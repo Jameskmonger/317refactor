@@ -25,9 +25,9 @@ public final class Player extends Entity
                 Model model_3 = new Model(true, Class36.method532(super.anInt1521), false, model_2);
                 model_3.method475(0, -super.anInt1524, 0);
                 model_3.method469();
-                model_3.method470(spotAnim.aAnimation_407.anIntArray353[super.anInt1521]);
+                model_3.applyTransformation(spotAnim.aAnimation_407.anIntArray353[super.anInt1521]);
                 model_3.anIntArrayArray1658 = null;
-                model_3.anIntArrayArray1657 = null;
+                model_3.vectorSkin = null;
                 if(spotAnim.anInt410 != 128 || spotAnim.anInt411 != 128)
                     model_3.method478(spotAnim.anInt410, spotAnim.anInt410, spotAnim.anInt411);
                 model_3.method479(64 + spotAnim.anInt413, 850 + spotAnim.anInt414, -30, -50, -30, true);
@@ -277,10 +277,10 @@ public final class Player extends Entity
             model_2.method471(Animation.anims[super.anim].anIntArray357, i1, k);
         else
         if(k != -1)
-            model_2.method470(k);
+            model_2.applyTransformation(k);
         model_2.method466();
         model_2.anIntArrayArray1658 = null;
-        model_2.anIntArrayArray1657 = null;
+        model_2.vectorSkin = null;
         return model_2;
     }
 

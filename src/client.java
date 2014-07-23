@@ -5214,7 +5214,7 @@ public final class client extends RSApplet {
                     }
 
                 model.method469();
-                model.method470(Animation.anims[myPlayer.anInt1511].anIntArray353[0]);
+                model.applyTransformation(Animation.anims[myPlayer.anInt1511].anIntArray353[0]);
                 model.method479(64, 850, -30, -50, -30, true);
                 class9.anInt233 = 5;
                 class9.mediaID = 0;

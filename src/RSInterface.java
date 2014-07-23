@@ -312,9 +312,9 @@ public final class RSInterface
         if(k != -1 || j != -1)
             model_1.method469();
         if(k != -1)
-            model_1.method470(k);
+            model_1.applyTransformation(k);
         if(j != -1)
-            model_1.method470(j);
+            model_1.applyTransformation(j);
         model_1.method479(64, 768, -50, -10, -50, true);
             return model_1;
     }

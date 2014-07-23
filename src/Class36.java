@@ -37,7 +37,7 @@ public final class Class36
         i1 += l;
         Stream stream_5 = new Stream(abyte0);
         stream_5.currentOffset = i1;
-        Class18 class18 = new Class18(stream_5);
+        Skins class18 = new Skins(stream_5);
         int k1 = stream_1.readUnsignedWord();
         int ai[] = new int[500];
         int ai1[] = new int[500];
@@ -48,7 +48,7 @@ public final class Class36
             int i2 = stream_1.readUnsignedWord();
             Class36 class36 = aClass36Array635[i2] = new Class36();
             class36.anInt636 = stream_4.readUnsignedByte();
-            class36.aClass18_637 = class18;
+            class36.animationSkins = class18;
             int j2 = stream_1.readUnsignedByte();
             int k2 = -1;
             int l2 = 0;
@@ -57,11 +57,11 @@ public final class Class36
                 int j3 = stream_2.readUnsignedByte();
                 if(j3 > 0)
                 {
-                    if(class18.anIntArray342[i3] != 0)
+                    if(class18.opcodes[i3] != 0)
                     {
                         for(int l3 = i3 - 1; l3 > k2; l3--)
                         {
-                            if(class18.anIntArray342[l3] != 0)
+                            if(class18.opcodes[l3] != 0)
                                 continue;
                             ai[l2] = l3;
                             ai1[l2] = 0;
@@ -74,7 +74,7 @@ public final class Class36
                     }
                     ai[l2] = i3;
                     char c = '\0';
-                    if(class18.anIntArray342[i3] == 3)
+                    if(class18.opcodes[i3] == 3)
                         c = '\200';
                     if((j3 & 1) != 0)
                         ai1[l2] = stream_3.method421();
@@ -90,19 +90,19 @@ public final class Class36
                         ai3[l2] = c;
                     k2 = i3;
                     l2++;
-                    if(class18.anIntArray342[i3] == 5)
+                    if(class18.opcodes[i3] == 5)
                         aBooleanArray643[i2] = false;
                 }
             }
 
-            class36.anInt638 = l2;
-            class36.anIntArray639 = new int[l2];
+            class36.stepCount = l2;
+            class36.opcodeTable = new int[l2];
             class36.anIntArray640 = new int[l2];
             class36.anIntArray641 = new int[l2];
             class36.anIntArray642 = new int[l2];
             for(int k3 = 0; k3 < l2; k3++)
             {
-                class36.anIntArray639[k3] = ai[k3];
+                class36.opcodeTable[k3] = ai[k3];
                 class36.anIntArray640[k3] = ai1[k3];
                 class36.anIntArray641[k3] = ai2[k3];
                 class36.anIntArray642[k3] = ai3[k3];
@@ -136,9 +136,9 @@ public final class Class36
 
     private static Class36[] aClass36Array635;
     public int anInt636;
-    public Class18 aClass18_637;
-    public int anInt638;
-    public int anIntArray639[];
+    public Skins animationSkins;
+    public int stepCount;
+    public int opcodeTable[];
     public int anIntArray640[];
     public int anIntArray641[];
     public int anIntArray642[];

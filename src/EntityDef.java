@@ -147,12 +147,12 @@ public final class EntityDef
             model_1.method471(ai, j, k);
         else
         if(k != -1)
-            model_1.method470(k);
+            model_1.applyTransformation(k);
         if(anInt91 != 128 || anInt86 != 128)
             model_1.method478(anInt91, anInt91, anInt86);
         model_1.method466();
         model_1.anIntArrayArray1658 = null;
-        model_1.anIntArrayArray1657 = null;
+        model_1.vectorSkin = null;
         if(aByte68 == 1)
             model_1.aBoolean1659 = true;
         return model_1;

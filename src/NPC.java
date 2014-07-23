@@ -39,9 +39,9 @@ public final class NPC extends Entity
                 Model model_2 = new Model(true, Class36.method532(j), false, model_1);
                 model_2.method475(0, -super.anInt1524, 0);
                 model_2.method469();
-                model_2.method470(j);
+                model_2.applyTransformation(j);
                 model_2.anIntArrayArray1658 = null;
-                model_2.anIntArrayArray1657 = null;
+                model_2.vectorSkin = null;
                 if(spotAnim.anInt410 != 128 || spotAnim.anInt411 != 128)
                     model_2.method478(spotAnim.anInt410, spotAnim.anInt410, spotAnim.anInt411);
                 model_2.method479(64 + spotAnim.anInt413, 850 + spotAnim.anInt414, -30, -50, -30, true);

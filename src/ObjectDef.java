@@ -249,9 +249,9 @@ stream = null;
         if(k != -1)
         {
             model_3.method469();
-            model_3.method470(k);
+            model_3.applyTransformation(k);
             model_3.anIntArrayArray1658 = null;
-            model_3.anIntArrayArray1657 = null;
+            model_3.vectorSkin = null;
         }
         while(l-- > 0) 
             model_3.method473();

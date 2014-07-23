@@ -27,9 +27,9 @@ final class Animable_Sub3 extends Animable {
         if(!aBoolean1567)
         {
             model_1.method469();
-            model_1.method470(j);
+            model_1.applyTransformation(j);
             model_1.anIntArrayArray1658 = null;
-            model_1.anIntArrayArray1657 = null;
+            model_1.vectorSkin = null;
         }
         if(aSpotAnim_1568.anInt410 != 128 || aSpotAnim_1568.anInt411 != 128)
             model_1.method478(aSpotAnim_1568.anInt410, aSpotAnim_1568.anInt410, aSpotAnim_1568.anInt411);

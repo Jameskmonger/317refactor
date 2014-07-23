@@ -710,7 +710,7 @@ public final class Model extends Animable {
         anIntArray1638 = model.anIntArray1638;
         anInt1641 = model.anInt1641;
         anIntArrayArray1658 = model.anIntArrayArray1658;
-        anIntArrayArray1657 = model.anIntArrayArray1657;
+        vectorSkin = model.vectorSkin;
         anIntArray1631 = model.anIntArray1631;
         anIntArray1632 = model.anIntArray1632;
         anIntArray1633 = model.anIntArray1633;
@@ -838,17 +838,17 @@ public final class Model extends Animable {
                     j = j1;
             }
 
-            anIntArrayArray1657 = new int[j + 1][];
+            vectorSkin = new int[j + 1][];
             for(int k1 = 0; k1 <= j; k1++)
             {
-                anIntArrayArray1657[k1] = new int[ai[k1]];
+                vectorSkin[k1] = new int[ai[k1]];
                 ai[k1] = 0;
             }
 
             for(int j2 = 0; j2 < anInt1626; j2++)
             {
                 int l2 = anIntArray1655[j2];
-                anIntArrayArray1657[l2][ai[l2]++] = j2;
+                vectorSkin[l2][ai[l2]++] = j2;
             }
 
             anIntArray1655 = null;
@@ -882,25 +882,24 @@ public final class Model extends Animable {
         }
     }
 
-    public void method470(int i)
+    public void applyTransformation(int frameId)
     {
-        if(anIntArrayArray1657 == null)
+        if(vectorSkin == null)
             return;
-        if(i == -1)
+        if(frameId == -1)
             return;
-        Class36 class36 = Class36.method531(i);
+        Class36 class36 = Class36.method531(frameId);
         if(class36 == null)
             return;
-        Class18 class18 = class36.aClass18_637;
+        Skins skins = class36.animationSkins;
         anInt1681 = 0;
         anInt1682 = 0;
         anInt1683 = 0;
-        for(int k = 0; k < class36.anInt638; k++)
+        for(int stepId = 0; stepId < class36.stepCount; stepId++)
         {
-            int l = class36.anIntArray639[k];
-            method472(class18.anIntArray342[l], class18.anIntArrayArray343[l], class36.anIntArray640[k], class36.anIntArray641[k], class36.anIntArray642[k]);
+            int opcode = class36.opcodeTable[stepId];
+            transformStep(skins.opcodes[opcode], skins.skinList[opcode], class36.anIntArray640[stepId], class36.anIntArray641[stepId], class36.anIntArray642[stepId]);
         }
-
     }
 
     public void method471(int ai[], int j, int k)
@@ -909,7 +908,7 @@ public final class Model extends Animable {
             return;
         if(ai == null || j == -1)
         {
-            method470(k);
+            applyTransformation(k);
             return;
         }
         Class36 class36 = Class36.method531(k);
@@ -918,21 +917,21 @@ public final class Model extends Animable {
         Class36 class36_1 = Class36.method531(j);
         if(class36_1 == null)
         {
-            method470(k);
+            applyTransformation(k);
             return;
         }
-        Class18 class18 = class36.aClass18_637;
+        Skins class18 = class36.animationSkins;
         anInt1681 = 0;
         anInt1682 = 0;
         anInt1683 = 0;
         int l = 0;
         int i1 = ai[l++];
-        for(int j1 = 0; j1 < class36.anInt638; j1++)
+        for(int j1 = 0; j1 < class36.stepCount; j1++)
         {
             int k1;
-            for(k1 = class36.anIntArray639[j1]; k1 > i1; i1 = ai[l++]);
-            if(k1 != i1 || class18.anIntArray342[k1] == 0)
-                method472(class18.anIntArray342[k1], class18.anIntArrayArray343[k1], class36.anIntArray640[j1], class36.anIntArray641[j1], class36.anIntArray642[j1]);
+            for(k1 = class36.opcodeTable[j1]; k1 > i1; i1 = ai[l++]);
+            if(k1 != i1 || class18.opcodes[k1] == 0)
+                transformStep(class18.opcodes[k1], class18.skinList[k1], class36.anIntArray640[j1], class36.anIntArray641[j1], class36.anIntArray642[j1]);
         }
 
         anInt1681 = 0;
@@ -940,17 +939,17 @@ public final class Model extends Animable {
         anInt1683 = 0;
         l = 0;
         i1 = ai[l++];
-        for(int l1 = 0; l1 < class36_1.anInt638; l1++)
+        for(int l1 = 0; l1 < class36_1.stepCount; l1++)
         {
             int i2;
-            for(i2 = class36_1.anIntArray639[l1]; i2 > i1; i1 = ai[l++]);
-            if(i2 == i1 || class18.anIntArray342[i2] == 0)
-                method472(class18.anIntArray342[i2], class18.anIntArrayArray343[i2], class36_1.anIntArray640[l1], class36_1.anIntArray641[l1], class36_1.anIntArray642[l1]);
+            for(i2 = class36_1.opcodeTable[l1]; i2 > i1; i1 = ai[l++]);
+            if(i2 == i1 || class18.opcodes[i2] == 0)
+                transformStep(class18.opcodes[i2], class18.skinList[i2], class36_1.anIntArray640[l1], class36_1.anIntArray641[l1], class36_1.anIntArray642[l1]);
         }
 
     }
 
-    private void method472(int i, int ai[], int j, int k, int l)
+    private void transformStep(int i, int ai[], int j, int k, int l)
     {
         int i1 = ai.length;
         if(i == 0)
@@ -962,9 +961,9 @@ public final class Model extends Animable {
             for(int k2 = 0; k2 < i1; k2++)
             {
                 int l3 = ai[k2];
-                if(l3 < anIntArrayArray1657.length)
+                if(l3 < vectorSkin.length)
                 {
-                    int ai5[] = anIntArrayArray1657[l3];
+                    int ai5[] = vectorSkin[l3];
                     for(int i5 = 0; i5 < ai5.length; i5++)
                     {
                         int j6 = ai5[i5];
@@ -996,9 +995,9 @@ public final class Model extends Animable {
             for(int k1 = 0; k1 < i1; k1++)
             {
                 int l2 = ai[k1];
-                if(l2 < anIntArrayArray1657.length)
+                if(l2 < vectorSkin.length)
                 {
-                    int ai1[] = anIntArrayArray1657[l2];
+                    int ai1[] = vectorSkin[l2];
                     for(int i4 = 0; i4 < ai1.length; i4++)
                     {
                         int j5 = ai1[i4];
@@ -1017,9 +1016,9 @@ public final class Model extends Animable {
             for(int l1 = 0; l1 < i1; l1++)
             {
                 int i3 = ai[l1];
-                if(i3 < anIntArrayArray1657.length)
+                if(i3 < vectorSkin.length)
                 {
-                    int ai2[] = anIntArrayArray1657[i3];
+                    int ai2[] = vectorSkin[i3];
                     for(int j4 = 0; j4 < ai2.length; j4++)
                     {
                         int k5 = ai2[j4];
@@ -1068,9 +1067,9 @@ public final class Model extends Animable {
             for(int i2 = 0; i2 < i1; i2++)
             {
                 int j3 = ai[i2];
-                if(j3 < anIntArrayArray1657.length)
+                if(j3 < vectorSkin.length)
                 {
-                    int ai3[] = anIntArrayArray1657[j3];
+                    int ai3[] = vectorSkin[j3];
                     for(int k4 = 0; k4 < ai3.length; k4++)
                     {
                         int l5 = ai3[k4];
@@ -1969,7 +1968,7 @@ public final class Model extends Animable {
     public int anInt1654;
     private int[] anIntArray1655;
     private int[] anIntArray1656;
-    public int anIntArrayArray1657[][];
+    public int vectorSkin[][];
     public int anIntArrayArray1658[][];
     public boolean aBoolean1659;
     Class33 aClass33Array1660[];
