@@ -4657,8 +4657,8 @@ public final class client extends RSApplet {
             System.out.println("Od-cycle:" + onDemandFetcher.onDemandCycle);
         System.out.println("loop-cycle:" + loopCycle);
         System.out.println("draw-cycle:" + anInt1061);
-        System.out.println("ptype:" + pktType);
-        System.out.println("psize:" + pktSize);
+        System.out.println("ptype:" + packetOpcode);
+        System.out.println("psize:" + packetSize);
         if(socket != null)
             socket.printDebug();
         super.shouldDebug = true;
@@ -4813,7 +4813,7 @@ public final class client extends RSApplet {
                 }
                 if((j == 13 || j == 10) && inputString.length() > 0)
                 {
-                    if(myPrivilege == 2)
+                    if(playerRights == 2)
                     {
                       if(inputString.equals("::clientdrop"))
                             dropClient();
@@ -4955,10 +4955,10 @@ public final class client extends RSApplet {
                         myPlayer.anInt1513 = j2;
                         myPlayer.anInt1531 = i3;
                         myPlayer.textCycle = 150;
-                        if(myPrivilege == 2)
+                        if(playerRights == 2)
                             pushMessage(myPlayer.textSpoken, 2, "@cr2@" + myPlayer.name);
                         else
-                        if(myPrivilege == 1)
+                        if(playerRights == 1)
                             pushMessage(myPlayer.textSpoken, 2, "@cr1@" + myPlayer.name);
                         else
                             pushMessage(myPlayer.textSpoken, 2, myPlayer.name);
@@ -5008,7 +5008,7 @@ public final class client extends RSApplet {
             {
                 if(j > k1 - 14 && j <= k1 && !s.equals(myPlayer.name))
                 {
-                    if(myPrivilege >= 1)
+                    if(playerRights >= 1)
                     {
                         menuActionName[menuActionRow] = "Report abuse @whi@" + s;
                         menuActionID[menuActionRow] = 606;
@@ -5027,7 +5027,7 @@ public final class client extends RSApplet {
             {
                 if(j > k1 - 14 && j <= k1)
                 {
-                    if(myPrivilege >= 1)
+                    if(playerRights >= 1)
                     {
                         menuActionName[menuActionRow] = "Report abuse @whi@" + s;
                         menuActionID[menuActionRow] = 606;
@@ -5270,7 +5270,7 @@ public final class client extends RSApplet {
             }
         }
         if(j == 613)
-            if(myPrivilege >= 1)
+            if(playerRights >= 1)
             {
                 if(canMute)
                 {
@@ -5763,7 +5763,7 @@ public final class client extends RSApplet {
             }
             if(responseCode == 2)
             {
-                myPrivilege = socket.read();
+                playerRights = socket.read();
                 flagged = socket.read() == 1;
                 aLong1220 = 0L;
                 anInt1022 = 0;
@@ -5773,11 +5773,11 @@ public final class client extends RSApplet {
                 loggedIn = true;
                 stream.currentOffset = 0;
                 inStream.currentOffset = 0;
-                pktType = -1;
+                packetOpcode = -1;
                 anInt841 = -1;
                 anInt842 = -1;
                 anInt843 = -1;
-                pktSize = 0;
+                packetSize = 0;
                 anInt1009 = 0;
                 anInt1104 = 0;
                 anInt1011 = 0;
@@ -5944,11 +5944,11 @@ public final class client extends RSApplet {
                 loggedIn = true;
                 stream.currentOffset = 0;
                 inStream.currentOffset = 0;
-                pktType = -1;
+                packetOpcode = -1;
                 anInt841 = -1;
                 anInt842 = -1;
                 anInt843 = -1;
-                pktSize = 0;
+                packetSize = 0;
                 anInt1009 = 0;
                 anInt1104 = 0;
                 menuActionRow = 0;
@@ -9280,7 +9280,7 @@ public final class client extends RSApplet {
                             i1 = 450;
                         if(super.mouseX < 4 + i1)
                         {
-                            if(myPrivilege >= 1)
+                            if(playerRights >= 1)
                             {
                                 menuActionName[menuActionRow] = "Report abuse @whi@" + s;
                                 menuActionID[menuActionRow] = 2606;
@@ -10295,52 +10295,52 @@ public final class client extends RSApplet {
             int i = socket.available();
             if(i == 0)
                 return false;
-            if(pktType == -1)
+            if(packetOpcode == -1)
             {
                 socket.read(inStream.buffer, 1);
-                pktType = inStream.buffer[0] & 0xff;
+                packetOpcode = inStream.buffer[0] & 0xff;
                 if(encryption != null)
-                    pktType = pktType - encryption.getNextKey() & 0xff;
-                pktSize = SizeConstants.packetSizes[pktType];
+                    packetOpcode = packetOpcode - encryption.getNextKey() & 0xff;
+                packetSize = SizeConstants.packetSizes[packetOpcode];
                 i--;
             }
-            if(pktSize == -1)
+            if(packetSize == -1)
                 if(i > 0)
                 {
                     socket.read(inStream.buffer, 1);
-                    pktSize = inStream.buffer[0] & 0xff;
+                    packetSize = inStream.buffer[0] & 0xff;
                     i--;
                 } else
                 {
                     return false;
                 }
-            if(pktSize == -2)
+            if(packetSize == -2)
                 if(i > 1)
                 {
                     socket.read(inStream.buffer, 2);
                     inStream.currentOffset = 0;
-                    pktSize = inStream.readUnsignedWord();
+                    packetSize = inStream.readUnsignedWord();
                     i -= 2;
                 } else
                 {
                     return false;
                 }
-            if(i < pktSize)
+            if(i < packetSize)
                 return false;
             inStream.currentOffset = 0;
-            socket.read(inStream.buffer, pktSize);
+            socket.read(inStream.buffer, packetSize);
             anInt1009 = 0;
             anInt843 = anInt842;
             anInt842 = anInt841;
-            anInt841 = pktType;
-            if(pktType == 81)
+            anInt841 = packetOpcode;
+            if(packetOpcode == 81)
             {
-                updatePlayers(pktSize, inStream);
+                updatePlayers(packetSize, inStream);
                 aBoolean1080 = false;
-                pktType = -1;
+                packetOpcode = -1;
                 return true;
             }
-            if(pktType == 176)
+            if(packetOpcode == 176)
             {
                 daysSinceRecovChange = inStream.method427();
                 unreadMessages = inStream.method435();
@@ -10365,10 +10365,10 @@ public final class client extends RSApplet {
                     }
 
                 }
-                pktType = -1;
+                packetOpcode = -1;
                 return true;
             }
-            if(pktType == 64)
+            if(packetOpcode == 64)
             {
                 anInt1268 = inStream.method427();
                 anInt1269 = inStream.method428();
@@ -10387,10 +10387,10 @@ public final class client extends RSApplet {
                     if(class30_sub1.anInt1297 >= anInt1268 && class30_sub1.anInt1297 < anInt1268 + 8 && class30_sub1.anInt1298 >= anInt1269 && class30_sub1.anInt1298 < anInt1269 + 8 && class30_sub1.anInt1295 == plane)
                         class30_sub1.anInt1294 = 0;
 
-                pktType = -1;
+                packetOpcode = -1;
                 return true;
             }
-            if(pktType == 185)
+            if(packetOpcode == 185)
             {
                 int k = inStream.method436();
                 RSInterface.interfaceCache[k].anInt233 = 3;
@@ -10398,19 +10398,19 @@ public final class client extends RSApplet {
                     RSInterface.interfaceCache[k].mediaID = (myPlayer.anIntArray1700[0] << 25) + (myPlayer.anIntArray1700[4] << 20) + (myPlayer.equipment[0] << 15) + (myPlayer.equipment[8] << 10) + (myPlayer.equipment[11] << 5) + myPlayer.equipment[1];
                 else
                     RSInterface.interfaceCache[k].mediaID = (int)(0x12345678L + myPlayer.desc.type);
-                pktType = -1;
+                packetOpcode = -1;
                 return true;
             }
-            if(pktType == 107)
+            if(packetOpcode == 107)
             {
                 aBoolean1160 = false;
                 for(int l = 0; l < 5; l++)
                     aBooleanArray876[l] = false;
 
-                pktType = -1;
+                packetOpcode = -1;
                 return true;
             }
-            if(pktType == 72)
+            if(packetOpcode == 72)
             {
                 int i1 = inStream.method434();
                 RSInterface class9 = RSInterface.interfaceCache[i1];
@@ -10420,19 +10420,19 @@ public final class client extends RSApplet {
                     class9.inv[k15] = 0;
                 }
 
-                pktType = -1;
+                packetOpcode = -1;
                 return true;
             }
-            if(pktType == 214)
+            if(packetOpcode == 214)
             {
-                ignoreCount = pktSize / 8;
+                ignoreCount = packetSize / 8;
                 for(int j1 = 0; j1 < ignoreCount; j1++)
                     ignoreListAsLongs[j1] = inStream.readQWord();
 
-                pktType = -1;
+                packetOpcode = -1;
                 return true;
             }
-            if(pktType == 166)
+            if(packetOpcode == 166)
             {
                 aBoolean1160 = true;
                 anInt1098 = inStream.readUnsignedByte();
@@ -10446,10 +10446,10 @@ public final class client extends RSApplet {
                     yCameraPos = anInt1099 * 128 + 64;
                     zCameraPos = method42(plane, yCameraPos, xCameraPos) - anInt1100;
                 }
-                pktType = -1;
+                packetOpcode = -1;
                 return true;
             }
-            if(pktType == 134)
+            if(packetOpcode == 134)
             {
                 needDrawTabArea = true;
                 int k1 = inStream.readUnsignedByte();
@@ -10462,10 +10462,10 @@ public final class client extends RSApplet {
                     if(i10 >= anIntArray1019[k20])
                         maxStats[k1] = k20 + 2;
 
-                pktType = -1;
+                packetOpcode = -1;
                 return true;
             }
-            if(pktType == 71)
+            if(packetOpcode == 71)
             {
                 int l1 = inStream.readUnsignedWord();
                 int j10 = inStream.method426();
@@ -10474,10 +10474,10 @@ public final class client extends RSApplet {
                 tabInterfaceIDs[j10] = l1;
                 needDrawTabArea = true;
                 tabAreaAltered = true;
-                pktType = -1;
+                packetOpcode = -1;
                 return true;
             }
-            if(pktType == 74)
+            if(packetOpcode == 74)
             {
                 int i2 = inStream.method434();
                 if(i2 == 65535)
@@ -10489,10 +10489,10 @@ public final class client extends RSApplet {
                     onDemandFetcher.method558(2, nextSong);
                 }
                 currentSong = i2;
-                pktType = -1;
+                packetOpcode = -1;
                 return true;
             }
-            if(pktType == 121)
+            if(packetOpcode == 121)
             {
                 int j2 = inStream.method436();
                 int k10 = inStream.method435();
@@ -10503,16 +10503,16 @@ public final class client extends RSApplet {
                     onDemandFetcher.method558(2, nextSong);
                     prevSong = k10;
                 }
-                pktType = -1;
+                packetOpcode = -1;
                 return true;
             }
-            if(pktType == 109)
+            if(packetOpcode == 109)
             {
                 resetLogout();
-                pktType = -1;
+                packetOpcode = -1;
                 return false;
             }
-            if(pktType == 70)
+            if(packetOpcode == 70)
             {
                 int k2 = inStream.readSignedWord();
                 int l10 = inStream.method437();
@@ -10520,22 +10520,22 @@ public final class client extends RSApplet {
                 RSInterface class9_5 = RSInterface.interfaceCache[i16];
                 class9_5.anInt263 = k2;
                 class9_5.anInt265 = l10;
-                pktType = -1;
+                packetOpcode = -1;
                 return true;
             }
-            if(pktType == 73 || pktType == 241)
+            if(packetOpcode == 73 || packetOpcode == 241)
             {
                 
 	//mapReset();
 	int l2 = anInt1069;
                 int i11 = anInt1070;
-                if(pktType == 73)
+                if(packetOpcode == 73)
                 {
                     l2 = inStream.method435();
                     i11 = inStream.readUnsignedWord();
                     aBoolean1159 = false;
                 }
-                if(pktType == 241)
+                if(packetOpcode == 241)
                 {
                     i11 = inStream.method435();
                     inStream.initBitAccess();
@@ -10562,7 +10562,7 @@ public final class client extends RSApplet {
                 }
                 if(anInt1069 == l2 && anInt1070 == i11 && loadingStage == 2)
                 {
-                    pktType = -1;
+                    packetOpcode = -1;
                     return true;
                 }
                 anInt1069 = l2;
@@ -10578,7 +10578,7 @@ public final class client extends RSApplet {
                 aTextDrawingArea_1271.drawText(0, "Loading - please wait.", 151, 257);
                 aTextDrawingArea_1271.drawText(0xffffff, "Loading - please wait.", 150, 256);
                 aRSImageProducer_1165.drawGraphics(4, super.graphics, 4);
-                if(pktType == 73)
+                if(packetOpcode == 73)
                 {
                     int k16 = 0;
                     for(int i21 = (anInt1069 - 6) / 8; i21 <= (anInt1069 + 6) / 8; i21++)
@@ -10619,7 +10619,7 @@ public final class client extends RSApplet {
                     }
 
                 }
-                if(pktType == 241)
+                if(packetOpcode == 241)
                 {
                     int l16 = 0;
                     int ai[] = new int[676];
@@ -10756,52 +10756,52 @@ public final class client extends RSApplet {
                     destY -= j21;
                 }
                 aBoolean1160 = false;
-                pktType = -1;
+                packetOpcode = -1;
                 return true;
             }
-            if(pktType == 208)
+            if(packetOpcode == 208)
             {
                 int i3 = inStream.method437();
                 if(i3 >= 0)
                     method60(i3);
                 anInt1018 = i3;
-                pktType = -1;
+                packetOpcode = -1;
                 return true;
             }
-            if(pktType == 99)
+            if(packetOpcode == 99)
             {
                 anInt1021 = inStream.readUnsignedByte();
-                pktType = -1;
+                packetOpcode = -1;
                 return true;
             }
-            if(pktType == 75)
+            if(packetOpcode == 75)
             {
                 int j3 = inStream.method436();
                 int j11 = inStream.method436();
                 RSInterface.interfaceCache[j11].anInt233 = 2;
                 RSInterface.interfaceCache[j11].mediaID = j3;
-                pktType = -1;
+                packetOpcode = -1;
                 return true;
             }
-            if(pktType == 114)
+            if(packetOpcode == 114)
             {
                 anInt1104 = inStream.method434() * 30;
-                pktType = -1;
+                packetOpcode = -1;
                 return true;
             }
-            if(pktType == 60)
+            if(packetOpcode == 60)
             {
                 anInt1269 = inStream.readUnsignedByte();
                 anInt1268 = inStream.method427();
-                while(inStream.currentOffset < pktSize)
+                while(inStream.currentOffset < packetSize)
                 {
                     int k3 = inStream.readUnsignedByte();
                     method137(inStream, k3);
                 }
-                pktType = -1;
+                packetOpcode = -1;
                 return true;
             }
-            if(pktType == 35)
+            if(packetOpcode == 35)
             {
                 int l3 = inStream.readUnsignedByte();
                 int k11 = inStream.readUnsignedByte();
@@ -10812,10 +10812,10 @@ public final class client extends RSApplet {
                 anIntArray1203[l3] = j17;
                 anIntArray928[l3] = k21;
                 anIntArray1030[l3] = 0;
-                pktType = -1;
+                packetOpcode = -1;
                 return true;
             }
-            if(pktType == 174)
+            if(packetOpcode == 174)
             {
                 int i4 = inStream.readUnsignedWord();
                 int l11 = inStream.readUnsignedByte();
@@ -10827,10 +10827,10 @@ public final class client extends RSApplet {
                     anIntArray1250[anInt1062] = k17 + Sounds.anIntArray326[i4];
                     anInt1062++;
                 }
-                pktType = -1;
+                packetOpcode = -1;
                 return true;
             }
-            if(pktType == 104)
+            if(packetOpcode == 104)
             {
                 int j4 = inStream.method427();
                 int i12 = inStream.method426();
@@ -10842,16 +10842,16 @@ public final class client extends RSApplet {
                     atPlayerActions[j4 - 1] = s6;
                     atPlayerArray[j4 - 1] = i12 == 0;
                 }
-                pktType = -1;
+                packetOpcode = -1;
                 return true;
             }
-            if(pktType == 78)
+            if(packetOpcode == 78)
             {
                 destX = 0;
-                pktType = -1;
+                packetOpcode = -1;
                 return true;
             }
-            if(pktType == 253)
+            if(packetOpcode == 253)
             {
                 String s = inStream.readString();
                 if(s.endsWith(":tradereq:"))
@@ -10908,12 +10908,12 @@ public final class client extends RSApplet {
                 {
                     pushMessage(s, 0, "");
                 }
-                pktType = -1;
+                packetOpcode = -1;
 	//serverMessage(s);
 	
                 return true;
             }
-            if(pktType == 1)
+            if(packetOpcode == 1)
             {
                 for(int k4 = 0; k4 < playerArray.length; k4++)
                     if(playerArray[k4] != null)
@@ -10923,10 +10923,10 @@ public final class client extends RSApplet {
                     if(npcArray[j12] != null)
                         npcArray[j12].anim = -1;
 
-                pktType = -1;
+                packetOpcode = -1;
                 return true;
             }
-            if(pktType == 50)
+            if(packetOpcode == 50)
             {
                 long l4 = inStream.readQWord();
                 int i18 = inStream.readUnsignedByte();
@@ -10977,18 +10977,18 @@ public final class client extends RSApplet {
 
                 }
 
-                pktType = -1;
+                packetOpcode = -1;
                 return true;
             }
-            if(pktType == 110)
+            if(packetOpcode == 110)
             {
                 if(tabID == 12)
                     needDrawTabArea = true;
                 energy = inStream.readUnsignedByte();
-                pktType = -1;
+                packetOpcode = -1;
                 return true;
             }
-            if(pktType == 254)
+            if(packetOpcode == 254)
             {
                 anInt855 = inStream.readUnsignedByte();
                 if(anInt855 == 1)
@@ -11027,10 +11027,10 @@ public final class client extends RSApplet {
                 }
                 if(anInt855 == 10)
                     anInt933 = inStream.readUnsignedWord();
-                pktType = -1;
+                packetOpcode = -1;
                 return true;
             }
-            if(pktType == 248)
+            if(packetOpcode == 248)
             {
                 int i5 = inStream.method435();
                 int k12 = inStream.readUnsignedWord();
@@ -11049,10 +11049,10 @@ public final class client extends RSApplet {
                 needDrawTabArea = true;
                 tabAreaAltered = true;
                 aBoolean1149 = false;
-                pktType = -1;
+                packetOpcode = -1;
                 return true;
             }
-            if(pktType == 79)
+            if(packetOpcode == 79)
             {
                 int j5 = inStream.method434();
                 int l12 = inStream.method435();
@@ -11065,10 +11065,10 @@ public final class client extends RSApplet {
                         l12 = class9_3.scrollMax - class9_3.height;
                     class9_3.scrollPosition = l12;
                 }
-                pktType = -1;
+                packetOpcode = -1;
                 return true;
             }
-            if(pktType == 68)
+            if(packetOpcode == 68)
             {
                 for(int k5 = 0; k5 < variousSettings.length; k5++)
                     if(variousSettings[k5] != anIntArray1045[k5])
@@ -11078,10 +11078,10 @@ public final class client extends RSApplet {
                         needDrawTabArea = true;
                     }
 
-                pktType = -1;
+                packetOpcode = -1;
                 return true;
             }
-            if(pktType == 196)
+            if(packetOpcode == 196)
             {
                 long l5 = inStream.readQWord();
                 int j18 = inStream.readDWord();
@@ -11111,7 +11111,7 @@ public final class client extends RSApplet {
                     {
                         anIntArray1240[anInt1169] = j18;
                         anInt1169 = (anInt1169 + 1) % 100;
-                        String s9 = TextInput.method525(pktSize - 13, inStream);
+                        String s9 = TextInput.method525(packetSize - 13, inStream);
                         if(l21 != 3)
                             s9 = Censor.doCensor(s9);
                         if(l21 == 2 || l21 == 3)
@@ -11126,17 +11126,17 @@ public final class client extends RSApplet {
                     {
                         signlink.reporterror("cde1");
                     }
-                pktType = -1;
+                packetOpcode = -1;
                 return true;
             }
-            if(pktType == 85)
+            if(packetOpcode == 85)
             {
                 anInt1269 = inStream.method427();
                 anInt1268 = inStream.method427();
-                pktType = -1;
+                packetOpcode = -1;
                 return true;
             }
-            if(pktType == 24)
+            if(packetOpcode == 24)
             {
                 anInt1054 = inStream.method428();
                 if(anInt1054 == tabID)
@@ -11147,10 +11147,10 @@ public final class client extends RSApplet {
                         tabID = 3;
                     needDrawTabArea = true;
                 }
-                pktType = -1;
+                packetOpcode = -1;
                 return true;
             }
-            if(pktType == 246)
+            if(packetOpcode == 246)
             {
                 int i6 = inStream.method434();
                 int i13 = inStream.readUnsignedWord();
@@ -11158,7 +11158,7 @@ public final class client extends RSApplet {
                 if(k18 == 65535)
                 {
                     RSInterface.interfaceCache[i6].anInt233 = 0;
-                    pktType = -1;
+                    packetOpcode = -1;
                     return true;
                 } else
                 {
@@ -11168,19 +11168,19 @@ public final class client extends RSApplet {
                     RSInterface.interfaceCache[i6].anInt270 = itemDef.modelRotation1;
                     RSInterface.interfaceCache[i6].anInt271 = itemDef.modelRotation2;
                     RSInterface.interfaceCache[i6].anInt269 = (itemDef.modelZoom * 100) / i13;
-                    pktType = -1;
+                    packetOpcode = -1;
                     return true;
                 }
             }
-            if(pktType == 171)
+            if(packetOpcode == 171)
             {
                 boolean flag1 = inStream.readUnsignedByte() == 1;
                 int j13 = inStream.readUnsignedWord();
                 RSInterface.interfaceCache[j13].aBoolean266 = flag1;
-                pktType = -1;
+                packetOpcode = -1;
                 return true;
             }
-            if(pktType == 142)
+            if(packetOpcode == 142)
             {
                 int j6 = inStream.method434();
                 method60(j6);
@@ -11199,47 +11199,47 @@ public final class client extends RSApplet {
                 tabAreaAltered = true;
                 openInterfaceID = -1;
                 aBoolean1149 = false;
-                pktType = -1;
+                packetOpcode = -1;
                 return true;
             }
-            if(pktType == 126)
+            if(packetOpcode == 126)
             {
                 String s1 = inStream.readString();
                 int k13 = inStream.method435();
                 RSInterface.interfaceCache[k13].message = s1;
                 if(RSInterface.interfaceCache[k13].parentID == tabInterfaceIDs[tabID])
                     needDrawTabArea = true;
-                pktType = -1;
+                packetOpcode = -1;
                 return true;
             }
-            if(pktType == 206)
+            if(packetOpcode == 206)
             {
                 publicChatMode = inStream.readUnsignedByte();
                 privateChatMode = inStream.readUnsignedByte();
                 tradeMode = inStream.readUnsignedByte();
                 aBoolean1233 = true;
                 inputTaken = true;
-                pktType = -1;
+                packetOpcode = -1;
                 return true;
             }
-            if(pktType == 240)
+            if(packetOpcode == 240)
             {
                 if(tabID == 12)
                     needDrawTabArea = true;
                 weight = inStream.readSignedWord();
-                pktType = -1;
+                packetOpcode = -1;
                 return true;
             }
-            if(pktType == 8)
+            if(packetOpcode == 8)
             {
                 int k6 = inStream.method436();
                 int l13 = inStream.readUnsignedWord();
                 RSInterface.interfaceCache[k6].anInt233 = 1;
                 RSInterface.interfaceCache[k6].mediaID = l13;
-                pktType = -1;
+                packetOpcode = -1;
                 return true;
             }
-            if(pktType == 122)
+            if(packetOpcode == 122)
             {
                 int l6 = inStream.method436();
                 int i14 = inStream.method436();
@@ -11247,10 +11247,10 @@ public final class client extends RSApplet {
                 int i22 = i14 >> 5 & 0x1f;
                 int l24 = i14 & 0x1f;
                 RSInterface.interfaceCache[l6].textColor = (i19 << 19) + (i22 << 11) + (l24 << 3);
-                pktType = -1;
+                packetOpcode = -1;
                 return true;
             }
-            if(pktType == 53)
+            if(packetOpcode == 53)
             {
                 needDrawTabArea = true;
                 int i7 = inStream.readUnsignedWord();
@@ -11271,10 +11271,10 @@ public final class client extends RSApplet {
                     class9_1.invStackSizes[j25] = 0;
                 }
 
-                pktType = -1;
+                packetOpcode = -1;
                 return true;
             }
-            if(pktType == 230)
+            if(packetOpcode == 230)
             {
                 int j7 = inStream.method435();
                 int j14 = inStream.readUnsignedWord();
@@ -11283,17 +11283,17 @@ public final class client extends RSApplet {
                 RSInterface.interfaceCache[j14].anInt270 = k19;
                 RSInterface.interfaceCache[j14].anInt271 = k22;
                 RSInterface.interfaceCache[j14].anInt269 = j7;
-                pktType = -1;
+                packetOpcode = -1;
                 return true;
             }
-            if(pktType == 221)
+            if(packetOpcode == 221)
             {
                 anInt900 = inStream.readUnsignedByte();
                 needDrawTabArea = true;
-                pktType = -1;
+                packetOpcode = -1;
                 return true;
             }
-            if(pktType == 177)
+            if(packetOpcode == 177)
             {
                 aBoolean1160 = true;
                 anInt995 = inStream.readUnsignedByte();
@@ -11317,41 +11317,41 @@ public final class client extends RSApplet {
                     if(yCameraCurve > 383)
                         yCameraCurve = 383;
                 }
-                pktType = -1;
+                packetOpcode = -1;
                 return true;
             }
-            if(pktType == 249)
+            if(packetOpcode == 249)
             {
                 anInt1046 = inStream.method426();
                 unknownInt10 = inStream.method436();
-                pktType = -1;
+                packetOpcode = -1;
                 return true;
             }
-            if(pktType == 65)
+            if(packetOpcode == 65)
             {
-                updateNPCs(inStream, pktSize);
-                pktType = -1;
+                updateNPCs(inStream, packetSize);
+                packetOpcode = -1;
                 return true;
             }
-            if(pktType == 27)
+            if(packetOpcode == 27)
             {
                 messagePromptRaised = false;
                 inputDialogState = 1;
                 amountOrNameInput = "";
                 inputTaken = true;
-                pktType = -1;
+                packetOpcode = -1;
                 return true;
             }
-            if(pktType == 187)
+            if(packetOpcode == 187)
             {
                 messagePromptRaised = false;
                 inputDialogState = 2;
                 amountOrNameInput = "";
                 inputTaken = true;
-                pktType = -1;
+                packetOpcode = -1;
                 return true;
             }
-            if(pktType == 97)
+            if(packetOpcode == 97)
             {
                 int l7 = inStream.readUnsignedWord();
                 method60(l7);
@@ -11373,18 +11373,18 @@ public final class client extends RSApplet {
                 }
                 openInterfaceID = l7;
                 aBoolean1149 = false;
-                pktType = -1;
+                packetOpcode = -1;
                 return true;
             }
-            if(pktType == 218)
+            if(packetOpcode == 218)
             {
                 int i8 = inStream.method438();
                 dialogID = i8;
                 inputTaken = true;
-                pktType = -1;
+                packetOpcode = -1;
                 return true;
             }
-            if(pktType == 87)
+            if(packetOpcode == 87)
             {
                 int j8 = inStream.method434();
                 int l14 = inStream.method439();
@@ -11397,10 +11397,10 @@ public final class client extends RSApplet {
                     if(dialogID != -1)
                         inputTaken = true;
                 }
-                pktType = -1;
+                packetOpcode = -1;
                 return true;
             }
-            if(pktType == 36)
+            if(packetOpcode == 36)
             {
                 int k8 = inStream.method434();
                 byte byte0 = inStream.readSignedByte();
@@ -11413,16 +11413,16 @@ public final class client extends RSApplet {
                     if(dialogID != -1)
                         inputTaken = true;
                 }
-                pktType = -1;
+                packetOpcode = -1;
                 return true;
             }
-            if(pktType == 61)
+            if(packetOpcode == 61)
             {
                 anInt1055 = inStream.readUnsignedByte();
-                pktType = -1;
+                packetOpcode = -1;
                 return true;
             }
-            if(pktType == 200)
+            if(packetOpcode == 200)
             {
                 int l8 = inStream.readUnsignedWord();
                 int i15 = inStream.readSignedWord();
@@ -11433,10 +11433,10 @@ public final class client extends RSApplet {
                     class9_4.anInt246 = 0;
                     class9_4.anInt208 = 0;
                 }
-                pktType = -1;
+                packetOpcode = -1;
                 return true;
             }
-            if(pktType == 219)
+            if(packetOpcode == 219)
             {
                 if(invOverlayInterfaceID != -1)
                 {
@@ -11456,15 +11456,15 @@ public final class client extends RSApplet {
                 }
                 openInterfaceID = -1;
                 aBoolean1149 = false;
-                pktType = -1;
+                packetOpcode = -1;
                 return true;
             }
-            if(pktType == 34)
+            if(packetOpcode == 34)
             {
                 needDrawTabArea = true;
                 int i9 = inStream.readUnsignedWord();
                 RSInterface class9_2 = RSInterface.interfaceCache[i9];
-                while(inStream.currentOffset < pktSize)
+                while(inStream.currentOffset < packetSize)
                 {
                     int j20 = inStream.method422();
                     int i23 = inStream.readUnsignedWord();
@@ -11477,24 +11477,24 @@ public final class client extends RSApplet {
                         class9_2.invStackSizes[j20] = l25;
                     }
                 }
-                pktType = -1;
+                packetOpcode = -1;
                 return true;
             }
-            if(pktType == 105 || pktType == 84 || pktType == 147 || pktType == 215 || pktType == 4 || pktType == 117 || pktType == 156 || pktType == 44 || pktType == 160 || pktType == 101 || pktType == 151)
+            if(packetOpcode == 105 || packetOpcode == 84 || packetOpcode == 147 || packetOpcode == 215 || packetOpcode == 4 || packetOpcode == 117 || packetOpcode == 156 || packetOpcode == 44 || packetOpcode == 160 || packetOpcode == 101 || packetOpcode == 151)
             {
-                method137(inStream, pktType);
-                pktType = -1;
+                method137(inStream, packetOpcode);
+                packetOpcode = -1;
                 return true;
             }
-            if(pktType == 106)
+            if(packetOpcode == 106)
             {
                 tabID = inStream.method427();
                 needDrawTabArea = true;
                 tabAreaAltered = true;
-                pktType = -1;
+                packetOpcode = -1;
                 return true;
             }
-            if(pktType == 164)
+            if(packetOpcode == 164)
             {
                 int j9 = inStream.method434();
                 method60(j9);
@@ -11508,10 +11508,10 @@ public final class client extends RSApplet {
                 inputTaken = true;
                 openInterfaceID = -1;
                 aBoolean1149 = false;
-                pktType = -1;
+                packetOpcode = -1;
                 return true;
             }
-            signlink.reporterror("T1 - " + pktType + "," + pktSize + " - " + anInt842 + "," + anInt843);
+            signlink.reporterror("T1 - " + packetOpcode + "," + packetSize + " - " + anInt842 + "," + anInt843);
             resetLogout();
         }
         catch(IOException _ex)
@@ -11520,8 +11520,8 @@ public final class client extends RSApplet {
         }
         catch(Exception exception)
         {
-            String s2 = "T2 - " + pktType + "," + anInt842 + "," + anInt843 + " - " + pktSize + "," + (baseX + myPlayer.smallX[0]) + "," + (baseY + myPlayer.smallY[0]) + " - ";
-            for(int j15 = 0; j15 < pktSize && j15 < 50; j15++)
+            String s2 = "T2 - " + packetOpcode + "," + anInt842 + "," + anInt843 + " - " + packetSize + "," + (baseX + myPlayer.smallX[0]) + "," + (baseY + myPlayer.smallY[0]) + " - ";
+            for(int j15 = 0; j15 < packetSize && j15 < 50; j15++)
                 s2 = s2 + inStream.buffer[j15] + ",";
 
             signlink.reporterror(s2);
@@ -11810,7 +11810,7 @@ public final class client extends RSApplet {
     private int yCameraPos;
     private int yCameraCurve;
     private int xCameraCurve;
-    private int myPrivilege;
+    private int playerRights;
     private final int[] currentExp;
     private Background redStone1_3;
     private Background redStone2_3;
@@ -11954,8 +11954,8 @@ public final class client extends RSApplet {
     private String amountOrNameInput;
     private static int anInt1005;
     private int daysSinceLastLogin;
-    private int pktSize;
-    private int pktType;
+    private int packetSize;
+    private int packetOpcode;
     private int anInt1009;
     private int anInt1010;
     private int anInt1011;
