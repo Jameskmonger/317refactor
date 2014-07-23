@@ -44,12 +44,12 @@ public final class Stream extends NodeSub {
         buffer[currentOffset++] = (byte)(i + encryption.getNextKey());
     }
 
-    public void writeWordBigEndian(int i)
+    public void put(int i)
     {
         buffer[currentOffset++] = (byte)i;
     }
 
-    public void writeWord(int i)
+    public void putShort(int i)
     {
         buffer[currentOffset++] = (byte)(i >> 8);
         buffer[currentOffset++] = (byte)i;
@@ -68,7 +68,7 @@ public final class Stream extends NodeSub {
         buffer[currentOffset++] = (byte)i;
     }
 
-    public void writeDWord(int i)
+    public void putInt(int i)
     {
         buffer[currentOffset++] = (byte)(i >> 24);
         buffer[currentOffset++] = (byte)(i >> 16);
@@ -104,7 +104,7 @@ public final class Stream extends NodeSub {
         }
     }
 
-    public void writeString(String s)
+    public void putString(String s)
     {
         //s.getBytes(0, s.length(), buffer, currentOffset);    //deprecated
         System.arraycopy(s.getBytes(), 0, buffer, currentOffset, s.length());
@@ -112,7 +112,7 @@ public final class Stream extends NodeSub {
         buffer[currentOffset++] = 10;
     }
 
-    public void writeBytes(byte abyte0[], int i, int j)
+    public void putBytes(byte abyte0[], int i, int j)
     {
         for(int k = j; k < j + i; k++)
             buffer[currentOffset++] = abyte0[k];
@@ -246,8 +246,8 @@ public final class Stream extends NodeSub {
         BigInteger biginteger3 = biginteger2/*.modPow(biginteger, biginteger1)*/;
         byte abyte1[] = biginteger3.toByteArray();
         currentOffset = 0;
-        writeWordBigEndian(abyte1.length);
-        writeBytes(abyte1, abyte1.length, 0);
+        put(abyte1.length);
+        putBytes(abyte1, abyte1.length, 0);
     }
 
     public void method424(int i)

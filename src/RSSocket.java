@@ -65,7 +65,7 @@ final class RSSocket
             return inputStream.available();
     }
 
-    public void flushInputStream(byte abyte0[], int j)
+    public void read(byte abyte0[], int j)
         throws IOException
     {
         int i = 0;//was parameter
@@ -82,7 +82,7 @@ final class RSSocket
 
     }
 
-    public void queueBytes(int i, byte abyte0[])
+    public void write(int i, byte abyte0[])
         throws IOException
     {
         if(closed)

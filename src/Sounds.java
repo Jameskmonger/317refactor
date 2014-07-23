@@ -80,10 +80,10 @@ final class Sounds {
     {
         int k = method245(i);
         aStream_328.currentOffset = 0;
-        aStream_328.writeDWord(0x52494646);
+        aStream_328.putInt(0x52494646);
         aStream_328.method403(36 + k);
-        aStream_328.writeDWord(0x57415645);
-        aStream_328.writeDWord(0x666d7420);
+        aStream_328.putInt(0x57415645);
+        aStream_328.putInt(0x666d7420);
         aStream_328.method403(16);
         aStream_328.method400(1);
         aStream_328.method400(1);
@@ -91,7 +91,7 @@ final class Sounds {
         aStream_328.method403(22050);
         aStream_328.method400(1);
         aStream_328.method400(8);
-        aStream_328.writeDWord(0x64617461);
+        aStream_328.putInt(0x64617461);
         aStream_328.method403(k);
         aStream_328.currentOffset += k;
         return aStream_328;

@@ -77,20 +77,20 @@ final class TextInput {
                 if(k < 13)
                     i = k;
                 else
-                    stream.writeWordBigEndian(k);
+                    stream.put(k);
             } else
             if(k < 13)
             {
-                stream.writeWordBigEndian((i << 4) + k);
+                stream.put((i << 4) + k);
                 i = -1;
             } else
             {
-                stream.writeWordBigEndian((i << 4) + (k >> 4));
+                stream.put((i << 4) + (k >> 4));
                 i = k & 0xf;
             }
         }
         if(i != -1)
-            stream.writeWordBigEndian(i << 4);
+            stream.put(i << 4);
     }
 
     public static String processText(String s)

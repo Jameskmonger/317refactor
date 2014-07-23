@@ -478,7 +478,7 @@ public final class client extends RSApplet {
                 {
                     anInt1097 = 0;
                     stream.createFrame(238);
-                    stream.writeWordBigEndian(96);
+                    stream.put(96);
                 }
                 stream.createFrame(0);
                 for(int i6 = 0; i6 < k2; i6++)
@@ -599,7 +599,7 @@ public final class client extends RSApplet {
         if(super.gameFrame != null)
         {
             stream.createFrame(210);
-            stream.writeDWord(0x3f008edd);
+            stream.putInt(0x3f008edd);
         }
         if(lowMemory && signlink.cache_dat != null)
         {
@@ -1111,9 +1111,9 @@ public final class client extends RSApplet {
                 aBoolean1233 = true;
                 inputTaken = true;
                 stream.createFrame(95);
-                stream.writeWordBigEndian(publicChatMode);
-                stream.writeWordBigEndian(privateChatMode);
-                stream.writeWordBigEndian(tradeMode);
+                stream.put(publicChatMode);
+                stream.put(privateChatMode);
+                stream.put(tradeMode);
             }
             if(super.saveClickX >= 135 && super.saveClickX <= 235 && super.saveClickY >= 467 && super.saveClickY <= 499)
             {
@@ -1121,9 +1121,9 @@ public final class client extends RSApplet {
                 aBoolean1233 = true;
                 inputTaken = true;
                 stream.createFrame(95);
-                stream.writeWordBigEndian(publicChatMode);
-                stream.writeWordBigEndian(privateChatMode);
-                stream.writeWordBigEndian(tradeMode);
+                stream.put(publicChatMode);
+                stream.put(privateChatMode);
+                stream.put(tradeMode);
             }
             if(super.saveClickX >= 273 && super.saveClickX <= 373 && super.saveClickY >= 467 && super.saveClickY <= 499)
             {
@@ -1131,9 +1131,9 @@ public final class client extends RSApplet {
                 aBoolean1233 = true;
                 inputTaken = true;
                 stream.createFrame(95);
-                stream.writeWordBigEndian(publicChatMode);
-                stream.writeWordBigEndian(privateChatMode);
-                stream.writeWordBigEndian(tradeMode);
+                stream.put(publicChatMode);
+                stream.put(privateChatMode);
+                stream.put(tradeMode);
             }
             if(super.saveClickX >= 412 && super.saveClickX <= 512 && super.saveClickY >= 467 && super.saveClickY <= 499)
                 if(openInterfaceID == -1)
@@ -1158,20 +1158,20 @@ public final class client extends RSApplet {
             {
                 anInt940 = 0;
                 stream.createFrame(165);
-                stream.writeWordBigEndian(0);
+                stream.put(0);
                 int j = stream.currentOffset;
-                stream.writeWordBigEndian(139);
-                stream.writeWordBigEndian(150);
-                stream.writeWord(32131);
-                stream.writeWordBigEndian((int)(Math.random() * 256D));
-                stream.writeWord(3250);
-                stream.writeWordBigEndian(177);
-                stream.writeWord(24859);
-                stream.writeWordBigEndian(119);
+                stream.put(139);
+                stream.put(150);
+                stream.putShort(32131);
+                stream.put((int)(Math.random() * 256D));
+                stream.putShort(3250);
+                stream.put(177);
+                stream.putShort(24859);
+                stream.put(119);
                 if((int)(Math.random() * 2D) == 0)
-                    stream.writeWord(47234);
+                    stream.putShort(47234);
                 if((int)(Math.random() * 2D) == 0)
-                    stream.writeWordBigEndian(21);
+                    stream.put(21);
                 stream.writeBytes(stream.currentOffset - j);
             }
         }
@@ -1590,19 +1590,19 @@ public final class client extends RSApplet {
                 {
                     anInt854 = 0;
                     stream.createFrame(226);
-                    stream.writeWordBigEndian(0);
+                    stream.put(0);
                     int l2 = stream.currentOffset;
-                    stream.writeWord(58722);
-                    stream.writeWordBigEndian(240);
-                    stream.writeWord((int)(Math.random() * 65536D));
-                    stream.writeWordBigEndian((int)(Math.random() * 256D));
+                    stream.putShort(58722);
+                    stream.put(240);
+                    stream.putShort((int)(Math.random() * 65536D));
+                    stream.put((int)(Math.random() * 256D));
                     if((int)(Math.random() * 2D) == 0)
-                        stream.writeWord(51825);
-                    stream.writeWordBigEndian((int)(Math.random() * 256D));
-                    stream.writeWord((int)(Math.random() * 65536D));
-                    stream.writeWord(7130);
-                    stream.writeWord((int)(Math.random() * 65536D));
-                    stream.writeWord(61657);
+                        stream.putShort(51825);
+                    stream.put((int)(Math.random() * 256D));
+                    stream.putShort((int)(Math.random() * 65536D));
+                    stream.putShort(7130);
+                    stream.putShort((int)(Math.random() * 65536D));
+                    stream.putShort(61657);
                     stream.writeBytes(stream.currentOffset - l2);
                 }
             }
@@ -2102,12 +2102,12 @@ public final class client extends RSApplet {
         if(j == 326)
         {
             stream.createFrame(101);
-            stream.writeWordBigEndian(aBoolean1047 ? 0 : 1);
+            stream.put(aBoolean1047 ? 0 : 1);
             for(int i1 = 0; i1 < 7; i1++)
-                stream.writeWordBigEndian(anIntArray1065[i1]);
+                stream.put(anIntArray1065[i1]);
 
             for(int l1 = 0; l1 < 5; l1++)
-                stream.writeWordBigEndian(anIntArray990[l1]);
+                stream.put(anIntArray990[l1]);
 
             return true;
         }
@@ -2120,8 +2120,8 @@ public final class client extends RSApplet {
             {
                 stream.createFrame(218);
                 stream.writeQWord(TextClass.longForName(reportAbuseInput));
-                stream.writeWordBigEndian(j - 601);
-                stream.writeWordBigEndian(canMute ? 1 : 0);
+                stream.put(j - 601);
+                stream.put(canMute ? 1 : 0);
             }
         }
         return false;
@@ -2761,7 +2761,7 @@ public final class client extends RSApplet {
                 if(super.clickMode3 != 0 || mouseDetection.coordsIndex >= 40)
                 {
                     stream.createFrame(45);
-                    stream.writeWordBigEndian(0);
+                    stream.put(0);
                     int j2 = stream.currentOffset;
                     int j3 = 0;
                     for(int j4 = 0; j4 < mouseDetection.coordsIndex; j4++)
@@ -2802,7 +2802,7 @@ public final class client extends RSApplet {
                             {
                                 j6 += 32;
                                 k6 += 32;
-                                stream.writeWord((anInt1022 << 12) + (j6 << 6) + k6);
+                                stream.putShort((anInt1022 << 12) + (j6 << 6) + k6);
                                 anInt1022 = 0;
                             } else
                             if(anInt1022 < 8)
@@ -2811,7 +2811,7 @@ public final class client extends RSApplet {
                                 anInt1022 = 0;
                             } else
                             {
-                                stream.writeDWord(0xc0000000 + (anInt1022 << 19) + i6);
+                                stream.putInt(0xc0000000 + (anInt1022 << 19) + i6);
                                 anInt1022 = 0;
                             }
                         }
@@ -2861,7 +2861,7 @@ public final class client extends RSApplet {
                 j5 = 1;
             int l5 = (int)l;
             stream.createFrame(241);
-            stream.writeDWord((l5 << 20) + (j5 << 19) + k4);
+            stream.putInt((l5 << 20) + (j5 << 19) + k4);
         }
         if(anInt1016 > 0)
             anInt1016--;
@@ -2872,20 +2872,20 @@ public final class client extends RSApplet {
             anInt1016 = 20;
             aBoolean1017 = false;
             stream.createFrame(86);
-            stream.writeWord(anInt1184);
+            stream.putShort(anInt1184);
             stream.method432(minimapInt1);
         }
         if(super.awtFocus && !aBoolean954)
         {
             aBoolean954 = true;
             stream.createFrame(3);
-            stream.writeWordBigEndian(1);
+            stream.put(1);
         }
         if(!super.awtFocus && aBoolean954)
         {
             aBoolean954 = false;
             stream.createFrame(3);
-            stream.writeWordBigEndian(0);
+            stream.put(0);
         }
         loadingStages();
         method115();
@@ -3073,7 +3073,7 @@ public final class client extends RSApplet {
         {
             if(socket != null && stream.currentOffset > 0)
             {
-                socket.queueBytes(stream.currentOffset, stream.buffer);
+                socket.write(stream.currentOffset, stream.buffer);
                 stream.currentOffset = 0;
                 anInt1010 = 0;
             }
@@ -3469,18 +3469,18 @@ public final class client extends RSApplet {
             crossIndex = 0;
             stream.createFrame(236);
             stream.method431(k + baseY);
-            stream.writeWord(i1);
+            stream.putShort(i1);
             stream.method431(j + baseX);
         }
         if(l == 62 && method66(i1, k, j))
         {
             stream.createFrame(192);
-            stream.writeWord(anInt1284);
+            stream.putShort(anInt1284);
             stream.method431(i1 >> 14 & 0x7fff);
             stream.method433(k + baseY);
             stream.method431(anInt1283);
             stream.method433(j + baseX);
-            stream.writeWord(anInt1285);
+            stream.putShort(anInt1285);
         }
         if(l == 511)
         {
@@ -3494,10 +3494,10 @@ public final class client extends RSApplet {
             stream.createFrame(25);
             stream.method431(anInt1284);
             stream.method432(anInt1285);
-            stream.writeWord(i1);
+            stream.putShort(i1);
             stream.method432(k + baseY);
             stream.method433(anInt1283);
-            stream.writeWord(j + baseX);
+            stream.putShort(j + baseX);
         }
         if(l == 74)
         {
@@ -3523,7 +3523,7 @@ public final class client extends RSApplet {
             if(flag8)
             {
                 stream.createFrame(185);
-                stream.writeWord(k);
+                stream.putShort(k);
             }
         }
         if(l == 561)
@@ -3543,7 +3543,7 @@ public final class client extends RSApplet {
                     anInt1188 = 0;
                 }
                 stream.createFrame(128);
-                stream.writeWord(i1);
+                stream.putShort(i1);
             }
         }
         if(l == 20)
@@ -3592,19 +3592,19 @@ public final class client extends RSApplet {
             stream.createFrame(228);
             stream.method432(i1 >> 14 & 0x7fff);
             stream.method432(k + baseY);
-            stream.writeWord(j + baseX);
+            stream.putShort(j + baseX);
         }
         if(l == 679 && !aBoolean1149)
         {
             stream.createFrame(40);
-            stream.writeWord(k);
+            stream.putShort(k);
             aBoolean1149 = true;
         }
         if(l == 431)
         {
             stream.createFrame(129);
             stream.method432(j);
-            stream.writeWord(k);
+            stream.putShort(k);
             stream.method432(i1);
             atInventoryLoopCycle = 0;
             atInventoryInterface = k;
@@ -3691,7 +3691,7 @@ public final class client extends RSApplet {
                             anInt1188 = 0;
                         }
                         stream.createFrame(128);
-                        stream.writeWord(playerIndices[j3]);
+                        stream.putShort(playerIndices[j3]);
                     }
                     flag9 = true;
                     break;
@@ -3704,12 +3704,12 @@ public final class client extends RSApplet {
         if(l == 870)
         {
             stream.createFrame(53);
-            stream.writeWord(j);
+            stream.putShort(j);
             stream.method432(anInt1283);
             stream.method433(i1);
-            stream.writeWord(anInt1284);
+            stream.putShort(anInt1284);
             stream.method431(anInt1285);
-            stream.writeWord(k);
+            stream.putShort(k);
             atInventoryLoopCycle = 0;
             atInventoryInterface = k;
             atInventoryIndex = j;
@@ -3723,7 +3723,7 @@ public final class client extends RSApplet {
         {
             stream.createFrame(87);
             stream.method432(i1);
-            stream.writeWord(k);
+            stream.putShort(k);
             stream.method432(j);
             atInventoryLoopCycle = 0;
             atInventoryInterface = k;
@@ -3786,7 +3786,7 @@ public final class client extends RSApplet {
                 if(anInt986 >= 54)
                 {
                     stream.createFrame(189);
-                    stream.writeWordBigEndian(234);
+                    stream.put(234);
                     anInt986 = 0;
                 }
                 stream.createFrame(73);
@@ -3804,7 +3804,7 @@ public final class client extends RSApplet {
             crossIndex = 0;
             stream.createFrame(79);
             stream.method431(k + baseY);
-            stream.writeWord(i1);
+            stream.putShort(i1);
             stream.method432(j + baseX);
         }
         if(l == 632)
@@ -3862,14 +3862,14 @@ public final class client extends RSApplet {
             crossIndex = 0;
             stream.createFrame(181);
             stream.method431(k + baseY);
-            stream.writeWord(i1);
+            stream.putShort(i1);
             stream.method431(j + baseX);
             stream.method432(anInt1137);
         }
         if(l == 646)
         {
             stream.createFrame(185);
-            stream.writeWord(k);
+            stream.putShort(k);
             RSInterface class9_2 = RSInterface.interfaceCache[k];
             if(class9_2.valueIndexArray != null && class9_2.valueIndexArray[0][0] == 5)
             {
@@ -3896,7 +3896,7 @@ public final class client extends RSApplet {
                 if(anInt1226 >= 85)
                 {
                     stream.createFrame(230);
-                    stream.writeWordBigEndian(239);
+                    stream.put(239);
                     anInt1226 = 0;
                 }
                 stream.createFrame(17);
@@ -3917,11 +3917,11 @@ public final class client extends RSApplet {
                 if(anInt1134 >= 96)
                 {
                     stream.createFrame(152);
-                    stream.writeWordBigEndian(88);
+                    stream.put(88);
                     anInt1134 = 0;
                 }
                 stream.createFrame(21);
-                stream.writeWord(i1);
+                stream.putShort(i1);
             }
         }
         if(l == 413)
@@ -4054,7 +4054,7 @@ public final class client extends RSApplet {
             if(anInt1175 >= 59)
             {
                 stream.createFrame(200);
-                stream.writeWord(25501);
+                stream.putShort(25501);
                 anInt1175 = 0;
             }
             stream.createFrame(43);
@@ -4073,9 +4073,9 @@ public final class client extends RSApplet {
         if(l == 543)
         {
             stream.createFrame(237);
-            stream.writeWord(j);
+            stream.putShort(j);
             stream.method432(i1);
-            stream.writeWord(k);
+            stream.putShort(k);
             stream.method432(anInt1137);
             atInventoryLoopCycle = 0;
             atInventoryInterface = k;
@@ -4121,8 +4121,8 @@ public final class client extends RSApplet {
                 crossIndex = 0;
                 stream.createFrame(14);
                 stream.method432(anInt1284);
-                stream.writeWord(i1);
-                stream.writeWord(anInt1285);
+                stream.putShort(i1);
+                stream.putShort(anInt1285);
                 stream.method431(anInt1283);
             }
         }
@@ -4157,7 +4157,7 @@ public final class client extends RSApplet {
         if(l == 454)
         {
             stream.createFrame(41);
-            stream.writeWord(i1);
+            stream.putShort(i1);
             stream.method432(j);
             stream.method432(k);
             atInventoryLoopCycle = 0;
@@ -4184,7 +4184,7 @@ public final class client extends RSApplet {
                 if(anInt1155 >= 53)
                 {
                     stream.createFrame(85);
-                    stream.writeWordBigEndian(66);
+                    stream.put(66);
                     anInt1155 = 0;
                 }
                 stream.createFrame(18);
@@ -4196,7 +4196,7 @@ public final class client extends RSApplet {
             method66(i1, k, j);
             stream.createFrame(70);
             stream.method431(j + baseX);
-            stream.writeWord(k + baseY);
+            stream.putShort(k + baseY);
             stream.method433(i1 >> 14 & 0x7fff);
         }
         if(l == 872)
@@ -4212,7 +4212,7 @@ public final class client extends RSApplet {
             method66(i1, k, j);
             stream.createFrame(132);
             stream.method433(j + baseX);
-            stream.writeWord(i1 >> 14 & 0x7fff);
+            stream.putShort(i1 >> 14 & 0x7fff);
             stream.method432(k + baseY);
         }
         if(l == 1125)
@@ -4232,7 +4232,7 @@ public final class client extends RSApplet {
         if(l == 169)
         {
             stream.createFrame(185);
-            stream.writeWord(k);
+            stream.putShort(k);
             RSInterface class9_3 = RSInterface.interfaceCache[k];
             if(class9_3.valueIndexArray != null && class9_3.valueIndexArray[0][0] == 5)
             {
@@ -4717,7 +4717,7 @@ public final class client extends RSApplet {
                     if(friendsListAction == 3 && promptInput.length() > 0)
                     {
                         stream.createFrame(126);
-                        stream.writeWordBigEndian(0);
+                        stream.put(0);
                         int k = stream.currentOffset;
                         stream.writeQWord(aLong953);
                         TextInput.method526(promptInput, stream);
@@ -4730,9 +4730,9 @@ public final class client extends RSApplet {
                             privateChatMode = 1;
                             aBoolean1233 = true;
                             stream.createFrame(95);
-                            stream.writeWordBigEndian(publicChatMode);
-                            stream.writeWordBigEndian(privateChatMode);
-                            stream.writeWordBigEndian(tradeMode);
+                            stream.put(publicChatMode);
+                            stream.put(privateChatMode);
+                            stream.put(tradeMode);
                         }
                     }
                     if(friendsListAction == 4 && ignoreCount < 100)
@@ -4770,7 +4770,7 @@ public final class client extends RSApplet {
                         }
                         catch(Exception _ex) { }
                         stream.createFrame(208);
-                        stream.writeDWord(i1);
+                        stream.putInt(i1);
                     }
                     inputDialogState = 0;
                     inputTaken = true;
@@ -4847,8 +4847,8 @@ public final class client extends RSApplet {
                     if(inputString.startsWith("::"))
                     {
                         stream.createFrame(103);
-                        stream.writeWordBigEndian(inputString.length() - 1);
-                        stream.writeString(inputString.substring(2));
+                        stream.put(inputString.length() - 1);
+                        stream.putString(inputString.substring(2));
                     } else
                     {
                         String s = inputString.toLowerCase();	
@@ -4941,7 +4941,7 @@ public final class client extends RSApplet {
                             inputString = inputString.substring(6);
                         }
                         stream.createFrame(4);
-                        stream.writeWordBigEndian(0);
+                        stream.put(0);
                         int j3 = stream.currentOffset;
                         stream.method425(i3);
                         stream.method425(j2);
@@ -4967,9 +4967,9 @@ public final class client extends RSApplet {
                             publicChatMode = 3;
                             aBoolean1233 = true;
                             stream.createFrame(95);
-                            stream.writeWordBigEndian(publicChatMode);
-                            stream.writeWordBigEndian(privateChatMode);
-                            stream.writeWordBigEndian(tradeMode);
+                            stream.put(publicChatMode);
+                            stream.put(privateChatMode);
+                            stream.put(tradeMode);
                         }
                     }
                     inputString = "";
@@ -5702,9 +5702,9 @@ public final class client extends RSApplet {
             long nameLong = TextClass.longForName(playerUsername);
             int nameHash = (int)(nameLong >> 16 & 31L);
             stream.currentOffset = 0;
-            stream.writeWordBigEndian(14);
-            stream.writeWordBigEndian(nameHash);
-            socket.queueBytes(2, stream.buffer);
+            stream.put(14);
+            stream.put(nameHash);
+            socket.write(2, stream.buffer);
             for(int ignoredByte = 0; ignoredByte < 8; ignoredByte++)
                 socket.read();
 
@@ -5712,7 +5712,7 @@ public final class client extends RSApplet {
             int initialResponseCode = responseCode;
             if(responseCode == 0)
             {
-                socket.flushInputStream(inStream.buffer, 8);
+                socket.read(inStream.buffer, 8);
                 inStream.currentOffset = 0;
                 serverSessionKey = inStream.readQWord();
                 int seed[] = new int[4];
@@ -5721,34 +5721,34 @@ public final class client extends RSApplet {
                 seed[2] = (int)(serverSessionKey >> 32);
                 seed[3] = (int)serverSessionKey;
                 stream.currentOffset = 0;
-                stream.writeWordBigEndian(10);
-                stream.writeDWord(seed[0]);
-                stream.writeDWord(seed[1]);
-                stream.writeDWord(seed[2]);
-                stream.writeDWord(seed[3]);
-                stream.writeDWord(signlink.uid);
-                stream.writeString(playerUsername);
-                stream.writeString(playerPassword);
+                stream.put(10);
+                stream.putInt(seed[0]);
+                stream.putInt(seed[1]);
+                stream.putInt(seed[2]);
+                stream.putInt(seed[3]);
+                stream.putInt(signlink.uid);
+                stream.putString(playerUsername);
+                stream.putString(playerPassword);
                 stream.generateKeys();
                 aStream_847.currentOffset = 0;
                 if(recoveredConnection)
-                    aStream_847.writeWordBigEndian(18);
+                    aStream_847.put(18);
                 else
-                    aStream_847.writeWordBigEndian(16);
-                aStream_847.writeWordBigEndian(stream.currentOffset + 36 + 1 + 1 + 2);
-                aStream_847.writeWordBigEndian(255);
-                aStream_847.writeWord(317);
-                aStream_847.writeWordBigEndian(lowMemory ? 1 : 0);
+                    aStream_847.put(16);
+                aStream_847.put(stream.currentOffset + 40);
+                aStream_847.put(255);
+                aStream_847.putShort(317);
+                aStream_847.put(lowMemory ? 1 : 0);
                 for(int crc = 0; crc < 9; crc++)
-                    aStream_847.writeDWord(expectedCRCs[crc]);
+                    aStream_847.putInt(expectedCRCs[crc]);
 
-                aStream_847.writeBytes(stream.buffer, stream.currentOffset, 0);
+                aStream_847.putBytes(stream.buffer, stream.currentOffset, 0);
                 stream.encryption = new ISAACRandomGen(seed);
-                for(int j2 = 0; j2 < 4; j2++)
-                    seed[j2] += 50;
+                for(int index = 0; index < 4; index++)
+                    seed[index] += 50;
 
                 encryption = new ISAACRandomGen(seed);
-                socket.queueBytes(aStream_847.currentOffset, aStream_847.buffer);
+                socket.write(aStream_847.currentOffset, aStream_847.buffer);
                 responseCode = socket.read();
             }
             if(responseCode == 1)
@@ -6220,23 +6220,23 @@ public final class client extends RSApplet {
             if(anInt1288 >= 92)
             {
                 stream.createFrame(36);
-                stream.writeDWord(0);
+                stream.putInt(0);
                 anInt1288 = 0;
             }
             if(i == 0)
             {
                 stream.createFrame(164);
-                stream.writeWordBigEndian(k4 + k4 + 3);
+                stream.put(k4 + k4 + 3);
             }
             if(i == 1)
             {
                 stream.createFrame(248);
-                stream.writeWordBigEndian(k4 + k4 + 3 + 14);
+                stream.put(k4 + k4 + 3 + 14);
             }
             if(i == 2)
             {
                 stream.createFrame(98);
-                stream.writeWordBigEndian(k4 + k4 + 3);
+                stream.put(k4 + k4 + 3);
             }
             stream.method433(k6 + baseX);
             destX = bigX[0];
@@ -6244,8 +6244,8 @@ public final class client extends RSApplet {
             for(int j7 = 1; j7 < k4; j7++)
             {
                 i4--;
-                stream.writeWordBigEndian(bigX[i4] - k6);
-                stream.writeWordBigEndian(bigY[i4] - i7);
+                stream.put(bigX[i4] - k6);
+                stream.put(bigY[i4] - i7);
             }
 
             stream.method431(i7 + baseY);
@@ -7094,17 +7094,17 @@ public final class client extends RSApplet {
                 boolean flag1 = doWalkTo(1, 0, 0, 0, myPlayer.smallY[0], 0, 0, j2, myPlayer.smallX[0], true, i2);
                 if(flag1)
                 {
-                    stream.writeWordBigEndian(i);
-                    stream.writeWordBigEndian(j);
-                    stream.writeWord(minimapInt1);
-                    stream.writeWordBigEndian(57);
-                    stream.writeWordBigEndian(minimapInt2);
-                    stream.writeWordBigEndian(minimapInt3);
-                    stream.writeWordBigEndian(89);
-                    stream.writeWord(myPlayer.x);
-                    stream.writeWord(myPlayer.y);
-                    stream.writeWordBigEndian(anInt1264);
-                    stream.writeWordBigEndian(63);
+                    stream.put(i);
+                    stream.put(j);
+                    stream.putShort(minimapInt1);
+                    stream.put(57);
+                    stream.put(minimapInt2);
+                    stream.put(minimapInt3);
+                    stream.put(89);
+                    stream.putShort(myPlayer.x);
+                    stream.putShort(myPlayer.y);
+                    stream.put(anInt1264);
+                    stream.put(63);
                 }
             }
             anInt1117++;
@@ -7112,21 +7112,21 @@ public final class client extends RSApplet {
             {
                 anInt1117 = 0;
                 stream.createFrame(246);
-                stream.writeWordBigEndian(0);
+                stream.put(0);
                 int l = stream.currentOffset;
                 if((int)(Math.random() * 2D) == 0)
-                    stream.writeWordBigEndian(101);
-                stream.writeWordBigEndian(197);
-                stream.writeWord((int)(Math.random() * 65536D));
-                stream.writeWordBigEndian((int)(Math.random() * 256D));
-                stream.writeWordBigEndian(67);
-                stream.writeWord(14214);
+                    stream.put(101);
+                stream.put(197);
+                stream.putShort((int)(Math.random() * 65536D));
+                stream.put((int)(Math.random() * 256D));
+                stream.put(67);
+                stream.putShort(14214);
                 if((int)(Math.random() * 2D) == 0)
-                    stream.writeWord(29487);
-                stream.writeWord((int)(Math.random() * 65536D));
+                    stream.putShort(29487);
+                stream.putShort((int)(Math.random() * 65536D));
                 if((int)(Math.random() * 2D) == 0)
-                    stream.writeWordBigEndian(220);
-                stream.writeWordBigEndian(180);
+                    stream.put(220);
+                stream.put(180);
                 stream.writeBytes(stream.currentOffset - l);
             }
         }
@@ -7627,7 +7627,7 @@ public final class client extends RSApplet {
             {
                 anInt1054 = -1;
                 stream.createFrame(120);
-                stream.writeWordBigEndian(tabID);
+                stream.put(tabID);
             }
             tabAreaAltered = false;
             aRSImageProducer_1125.initDrawingArea();
@@ -8371,19 +8371,19 @@ public final class client extends RSApplet {
             {
                 anInt1005 = 0;
                 stream.createFrame(77);
-                stream.writeWordBigEndian(0);
+                stream.put(0);
                 int i2 = stream.currentOffset;
-                stream.writeWordBigEndian((int)(Math.random() * 256D));
-                stream.writeWordBigEndian(101);
-                stream.writeWordBigEndian(233);
-                stream.writeWord(45092);
+                stream.put((int)(Math.random() * 256D));
+                stream.put(101);
+                stream.put(233);
+                stream.putShort(45092);
                 if((int)(Math.random() * 2D) == 0)
-                    stream.writeWord(35784);
-                stream.writeWordBigEndian((int)(Math.random() * 256D));
-                stream.writeWordBigEndian(64);
-                stream.writeWordBigEndian(38);
-                stream.writeWord((int)(Math.random() * 65536D));
-                stream.writeWord((int)(Math.random() * 65536D));
+                    stream.putShort(35784);
+                stream.put((int)(Math.random() * 256D));
+                stream.put(64);
+                stream.put(38);
+                stream.putShort((int)(Math.random() * 65536D));
+                stream.putShort((int)(Math.random() * 65536D));
                 stream.writeBytes(stream.currentOffset - i2);
             }
             int j2 = k1 * 192;
@@ -10297,7 +10297,7 @@ public final class client extends RSApplet {
                 return false;
             if(pktType == -1)
             {
-                socket.flushInputStream(inStream.buffer, 1);
+                socket.read(inStream.buffer, 1);
                 pktType = inStream.buffer[0] & 0xff;
                 if(encryption != null)
                     pktType = pktType - encryption.getNextKey() & 0xff;
@@ -10307,7 +10307,7 @@ public final class client extends RSApplet {
             if(pktSize == -1)
                 if(i > 0)
                 {
-                    socket.flushInputStream(inStream.buffer, 1);
+                    socket.read(inStream.buffer, 1);
                     pktSize = inStream.buffer[0] & 0xff;
                     i--;
                 } else
@@ -10317,7 +10317,7 @@ public final class client extends RSApplet {
             if(pktSize == -2)
                 if(i > 1)
                 {
-                    socket.flushInputStream(inStream.buffer, 2);
+                    socket.read(inStream.buffer, 2);
                     inStream.currentOffset = 0;
                     pktSize = inStream.readUnsignedWord();
                     i -= 2;
@@ -10328,7 +10328,7 @@ public final class client extends RSApplet {
             if(i < pktSize)
                 return false;
             inStream.currentOffset = 0;
-            socket.flushInputStream(inStream.buffer, pktSize);
+            socket.read(inStream.buffer, pktSize);
             anInt1009 = 0;
             anInt843 = anInt842;
             anInt842 = anInt841;
