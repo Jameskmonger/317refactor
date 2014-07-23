@@ -273,7 +273,7 @@ public final class client extends RSApplet {
     public void init()
     {
         nodeID = Integer.parseInt(getParameter("nodeid"));
-        portOff = Integer.parseInt(getParameter("portoff"));
+        portOffset = Integer.parseInt(getParameter("portoff"));
         String s = getParameter("lowmem");
         if(s != null && s.equals("1"))
             setLowMem();
@@ -575,7 +575,7 @@ public final class client extends RSApplet {
                 k3 = plane;
             if(k3 < plane - 1)
                 k3 = plane - 1;
-            if(lowMem)
+            if(lowMemory)
                 worldController.method275(ObjectManager.anInt145);
             else
                 worldController.method275(0);
@@ -601,7 +601,7 @@ public final class client extends RSApplet {
             stream.createFrame(210);
             stream.writeDWord(0x3f008edd);
         }
-        if(lowMem && signlink.cache_dat != null)
+        if(lowMemory && signlink.cache_dat != null)
         {
             int j = onDemandFetcher.getVersionCount(0);
             for(int i1 = 0; i1 < j; i1++)
@@ -1221,7 +1221,7 @@ public final class client extends RSApplet {
             }
             if(k == 4)
                 musicEnabled = false;
-            if(musicEnabled != flag1 && !lowMem)
+            if(musicEnabled != flag1 && !lowMemory)
             {
                 if(musicEnabled)
                 {
@@ -1570,7 +1570,7 @@ public final class client extends RSApplet {
 
     private void method37(int j)
     {
-        if(!lowMem)
+        if(!lowMemory)
         {
             if(Texture.anIntArray1480[17] >= j)
             {
@@ -1880,11 +1880,11 @@ public final class client extends RSApplet {
     {
         try
         {
-            if(socketStream != null)
-                socketStream.close();
+            if(socket != null)
+                socket.close();
         }
         catch(Exception _ex) { }
-        socketStream = null;
+        socket = null;
         loggedIn = false;
         loginScreenState = 0;
  //       myUsername = "";
@@ -1988,7 +1988,7 @@ public final class client extends RSApplet {
             }
             if(player == null || !player.isVisible())
                 continue;
-            player.aBoolean1699 = (lowMem && playerCount > 50 || playerCount > 200) && !flag && player.anInt1517 == player.anInt1511;
+            player.aBoolean1699 = (lowMemory && playerCount > 50 || playerCount > 200) && !flag && player.anInt1517 == player.anInt1511;
             int j1 = player.x >> 7;
             int k1 = player.y >> 7;
             if(j1 < 0 || j1 >= 104 || k1 < 0 || k1 >= 104)
@@ -2383,7 +2383,7 @@ public final class client extends RSApplet {
     {
         WorldController.lowMem = false;
         Texture.lowMem = false;
-        lowMem = false;
+        lowMemory = false;
         ObjectManager.lowMem = false;
         ObjectDef.lowMem = false;
     }
@@ -2399,7 +2399,7 @@ public final class client extends RSApplet {
                 return;
             }
             nodeID = Integer.parseInt(args[0]);
-            portOff = Integer.parseInt(args[1]);
+            portOffset = Integer.parseInt(args[1]);
             if(args[2].equals("lowmem"))
                 setLowMem();
             else
@@ -2434,7 +2434,7 @@ public final class client extends RSApplet {
 
     private void loadingStages()
     {
-        if(lowMem && loadingStage == 2 && ObjectManager.anInt131 != plane)
+        if(lowMemory && loadingStage == 2 && ObjectManager.anInt131 != plane)
         {
             aRSImageProducer_1165.initDrawingArea();
             aTextDrawingArea_1271.drawText(0, "Loading - please wait.", 151, 257);
@@ -2448,7 +2448,7 @@ public final class client extends RSApplet {
             int j = method54();
             if(j != 0 && System.currentTimeMillis() - aLong824 > 0x57e40L)
             {
-                signlink.reporterror(myUsername + " glcfb " + aLong1215 + "," + j + "," + lowMem + "," + decompressors[0] + "," + onDemandFetcher.getNodeCount() + "," + plane + "," + anInt1069 + "," + anInt1070);
+                signlink.reporterror(myUsername + " glcfb " + serverSessionKey + "," + j + "," + lowMemory + "," + decompressors[0] + "," + onDemandFetcher.getNodeCount() + "," + plane + "," + anInt1069 + "," + anInt1070);
                 aLong824 = System.currentTimeMillis();
             }
         }
@@ -3071,9 +3071,9 @@ public final class client extends RSApplet {
             stream.createFrame(0);
         try
         {
-            if(socketStream != null && stream.currentOffset > 0)
+            if(socket != null && stream.currentOffset > 0)
             {
-                socketStream.queueBytes(stream.currentOffset, stream.buffer);
+                socket.queueBytes(stream.currentOffset, stream.buffer);
                 stream.currentOffset = 0;
                 anInt1010 = 0;
             }
@@ -3411,7 +3411,7 @@ public final class client extends RSApplet {
         aRSImageProducer_1165.drawGraphics(4, super.graphics, 4);
         anInt1021 = 0;
         destX = 0;
-        RSSocket rsSocket = socketStream;
+        RSSocket rsSocket = socket;
         loggedIn = false;
         loginFailures = 0;
         login(myUsername, myPassword, true);
@@ -4521,11 +4521,11 @@ public final class client extends RSApplet {
         signlink.reporterror = false;
         try
         {
-            if(socketStream != null)
-                socketStream.close();
+            if(socket != null)
+                socket.close();
         }
         catch(Exception _ex) { }
-        socketStream = null;
+        socket = null;
         stopMidi();
         if(mouseDetection != null)
             mouseDetection.running = false;
@@ -4659,8 +4659,8 @@ public final class client extends RSApplet {
         System.out.println("draw-cycle:" + anInt1061);
         System.out.println("ptype:" + pktType);
         System.out.println("psize:" + pktSize);
-        if(socketStream != null)
-            socketStream.printDebug();
+        if(socket != null)
+            socket.printDebug();
         super.shouldDebug = true;
     }
 
@@ -5687,84 +5687,84 @@ public final class client extends RSApplet {
         return ((i & 0xff00ff) * l + (j & 0xff00ff) * k & 0xff00ff00) + ((i & 0xff00) * l + (j & 0xff00) * k & 0xff0000) >> 8;
     }
 
-    private void login(String s, String s1, boolean flag)
+    private void login(String playerUsername, String playerPassword, boolean recoveredConnection)
     {
-        signlink.errorname = s;
+        signlink.errorname = playerUsername;
         try
         {
-            if(!flag)
+            if(!recoveredConnection)
             {
                 loginMessage1 = "";
                 loginMessage2 = "Connecting to server...";
                 drawLoginScreen(true);
             }
-            socketStream = new RSSocket(this, openSocket(43594 + portOff));
-            long l = TextClass.longForName(s);
-            int i = (int)(l >> 16 & 31L);
+            socket = new RSSocket(this, openSocket(43594 + portOffset));
+            long nameLong = TextClass.longForName(playerUsername);
+            int nameHash = (int)(nameLong >> 16 & 31L);
             stream.currentOffset = 0;
             stream.writeWordBigEndian(14);
-            stream.writeWordBigEndian(i);
-            socketStream.queueBytes(2, stream.buffer);
-            for(int j = 0; j < 8; j++)
-                socketStream.read();
+            stream.writeWordBigEndian(nameHash);
+            socket.queueBytes(2, stream.buffer);
+            for(int ignoredByte = 0; ignoredByte < 8; ignoredByte++)
+                socket.read();
 
-            int k = socketStream.read();
-            int i1 = k;
-            if(k == 0)
+            int responseCode = socket.read();
+            int initialResponseCode = responseCode;
+            if(responseCode == 0)
             {
-                socketStream.flushInputStream(inStream.buffer, 8);
+                socket.flushInputStream(inStream.buffer, 8);
                 inStream.currentOffset = 0;
-                aLong1215 = inStream.readQWord();
-                int ai[] = new int[4];
-                ai[0] = (int)(Math.random() * 99999999D);
-                ai[1] = (int)(Math.random() * 99999999D);
-                ai[2] = (int)(aLong1215 >> 32);
-                ai[3] = (int)aLong1215;
+                serverSessionKey = inStream.readQWord();
+                int seed[] = new int[4];
+                seed[0] = (int)(Math.random() * 99999999D);
+                seed[1] = (int)(Math.random() * 99999999D);
+                seed[2] = (int)(serverSessionKey >> 32);
+                seed[3] = (int)serverSessionKey;
                 stream.currentOffset = 0;
                 stream.writeWordBigEndian(10);
-                stream.writeDWord(ai[0]);
-                stream.writeDWord(ai[1]);
-                stream.writeDWord(ai[2]);
-                stream.writeDWord(ai[3]);
+                stream.writeDWord(seed[0]);
+                stream.writeDWord(seed[1]);
+                stream.writeDWord(seed[2]);
+                stream.writeDWord(seed[3]);
                 stream.writeDWord(signlink.uid);
-                stream.writeString(s);
-                stream.writeString(s1);
-                stream.doKeys();
+                stream.writeString(playerUsername);
+                stream.writeString(playerPassword);
+                stream.generateKeys();
                 aStream_847.currentOffset = 0;
-                if(flag)
+                if(recoveredConnection)
                     aStream_847.writeWordBigEndian(18);
                 else
                     aStream_847.writeWordBigEndian(16);
                 aStream_847.writeWordBigEndian(stream.currentOffset + 36 + 1 + 1 + 2);
                 aStream_847.writeWordBigEndian(255);
                 aStream_847.writeWord(317);
-                aStream_847.writeWordBigEndian(lowMem ? 1 : 0);
-                for(int l1 = 0; l1 < 9; l1++)
-                    aStream_847.writeDWord(expectedCRCs[l1]);
+                aStream_847.writeWordBigEndian(lowMemory ? 1 : 0);
+                for(int crc = 0; crc < 9; crc++)
+                    aStream_847.writeDWord(expectedCRCs[crc]);
 
                 aStream_847.writeBytes(stream.buffer, stream.currentOffset, 0);
-                stream.encryption = new ISAACRandomGen(ai);
+                stream.encryption = new ISAACRandomGen(seed);
                 for(int j2 = 0; j2 < 4; j2++)
-                    ai[j2] += 50;
+                    seed[j2] += 50;
 
-                encryption = new ISAACRandomGen(ai);
-                socketStream.queueBytes(aStream_847.currentOffset, aStream_847.buffer);
-                k = socketStream.read();
+                encryption = new ISAACRandomGen(seed);
+                socket.queueBytes(aStream_847.currentOffset, aStream_847.buffer);
+                responseCode = socket.read();
             }
-            if(k == 1)
+            if(responseCode == 1)
             {
                 try
                 {
                     Thread.sleep(2000L);
                 }
                 catch(Exception _ex) { }
-                login(s, s1, flag);
+                login(playerUsername, playerPassword, recoveredConnection);
                 return;
             }
-            if(k == 2)
+            if(responseCode == 2)
             {
-                myPrivilege = socketStream.read();
-                flagged = socketStream.read() == 1;
+                myPrivilege = socket.read();
+                flagged = socket.read() == 1;
                 aLong1220 = 0L;
                 anInt1022 = 0;
                 mouseDetection.coordsIndex = 0;
@@ -5867,79 +5867,79 @@ public final class client extends RSApplet {
                 resetImageProducers2();
                 return;
             }
-            if(k == 3)
+            if(responseCode == 3)
             {
                 loginMessage1 = "";
                 loginMessage2 = "Invalid username or password.";
                 return;
             }
-            if(k == 4)
+            if(responseCode == 4)
             {
                 loginMessage1 = "Your account has been disabled.";
                 loginMessage2 = "Please check your message-center for details.";
                 return;
             }
-            if(k == 5)
+            if(responseCode == 5)
             {
                 loginMessage1 = "Your account is already logged in.";
                 loginMessage2 = "Try again in 60 secs...";
                 return;
             }
-            if(k == 6)
+            if(responseCode == 6)
             {
                 loginMessage1 = "RuneScape has been updated!";
                 loginMessage2 = "Please reload this page.";
                 return;
             }
-            if(k == 7)
+            if(responseCode == 7)
             {
                 loginMessage1 = "This world is full.";
                 loginMessage2 = "Please use a different world.";
                 return;
             }
-            if(k == 8)
+            if(responseCode == 8)
             {
                 loginMessage1 = "Unable to connect.";
                 loginMessage2 = "Login server offline.";
                 return;
             }
-            if(k == 9)
+            if(responseCode == 9)
             {
                 loginMessage1 = "Login limit exceeded.";
                 loginMessage2 = "Too many connections from your address.";
                 return;
             }
-            if(k == 10)
+            if(responseCode == 10)
             {
                 loginMessage1 = "Unable to connect.";
                 loginMessage2 = "Bad session id.";
                 return;
             }
-            if(k == 11)
+            if(responseCode == 11)
             {
                 loginMessage2 = "Login server rejected session.";
                 loginMessage2 = "Please try again.";
                 return;
             }
-            if(k == 12)
+            if(responseCode == 12)
             {
                 loginMessage1 = "You need a members account to login to this world.";
                 loginMessage2 = "Please subscribe, or use a different world.";
                 return;
             }
-            if(k == 13)
+            if(responseCode == 13)
             {
                 loginMessage1 = "Could not complete login.";
                 loginMessage2 = "Please try using a different world.";
                 return;
             }
-            if(k == 14)
+            if(responseCode == 14)
             {
                 loginMessage1 = "The server is being updated.";
                 loginMessage2 = "Please wait 1 minute and try again.";
                 return;
             }
-            if(k == 15)
+            if(responseCode == 15)
             {
                 loggedIn = true;
                 stream.currentOffset = 0;
@@ -5956,27 +5956,27 @@ public final class client extends RSApplet {
                 aLong824 = System.currentTimeMillis();
                 return;
             }
-            if(k == 16)
+            if(responseCode == 16)
             {
                 loginMessage1 = "Login attempts exceeded.";
                 loginMessage2 = "Please wait 1 minute and try again.";
                 return;
             }
-            if(k == 17)
+            if(responseCode == 17)
             {
                 loginMessage1 = "You are standing in a members-only area.";
                 loginMessage2 = "To play on this world move to a free area first";
                 return;
             }
-            if(k == 20)
+            if(responseCode == 20)
             {
                 loginMessage1 = "Invalid loginserver requested";
                 loginMessage2 = "Please try using a different world.";
                 return;
             }
-            if(k == 21)
+            if(responseCode == 21)
             {
-                for(int k1 = socketStream.read(); k1 >= 0; k1--)
+                for(int k1 = socket.read(); k1 >= 0; k1--)
                 {
                     loginMessage1 = "You have only just left another world";
                     loginMessage2 = "Your profile will be transferred in: " + k1 + " seconds";
@@ -5988,12 +5988,12 @@ public final class client extends RSApplet {
                     catch(Exception _ex) { }
                 }
 
-                login(s, s1, flag);
+                login(playerUsername, playerPassword, recoveredConnection);
                 return;
             }
-            if(k == -1)
+            if(responseCode == -1)
             {
-                if(i1 == 0)
+                if(initialResponseCode == 0)
                 {
                     if(loginFailures < 2)
                     {
@@ -6003,7 +6003,7 @@ public final class client extends RSApplet {
                         }
                         catch(Exception _ex) { }
                         loginFailures++;
-                        login(s, s1, flag);
+                        login(playerUsername, playerPassword, recoveredConnection);
                         return;
                     } else
                     {
@@ -6019,7 +6019,7 @@ public final class client extends RSApplet {
                 }
             } else
             {
-                System.out.println("response:" + k);
+                System.out.println("response:" + responseCode);
                 loginMessage1 = "Unexpected server response";
                 loginMessage2 = "Please try using a different world.";
                 return;
@@ -6606,7 +6606,7 @@ public final class client extends RSApplet {
             prevSong -= 20;
             if(prevSong < 0)
                 prevSong = 0;
-            if(prevSong == 0 && musicEnabled && !lowMem)
+            if(prevSong == 0 && musicEnabled && !lowMemory)
             {
                 nextSong = currentSong;
                 songChanging = true;
@@ -6684,7 +6684,7 @@ public final class client extends RSApplet {
             onDemandFetcher.start(streamLoader_6, this);
             Class36.method528(onDemandFetcher.getAnimCount());
             Model.method459(onDemandFetcher.getVersionCount(0), onDemandFetcher);
-            if(!lowMem)
+            if(!lowMemory)
             {
                 nextSong = 0;
                 try
@@ -6814,7 +6814,7 @@ public final class client extends RSApplet {
             }
 
             onDemandFetcher.method554(isMembers);
-            if(!lowMem)
+            if(!lowMemory)
             {
                 int l = onDemandFetcher.getVersionCount(2);
                 for(int i3 = 1; i3 < l; i3++)
@@ -6951,7 +6951,7 @@ public final class client extends RSApplet {
             Varp.unpackConfig(streamLoader);
             VarBit.unpackConfig(streamLoader);
             ItemDef.isMembers = isMembers;
-            if(!lowMem)
+            if(!lowMemory)
             {
                 drawLoadingText(90, "Unpacking sounds");
                 byte abyte0[] = streamLoader_5.getDataForName("sounds.dat");
@@ -7204,7 +7204,7 @@ public final class client extends RSApplet {
         try
         {
             if(super.gameFrame != null)
-                return new URL("http://127.0.0.1:" + (80 + portOff));
+                return new URL("http://127.0.0.1:" + (80 + portOffset));
         }
         catch(Exception _ex) { }
         return super.getCodeBase();
@@ -8508,7 +8508,7 @@ public final class client extends RSApplet {
             Runtime runtime = Runtime.getRuntime();
             int j1 = (int)((runtime.totalMemory() - runtime.freeMemory()) / 1024L);
             i1 = 0xffff00;
-            if(j1 > 0x2000000 && lowMem)
+            if(j1 > 0x2000000 && lowMemory)
                 i1 = 0xff0000;
             aTextDrawingArea_1271.method380("Mem:" + j1 + "k", c, 0xffff00, k);
             k += 15;
@@ -9699,7 +9699,7 @@ public final class client extends RSApplet {
             int l11 = stream.readUnsignedByte();
             int i14 = l11 >> 4 & 0xf;
             int i16 = l11 & 7;
-            if(myPlayer.smallX[0] >= k3 - i14 && myPlayer.smallX[0] <= k3 + i14 && myPlayer.smallY[0] >= j6 - i14 && myPlayer.smallY[0] <= j6 + i14 && aBoolean848 && !lowMem && anInt1062 < 50)
+            if(myPlayer.smallX[0] >= k3 - i14 && myPlayer.smallX[0] <= k3 + i14 && myPlayer.smallY[0] >= j6 - i14 && myPlayer.smallY[0] <= j6 + i14 && aBoolean848 && !lowMemory && anInt1062 < 50)
             {
                 anIntArray1207[anInt1062] = i9;
                 anIntArray1241[anInt1062] = i16;
@@ -9968,7 +9968,7 @@ public final class client extends RSApplet {
     {
         WorldController.lowMem = true;
         Texture.lowMem = true;
-        lowMem = true;
+        lowMemory = true;
         ObjectManager.lowMem = true;
         ObjectDef.lowMem = true;
     }
@@ -10162,7 +10162,7 @@ public final class client extends RSApplet {
     {
         if(i1 >= 1 && i >= 1 && i1 <= 102 && i <= 102)
         {
-            if(lowMem && j != plane)
+            if(lowMemory && j != plane)
                 return;
             int i2 = 0;
             if(j1 == 0)
@@ -10288,16 +10288,16 @@ public final class client extends RSApplet {
 
     private boolean parsePacket()
     {
-        if(socketStream == null)
+        if(socket == null)
             return false;
         try
         {
-            int i = socketStream.available();
+            int i = socket.available();
             if(i == 0)
                 return false;
             if(pktType == -1)
             {
-                socketStream.flushInputStream(inStream.buffer, 1);
+                socket.flushInputStream(inStream.buffer, 1);
                 pktType = inStream.buffer[0] & 0xff;
                 if(encryption != null)
                     pktType = pktType - encryption.getNextKey() & 0xff;
@@ -10307,7 +10307,7 @@ public final class client extends RSApplet {
             if(pktSize == -1)
                 if(i > 0)
                 {
-                    socketStream.flushInputStream(inStream.buffer, 1);
+                    socket.flushInputStream(inStream.buffer, 1);
                     pktSize = inStream.buffer[0] & 0xff;
                     i--;
                 } else
@@ -10317,7 +10317,7 @@ public final class client extends RSApplet {
             if(pktSize == -2)
                 if(i > 1)
                 {
-                    socketStream.flushInputStream(inStream.buffer, 2);
+                    socket.flushInputStream(inStream.buffer, 2);
                     inStream.currentOffset = 0;
                     pktSize = inStream.readUnsignedWord();
                     i -= 2;
@@ -10328,7 +10328,7 @@ public final class client extends RSApplet {
             if(i < pktSize)
                 return false;
             inStream.currentOffset = 0;
-            socketStream.flushInputStream(inStream.buffer, pktSize);
+            socket.flushInputStream(inStream.buffer, pktSize);
             anInt1009 = 0;
             anInt843 = anInt842;
             anInt842 = anInt841;
@@ -10482,7 +10482,7 @@ public final class client extends RSApplet {
                 int i2 = inStream.method434();
                 if(i2 == 65535)
                     i2 = -1;
-                if(i2 != currentSong && musicEnabled && !lowMem && prevSong == 0)
+                if(i2 != currentSong && musicEnabled && !lowMemory && prevSong == 0)
                 {
                     nextSong = i2;
                     songChanging = true;
@@ -10496,7 +10496,7 @@ public final class client extends RSApplet {
             {
                 int j2 = inStream.method436();
                 int k10 = inStream.method435();
-                if(musicEnabled && !lowMem)
+                if(musicEnabled && !lowMemory)
                 {
                     nextSong = j2;
                     songChanging = false;
@@ -10820,7 +10820,7 @@ public final class client extends RSApplet {
                 int i4 = inStream.readUnsignedWord();
                 int l11 = inStream.readUnsignedByte();
                 int k17 = inStream.readUnsignedWord();
-                if(aBoolean848 && !lowMem && anInt1062 < 50)
+                if(aBoolean848 && !lowMemory && anInt1062 < 50)
                 {
                     anIntArray1207[anInt1062] = i4;
                     anIntArray1241[anInt1062] = l11;
@@ -11893,9 +11893,9 @@ public final class client extends RSApplet {
     private long[] friendsListAsLongs;
     private int currentSong;
     private static int nodeID = 10;
-    static int portOff;
+    static int portOffset;
     private static boolean isMembers = true;
-    private static boolean lowMem;
+    private static boolean lowMemory;
     private volatile boolean drawingFlames;
     private int spriteDrawX;
     private int spriteDrawY;
@@ -12104,7 +12104,7 @@ public final class client extends RSApplet {
     private RSImageProducer aRSImageProducer_1165;
     private RSImageProducer aRSImageProducer_1166;
     private int daysSinceRecovChange;
-    private RSSocket socketStream;
+    private RSSocket socket;
     private int anInt1169;
     private int minimapInt3;
     private int anInt1171;
@@ -12155,7 +12155,7 @@ public final class client extends RSApplet {
     private String promptInput;
     private int anInt1213;
     private int[][][] intGroundArray;
-    private long aLong1215;
+    private long serverSessionKey;
     private int loginScreenCursorPos;
     private final Background[] modIcons;
     private long aLong1220;

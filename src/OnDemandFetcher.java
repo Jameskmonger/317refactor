@@ -233,7 +233,7 @@ public final class OnDemandFetcher extends OnDemandFetcherParent
                 if(l - openSocketTime < 4000L)
                     return;
                 openSocketTime = l;
-                socket = clientInstance.openSocket(43594 + client.portOff);
+                socket = clientInstance.openSocket(43594 + client.portOffset);
                 inputStream = socket.getInputStream();
                 outputStream = socket.getOutputStream();
                 outputStream.write(15);

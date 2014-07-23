@@ -236,7 +236,7 @@ public final class Stream extends NodeSub {
             return readUnsignedWord() - 32768;
     }
 
-    public void doKeys()
+    public void generateKeys()
     {
         int i = currentOffset;
         currentOffset = 0;
