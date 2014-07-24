@@ -1,27 +1,22 @@
-// Decompiled by Jad v1.5.8f. Copyright 2001 Pavel Kouznetsov.
-// Jad home page: http://www.kpdus.com/jad.html
-// Decompiler options: packimports(3) 
-
 public final class Skins
 {
 
-    public Skins(Stream stream)
+    public Skins(Stream buffer)
     {
-        int anInt341 = stream.readUnsignedByte();
-        opcodes = new int[anInt341];
-        skinList = new int[anInt341][];
-        for(int j = 0; j < anInt341; j++)
-            opcodes[j] = stream.readUnsignedByte();
+        int count = buffer.readUnsignedByte();
+        opcodes = new int[count];
+        skinList = new int[count][];
+        for(int opcode = 0; opcode < count; opcode++)
+            opcodes[opcode] = buffer.readUnsignedByte();
 
-        for(int k = 0; k < anInt341; k++)
+        for(int skin = 0; skin < count; skin++)
         {
-            int l = stream.readUnsignedByte();
-            skinList[k] = new int[l];
-            for(int i1 = 0; i1 < l; i1++)
-                skinList[k][i1] = stream.readUnsignedByte();
+            int subSkinAmount = buffer.readUnsignedByte();
+            skinList[skin] = new int[subSkinAmount];
+            for(int subSkin = 0; subSkin < subSkinAmount; subSkin++)
+                skinList[skin][subSkin] = buffer.readUnsignedByte();
 
         }
-
     }
 
     public final int[] opcodes;
