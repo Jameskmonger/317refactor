@@ -1,40 +1,34 @@
-// Decompiled by Jad v1.5.8f. Copyright 2001 Pavel Kouznetsov.
-// Jad home page: http://www.kpdus.com/jad.html
-// Decompiler options: packimports(3) 
-
 import java.awt.*;
 
 final class RSFrame extends Frame
 {
 
-    public RSFrame(RSApplet RSApplet_, int i, int j)
+    public RSFrame(RSApplet applet, int width, int height)
     {
-        rsApplet = RSApplet_;
+        this.applet = applet;
         setTitle("Jagex");
         setResizable(false);
-        //show();        //deprecated
         setVisible(true);
         toFront();
-        //resize(i + 8, j + 28);   //deprecated
-        setSize(i + 8, j + 28);
+        setSize(width + 8, height + 28);
     }
 
     public Graphics getGraphics()
     {
-        Graphics g = super.getGraphics();
-        g.translate(4, 24);
-        return g;
+        Graphics graphics = super.getGraphics();
+        graphics.translate(4, 24);
+        return graphics;
     }
 
-    public void update(Graphics g)
+    public void update(Graphics graphics)
     {
-        rsApplet.update(g);
+        applet.update(graphics);
     }
 
-    public void paint(Graphics g)
+    public void paint(Graphics graphics)
     {
-        rsApplet.paint(g);
+        applet.paint(graphics);
     }
 
-    private final RSApplet rsApplet;
+    private final RSApplet applet;
 }
