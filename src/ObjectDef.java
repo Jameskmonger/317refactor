@@ -245,16 +245,16 @@ stream = null;
         flag = anInt748 != 128 || anInt772 != 128 || anInt740 != 128;
         boolean flag2;
         flag2 = anInt738 != 0 || anInt745 != 0 || anInt783 != 0;
-        Model model_3 = new Model(modifiedModelColors == null, Class36.method532(k), l == 0 && k == -1 && !flag && !flag2, model);
+        Model model_3 = new Model(modifiedModelColors == null, Class36.isNullFrame(k), l == 0 && k == -1 && !flag && !flag2, model);
         if(k != -1)
         {
-            model_3.method469();
+            model_3.createBones();
             model_3.applyTransformation(k);
-            model_3.anIntArrayArray1658 = null;
+            model_3.triangleSkin = null;
             model_3.vectorSkin = null;
         }
         while(l-- > 0) 
-            model_3.method473();
+            model_3.rotate90Degrees();
         if(modifiedModelColors != null)
         {
             for(int k2 = 0; k2 < modifiedModelColors.length; k2++)
@@ -262,10 +262,10 @@ stream = null;
 
         }
         if(flag)
-            model_3.method478(anInt748, anInt740, anInt772);
+            model_3.scaleT(anInt748, anInt740, anInt772);
         if(flag2)
             model_3.method475(anInt738, anInt745, anInt783);
-        model_3.method479(64 + aByte737, 768 + aByte742 * 5, -50, -10, -50, !aBoolean769);
+        model_3.applyLighting(64 + aByte737, 768 + aByte742 * 5, -50, -10, -50, !aBoolean769);
         if(anInt760 == 1)
             model_3.anInt1654 = model_3.modelHeight;
         mruNodes2.removeFromCache(model_3, l1);

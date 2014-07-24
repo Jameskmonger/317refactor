@@ -430,7 +430,7 @@ public final class client extends RSApplet {
         try
         {
             anInt985 = -1;
-            aClass19_1056.removeAll();
+            stationaryGraphicDeque.removeAll();
             aClass19_1013.removeAll();
             Texture.method366();
             unlinkMRUNodes();
@@ -796,7 +796,7 @@ public final class client extends RSApplet {
             }
             if(!npc.desc.aBoolean84)
                 k += 0x80000000;
-            worldController.method285(plane, npc.anInt1552, method42(plane, npc.y, npc.x), k, npc.y, (npc.anInt1540 - 1) * 64 + 60, npc.x, npc, npc.aBoolean1541);
+            worldController.addEntityA(plane, npc.anInt1552, method42(plane, npc.y, npc.x), k, npc.y, (npc.anInt1540 - 1) * 64 + 60, npc.x, npc, npc.aBoolean1541);
         }
     }
 
@@ -1576,7 +1576,7 @@ public final class client extends RSApplet {
             {
                 Background background = Texture.aBackgroundArray1474s[17];
                 int k = background.anInt1452 * background.anInt1453 - 1;
-                int j1 = background.anInt1452 * anInt945 * 2;
+                int j1 = background.anInt1452 * animationTimePassed * 2;
                 byte abyte0[] = background.aByteArray1450;
                 byte abyte3[] = aByteArray912;
                 for(int i2 = 0; i2 <= k; i2++)
@@ -1610,7 +1610,7 @@ public final class client extends RSApplet {
             {
                 Background background_1 = Texture.aBackgroundArray1474s[24];
                 int l = background_1.anInt1452 * background_1.anInt1453 - 1;
-                int k1 = background_1.anInt1452 * anInt945 * 2;
+                int k1 = background_1.anInt1452 * animationTimePassed * 2;
                 byte abyte1[] = background_1.aByteArray1450;
                 byte abyte4[] = aByteArray912;
                 for(int j2 = 0; j2 <= l; j2++)
@@ -1624,7 +1624,7 @@ public final class client extends RSApplet {
             {
                 Background background_2 = Texture.aBackgroundArray1474s[34];
                 int i1 = background_2.anInt1452 * background_2.anInt1453 - 1;
-                int l1 = background_2.anInt1452 * anInt945 * 2;
+                int l1 = background_2.anInt1452 * animationTimePassed * 2;
                 byte abyte2[] = background_2.aByteArray1450;
                 byte abyte5[] = aByteArray912;
                 for(int k2 = 0; k2 <= i1; k2++)
@@ -2007,7 +2007,7 @@ public final class client extends RSApplet {
                 anIntArrayArray929[j1][k1] = anInt1265;
             }
             player.anInt1709 = method42(plane, player.y, player.x);
-            worldController.method285(plane, player.anInt1552, player.anInt1709, i1, player.y, 60, player.x, player, player.aBoolean1541);
+            worldController.addEntityA(plane, player.anInt1552, player.anInt1709, i1, player.y, 60, player.x, player, player.aBoolean1541);
         }
 
     }
@@ -2526,8 +2526,8 @@ public final class client extends RSApplet {
                     if(player != null && player.x >= 0 && player.x < 13312 && player.y >= 0 && player.y < 13312)
                         class30_sub2_sub4_sub4.method455(loopCycle, player.y, method42(class30_sub2_sub4_sub4.anInt1597, player.y, player.x) - class30_sub2_sub4_sub4.anInt1583, player.x);
                 }
-                class30_sub2_sub4_sub4.method456(anInt945);
-                worldController.method285(plane, class30_sub2_sub4_sub4.anInt1595, (int)class30_sub2_sub4_sub4.aDouble1587, -1, (int)class30_sub2_sub4_sub4.aDouble1586, 60, (int)class30_sub2_sub4_sub4.aDouble1585, class30_sub2_sub4_sub4, false);
+                class30_sub2_sub4_sub4.method456(animationTimePassed);
+                worldController.addEntityA(plane, class30_sub2_sub4_sub4.anInt1595, (int)class30_sub2_sub4_sub4.aDouble1587, -1, (int)class30_sub2_sub4_sub4.aDouble1586, 60, (int)class30_sub2_sub4_sub4.aDouble1585, class30_sub2_sub4_sub4, false);
             }
 
     }
@@ -2896,7 +2896,7 @@ public final class client extends RSApplet {
         method114();
         method95();
         method38();
-        anInt945++;
+        animationTimePassed++;
         if(crossType != 0)
         {
             crossIndex += 20;
@@ -4605,7 +4605,7 @@ public final class client extends RSApplet {
         groundArray = null;
         aClass19_1179 = null;
         aClass19_1013 = null;
-        aClass19_1056 = null;
+        stationaryGraphicDeque = null;
         menuActionCmd2 = null;
         menuActionCmd3 = null;
         menuActionID = null;
@@ -5213,9 +5213,9 @@ public final class client extends RSApplet {
                             model.method476(anIntArray1204[0], anIntArray1204[anIntArray990[l2]]);
                     }
 
-                model.method469();
-                model.applyTransformation(Animation.anims[myPlayer.anInt1511].anIntArray353[0]);
-                model.method479(64, 850, -30, -50, -30, true);
+                model.createBones();
+                model.applyTransformation(Animation.anims[myPlayer.anInt1511].frame2Ids[0]);
+                model.applyLighting(64, 850, -30, -50, -30, true);
                 class9.anInt233 = 5;
                 class9.mediaID = 0;
                 RSInterface.method208(aBoolean994, model);
@@ -5815,7 +5815,7 @@ public final class client extends RSApplet {
 
                 myPlayer = playerArray[myPlayerIndex] = new Player();
                 aClass19_1013.removeAll();
-                aClass19_1056.removeAll();
+                stationaryGraphicDeque.removeAll();
                 for(int l2 = 0; l2 < 4; l2++)
                 {
                     for(int i3 = 0; i3 < 104; i3++)
@@ -7274,7 +7274,7 @@ public final class client extends RSApplet {
 
     private void method98(Entity entity)
     {
-        if(entity.anInt1548 == loopCycle || entity.anim == -1 || entity.anInt1529 != 0 || entity.anInt1528 + 1 > Animation.anims[entity.anim].method258(entity.anInt1527))
+        if(entity.anInt1548 == loopCycle || entity.anim == -1 || entity.anInt1529 != 0 || entity.anInt1528 + 1 > Animation.anims[entity.anim].getFrameLength(entity.anInt1527))
         {
             int i = entity.anInt1548 - entity.anInt1547;
             int j = loopCycle - entity.anInt1547;
@@ -7484,12 +7484,12 @@ public final class client extends RSApplet {
         {
             Animation animation = Animation.anims[entity.anInt1517];
             entity.anInt1519++;
-            if(entity.anInt1518 < animation.anInt352 && entity.anInt1519 > animation.method258(entity.anInt1518))
+            if(entity.anInt1518 < animation.frameCount && entity.anInt1519 > animation.getFrameLength(entity.anInt1518))
             {
                 entity.anInt1519 = 0;
                 entity.anInt1518++;
             }
-            if(entity.anInt1518 >= animation.anInt352)
+            if(entity.anInt1518 >= animation.frameCount)
             {
                 entity.anInt1519 = 0;
                 entity.anInt1518 = 0;
@@ -7499,11 +7499,11 @@ public final class client extends RSApplet {
         {
             if(entity.anInt1521 < 0)
                 entity.anInt1521 = 0;
-            Animation animation_1 = SpotAnim.cache[entity.anInt1520].aAnimation_407;
-            for(entity.anInt1522++; entity.anInt1521 < animation_1.anInt352 && entity.anInt1522 > animation_1.method258(entity.anInt1521); entity.anInt1521++)
-                entity.anInt1522 -= animation_1.method258(entity.anInt1521);
+            Animation animation_1 = SpotAnim.cache[entity.anInt1520].sequences;
+            for(entity.anInt1522++; entity.anInt1521 < animation_1.frameCount && entity.anInt1522 > animation_1.getFrameLength(entity.anInt1521); entity.anInt1521++)
+                entity.anInt1522 -= animation_1.getFrameLength(entity.anInt1521);
 
-            if(entity.anInt1521 >= animation_1.anInt352 && (entity.anInt1521 < 0 || entity.anInt1521 >= animation_1.anInt352))
+            if(entity.anInt1521 >= animation_1.frameCount && (entity.anInt1521 < 0 || entity.anInt1521 >= animation_1.frameCount))
                 entity.anInt1520 = -1;
         }
         if(entity.anim != -1 && entity.anInt1529 <= 1)
@@ -7518,16 +7518,16 @@ public final class client extends RSApplet {
         if(entity.anim != -1 && entity.anInt1529 == 0)
         {
             Animation animation_3 = Animation.anims[entity.anim];
-            for(entity.anInt1528++; entity.anInt1527 < animation_3.anInt352 && entity.anInt1528 > animation_3.method258(entity.anInt1527); entity.anInt1527++)
-                entity.anInt1528 -= animation_3.method258(entity.anInt1527);
+            for(entity.anInt1528++; entity.anInt1527 < animation_3.frameCount && entity.anInt1528 > animation_3.getFrameLength(entity.anInt1527); entity.anInt1527++)
+                entity.anInt1528 -= animation_3.getFrameLength(entity.anInt1527);
 
-            if(entity.anInt1527 >= animation_3.anInt352)
+            if(entity.anInt1527 >= animation_3.frameCount)
             {
                 entity.anInt1527 -= animation_3.anInt356;
                 entity.anInt1530++;
                 if(entity.anInt1530 >= animation_3.anInt362)
                     entity.anim = -1;
-                if(entity.anInt1527 < 0 || entity.anInt1527 >= animation_3.anInt352)
+                if(entity.anInt1527 < 0 || entity.anInt1527 >= animation_3.frameCount)
                     entity.anim = -1;
             }
             entity.aBoolean1541 = animation_3.aBoolean358;
@@ -7566,7 +7566,7 @@ public final class client extends RSApplet {
             needDrawTabArea = true;
         if(invOverlayInterfaceID != -1)
         {
-            boolean flag1 = method119(anInt945, invOverlayInterfaceID);
+            boolean flag1 = method119(animationTimePassed, invOverlayInterfaceID);
             if(flag1)
                 needDrawTabArea = true;
         }
@@ -7597,7 +7597,7 @@ public final class client extends RSApplet {
         }
         if(backDialogID != -1)
         {
-            boolean flag2 = method119(anInt945, backDialogID);
+            boolean flag2 = method119(animationTimePassed, backDialogID);
             if(flag2)
                 inputTaken = true;
         }
@@ -7736,7 +7736,7 @@ public final class client extends RSApplet {
             aRSImageProducer_1123.drawGraphics(453, super.graphics, 0);
             aRSImageProducer_1165.initDrawingArea();
         }
-        anInt945 = 0;
+        animationTimePassed = 0;
     }
 
     private boolean buildFriendsListMenu(RSInterface class9)
@@ -7774,20 +7774,20 @@ public final class client extends RSApplet {
         }
     }
 
-    private void method104()
+    private void renderStationaryGraphics()
     {
-        Animable_Sub3 class30_sub2_sub4_sub3 = (Animable_Sub3)aClass19_1056.reverseGetFirst();
-        for(; class30_sub2_sub4_sub3 != null; class30_sub2_sub4_sub3 = (Animable_Sub3)aClass19_1056.reverseGetNext())
-            if(class30_sub2_sub4_sub3.anInt1560 != plane || class30_sub2_sub4_sub3.aBoolean1567)
-                class30_sub2_sub4_sub3.unlink();
+        StationaryGraphic stationaryGraphic = (StationaryGraphic)stationaryGraphicDeque.reverseGetFirst();
+        for(; stationaryGraphic != null; stationaryGraphic = (StationaryGraphic)stationaryGraphicDeque.reverseGetNext())
+            if(stationaryGraphic.plane != plane || stationaryGraphic.transformationCompleted)
+                stationaryGraphic.unlink();
             else
-            if(loopCycle >= class30_sub2_sub4_sub3.anInt1564)
+            if(loopCycle >= stationaryGraphic.stationaryGraphicLoopCycle)
             {
-                class30_sub2_sub4_sub3.method454(anInt945);
-                if(class30_sub2_sub4_sub3.aBoolean1567)
-                    class30_sub2_sub4_sub3.unlink();
+                stationaryGraphic.animationStep(animationTimePassed);
+                if(stationaryGraphic.transformationCompleted)
+                    stationaryGraphic.unlink();
                 else
-                    worldController.method285(class30_sub2_sub4_sub3.anInt1560, 0, class30_sub2_sub4_sub3.anInt1563, -1, class30_sub2_sub4_sub3.anInt1562, 60, class30_sub2_sub4_sub3.anInt1561, class30_sub2_sub4_sub3, false);
+                    worldController.addEntityA(stationaryGraphic.plane, 0, stationaryGraphic.anInt1563, -1, stationaryGraphic.anInt1562, 60, stationaryGraphic.anInt1561, stationaryGraphic, false);
             }
 
     }
@@ -7867,9 +7867,9 @@ public final class client extends RSApplet {
                                             class30_sub2_sub1_sub1_2.drawSprite1(k5 + k6, j6 + j7);
                                             if(j6 + j7 < DrawingArea.topY && class9.scrollPosition > 0)
                                             {
-                                                int i10 = (anInt945 * (DrawingArea.topY - j6 - j7)) / 3;
-                                                if(i10 > anInt945 * 10)
-                                                    i10 = anInt945 * 10;
+                                                int i10 = (animationTimePassed * (DrawingArea.topY - j6 - j7)) / 3;
+                                                if(i10 > animationTimePassed * 10)
+                                                    i10 = animationTimePassed * 10;
                                                 if(i10 > class9.scrollPosition)
                                                     i10 = class9.scrollPosition;
                                                 class9.scrollPosition -= i10;
@@ -7877,9 +7877,9 @@ public final class client extends RSApplet {
                                             }
                                             if(j6 + j7 + 32 > DrawingArea.bottomY && class9.scrollPosition < class9.scrollMax - class9.height)
                                             {
-                                                int j10 = (anInt945 * ((j6 + j7 + 32) - DrawingArea.bottomY)) / 3;
-                                                if(j10 > anInt945 * 10)
-                                                    j10 = anInt945 * 10;
+                                                int j10 = (animationTimePassed * ((j6 + j7 + 32) - DrawingArea.bottomY)) / 3;
+                                                if(j10 > animationTimePassed * 10)
+                                                    j10 = animationTimePassed * 10;
                                                 if(j10 > class9.scrollMax - class9.height - class9.scrollPosition)
                                                     j10 = class9.scrollMax - class9.height - class9.scrollPosition;
                                                 class9.scrollPosition += j10;
@@ -8062,7 +8062,7 @@ public final class client extends RSApplet {
                     } else
                     {
                         Animation animation = Animation.anims[i7];
-                        model = class9_1.method209(animation.anIntArray354[class9_1.anInt246], animation.anIntArray353[class9_1.anInt246], flag2);
+                        model = class9_1.method209(animation.anIntArray354[class9_1.anInt246], animation.frame2Ids[class9_1.anInt246], flag2);
                     }
                     if(model != null)
                         model.method482(class9_1.anInt271, 0, class9_1.anInt270, 0, i5, l5);
@@ -8478,12 +8478,12 @@ public final class client extends RSApplet {
             crosses[4 + crossIndex / 100].drawSprite(crossX - 8 - 4, crossY - 8 - 4);
         if(anInt1018 != -1)
         {
-            method119(anInt945, anInt1018);
+            method119(animationTimePassed, anInt1018);
             drawInterface(0, 0, RSInterface.interfaceCache[anInt1018], 0);
         }
         if(openInterfaceID != -1)
         {
-            method119(anInt945, openInterfaceID);
+            method119(animationTimePassed, openInterfaceID);
             drawInterface(0, 0, RSInterface.interfaceCache[openInterfaceID], 0);
         }
         method70();
@@ -8789,14 +8789,14 @@ public final class client extends RSApplet {
                 if(l != -1)
                 {
                     Animation animation = Animation.anims[l];
-                    for(class9_1.anInt208 += i; class9_1.anInt208 > animation.method258(class9_1.anInt246);)
+                    for(class9_1.anInt208 += i; class9_1.anInt208 > animation.getFrameLength(class9_1.anInt246);)
                     {
-                        class9_1.anInt208 -= animation.method258(class9_1.anInt246) + 1;
+                        class9_1.anInt208 -= animation.getFrameLength(class9_1.anInt246) + 1;
                         class9_1.anInt246++;
-                        if(class9_1.anInt246 >= animation.anInt352)
+                        if(class9_1.anInt246 >= animation.frameCount)
                         {
                             class9_1.anInt246 -= animation.anInt356;
-                            if(class9_1.anInt246 < 0 || class9_1.anInt246 >= animation.anInt352)
+                            if(class9_1.anInt246 < 0 || class9_1.anInt246 >= animation.frameCount)
                                 class9_1.anInt246 = 0;
                         }
                         flag1 = true;
@@ -9899,8 +9899,8 @@ public final class client extends RSApplet {
             {
                 i5 = i5 * 128 + 64;
                 l7 = l7 * 128 + 64;
-                Animable_Sub3 class30_sub2_sub4_sub3 = new Animable_Sub3(plane, loopCycle, j15, k10, method42(plane, l7, i5) - l12, l7, i5);
-                aClass19_1056.insertHead(class30_sub2_sub4_sub3);
+                StationaryGraphic class30_sub2_sub4_sub3 = new StationaryGraphic(plane, loopCycle, j15, k10, method42(plane, l7, i5) - l12, l7, i5);
+                stationaryGraphicDeque.insertHead(class30_sub2_sub4_sub3);
             }
             return;
         }
@@ -11538,7 +11538,7 @@ public final class client extends RSApplet {
         method47(false);
         method26(false);
         method55();
-        method104();
+        renderStationaryGraphics();
         if(!aBoolean1160)
         {
             int i = anInt1184;
@@ -11703,7 +11703,7 @@ public final class client extends RSApplet {
         aBoolean1047 = true;
         anIntArray1052 = new int[151];
         anInt1054 = -1;
-        aClass19_1056 = new NodeList();
+        stationaryGraphicDeque = new NodeList();
         anIntArray1057 = new int[33];
         aClass9_1059 = new RSInterface();
         mapScenes = new Background[100];
@@ -11880,7 +11880,7 @@ public final class client extends RSApplet {
     private final int[] chatTypes;
     private final String[] chatNames;
     private final String[] chatMessages;
-    private int anInt945;
+    private int animationTimePassed;
     private WorldController worldController;
     private Background[] sideIcons;
     private int menuScreenArea;
@@ -11998,7 +11998,7 @@ public final class client extends RSApplet {
     private StreamLoader titleStreamLoader;
     private int anInt1054;
     private int anInt1055;
-    private NodeList aClass19_1056;
+    private NodeList stationaryGraphicDeque;
     private final int[] anIntArray1057;
     private final RSInterface aClass9_1059;
     private Background[] mapScenes;

@@ -125,7 +125,7 @@ public final class Class36
             return aClass36Array635[j];
     }
 
-    public static boolean method532(int i)
+    public static boolean isNullFrame(int i)
     {
         return i == -1;
     }

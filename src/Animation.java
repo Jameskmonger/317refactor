@@ -18,12 +18,12 @@ public final class Animation {
         }
     }
 
-    public int method258(int i)
+    public int getFrameLength(int i)
     {
         int j = anIntArray355[i];
         if(j == 0)
         {
-            Class36 class36 = Class36.method531(anIntArray353[i]);
+            Class36 class36 = Class36.method531(frame2Ids[i]);
             if(class36 != null)
                 j = anIntArray355[i] = class36.anInt636;
         }
@@ -41,13 +41,13 @@ public final class Animation {
                 break;
             if(i == 1)
             {
-                anInt352 = stream.readUnsignedByte();
-                anIntArray353 = new int[anInt352];
-                anIntArray354 = new int[anInt352];
-                anIntArray355 = new int[anInt352];
-                for(int j = 0; j < anInt352; j++)
+                frameCount = stream.readUnsignedByte();
+                frame2Ids = new int[frameCount];
+                anIntArray354 = new int[frameCount];
+                anIntArray355 = new int[frameCount];
+                for(int j = 0; j < frameCount; j++)
                 {
-                    anIntArray353[j] = stream.readUnsignedWord();
+                    frame2Ids[j] = stream.readUnsignedWord();
                     anIntArray354[j] = stream.readUnsignedWord();
                     if(anIntArray354[j] == 65535)
                         anIntArray354[j] = -1;
@@ -96,11 +96,11 @@ public final class Animation {
             else
                 System.out.println("Error unrecognised seq config code: " + i);
         } while(true);
-        if(anInt352 == 0)
+        if(frameCount == 0)
         {
-            anInt352 = 1;
-            anIntArray353 = new int[1];
-            anIntArray353[0] = -1;
+            frameCount = 1;
+            frame2Ids = new int[1];
+            frame2Ids[0] = -1;
             anIntArray354 = new int[1];
             anIntArray354[0] = -1;
             anIntArray355 = new int[1];
@@ -136,8 +136,8 @@ public final class Animation {
     }
 
     public static Animation anims[];
-    public int anInt352;
-    public int anIntArray353[];
+    public int frameCount;
+    public int frame2Ids[];
     public int anIntArray354[];
     private int[] anIntArray355;
     public int anInt356;

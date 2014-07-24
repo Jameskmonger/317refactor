@@ -137,21 +137,21 @@ public final class EntityDef
                     model.method476(anIntArray76[k1], anIntArray70[k1]);
 
             }
-            model.method469();
-            model.method479(64 + anInt85, 850 + anInt92, -30, -50, -30, true);
+            model.createBones();
+            model.applyLighting(64 + anInt85, 850 + anInt92, -30, -50, -30, true);
             mruNodes.removeFromCache(model, type);
         }
         Model model_1 = Model.aModel_1621;
-        model_1.method464(model, Class36.method532(k) & Class36.method532(j));
+        model_1.method464(model, Class36.isNullFrame(k) & Class36.isNullFrame(j));
         if(k != -1 && j != -1)
             model_1.method471(ai, j, k);
         else
         if(k != -1)
             model_1.applyTransformation(k);
         if(anInt91 != 128 || anInt86 != 128)
-            model_1.method478(anInt91, anInt91, anInt86);
+            model_1.scaleT(anInt91, anInt91, anInt86);
         model_1.method466();
-        model_1.anIntArrayArray1658 = null;
+        model_1.triangleSkin = null;
         model_1.vectorSkin = null;
         if(aByte68 == 1)
             model_1.aBoolean1659 = true;

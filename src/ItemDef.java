@@ -394,14 +394,14 @@ public final class ItemDef
         if(model == null)
             return null;
         if(anInt167 != 128 || anInt192 != 128 || anInt191 != 128)
-            model.method478(anInt167, anInt191, anInt192);
+            model.scaleT(anInt167, anInt191, anInt192);
         if(modifiedModelColors != null)
         {
             for(int l = 0; l < modifiedModelColors.length; l++)
                 model.method476(modifiedModelColors[l], originalModelColors[l]);
 
         }
-        model.method479(64 + anInt196, 768 + anInt184, -50, -10, -50, true);
+        model.applyLighting(64 + anInt196, 768 + anInt184, -50, -10, -50, true);
         model.aBoolean1659 = true;
         mruNodes2.removeFromCache(model, id);
         return model;

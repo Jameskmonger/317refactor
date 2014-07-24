@@ -34,7 +34,7 @@ public final class SpotAnim {
             {
                 anInt406 = stream.readUnsignedWord();
                 if(Animation.anims != null)
-                    aAnimation_407 = Animation.anims[anInt406];
+                    sequences = Animation.anims[anInt406];
             } else
             if(i == 4)
                 anInt410 = stream.readUnsignedWord();
@@ -43,13 +43,13 @@ public final class SpotAnim {
                 anInt411 = stream.readUnsignedWord();
             else
             if(i == 6)
-                anInt412 = stream.readUnsignedWord();
+                rotation = stream.readUnsignedWord();
             else
             if(i == 7)
-                anInt413 = stream.readUnsignedByte();
+                modelLightFalloff = stream.readUnsignedByte();
             else
             if(i == 8)
-                anInt414 = stream.readUnsignedByte();
+                modelLightAmbient = stream.readUnsignedByte();
             else
             if(i >= 40 && i < 50)
                 anIntArray408[i - 40] = stream.readUnsignedWord();
@@ -92,14 +92,14 @@ public final class SpotAnim {
     private int anInt404;
     private int anInt405;
     private int anInt406;
-    public Animation aAnimation_407;
+    public Animation sequences;
     private final int[] anIntArray408;
     private final int[] anIntArray409;
     public int anInt410;
     public int anInt411;
-    public int anInt412;
-    public int anInt413;
-    public int anInt414;
+    public int rotation;
+    public int modelLightFalloff;
+    public int modelLightAmbient;
     public static MRUNodes aMRUNodes_415 = new MRUNodes(30);
 
 }

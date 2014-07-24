@@ -261,7 +261,7 @@ final class WorldController {
         }
     }
 
-    public boolean method285(int i, int j, int k, int l, int i1, int j1,
+    public boolean addEntityA(int i, int j, int k, int l, int i1, int j1,
                              int k1, Animable class30_sub2_sub4, boolean flag)
     {
         if(class30_sub2_sub4 == null)
