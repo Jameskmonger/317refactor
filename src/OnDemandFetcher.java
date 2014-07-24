@@ -132,7 +132,7 @@ public final class OnDemandFetcher extends OnDemandFetcherParent
             versions[i] = new int[j];
             fileStatus[i] = new byte[j];
             for(int l = 0; l < j; l++)
-                versions[i][l] = stream.readUnsignedWord();
+                versions[i][l] = stream.getUnsignedLEShort();
 
         }
 
@@ -168,10 +168,10 @@ public final class OnDemandFetcher extends OnDemandFetcherParent
         mapIndices4 = new int[j1];
         for(int i2 = 0; i2 < j1; i2++)
         {
-            mapIndices1[i2] = stream2.readUnsignedWord();
-            mapIndices2[i2] = stream2.readUnsignedWord();
-            mapIndices3[i2] = stream2.readUnsignedWord();
-            mapIndices4[i2] = stream2.readUnsignedByte();
+            mapIndices1[i2] = stream2.getUnsignedLEShort();
+            mapIndices2[i2] = stream2.getUnsignedLEShort();
+            mapIndices3[i2] = stream2.getUnsignedLEShort();
+            mapIndices4[i2] = stream2.getUnsignedByte();
         }
 
         abyte2 = streamLoader.getDataForName("anim_index");
@@ -179,14 +179,14 @@ public final class OnDemandFetcher extends OnDemandFetcherParent
         j1 = abyte2.length / 2;
         anIntArray1360 = new int[j1];
         for(int j2 = 0; j2 < j1; j2++)
-            anIntArray1360[j2] = stream2.readUnsignedWord();
+            anIntArray1360[j2] = stream2.getUnsignedLEShort();
 
         abyte2 = streamLoader.getDataForName("midi_index");
         stream2 = new Stream(abyte2);
         j1 = abyte2.length;
         anIntArray1348 = new int[j1];
         for(int k2 = 0; k2 < j1; k2++)
-            anIntArray1348[k2] = stream2.readUnsignedByte();
+            anIntArray1348[k2] = stream2.getUnsignedByte();
 
         clientInstance = client1;
         running = true;
@@ -480,7 +480,7 @@ public final class OnDemandFetcher extends OnDemandFetcherParent
         return -1;
     }
 
-    public void method548(int i)
+    public void request(int i)
     {
         method558(0, i);
     }

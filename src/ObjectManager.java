@@ -438,7 +438,7 @@ label0:
                     int k = stream.method422();
                     if(k == 0)
                         break;
-                    stream.readUnsignedByte();
+                    stream.getUnsignedByte();
                 } while(true);
             } while(true);
         }
@@ -537,7 +537,7 @@ label0:
                         {
                             for(int k5 = 0; k5 <= l4; k5++)
                             {
-                                int l5 = model.anInt1650 / 4;
+                                int l5 = model.diagonal2DAboveOrigin / 4;
                                 if(l5 > 30)
                                     l5 = 30;
                                 if(l5 > aByteArrayArrayArray134[k][l + j5][i + k5])
@@ -904,7 +904,7 @@ label0:
             aByteArrayArrayArray149[l][k][i] = 0;
             do
             {
-                int l1 = stream.readUnsignedByte();
+                int l1 = stream.getUnsignedByte();
                 if(l1 == 0)
                     if(l == 0)
                     {
@@ -917,7 +917,7 @@ label0:
                     }
                 if(l1 == 1)
                 {
-                    int j2 = stream.readUnsignedByte();
+                    int j2 = stream.getUnsignedByte();
                     if(j2 == 1)
                         j2 = 0;
                     if(l == 0)
@@ -944,16 +944,16 @@ label0:
         }
         do
         {
-            int i2 = stream.readUnsignedByte();
+            int i2 = stream.getUnsignedByte();
             if(i2 == 0)
                 break;
             if(i2 == 1)
             {
-                stream.readUnsignedByte();
+                stream.getUnsignedByte();
                 return;
             }
             if(i2 <= 49)
-                stream.readUnsignedByte();
+                stream.getUnsignedByte();
         } while(true);
     }
 
@@ -990,7 +990,7 @@ label0:
                     int l2 = j2 & 0x3f;
                     int i3 = j2 >> 6 & 0x3f;
                     int j3 = j2 >> 12;
-                    int k3 = stream.readUnsignedByte();
+                    int k3 = stream.getUnsignedByte();
                     int l3 = k3 >> 2;
                     int i4 = k3 & 3;
                     if(j3 == i && i3 >= i1 && i3 < i1 + 8 && l2 >= k && l2 < k + 8)
@@ -1299,7 +1299,7 @@ label0:
 		int i_256_ = stream.method422 ();
 		if (i_256_ == 0)
 		  break;
-		stream.readUnsignedByte();
+		stream.getUnsignedByte();
 	      }
 	    else
 	      {
@@ -1309,7 +1309,7 @@ label0:
 		i_254_ += i_257_ - 1;
 		int i_258_ = i_254_ & 0x3f;
 		int i_259_ = i_254_ >> 6 & 0x3f;
-		int i_260_ = stream.readUnsignedByte() >> 2;
+		int i_260_ = stream.getUnsignedByte() >> 2;
 		int i_261_ = i_259_ + i;
 		int i_262_ = i_258_ + i_250_;
 		if (i_261_ > 0 && i_262_ > 0 && i_261_ < 103 && i_262_ < 103)
@@ -1350,7 +1350,7 @@ label0:
                     int l1 = j1 & 0x3f;
                     int i2 = j1 >> 6 & 0x3f;
                     int j2 = j1 >> 12;
-                    int k2 = stream.readUnsignedByte();
+                    int k2 = stream.getUnsignedByte();
                     int l2 = k2 >> 2;
                     int i3 = k2 & 3;
                     int j3 = i2 + i;

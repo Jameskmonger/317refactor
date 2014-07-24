@@ -587,32 +587,32 @@ final class WorldController {
                     if(class30_sub3 != null)
                     {
                         Object1 class10 = class30_sub3.obj1;
-                        if(class10 != null && class10.aClass30_Sub2_Sub4_278 != null && class10.aClass30_Sub2_Sub4_278.aClass33Array1425 != null)
+                        if(class10 != null && class10.aClass30_Sub2_Sub4_278 != null && class10.aClass30_Sub2_Sub4_278.vertexNormals != null)
                         {
                             method307(l1, 1, 1, i2, j2, (Model)class10.aClass30_Sub2_Sub4_278);
-                            if(class10.aClass30_Sub2_Sub4_279 != null && class10.aClass30_Sub2_Sub4_279.aClass33Array1425 != null)
+                            if(class10.aClass30_Sub2_Sub4_279 != null && class10.aClass30_Sub2_Sub4_279.vertexNormals != null)
                             {
                                 method307(l1, 1, 1, i2, j2, (Model)class10.aClass30_Sub2_Sub4_279);
                                 method308((Model)class10.aClass30_Sub2_Sub4_278, (Model)class10.aClass30_Sub2_Sub4_279, 0, 0, 0, false);
-                                ((Model)class10.aClass30_Sub2_Sub4_279).method480(j, k1, k, i, i1);
+                                ((Model)class10.aClass30_Sub2_Sub4_279).handleShading(j, k1, k, i, i1);
                             }
-                            ((Model)class10.aClass30_Sub2_Sub4_278).method480(j, k1, k, i, i1);
+                            ((Model)class10.aClass30_Sub2_Sub4_278).handleShading(j, k1, k, i, i1);
                         }
                         for(int k2 = 0; k2 < class30_sub3.anInt1317; k2++)
                         {
                             Object5 class28 = class30_sub3.obj5Array[k2];
-                            if(class28 != null && class28.aClass30_Sub2_Sub4_521 != null && class28.aClass30_Sub2_Sub4_521.aClass33Array1425 != null)
+                            if(class28 != null && class28.aClass30_Sub2_Sub4_521 != null && class28.aClass30_Sub2_Sub4_521.vertexNormals != null)
                             {
                                 method307(l1, (class28.anInt524 - class28.anInt523) + 1, (class28.anInt526 - class28.anInt525) + 1, i2, j2, (Model)class28.aClass30_Sub2_Sub4_521);
-                                ((Model)class28.aClass30_Sub2_Sub4_521).method480(j, k1, k, i, i1);
+                                ((Model)class28.aClass30_Sub2_Sub4_521).handleShading(j, k1, k, i, i1);
                             }
                         }
 
                         Object3 class49 = class30_sub3.obj3;
-                        if(class49 != null && class49.aClass30_Sub2_Sub4_814.aClass33Array1425 != null)
+                        if(class49 != null && class49.aClass30_Sub2_Sub4_814.vertexNormals != null)
                         {
                             method306(i2, l1, (Model)class49.aClass30_Sub2_Sub4_814, j2);
-                            ((Model)class49.aClass30_Sub2_Sub4_814).method480(j, k1, k, i, i1);
+                            ((Model)class49.aClass30_Sub2_Sub4_814).handleShading(j, k1, k, i, i1);
                         }
                     }
                 }
@@ -628,25 +628,25 @@ final class WorldController {
         if(i < anInt438)
         {
             Ground class30_sub3 = groundArray[j][i + 1][k];
-            if(class30_sub3 != null && class30_sub3.obj3 != null && class30_sub3.obj3.aClass30_Sub2_Sub4_814.aClass33Array1425 != null)
+            if(class30_sub3 != null && class30_sub3.obj3 != null && class30_sub3.obj3.aClass30_Sub2_Sub4_814.vertexNormals != null)
                 method308(model, (Model)class30_sub3.obj3.aClass30_Sub2_Sub4_814, 128, 0, 0, true);
         }
         if(k < anInt438)
         {
             Ground class30_sub3_1 = groundArray[j][i][k + 1];
-            if(class30_sub3_1 != null && class30_sub3_1.obj3 != null && class30_sub3_1.obj3.aClass30_Sub2_Sub4_814.aClass33Array1425 != null)
+            if(class30_sub3_1 != null && class30_sub3_1.obj3 != null && class30_sub3_1.obj3.aClass30_Sub2_Sub4_814.vertexNormals != null)
                 method308(model, (Model)class30_sub3_1.obj3.aClass30_Sub2_Sub4_814, 0, 0, 128, true);
         }
         if(i < anInt438 && k < anInt439)
         {
             Ground class30_sub3_2 = groundArray[j][i + 1][k + 1];
-            if(class30_sub3_2 != null && class30_sub3_2.obj3 != null && class30_sub3_2.obj3.aClass30_Sub2_Sub4_814.aClass33Array1425 != null)
+            if(class30_sub3_2 != null && class30_sub3_2.obj3 != null && class30_sub3_2.obj3.aClass30_Sub2_Sub4_814.vertexNormals != null)
                 method308(model, (Model)class30_sub3_2.obj3.aClass30_Sub2_Sub4_814, 128, 0, 128, true);
         }
         if(i < anInt438 && k > 0)
         {
             Ground class30_sub3_3 = groundArray[j][i + 1][k - 1];
-            if(class30_sub3_3 != null && class30_sub3_3.obj3 != null && class30_sub3_3.obj3.aClass30_Sub2_Sub4_814.aClass33Array1425 != null)
+            if(class30_sub3_3 != null && class30_sub3_3.obj3 != null && class30_sub3_3.obj3.aClass30_Sub2_Sub4_814.vertexNormals != null)
                 method308(model, (Model)class30_sub3_3.obj3.aClass30_Sub2_Sub4_814, 128, 0, -128, true);
         }
     }
@@ -672,14 +672,14 @@ final class WorldController {
                                 {
                                     int i3 = (anIntArrayArrayArray440[j2][k2][l2] + anIntArrayArrayArray440[j2][k2 + 1][l2] + anIntArrayArrayArray440[j2][k2][l2 + 1] + anIntArrayArrayArray440[j2][k2 + 1][l2 + 1]) / 4 - (anIntArrayArrayArray440[i][l][i1] + anIntArrayArrayArray440[i][l + 1][i1] + anIntArrayArrayArray440[i][l][i1 + 1] + anIntArrayArrayArray440[i][l + 1][i1 + 1]) / 4;
                                     Object1 class10 = class30_sub3.obj1;
-                                    if(class10 != null && class10.aClass30_Sub2_Sub4_278 != null && class10.aClass30_Sub2_Sub4_278.aClass33Array1425 != null)
+                                    if(class10 != null && class10.aClass30_Sub2_Sub4_278 != null && class10.aClass30_Sub2_Sub4_278.vertexNormals != null)
                                         method308(model, (Model)class10.aClass30_Sub2_Sub4_278, (k2 - l) * 128 + (1 - j) * 64, i3, (l2 - i1) * 128 + (1 - k) * 64, flag);
-                                    if(class10 != null && class10.aClass30_Sub2_Sub4_279 != null && class10.aClass30_Sub2_Sub4_279.aClass33Array1425 != null)
+                                    if(class10 != null && class10.aClass30_Sub2_Sub4_279 != null && class10.aClass30_Sub2_Sub4_279.vertexNormals != null)
                                         method308(model, (Model)class10.aClass30_Sub2_Sub4_279, (k2 - l) * 128 + (1 - j) * 64, i3, (l2 - i1) * 128 + (1 - k) * 64, flag);
                                     for(int j3 = 0; j3 < class30_sub3.anInt1317; j3++)
                                     {
                                         Object5 class28 = class30_sub3.obj5Array[j3];
-                                        if(class28 != null && class28.aClass30_Sub2_Sub4_521 != null && class28.aClass30_Sub2_Sub4_521.aClass33Array1425 != null)
+                                        if(class28 != null && class28.aClass30_Sub2_Sub4_521 != null && class28.aClass30_Sub2_Sub4_521.vertexNormals != null)
                                         {
                                             int k3 = (class28.anInt524 - class28.anInt523) + 1;
                                             int l3 = (class28.anInt526 - class28.anInt525) + 1;
@@ -702,37 +702,37 @@ final class WorldController {
     {
         anInt488++;
         int l = 0;
-        int ai[] = model_1.anIntArray1627;
-        int i1 = model_1.anInt1626;
-        for(int j1 = 0; j1 < model.anInt1626; j1++)
+        int ai[] = model_1.verticesX;
+        int i1 = model_1.vertexCount;
+        for(int j1 = 0; j1 < model.vertexCount; j1++)
         {
-            Class33 class33 = model.aClass33Array1425[j1];
-            Class33 class33_1 = model.aClass33Array1660[j1];
-            if(class33_1.anInt605 != 0)
+            VertexNormal class33 = model.vertexNormals[j1];
+            VertexNormal class33_1 = model.vertexNormalOffset[j1];
+            if(class33_1.magnitude != 0)
             {
-                int i2 = model.anIntArray1628[j1] - j;
-                if(i2 <= model_1.anInt1651)
+                int i2 = model.verticesY[j1] - j;
+                if(i2 <= model_1.maxY)
                 {
-                    int j2 = model.anIntArray1627[j1] - i;
-                    if(j2 >= model_1.anInt1646 && j2 <= model_1.anInt1647)
+                    int j2 = model.verticesX[j1] - i;
+                    if(j2 >= model_1.maxY && j2 <= model_1.maxX)
                     {
-                        int k2 = model.anIntArray1629[j1] - k;
-                        if(k2 >= model_1.anInt1649 && k2 <= model_1.anInt1648)
+                        int k2 = model.verticesZ[j1] - k;
+                        if(k2 >= model_1.minZ && k2 <= model_1.maxZ)
                         {
                             for(int l2 = 0; l2 < i1; l2++)
                             {
-                                Class33 class33_2 = model_1.aClass33Array1425[l2];
-                                Class33 class33_3 = model_1.aClass33Array1660[l2];
-                                if(j2 == ai[l2] && k2 == model_1.anIntArray1629[l2] && i2 == model_1.anIntArray1628[l2] && class33_3.anInt605 != 0)
+                                VertexNormal class33_2 = model_1.vertexNormals[l2];
+                                VertexNormal class33_3 = model_1.vertexNormalOffset[l2];
+                                if(j2 == ai[l2] && k2 == model_1.verticesZ[l2] && i2 == model_1.verticesY[l2] && class33_3.magnitude != 0)
                                 {
-                                    class33.anInt602 += class33_3.anInt602;
-                                    class33.anInt603 += class33_3.anInt603;
-                                    class33.anInt604 += class33_3.anInt604;
-                                    class33.anInt605 += class33_3.anInt605;
-                                    class33_2.anInt602 += class33_1.anInt602;
-                                    class33_2.anInt603 += class33_1.anInt603;
-                                    class33_2.anInt604 += class33_1.anInt604;
-                                    class33_2.anInt605 += class33_1.anInt605;
+                                    class33.x += class33_3.x;
+                                    class33.y += class33_3.y;
+                                    class33.z += class33_3.z;
+                                    class33.magnitude += class33_3.magnitude;
+                                    class33_2.x += class33_1.x;
+                                    class33_2.y += class33_1.y;
+                                    class33_2.z += class33_1.z;
+                                    class33_2.magnitude += class33_1.magnitude;
                                     l++;
                                     anIntArray486[j1] = anInt488;
                                     anIntArray487[l2] = anInt488;
@@ -748,11 +748,11 @@ final class WorldController {
         if(l < 3 || !flag)
             return;
         for(int k1 = 0; k1 < model.anInt1630; k1++)
-            if(anIntArray486[model.anIntArray1631[k1]] == anInt488 && anIntArray486[model.anIntArray1632[k1]] == anInt488 && anIntArray486[model.anIntArray1633[k1]] == anInt488)
+            if(anIntArray486[model.triangleX[k1]] == anInt488 && anIntArray486[model.triangleY[k1]] == anInt488 && anIntArray486[model.triangleZ[k1]] == anInt488)
                 model.anIntArray1637[k1] = -1;
 
         for(int l1 = 0; l1 < model_1.anInt1630; l1++)
-            if(anIntArray487[model_1.anIntArray1631[l1]] == anInt488 && anIntArray487[model_1.anIntArray1632[l1]] == anInt488 && anIntArray487[model_1.anIntArray1633[l1]] == anInt488)
+            if(anIntArray487[model_1.triangleX[l1]] == anInt488 && anIntArray487[model_1.triangleY[l1]] == anInt488 && anIntArray487[model_1.triangleZ[l1]] == anInt488)
                 model_1.anIntArray1637[l1] = -1;
 
     }
@@ -831,10 +831,10 @@ final class WorldController {
         {
             for(int j1 = 0; j1 < 2048; j1 += 64)
             {
-                anInt458 = Model.modelIntArray1[i1];
-                anInt459 = Model.modelIntArray2[i1];
-                anInt460 = Model.modelIntArray1[j1];
-                anInt461 = Model.modelIntArray2[j1];
+                anInt458 = Model.SINE[i1];
+                anInt459 = Model.COSINE[i1];
+                anInt460 = Model.SINE[j1];
+                anInt461 = Model.COSINE[j1];
                 int l1 = (i1 - 128) / 32;
                 int j2 = j1 / 64;
                 for(int l2 = -26; l2 <= 26; l2++)
@@ -941,10 +941,10 @@ label0:
         if(j >= anInt439 * 128)
             j = anInt439 * 128 - 1;
         anInt448++;
-        anInt458 = Model.modelIntArray1[j1];
-        anInt459 = Model.modelIntArray2[j1];
-        anInt460 = Model.modelIntArray1[k];
-        anInt461 = Model.modelIntArray2[k];
+        anInt458 = Model.SINE[j1];
+        anInt459 = Model.COSINE[j1];
+        anInt460 = Model.SINE[k];
+        anInt461 = Model.COSINE[k];
         aBooleanArrayArray492 = aBooleanArrayArrayArrayArray491[(j1 - 128) / 32][k / 64];
         anInt455 = i;
         anInt456 = l;

@@ -13,7 +13,7 @@ public final class Player extends Entity
         if(model == null)
             return null;
         super.height = model.modelHeight;
-        model.aBoolean1659 = true;
+        model.singleTile = true;
         if(aBoolean1699)
             return model;
         if(super.anInt1520 != -1 && super.anInt1521 != -1)
@@ -23,11 +23,11 @@ public final class Player extends Entity
             if(model_2 != null)
             {
                 Model model_3 = new Model(true, Class36.isNullFrame(super.anInt1521), false, model_2);
-                model_3.method475(0, -super.anInt1524, 0);
+                model_3.translate(0, -super.anInt1524, 0);
                 model_3.createBones();
                 model_3.applyTransformation(spotAnim.sequences.frame2Ids[super.anInt1521]);
                 model_3.triangleSkin = null;
-                model_3.vectorSkin = null;
+                model_3.vertexSkin = null;
                 if(spotAnim.anInt410 != 128 || spotAnim.anInt411 != 128)
                     model_3.scaleT(spotAnim.anInt410, spotAnim.anInt410, spotAnim.anInt411);
                 model_3.applyLighting(64 + spotAnim.modelLightFalloff, 850 + spotAnim.modelLightAmbient, -30, -50, -30, true);
@@ -44,7 +44,7 @@ public final class Player extends Entity
             if(client.loopCycle >= anInt1707 && client.loopCycle < anInt1708)
             {
                 Model model_1 = aModel_1714;
-                model_1.method475(anInt1711 - super.x, anInt1712 - anInt1709, anInt1713 - super.y);
+                model_1.translate(anInt1711 - super.x, anInt1712 - anInt1709, anInt1713 - super.y);
                 if(super.turnDirection == 512)
                 {
                     model_1.rotate90Degrees();
@@ -76,33 +76,33 @@ public final class Player extends Entity
                     model_1.rotate90Degrees();
                     model_1.rotate90Degrees();
                 }
-                model_1.method475(super.x - anInt1711, anInt1709 - anInt1712, super.y - anInt1713);
+                model_1.translate(super.x - anInt1711, anInt1709 - anInt1712, super.y - anInt1713);
             }
         }
-        model.aBoolean1659 = true;
+        model.singleTile = true;
         return model;
     }
 
     public void updatePlayer(Stream stream)
     {
         stream.currentOffset = 0;
-        anInt1702 = stream.readUnsignedByte();
-        headIcon = stream.readUnsignedByte();
+        anInt1702 = stream.getUnsignedByte();
+        headIcon = stream.getUnsignedByte();
         desc = null;
         team = 0;
         for(int j = 0; j < 12; j++)
         {
-            int k = stream.readUnsignedByte();
+            int k = stream.getUnsignedByte();
             if(k == 0)
             {
                 equipment[j] = 0;
                 continue;
             }
-            int i1 = stream.readUnsignedByte();
+            int i1 = stream.getUnsignedByte();
             equipment[j] = (k << 8) + i1;
             if(j == 0 && equipment[0] == 65535)
             {
-                desc = EntityDef.forID(stream.readUnsignedWord());
+                desc = EntityDef.forID(stream.getUnsignedLEShort());
                 break;
             }
             if(equipment[j] >= 512 && equipment[j] - 512 < ItemDef.totalItems)
@@ -115,36 +115,36 @@ public final class Player extends Entity
 
         for(int l = 0; l < 5; l++)
         {
-            int j1 = stream.readUnsignedByte();
+            int j1 = stream.getUnsignedByte();
             if(j1 < 0 || j1 >= client.anIntArrayArray1003[l].length)
                 j1 = 0;
             anIntArray1700[l] = j1;
         }
 
-        super.anInt1511 = stream.readUnsignedWord();
+        super.anInt1511 = stream.getUnsignedLEShort();
         if(super.anInt1511 == 65535)
             super.anInt1511 = -1;
-        super.anInt1512 = stream.readUnsignedWord();
+        super.anInt1512 = stream.getUnsignedLEShort();
         if(super.anInt1512 == 65535)
             super.anInt1512 = -1;
-        super.anInt1554 = stream.readUnsignedWord();
+        super.anInt1554 = stream.getUnsignedLEShort();
         if(super.anInt1554 == 65535)
             super.anInt1554 = -1;
-        super.anInt1555 = stream.readUnsignedWord();
+        super.anInt1555 = stream.getUnsignedLEShort();
         if(super.anInt1555 == 65535)
             super.anInt1555 = -1;
-        super.anInt1556 = stream.readUnsignedWord();
+        super.anInt1556 = stream.getUnsignedLEShort();
         if(super.anInt1556 == 65535)
             super.anInt1556 = -1;
-        super.anInt1557 = stream.readUnsignedWord();
+        super.anInt1557 = stream.getUnsignedLEShort();
         if(super.anInt1557 == 65535)
             super.anInt1557 = -1;
-        super.anInt1505 = stream.readUnsignedWord();
+        super.anInt1505 = stream.getUnsignedLEShort();
         if(super.anInt1505 == 65535)
             super.anInt1505 = -1;
         name = TextClass.fixName(TextClass.nameForLong(stream.readQWord()));
-        combatLevel = stream.readUnsignedByte();
-        skill = stream.readUnsignedWord();
+        combatLevel = stream.getUnsignedByte();
+        skill = stream.getUnsignedLEShort();
         visible = true;
         aLong1718 = 0L;
         for(int k1 = 0; k1 < 12; k1++)
@@ -259,9 +259,9 @@ public final class Player extends Entity
             for(int j3 = 0; j3 < 5; j3++)
                 if(anIntArray1700[j3] != 0)
                 {
-                    model_1.method476(client.anIntArrayArray1003[j3][0], client.anIntArrayArray1003[j3][anIntArray1700[j3]]);
+                    model_1.recolour(client.anIntArrayArray1003[j3][0], client.anIntArrayArray1003[j3][anIntArray1700[j3]]);
                     if(j3 == 1)
-                        model_1.method476(client.anIntArray1204[0], client.anIntArray1204[anIntArray1700[j3]]);
+                        model_1.recolour(client.anIntArray1204[0], client.anIntArray1204[anIntArray1700[j3]]);
                 }
 
             model_1.createBones();
@@ -272,15 +272,15 @@ public final class Player extends Entity
         if(aBoolean1699)
             return model_1;
         Model model_2 = Model.aModel_1621;
-        model_2.method464(model_1, Class36.isNullFrame(k) & Class36.isNullFrame(i1));
+        model_2.replaceWithModel(model_1, Class36.isNullFrame(k) & Class36.isNullFrame(i1));
         if(k != -1 && i1 != -1)
-            model_2.method471(Animation.anims[super.anim].anIntArray357, i1, k);
+            model_2.mixAnimationFrames(Animation.anims[super.anim].anIntArray357, i1, k);
         else
         if(k != -1)
             model_2.applyTransformation(k);
-        model_2.method466();
+        model_2.calculateDiagonals();
         model_2.triangleSkin = null;
-        model_2.vectorSkin = null;
+        model_2.vertexSkin = null;
         return model_2;
     }
 
@@ -331,9 +331,9 @@ public final class Player extends Entity
         for(int j1 = 0; j1 < 5; j1++)
             if(anIntArray1700[j1] != 0)
             {
-                model.method476(client.anIntArrayArray1003[j1][0], client.anIntArrayArray1003[j1][anIntArray1700[j1]]);
+                model.recolour(client.anIntArrayArray1003[j1][0], client.anIntArrayArray1003[j1][anIntArray1700[j1]]);
                 if(j1 == 1)
-                    model.method476(client.anIntArray1204[0], client.anIntArray1204[anIntArray1700[j1]]);
+                    model.recolour(client.anIntArray1204[0], client.anIntArray1204[anIntArray1700[j1]]);
             }
 
         return model;

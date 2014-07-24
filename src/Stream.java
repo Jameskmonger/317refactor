@@ -124,7 +124,7 @@ public final class Stream extends NodeSub {
         buffer[currentOffset - i - 1] = (byte)i;
     }
 
-    public int readUnsignedByte()
+    public int getUnsignedByte()
     {
         return buffer[currentOffset++] & 0xff;
     }
@@ -134,7 +134,7 @@ public final class Stream extends NodeSub {
         return buffer[currentOffset++];
     }
 
-    public int readUnsignedWord()
+    public int getUnsignedLEShort()
     {
         currentOffset += 2;
         return ((buffer[currentOffset - 2] & 0xff) << 8) + (buffer[currentOffset - 1] & 0xff);
@@ -218,22 +218,22 @@ public final class Stream extends NodeSub {
         currentOffset = (bitPosition + 7) / 8;
     }
 
-    public int method421()
+    public int getSmartA()
     {
         int i = buffer[currentOffset] & 0xff;
         if(i < 128)
-            return readUnsignedByte() - 64;
+            return getUnsignedByte() - 64;
         else
-            return readUnsignedWord() - 49152;
+            return getUnsignedLEShort() - 49152;
     }
 
     public int method422()
     {
         int i = buffer[currentOffset] & 0xff;
         if(i < 128)
-            return readUnsignedByte();
+            return getUnsignedByte();
         else
-            return readUnsignedWord() - 32768;
+            return getUnsignedLEShort() - 32768;
     }
 
     public void generateKeys()

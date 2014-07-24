@@ -25,7 +25,7 @@ final class StationaryGraphic extends Animable {
             animatedModel.createBones();
             animatedModel.applyTransformation(frame);
             animatedModel.triangleSkin = null;
-            animatedModel.vectorSkin = null;
+            animatedModel.vertexSkin = null;
         }
         if(animation.anInt410 != 128 || animation.anInt411 != 128)
             animatedModel.scaleT(animation.anInt410, animation.anInt410, animation.anInt411);

@@ -33,14 +33,14 @@ public final class EntityDef
             return null;
         boolean flag1 = false;
         for(int i = 0; i < anIntArray73.length; i++)
-            if(!Model.method463(anIntArray73[i]))
+            if(!Model.isCached(anIntArray73[i]))
                 flag1 = true;
 
         if(flag1)
             return null;
         Model aclass30_sub2_sub4_sub6s[] = new Model[anIntArray73.length];
         for(int j = 0; j < anIntArray73.length; j++)
-            aclass30_sub2_sub4_sub6s[j] = Model.method462(anIntArray73[j]);
+            aclass30_sub2_sub4_sub6s[j] = Model.getModel(anIntArray73[j]);
 
         Model model;
         if(aclass30_sub2_sub4_sub6s.length == 1)
@@ -50,7 +50,7 @@ public final class EntityDef
         if(anIntArray76 != null)
         {
             for(int k = 0; k < anIntArray76.length; k++)
-                model.method476(anIntArray76[k], anIntArray70[k]);
+                model.recolour(anIntArray76[k], anIntArray70[k]);
 
         }
         return model;
@@ -80,13 +80,13 @@ public final class EntityDef
     {
         stream = new Stream(streamLoader.getDataForName("npc.dat"));
         Stream stream2 = new Stream(streamLoader.getDataForName("npc.idx"));
-        int totalNPCs = stream2.readUnsignedWord();
+        int totalNPCs = stream2.getUnsignedLEShort();
         streamIndices = new int[totalNPCs];
         int i = 2;
         for(int j = 0; j < totalNPCs; j++)
         {
             streamIndices[j] = i;
-            i += stream2.readUnsignedWord();
+            i += stream2.getUnsignedLEShort();
         }
 
         cache = new EntityDef[20];
@@ -118,14 +118,14 @@ public final class EntityDef
         {
             boolean flag = false;
             for(int i1 = 0; i1 < anIntArray94.length; i1++)
-                if(!Model.method463(anIntArray94[i1]))
+                if(!Model.isCached(anIntArray94[i1]))
                     flag = true;
 
             if(flag)
                 return null;
             Model aclass30_sub2_sub4_sub6s[] = new Model[anIntArray94.length];
             for(int j1 = 0; j1 < anIntArray94.length; j1++)
-                aclass30_sub2_sub4_sub6s[j1] = Model.method462(anIntArray94[j1]);
+                aclass30_sub2_sub4_sub6s[j1] = Model.getModel(anIntArray94[j1]);
 
             if(aclass30_sub2_sub4_sub6s.length == 1)
                 model = aclass30_sub2_sub4_sub6s[0];
@@ -134,7 +134,7 @@ public final class EntityDef
             if(anIntArray76 != null)
             {
                 for(int k1 = 0; k1 < anIntArray76.length; k1++)
-                    model.method476(anIntArray76[k1], anIntArray70[k1]);
+                    model.recolour(anIntArray76[k1], anIntArray70[k1]);
 
             }
             model.createBones();
@@ -142,19 +142,19 @@ public final class EntityDef
             mruNodes.removeFromCache(model, type);
         }
         Model model_1 = Model.aModel_1621;
-        model_1.method464(model, Class36.isNullFrame(k) & Class36.isNullFrame(j));
+        model_1.replaceWithModel(model, Class36.isNullFrame(k) & Class36.isNullFrame(j));
         if(k != -1 && j != -1)
-            model_1.method471(ai, j, k);
+            model_1.mixAnimationFrames(ai, j, k);
         else
         if(k != -1)
             model_1.applyTransformation(k);
         if(anInt91 != 128 || anInt86 != 128)
             model_1.scaleT(anInt91, anInt91, anInt86);
-        model_1.method466();
+        model_1.calculateDiagonals();
         model_1.triangleSkin = null;
-        model_1.vectorSkin = null;
+        model_1.vertexSkin = null;
         if(aByte68 == 1)
-            model_1.aBoolean1659 = true;
+            model_1.singleTile = true;
         return model_1;
     }
 
@@ -162,15 +162,15 @@ public final class EntityDef
     {
         do
         {
-            int i = stream.readUnsignedByte();
+            int i = stream.getUnsignedByte();
             if(i == 0)
                 return;
             if(i == 1)
             {
-                int j = stream.readUnsignedByte();
+                int j = stream.getUnsignedByte();
                 anIntArray94 = new int[j];
                 for(int j1 = 0; j1 < j; j1++)
-                    anIntArray94[j1] = stream.readUnsignedWord();
+                    anIntArray94[j1] = stream.getUnsignedLEShort();
 
             } else
             if(i == 2)
@@ -183,17 +183,17 @@ public final class EntityDef
                 aByte68 = stream.readSignedByte();
             else
             if(i == 13)
-                anInt77 = stream.readUnsignedWord();
+                anInt77 = stream.getUnsignedLEShort();
             else
             if(i == 14)
-                anInt67 = stream.readUnsignedWord();
+                anInt67 = stream.getUnsignedLEShort();
             else
             if(i == 17)
             {
-                anInt67 = stream.readUnsignedWord();
-                anInt58 = stream.readUnsignedWord();
-                anInt83 = stream.readUnsignedWord();
-                anInt55 = stream.readUnsignedWord();
+                anInt67 = stream.getUnsignedLEShort();
+                anInt58 = stream.getUnsignedLEShort();
+                anInt83 = stream.getUnsignedLEShort();
+                anInt55 = stream.getUnsignedLEShort();
             } else
             if(i >= 30 && i < 40)
             {
@@ -205,44 +205,44 @@ public final class EntityDef
             } else
             if(i == 40)
             {
-                int k = stream.readUnsignedByte();
+                int k = stream.getUnsignedByte();
                 anIntArray76 = new int[k];
                 anIntArray70 = new int[k];
                 for(int k1 = 0; k1 < k; k1++)
                 {
-                    anIntArray76[k1] = stream.readUnsignedWord();
-                    anIntArray70[k1] = stream.readUnsignedWord();
+                    anIntArray76[k1] = stream.getUnsignedLEShort();
+                    anIntArray70[k1] = stream.getUnsignedLEShort();
                 }
 
             } else
             if(i == 60)
             {
-                int l = stream.readUnsignedByte();
+                int l = stream.getUnsignedByte();
                 anIntArray73 = new int[l];
                 for(int l1 = 0; l1 < l; l1++)
-                    anIntArray73[l1] = stream.readUnsignedWord();
+                    anIntArray73[l1] = stream.getUnsignedLEShort();
 
             } else
             if(i == 90)
-                stream.readUnsignedWord();
+                stream.getUnsignedLEShort();
             else
             if(i == 91)
-                stream.readUnsignedWord();
+                stream.getUnsignedLEShort();
             else
             if(i == 92)
-                stream.readUnsignedWord();
+                stream.getUnsignedLEShort();
             else
             if(i == 93)
                 aBoolean87 = false;
             else
             if(i == 95)
-                combatLevel = stream.readUnsignedWord();
+                combatLevel = stream.getUnsignedLEShort();
             else
             if(i == 97)
-                anInt91 = stream.readUnsignedWord();
+                anInt91 = stream.getUnsignedLEShort();
             else
             if(i == 98)
-                anInt86 = stream.readUnsignedWord();
+                anInt86 = stream.getUnsignedLEShort();
             else
             if(i == 99)
                 aBoolean93 = true;
@@ -254,24 +254,24 @@ public final class EntityDef
                 anInt92 = stream.readSignedByte() * 5;
             else
             if(i == 102)
-                anInt75 = stream.readUnsignedWord();
+                anInt75 = stream.getUnsignedLEShort();
             else
             if(i == 103)
-                anInt79 = stream.readUnsignedWord();
+                anInt79 = stream.getUnsignedLEShort();
             else
             if(i == 106)
             {
-                anInt57 = stream.readUnsignedWord();
+                anInt57 = stream.getUnsignedLEShort();
                 if(anInt57 == 65535)
                     anInt57 = -1;
-                anInt59 = stream.readUnsignedWord();
+                anInt59 = stream.getUnsignedLEShort();
                 if(anInt59 == 65535)
                     anInt59 = -1;
-                int i1 = stream.readUnsignedByte();
+                int i1 = stream.getUnsignedByte();
                 childrenIDs = new int[i1 + 1];
                 for(int i2 = 0; i2 <= i1; i2++)
                 {
-                    childrenIDs[i2] = stream.readUnsignedWord();
+                    childrenIDs[i2] = stream.getUnsignedLEShort();
                     if(childrenIDs[i2] == 65535)
                         childrenIDs[i2] = -1;
                 }

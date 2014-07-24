@@ -7,7 +7,7 @@ public final class SpotAnim {
     public static void unpackConfig(StreamLoader streamLoader)
     {
         Stream stream = new Stream(streamLoader.getDataForName("spotanim.dat"));
-        int length = stream.readUnsignedWord();
+        int length = stream.getUnsignedLEShort();
         if(cache == null)
             cache = new SpotAnim[length];
         for(int j = 0; j < length; j++)
@@ -24,38 +24,38 @@ public final class SpotAnim {
     {
         do
         {
-            int i = stream.readUnsignedByte();
+            int i = stream.getUnsignedByte();
             if(i == 0)
                 return;
             if(i == 1)
-                anInt405 = stream.readUnsignedWord();
+                anInt405 = stream.getUnsignedLEShort();
             else
             if(i == 2)
             {
-                anInt406 = stream.readUnsignedWord();
+                anInt406 = stream.getUnsignedLEShort();
                 if(Animation.anims != null)
                     sequences = Animation.anims[anInt406];
             } else
             if(i == 4)
-                anInt410 = stream.readUnsignedWord();
+                anInt410 = stream.getUnsignedLEShort();
             else
             if(i == 5)
-                anInt411 = stream.readUnsignedWord();
+                anInt411 = stream.getUnsignedLEShort();
             else
             if(i == 6)
-                rotation = stream.readUnsignedWord();
+                rotation = stream.getUnsignedLEShort();
             else
             if(i == 7)
-                modelLightFalloff = stream.readUnsignedByte();
+                modelLightFalloff = stream.getUnsignedByte();
             else
             if(i == 8)
-                modelLightAmbient = stream.readUnsignedByte();
+                modelLightAmbient = stream.getUnsignedByte();
             else
             if(i >= 40 && i < 50)
-                anIntArray408[i - 40] = stream.readUnsignedWord();
+                anIntArray408[i - 40] = stream.getUnsignedLEShort();
             else
             if(i >= 50 && i < 60)
-                anIntArray409[i - 50] = stream.readUnsignedWord();
+                anIntArray409[i - 50] = stream.getUnsignedLEShort();
             else
                 System.out.println("Error unrecognised spotanim config code: " + i);
         } while(true);
@@ -66,12 +66,12 @@ public final class SpotAnim {
         Model model = (Model) aMRUNodes_415.insertFromCache(anInt404);
         if(model != null)
             return model;
-        model = Model.method462(anInt405);
+        model = Model.getModel(anInt405);
         if(model == null)
             return null;
         for(int i = 0; i < 6; i++)
             if(anIntArray408[0] != 0)
-                model.method476(anIntArray408[i], anIntArray409[i]);
+                model.recolour(anIntArray408[i], anIntArray409[i]);
 
         aMRUNodes_415.removeFromCache(model, anInt404);
         return model;

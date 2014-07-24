@@ -20,67 +20,67 @@ public final class RSInterface
         aMRUNodes_238 = new MRUNodes(50000);
         Stream stream = new Stream(streamLoader.getDataForName("data"));
         int i = -1;
-        int j = stream.readUnsignedWord();
+        int j = stream.getUnsignedLEShort();
         interfaceCache = new RSInterface[j];
         while(stream.currentOffset < stream.buffer.length)
         {
-            int k = stream.readUnsignedWord();
+            int k = stream.getUnsignedLEShort();
             if(k == 65535)
             {
-                i = stream.readUnsignedWord();
-                k = stream.readUnsignedWord();
+                i = stream.getUnsignedLEShort();
+                k = stream.getUnsignedLEShort();
             }
             RSInterface rsInterface = interfaceCache[k] = new RSInterface();
             rsInterface.id = k;
             rsInterface.parentID = i;
-            rsInterface.type = stream.readUnsignedByte();
-            rsInterface.atActionType = stream.readUnsignedByte();
-            rsInterface.anInt214 = stream.readUnsignedWord();
-            rsInterface.width = stream.readUnsignedWord();
-            rsInterface.height = stream.readUnsignedWord();
-            rsInterface.aByte254 = (byte) stream.readUnsignedByte();
-            rsInterface.anInt230 = stream.readUnsignedByte();
+            rsInterface.type = stream.getUnsignedByte();
+            rsInterface.atActionType = stream.getUnsignedByte();
+            rsInterface.anInt214 = stream.getUnsignedLEShort();
+            rsInterface.width = stream.getUnsignedLEShort();
+            rsInterface.height = stream.getUnsignedLEShort();
+            rsInterface.aByte254 = (byte) stream.getUnsignedByte();
+            rsInterface.anInt230 = stream.getUnsignedByte();
             if(rsInterface.anInt230 != 0)
-                rsInterface.anInt230 = (rsInterface.anInt230 - 1 << 8) + stream.readUnsignedByte();
+                rsInterface.anInt230 = (rsInterface.anInt230 - 1 << 8) + stream.getUnsignedByte();
             else
                 rsInterface.anInt230 = -1;
-            int i1 = stream.readUnsignedByte();
+            int i1 = stream.getUnsignedByte();
             if(i1 > 0)
             {
                 rsInterface.anIntArray245 = new int[i1];
                 rsInterface.anIntArray212 = new int[i1];
                 for(int j1 = 0; j1 < i1; j1++)
                 {
-                    rsInterface.anIntArray245[j1] = stream.readUnsignedByte();
-                    rsInterface.anIntArray212[j1] = stream.readUnsignedWord();
+                    rsInterface.anIntArray245[j1] = stream.getUnsignedByte();
+                    rsInterface.anIntArray212[j1] = stream.getUnsignedLEShort();
                 }
 
             }
-            int k1 = stream.readUnsignedByte();
+            int k1 = stream.getUnsignedByte();
             if(k1 > 0)
             {
                 rsInterface.valueIndexArray = new int[k1][];
                 for(int l1 = 0; l1 < k1; l1++)
                 {
-                    int i3 = stream.readUnsignedWord();
+                    int i3 = stream.getUnsignedLEShort();
                     rsInterface.valueIndexArray[l1] = new int[i3];
                     for(int l4 = 0; l4 < i3; l4++)
-                        rsInterface.valueIndexArray[l1][l4] = stream.readUnsignedWord();
+                        rsInterface.valueIndexArray[l1][l4] = stream.getUnsignedLEShort();
 
                 }
 
             }
             if(rsInterface.type == 0)
             {
-                rsInterface.scrollMax = stream.readUnsignedWord();
-                rsInterface.aBoolean266 = stream.readUnsignedByte() == 1;
-                int i2 = stream.readUnsignedWord();
+                rsInterface.scrollMax = stream.getUnsignedLEShort();
+                rsInterface.aBoolean266 = stream.getUnsignedByte() == 1;
+                int i2 = stream.getUnsignedLEShort();
                 rsInterface.children = new int[i2];
                 rsInterface.childX = new int[i2];
                 rsInterface.childY = new int[i2];
                 for(int j3 = 0; j3 < i2; j3++)
                 {
-                    rsInterface.children[j3] = stream.readUnsignedWord();
+                    rsInterface.children[j3] = stream.getUnsignedLEShort();
                     rsInterface.childX[j3] = stream.readSignedWord();
                     rsInterface.childY[j3] = stream.readSignedWord();
                 }
@@ -88,25 +88,25 @@ public final class RSInterface
             }
             if(rsInterface.type == 1)
             {
-                stream.readUnsignedWord();
-                stream.readUnsignedByte();
+                stream.getUnsignedLEShort();
+                stream.getUnsignedByte();
             }
             if(rsInterface.type == 2)
             {
                 rsInterface.inv = new int[rsInterface.width * rsInterface.height];
                 rsInterface.invStackSizes = new int[rsInterface.width * rsInterface.height];
-                rsInterface.aBoolean259 = stream.readUnsignedByte() == 1;
-                rsInterface.isInventoryInterface = stream.readUnsignedByte() == 1;
-                rsInterface.usableItemInterface = stream.readUnsignedByte() == 1;
-                rsInterface.aBoolean235 = stream.readUnsignedByte() == 1;
-                rsInterface.invSpritePadX = stream.readUnsignedByte();
-                rsInterface.invSpritePadY = stream.readUnsignedByte();
+                rsInterface.aBoolean259 = stream.getUnsignedByte() == 1;
+                rsInterface.isInventoryInterface = stream.getUnsignedByte() == 1;
+                rsInterface.usableItemInterface = stream.getUnsignedByte() == 1;
+                rsInterface.aBoolean235 = stream.getUnsignedByte() == 1;
+                rsInterface.invSpritePadX = stream.getUnsignedByte();
+                rsInterface.invSpritePadY = stream.getUnsignedByte();
                 rsInterface.spritesX = new int[20];
                 rsInterface.spritesY = new int[20];
                 rsInterface.sprites = new Sprite[20];
                 for(int j2 = 0; j2 < 20; j2++)
                 {
-                    int k3 = stream.readUnsignedByte();
+                    int k3 = stream.getUnsignedByte();
                     if(k3 == 1)
                     {
                         rsInterface.spritesX[j2] = stream.readSignedWord();
@@ -130,14 +130,14 @@ public final class RSInterface
 
             }
             if(rsInterface.type == 3)
-                rsInterface.aBoolean227 = stream.readUnsignedByte() == 1;
+                rsInterface.aBoolean227 = stream.getUnsignedByte() == 1;
             if(rsInterface.type == 4 || rsInterface.type == 1)
             {
-                rsInterface.aBoolean223 = stream.readUnsignedByte() == 1;
-                int k2 = stream.readUnsignedByte();
+                rsInterface.aBoolean223 = stream.getUnsignedByte() == 1;
+                int k2 = stream.getUnsignedByte();
                 if(textDrawingAreas != null)
                     rsInterface.textDrawingAreas = textDrawingAreas[k2];
-                rsInterface.aBoolean268 = stream.readUnsignedByte() == 1;
+                rsInterface.aBoolean268 = stream.getUnsignedByte() == 1;
             }
             if(rsInterface.type == 4)
             {
@@ -169,45 +169,45 @@ public final class RSInterface
             }
             if(rsInterface.type == 6)
             {
-                int l = stream.readUnsignedByte();
+                int l = stream.getUnsignedByte();
                 if(l != 0)
                 {
                     rsInterface.anInt233 = 1;
-                    rsInterface.mediaID = (l - 1 << 8) + stream.readUnsignedByte();
+                    rsInterface.mediaID = (l - 1 << 8) + stream.getUnsignedByte();
                 }
-                l = stream.readUnsignedByte();
+                l = stream.getUnsignedByte();
                 if(l != 0)
                 {
                     rsInterface.anInt255 = 1;
-                    rsInterface.anInt256 = (l - 1 << 8) + stream.readUnsignedByte();
+                    rsInterface.anInt256 = (l - 1 << 8) + stream.getUnsignedByte();
                 }
-                l = stream.readUnsignedByte();
+                l = stream.getUnsignedByte();
                 if(l != 0)
-                    rsInterface.anInt257 = (l - 1 << 8) + stream.readUnsignedByte();
+                    rsInterface.anInt257 = (l - 1 << 8) + stream.getUnsignedByte();
                 else
                     rsInterface.anInt257 = -1;
-                l = stream.readUnsignedByte();
+                l = stream.getUnsignedByte();
                 if(l != 0)
-                    rsInterface.anInt258 = (l - 1 << 8) + stream.readUnsignedByte();
+                    rsInterface.anInt258 = (l - 1 << 8) + stream.getUnsignedByte();
                 else
                     rsInterface.anInt258 = -1;
-                rsInterface.anInt269 = stream.readUnsignedWord();
-                rsInterface.anInt270 = stream.readUnsignedWord();
-                rsInterface.anInt271 = stream.readUnsignedWord();
+                rsInterface.anInt269 = stream.getUnsignedLEShort();
+                rsInterface.anInt270 = stream.getUnsignedLEShort();
+                rsInterface.anInt271 = stream.getUnsignedLEShort();
             }
             if(rsInterface.type == 7)
             {
                 rsInterface.inv = new int[rsInterface.width * rsInterface.height];
                 rsInterface.invStackSizes = new int[rsInterface.width * rsInterface.height];
-                rsInterface.aBoolean223 = stream.readUnsignedByte() == 1;
-                int l2 = stream.readUnsignedByte();
+                rsInterface.aBoolean223 = stream.getUnsignedByte() == 1;
+                int l2 = stream.getUnsignedByte();
                 if(textDrawingAreas != null)
                     rsInterface.textDrawingAreas = textDrawingAreas[l2];
-                rsInterface.aBoolean268 = stream.readUnsignedByte() == 1;
+                rsInterface.aBoolean268 = stream.getUnsignedByte() == 1;
                 rsInterface.textColor = stream.readDWord();
                 rsInterface.invSpritePadX = stream.readSignedWord();
                 rsInterface.invSpritePadY = stream.readSignedWord();
-                rsInterface.isInventoryInterface = stream.readUnsignedByte() == 1;
+                rsInterface.isInventoryInterface = stream.getUnsignedByte() == 1;
                 rsInterface.actions = new String[5];
                 for(int k4 = 0; k4 < 5; k4++)
                 {
@@ -221,7 +221,7 @@ public final class RSInterface
             {
                 rsInterface.selectedActionName = stream.readString();
                 rsInterface.spellName = stream.readString();
-                rsInterface.spellUsableOn = stream.readUnsignedWord();
+                rsInterface.spellUsableOn = stream.getUnsignedLEShort();
             }
 
             if(rsInterface.type == 8)
@@ -254,7 +254,7 @@ public final class RSInterface
         if(model != null)
             return model;
         if(i == 1)
-            model = Model.method462(j);
+            model = Model.getModel(j);
         if(i == 2)
             model = EntityDef.forID(j).method160();
         if(i == 3)
@@ -306,7 +306,7 @@ public final class RSInterface
             model = method206(anInt233, mediaID);
         if(model == null)
             return null;
-        if(k == -1 && j == -1 && model.anIntArray1640 == null)
+        if(k == -1 && j == -1 && model.triangleColours == null)
             return model;
         Model model_1 = new Model(true, Class36.isNullFrame(k) & Class36.isNullFrame(j), false, model);
         if(k != -1 || j != -1)

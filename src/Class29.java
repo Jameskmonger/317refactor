@@ -7,7 +7,7 @@ final class Class29
 
     public void method325(Stream stream)
     {
-        anInt540 = stream.readUnsignedByte();
+        anInt540 = stream.getUnsignedByte();
             anInt538 = stream.readDWord();
             anInt539 = stream.readDWord();
             method326(stream);
@@ -15,13 +15,13 @@ final class Class29
 
     public void method326(Stream stream)
     {
-        anInt535 = stream.readUnsignedByte();
+        anInt535 = stream.getUnsignedByte();
         anIntArray536 = new int[anInt535];
         anIntArray537 = new int[anInt535];
         for(int i = 0; i < anInt535; i++)
         {
-            anIntArray536[i] = stream.readUnsignedWord();
-            anIntArray537[i] = stream.readUnsignedWord();
+            anIntArray536[i] = stream.getUnsignedLEShort();
+            anIntArray537[i] = stream.getUnsignedLEShort();
         }
 
     }

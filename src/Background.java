@@ -8,10 +8,10 @@ public final class Background extends DrawingArea {
     {
         Stream stream = new Stream(streamLoader.getDataForName(s + ".dat"));
         Stream stream_1 = new Stream(streamLoader.getDataForName("index.dat"));
-        stream_1.currentOffset = stream.readUnsignedWord();
-        anInt1456 = stream_1.readUnsignedWord();
-        anInt1457 = stream_1.readUnsignedWord();
-        int j = stream_1.readUnsignedByte();
+        stream_1.currentOffset = stream.getUnsignedLEShort();
+        anInt1456 = stream_1.getUnsignedLEShort();
+        anInt1457 = stream_1.getUnsignedLEShort();
+        int j = stream_1.getUnsignedByte();
         anIntArray1451 = new int[j];
         for(int k = 0; k < j - 1; k++)
             anIntArray1451[k + 1] = stream_1.read3Bytes();
@@ -19,15 +19,15 @@ public final class Background extends DrawingArea {
         for(int l = 0; l < i; l++)
         {
             stream_1.currentOffset += 2;
-            stream.currentOffset += stream_1.readUnsignedWord() * stream_1.readUnsignedWord();
+            stream.currentOffset += stream_1.getUnsignedLEShort() * stream_1.getUnsignedLEShort();
             stream_1.currentOffset++;
         }
 
-        anInt1454 = stream_1.readUnsignedByte();
-        anInt1455 = stream_1.readUnsignedByte();
-        anInt1452 = stream_1.readUnsignedWord();
-        anInt1453 = stream_1.readUnsignedWord();
-        int i1 = stream_1.readUnsignedByte();
+        anInt1454 = stream_1.getUnsignedByte();
+        anInt1455 = stream_1.getUnsignedByte();
+        anInt1452 = stream_1.getUnsignedLEShort();
+        anInt1453 = stream_1.getUnsignedLEShort();
+        int i1 = stream_1.getUnsignedByte();
         int j1 = anInt1452 * anInt1453;
         aByteArray1450 = new byte[j1];
         if(i1 == 0)

@@ -26,9 +26,9 @@ public final class ItemDef
         if(k == -1)
             return true;
         boolean flag = true;
-        if(!Model.method463(k))
+        if(!Model.isCached(k))
             flag = false;
-        if(l != -1 && !Model.method463(l))
+        if(l != -1 && !Model.isCached(l))
             flag = false;
         return flag;
     }
@@ -37,13 +37,13 @@ public final class ItemDef
     {
         stream = new Stream(streamLoader.getDataForName("obj.dat"));
         Stream stream = new Stream(streamLoader.getDataForName("obj.idx"));
-        totalItems = stream.readUnsignedWord();
+        totalItems = stream.getUnsignedLEShort();
         streamIndices = new int[totalItems];
         int i = 2;
         for(int j = 0; j < totalItems; j++)
         {
             streamIndices[j] = i;
-            i += stream.readUnsignedWord();
+            i += stream.getUnsignedLEShort();
         }
 
         cache = new ItemDef[10];
@@ -63,10 +63,10 @@ public final class ItemDef
         }
         if(k == -1)
             return null;
-        Model model = Model.method462(k);
+        Model model = Model.getModel(k);
         if(l != -1)
         {
-            Model model_1 = Model.method462(l);
+            Model model_1 = Model.getModel(l);
             Model aclass30_sub2_sub4_sub6s[] = {
                     model, model_1
             };
@@ -75,7 +75,7 @@ public final class ItemDef
         if(modifiedModelColors != null)
         {
             for(int i1 = 0; i1 < modifiedModelColors.length; i1++)
-                model.method476(modifiedModelColors[i1], originalModelColors[i1]);
+                model.recolour(modifiedModelColors[i1], originalModelColors[i1]);
 
         }
         return model;
@@ -95,11 +95,11 @@ public final class ItemDef
         if(k == -1)
             return true;
         boolean flag = true;
-        if(!Model.method463(k))
+        if(!Model.isCached(k))
             flag = false;
-        if(l != -1 && !Model.method463(l))
+        if(l != -1 && !Model.isCached(l))
             flag = false;
-        if(i1 != -1 && !Model.method463(i1))
+        if(i1 != -1 && !Model.isCached(i1))
             flag = false;
         return flag;
     }
@@ -117,32 +117,32 @@ public final class ItemDef
         }
         if(j == -1)
             return null;
-        Model model = Model.method462(j);
+        Model model = Model.getModel(j);
         if(k != -1)
             if(l != -1)
             {
-                Model model_1 = Model.method462(k);
-                Model model_3 = Model.method462(l);
+                Model model_1 = Model.getModel(k);
+                Model model_3 = Model.getModel(l);
                 Model aclass30_sub2_sub4_sub6_1s[] = {
                         model, model_1, model_3
                 };
                 model = new Model(3, aclass30_sub2_sub4_sub6_1s);
             } else
             {
-                Model model_2 = Model.method462(k);
+                Model model_2 = Model.getModel(k);
                 Model aclass30_sub2_sub4_sub6s[] = {
                         model, model_2
                 };
                 model = new Model(2, aclass30_sub2_sub4_sub6s);
             }
         if(i == 0 && aByte205 != 0)
-            model.method475(0, aByte205, 0);
+            model.translate(0, aByte205, 0);
         if(i == 1 && aByte154 != 0)
-            model.method475(0, aByte154, 0);
+            model.translate(0, aByte154, 0);
         if(modifiedModelColors != null)
         {
             for(int i1 = 0; i1 < modifiedModelColors.length; i1++)
-                model.method476(modifiedModelColors[i1], originalModelColors[i1]);
+                model.recolour(modifiedModelColors[i1], originalModelColors[i1]);
 
         }
         return model;
@@ -390,7 +390,7 @@ public final class ItemDef
         Model model = (Model) mruNodes2.insertFromCache(id);
         if(model != null)
             return model;
-        model = Model.method462(modelID);
+        model = Model.getModel(modelID);
         if(model == null)
             return null;
         if(anInt167 != 128 || anInt192 != 128 || anInt191 != 128)
@@ -398,11 +398,11 @@ public final class ItemDef
         if(modifiedModelColors != null)
         {
             for(int l = 0; l < modifiedModelColors.length; l++)
-                model.method476(modifiedModelColors[l], originalModelColors[l]);
+                model.recolour(modifiedModelColors[l], originalModelColors[l]);
 
         }
         model.applyLighting(64 + anInt196, 768 + anInt184, -50, -10, -50, true);
-        model.aBoolean1659 = true;
+        model.singleTile = true;
         mruNodes2.removeFromCache(model, id);
         return model;
     }
@@ -419,13 +419,13 @@ public final class ItemDef
             if(j != -1)
                 return forID(j).method202(1);
         }
-        Model model = Model.method462(modelID);
+        Model model = Model.getModel(modelID);
         if(model == null)
             return null;
         if(modifiedModelColors != null)
         {
             for(int l = 0; l < modifiedModelColors.length; l++)
-                model.method476(modifiedModelColors[l], originalModelColors[l]);
+                model.recolour(modifiedModelColors[l], originalModelColors[l]);
 
         }
         return model;
@@ -435,11 +435,11 @@ public final class ItemDef
     {
         do
         {
-            int i = stream.readUnsignedByte();
+            int i = stream.getUnsignedByte();
             if(i == 0)
                 return;
             if(i == 1)
-                modelID = stream.readUnsignedWord();
+                modelID = stream.getUnsignedLEShort();
             else
             if(i == 2)
                 name = stream.readString();
@@ -448,28 +448,28 @@ public final class ItemDef
                 description = stream.readBytes();
             else
             if(i == 4)
-                modelZoom = stream.readUnsignedWord();
+                modelZoom = stream.getUnsignedLEShort();
             else
             if(i == 5)
-                modelRotation1 = stream.readUnsignedWord();
+                modelRotation1 = stream.getUnsignedLEShort();
             else
             if(i == 6)
-                modelRotation2 = stream.readUnsignedWord();
+                modelRotation2 = stream.getUnsignedLEShort();
             else
             if(i == 7)
             {
-                modelOffset1 = stream.readUnsignedWord();
+                modelOffset1 = stream.getUnsignedLEShort();
                 if(modelOffset1 > 32767)
                     modelOffset1 -= 0x10000;
             } else
             if(i == 8)
             {
-                modelOffset2 = stream.readUnsignedWord();
+                modelOffset2 = stream.getUnsignedLEShort();
                 if(modelOffset2 > 32767)
                     modelOffset2 -= 0x10000;
             } else
             if(i == 10)
-                stream.readUnsignedWord();
+                stream.getUnsignedLEShort();
             else
             if(i == 11)
                 stackable = true;
@@ -482,19 +482,19 @@ public final class ItemDef
             else
             if(i == 23)
             {
-                anInt165 = stream.readUnsignedWord();
+                anInt165 = stream.getUnsignedLEShort();
                 aByte205 = stream.readSignedByte();
             } else
             if(i == 24)
-                anInt188 = stream.readUnsignedWord();
+                anInt188 = stream.getUnsignedLEShort();
             else
             if(i == 25)
             {
-                anInt200 = stream.readUnsignedWord();
+                anInt200 = stream.getUnsignedLEShort();
                 aByte154 = stream.readSignedByte();
             } else
             if(i == 26)
-                anInt164 = stream.readUnsignedWord();
+                anInt164 = stream.getUnsignedLEShort();
             else
             if(i >= 30 && i < 35)
             {
@@ -512,42 +512,42 @@ public final class ItemDef
             } else
             if(i == 40)
             {
-                int j = stream.readUnsignedByte();
+                int j = stream.getUnsignedByte();
                 modifiedModelColors = new int[j];
                 originalModelColors = new int[j];
                 for(int k = 0; k < j; k++)
                 {
-                    modifiedModelColors[k] = stream.readUnsignedWord();
-                    originalModelColors[k] = stream.readUnsignedWord();
+                    modifiedModelColors[k] = stream.getUnsignedLEShort();
+                    originalModelColors[k] = stream.getUnsignedLEShort();
                 }
 
             } else
             if(i == 78)
-                anInt185 = stream.readUnsignedWord();
+                anInt185 = stream.getUnsignedLEShort();
             else
             if(i == 79)
-                anInt162 = stream.readUnsignedWord();
+                anInt162 = stream.getUnsignedLEShort();
             else
             if(i == 90)
-                anInt175 = stream.readUnsignedWord();
+                anInt175 = stream.getUnsignedLEShort();
             else
             if(i == 91)
-                anInt197 = stream.readUnsignedWord();
+                anInt197 = stream.getUnsignedLEShort();
             else
             if(i == 92)
-                anInt166 = stream.readUnsignedWord();
+                anInt166 = stream.getUnsignedLEShort();
             else
             if(i == 93)
-                anInt173 = stream.readUnsignedWord();
+                anInt173 = stream.getUnsignedLEShort();
             else
             if(i == 95)
-                anInt204 = stream.readUnsignedWord();
+                anInt204 = stream.getUnsignedLEShort();
             else
             if(i == 97)
-                certID = stream.readUnsignedWord();
+                certID = stream.getUnsignedLEShort();
             else
             if(i == 98)
-                certTemplateID = stream.readUnsignedWord();
+                certTemplateID = stream.getUnsignedLEShort();
             else
             if(i >= 100 && i < 110)
             {
@@ -556,17 +556,17 @@ public final class ItemDef
                     stackIDs = new int[10];
                     stackAmounts = new int[10];
                 }
-                stackIDs[i - 100] = stream.readUnsignedWord();
-                stackAmounts[i - 100] = stream.readUnsignedWord();
+                stackIDs[i - 100] = stream.getUnsignedLEShort();
+                stackAmounts[i - 100] = stream.getUnsignedLEShort();
             } else
             if(i == 110)
-                anInt167 = stream.readUnsignedWord();
+                anInt167 = stream.getUnsignedLEShort();
             else
             if(i == 111)
-                anInt192 = stream.readUnsignedWord();
+                anInt192 = stream.getUnsignedLEShort();
             else
             if(i == 112)
-                anInt191 = stream.readUnsignedWord();
+                anInt191 = stream.getUnsignedLEShort();
             else
             if(i == 113)
                 anInt196 = stream.readSignedByte();
@@ -575,7 +575,7 @@ public final class ItemDef
                 anInt184 = stream.readSignedByte() * 5;
             else
             if(i == 115)
-                team = stream.readUnsignedByte();
+                team = stream.getUnsignedByte();
         } while(true);
     }
 

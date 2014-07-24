@@ -44,10 +44,10 @@ public final class Sprite extends DrawingArea {
     {
         Stream stream = new Stream(streamLoader.getDataForName(s + ".dat"));
         Stream stream_1 = new Stream(streamLoader.getDataForName("index.dat"));
-        stream_1.currentOffset = stream.readUnsignedWord();
-        anInt1444 = stream_1.readUnsignedWord();
-        anInt1445 = stream_1.readUnsignedWord();
-        int j = stream_1.readUnsignedByte();
+        stream_1.currentOffset = stream.getUnsignedLEShort();
+        anInt1444 = stream_1.getUnsignedLEShort();
+        anInt1445 = stream_1.getUnsignedLEShort();
+        int j = stream_1.getUnsignedByte();
         int ai[] = new int[j];
         for(int k = 0; k < j - 1; k++)
         {
@@ -59,21 +59,21 @@ public final class Sprite extends DrawingArea {
         for(int l = 0; l < i; l++)
         {
             stream_1.currentOffset += 2;
-            stream.currentOffset += stream_1.readUnsignedWord() * stream_1.readUnsignedWord();
+            stream.currentOffset += stream_1.getUnsignedLEShort() * stream_1.getUnsignedLEShort();
             stream_1.currentOffset++;
         }
 
-        anInt1442 = stream_1.readUnsignedByte();
-        anInt1443 = stream_1.readUnsignedByte();
-        myWidth = stream_1.readUnsignedWord();
-        myHeight = stream_1.readUnsignedWord();
-        int i1 = stream_1.readUnsignedByte();
+        anInt1442 = stream_1.getUnsignedByte();
+        anInt1443 = stream_1.getUnsignedByte();
+        myWidth = stream_1.getUnsignedLEShort();
+        myHeight = stream_1.getUnsignedLEShort();
+        int i1 = stream_1.getUnsignedByte();
         int j1 = myWidth * myHeight;
         myPixels = new int[j1];
         if(i1 == 0)
         {
             for(int k1 = 0; k1 < j1; k1++)
-                myPixels[k1] = ai[stream.readUnsignedByte()];
+                myPixels[k1] = ai[stream.getUnsignedByte()];
 
             return;
         }
@@ -82,7 +82,7 @@ public final class Sprite extends DrawingArea {
             for(int l1 = 0; l1 < myWidth; l1++)
             {
                 for(int i2 = 0; i2 < myHeight; i2++)
-                    myPixels[l1 + i2 * myWidth] = ai[stream.readUnsignedByte()];
+                    myPixels[l1 + i2 * myWidth] = ai[stream.getUnsignedByte()];
 
             }
 

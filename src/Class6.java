@@ -224,7 +224,7 @@ final class Class6
         aClass29_98.method325(stream);
         aClass29_99 = new Class29();
         aClass29_99.method325(stream);
-        int i = stream.readUnsignedByte();
+        int i = stream.getUnsignedByte();
         if(i != 0)
         {
             stream.currentOffset--;
@@ -233,7 +233,7 @@ final class Class6
             aClass29_101 = new Class29();
             aClass29_101.method325(stream);
         }
-        i = stream.readUnsignedByte();
+        i = stream.getUnsignedByte();
         if(i != 0)
         {
             stream.currentOffset--;
@@ -242,7 +242,7 @@ final class Class6
             aClass29_103 = new Class29();
             aClass29_103.method325(stream);
         }
-        i = stream.readUnsignedByte();
+        i = stream.getUnsignedByte();
         if(i != 0)
         {
             stream.currentOffset--;
@@ -257,14 +257,14 @@ final class Class6
             if(k == 0)
                 break;
             anIntArray106[j] = k;
-            anIntArray107[j] = stream.method421();
+            anIntArray107[j] = stream.getSmartA();
             anIntArray108[j] = stream.method422();
         }
 
         anInt109 = stream.method422();
         anInt110 = stream.method422();
-        anInt113 = stream.readUnsignedWord();
-        anInt114 = stream.readUnsignedWord();
+        anInt113 = stream.getUnsignedLEShort();
+        anInt114 = stream.getUnsignedLEShort();
         aClass39_111 = new Class39();
         aClass29_112 = new Class29();
         aClass39_111.method545(stream, aClass29_112);

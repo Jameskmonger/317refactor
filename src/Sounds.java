@@ -16,7 +16,7 @@ final class Sounds {
         Class6.method166();
         do
         {
-            int j = stream.readUnsignedWord();
+            int j = stream.getUnsignedLEShort();
             if(j == 65535)
                 return;
             aSoundsArray325s[j] = new Sounds();
@@ -41,7 +41,7 @@ final class Sounds {
     {
         for(int i = 0; i < 10; i++)
         {
-            int j = stream.readUnsignedByte();
+            int j = stream.getUnsignedByte();
             if(j != 0)
             {
                 stream.currentOffset--;
@@ -49,8 +49,8 @@ final class Sounds {
                 aClass6Array329[i].method169(stream);
             }
         }
-        anInt330 = stream.readUnsignedWord();
-        anInt331 = stream.readUnsignedWord();
+        anInt330 = stream.getUnsignedLEShort();
+        anInt331 = stream.getUnsignedLEShort();
     }
 
     private int method243()

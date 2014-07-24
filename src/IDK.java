@@ -7,7 +7,7 @@ public final class IDK {
     public static void unpackConfig(StreamLoader streamLoader)
     {
         Stream stream = new Stream(streamLoader.getDataForName("idk.dat"));
-        length = stream.readUnsignedWord();
+        length = stream.getUnsignedLEShort();
         if(cache == null)
             cache = new IDK[length];
         for(int j = 0; j < length; j++)
@@ -22,31 +22,31 @@ public final class IDK {
     {
         do
         {
-            int i = stream.readUnsignedByte();
+            int i = stream.getUnsignedByte();
             if(i == 0)
                 return;
             if(i == 1)
-                anInt657 = stream.readUnsignedByte();
+                anInt657 = stream.getUnsignedByte();
             else
             if(i == 2)
             {
-                int j = stream.readUnsignedByte();
+                int j = stream.getUnsignedByte();
                 anIntArray658 = new int[j];
                 for(int k = 0; k < j; k++)
-                    anIntArray658[k] = stream.readUnsignedWord();
+                    anIntArray658[k] = stream.getUnsignedLEShort();
 
             } else
             if(i == 3)
                 aBoolean662 = true;
             else
             if(i >= 40 && i < 50)
-                anIntArray659[i - 40] = stream.readUnsignedWord();
+                anIntArray659[i - 40] = stream.getUnsignedLEShort();
             else
             if(i >= 50 && i < 60)
-                anIntArray660[i - 50] = stream.readUnsignedWord();
+                anIntArray660[i - 50] = stream.getUnsignedLEShort();
             else
             if(i >= 60 && i < 70)
-                anIntArray661[i - 60] = stream.readUnsignedWord();
+                anIntArray661[i - 60] = stream.getUnsignedLEShort();
             else
                 System.out.println("Error unrecognised config code: " + i);
         } while(true);
@@ -58,7 +58,7 @@ public final class IDK {
             return true;
         boolean flag = true;
         for(int j = 0; j < anIntArray658.length; j++)
-            if(!Model.method463(anIntArray658[j]))
+            if(!Model.isCached(anIntArray658[j]))
                 flag = false;
 
         return flag;
@@ -70,7 +70,7 @@ public final class IDK {
             return null;
         Model aclass30_sub2_sub4_sub6s[] = new Model[anIntArray658.length];
         for(int i = 0; i < anIntArray658.length; i++)
-            aclass30_sub2_sub4_sub6s[i] = Model.method462(anIntArray658[i]);
+            aclass30_sub2_sub4_sub6s[i] = Model.getModel(anIntArray658[i]);
 
         Model model;
         if(aclass30_sub2_sub4_sub6s.length == 1)
@@ -81,7 +81,7 @@ public final class IDK {
         {
             if(anIntArray659[j] == 0)
                 break;
-            model.method476(anIntArray659[j], anIntArray660[j]);
+            model.recolour(anIntArray659[j], anIntArray660[j]);
         }
 
         return model;
@@ -91,7 +91,7 @@ public final class IDK {
     {
         boolean flag1 = true;
         for(int i = 0; i < 5; i++)
-            if(anIntArray661[i] != -1 && !Model.method463(anIntArray661[i]))
+            if(anIntArray661[i] != -1 && !Model.isCached(anIntArray661[i]))
                 flag1 = false;
 
         return flag1;
@@ -103,14 +103,14 @@ public final class IDK {
         int j = 0;
         for(int k = 0; k < 5; k++)
             if(anIntArray661[k] != -1)
-                aclass30_sub2_sub4_sub6s[j++] = Model.method462(anIntArray661[k]);
+                aclass30_sub2_sub4_sub6s[j++] = Model.getModel(anIntArray661[k]);
 
         Model model = new Model(j, aclass30_sub2_sub4_sub6s);
         for(int l = 0; l < 6; l++)
         {
             if(anIntArray659[l] == 0)
                 break;
-            model.method476(anIntArray659[l], anIntArray660[l]);
+            model.recolour(anIntArray659[l], anIntArray660[l]);
         }
 
         return model;

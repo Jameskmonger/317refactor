@@ -37,11 +37,11 @@ public final class NPC extends Entity
             {
                 int j = spotAnim.sequences.frame2Ids[super.anInt1521];
                 Model model_2 = new Model(true, Class36.isNullFrame(j), false, model_1);
-                model_2.method475(0, -super.anInt1524, 0);
+                model_2.translate(0, -super.anInt1524, 0);
                 model_2.createBones();
                 model_2.applyTransformation(j);
                 model_2.triangleSkin = null;
-                model_2.vectorSkin = null;
+                model_2.vertexSkin = null;
                 if(spotAnim.anInt410 != 128 || spotAnim.anInt411 != 128)
                     model_2.scaleT(spotAnim.anInt410, spotAnim.anInt410, spotAnim.anInt411);
                 model_2.applyLighting(64 + spotAnim.modelLightFalloff, 850 + spotAnim.modelLightAmbient, -30, -50, -30, true);
@@ -52,7 +52,7 @@ public final class NPC extends Entity
             }
         }
         if(desc.aByte68 == 1)
-            model.aBoolean1659 = true;
+            model.singleTile = true;
         return model;
     }
 

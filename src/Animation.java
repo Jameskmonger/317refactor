@@ -7,7 +7,7 @@ public final class Animation {
     public static void unpackConfig(StreamLoader streamLoader)
     {
         Stream stream = new Stream(streamLoader.getDataForName("seq.dat"));
-        int length = stream.readUnsignedWord();
+        int length = stream.getUnsignedLEShort();
         if(anims == null)
             anims = new Animation[length];
         for(int j = 0; j < length; j++)
@@ -23,7 +23,7 @@ public final class Animation {
         int j = anIntArray355[i];
         if(j == 0)
         {
-            Class36 class36 = Class36.method531(frame2Ids[i]);
+            Class36 class36 = Class36.forFrameId(frame2Ids[i]);
             if(class36 != null)
                 j = anIntArray355[i] = class36.anInt636;
         }
@@ -36,34 +36,34 @@ public final class Animation {
     {
         do
         {
-            int i = stream.readUnsignedByte();
+            int i = stream.getUnsignedByte();
             if(i == 0)
                 break;
             if(i == 1)
             {
-                frameCount = stream.readUnsignedByte();
+                frameCount = stream.getUnsignedByte();
                 frame2Ids = new int[frameCount];
                 anIntArray354 = new int[frameCount];
                 anIntArray355 = new int[frameCount];
                 for(int j = 0; j < frameCount; j++)
                 {
-                    frame2Ids[j] = stream.readUnsignedWord();
-                    anIntArray354[j] = stream.readUnsignedWord();
+                    frame2Ids[j] = stream.getUnsignedLEShort();
+                    anIntArray354[j] = stream.getUnsignedLEShort();
                     if(anIntArray354[j] == 65535)
                         anIntArray354[j] = -1;
-                    anIntArray355[j] = stream.readUnsignedWord();
+                    anIntArray355[j] = stream.getUnsignedLEShort();
                 }
 
             } else
             if(i == 2)
-                anInt356 = stream.readUnsignedWord();
+                anInt356 = stream.getUnsignedLEShort();
             else
             if(i == 3)
             {
-                int k = stream.readUnsignedByte();
+                int k = stream.getUnsignedByte();
                 anIntArray357 = new int[k + 1];
                 for(int l = 0; l < k; l++)
-                    anIntArray357[l] = stream.readUnsignedByte();
+                    anIntArray357[l] = stream.getUnsignedByte();
 
                 anIntArray357[k] = 0x98967f;
             } else
@@ -71,25 +71,25 @@ public final class Animation {
                 aBoolean358 = true;
             else
             if(i == 5)
-                anInt359 = stream.readUnsignedByte();
+                anInt359 = stream.getUnsignedByte();
             else
             if(i == 6)
-                anInt360 = stream.readUnsignedWord();
+                anInt360 = stream.getUnsignedLEShort();
             else
             if(i == 7)
-                anInt361 = stream.readUnsignedWord();
+                anInt361 = stream.getUnsignedLEShort();
             else
             if(i == 8)
-                anInt362 = stream.readUnsignedByte();
+                anInt362 = stream.getUnsignedByte();
             else
             if(i == 9)
-                anInt363 = stream.readUnsignedByte();
+                anInt363 = stream.getUnsignedByte();
             else
             if(i == 10)
-                anInt364 = stream.readUnsignedByte();
+                anInt364 = stream.getUnsignedByte();
             else
             if(i == 11)
-                anInt365 = stream.readUnsignedByte();
+                anInt365 = stream.getUnsignedByte();
             else
             if(i == 12)
                 stream.readDWord();

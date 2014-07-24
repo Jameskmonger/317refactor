@@ -7,7 +7,7 @@ public final class Flo {
     public static void unpackConfig(StreamLoader streamLoader)
     {
         Stream stream = new Stream(streamLoader.getDataForName("flo.dat"));
-        int cacheSize = stream.readUnsignedWord();
+        int cacheSize = stream.getUnsignedLEShort();
         if(cache == null)
             cache = new Flo[cacheSize];
         for(int j = 0; j < cacheSize; j++)
@@ -23,7 +23,7 @@ public final class Flo {
     {
         do
         {
-            int i = stream.readUnsignedByte();
+            int i = stream.getUnsignedByte();
             boolean dummy;
             if(i == 0)
                 return;
@@ -34,7 +34,7 @@ public final class Flo {
                 method262(anInt390);
             } else
             if(i == 2)
-                anInt391 = stream.readUnsignedByte();
+                anInt391 = stream.getUnsignedByte();
             else
             if(i == 3)
                 dummy = true;

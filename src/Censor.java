@@ -28,10 +28,10 @@ final class Censor {
         anIntArray625 = new int[i];
         for(int j = 0; j < i; j++)
         {
-            anIntArray625[j] = stream.readUnsignedByte();
-            char ac[] = new char[stream.readUnsignedByte()];
+            anIntArray625[j] = stream.getUnsignedByte();
+            char ac[] = new char[stream.getUnsignedByte()];
             for(int k = 0; k < ac.length; k++)
-                ac[k] = (char) stream.readUnsignedByte();
+                ac[k] = (char) stream.getUnsignedByte();
 
             aCharArrayArray624[j] = ac;
         }
@@ -57,23 +57,23 @@ final class Censor {
     {
         anIntArray620 = new int[stream.readDWord()];
         for(int i = 0; i < anIntArray620.length; i++)
-            anIntArray620[i] = stream.readUnsignedWord();
+            anIntArray620[i] = stream.getUnsignedLEShort();
     }
 
     private static void method493(Stream stream, char ac[][], byte abyte0[][][])
     {
         for(int j = 0; j < ac.length; j++)
         {
-            char ac1[] = new char[stream.readUnsignedByte()];
+            char ac1[] = new char[stream.getUnsignedByte()];
             for(int k = 0; k < ac1.length; k++)
-                ac1[k] = (char) stream.readUnsignedByte();
+                ac1[k] = (char) stream.getUnsignedByte();
 
             ac[j] = ac1;
-            byte abyte1[][] = new byte[stream.readUnsignedByte()][2];
+            byte abyte1[][] = new byte[stream.getUnsignedByte()][2];
             for(int l = 0; l < abyte1.length; l++)
             {
-                abyte1[l][0] = (byte) stream.readUnsignedByte();
-                abyte1[l][1] = (byte) stream.readUnsignedByte();
+                abyte1[l][0] = (byte) stream.getUnsignedByte();
+                abyte1[l][1] = (byte) stream.getUnsignedByte();
             }
 
             if(abyte1.length > 0)
@@ -86,9 +86,9 @@ final class Censor {
     {
         for(int j = 0; j < ac.length; j++)
         {
-            char ac1[] = new char[stream.readUnsignedByte()];
+            char ac1[] = new char[stream.getUnsignedByte()];
             for(int k = 0; k < ac1.length; k++)
-                ac1[k] = (char) stream.readUnsignedByte();
+                ac1[k] = (char) stream.getUnsignedByte();
 
             ac[j] = ac1;
         }

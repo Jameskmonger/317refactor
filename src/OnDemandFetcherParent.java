@@ -5,7 +5,7 @@
 
 public class OnDemandFetcherParent {
 
-    public void method548(int i)
+    public void request(int i)
     {
     }
 

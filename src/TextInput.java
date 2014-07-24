@@ -10,7 +10,7 @@ final class TextInput {
         int k = -1;
         for(int l = 0; l < i; l++)
         {
-            int i1 = stream.readUnsignedByte();
+            int i1 = stream.getUnsignedByte();
             int j1 = i1 >> 4 & 0xf;
             if(k == -1)
             {

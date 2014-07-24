@@ -3,15 +3,15 @@
 // Decompiler options: packimports(3) 
 
 
-final class Class33
+final class VertexNormal
 {
 
-    public Class33()
+    public VertexNormal()
     {
     }
 
-    int anInt602;
-    int anInt603;
-    int anInt604;
-    int anInt605;
+    int x;
+    int y;
+    int z;
+    int magnitude;
 }
