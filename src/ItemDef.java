@@ -277,8 +277,8 @@ public final class ItemDef
                 return null;
         }
         Sprite sprite2 = new Sprite(32, 32);
-        int k1 = Texture.textureInt1;
-        int l1 = Texture.textureInt2;
+        int k1 = Texture.centreX;
+        int l1 = Texture.centreY;
         int ai[] = Texture.anIntArray1472;
         int ai1[] = DrawingArea.pixels;
         int i2 = DrawingArea.width;
@@ -298,7 +298,7 @@ public final class ItemDef
             k3 = (int)((double)k3 * 1.04D);
         int l3 = Texture.anIntArray1470[itemDef.modelRotation1] * k3 >> 16;
         int i4 = Texture.anIntArray1471[itemDef.modelRotation1] * k3 >> 16;
-        model.method482(itemDef.modelRotation2, itemDef.anInt204, itemDef.modelRotation1, itemDef.modelOffset1, l3 + model.modelHeight / 2 + itemDef.modelOffset2, i4 + itemDef.modelOffset2);
+        model.renderSingle(itemDef.modelRotation2, itemDef.anInt204, itemDef.modelRotation1, itemDef.modelOffset1, l3 + model.modelHeight / 2 + itemDef.modelOffset2, i4 + itemDef.modelOffset2);
         for(int i5 = 31; i5 >= 0; i5--)
         {
             for(int j4 = 31; j4 >= 0; j4--)
@@ -363,8 +363,8 @@ public final class ItemDef
             mruNodes1.removeFromCache(sprite2, i);
         DrawingArea.initDrawingArea(j2, i2, ai1);
         DrawingArea.setDrawingArea(j3, k2, l2, i3);
-        Texture.textureInt1 = k1;
-        Texture.textureInt2 = l1;
+        Texture.centreX = k1;
+        Texture.centreY = l1;
         Texture.anIntArray1472 = ai;
         Texture.aBoolean1464 = true;
         if(itemDef.stackable)

@@ -1174,12 +1174,12 @@ label0:
                         method316(i, anInt458, anInt460, class30_sub3_7.aClass40_1312, anInt459, j, anInt461);
                     Object1 class10 = class30_sub3_7.obj1;
                     if(class10 != null)
-                        class10.aClass30_Sub2_Sub4_278.method443(0, anInt458, anInt459, anInt460, anInt461, class10.anInt274 - anInt455, class10.anInt273 - anInt456, class10.anInt275 - anInt457, class10.uid);
+                        class10.aClass30_Sub2_Sub4_278.renderAtPoint(0, anInt458, anInt459, anInt460, anInt461, class10.anInt274 - anInt455, class10.anInt273 - anInt456, class10.anInt275 - anInt457, class10.uid);
                     for(int i2 = 0; i2 < class30_sub3_7.anInt1317; i2++)
                     {
                         Object5 class28 = class30_sub3_7.obj5Array[i2];
                         if(class28 != null)
-                            class28.aClass30_Sub2_Sub4_521.method443(class28.anInt522, anInt458, anInt459, anInt460, anInt461, class28.anInt519 - anInt455, class28.anInt518 - anInt456, class28.anInt520 - anInt457, class28.uid);
+                            class28.aClass30_Sub2_Sub4_521.renderAtPoint(class28.anInt522, anInt458, anInt459, anInt460, anInt461, class28.anInt519 - anInt455, class28.anInt518 - anInt456, class28.anInt520 - anInt457, class28.uid);
                     }
 
                 }
@@ -1248,13 +1248,13 @@ label0:
                         class30_sub3_1.anInt1325 = 0;
                     }
                     if((class10_3.orientation & j2) != 0 && !method321(l, i, j, class10_3.orientation))
-                        class10_3.aClass30_Sub2_Sub4_278.method443(0, anInt458, anInt459, anInt460, anInt461, class10_3.anInt274 - anInt455, class10_3.anInt273 - anInt456, class10_3.anInt275 - anInt457, class10_3.uid);
+                        class10_3.aClass30_Sub2_Sub4_278.renderAtPoint(0, anInt458, anInt459, anInt460, anInt461, class10_3.anInt274 - anInt455, class10_3.anInt273 - anInt456, class10_3.anInt275 - anInt457, class10_3.uid);
                     if((class10_3.orientation1 & j2) != 0 && !method321(l, i, j, class10_3.orientation1))
-                        class10_3.aClass30_Sub2_Sub4_279.method443(0, anInt458, anInt459, anInt460, anInt461, class10_3.anInt274 - anInt455, class10_3.anInt273 - anInt456, class10_3.anInt275 - anInt457, class10_3.uid);
+                        class10_3.aClass30_Sub2_Sub4_279.renderAtPoint(0, anInt458, anInt459, anInt460, anInt461, class10_3.anInt274 - anInt455, class10_3.anInt273 - anInt456, class10_3.anInt275 - anInt457, class10_3.uid);
                 }
                 if(class26_1 != null && !method322(l, i, j, class26_1.aClass30_Sub2_Sub4_504.modelHeight))
                     if((class26_1.anInt502 & j2) != 0)
-                        class26_1.aClass30_Sub2_Sub4_504.method443(class26_1.anInt503, anInt458, anInt459, anInt460, anInt461, class26_1.anInt500 - anInt455, class26_1.anInt499 - anInt456, class26_1.anInt501 - anInt457, class26_1.uid);
+                        class26_1.aClass30_Sub2_Sub4_504.renderAtPoint(class26_1.anInt503, anInt458, anInt459, anInt460, anInt461, class26_1.anInt500 - anInt455, class26_1.anInt499 - anInt456, class26_1.anInt501 - anInt457, class26_1.uid);
                     else
                     if((class26_1.anInt502 & 0x300) != 0)
                     {
@@ -1276,29 +1276,29 @@ label0:
                         {
                             int i11 = j4 + anIntArray463[i8];
                             int k11 = k6 + anIntArray464[i8];
-                            class26_1.aClass30_Sub2_Sub4_504.method443(i8 * 512 + 256, anInt458, anInt459, anInt460, anInt461, i11, l5, k11, class26_1.uid);
+                            class26_1.aClass30_Sub2_Sub4_504.renderAtPoint(i8 * 512 + 256, anInt458, anInt459, anInt460, anInt461, i11, l5, k11, class26_1.uid);
                         }
                         if((class26_1.anInt502 & 0x200) != 0 && k10 > k9)
                         {
                             int j11 = j4 + anIntArray465[i8];
                             int l11 = k6 + anIntArray466[i8];
-                            class26_1.aClass30_Sub2_Sub4_504.method443(i8 * 512 + 1280 & 0x7ff, anInt458, anInt459, anInt460, anInt461, j11, l5, l11, class26_1.uid);
+                            class26_1.aClass30_Sub2_Sub4_504.renderAtPoint(i8 * 512 + 1280 & 0x7ff, anInt458, anInt459, anInt460, anInt461, j11, l5, l11, class26_1.uid);
                         }
                     }
                 if(flag1)
                 {
                     Object3 class49 = class30_sub3_1.obj3;
                     if(class49 != null)
-                        class49.aClass30_Sub2_Sub4_814.method443(0, anInt458, anInt459, anInt460, anInt461, class49.anInt812 - anInt455, class49.anInt811 - anInt456, class49.anInt813 - anInt457, class49.uid);
+                        class49.aClass30_Sub2_Sub4_814.renderAtPoint(0, anInt458, anInt459, anInt460, anInt461, class49.anInt812 - anInt455, class49.anInt811 - anInt456, class49.anInt813 - anInt457, class49.uid);
                     Object4 object4_1 = class30_sub3_1.obj4;
                     if(object4_1 != null && object4_1.anInt52 == 0)
                     {
                         if(object4_1.aClass30_Sub2_Sub4_49 != null)
-                            object4_1.aClass30_Sub2_Sub4_49.method443(0, anInt458, anInt459, anInt460, anInt461, object4_1.anInt46 - anInt455, object4_1.anInt45 - anInt456, object4_1.anInt47 - anInt457, object4_1.uid);
+                            object4_1.aClass30_Sub2_Sub4_49.renderAtPoint(0, anInt458, anInt459, anInt460, anInt461, object4_1.anInt46 - anInt455, object4_1.anInt45 - anInt456, object4_1.anInt47 - anInt457, object4_1.uid);
                         if(object4_1.aClass30_Sub2_Sub4_50 != null)
-                            object4_1.aClass30_Sub2_Sub4_50.method443(0, anInt458, anInt459, anInt460, anInt461, object4_1.anInt46 - anInt455, object4_1.anInt45 - anInt456, object4_1.anInt47 - anInt457, object4_1.uid);
+                            object4_1.aClass30_Sub2_Sub4_50.renderAtPoint(0, anInt458, anInt459, anInt460, anInt461, object4_1.anInt46 - anInt455, object4_1.anInt45 - anInt456, object4_1.anInt47 - anInt457, object4_1.uid);
                         if(object4_1.aClass30_Sub2_Sub4_48 != null)
-                            object4_1.aClass30_Sub2_Sub4_48.method443(0, anInt458, anInt459, anInt460, anInt461, object4_1.anInt46 - anInt455, object4_1.anInt45 - anInt456, object4_1.anInt47 - anInt457, object4_1.uid);
+                            object4_1.aClass30_Sub2_Sub4_48.renderAtPoint(0, anInt458, anInt459, anInt460, anInt461, object4_1.anInt46 - anInt455, object4_1.anInt45 - anInt456, object4_1.anInt47 - anInt457, object4_1.uid);
                     }
                 }
                 int k4 = class30_sub3_1.anInt1320;
@@ -1345,7 +1345,7 @@ label0:
                 {
                     Object1 class10_1 = class30_sub3_1.obj1;
                     if(!method321(l, i, j, class10_1.orientation))
-                        class10_1.aClass30_Sub2_Sub4_278.method443(0, anInt458, anInt459, anInt460, anInt461, class10_1.anInt274 - anInt455, class10_1.anInt273 - anInt456, class10_1.anInt275 - anInt457, class10_1.uid);
+                        class10_1.aClass30_Sub2_Sub4_278.renderAtPoint(0, anInt458, anInt459, anInt460, anInt461, class10_1.anInt274 - anInt455, class10_1.anInt273 - anInt456, class10_1.anInt275 - anInt457, class10_1.uid);
                     class30_sub3_1.anInt1325 = 0;
                 }
             }
@@ -1433,7 +1433,7 @@ label0:
                         Object5 class28_3 = aClass28Array462[l3];
                         class28_3.anInt528 = anInt448;
                         if(!method323(l, class28_3.anInt523, class28_3.anInt524, class28_3.anInt525, class28_3.anInt526, class28_3.aClass30_Sub2_Sub4_521.modelHeight))
-                            class28_3.aClass30_Sub2_Sub4_521.method443(class28_3.anInt522, anInt458, anInt459, anInt460, anInt461, class28_3.anInt519 - anInt455, class28_3.anInt518 - anInt456, class28_3.anInt520 - anInt457, class28_3.uid);
+                            class28_3.aClass30_Sub2_Sub4_521.renderAtPoint(class28_3.anInt522, anInt458, anInt459, anInt460, anInt461, class28_3.anInt519 - anInt455, class28_3.anInt518 - anInt456, class28_3.anInt520 - anInt457, class28_3.uid);
                         for(int k7 = class28_3.anInt523; k7 <= class28_3.anInt524; k7++)
                         {
                             for(int l8 = class28_3.anInt525; l8 <= class28_3.anInt526; l8++)
@@ -1488,18 +1488,18 @@ label0:
             if(object4 != null && object4.anInt52 != 0)
             {
                 if(object4.aClass30_Sub2_Sub4_49 != null)
-                    object4.aClass30_Sub2_Sub4_49.method443(0, anInt458, anInt459, anInt460, anInt461, object4.anInt46 - anInt455, object4.anInt45 - anInt456 - object4.anInt52, object4.anInt47 - anInt457, object4.uid);
+                    object4.aClass30_Sub2_Sub4_49.renderAtPoint(0, anInt458, anInt459, anInt460, anInt461, object4.anInt46 - anInt455, object4.anInt45 - anInt456 - object4.anInt52, object4.anInt47 - anInt457, object4.uid);
                 if(object4.aClass30_Sub2_Sub4_50 != null)
-                    object4.aClass30_Sub2_Sub4_50.method443(0, anInt458, anInt459, anInt460, anInt461, object4.anInt46 - anInt455, object4.anInt45 - anInt456 - object4.anInt52, object4.anInt47 - anInt457, object4.uid);
+                    object4.aClass30_Sub2_Sub4_50.renderAtPoint(0, anInt458, anInt459, anInt460, anInt461, object4.anInt46 - anInt455, object4.anInt45 - anInt456 - object4.anInt52, object4.anInt47 - anInt457, object4.uid);
                 if(object4.aClass30_Sub2_Sub4_48 != null)
-                    object4.aClass30_Sub2_Sub4_48.method443(0, anInt458, anInt459, anInt460, anInt461, object4.anInt46 - anInt455, object4.anInt45 - anInt456 - object4.anInt52, object4.anInt47 - anInt457, object4.uid);
+                    object4.aClass30_Sub2_Sub4_48.renderAtPoint(0, anInt458, anInt459, anInt460, anInt461, object4.anInt46 - anInt455, object4.anInt45 - anInt456 - object4.anInt52, object4.anInt47 - anInt457, object4.uid);
             }
             if(class30_sub3_1.anInt1328 != 0)
             {
                 Object2 class26 = class30_sub3_1.obj2;
                 if(class26 != null && !method322(l, i, j, class26.aClass30_Sub2_Sub4_504.modelHeight))
                     if((class26.anInt502 & class30_sub3_1.anInt1328) != 0)
-                        class26.aClass30_Sub2_Sub4_504.method443(class26.anInt503, anInt458, anInt459, anInt460, anInt461, class26.anInt500 - anInt455, class26.anInt499 - anInt456, class26.anInt501 - anInt457, class26.uid);
+                        class26.aClass30_Sub2_Sub4_504.renderAtPoint(class26.anInt503, anInt458, anInt459, anInt460, anInt461, class26.anInt500 - anInt455, class26.anInt499 - anInt456, class26.anInt501 - anInt457, class26.uid);
                     else
                     if((class26.anInt502 & 0x300) != 0)
                     {
@@ -1521,22 +1521,22 @@ label0:
                         {
                             int i9 = l2 + anIntArray463[k5];
                             int i10 = i4 + anIntArray464[k5];
-                            class26.aClass30_Sub2_Sub4_504.method443(k5 * 512 + 256, anInt458, anInt459, anInt460, anInt461, i9, j3, i10, class26.uid);
+                            class26.aClass30_Sub2_Sub4_504.renderAtPoint(k5 * 512 + 256, anInt458, anInt459, anInt460, anInt461, i9, j3, i10, class26.uid);
                         }
                         if((class26.anInt502 & 0x200) != 0 && l7 <= j6)
                         {
                             int j9 = l2 + anIntArray465[k5];
                             int j10 = i4 + anIntArray466[k5];
-                            class26.aClass30_Sub2_Sub4_504.method443(k5 * 512 + 1280 & 0x7ff, anInt458, anInt459, anInt460, anInt461, j9, j3, j10, class26.uid);
+                            class26.aClass30_Sub2_Sub4_504.renderAtPoint(k5 * 512 + 1280 & 0x7ff, anInt458, anInt459, anInt460, anInt461, j9, j3, j10, class26.uid);
                         }
                     }
                 Object1 class10_2 = class30_sub3_1.obj1;
                 if(class10_2 != null)
                 {
                     if((class10_2.orientation1 & class30_sub3_1.anInt1328) != 0 && !method321(l, i, j, class10_2.orientation1))
-                        class10_2.aClass30_Sub2_Sub4_279.method443(0, anInt458, anInt459, anInt460, anInt461, class10_2.anInt274 - anInt455, class10_2.anInt273 - anInt456, class10_2.anInt275 - anInt457, class10_2.uid);
+                        class10_2.aClass30_Sub2_Sub4_279.renderAtPoint(0, anInt458, anInt459, anInt460, anInt461, class10_2.anInt274 - anInt455, class10_2.anInt273 - anInt456, class10_2.anInt275 - anInt457, class10_2.uid);
                     if((class10_2.orientation & class30_sub3_1.anInt1328) != 0 && !method321(l, i, j, class10_2.orientation))
-                        class10_2.aClass30_Sub2_Sub4_278.method443(0, anInt458, anInt459, anInt460, anInt461, class10_2.anInt274 - anInt455, class10_2.anInt273 - anInt456, class10_2.anInt275 - anInt457, class10_2.uid);
+                        class10_2.aClass30_Sub2_Sub4_278.renderAtPoint(0, anInt458, anInt459, anInt460, anInt461, class10_2.anInt274 - anInt455, class10_2.anInt273 - anInt456, class10_2.anInt275 - anInt457, class10_2.uid);
                 }
             }
             if(k < anInt437 - 1)
@@ -1619,18 +1619,18 @@ label0:
         k4 = l4;
         if(j3 < 50)
             return;
-        int i5 = Texture.textureInt1 + (i2 << 9) / k2;
-        int j5 = Texture.textureInt2 + (l3 << 9) / k2;
-        int k5 = Texture.textureInt1 + (i3 << 9) / j2;
-        int l5 = Texture.textureInt2 + (i4 << 9) / j2;
-        int i6 = Texture.textureInt1 + (l2 << 9) / k3;
-        int j6 = Texture.textureInt2 + (j4 << 9) / k3;
-        int k6 = Texture.textureInt1 + (l1 << 9) / j3;
-        int l6 = Texture.textureInt2 + (k4 << 9) / j3;
-        Texture.anInt1465 = 0;
+        int i5 = Texture.centreX + (i2 << 9) / k2;
+        int j5 = Texture.centreY + (l3 << 9) / k2;
+        int k5 = Texture.centreX + (i3 << 9) / j2;
+        int l5 = Texture.centreY + (i4 << 9) / j2;
+        int i6 = Texture.centreX + (l2 << 9) / k3;
+        int j6 = Texture.centreY + (j4 << 9) / k3;
+        int k6 = Texture.centreX + (l1 << 9) / j3;
+        int l6 = Texture.centreY + (k4 << 9) / j3;
+        Texture.alpha = 0;
         if((i6 - k6) * (l5 - l6) - (j6 - l6) * (k5 - k6) > 0)
         {
-            Texture.aBoolean1462 = i6 < 0 || k6 < 0 || k5 < 0 || i6 > DrawingArea.centerX || k6 > DrawingArea.centerX || k5 > DrawingArea.centerX;
+            Texture.restrictEdges = i6 < 0 || k6 < 0 || k5 < 0 || i6 > DrawingArea.centerX || k6 > DrawingArea.centerX || k5 > DrawingArea.centerX;
             if(aBoolean467 && method318(anInt468, anInt469, j6, l6, l5, i6, k6, k5))
             {
                 anInt470 = j1;
@@ -1639,23 +1639,23 @@ label0:
             if(class43.anInt720 == -1)
             {
                 if(class43.anInt718 != 0xbc614e)
-                    Texture.method374(j6, l6, l5, i6, k6, k5, class43.anInt718, class43.anInt719, class43.anInt717);
+                    Texture.drawShadedTriangle(j6, l6, l5, i6, k6, k5, class43.anInt718, class43.anInt719, class43.anInt717);
             } else
             if(!lowMem)
             {
                 if(class43.aBoolean721)
-                    Texture.method378(j6, l6, l5, i6, k6, k5, class43.anInt718, class43.anInt719, class43.anInt717, i2, i3, l1, l3, i4, k4, k2, j2, j3, class43.anInt720);
+                    Texture.drawTexturedTriangle(j6, l6, l5, i6, k6, k5, class43.anInt718, class43.anInt719, class43.anInt717, i2, i3, l1, l3, i4, k4, k2, j2, j3, class43.anInt720);
                 else
-                    Texture.method378(j6, l6, l5, i6, k6, k5, class43.anInt718, class43.anInt719, class43.anInt717, l2, l1, i3, j4, k4, i4, k3, j3, j2, class43.anInt720);
+                    Texture.drawTexturedTriangle(j6, l6, l5, i6, k6, k5, class43.anInt718, class43.anInt719, class43.anInt717, l2, l1, i3, j4, k4, i4, k3, j3, j2, class43.anInt720);
             } else
             {
                 int i7 = anIntArray485[class43.anInt720];
-                Texture.method374(j6, l6, l5, i6, k6, k5, method317(i7, class43.anInt718), method317(i7, class43.anInt719), method317(i7, class43.anInt717));
+                Texture.drawShadedTriangle(j6, l6, l5, i6, k6, k5, method317(i7, class43.anInt718), method317(i7, class43.anInt719), method317(i7, class43.anInt717));
             }
         }
         if((i5 - k5) * (l6 - l5) - (j5 - l5) * (k6 - k5) > 0)
         {
-            Texture.aBoolean1462 = i5 < 0 || k5 < 0 || k6 < 0 || i5 > DrawingArea.centerX || k5 > DrawingArea.centerX || k6 > DrawingArea.centerX;
+            Texture.restrictEdges = i5 < 0 || k5 < 0 || k6 < 0 || i5 > DrawingArea.centerX || k5 > DrawingArea.centerX || k6 > DrawingArea.centerX;
             if(aBoolean467 && method318(anInt468, anInt469, j5, l5, l6, i5, k5, k6))
             {
                 anInt470 = j1;
@@ -1665,17 +1665,17 @@ label0:
             {
                 if(class43.anInt716 != 0xbc614e)
                 {
-                    Texture.method374(j5, l5, l6, i5, k5, k6, class43.anInt716, class43.anInt717, class43.anInt719);
+                    Texture.drawShadedTriangle(j5, l5, l6, i5, k5, k6, class43.anInt716, class43.anInt717, class43.anInt719);
                 }
             } else
             {
                 if(!lowMem)
                 {
-                    Texture.method378(j5, l5, l6, i5, k5, k6, class43.anInt716, class43.anInt717, class43.anInt719, i2, i3, l1, l3, i4, k4, k2, j2, j3, class43.anInt720);
+                    Texture.drawTexturedTriangle(j5, l5, l6, i5, k5, k6, class43.anInt716, class43.anInt717, class43.anInt719, i2, i3, l1, l3, i4, k4, k2, j2, j3, class43.anInt720);
                     return;
                 }
                 int j7 = anIntArray485[class43.anInt720];
-                Texture.method374(j5, l5, l6, i5, k5, k6, method317(j7, class43.anInt716), method317(j7, class43.anInt717), method317(j7, class43.anInt719));
+                Texture.drawShadedTriangle(j5, l5, l6, i5, k5, k6, method317(j7, class43.anInt716), method317(j7, class43.anInt717), method317(j7, class43.anInt719));
             }
         }
     }
@@ -1703,11 +1703,11 @@ label0:
                 Class40.anIntArray691[l1] = k2;
                 Class40.anIntArray692[l1] = i3;
             }
-            Class40.anIntArray688[l1] = Texture.textureInt1 + (i2 << 9) / i3;
-            Class40.anIntArray689[l1] = Texture.textureInt2 + (k2 << 9) / i3;
+            Class40.anIntArray688[l1] = Texture.centreX + (i2 << 9) / i3;
+            Class40.anIntArray689[l1] = Texture.centreY + (k2 << 9) / i3;
         }
 
-        Texture.anInt1465 = 0;
+        Texture.alpha = 0;
         k1 = class40.anIntArray679.length;
         for(int j2 = 0; j2 < k1; j2++)
         {
@@ -1722,7 +1722,7 @@ label0:
             int j5 = Class40.anIntArray689[l3];
             if((i4 - j4) * (j5 - i5) - (l4 - i5) * (k4 - j4) > 0)
             {
-                Texture.aBoolean1462 = i4 < 0 || j4 < 0 || k4 < 0 || i4 > DrawingArea.centerX || j4 > DrawingArea.centerX || k4 > DrawingArea.centerX;
+                Texture.restrictEdges = i4 < 0 || j4 < 0 || k4 < 0 || i4 > DrawingArea.centerX || j4 > DrawingArea.centerX || k4 > DrawingArea.centerX;
                 if(aBoolean467 && method318(anInt468, anInt469, l4, i5, j5, i4, j4, k4))
                 {
                     anInt470 = i;
@@ -1731,18 +1731,18 @@ label0:
                 if(class40.anIntArray682 == null || class40.anIntArray682[j2] == -1)
                 {
                     if(class40.anIntArray676[j2] != 0xbc614e)
-                        Texture.method374(l4, i5, j5, i4, j4, k4, class40.anIntArray676[j2], class40.anIntArray677[j2], class40.anIntArray678[j2]);
+                        Texture.drawShadedTriangle(l4, i5, j5, i4, j4, k4, class40.anIntArray676[j2], class40.anIntArray677[j2], class40.anIntArray678[j2]);
                 } else
                 if(!lowMem)
                 {
                     if(class40.aBoolean683)
-                        Texture.method378(l4, i5, j5, i4, j4, k4, class40.anIntArray676[j2], class40.anIntArray677[j2], class40.anIntArray678[j2], Class40.anIntArray690[0], Class40.anIntArray690[1], Class40.anIntArray690[3], Class40.anIntArray691[0], Class40.anIntArray691[1], Class40.anIntArray691[3], Class40.anIntArray692[0], Class40.anIntArray692[1], Class40.anIntArray692[3], class40.anIntArray682[j2]);
+                        Texture.drawTexturedTriangle(l4, i5, j5, i4, j4, k4, class40.anIntArray676[j2], class40.anIntArray677[j2], class40.anIntArray678[j2], Class40.anIntArray690[0], Class40.anIntArray690[1], Class40.anIntArray690[3], Class40.anIntArray691[0], Class40.anIntArray691[1], Class40.anIntArray691[3], Class40.anIntArray692[0], Class40.anIntArray692[1], Class40.anIntArray692[3], class40.anIntArray682[j2]);
                     else
-                        Texture.method378(l4, i5, j5, i4, j4, k4, class40.anIntArray676[j2], class40.anIntArray677[j2], class40.anIntArray678[j2], Class40.anIntArray690[l2], Class40.anIntArray690[j3], Class40.anIntArray690[l3], Class40.anIntArray691[l2], Class40.anIntArray691[j3], Class40.anIntArray691[l3], Class40.anIntArray692[l2], Class40.anIntArray692[j3], Class40.anIntArray692[l3], class40.anIntArray682[j2]);
+                        Texture.drawTexturedTriangle(l4, i5, j5, i4, j4, k4, class40.anIntArray676[j2], class40.anIntArray677[j2], class40.anIntArray678[j2], Class40.anIntArray690[l2], Class40.anIntArray690[j3], Class40.anIntArray690[l3], Class40.anIntArray691[l2], Class40.anIntArray691[j3], Class40.anIntArray691[l3], Class40.anIntArray692[l2], Class40.anIntArray692[j3], Class40.anIntArray692[l3], class40.anIntArray682[j2]);
                 } else
                 {
                     int k5 = anIntArray485[class40.anIntArray682[j2]];
-                    Texture.method374(l4, i5, j5, i4, j4, k4, method317(k5, class40.anIntArray676[j2]), method317(k5, class40.anIntArray677[j2]), method317(k5, class40.anIntArray678[j2]));
+                    Texture.drawShadedTriangle(l4, i5, j5, i4, j4, k4, method317(k5, class40.anIntArray676[j2]), method317(k5, class40.anIntArray677[j2]), method317(k5, class40.anIntArray678[j2]));
                 }
             }
         }

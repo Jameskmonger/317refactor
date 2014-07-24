@@ -8043,10 +8043,10 @@ public final class client extends RSApplet {
                 } else
                 if(class9_1.type == 6)
                 {
-                    int k3 = Texture.textureInt1;
-                    int j4 = Texture.textureInt2;
-                    Texture.textureInt1 = k2 + class9_1.width / 2;
-                    Texture.textureInt2 = l2 + class9_1.height / 2;
+                    int k3 = Texture.centreX;
+                    int j4 = Texture.centreY;
+                    Texture.centreX = k2 + class9_1.width / 2;
+                    Texture.centreY = l2 + class9_1.height / 2;
                     int i5 = Texture.anIntArray1470[class9_1.anInt270] * class9_1.anInt269 >> 16;
                     int l5 = Texture.anIntArray1471[class9_1.anInt270] * class9_1.anInt269 >> 16;
                     boolean flag2 = interfaceIsSelected(class9_1);
@@ -8065,9 +8065,9 @@ public final class client extends RSApplet {
                         model = class9_1.method209(animation.anIntArray354[class9_1.anInt246], animation.frame2Ids[class9_1.anInt246], flag2);
                     }
                     if(model != null)
-                        model.method482(class9_1.anInt271, 0, class9_1.anInt270, 0, i5, l5);
-                    Texture.textureInt1 = k3;
-                    Texture.textureInt2 = j4;
+                        model.renderSingle(class9_1.anInt271, 0, class9_1.anInt270, 0, i5, l5);
+                    Texture.centreX = k3;
+                    Texture.centreY = j4;
                 } else
                 if(class9_1.type == 7)
                 {
@@ -9238,8 +9238,8 @@ public final class client extends RSApplet {
         i1 = j2;
         if(l >= 50)
         {
-            spriteDrawX = Texture.textureInt1 + (i << 9) / l;
-            spriteDrawY = Texture.textureInt2 + (i1 << 9) / l;
+            spriteDrawX = Texture.centreX + (i << 9) / l;
+            spriteDrawY = Texture.centreY + (i1 << 9) / l;
         } else
         {
             spriteDrawX = -1;
@@ -11584,8 +11584,8 @@ public final class client extends RSApplet {
         int k2 = Texture.anInt1481;
         Model.aBoolean1684 = true;
             Model.anInt1687 = 0;
-            Model.anInt1685 = super.mouseX - 4;
-            Model.anInt1686 = super.mouseY - 4;
+            Model.cursorX = super.mouseX - 4;
+            Model.cursorY = super.mouseY - 4;
             DrawingArea.setAllPixelsToZero();
 //xxx disables graphics            if(graphicsEnabled){
             worldController.method313(xCameraPos, yCameraPos, xCameraCurve, zCameraPos, j, yCameraCurve);

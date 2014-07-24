@@ -12,7 +12,7 @@ final class Texture extends DrawingArea {
         anIntArray1471 = null;
         anIntArray1472 = null;
         aBackgroundArray1474s = null;
-        aBooleanArray1475 = null;
+        transparent = null;
         anIntArray1476 = null;
         anIntArrayArray1478 = null;
         anIntArrayArray1479 = null;
@@ -27,8 +27,8 @@ final class Texture extends DrawingArea {
         for(int j = 0; j < DrawingArea.height; j++)
             anIntArray1472[j] = DrawingArea.width * j;
 
-        textureInt1 = DrawingArea.width / 2;
-        textureInt2 = DrawingArea.height / 2;
+        centreX = DrawingArea.width / 2;
+        centreY = DrawingArea.height / 2;
     }
 
     public static void method365(int j, int k)
@@ -37,8 +37,8 @@ final class Texture extends DrawingArea {
         for(int l = 0; l < k; l++)
             anIntArray1472[l] = j * l;
 
-        textureInt1 = j / 2;
-        textureInt2 = k / 2;
+        centreX = j / 2;
+        centreY = k / 2;
     }
 
     public static void method366()
@@ -112,7 +112,7 @@ final class Texture extends DrawingArea {
         anIntArrayArray1479[i] = null;
     }
 
-    private static int[] method371(int i)
+    private static int[] getTexturePixels(int i)
     {
         anIntArray1480[i] = anInt1481++;
         if(anIntArrayArray1479[i] != null)
@@ -141,12 +141,12 @@ final class Texture extends DrawingArea {
         int ai1[] = anIntArrayArray1483[i];
         if(lowMem)
         {
-            aBooleanArray1475[i] = false;
+            transparent[i] = false;
             for(int i1 = 0; i1 < 4096; i1++)
             {
                 int i2 = ai[i1] = ai1[background.aByteArray1450[i1]] & 0xf8f8ff;
                 if(i2 == 0)
-                    aBooleanArray1475[i] = true;
+                    transparent[i] = true;
                 ai[4096 + i1] = i2 - (i2 >>> 3) & 0xf8f8ff;
                 ai[8192 + i1] = i2 - (i2 >>> 2) & 0xf8f8ff;
                 ai[12288 + i1] = i2 - (i2 >>> 2) - (i2 >>> 3) & 0xf8f8ff;
@@ -169,13 +169,13 @@ final class Texture extends DrawingArea {
                     ai[k1] = ai1[background.aByteArray1450[k1]];
 
             }
-            aBooleanArray1475[i] = false;
+            transparent[i] = false;
             for(int l1 = 0; l1 < 16384; l1++)
             {
                 ai[l1] &= 0xf8f8ff;
                 int k2 = ai[l1];
                 if(k2 == 0)
-                    aBooleanArray1475[i] = true;
+                    transparent[i] = true;
                 ai[16384 + l1] = k2 - (k2 >>> 3) & 0xf8f8ff;
                 ai[32768 + l1] = k2 - (k2 >>> 2) & 0xf8f8ff;
                 ai[49152 + l1] = k2 - (k2 >>> 2) - (k2 >>> 3) & 0xf8f8ff;
@@ -290,439 +290,439 @@ final class Texture extends DrawingArea {
         return (j << 16) + (k << 8) + l;
     }
 
-    public static void method374(int i, int j, int k, int l, int i1, int j1, int k1, int l1, 
-            int i2)
+    public static void drawShadedTriangle(int yA, int yB, int yC, int xA, int xB, int xC, int zA, int zB, 
+            int zC)
     {
         int j2 = 0;
         int k2 = 0;
-        if(j != i)
+        if(yB != yA)
         {
-            j2 = (i1 - l << 16) / (j - i);
-            k2 = (l1 - k1 << 15) / (j - i);
+            j2 = (xB - xA << 16) / (yB - yA);
+            k2 = (zB - zA << 15) / (yB - yA);
         }
         int l2 = 0;
         int i3 = 0;
-        if(k != j)
+        if(yC != yB)
         {
-            l2 = (j1 - i1 << 16) / (k - j);
-            i3 = (i2 - l1 << 15) / (k - j);
+            l2 = (xC - xB << 16) / (yC - yB);
+            i3 = (zC - zB << 15) / (yC - yB);
         }
         int j3 = 0;
         int k3 = 0;
-        if(k != i)
+        if(yC != yA)
         {
-            j3 = (l - j1 << 16) / (i - k);
-            k3 = (k1 - i2 << 15) / (i - k);
+            j3 = (xA - xC << 16) / (yA - yC);
+            k3 = (zA - zC << 15) / (yA - yC);
         }
-        if(i <= j && i <= k)
+        if(yA <= yB && yA <= yC)
         {
-            if(i >= DrawingArea.bottomY)
+            if(yA >= DrawingArea.bottomY)
                 return;
-            if(j > DrawingArea.bottomY)
-                j = DrawingArea.bottomY;
-            if(k > DrawingArea.bottomY)
-                k = DrawingArea.bottomY;
-            if(j < k)
+            if(yB > DrawingArea.bottomY)
+                yB = DrawingArea.bottomY;
+            if(yC > DrawingArea.bottomY)
+                yC = DrawingArea.bottomY;
+            if(yB < yC)
             {
-                j1 = l <<= 16;
-                i2 = k1 <<= 15;
-                if(i < 0)
+                xC = xA <<= 16;
+                zC = zA <<= 15;
+                if(yA < 0)
                 {
-                    j1 -= j3 * i;
-                    l -= j2 * i;
-                    i2 -= k3 * i;
-                    k1 -= k2 * i;
-                    i = 0;
+                    xC -= j3 * yA;
+                    xA -= j2 * yA;
+                    zC -= k3 * yA;
+                    zA -= k2 * yA;
+                    yA = 0;
                 }
-                i1 <<= 16;
-                l1 <<= 15;
-                if(j < 0)
+                xB <<= 16;
+                zB <<= 15;
+                if(yB < 0)
                 {
-                    i1 -= l2 * j;
-                    l1 -= i3 * j;
-                    j = 0;
+                    xB -= l2 * yB;
+                    zB -= i3 * yB;
+                    yB = 0;
                 }
-                if(i != j && j3 < j2 || i == j && j3 > l2)
+                if(yA != yB && j3 < j2 || yA == yB && j3 > l2)
                 {
-                    k -= j;
-                    j -= i;
-                    for(i = anIntArray1472[i]; --j >= 0; i += DrawingArea.width)
+                    yC -= yB;
+                    yB -= yA;
+                    for(yA = anIntArray1472[yA]; --yB >= 0; yA += DrawingArea.width)
                     {
-                        method375(DrawingArea.pixels, i, j1 >> 16, l >> 16, i2 >> 7, k1 >> 7);
-                        j1 += j3;
-                        l += j2;
-                        i2 += k3;
-                        k1 += k2;
+                        method375(DrawingArea.pixels, yA, xC >> 16, xA >> 16, zC >> 7, zA >> 7);
+                        xC += j3;
+                        xA += j2;
+                        zC += k3;
+                        zA += k2;
                     }
 
-                    while(--k >= 0) 
+                    while(--yC >= 0) 
                     {
-                        method375(DrawingArea.pixels, i, j1 >> 16, i1 >> 16, i2 >> 7, l1 >> 7);
-                        j1 += j3;
-                        i1 += l2;
-                        i2 += k3;
-                        l1 += i3;
-                        i += DrawingArea.width;
+                        method375(DrawingArea.pixels, yA, xC >> 16, xB >> 16, zC >> 7, zB >> 7);
+                        xC += j3;
+                        xB += l2;
+                        zC += k3;
+                        zB += i3;
+                        yA += DrawingArea.width;
                     }
                     return;
                 }
-                k -= j;
-                j -= i;
-                for(i = anIntArray1472[i]; --j >= 0; i += DrawingArea.width)
+                yC -= yB;
+                yB -= yA;
+                for(yA = anIntArray1472[yA]; --yB >= 0; yA += DrawingArea.width)
                 {
-                    method375(DrawingArea.pixels, i, l >> 16, j1 >> 16, k1 >> 7, i2 >> 7);
-                    j1 += j3;
-                    l += j2;
-                    i2 += k3;
-                    k1 += k2;
+                    method375(DrawingArea.pixels, yA, xA >> 16, xC >> 16, zA >> 7, zC >> 7);
+                    xC += j3;
+                    xA += j2;
+                    zC += k3;
+                    zA += k2;
                 }
 
-                while(--k >= 0) 
+                while(--yC >= 0) 
                 {
-                    method375(DrawingArea.pixels, i, i1 >> 16, j1 >> 16, l1 >> 7, i2 >> 7);
-                    j1 += j3;
-                    i1 += l2;
-                    i2 += k3;
-                    l1 += i3;
-                    i += DrawingArea.width;
+                    method375(DrawingArea.pixels, yA, xB >> 16, xC >> 16, zB >> 7, zC >> 7);
+                    xC += j3;
+                    xB += l2;
+                    zC += k3;
+                    zB += i3;
+                    yA += DrawingArea.width;
                 }
                 return;
             }
-            i1 = l <<= 16;
-            l1 = k1 <<= 15;
-            if(i < 0)
+            xB = xA <<= 16;
+            zB = zA <<= 15;
+            if(yA < 0)
             {
-                i1 -= j3 * i;
-                l -= j2 * i;
-                l1 -= k3 * i;
-                k1 -= k2 * i;
-                i = 0;
+                xB -= j3 * yA;
+                xA -= j2 * yA;
+                zB -= k3 * yA;
+                zA -= k2 * yA;
+                yA = 0;
             }
-            j1 <<= 16;
-            i2 <<= 15;
-            if(k < 0)
+            xC <<= 16;
+            zC <<= 15;
+            if(yC < 0)
             {
-                j1 -= l2 * k;
-                i2 -= i3 * k;
-                k = 0;
+                xC -= l2 * yC;
+                zC -= i3 * yC;
+                yC = 0;
             }
-            if(i != k && j3 < j2 || i == k && l2 > j2)
+            if(yA != yC && j3 < j2 || yA == yC && l2 > j2)
             {
-                j -= k;
-                k -= i;
-                for(i = anIntArray1472[i]; --k >= 0; i += DrawingArea.width)
+                yB -= yC;
+                yC -= yA;
+                for(yA = anIntArray1472[yA]; --yC >= 0; yA += DrawingArea.width)
                 {
-                    method375(DrawingArea.pixels, i, i1 >> 16, l >> 16, l1 >> 7, k1 >> 7);
-                    i1 += j3;
-                    l += j2;
-                    l1 += k3;
-                    k1 += k2;
+                    method375(DrawingArea.pixels, yA, xB >> 16, xA >> 16, zB >> 7, zA >> 7);
+                    xB += j3;
+                    xA += j2;
+                    zB += k3;
+                    zA += k2;
                 }
 
-                while(--j >= 0) 
+                while(--yB >= 0) 
                 {
-                    method375(DrawingArea.pixels, i, j1 >> 16, l >> 16, i2 >> 7, k1 >> 7);
-                    j1 += l2;
-                    l += j2;
-                    i2 += i3;
-                    k1 += k2;
-                    i += DrawingArea.width;
+                    method375(DrawingArea.pixels, yA, xC >> 16, xA >> 16, zC >> 7, zA >> 7);
+                    xC += l2;
+                    xA += j2;
+                    zC += i3;
+                    zA += k2;
+                    yA += DrawingArea.width;
                 }
                 return;
             }
-            j -= k;
-            k -= i;
-            for(i = anIntArray1472[i]; --k >= 0; i += DrawingArea.width)
+            yB -= yC;
+            yC -= yA;
+            for(yA = anIntArray1472[yA]; --yC >= 0; yA += DrawingArea.width)
             {
-                method375(DrawingArea.pixels, i, l >> 16, i1 >> 16, k1 >> 7, l1 >> 7);
-                i1 += j3;
-                l += j2;
-                l1 += k3;
-                k1 += k2;
+                method375(DrawingArea.pixels, yA, xA >> 16, xB >> 16, zA >> 7, zB >> 7);
+                xB += j3;
+                xA += j2;
+                zB += k3;
+                zA += k2;
             }
 
-            while(--j >= 0) 
+            while(--yB >= 0) 
             {
-                method375(DrawingArea.pixels, i, l >> 16, j1 >> 16, k1 >> 7, i2 >> 7);
-                j1 += l2;
-                l += j2;
-                i2 += i3;
-                k1 += k2;
-                i += DrawingArea.width;
+                method375(DrawingArea.pixels, yA, xA >> 16, xC >> 16, zA >> 7, zC >> 7);
+                xC += l2;
+                xA += j2;
+                zC += i3;
+                zA += k2;
+                yA += DrawingArea.width;
             }
             return;
         }
-        if(j <= k)
+        if(yB <= yC)
         {
-            if(j >= DrawingArea.bottomY)
+            if(yB >= DrawingArea.bottomY)
                 return;
-            if(k > DrawingArea.bottomY)
-                k = DrawingArea.bottomY;
-            if(i > DrawingArea.bottomY)
-                i = DrawingArea.bottomY;
-            if(k < i)
+            if(yC > DrawingArea.bottomY)
+                yC = DrawingArea.bottomY;
+            if(yA > DrawingArea.bottomY)
+                yA = DrawingArea.bottomY;
+            if(yC < yA)
             {
-                l = i1 <<= 16;
-                k1 = l1 <<= 15;
-                if(j < 0)
+                xA = xB <<= 16;
+                zA = zB <<= 15;
+                if(yB < 0)
                 {
-                    l -= j2 * j;
-                    i1 -= l2 * j;
-                    k1 -= k2 * j;
-                    l1 -= i3 * j;
-                    j = 0;
+                    xA -= j2 * yB;
+                    xB -= l2 * yB;
+                    zA -= k2 * yB;
+                    zB -= i3 * yB;
+                    yB = 0;
                 }
-                j1 <<= 16;
-                i2 <<= 15;
-                if(k < 0)
+                xC <<= 16;
+                zC <<= 15;
+                if(yC < 0)
                 {
-                    j1 -= j3 * k;
-                    i2 -= k3 * k;
-                    k = 0;
+                    xC -= j3 * yC;
+                    zC -= k3 * yC;
+                    yC = 0;
                 }
-                if(j != k && j2 < l2 || j == k && j2 > j3)
+                if(yB != yC && j2 < l2 || yB == yC && j2 > j3)
                 {
-                    i -= k;
-                    k -= j;
-                    for(j = anIntArray1472[j]; --k >= 0; j += DrawingArea.width)
+                    yA -= yC;
+                    yC -= yB;
+                    for(yB = anIntArray1472[yB]; --yC >= 0; yB += DrawingArea.width)
                     {
-                        method375(DrawingArea.pixels, j, l >> 16, i1 >> 16, k1 >> 7, l1 >> 7);
-                        l += j2;
-                        i1 += l2;
-                        k1 += k2;
-                        l1 += i3;
+                        method375(DrawingArea.pixels, yB, xA >> 16, xB >> 16, zA >> 7, zB >> 7);
+                        xA += j2;
+                        xB += l2;
+                        zA += k2;
+                        zB += i3;
                     }
 
-                    while(--i >= 0) 
+                    while(--yA >= 0) 
                     {
-                        method375(DrawingArea.pixels, j, l >> 16, j1 >> 16, k1 >> 7, i2 >> 7);
-                        l += j2;
-                        j1 += j3;
-                        k1 += k2;
-                        i2 += k3;
-                        j += DrawingArea.width;
+                        method375(DrawingArea.pixels, yB, xA >> 16, xC >> 16, zA >> 7, zC >> 7);
+                        xA += j2;
+                        xC += j3;
+                        zA += k2;
+                        zC += k3;
+                        yB += DrawingArea.width;
                     }
                     return;
                 }
-                i -= k;
-                k -= j;
-                for(j = anIntArray1472[j]; --k >= 0; j += DrawingArea.width)
+                yA -= yC;
+                yC -= yB;
+                for(yB = anIntArray1472[yB]; --yC >= 0; yB += DrawingArea.width)
                 {
-                    method375(DrawingArea.pixels, j, i1 >> 16, l >> 16, l1 >> 7, k1 >> 7);
-                    l += j2;
-                    i1 += l2;
-                    k1 += k2;
-                    l1 += i3;
+                    method375(DrawingArea.pixels, yB, xB >> 16, xA >> 16, zB >> 7, zA >> 7);
+                    xA += j2;
+                    xB += l2;
+                    zA += k2;
+                    zB += i3;
                 }
 
-                while(--i >= 0) 
+                while(--yA >= 0) 
                 {
-                    method375(DrawingArea.pixels, j, j1 >> 16, l >> 16, i2 >> 7, k1 >> 7);
-                    l += j2;
-                    j1 += j3;
-                    k1 += k2;
-                    i2 += k3;
-                    j += DrawingArea.width;
+                    method375(DrawingArea.pixels, yB, xC >> 16, xA >> 16, zC >> 7, zA >> 7);
+                    xA += j2;
+                    xC += j3;
+                    zA += k2;
+                    zC += k3;
+                    yB += DrawingArea.width;
                 }
                 return;
             }
-            j1 = i1 <<= 16;
-            i2 = l1 <<= 15;
-            if(j < 0)
+            xC = xB <<= 16;
+            zC = zB <<= 15;
+            if(yB < 0)
             {
-                j1 -= j2 * j;
-                i1 -= l2 * j;
-                i2 -= k2 * j;
-                l1 -= i3 * j;
-                j = 0;
+                xC -= j2 * yB;
+                xB -= l2 * yB;
+                zC -= k2 * yB;
+                zB -= i3 * yB;
+                yB = 0;
             }
-            l <<= 16;
-            k1 <<= 15;
-            if(i < 0)
+            xA <<= 16;
+            zA <<= 15;
+            if(yA < 0)
             {
-                l -= j3 * i;
-                k1 -= k3 * i;
-                i = 0;
+                xA -= j3 * yA;
+                zA -= k3 * yA;
+                yA = 0;
             }
             if(j2 < l2)
             {
-                k -= i;
-                i -= j;
-                for(j = anIntArray1472[j]; --i >= 0; j += DrawingArea.width)
+                yC -= yA;
+                yA -= yB;
+                for(yB = anIntArray1472[yB]; --yA >= 0; yB += DrawingArea.width)
                 {
-                    method375(DrawingArea.pixels, j, j1 >> 16, i1 >> 16, i2 >> 7, l1 >> 7);
-                    j1 += j2;
-                    i1 += l2;
-                    i2 += k2;
-                    l1 += i3;
+                    method375(DrawingArea.pixels, yB, xC >> 16, xB >> 16, zC >> 7, zB >> 7);
+                    xC += j2;
+                    xB += l2;
+                    zC += k2;
+                    zB += i3;
                 }
 
-                while(--k >= 0) 
+                while(--yC >= 0) 
                 {
-                    method375(DrawingArea.pixels, j, l >> 16, i1 >> 16, k1 >> 7, l1 >> 7);
-                    l += j3;
-                    i1 += l2;
-                    k1 += k3;
-                    l1 += i3;
-                    j += DrawingArea.width;
+                    method375(DrawingArea.pixels, yB, xA >> 16, xB >> 16, zA >> 7, zB >> 7);
+                    xA += j3;
+                    xB += l2;
+                    zA += k3;
+                    zB += i3;
+                    yB += DrawingArea.width;
                 }
                 return;
             }
-            k -= i;
-            i -= j;
-            for(j = anIntArray1472[j]; --i >= 0; j += DrawingArea.width)
+            yC -= yA;
+            yA -= yB;
+            for(yB = anIntArray1472[yB]; --yA >= 0; yB += DrawingArea.width)
             {
-                method375(DrawingArea.pixels, j, i1 >> 16, j1 >> 16, l1 >> 7, i2 >> 7);
-                j1 += j2;
-                i1 += l2;
-                i2 += k2;
-                l1 += i3;
+                method375(DrawingArea.pixels, yB, xB >> 16, xC >> 16, zB >> 7, zC >> 7);
+                xC += j2;
+                xB += l2;
+                zC += k2;
+                zB += i3;
             }
 
-            while(--k >= 0) 
+            while(--yC >= 0) 
             {
-                method375(DrawingArea.pixels, j, i1 >> 16, l >> 16, l1 >> 7, k1 >> 7);
-                l += j3;
-                i1 += l2;
-                k1 += k3;
-                l1 += i3;
-                j += DrawingArea.width;
+                method375(DrawingArea.pixels, yB, xB >> 16, xA >> 16, zB >> 7, zA >> 7);
+                xA += j3;
+                xB += l2;
+                zA += k3;
+                zB += i3;
+                yB += DrawingArea.width;
             }
             return;
         }
-        if(k >= DrawingArea.bottomY)
+        if(yC >= DrawingArea.bottomY)
             return;
-        if(i > DrawingArea.bottomY)
-            i = DrawingArea.bottomY;
-        if(j > DrawingArea.bottomY)
-            j = DrawingArea.bottomY;
-        if(i < j)
+        if(yA > DrawingArea.bottomY)
+            yA = DrawingArea.bottomY;
+        if(yB > DrawingArea.bottomY)
+            yB = DrawingArea.bottomY;
+        if(yA < yB)
         {
-            i1 = j1 <<= 16;
-            l1 = i2 <<= 15;
-            if(k < 0)
+            xB = xC <<= 16;
+            zB = zC <<= 15;
+            if(yC < 0)
             {
-                i1 -= l2 * k;
-                j1 -= j3 * k;
-                l1 -= i3 * k;
-                i2 -= k3 * k;
-                k = 0;
+                xB -= l2 * yC;
+                xC -= j3 * yC;
+                zB -= i3 * yC;
+                zC -= k3 * yC;
+                yC = 0;
             }
-            l <<= 16;
-            k1 <<= 15;
-            if(i < 0)
+            xA <<= 16;
+            zA <<= 15;
+            if(yA < 0)
             {
-                l -= j2 * i;
-                k1 -= k2 * i;
-                i = 0;
+                xA -= j2 * yA;
+                zA -= k2 * yA;
+                yA = 0;
             }
             if(l2 < j3)
             {
-                j -= i;
-                i -= k;
-                for(k = anIntArray1472[k]; --i >= 0; k += DrawingArea.width)
+                yB -= yA;
+                yA -= yC;
+                for(yC = anIntArray1472[yC]; --yA >= 0; yC += DrawingArea.width)
                 {
-                    method375(DrawingArea.pixels, k, i1 >> 16, j1 >> 16, l1 >> 7, i2 >> 7);
-                    i1 += l2;
-                    j1 += j3;
-                    l1 += i3;
-                    i2 += k3;
+                    method375(DrawingArea.pixels, yC, xB >> 16, xC >> 16, zB >> 7, zC >> 7);
+                    xB += l2;
+                    xC += j3;
+                    zB += i3;
+                    zC += k3;
                 }
 
-                while(--j >= 0) 
+                while(--yB >= 0) 
                 {
-                    method375(DrawingArea.pixels, k, i1 >> 16, l >> 16, l1 >> 7, k1 >> 7);
-                    i1 += l2;
-                    l += j2;
-                    l1 += i3;
-                    k1 += k2;
-                    k += DrawingArea.width;
+                    method375(DrawingArea.pixels, yC, xB >> 16, xA >> 16, zB >> 7, zA >> 7);
+                    xB += l2;
+                    xA += j2;
+                    zB += i3;
+                    zA += k2;
+                    yC += DrawingArea.width;
                 }
                 return;
             }
-            j -= i;
-            i -= k;
-            for(k = anIntArray1472[k]; --i >= 0; k += DrawingArea.width)
+            yB -= yA;
+            yA -= yC;
+            for(yC = anIntArray1472[yC]; --yA >= 0; yC += DrawingArea.width)
             {
-                method375(DrawingArea.pixels, k, j1 >> 16, i1 >> 16, i2 >> 7, l1 >> 7);
-                i1 += l2;
-                j1 += j3;
-                l1 += i3;
-                i2 += k3;
+                method375(DrawingArea.pixels, yC, xC >> 16, xB >> 16, zC >> 7, zB >> 7);
+                xB += l2;
+                xC += j3;
+                zB += i3;
+                zC += k3;
             }
 
-            while(--j >= 0) 
+            while(--yB >= 0) 
             {
-                method375(DrawingArea.pixels, k, l >> 16, i1 >> 16, k1 >> 7, l1 >> 7);
-                i1 += l2;
-                l += j2;
-                l1 += i3;
-                k1 += k2;
-                k += DrawingArea.width;
+                method375(DrawingArea.pixels, yC, xA >> 16, xB >> 16, zA >> 7, zB >> 7);
+                xB += l2;
+                xA += j2;
+                zB += i3;
+                zA += k2;
+                yC += DrawingArea.width;
             }
             return;
         }
-        l = j1 <<= 16;
-        k1 = i2 <<= 15;
-        if(k < 0)
+        xA = xC <<= 16;
+        zA = zC <<= 15;
+        if(yC < 0)
         {
-            l -= l2 * k;
-            j1 -= j3 * k;
-            k1 -= i3 * k;
-            i2 -= k3 * k;
-            k = 0;
+            xA -= l2 * yC;
+            xC -= j3 * yC;
+            zA -= i3 * yC;
+            zC -= k3 * yC;
+            yC = 0;
         }
-        i1 <<= 16;
-        l1 <<= 15;
-        if(j < 0)
+        xB <<= 16;
+        zB <<= 15;
+        if(yB < 0)
         {
-            i1 -= j2 * j;
-            l1 -= k2 * j;
-            j = 0;
+            xB -= j2 * yB;
+            zB -= k2 * yB;
+            yB = 0;
         }
         if(l2 < j3)
         {
-            i -= j;
-            j -= k;
-            for(k = anIntArray1472[k]; --j >= 0; k += DrawingArea.width)
+            yA -= yB;
+            yB -= yC;
+            for(yC = anIntArray1472[yC]; --yB >= 0; yC += DrawingArea.width)
             {
-                method375(DrawingArea.pixels, k, l >> 16, j1 >> 16, k1 >> 7, i2 >> 7);
-                l += l2;
-                j1 += j3;
-                k1 += i3;
-                i2 += k3;
+                method375(DrawingArea.pixels, yC, xA >> 16, xC >> 16, zA >> 7, zC >> 7);
+                xA += l2;
+                xC += j3;
+                zA += i3;
+                zC += k3;
             }
 
-            while(--i >= 0) 
+            while(--yA >= 0) 
             {
-                method375(DrawingArea.pixels, k, i1 >> 16, j1 >> 16, l1 >> 7, i2 >> 7);
-                i1 += j2;
-                j1 += j3;
-                l1 += k2;
-                i2 += k3;
-                k += DrawingArea.width;
+                method375(DrawingArea.pixels, yC, xB >> 16, xC >> 16, zB >> 7, zC >> 7);
+                xB += j2;
+                xC += j3;
+                zB += k2;
+                zC += k3;
+                yC += DrawingArea.width;
             }
             return;
         }
-        i -= j;
-        j -= k;
-        for(k = anIntArray1472[k]; --j >= 0; k += DrawingArea.width)
+        yA -= yB;
+        yB -= yC;
+        for(yC = anIntArray1472[yC]; --yB >= 0; yC += DrawingArea.width)
         {
-            method375(DrawingArea.pixels, k, j1 >> 16, l >> 16, i2 >> 7, k1 >> 7);
-            l += l2;
-            j1 += j3;
-            k1 += i3;
-            i2 += k3;
+            method375(DrawingArea.pixels, yC, xC >> 16, xA >> 16, zC >> 7, zA >> 7);
+            xA += l2;
+            xC += j3;
+            zA += i3;
+            zC += k3;
         }
 
-        while(--i >= 0) 
+        while(--yA >= 0) 
         {
-            method375(DrawingArea.pixels, k, j1 >> 16, i1 >> 16, i2 >> 7, l1 >> 7);
-            i1 += j2;
-            j1 += j3;
-            l1 += k2;
-            i2 += k3;
-            k += DrawingArea.width;
+            method375(DrawingArea.pixels, yC, xC >> 16, xB >> 16, zC >> 7, zB >> 7);
+            xB += j2;
+            xC += j3;
+            zB += k2;
+            zC += k3;
+            yC += DrawingArea.width;
         }
     }
 
@@ -733,7 +733,7 @@ final class Texture extends DrawingArea {
         if(aBoolean1464)
         {
             int l1;
-            if(aBoolean1462)
+            if(restrictEdges)
             {
                 if(i1 - l > 3)
                     l1 = (k1 - j1) / (i1 - l);
@@ -762,7 +762,7 @@ final class Texture extends DrawingArea {
                 else
                     l1 = 0;
             }
-            if(anInt1465 == 0)
+            if(alpha == 0)
             {
                 while(--k >= 0) 
                 {
@@ -784,8 +784,8 @@ final class Texture extends DrawingArea {
                 }
             } else
             {
-                int j2 = anInt1465;
-                int l2 = 256 - anInt1465;
+                int j2 = alpha;
+                int l2 = 256 - alpha;
                 while(--k >= 0) 
                 {
                     j = anIntArray1482[j1 >> 8];
@@ -811,7 +811,7 @@ final class Texture extends DrawingArea {
         if(l >= i1)
             return;
         int i2 = (k1 - j1) / (i1 - l);
-        if(aBoolean1462)
+        if(restrictEdges)
         {
             if(i1 > DrawingArea.centerX)
                 i1 = DrawingArea.centerX;
@@ -825,7 +825,7 @@ final class Texture extends DrawingArea {
         }
         i += l;
         k = i1 - l;
-        if(anInt1465 == 0)
+        if(alpha == 0)
         {
             do
             {
@@ -834,8 +834,8 @@ final class Texture extends DrawingArea {
             } while(--k > 0);
             return;
         }
-        int k2 = anInt1465;
-        int i3 = 256 - anInt1465;
+        int k2 = alpha;
+        int i3 = 256 - alpha;
         do
         {
             j = anIntArray1482[j1 >> 8];
@@ -845,7 +845,7 @@ final class Texture extends DrawingArea {
         } while(--k > 0);
     }
 
-    public static void method376(int i, int j, int k, int l, int i1, int j1, int k1)
+    public static void drawFlatTriangle(int i, int j, int k, int l, int i1, int j1, int k1)
     {
         int l1 = 0;
         if(j != i)
@@ -1193,7 +1193,7 @@ final class Texture extends DrawingArea {
     private static void method377(int ai[], int i, int j, int l, int i1)
     {
         int k;//was parameter
-        if(aBoolean1462)
+        if(restrictEdges)
         {
             if(i1 > DrawingArea.centerX)
                 i1 = DrawingArea.centerX;
@@ -1204,7 +1204,7 @@ final class Texture extends DrawingArea {
             return;
         i += l;
         k = i1 - l >> 2;
-        if(anInt1465 == 0)
+        if(alpha == 0)
         {
             while(--k >= 0) 
             {
@@ -1218,8 +1218,8 @@ final class Texture extends DrawingArea {
 
             return;
         }
-        int j1 = anInt1465;
-        int k1 = 256 - anInt1465;
+        int j1 = alpha;
+        int k1 = 256 - alpha;
         j = ((j & 0xff00ff) * k1 >> 8 & 0xff00ff) + ((j & 0xff00) * k1 >> 8 & 0xff00);
         while(--k >= 0) 
         {
@@ -1233,12 +1233,12 @@ final class Texture extends DrawingArea {
 
     }
 
-    public static void method378(int i, int j, int k, int l, int i1, int j1, int k1, int l1, 
-            int i2, int j2, int k2, int l2, int i3, int j3, int k3, 
-            int l3, int i4, int j4, int k4)
+    public static void drawTexturedTriangle(int yA, int yB, int yC, int xA, int xB, int xC, int zA, int zB, 
+            int zC, int j2, int k2, int l2, int i3, int j3, int k3, 
+            int l3, int i4, int j4, int textureId)
     {
-        int ai[] = method371(k4);
-        aBoolean1463 = !aBooleanArray1475[k4];
+        int texture[] = getTexturePixels(textureId);
+        opaque = !transparent[textureId];
         k2 = j2 - k2;
         j3 = i3 - j3;
         i4 = l3 - i4;
@@ -1256,539 +1256,539 @@ final class Texture extends DrawingArea {
         int l6 = k2 * j4 - i4 * l2 << 5;
         int i7 = 0;
         int j7 = 0;
-        if(j != i)
+        if(yB != yA)
         {
-            i7 = (i1 - l << 16) / (j - i);
-            j7 = (l1 - k1 << 16) / (j - i);
+            i7 = (xB - xA << 16) / (yB - yA);
+            j7 = (zB - zA << 16) / (yB - yA);
         }
         int k7 = 0;
         int l7 = 0;
-        if(k != j)
+        if(yC != yB)
         {
-            k7 = (j1 - i1 << 16) / (k - j);
-            l7 = (i2 - l1 << 16) / (k - j);
+            k7 = (xC - xB << 16) / (yC - yB);
+            l7 = (zC - zB << 16) / (yC - yB);
         }
         int i8 = 0;
         int j8 = 0;
-        if(k != i)
+        if(yC != yA)
         {
-            i8 = (l - j1 << 16) / (i - k);
-            j8 = (k1 - i2 << 16) / (i - k);
+            i8 = (xA - xC << 16) / (yA - yC);
+            j8 = (zA - zC << 16) / (yA - yC);
         }
-        if(i <= j && i <= k)
+        if(yA <= yB && yA <= yC)
         {
-            if(i >= DrawingArea.bottomY)
+            if(yA >= DrawingArea.bottomY)
                 return;
-            if(j > DrawingArea.bottomY)
-                j = DrawingArea.bottomY;
-            if(k > DrawingArea.bottomY)
-                k = DrawingArea.bottomY;
-            if(j < k)
+            if(yB > DrawingArea.bottomY)
+                yB = DrawingArea.bottomY;
+            if(yC > DrawingArea.bottomY)
+                yC = DrawingArea.bottomY;
+            if(yB < yC)
             {
-                j1 = l <<= 16;
-                i2 = k1 <<= 16;
-                if(i < 0)
+                xC = xA <<= 16;
+                zC = zA <<= 16;
+                if(yA < 0)
                 {
-                    j1 -= i8 * i;
-                    l -= i7 * i;
-                    i2 -= j8 * i;
-                    k1 -= j7 * i;
-                    i = 0;
+                    xC -= i8 * yA;
+                    xA -= i7 * yA;
+                    zC -= j8 * yA;
+                    zA -= j7 * yA;
+                    yA = 0;
                 }
-                i1 <<= 16;
-                l1 <<= 16;
-                if(j < 0)
+                xB <<= 16;
+                zB <<= 16;
+                if(yB < 0)
                 {
-                    i1 -= k7 * j;
-                    l1 -= l7 * j;
-                    j = 0;
+                    xB -= k7 * yB;
+                    zB -= l7 * yB;
+                    yB = 0;
                 }
-                int k8 = i - textureInt2;
+                int k8 = yA - centreY;
                 l4 += j5 * k8;
                 k5 += i6 * k8;
                 j6 += l6 * k8;
-                if(i != j && i8 < i7 || i == j && i8 > k7)
+                if(yA != yB && i8 < i7 || yA == yB && i8 > k7)
                 {
-                    k -= j;
-                    j -= i;
-                    i = anIntArray1472[i];
-                    while(--j >= 0) 
+                    yC -= yB;
+                    yB -= yA;
+                    yA = anIntArray1472[yA];
+                    while(--yB >= 0) 
                     {
-                        method379(DrawingArea.pixels, ai, i, j1 >> 16, l >> 16, i2 >> 8, k1 >> 8, l4, k5, j6, i5, l5, k6);
-                        j1 += i8;
-                        l += i7;
-                        i2 += j8;
-                        k1 += j7;
-                        i += DrawingArea.width;
+                        method379(DrawingArea.pixels, texture, yA, xC >> 16, xA >> 16, zC >> 8, zA >> 8, l4, k5, j6, i5, l5, k6);
+                        xC += i8;
+                        xA += i7;
+                        zC += j8;
+                        zA += j7;
+                        yA += DrawingArea.width;
                         l4 += j5;
                         k5 += i6;
                         j6 += l6;
                     }
-                    while(--k >= 0) 
+                    while(--yC >= 0) 
                     {
-                        method379(DrawingArea.pixels, ai, i, j1 >> 16, i1 >> 16, i2 >> 8, l1 >> 8, l4, k5, j6, i5, l5, k6);
-                        j1 += i8;
-                        i1 += k7;
-                        i2 += j8;
-                        l1 += l7;
-                        i += DrawingArea.width;
+                        method379(DrawingArea.pixels, texture, yA, xC >> 16, xB >> 16, zC >> 8, zB >> 8, l4, k5, j6, i5, l5, k6);
+                        xC += i8;
+                        xB += k7;
+                        zC += j8;
+                        zB += l7;
+                        yA += DrawingArea.width;
                         l4 += j5;
                         k5 += i6;
                         j6 += l6;
                     }
                     return;
                 }
-                k -= j;
-                j -= i;
-                i = anIntArray1472[i];
-                while(--j >= 0) 
+                yC -= yB;
+                yB -= yA;
+                yA = anIntArray1472[yA];
+                while(--yB >= 0) 
                 {
-                    method379(DrawingArea.pixels, ai, i, l >> 16, j1 >> 16, k1 >> 8, i2 >> 8, l4, k5, j6, i5, l5, k6);
-                    j1 += i8;
-                    l += i7;
-                    i2 += j8;
-                    k1 += j7;
-                    i += DrawingArea.width;
+                    method379(DrawingArea.pixels, texture, yA, xA >> 16, xC >> 16, zA >> 8, zC >> 8, l4, k5, j6, i5, l5, k6);
+                    xC += i8;
+                    xA += i7;
+                    zC += j8;
+                    zA += j7;
+                    yA += DrawingArea.width;
                     l4 += j5;
                     k5 += i6;
                     j6 += l6;
                 }
-                while(--k >= 0) 
+                while(--yC >= 0) 
                 {
-                    method379(DrawingArea.pixels, ai, i, i1 >> 16, j1 >> 16, l1 >> 8, i2 >> 8, l4, k5, j6, i5, l5, k6);
-                    j1 += i8;
-                    i1 += k7;
-                    i2 += j8;
-                    l1 += l7;
-                    i += DrawingArea.width;
+                    method379(DrawingArea.pixels, texture, yA, xB >> 16, xC >> 16, zB >> 8, zC >> 8, l4, k5, j6, i5, l5, k6);
+                    xC += i8;
+                    xB += k7;
+                    zC += j8;
+                    zB += l7;
+                    yA += DrawingArea.width;
                     l4 += j5;
                     k5 += i6;
                     j6 += l6;
                 }
                 return;
             }
-            i1 = l <<= 16;
-            l1 = k1 <<= 16;
-            if(i < 0)
+            xB = xA <<= 16;
+            zB = zA <<= 16;
+            if(yA < 0)
             {
-                i1 -= i8 * i;
-                l -= i7 * i;
-                l1 -= j8 * i;
-                k1 -= j7 * i;
-                i = 0;
+                xB -= i8 * yA;
+                xA -= i7 * yA;
+                zB -= j8 * yA;
+                zA -= j7 * yA;
+                yA = 0;
             }
-            j1 <<= 16;
-            i2 <<= 16;
-            if(k < 0)
+            xC <<= 16;
+            zC <<= 16;
+            if(yC < 0)
             {
-                j1 -= k7 * k;
-                i2 -= l7 * k;
-                k = 0;
+                xC -= k7 * yC;
+                zC -= l7 * yC;
+                yC = 0;
             }
-            int l8 = i - textureInt2;
+            int l8 = yA - centreY;
             l4 += j5 * l8;
             k5 += i6 * l8;
             j6 += l6 * l8;
-            if(i != k && i8 < i7 || i == k && k7 > i7)
+            if(yA != yC && i8 < i7 || yA == yC && k7 > i7)
             {
-                j -= k;
-                k -= i;
-                i = anIntArray1472[i];
-                while(--k >= 0) 
+                yB -= yC;
+                yC -= yA;
+                yA = anIntArray1472[yA];
+                while(--yC >= 0) 
                 {
-                    method379(DrawingArea.pixels, ai, i, i1 >> 16, l >> 16, l1 >> 8, k1 >> 8, l4, k5, j6, i5, l5, k6);
-                    i1 += i8;
-                    l += i7;
-                    l1 += j8;
-                    k1 += j7;
-                    i += DrawingArea.width;
+                    method379(DrawingArea.pixels, texture, yA, xB >> 16, xA >> 16, zB >> 8, zA >> 8, l4, k5, j6, i5, l5, k6);
+                    xB += i8;
+                    xA += i7;
+                    zB += j8;
+                    zA += j7;
+                    yA += DrawingArea.width;
                     l4 += j5;
                     k5 += i6;
                     j6 += l6;
                 }
-                while(--j >= 0) 
+                while(--yB >= 0) 
                 {
-                    method379(DrawingArea.pixels, ai, i, j1 >> 16, l >> 16, i2 >> 8, k1 >> 8, l4, k5, j6, i5, l5, k6);
-                    j1 += k7;
-                    l += i7;
-                    i2 += l7;
-                    k1 += j7;
-                    i += DrawingArea.width;
+                    method379(DrawingArea.pixels, texture, yA, xC >> 16, xA >> 16, zC >> 8, zA >> 8, l4, k5, j6, i5, l5, k6);
+                    xC += k7;
+                    xA += i7;
+                    zC += l7;
+                    zA += j7;
+                    yA += DrawingArea.width;
                     l4 += j5;
                     k5 += i6;
                     j6 += l6;
                 }
                 return;
             }
-            j -= k;
-            k -= i;
-            i = anIntArray1472[i];
-            while(--k >= 0) 
+            yB -= yC;
+            yC -= yA;
+            yA = anIntArray1472[yA];
+            while(--yC >= 0) 
             {
-                method379(DrawingArea.pixels, ai, i, l >> 16, i1 >> 16, k1 >> 8, l1 >> 8, l4, k5, j6, i5, l5, k6);
-                i1 += i8;
-                l += i7;
-                l1 += j8;
-                k1 += j7;
-                i += DrawingArea.width;
+                method379(DrawingArea.pixels, texture, yA, xA >> 16, xB >> 16, zA >> 8, zB >> 8, l4, k5, j6, i5, l5, k6);
+                xB += i8;
+                xA += i7;
+                zB += j8;
+                zA += j7;
+                yA += DrawingArea.width;
                 l4 += j5;
                 k5 += i6;
                 j6 += l6;
             }
-            while(--j >= 0) 
+            while(--yB >= 0) 
             {
-                method379(DrawingArea.pixels, ai, i, l >> 16, j1 >> 16, k1 >> 8, i2 >> 8, l4, k5, j6, i5, l5, k6);
-                j1 += k7;
-                l += i7;
-                i2 += l7;
-                k1 += j7;
-                i += DrawingArea.width;
+                method379(DrawingArea.pixels, texture, yA, xA >> 16, xC >> 16, zA >> 8, zC >> 8, l4, k5, j6, i5, l5, k6);
+                xC += k7;
+                xA += i7;
+                zC += l7;
+                zA += j7;
+                yA += DrawingArea.width;
                 l4 += j5;
                 k5 += i6;
                 j6 += l6;
             }
             return;
         }
-        if(j <= k)
+        if(yB <= yC)
         {
-            if(j >= DrawingArea.bottomY)
+            if(yB >= DrawingArea.bottomY)
                 return;
-            if(k > DrawingArea.bottomY)
-                k = DrawingArea.bottomY;
-            if(i > DrawingArea.bottomY)
-                i = DrawingArea.bottomY;
-            if(k < i)
+            if(yC > DrawingArea.bottomY)
+                yC = DrawingArea.bottomY;
+            if(yA > DrawingArea.bottomY)
+                yA = DrawingArea.bottomY;
+            if(yC < yA)
             {
-                l = i1 <<= 16;
-                k1 = l1 <<= 16;
-                if(j < 0)
+                xA = xB <<= 16;
+                zA = zB <<= 16;
+                if(yB < 0)
                 {
-                    l -= i7 * j;
-                    i1 -= k7 * j;
-                    k1 -= j7 * j;
-                    l1 -= l7 * j;
-                    j = 0;
+                    xA -= i7 * yB;
+                    xB -= k7 * yB;
+                    zA -= j7 * yB;
+                    zB -= l7 * yB;
+                    yB = 0;
                 }
-                j1 <<= 16;
-                i2 <<= 16;
-                if(k < 0)
+                xC <<= 16;
+                zC <<= 16;
+                if(yC < 0)
                 {
-                    j1 -= i8 * k;
-                    i2 -= j8 * k;
-                    k = 0;
+                    xC -= i8 * yC;
+                    zC -= j8 * yC;
+                    yC = 0;
                 }
-                int i9 = j - textureInt2;
+                int i9 = yB - centreY;
                 l4 += j5 * i9;
                 k5 += i6 * i9;
                 j6 += l6 * i9;
-                if(j != k && i7 < k7 || j == k && i7 > i8)
+                if(yB != yC && i7 < k7 || yB == yC && i7 > i8)
                 {
-                    i -= k;
-                    k -= j;
-                    j = anIntArray1472[j];
-                    while(--k >= 0) 
+                    yA -= yC;
+                    yC -= yB;
+                    yB = anIntArray1472[yB];
+                    while(--yC >= 0) 
                     {
-                        method379(DrawingArea.pixels, ai, j, l >> 16, i1 >> 16, k1 >> 8, l1 >> 8, l4, k5, j6, i5, l5, k6);
-                        l += i7;
-                        i1 += k7;
-                        k1 += j7;
-                        l1 += l7;
-                        j += DrawingArea.width;
+                        method379(DrawingArea.pixels, texture, yB, xA >> 16, xB >> 16, zA >> 8, zB >> 8, l4, k5, j6, i5, l5, k6);
+                        xA += i7;
+                        xB += k7;
+                        zA += j7;
+                        zB += l7;
+                        yB += DrawingArea.width;
                         l4 += j5;
                         k5 += i6;
                         j6 += l6;
                     }
-                    while(--i >= 0) 
+                    while(--yA >= 0) 
                     {
-                        method379(DrawingArea.pixels, ai, j, l >> 16, j1 >> 16, k1 >> 8, i2 >> 8, l4, k5, j6, i5, l5, k6);
-                        l += i7;
-                        j1 += i8;
-                        k1 += j7;
-                        i2 += j8;
-                        j += DrawingArea.width;
+                        method379(DrawingArea.pixels, texture, yB, xA >> 16, xC >> 16, zA >> 8, zC >> 8, l4, k5, j6, i5, l5, k6);
+                        xA += i7;
+                        xC += i8;
+                        zA += j7;
+                        zC += j8;
+                        yB += DrawingArea.width;
                         l4 += j5;
                         k5 += i6;
                         j6 += l6;
                     }
                     return;
                 }
-                i -= k;
-                k -= j;
-                j = anIntArray1472[j];
-                while(--k >= 0) 
+                yA -= yC;
+                yC -= yB;
+                yB = anIntArray1472[yB];
+                while(--yC >= 0) 
                 {
-                    method379(DrawingArea.pixels, ai, j, i1 >> 16, l >> 16, l1 >> 8, k1 >> 8, l4, k5, j6, i5, l5, k6);
-                    l += i7;
-                    i1 += k7;
-                    k1 += j7;
-                    l1 += l7;
-                    j += DrawingArea.width;
+                    method379(DrawingArea.pixels, texture, yB, xB >> 16, xA >> 16, zB >> 8, zA >> 8, l4, k5, j6, i5, l5, k6);
+                    xA += i7;
+                    xB += k7;
+                    zA += j7;
+                    zB += l7;
+                    yB += DrawingArea.width;
                     l4 += j5;
                     k5 += i6;
                     j6 += l6;
                 }
-                while(--i >= 0) 
+                while(--yA >= 0) 
                 {
-                    method379(DrawingArea.pixels, ai, j, j1 >> 16, l >> 16, i2 >> 8, k1 >> 8, l4, k5, j6, i5, l5, k6);
-                    l += i7;
-                    j1 += i8;
-                    k1 += j7;
-                    i2 += j8;
-                    j += DrawingArea.width;
+                    method379(DrawingArea.pixels, texture, yB, xC >> 16, xA >> 16, zC >> 8, zA >> 8, l4, k5, j6, i5, l5, k6);
+                    xA += i7;
+                    xC += i8;
+                    zA += j7;
+                    zC += j8;
+                    yB += DrawingArea.width;
                     l4 += j5;
                     k5 += i6;
                     j6 += l6;
                 }
                 return;
             }
-            j1 = i1 <<= 16;
-            i2 = l1 <<= 16;
-            if(j < 0)
+            xC = xB <<= 16;
+            zC = zB <<= 16;
+            if(yB < 0)
             {
-                j1 -= i7 * j;
-                i1 -= k7 * j;
-                i2 -= j7 * j;
-                l1 -= l7 * j;
-                j = 0;
+                xC -= i7 * yB;
+                xB -= k7 * yB;
+                zC -= j7 * yB;
+                zB -= l7 * yB;
+                yB = 0;
             }
-            l <<= 16;
-            k1 <<= 16;
-            if(i < 0)
+            xA <<= 16;
+            zA <<= 16;
+            if(yA < 0)
             {
-                l -= i8 * i;
-                k1 -= j8 * i;
-                i = 0;
+                xA -= i8 * yA;
+                zA -= j8 * yA;
+                yA = 0;
             }
-            int j9 = j - textureInt2;
+            int j9 = yB - centreY;
             l4 += j5 * j9;
             k5 += i6 * j9;
             j6 += l6 * j9;
             if(i7 < k7)
             {
-                k -= i;
-                i -= j;
-                j = anIntArray1472[j];
-                while(--i >= 0) 
+                yC -= yA;
+                yA -= yB;
+                yB = anIntArray1472[yB];
+                while(--yA >= 0) 
                 {
-                    method379(DrawingArea.pixels, ai, j, j1 >> 16, i1 >> 16, i2 >> 8, l1 >> 8, l4, k5, j6, i5, l5, k6);
-                    j1 += i7;
-                    i1 += k7;
-                    i2 += j7;
-                    l1 += l7;
-                    j += DrawingArea.width;
+                    method379(DrawingArea.pixels, texture, yB, xC >> 16, xB >> 16, zC >> 8, zB >> 8, l4, k5, j6, i5, l5, k6);
+                    xC += i7;
+                    xB += k7;
+                    zC += j7;
+                    zB += l7;
+                    yB += DrawingArea.width;
                     l4 += j5;
                     k5 += i6;
                     j6 += l6;
                 }
-                while(--k >= 0) 
+                while(--yC >= 0) 
                 {
-                    method379(DrawingArea.pixels, ai, j, l >> 16, i1 >> 16, k1 >> 8, l1 >> 8, l4, k5, j6, i5, l5, k6);
-                    l += i8;
-                    i1 += k7;
-                    k1 += j8;
-                    l1 += l7;
-                    j += DrawingArea.width;
+                    method379(DrawingArea.pixels, texture, yB, xA >> 16, xB >> 16, zA >> 8, zB >> 8, l4, k5, j6, i5, l5, k6);
+                    xA += i8;
+                    xB += k7;
+                    zA += j8;
+                    zB += l7;
+                    yB += DrawingArea.width;
                     l4 += j5;
                     k5 += i6;
                     j6 += l6;
                 }
                 return;
             }
-            k -= i;
-            i -= j;
-            j = anIntArray1472[j];
-            while(--i >= 0) 
+            yC -= yA;
+            yA -= yB;
+            yB = anIntArray1472[yB];
+            while(--yA >= 0) 
             {
-                method379(DrawingArea.pixels, ai, j, i1 >> 16, j1 >> 16, l1 >> 8, i2 >> 8, l4, k5, j6, i5, l5, k6);
-                j1 += i7;
-                i1 += k7;
-                i2 += j7;
-                l1 += l7;
-                j += DrawingArea.width;
+                method379(DrawingArea.pixels, texture, yB, xB >> 16, xC >> 16, zB >> 8, zC >> 8, l4, k5, j6, i5, l5, k6);
+                xC += i7;
+                xB += k7;
+                zC += j7;
+                zB += l7;
+                yB += DrawingArea.width;
                 l4 += j5;
                 k5 += i6;
                 j6 += l6;
             }
-            while(--k >= 0) 
+            while(--yC >= 0) 
             {
-                method379(DrawingArea.pixels, ai, j, i1 >> 16, l >> 16, l1 >> 8, k1 >> 8, l4, k5, j6, i5, l5, k6);
-                l += i8;
-                i1 += k7;
-                k1 += j8;
-                l1 += l7;
-                j += DrawingArea.width;
+                method379(DrawingArea.pixels, texture, yB, xB >> 16, xA >> 16, zB >> 8, zA >> 8, l4, k5, j6, i5, l5, k6);
+                xA += i8;
+                xB += k7;
+                zA += j8;
+                zB += l7;
+                yB += DrawingArea.width;
                 l4 += j5;
                 k5 += i6;
                 j6 += l6;
             }
             return;
         }
-        if(k >= DrawingArea.bottomY)
+        if(yC >= DrawingArea.bottomY)
             return;
-        if(i > DrawingArea.bottomY)
-            i = DrawingArea.bottomY;
-        if(j > DrawingArea.bottomY)
-            j = DrawingArea.bottomY;
-        if(i < j)
+        if(yA > DrawingArea.bottomY)
+            yA = DrawingArea.bottomY;
+        if(yB > DrawingArea.bottomY)
+            yB = DrawingArea.bottomY;
+        if(yA < yB)
         {
-            i1 = j1 <<= 16;
-            l1 = i2 <<= 16;
-            if(k < 0)
+            xB = xC <<= 16;
+            zB = zC <<= 16;
+            if(yC < 0)
             {
-                i1 -= k7 * k;
-                j1 -= i8 * k;
-                l1 -= l7 * k;
-                i2 -= j8 * k;
-                k = 0;
+                xB -= k7 * yC;
+                xC -= i8 * yC;
+                zB -= l7 * yC;
+                zC -= j8 * yC;
+                yC = 0;
             }
-            l <<= 16;
-            k1 <<= 16;
-            if(i < 0)
+            xA <<= 16;
+            zA <<= 16;
+            if(yA < 0)
             {
-                l -= i7 * i;
-                k1 -= j7 * i;
-                i = 0;
+                xA -= i7 * yA;
+                zA -= j7 * yA;
+                yA = 0;
             }
-            int k9 = k - textureInt2;
+            int k9 = yC - centreY;
             l4 += j5 * k9;
             k5 += i6 * k9;
             j6 += l6 * k9;
             if(k7 < i8)
             {
-                j -= i;
-                i -= k;
-                k = anIntArray1472[k];
-                while(--i >= 0) 
+                yB -= yA;
+                yA -= yC;
+                yC = anIntArray1472[yC];
+                while(--yA >= 0) 
                 {
-                    method379(DrawingArea.pixels, ai, k, i1 >> 16, j1 >> 16, l1 >> 8, i2 >> 8, l4, k5, j6, i5, l5, k6);
-                    i1 += k7;
-                    j1 += i8;
-                    l1 += l7;
-                    i2 += j8;
-                    k += DrawingArea.width;
+                    method379(DrawingArea.pixels, texture, yC, xB >> 16, xC >> 16, zB >> 8, zC >> 8, l4, k5, j6, i5, l5, k6);
+                    xB += k7;
+                    xC += i8;
+                    zB += l7;
+                    zC += j8;
+                    yC += DrawingArea.width;
                     l4 += j5;
                     k5 += i6;
                     j6 += l6;
                 }
-                while(--j >= 0) 
+                while(--yB >= 0) 
                 {
-                    method379(DrawingArea.pixels, ai, k, i1 >> 16, l >> 16, l1 >> 8, k1 >> 8, l4, k5, j6, i5, l5, k6);
-                    i1 += k7;
-                    l += i7;
-                    l1 += l7;
-                    k1 += j7;
-                    k += DrawingArea.width;
+                    method379(DrawingArea.pixels, texture, yC, xB >> 16, xA >> 16, zB >> 8, zA >> 8, l4, k5, j6, i5, l5, k6);
+                    xB += k7;
+                    xA += i7;
+                    zB += l7;
+                    zA += j7;
+                    yC += DrawingArea.width;
                     l4 += j5;
                     k5 += i6;
                     j6 += l6;
                 }
                 return;
             }
-            j -= i;
-            i -= k;
-            k = anIntArray1472[k];
-            while(--i >= 0) 
+            yB -= yA;
+            yA -= yC;
+            yC = anIntArray1472[yC];
+            while(--yA >= 0) 
             {
-                method379(DrawingArea.pixels, ai, k, j1 >> 16, i1 >> 16, i2 >> 8, l1 >> 8, l4, k5, j6, i5, l5, k6);
-                i1 += k7;
-                j1 += i8;
-                l1 += l7;
-                i2 += j8;
-                k += DrawingArea.width;
+                method379(DrawingArea.pixels, texture, yC, xC >> 16, xB >> 16, zC >> 8, zB >> 8, l4, k5, j6, i5, l5, k6);
+                xB += k7;
+                xC += i8;
+                zB += l7;
+                zC += j8;
+                yC += DrawingArea.width;
                 l4 += j5;
                 k5 += i6;
                 j6 += l6;
             }
-            while(--j >= 0) 
+            while(--yB >= 0) 
             {
-                method379(DrawingArea.pixels, ai, k, l >> 16, i1 >> 16, k1 >> 8, l1 >> 8, l4, k5, j6, i5, l5, k6);
-                i1 += k7;
-                l += i7;
-                l1 += l7;
-                k1 += j7;
-                k += DrawingArea.width;
+                method379(DrawingArea.pixels, texture, yC, xA >> 16, xB >> 16, zA >> 8, zB >> 8, l4, k5, j6, i5, l5, k6);
+                xB += k7;
+                xA += i7;
+                zB += l7;
+                zA += j7;
+                yC += DrawingArea.width;
                 l4 += j5;
                 k5 += i6;
                 j6 += l6;
             }
             return;
         }
-        l = j1 <<= 16;
-        k1 = i2 <<= 16;
-        if(k < 0)
+        xA = xC <<= 16;
+        zA = zC <<= 16;
+        if(yC < 0)
         {
-            l -= k7 * k;
-            j1 -= i8 * k;
-            k1 -= l7 * k;
-            i2 -= j8 * k;
-            k = 0;
+            xA -= k7 * yC;
+            xC -= i8 * yC;
+            zA -= l7 * yC;
+            zC -= j8 * yC;
+            yC = 0;
         }
-        i1 <<= 16;
-        l1 <<= 16;
-        if(j < 0)
+        xB <<= 16;
+        zB <<= 16;
+        if(yB < 0)
         {
-            i1 -= i7 * j;
-            l1 -= j7 * j;
-            j = 0;
+            xB -= i7 * yB;
+            zB -= j7 * yB;
+            yB = 0;
         }
-        int l9 = k - textureInt2;
+        int l9 = yC - centreY;
         l4 += j5 * l9;
         k5 += i6 * l9;
         j6 += l6 * l9;
         if(k7 < i8)
         {
-            i -= j;
-            j -= k;
-            k = anIntArray1472[k];
-            while(--j >= 0) 
+            yA -= yB;
+            yB -= yC;
+            yC = anIntArray1472[yC];
+            while(--yB >= 0) 
             {
-                method379(DrawingArea.pixels, ai, k, l >> 16, j1 >> 16, k1 >> 8, i2 >> 8, l4, k5, j6, i5, l5, k6);
-                l += k7;
-                j1 += i8;
-                k1 += l7;
-                i2 += j8;
-                k += DrawingArea.width;
+                method379(DrawingArea.pixels, texture, yC, xA >> 16, xC >> 16, zA >> 8, zC >> 8, l4, k5, j6, i5, l5, k6);
+                xA += k7;
+                xC += i8;
+                zA += l7;
+                zC += j8;
+                yC += DrawingArea.width;
                 l4 += j5;
                 k5 += i6;
                 j6 += l6;
             }
-            while(--i >= 0) 
+            while(--yA >= 0) 
             {
-                method379(DrawingArea.pixels, ai, k, i1 >> 16, j1 >> 16, l1 >> 8, i2 >> 8, l4, k5, j6, i5, l5, k6);
-                i1 += i7;
-                j1 += i8;
-                l1 += j7;
-                i2 += j8;
-                k += DrawingArea.width;
+                method379(DrawingArea.pixels, texture, yC, xB >> 16, xC >> 16, zB >> 8, zC >> 8, l4, k5, j6, i5, l5, k6);
+                xB += i7;
+                xC += i8;
+                zB += j7;
+                zC += j8;
+                yC += DrawingArea.width;
                 l4 += j5;
                 k5 += i6;
                 j6 += l6;
             }
             return;
         }
-        i -= j;
-        j -= k;
-        k = anIntArray1472[k];
-        while(--j >= 0) 
+        yA -= yB;
+        yB -= yC;
+        yC = anIntArray1472[yC];
+        while(--yB >= 0) 
         {
-            method379(DrawingArea.pixels, ai, k, j1 >> 16, l >> 16, i2 >> 8, k1 >> 8, l4, k5, j6, i5, l5, k6);
-            l += k7;
-            j1 += i8;
-            k1 += l7;
-            i2 += j8;
-            k += DrawingArea.width;
+            method379(DrawingArea.pixels, texture, yC, xC >> 16, xA >> 16, zC >> 8, zA >> 8, l4, k5, j6, i5, l5, k6);
+            xA += k7;
+            xC += i8;
+            zA += l7;
+            zC += j8;
+            yC += DrawingArea.width;
             l4 += j5;
             k5 += i6;
             j6 += l6;
         }
-        while(--i >= 0) 
+        while(--yA >= 0) 
         {
-            method379(DrawingArea.pixels, ai, k, j1 >> 16, i1 >> 16, i2 >> 8, l1 >> 8, l4, k5, j6, i5, l5, k6);
-            i1 += i7;
-            j1 += i8;
-            l1 += j7;
-            i2 += j8;
-            k += DrawingArea.width;
+            method379(DrawingArea.pixels, texture, yC, xC >> 16, xB >> 16, zC >> 8, zB >> 8, l4, k5, j6, i5, l5, k6);
+            xB += i7;
+            xC += i8;
+            zB += j7;
+            zC += j8;
+            yC += DrawingArea.width;
             l4 += j5;
             k5 += i6;
             j6 += l6;
@@ -1804,7 +1804,7 @@ final class Texture extends DrawingArea {
             return;
         int j3;
         int k3;
-        if(aBoolean1462)
+        if(restrictEdges)
         {
             j3 = (k1 - j1) / (i1 - l);
             if(i1 > DrawingArea.centerX)
@@ -1837,7 +1837,7 @@ final class Texture extends DrawingArea {
         {
             int i4 = 0;
             int k4 = 0;
-            int k6 = l - textureInt1;
+            int k6 = l - centreX;
             l1 += (k2 >> 3) * k6;
             i2 += (l2 >> 3) * k6;
             j2 += (i3 >> 3) * k6;
@@ -1870,7 +1870,7 @@ final class Texture extends DrawingArea {
             int k7 = k4 - j >> 3;
             i += (j1 & 0x600000) >> 3;
             int i8 = j1 >> 23;
-            if(aBoolean1463)
+            if(opaque)
             {
                 while(k3-- > 0) 
                 {
@@ -2004,7 +2004,7 @@ final class Texture extends DrawingArea {
         }
         int j4 = 0;
         int l4 = 0;
-        int l6 = l - textureInt1;
+        int l6 = l - centreX;
         l1 += (k2 >> 3) * l6;
         i2 += (l2 >> 3) * l6;
         j2 += (i3 >> 3) * l6;
@@ -2037,7 +2037,7 @@ final class Texture extends DrawingArea {
         int l7 = l4 - j >> 3;
         i += j1 & 0x600000;
         int j8 = j1 >> 23;
-        if(aBoolean1463)
+        if(opaque)
         {
             while(k3-- > 0) 
             {
@@ -2171,12 +2171,12 @@ final class Texture extends DrawingArea {
 
     public static final int anInt1459 = -477;
     public static boolean lowMem = true;
-    static boolean aBoolean1462;
-    private static boolean aBoolean1463;
+    static boolean restrictEdges;
+    private static boolean opaque;
     public static boolean aBoolean1464 = true;
-    public static int anInt1465;
-    public static int textureInt1;
-    public static int textureInt2;
+    public static int alpha;
+    public static int centreX;
+    public static int centreY;
     private static int[] anIntArray1468;
     public static final int[] anIntArray1469;
     public static int anIntArray1470[];
@@ -2184,7 +2184,7 @@ final class Texture extends DrawingArea {
     public static int anIntArray1472[];
     private static int anInt1473;
     public static Background aBackgroundArray1474s[] = new Background[50];
-    private static boolean[] aBooleanArray1475 = new boolean[50];
+    private static boolean[] transparent = new boolean[50];
     private static int[] anIntArray1476 = new int[50];
     private static int anInt1477;
     private static int[][] anIntArrayArray1478;
