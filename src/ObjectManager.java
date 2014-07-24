@@ -249,7 +249,7 @@ final class ObjectManager {
 
         }
 
-        worldController.method305(-10, -50, -50);
+        worldController.shadeModels(-10, -50, -50);
         for(int j1 = 0; j1 < anInt146; j1++)
         {
             for(int l1 = 0; l1 < anInt147; l1++)
@@ -762,7 +762,7 @@ label0:
         if(j == 5)
         {
             int i4 = 16;
-            int k4 = worldController.method300(k, l, i);
+            int k4 = worldController.getWallObjectUID(l, i, k);
             if(k4 > 0)
                 i4 = ObjectDef.forID(k4 >> 14 & 0x7fff).anInt775;
             Object obj13;
@@ -1236,7 +1236,7 @@ label0:
         if(k == 5)
         {
             int j4 = 16;
-            int l4 = worldController.method300(k1, i1, j);
+            int l4 = worldController.getWallObjectUID(i1, j, k1);
             if(l4 > 0)
                 j4 = ObjectDef.forID(l4 >> 14 & 0x7fff).anInt775;
             Object obj13;

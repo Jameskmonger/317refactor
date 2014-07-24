@@ -3,10 +3,10 @@
 // Decompiler options: packimports(3) 
 
 
-public final class Object1
+public final class WallObject
 {
 
-    public Object1()
+    public WallObject()
     {
     }
 
@@ -15,8 +15,8 @@ public final class Object1
     int anInt275;
     int orientation;
     int orientation1;
-    public Animable aClass30_Sub2_Sub4_278;
-    public Animable aClass30_Sub2_Sub4_279;
+    public Animable renderable;
+    public Animable renderable2;
     public int uid;
-    byte aByte281;
+    byte objConf;
 }

@@ -696,7 +696,7 @@ public final class client extends RSApplet {
         {
             for(int l2 = 0; l2 < 104; l2++)
             {
-                int i3 = worldController.method303(plane, k2, l2);
+                int i3 = worldController.getGroundDecorationUID(l2, k2, plane);
                 if(i3 != 0)
                 {
                     i3 = i3 >> 14 & 0x7fff;
@@ -741,7 +741,7 @@ public final class client extends RSApplet {
         NodeList class19 = groundArray[plane][i][j];
         if(class19 == null)
         {
-            worldController.method295(plane, i, j);
+            worldController.removeGroundItemTile(i, j, plane);
             return;
         }
         int k = 0xfa0a1f01;
@@ -2143,10 +2143,10 @@ public final class client extends RSApplet {
 
     private void method50(int i, int k, int l, int i1, int j1)
     {
-        int k1 = worldController.method300(j1, l, i);
+        int k1 = worldController.getWallObjectUID(l, i, j1);
         if(k1 != 0)
         {
-            int l1 = worldController.method304(j1, l, i, k1);
+            int l1 = worldController.getIDforLocation(k1, l, i, j1);
             int k2 = l1 >> 6 & 3;
             int i3 = l1 & 0x1f;
             int k3 = k;
@@ -2239,10 +2239,10 @@ public final class client extends RSApplet {
                     }
             }
         }
-        k1 = worldController.method302(j1, l, i);
+        k1 = worldController.getInteractibleObjectUID(l, i, j1);
         if(k1 != 0)
         {
-            int i2 = worldController.method304(j1, l, i, k1);
+            int i2 = worldController.getIDforLocation(k1, l, i, j1);
             int l2 = i2 >> 6 & 3;
             int j3 = i2 & 0x1f;
             int l3 = k1 >> 14 & 0x7fff;
@@ -2279,7 +2279,7 @@ public final class client extends RSApplet {
                 }
             }
         }
-        k1 = worldController.method303(j1, l, i);
+        k1 = worldController.getGroundDecorationUID(i, l, j1);
         if(k1 != 0)
         {
             int j2 = k1 >> 14 & 0x7fff;
@@ -3222,7 +3222,7 @@ public final class client extends RSApplet {
     private boolean method66(int i, int j, int k)
     {
         int i1 = i >> 14 & 0x7fff;
-        int j1 = worldController.method304(plane, k, j, i);
+        int j1 = worldController.getIDforLocation(i, k, j, plane);
         if(j1 == -1)
             return false;
         int k1 = j1 & 0x1f;
@@ -4339,7 +4339,7 @@ public final class client extends RSApplet {
             if(l == j)
                 continue;
             j = l;
-            if(k1 == 2 && worldController.method304(plane, i1, j1, l) >= 0)
+            if(k1 == 2 && worldController.getIDforLocation(l, i1, j1, plane) >= 0)
             {
                 ObjectDef class46 = ObjectDef.forID(l1);
                 if(class46.childrenIDs != null)
@@ -6531,16 +6531,16 @@ public final class client extends RSApplet {
         int k = 0;
         int l = 0;
         if(class30_sub1.anInt1296 == 0)
-            i = worldController.method300(class30_sub1.anInt1295, class30_sub1.anInt1297, class30_sub1.anInt1298);
+            i = worldController.getWallObjectUID(class30_sub1.anInt1297, class30_sub1.anInt1298, class30_sub1.anInt1295);
         if(class30_sub1.anInt1296 == 1)
-            i = worldController.method301(class30_sub1.anInt1295, class30_sub1.anInt1297, class30_sub1.anInt1298);
+            i = worldController.getWallDecorationUID(class30_sub1.anInt1297, class30_sub1.anInt1298, class30_sub1.anInt1295);
         if(class30_sub1.anInt1296 == 2)
-            i = worldController.method302(class30_sub1.anInt1295, class30_sub1.anInt1297, class30_sub1.anInt1298);
+            i = worldController.getInteractibleObjectUID(class30_sub1.anInt1297, class30_sub1.anInt1298, class30_sub1.anInt1295);
         if(class30_sub1.anInt1296 == 3)
-            i = worldController.method303(class30_sub1.anInt1295, class30_sub1.anInt1297, class30_sub1.anInt1298);
+            i = worldController.getGroundDecorationUID(class30_sub1.anInt1298, class30_sub1.anInt1297, class30_sub1.anInt1295);
         if(i != 0)
         {
-            int i1 = worldController.method304(class30_sub1.anInt1295, class30_sub1.anInt1297, class30_sub1.anInt1298, i);
+            int i1 = worldController.getIDforLocation(i, class30_sub1.anInt1297, class30_sub1.anInt1298, class30_sub1.anInt1295);
             j = i >> 14 & 0x7fff;
             k = i1 & 0x1f;
             l = i1 >> 6;
@@ -9771,39 +9771,39 @@ public final class client extends RSApplet {
                 int k20 = intGroundArray[plane][j4][i7 + 1];
                 if(j16 == 0)
                 {
-                    Object1 class10 = worldController.method296(plane, j4, i7);
+                    WallObject class10 = worldController.getWallObject(j4, i7, plane);
                     if(class10 != null)
                     {
                         int k21 = class10.uid >> 14 & 0x7fff;
                         if(j12 == 2)
                         {
-                            class10.aClass30_Sub2_Sub4_278 = new Animable_Sub5(k21, 4 + k14, 2, i19, l19, j18, k20, j17, false);
-                            class10.aClass30_Sub2_Sub4_279 = new Animable_Sub5(k21, k14 + 1 & 3, 2, i19, l19, j18, k20, j17, false);
+                            class10.renderable = new Animable_Sub5(k21, 4 + k14, 2, i19, l19, j18, k20, j17, false);
+                            class10.renderable2 = new Animable_Sub5(k21, k14 + 1 & 3, 2, i19, l19, j18, k20, j17, false);
                         } else
                         {
-                            class10.aClass30_Sub2_Sub4_278 = new Animable_Sub5(k21, k14, j12, i19, l19, j18, k20, j17, false);
+                            class10.renderable = new Animable_Sub5(k21, k14, j12, i19, l19, j18, k20, j17, false);
                         }
                     }
                 }
                 if(j16 == 1)
                 {
-                    Object2 class26 = worldController.method297(j4, i7, plane);
+                    WallDecoration class26 = worldController.getWallDecoration(j4, i7, plane);
                     if(class26 != null)
                         class26.aClass30_Sub2_Sub4_504 = new Animable_Sub5(class26.uid >> 14 & 0x7fff, 0, 4, i19, l19, j18, k20, j17, false);
                 }
                 if(j16 == 2)
                 {
-                    Object5 class28 = worldController.method298(j4, i7, plane);
+                    InteractiveObject class28 = worldController.getInteractiveObject(j4, i7, plane);
                     if(j12 == 11)
                         j12 = 10;
                     if(class28 != null)
-                        class28.aClass30_Sub2_Sub4_521 = new Animable_Sub5(class28.uid >> 14 & 0x7fff, k14, j12, i19, l19, j18, k20, j17, false);
+                        class28.renderable = new Animable_Sub5(class28.uid >> 14 & 0x7fff, k14, j12, i19, l19, j18, k20, j17, false);
                 }
                 if(j16 == 3)
                 {
-                    Object3 class49 = worldController.method299(i7, j4, plane);
+                    GroundDecoration class49 = worldController.getGroundDecoration(j4, i7, plane);
                     if(class49 != null)
-                        class49.aClass30_Sub2_Sub4_814 = new Animable_Sub5(class49.uid >> 14 & 0x7fff, k14, 22, i19, l19, j18, k20, j17, false);
+                        class49.renderable = new Animable_Sub5(class49.uid >> 14 & 0x7fff, k14, 22, i19, l19, j18, k20, j17, false);
                 }
             }
             return;
@@ -10166,31 +10166,31 @@ public final class client extends RSApplet {
                 return;
             int i2 = 0;
             if(j1 == 0)
-                i2 = worldController.method300(j, i1, i);
+                i2 = worldController.getWallObjectUID(i1, i, j);
             if(j1 == 1)
-                i2 = worldController.method301(j, i1, i);
+                i2 = worldController.getWallDecorationUID(i1, i, j);
             if(j1 == 2)
-                i2 = worldController.method302(j, i1, i);
+                i2 = worldController.getInteractibleObjectUID(i1, i, j);
             if(j1 == 3)
-                i2 = worldController.method303(j, i1, i);
+                i2 = worldController.getGroundDecorationUID(i, i1, j);
             if(i2 != 0)
             {
-                int i3 = worldController.method304(j, i1, i, i2);
+                int i3 = worldController.getIDforLocation(i2, i1, i, j);
                 int j2 = i2 >> 14 & 0x7fff;
                 int k2 = i3 & 0x1f;
                 int l2 = i3 >> 6;
                 if(j1 == 0)
                 {
-                    worldController.method291(i1, j, i, (byte)-119);
+                    worldController.removeWallObject(i1, j, i);
                     ObjectDef class46 = ObjectDef.forID(j2);
                     if(class46.aBoolean767)
                         aClass11Array1230[j].method215(l2, k2, class46.aBoolean757, i1, i);
                 }
                 if(j1 == 1)
-                    worldController.method292(i, j, i1);
+                    worldController.removeWallDecoration(i1, i, j);
                 if(j1 == 2)
                 {
-                    worldController.method293(j, i1, i);
+                    worldController.removeInteractiveObject(i1, i, j);
                     ObjectDef class46_1 = ObjectDef.forID(j2);
                     if(i1 + class46_1.anInt744 > 103 || i + class46_1.anInt744 > 103 || i1 + class46_1.anInt761 > 103 || i + class46_1.anInt761 > 103)
                         return;
@@ -10199,7 +10199,7 @@ public final class client extends RSApplet {
                 }
                 if(j1 == 3)
                 {
-                    worldController.method294(j, i, i1);
+                    worldController.removeGroundDecoration(i1, i, j);
                     ObjectDef class46_2 = ObjectDef.forID(j2);
                     if(class46_2.aBoolean767 && class46_2.hasActions)
                         aClass11Array1230[j].method218(i, i1);
