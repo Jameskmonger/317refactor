@@ -149,7 +149,7 @@ final class WorldController {
             groundArray[z][x][y].plainTile = tile;
             return;
         }
-        ShapedTile tile = new ShapedTile(y, k3, j3, i2, j1, i4, i1, k2, k4, i3, j2, l1, k1, l, j4, l3, l2, x, l4);
+        ShapedTile tile = new ShapedTile(x, k1, l1, j2, i2, y, i1, j1, l, k2, k3, l2, l3, j3, j4, i3, i4, l4, k4);
         for(int _z = z; _z >= 0; _z--)
             if(groundArray[_z][x][y] == null)
                 groundArray[_z][x][y] = new Ground(_z, x, y);
