@@ -4,30 +4,30 @@
 
 final class WorldController {
 
-    public WorldController(int ai[][][])
+    public WorldController(int heightMap[][][])
     {
-        int i = 104;//was parameter
-        int j = 104;//was parameter
-        int k = 4;//was parameter
+        int length = 104;//was parameter
+        int width = 104;//was parameter
+        int height = 4;//was parameter
         aBoolean434 = true;
         interactiveObjectCache = new InteractiveObject[5000];
         anIntArray486 = new int[10000];
         anIntArray487 = new int[10000];
-        mapSizeZ = k;
-        mapSizeX = j;
-        mapSizeY = i;
-            groundArray = new Ground[k][j][i];
-            anIntArrayArrayArray445 = new int[k][j + 1][i + 1];
-            heightMap = ai;
-            initToNull();
+        mapSizeZ = height;
+        mapSizeX = width;
+        mapSizeY = length;
+        groundArray = new Ground[height][width][length];
+        anIntArrayArrayArray445 = new int[height][width + 1][length + 1];
+        this.heightMap = heightMap;
+        initToNull();
     }
 
     public static void nullLoader()
     {
-        aClass28Array462 = null;
+        interactiveObjects = null;
         cullingClusterPointer = null;
         cullingClusters = null;
-        aClass19_477 = null;
+        tileList = null;
         TILE_VISIBILITY_MAPS = null;
         TILE_VISIBILITY_MAP = null;
     }
@@ -56,8 +56,8 @@ final class WorldController {
             interactiveObjectCache[k1] = null;
 
         interactiveObjectCacheCurrentPos = 0;
-        for(int l1 = 0; l1 < aClass28Array462.length; l1++)
-            aClass28Array462[l1] = null;
+        for(int l1 = 0; l1 < interactiveObjects.length; l1++)
+            interactiveObjects[l1] = null;
 
     }
 
@@ -82,7 +82,7 @@ final class WorldController {
             Ground _tile = groundArray[z][x][y] = groundArray[z + 1][x][y];
             if(_tile != null)
             {
-                _tile.anInt1307--;
+                _tile.z--;
                 for(int e = 0; e < _tile.entityCount; e++)
                 {
                     InteractiveObject entity = _tile.interactiveObjects[e];
@@ -691,7 +691,7 @@ final class WorldController {
 
     }
 
-    private void method308(Model model, Model model_1, int i, int j, int k, boolean flag)
+    private void method308(Model model, Model model_1, int posX, int posY, int posZ, boolean flag)
     {
         anInt488++;
         int l = 0;
@@ -703,13 +703,13 @@ final class WorldController {
             VertexNormal offsetVertexNormal = model.vertexNormalOffset[vertex];
             if(offsetVertexNormal.magnitude != 0)
             {
-                int y = model.verticesY[vertex] - j;
+                int y = model.verticesY[vertex] - posY;
                 if(y <= model_1.maxY)
                 {
-                    int x = model.verticesX[vertex] - i;
+                    int x = model.verticesX[vertex] - posX;
                     if(x >= model_1.maxY && x <= model_1.maxX)
                     {
-                        int z = model.verticesZ[vertex] - k;
+                        int z = model.verticesZ[vertex] - posZ;
                         if(z >= model_1.minZ && z <= model_1.maxZ)
                         {
                             for(int v = 0; v < vertexCount; v++)
@@ -1101,19 +1101,19 @@ label0:
 
     private void renderTile(Ground _tile, boolean flag)
     {
-        aClass19_477.insertHead(_tile);
+        tileList.insertHead(_tile);
         do
         {
             Ground groundTile;
             do
             {
-                groundTile = (Ground)aClass19_477.popHead();
+                groundTile = (Ground)tileList.popHead();
                 if(groundTile == null)
                     return;
             } while(!groundTile.aBoolean1323);
-            int x = groundTile.anInt1308;
-            int y = groundTile.anInt1309;
-            int z = groundTile.anInt1307;
+            int x = groundTile.x;
+            int y = groundTile.y;
+            int z = groundTile.z;
             int l = groundTile.anInt1310;
             Ground tiles[][] = groundArray[z];
             if(groundTile.aBoolean1322)
@@ -1164,7 +1164,7 @@ label0:
                             renderPlainTile(tile.plainTile, x, y, 0, curveSineX, curveCosineX, curveSineY, curveCosineY);
                     } else
                     if(tile.shapedTile != null && !method320(x, y, 0))
-                        renderShapedTile(x, curveSineY, curveSineX, tile.shapedTile, curveCosineY, y, curveCosineX);
+                        renderShapedTile(tile.shapedTile, x, y, curveSineX, curveCosineX, curveSineY, curveCosineY);
                     WallObject wallObject = tile.wallObject;
                     if(wallObject != null)
                         wallObject.renderable.renderAtPoint(0, curveSineY, curveCosineY, curveSineX, curveCosineX, wallObject.x - cameraPosX, wallObject.z - cameraPosZ, wallObject.y - cameraPosY, wallObject.uid);
@@ -1188,7 +1188,7 @@ label0:
                 if(groundTile.shapedTile != null && !method320(x, y, l))
                 {
                     flag1 = true;
-                    renderShapedTile(x, curveSineY, curveSineX, groundTile.shapedTile, curveCosineY, y, curveCosineX);
+                    renderShapedTile(groundTile.shapedTile, x, y, curveSineX, curveCosineX, curveSineY, curveCosineY);
                 }
                 int j1 = 0;
                 int j2 = 0;
@@ -1267,14 +1267,14 @@ label0:
                             k10 = k6;
                         if((wallDecoration.configBits & 0x100) != 0 && k10 < k9)
                         {
-                            int i11 = j4 + anIntArray463[i8];
-                            int k11 = k6 + anIntArray464[i8];
+                            int i11 = j4 + faceOffsetX2[i8];
+                            int k11 = k6 + faceOffsetY2[i8];
                             wallDecoration.renderable.renderAtPoint(i8 * 512 + 256, curveSineY, curveCosineY, curveSineX, curveCosineX, i11, l5, k11, wallDecoration.uid);
                         }
                         if((wallDecoration.configBits & 0x200) != 0 && k10 > k9)
                         {
-                            int j11 = j4 + anIntArray465[i8];
-                            int l11 = k6 + anIntArray466[i8];
+                            int j11 = j4 + faceOffsetX3[i8];
+                            int l11 = k6 + faceOffsetY3[i8];
                             wallDecoration.renderable.renderAtPoint(i8 * 512 + 1280 & 0x7ff, curveSineY, curveCosineY, curveSineX, curveCosineX, j11, l5, l11, wallDecoration.uid);
                         }
                     }
@@ -1301,25 +1301,25 @@ label0:
                     {
                         Ground tile = tiles[x + 1][y];
                         if(tile != null && tile.aBoolean1323)
-                            aClass19_477.insertHead(tile);
+                            tileList.insertHead(tile);
                     }
                     if(y < cameraPositionTileY && (interactiveObjectsSizeOR & 2) != 0)
                     {
                         Ground tile = tiles[x][y + 1];
                         if(tile != null && tile.aBoolean1323)
-                            aClass19_477.insertHead(tile);
+                            tileList.insertHead(tile);
                     }
                     if(x > cameraPositionTileX && (interactiveObjectsSizeOR & 1) != 0)
                     {
                         Ground tile = tiles[x - 1][y];
                         if(tile != null && tile.aBoolean1323)
-                            aClass19_477.insertHead(tile);
+                            tileList.insertHead(tile);
                     }
                     if(y > cameraPositionTileY && (interactiveObjectsSizeOR & 8) != 0)
                     {
                         Ground tile = tiles[x][y - 1];
                         if(tile != null && tile.aBoolean1323)
-                            aClass19_477.insertHead(tile);
+                            tileList.insertHead(tile);
                     }
                 }
             }
@@ -1384,7 +1384,7 @@ label0:
 
                         }
 
-                        aClass28Array462[l1++] = entity;
+                        interactiveObjects[l1++] = entity;
                         int i5 = cameraPositionTileX - entity.tileLeft;
                         int i6 = entity.tileRight - cameraPositionTileX;
                         if(i6 > i5)
@@ -1403,7 +1403,7 @@ label0:
                         int l3 = -1;
                         for(int j5 = 0; j5 < l1; j5++)
                         {
-                            InteractiveObject entity = aClass28Array462[j5];
+                            InteractiveObject entity = interactiveObjects[j5];
                             if(entity.anInt528 != anInt448)
                                 if(entity.anInt527 > i3)
                                 {
@@ -1414,8 +1414,8 @@ label0:
                                 {
                                     int j7 = entity.worldX - cameraPosX;
                                     int k8 = entity.worldY - cameraPosY;
-                                    int l9 = aClass28Array462[l3].worldX - cameraPosX;
-                                    int l10 = aClass28Array462[l3].worldY - cameraPosY;
+                                    int l9 = interactiveObjects[l3].worldX - cameraPosX;
+                                    int l10 = interactiveObjects[l3].worldY - cameraPosY;
                                     if(j7 * j7 + k8 * k8 > l9 * l9 + l10 * l10)
                                         l3 = j5;
                                 }
@@ -1423,20 +1423,22 @@ label0:
 
                         if(l3 == -1)
                             break;
-                        InteractiveObject entity = aClass28Array462[l3];
+                        InteractiveObject entity = interactiveObjects[l3];
                         entity.anInt528 = anInt448;
+                        
                         if(!method323(entity.tileLeft, entity.tileRight, entity.tileTop, entity.tileBottom, l, entity.renderable.modelHeight))
                             entity.renderable.renderAtPoint(entity.rotation, curveSineY, curveCosineY, curveSineX, curveCosineX, entity.worldX - cameraPosX, entity.worldZ - cameraPosZ, entity.worldY - cameraPosY, entity.uid);
+                        
                         for(int _x = entity.tileLeft; _x <= entity.tileRight; _x++)
                         {
                             for(int _y = entity.tileTop; _y <= entity.tileBottom; _y++)
                             {
                                 Ground tile = tiles[_x][_y];
                                 if(tile.anInt1325 != 0)
-                                    aClass19_477.insertHead(tile);
+                                    tileList.insertHead(tile);
                                 else
                                 if((_x != x || _y != y) && tile.aBoolean1323)
-                                    aClass19_477.insertHead(tile);
+                                    tileList.insertHead(tile);
                             }
 
                         }
@@ -1512,14 +1514,14 @@ label0:
                             l7 = i4;
                         if((wallDecoration.configBits & 0x100) != 0 && l7 >= j6)
                         {
-                            int i9 = l2 + anIntArray463[face];
-                            int i10 = i4 + anIntArray464[face];
+                            int i9 = l2 + faceOffsetX2[face];
+                            int i10 = i4 + faceOffsetY2[face];
                             wallDecoration.renderable.renderAtPoint(face * 512 + 256, curveSineY, curveCosineY, curveSineX, curveCosineX, i9, j3, i10, wallDecoration.uid);
                         }
                         if((wallDecoration.configBits & 0x200) != 0 && l7 <= j6)
                         {
-                            int j9 = l2 + anIntArray465[face];
-                            int j10 = i4 + anIntArray466[face];
+                            int j9 = l2 + faceOffsetX3[face];
+                            int j10 = i4 + faceOffsetY3[face];
                             wallDecoration.renderable.renderAtPoint(face * 512 + 1280 & 0x7ff, curveSineY, curveCosineY, curveSineX, curveCosineX, j9, j3, j10, wallDecoration.uid);
                         }
                     }
@@ -1536,37 +1538,37 @@ label0:
             {
                 Ground tile = groundArray[z + 1][x][y];
                 if(tile != null && tile.aBoolean1323)
-                    aClass19_477.insertHead(tile);
+                    tileList.insertHead(tile);
             }
             if(x < cameraPositionTileX)
             {
                 Ground tile = tiles[x + 1][y];
                 if(tile != null && tile.aBoolean1323)
-                    aClass19_477.insertHead(tile);
+                    tileList.insertHead(tile);
             }
             if(y < cameraPositionTileY)
             {
                 Ground tile = tiles[x][y + 1];
                 if(tile != null && tile.aBoolean1323)
-                    aClass19_477.insertHead(tile);
+                    tileList.insertHead(tile);
             }
             if(x > cameraPositionTileX)
             {
                 Ground tile = tiles[x - 1][y];
                 if(tile != null && tile.aBoolean1323)
-                    aClass19_477.insertHead(tile);
+                    tileList.insertHead(tile);
             }
             if(y > cameraPositionTileY)
             {
                 Ground tile = tiles[x][y - 1];
                 if(tile != null && tile.aBoolean1323)
-                    aClass19_477.insertHead(tile);
+                    tileList.insertHead(tile);
             }
         } while(true);
     }
 
-    void renderPlainTile(PlainTile plainTile, int tileX, int tileY, int tileZ, int sinX, int cosX, int sinY,
-            int cosY)
+    void renderPlainTile(PlainTile plainTile, int tileX, int tileY, int tileZ, int sinX, int cosineX, int sinY,
+            int cosineY)
     {
         int xC;
         int xA = xC = (tileX << 7) - cameraPosX;
@@ -1580,35 +1582,35 @@ label0:
         int zB = heightMap[tileZ][tileX + 1][tileY] - cameraPosZ;
         int zC = heightMap[tileZ][tileX + 1][tileY + 1] - cameraPosZ;
         int zD = heightMap[tileZ][tileX][tileY + 1] - cameraPosZ;
-        int temp = yA * sinX + xA * cosX >> 16;
-        yA = yA * cosX - xA * sinX >> 16;
+        int temp = yA * sinX + xA * cosineX >> 16;
+        yA = yA * cosineX - xA * sinX >> 16;
         xA = temp;
-        temp = zA * cosY - yA * sinY >> 16;
-        yA = zA * sinY + yA * cosY >> 16;
+        temp = zA * cosineY - yA * sinY >> 16;
+        yA = zA * sinY + yA * cosineY >> 16;
         zA = temp;
         if(yA < 50)
             return;
-        temp = yB * sinX + xB * cosX >> 16;
-        yB = yB * cosX - xB * sinX >> 16;
+        temp = yB * sinX + xB * cosineX >> 16;
+        yB = yB * cosineX - xB * sinX >> 16;
         xB = temp;
-        temp = zB * cosY - yB * sinY >> 16;
-        yB = zB * sinY + yB * cosY >> 16;
+        temp = zB * cosineY - yB * sinY >> 16;
+        yB = zB * sinY + yB * cosineY >> 16;
         zB = temp;
         if(yB < 50)
             return;
-        temp = yD * sinX + xD * cosX >> 16;
-        yD = yD * cosX - xD * sinX >> 16;
+        temp = yD * sinX + xD * cosineX >> 16;
+        yD = yD * cosineX - xD * sinX >> 16;
         xD = temp;
-        temp = zC * cosY - yD * sinY >> 16;
-        yD = zC * sinY + yD * cosY >> 16;
+        temp = zC * cosineY - yD * sinY >> 16;
+        yD = zC * sinY + yD * cosineY >> 16;
         zC = temp;
         if(yD < 50)
             return;
-        temp = yC * sinX + xC * cosX >> 16;
-        yC = yC * cosX - xC * sinX >> 16;
+        temp = yC * sinX + xC * cosineX >> 16;
+        yC = yC * cosineX - xC * sinX >> 16;
         xC = temp;
-        temp = zD * cosY - yC * sinY >> 16;
-        yC = zD * sinY + yC * cosY >> 16;
+        temp = zD * cosineY - yC * sinY >> 16;
+        yC = zD * sinY + yC * cosineY >> 16;
         zD = temp;
         if(yC < 50)
             return;
@@ -1673,20 +1675,20 @@ label0:
         }
     }
 
-    private void renderShapedTile(int i, int j, int k, ShapedTile shapedTile, int l, int i1,
-                           int j1)
-    {
+    private void renderShapedTile(ShapedTile shapedTile, int tileX, int tileY, int sineX, int cosineX, int sineY,
+                           int cosineY)
+    {    	
         int triangleCount = shapedTile.originalVertexX.length;
         for(int triangle = 0; triangle < triangleCount; triangle++)
         {
             int viewspaceX = shapedTile.originalVertexX[triangle] - cameraPosX;
             int viewspaceY = shapedTile.originalVertexY[triangle] - cameraPosZ;
             int viewspaceZ = shapedTile.originalVertexZ[triangle] - cameraPosY;
-            int temp = viewspaceZ * k + viewspaceX * j1 >> 16;
-            viewspaceZ = viewspaceZ * j1 - viewspaceX * k >> 16;
+            int temp = viewspaceZ * sineX + viewspaceX * cosineX >> 16;
+            viewspaceZ = viewspaceZ * cosineX - viewspaceX * sineX >> 16;
             viewspaceX = temp;
-            temp = viewspaceY * l - viewspaceZ * j >> 16;
-            viewspaceZ = viewspaceY * j + viewspaceZ * l >> 16;
+            temp = viewspaceY * cosineY - viewspaceZ * sineY >> 16;
+            viewspaceZ = viewspaceY * sineY + viewspaceZ * cosineY >> 16;
             viewspaceY = temp;
             if(viewspaceZ < 50)
                 return;
@@ -1718,8 +1720,8 @@ label0:
                 Texture.restrictEdges = screenXA < 0 || screenXB < 0 || screenXC < 0 || screenXA > DrawingArea.centerX || screenXB > DrawingArea.centerX || screenXC > DrawingArea.centerX;
                 if(clicked && isMouseWithinTriangle(clickX, clickY, screenYA, screenYB, screenYC, screenXA, screenXB, screenXC))
                 {
-                    clickedTileX = i;
-                    clickedTileY = i1;
+                    clickedTileX = tileX;
+                    clickedTileY = tileY;
                 }
                 if(shapedTile.triangleTexture == null || shapedTile.triangleTexture[triangle] == -1)
                 {
@@ -1754,21 +1756,22 @@ label0:
         return (colourA & 0xff80) + colourB;
     }
 
-    private boolean isMouseWithinTriangle(int mouseX, int mouseY, int k, int l, int i1, int j1, int k1,
-            int l1)
+    private boolean isMouseWithinTriangle(int mouseX, int mouseY, int pointAY, int pointBY, int pointCY, int pointAX, int pointBX,
+            int pointCX)
     {
-        if(mouseY < k && mouseY < l && mouseY < i1)
+        if(mouseY < pointAY && mouseY < pointBY && mouseY < pointCY)
             return false;
-        if(mouseY > k && mouseY > l && mouseY > i1)
+        if(mouseY > pointAY && mouseY > pointBY && mouseY > pointCY)
             return false;
-        if(mouseX < j1 && mouseX < k1 && mouseX < l1)
+        if(mouseX < pointAX && mouseX < pointBX && mouseX < pointCX)
             return false;
-        if(mouseX > j1 && mouseX > k1 && mouseX > l1)
+        if(mouseX > pointAX && mouseX > pointBX && mouseX > pointCX)
             return false;
-        int i2 = (mouseY - k) * (k1 - j1) - (mouseX - j1) * (l - k);
-        int j2 = (mouseY - i1) * (j1 - l1) - (mouseX - l1) * (k - i1);
-        int k2 = (mouseY - l) * (l1 - k1) - (mouseX - k1) * (i1 - l);
-        return i2 * k2 > 0 && k2 * j2 > 0;
+
+        int b1 = (mouseY - pointAY) * (pointBX - pointAX) - (mouseX - pointAX) * (pointBY - pointAY);
+        int b2 = (mouseY - pointCY) * (pointAX - pointCX) - (mouseX - pointCX) * (pointAY - pointCY);
+        int b3 = (mouseY - pointBY) * (pointCX - pointBX) - (mouseX - pointBX) * (pointCY - pointBY);
+        return b1 * b3 > 0 && b3 * b2 > 0;
     }
 
     private void processCulling()
@@ -2167,17 +2170,17 @@ label0:
     private static int curveCosineY;
     private static int curveSineX;
     private static int curveCosineX;
-    private static InteractiveObject[] aClass28Array462 = new InteractiveObject[100];
-    private static final int[] anIntArray463 = {
+    private static InteractiveObject[] interactiveObjects = new InteractiveObject[100];
+    private static final int[] faceOffsetX2 = {
         53, -53, -53, 53
     };
-    private static final int[] anIntArray464 = {
+    private static final int[] faceOffsetY2 = {
         -53, -53, 53, 53
     };
-    private static final int[] anIntArray465 = {
+    private static final int[] faceOffsetX3 = {
         -45, 45, 45, -45
     };
-    private static final int[] anIntArray466 = {
+    private static final int[] faceOffsetY3 = {
         45, 45, -45, -45
     };
     private static boolean clicked;
@@ -2190,7 +2193,7 @@ label0:
     private static CullingCluster[][] cullingClusters;
     private static int processedCullingClustersPointer;
     private static final CullingCluster[] processedCullingClusters = new CullingCluster[500];
-    private static NodeList aClass19_477 = new NodeList();
+    private static NodeList tileList = new NodeList();
     private static final int[] anIntArray478 = {
         19, 55, 38, 155, 255, 110, 137, 205, 76
     };

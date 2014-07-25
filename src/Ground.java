@@ -9,14 +9,14 @@ public final class Ground extends Node {
     {
         interactiveObjects = new InteractiveObject[5];
         interactiveObjectsSize = new int[5];
-        anInt1310 = anInt1307 = i;
-        anInt1308 = j;
-        anInt1309 = k;
+        anInt1310 = z = i;
+        x = j;
+        y = k;
     }
 
-    int anInt1307;
-    final int anInt1308;
-    final int anInt1309;
+    int z;
+    final int x;
+    final int y;
     final int anInt1310;
     public PlainTile plainTile;
     public ShapedTile shapedTile;
