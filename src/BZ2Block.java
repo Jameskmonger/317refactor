@@ -3,20 +3,20 @@
 // Decompiler options: packimports(3) 
 
 
-final class Class32
+final class BZ2Block
 {
 
-    Class32()
+    BZ2Block()
     {
         anIntArray583 = new int[256];
         anIntArray585 = new int[257];
-        aBooleanArray589 = new boolean[256];
-        aBooleanArray590 = new boolean[16];
+        inUse = new boolean[256];
+        inUse16 = new boolean[16];
         aByteArray591 = new byte[256];
         aByteArray592 = new byte[4096];
         anIntArray593 = new int[16];
         aByteArray594 = new byte[18002];
-        aByteArray595 = new byte[18002];
+        selectorMtf = new byte[18002];
         aByteArrayArray596 = new byte[6][258];
         anIntArrayArray597 = new int[6][258];
         anIntArrayArray598 = new int[6][258];
@@ -36,26 +36,26 @@ final class Class32
     int anInt572;
     byte aByte573;
     int anInt574;
-    boolean aBoolean575;
+    boolean randomised;
     int anInt576;
     int anInt577;
-    int anInt578;
+    int blockSize_100k;
     int anInt579;
-    int anInt580;
+    int originalPointer;
     int anInt581;
     int anInt582;
     final int[] anIntArray583;
     int anInt584;
     final int[] anIntArray585;
     public static int anIntArray587[];
-    int anInt588;
-    final boolean[] aBooleanArray589;
-    final boolean[] aBooleanArray590;
+    int nInUse;
+    final boolean[] inUse;
+    final boolean[] inUse16;
     final byte[] aByteArray591;
     final byte[] aByteArray592;
     final int[] anIntArray593;
     final byte[] aByteArray594;
-    final byte[] aByteArray595;
+    final byte[] selectorMtf;
     final byte[][] aByteArrayArray596;
     final int[][] anIntArrayArray597;
     final int[][] anIntArrayArray598;
