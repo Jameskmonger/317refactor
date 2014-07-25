@@ -116,8 +116,8 @@ public class DrawingArea extends NodeSub {
 
     public static void fillPixels(int i, int j, int k, int l, int i1)
     {
-        method339(i1, l, j, i);
-        method339((i1 + k) - 1, l, j, i);
+        drawHLine(i1, l, j, i);
+        drawHLine((i1 + k) - 1, l, j, i);
         method341(i1, l, k, i);
         method341(i1, l, k, (i + j) - 1);
     }
@@ -133,7 +133,7 @@ public class DrawingArea extends NodeSub {
         }
     }
 
-    public static void method339(int i, int j, int k, int l)
+    public static void drawHLine(int i, int j, int k, int l)
     {
         if(i < topY || i >= bottomY)
             return;

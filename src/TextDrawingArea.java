@@ -1,356 +1,352 @@
-// Decompiled by Jad v1.5.8f. Copyright 2001 Pavel Kouznetsov.
-// Jad home page: http://www.kpdus.com/jad.html
-// Decompiler options: packimports(3) 
-
 import java.util.Random;
 
 public final class TextDrawingArea extends DrawingArea {
 
     public TextDrawingArea(boolean flag, String s, StreamLoader streamLoader)
     {
-        aByteArrayArray1491 = new byte[256][];
-        anIntArray1492 = new int[256];
-        anIntArray1493 = new int[256];
-        anIntArray1494 = new int[256];
-        anIntArray1495 = new int[256];
-        anIntArray1496 = new int[256];
-        aRandom1498 = new Random();
-        aBoolean1499 = false;
-        Stream stream = new Stream(streamLoader.getDataForName(s + ".dat"));
-        Stream stream_1 = new Stream(streamLoader.getDataForName("index.dat"));
-        stream_1.currentOffset = stream.getUnsignedLEShort() + 4;
-        int k = stream_1.getUnsignedByte();
+        glyphPixels = new byte[256][];
+        glyphWidth = new int[256];
+        glyphHeight = new int[256];
+        horizontalKerning = new int[256];
+        verticalKerning = new int[256];
+        characterEffectiveWidth = new int[256];
+        random = new Random();
+        strikethrough = false;
+        Stream data = new Stream(streamLoader.getDataForName(s + ".dat"));
+        Stream index = new Stream(streamLoader.getDataForName("index.dat"));
+        index.currentOffset = data.getUnsignedLEShort() + 4;
+        int k = index.getUnsignedByte();
         if(k > 0)
-            stream_1.currentOffset += 3 * (k - 1);
-        for(int l = 0; l < 256; l++)
+            index.currentOffset += 3 * (k - 1);
+        for(int c = 0; c < 256; c++)
         {
-            anIntArray1494[l] = stream_1.getUnsignedByte();
-            anIntArray1495[l] = stream_1.getUnsignedByte();
-            int i1 = anIntArray1492[l] = stream_1.getUnsignedLEShort();
-            int j1 = anIntArray1493[l] = stream_1.getUnsignedLEShort();
-            int k1 = stream_1.getUnsignedByte();
-            int l1 = i1 * j1;
-            aByteArrayArray1491[l] = new byte[l1];
-            if(k1 == 0)
+            horizontalKerning[c] = index.getUnsignedByte();
+            verticalKerning[c] = index.getUnsignedByte();
+            int width = glyphWidth[c] = index.getUnsignedLEShort();
+            int height = glyphHeight[c] = index.getUnsignedLEShort();
+            int rectangular = index.getUnsignedByte();
+            int area = width * height;
+            glyphPixels[c] = new byte[area];
+            if(rectangular == 0)
             {
-                for(int i2 = 0; i2 < l1; i2++)
-                    aByteArrayArray1491[l][i2] = stream.readSignedByte();
+                for(int p = 0; p < area; p++)
+                    glyphPixels[c][p] = data.readSignedByte();
 
             } else
-            if(k1 == 1)
+            if(rectangular == 1)
             {
-                for(int j2 = 0; j2 < i1; j2++)
+                for(int w = 0; w < width; w++)
                 {
-                    for(int l2 = 0; l2 < j1; l2++)
-                        aByteArrayArray1491[l][j2 + l2 * i1] = stream.readSignedByte();
+                    for(int h = 0; h < height; h++)
+                        glyphPixels[c][w + h * width] = data.readSignedByte();
 
                 }
 
             }
-            if(j1 > anInt1497 && l < 128)
-                anInt1497 = j1;
-            anIntArray1494[l] = 1;
-            anIntArray1496[l] = i1 + 2;
-            int k2 = 0;
-            for(int i3 = j1 / 7; i3 < j1; i3++)
-                k2 += aByteArrayArray1491[l][i3 * i1];
+            if(height > charHeight && c < 128)
+                charHeight = height;
+            horizontalKerning[c] = 1;
+            characterEffectiveWidth[c] = width + 2;
+            int pixelCount = 0;
+            for(int h = height / 7; h < height; h++)
+                pixelCount += glyphPixels[c][h * width];
 
-            if(k2 <= j1 / 7)
+            if(pixelCount <= height / 7)
             {
-                anIntArray1496[l]--;
-                anIntArray1494[l] = 0;
+                characterEffectiveWidth[c]--;
+                horizontalKerning[c] = 0;
             }
-            k2 = 0;
-            for(int j3 = j1 / 7; j3 < j1; j3++)
-                k2 += aByteArrayArray1491[l][(i1 - 1) + j3 * i1];
+            pixelCount = 0;
+            for(int h = height / 7; h < height; h++)
+                pixelCount += glyphPixels[c][(width - 1) + h * width];
 
-            if(k2 <= j1 / 7)
-                anIntArray1496[l]--;
+            if(pixelCount <= height / 7)
+                characterEffectiveWidth[c]--;
         }
 
         if(flag)
         {
-            anIntArray1496[32] = anIntArray1496[73];
+            characterEffectiveWidth[32] = characterEffectiveWidth[73];
         } else
         {
-            anIntArray1496[32] = anIntArray1496[105];
+            characterEffectiveWidth[32] = characterEffectiveWidth[105];
         }
     }
 
-    public void method380(String s, int i, int j, int k)
+    public void drawTextHRightVTop(String text, int x, int y, int colour)
     {
-        method385(j, s, k, i - method384(s));
+        drawTextHLeftVTop(text, x - getStringWidth(text), y, colour);
     }
 
-    public void drawText(int i, String s, int k, int l)
+    public void drawTextHMidVTop(String text, int x, int y, int colour)
     {
-        method385(i, s, k, l - method384(s) / 2);
+        drawTextHLeftVTop(text, x - getStringWidth(text) / 2, y, colour);
     }
 
-    public void method382(int i, int j, String s, int l, boolean flag)
+    public void drawShadowTextHMidVTop(int i, int x, String text, int l, boolean flag)
     {
-        method389(flag, j - getTextWidth(s) / 2, i, s, l);
+        drawShadowTextHLeftVTop(text, x - getFormattedStringWidth(text) / 2, l, i, flag);
     }
 
-    public int getTextWidth(String s)
+    public int getFormattedStringWidth(String string)
     {
-        if(s == null)
+        if(string == null)
             return 0;
-        int j = 0;
-        for(int k = 0; k < s.length(); k++)
-            if(s.charAt(k) == '@' && k + 4 < s.length() && s.charAt(k + 4) == '@')
-                k += 4;
+        int width = 0;
+        for(int c = 0; c < string.length(); c++)
+            if(string.charAt(c) == '@' && c + 4 < string.length() && string.charAt(c + 4) == '@')
+                c += 4;
             else
-                j += anIntArray1496[s.charAt(k)];
+                width += characterEffectiveWidth[string.charAt(c)];
 
-        return j;
+        return width;
     }
 
-    public int method384(String s)
+    public int getStringWidth(String string)
     {
-        if(s == null)
+        if(string == null)
             return 0;
-        int j = 0;
-        for(int k = 0; k < s.length(); k++)
-            j += anIntArray1496[s.charAt(k)];
-        return j;
+        int width = 0;
+        for(int c = 0; c < string.length(); c++)
+            width += characterEffectiveWidth[string.charAt(c)];
+        return width;
     }
 
-    public void method385(int i, String s, int j, int l)
+    public void drawTextHLeftVTop(String text, int x, int y, int colour)
     {
-        if(s == null)
+        if(text == null)
             return;
-        j -= anInt1497;
-        for(int i1 = 0; i1 < s.length(); i1++)
+        y -= charHeight;
+        for(int c = 0; c < text.length(); c++)
         {
-            char c = s.charAt(i1);
-            if(c != ' ')
-                method392(aByteArrayArray1491[c], l + anIntArray1494[c], j + anIntArray1495[c], anIntArray1492[c], anIntArray1493[c], i);
-            l += anIntArray1496[c];
+            char character = text.charAt(c);
+            if(character != ' ')
+                drawGlyph(glyphPixels[character], x + horizontalKerning[character], y + verticalKerning[character], glyphWidth[character], glyphHeight[character], colour);
+            x += characterEffectiveWidth[character];
         }
     }
 
-    public void method386(int i, String s, int j, int k, int l)
+    public void drawTextHRMidVTopWaving(String text, int x, int y, int colour, int wavePart)
     {
-        if(s == null)
+        if(text == null)
             return;
-        j -= method384(s) / 2;
-        l -= anInt1497;
-        for(int i1 = 0; i1 < s.length(); i1++)
+        x -= getStringWidth(text) / 2;
+        y -= charHeight;
+        for(int c = 0; c < text.length(); c++)
         {
-            char c = s.charAt(i1);
-            if(c != ' ')
-                method392(aByteArrayArray1491[c], j + anIntArray1494[c], l + anIntArray1495[c] + (int)(Math.sin((double)i1 / 2D + (double)k / 5D) * 5D), anIntArray1492[c], anIntArray1493[c], i);
-            j += anIntArray1496[c];
-        }
-
-    }
-
-    public void method387(int i, String s, int j, int k, int l)
-    {
-        if(s == null)
-            return;
-        i -= method384(s) / 2;
-        k -= anInt1497;
-        for(int i1 = 0; i1 < s.length(); i1++)
-        {
-            char c = s.charAt(i1);
-            if(c != ' ')
-                method392(aByteArrayArray1491[c], i + anIntArray1494[c] + (int)(Math.sin((double)i1 / 5D + (double)j / 5D) * 5D), k + anIntArray1495[c] + (int)(Math.sin((double)i1 / 3D + (double)j / 5D) * 5D), anIntArray1492[c], anIntArray1493[c], l);
-            i += anIntArray1496[c];
+            char character = text.charAt(c);
+            if(character != ' ')
+                drawGlyph(glyphPixels[character], x + horizontalKerning[character], y + verticalKerning[character] + (int)(Math.sin((double)c / 2D + (double)wavePart / 5D) * 5D), glyphWidth[character], glyphHeight[character], colour);
+            x += characterEffectiveWidth[character];
         }
 
     }
 
-    public void method388(int i, String s, int j, int k, int l, int i1)
+    public void drawTextHRMidVTopWaving2(String text, int x, int y, int colour, int wavePart)
     {
-        if(s == null)
+        if(text == null)
             return;
-        double d = 7D - (double)i / 8D;
+        x -= getStringWidth(text) / 2;
+        y -= charHeight;
+        for(int c = 0; c < text.length(); c++)
+        {
+            char character = text.charAt(c);
+            if(character != ' ')
+                drawGlyph(glyphPixels[character], x + horizontalKerning[character] + (int)(Math.sin((double)c / 5D + (double)wavePart / 5D) * 5D), y + verticalKerning[character] + (int)(Math.sin((double)c / 3D + (double)wavePart / 5D) * 5D), glyphWidth[character], glyphHeight[character], colour);
+            x += characterEffectiveWidth[character];
+        }
+
+    }
+
+    public void drawTextHRMidVTopWaving(String text, int x, int y, int colour, int wavePart, int wavePart2)
+    {
+        if(text == null)
+            return;
+        double d = 7D - (double)wavePart / 8D;
         if(d < 0.0D)
             d = 0.0D;
-        l -= method384(s) / 2;
-        k -= anInt1497;
-        for(int k1 = 0; k1 < s.length(); k1++)
+        x -= getStringWidth(text) / 2;
+        y -= charHeight;
+        for(int c = 0; c < text.length(); c++)
         {
-            char c = s.charAt(k1);
-            if(c != ' ')
-                method392(aByteArrayArray1491[c], l + anIntArray1494[c], k + anIntArray1495[c] + (int)(Math.sin((double)k1 / 1.5D + (double)j) * d), anIntArray1492[c], anIntArray1493[c], i1);
-            l += anIntArray1496[c];
+            char character = text.charAt(c);
+            if(character != ' ')
+                drawGlyph(glyphPixels[character], x + horizontalKerning[character], y + verticalKerning[character] + (int)(Math.sin((double)c / 1.5D + (double)wavePart2) * d), glyphWidth[character], glyphHeight[character], colour);
+            x += characterEffectiveWidth[character];
         }
 
     }
 
-    public void method389(boolean flag1, int i, int j, String s, int k)
+    public void drawShadowTextHLeftVTop(String text, int x, int y, int colour, boolean flag1)
     {
-        aBoolean1499 = false;
-        int l = i;
-        if(s == null)
+        strikethrough = false;
+        int originalX = x;
+        if(text == null)
             return;
-        k -= anInt1497;
-        for(int i1 = 0; i1 < s.length(); i1++)
-            if(s.charAt(i1) == '@' && i1 + 4 < s.length() && s.charAt(i1 + 4) == '@')
+        y -= charHeight;
+        for(int c = 0; c < text.length(); c++)
+            if(text.charAt(c) == '@' && c + 4 < text.length() && text.charAt(c + 4) == '@')
             {
-                int j1 = getColorByName(s.substring(i1 + 1, i1 + 4));
-                if(j1 != -1)
-                    j = j1;
-                i1 += 4;
+                int _colour = getColorByName(text.substring(c + 1, c + 4));
+                if(_colour != -1)
+                    colour = _colour;
+                c += 4;
             } else
             {
-                char c = s.charAt(i1);
-                if(c != ' ')
+                char character = text.charAt(c);
+                if(character != ' ')
                 {
                     if(flag1)
-                        method392(aByteArrayArray1491[c], i + anIntArray1494[c] + 1, k + anIntArray1495[c] + 1, anIntArray1492[c], anIntArray1493[c], 0);
-                    method392(aByteArrayArray1491[c], i + anIntArray1494[c], k + anIntArray1495[c], anIntArray1492[c], anIntArray1493[c], j);
+                        drawGlyph(glyphPixels[character], x + horizontalKerning[character] + 1, y + verticalKerning[character] + 1, glyphWidth[character], glyphHeight[character], 0);
+                    drawGlyph(glyphPixels[character], x + horizontalKerning[character], y + verticalKerning[character], glyphWidth[character], glyphHeight[character], colour);
                 }
-                i += anIntArray1496[c];
+                x += characterEffectiveWidth[character];
             }
-        if(aBoolean1499)
-            DrawingArea.method339(k + (int)((double)anInt1497 * 0.69999999999999996D), 0x800000, i - l, l);
+        if(strikethrough)
+            DrawingArea.drawHLine(y + (int)((double)charHeight * 0.69999999999999996D), 0x800000, x - originalX, originalX);
     }
 
-    public void method390(int i, int j, String s, int k, int i1)
+    public void drawShadowedTextRight(String text, int x, int y, int colour, int seed)
     {
-        if(s == null)
+        if(text == null)
             return;
-        aRandom1498.setSeed(k);
-        int j1 = 192 + (aRandom1498.nextInt() & 0x1f);
-        i1 -= anInt1497;
-        for(int k1 = 0; k1 < s.length(); k1++)
-            if(s.charAt(k1) == '@' && k1 + 4 < s.length() && s.charAt(k1 + 4) == '@')
+        random.setSeed(seed);
+        int j1 = 192 + (random.nextInt() & 0x1f);
+        y -= charHeight;
+        for(int c = 0; c < text.length(); c++)
+            if(text.charAt(c) == '@' && c + 4 < text.length() && text.charAt(c + 4) == '@')
             {
-                int l1 = getColorByName(s.substring(k1 + 1, k1 + 4));
-                if(l1 != -1)
-                    j = l1;
-                k1 += 4;
+                int _colour = getColorByName(text.substring(c + 1, c + 4));
+                if(_colour != -1)
+                    colour = _colour;
+                c += 4;
             } else
             {
-                char c = s.charAt(k1);
-                if(c != ' ')
+                char character = text.charAt(c);
+                if(character != ' ')
                 {
-                        method394(192, i + anIntArray1494[c] + 1, aByteArrayArray1491[c], anIntArray1492[c], i1 + anIntArray1495[c] + 1, anIntArray1493[c], 0);
-                    method394(j1, i + anIntArray1494[c], aByteArrayArray1491[c], anIntArray1492[c], i1 + anIntArray1495[c], anIntArray1493[c], j);
+                        drawShadowedChar(192, x + horizontalKerning[character] + 1, glyphPixels[character], glyphWidth[character], y + verticalKerning[character] + 1, glyphHeight[character], 0);
+                    drawShadowedChar(j1, x + horizontalKerning[character], glyphPixels[character], glyphWidth[character], y + verticalKerning[character], glyphHeight[character], colour);
                 }
-                i += anIntArray1496[c];
-                if((aRandom1498.nextInt() & 3) == 0)
-                    i++;
+                x += characterEffectiveWidth[character];
+                if((random.nextInt() & 3) == 0)
+                    x++;
             }
 
     }
 
-    private int getColorByName(String s)
+    private int getColorByName(String name)
     {
-        if(s.equals("red"))
+        if(name.equals("red"))
             return 0xff0000;
-        if(s.equals("gre"))
+        if(name.equals("gre"))
             return 65280;
-        if(s.equals("blu"))
+        if(name.equals("blu"))
             return 255;
-        if(s.equals("yel"))
+        if(name.equals("yel"))
             return 0xffff00;
-        if(s.equals("cya"))
+        if(name.equals("cya"))
             return 65535;
-        if(s.equals("mag"))
+        if(name.equals("mag"))
             return 0xff00ff;
-        if(s.equals("whi"))
+        if(name.equals("whi"))
             return 0xffffff;
-        if(s.equals("bla"))
+        if(name.equals("bla"))
             return 0;
-        if(s.equals("lre"))
+        if(name.equals("lre"))
             return 0xff9040;
-        if(s.equals("dre"))
+        if(name.equals("dre"))
             return 0x800000;
-        if(s.equals("dbl"))
+        if(name.equals("dbl"))
             return 128;
-        if(s.equals("or1"))
+        if(name.equals("or1"))
             return 0xffb000;
-        if(s.equals("or2"))
+        if(name.equals("or2"))
             return 0xff7000;
-        if(s.equals("or3"))
+        if(name.equals("or3"))
             return 0xff3000;
-        if(s.equals("gr1"))
+        if(name.equals("gr1"))
             return 0xc0ff00;
-        if(s.equals("gr2"))
+        if(name.equals("gr2"))
             return 0x80ff00;
-        if(s.equals("gr3"))
+        if(name.equals("gr3"))
             return 0x40ff00;
-        if(s.equals("str"))
-            aBoolean1499 = true;
-        if(s.equals("end"))
-            aBoolean1499 = false;
+        if(name.equals("str"))
+            strikethrough = true;
+        if(name.equals("end"))
+            strikethrough = false;
         return -1;
     }
 
-    private void method392(byte abyte0[], int i, int j, int k, int l, int i1)
+    private void drawGlyph(byte glyphPixels[], int x, int y, int width, int height, int colour)
     {
-        int j1 = i + j * DrawingArea.width;
-        int k1 = DrawingArea.width - k;
+        int j1 = x + y * DrawingArea.width;
+        int k1 = DrawingArea.width - width;
         int l1 = 0;
         int i2 = 0;
-        if(j < DrawingArea.topY)
+        if(y < DrawingArea.topY)
         {
-            int j2 = DrawingArea.topY - j;
-            l -= j2;
-            j = DrawingArea.topY;
-            i2 += j2 * k;
-            j1 += j2 * DrawingArea.width;
+            int size = DrawingArea.topY - y;
+            height -= size;
+            y = DrawingArea.topY;
+            i2 += size * width;
+            j1 += size * DrawingArea.width;
         }
-        if(j + l >= DrawingArea.bottomY)
-            l -= ((j + l) - DrawingArea.bottomY) + 1;
-        if(i < DrawingArea.topX)
+        if(y + height >= DrawingArea.bottomY)
+            height -= ((y + height) - DrawingArea.bottomY) + 1;
+        if(x < DrawingArea.topX)
         {
-            int k2 = DrawingArea.topX - i;
-            k -= k2;
-            i = DrawingArea.topX;
-            i2 += k2;
-            j1 += k2;
-            l1 += k2;
-            k1 += k2;
+            int size = DrawingArea.topX - x;
+            width -= size;
+            x = DrawingArea.topX;
+            i2 += size;
+            j1 += size;
+            l1 += size;
+            k1 += size;
         }
-        if(i + k >= DrawingArea.bottomX)
+        if(x + width >= DrawingArea.bottomX)
         {
-            int l2 = ((i + k) - DrawingArea.bottomX) + 1;
-            k -= l2;
+            int l2 = ((x + width) - DrawingArea.bottomX) + 1;
+            width -= l2;
             l1 += l2;
             k1 += l2;
         }
-        if(!(k <= 0 || l <= 0))
+        if(!(width <= 0 || height <= 0))
         {
-            method393(DrawingArea.pixels, abyte0, i1, i2, j1, k, l, k1, l1);
+            colourPixels(DrawingArea.pixels, glyphPixels, colour, i2, j1, width, height, k1, l1);
         }
     }
 
-    private void method393(int ai[], byte abyte0[], int i, int j, int k, int l, int i1,
+    private void colourPixels(int pixels[], byte originalPixels[], int colour, int j, int k, int width, int height,
             int j1, int k1)
     {
-        int l1 = -(l >> 2);
-        l = -(l & 3);
-        for(int i2 = -i1; i2 < 0; i2++)
+        int _width = -(width >> 2);
+        width = -(width & 3);
+        for(int h = -height; h < 0; h++)
         {
-            for(int j2 = l1; j2 < 0; j2++)
+            for(int w = _width; w < 0; w++)
             {
-                if(abyte0[j++] != 0)
-                    ai[k++] = i;
+                if(originalPixels[j++] != 0)
+                    pixels[k++] = colour;
                 else
                     k++;
-                if(abyte0[j++] != 0)
-                    ai[k++] = i;
+                if(originalPixels[j++] != 0)
+                    pixels[k++] = colour;
                 else
                     k++;
-                if(abyte0[j++] != 0)
-                    ai[k++] = i;
+                if(originalPixels[j++] != 0)
+                    pixels[k++] = colour;
                 else
                     k++;
-                if(abyte0[j++] != 0)
-                    ai[k++] = i;
+                if(originalPixels[j++] != 0)
+                    pixels[k++] = colour;
                 else
                     k++;
             }
 
-            for(int k2 = l; k2 < 0; k2++)
-                if(abyte0[j++] != 0)
-                    ai[k++] = i;
+            for(int k2 = width; k2 < 0; k2++)
+                if(originalPixels[j++] != 0)
+                    pixels[k++] = colour;
                 else
                     k++;
 
@@ -360,7 +356,7 @@ public final class TextDrawingArea extends DrawingArea {
 
     }
 
-    private void method394(int i, int j, byte abyte0[], int k, int l, int i1,
+    private void drawShadowedChar(int i, int j, byte abyte0[], int k, int l, int i1,
                            int j1)
     {
         int k1 = j + l * DrawingArea.width;
@@ -396,21 +392,21 @@ public final class TextDrawingArea extends DrawingArea {
         }
         if(k <= 0 || i1 <= 0)
             return;
-        method395(abyte0, i1, k1, DrawingArea.pixels, j2, k, i2, l1, j1, i);
+        recolourAlpha(abyte0, i1, k1, DrawingArea.pixels, j2, k, i2, l1, j1, i);
     }
 
-    private void method395(byte abyte0[], int i, int j, int ai[], int l, int i1,
-                           int j1, int k1, int l1, int i2)
+    private void recolourAlpha(byte abyte0[], int i, int j, int ai[], int l, int i1,
+                           int j1, int k1, int colour, int alpha)
     {
-        l1 = ((l1 & 0xff00ff) * i2 & 0xff00ff00) + ((l1 & 0xff00) * i2 & 0xff0000) >> 8;
-        i2 = 256 - i2;
+        colour = ((colour & 0xff00ff) * alpha & 0xff00ff00) + ((colour & 0xff00) * alpha & 0xff0000) >> 8;
+        alpha = 256 - alpha;
         for(int j2 = -i; j2 < 0; j2++)
         {
             for(int k2 = -i1; k2 < 0; k2++)
                 if(abyte0[l++] != 0)
                 {
                     int l2 = ai[j];
-                    ai[j++] = (((l2 & 0xff00ff) * i2 & 0xff00ff00) + ((l2 & 0xff00) * i2 & 0xff0000) >> 8) + l1;
+                    ai[j++] = (((l2 & 0xff00ff) * alpha & 0xff00ff00) + ((l2 & 0xff00) * alpha & 0xff0000) >> 8) + colour;
                 } else
                 {
                     j++;
@@ -422,13 +418,13 @@ public final class TextDrawingArea extends DrawingArea {
 
     }
 
-    private final byte[][] aByteArrayArray1491;
-    private final int[] anIntArray1492;
-    private final int[] anIntArray1493;
-    private final int[] anIntArray1494;
-    private final int[] anIntArray1495;
-    private final int[] anIntArray1496;
-    public int anInt1497;
-    private final Random aRandom1498;
-    private boolean aBoolean1499;
+    private final byte[][] glyphPixels;
+    private final int[] glyphWidth;
+    private final int[] glyphHeight;
+    private final int[] horizontalKerning;
+    private final int[] verticalKerning;
+    private final int[] characterEffectiveWidth;
+    public int charHeight;
+    private final Random random;
+    private boolean strikethrough;
 }
