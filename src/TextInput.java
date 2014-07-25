@@ -1,92 +1,88 @@
-// Decompiled by Jad v1.5.8f. Copyright 2001 Pavel Kouznetsov.
-// Jad home page: http://www.kpdus.com/jad.html
-// Decompiler options: packimports(3) 
-
 final class TextInput {
 
-    public static String method525(int i, Stream stream)
+    public static String readFromStream(int length, Stream stream)
     {
-        int j = 0;
-        int k = -1;
-        for(int l = 0; l < i; l++)
+        int pointer = 0;
+        int l = -1;
+        for(int c = 0; c < length; c++)
         {
-            int i1 = stream.getUnsignedByte();
-            int j1 = i1 >> 4 & 0xf;
-            if(k == -1)
+            int encodedLetter = stream.getUnsignedByte();
+            int letter = encodedLetter >> 4 & 0xf;
+            if(l == -1)
             {
-                if(j1 < 13)
-                    aCharArray631[j++] = validChars[j1];
+                if(letter < 13)
+                    characterList[pointer++] = validChars[letter];
                 else
-                    k = j1;
+                    l = letter;
             } else
             {
-                aCharArray631[j++] = validChars[((k << 4) + j1) - 195];
-                k = -1;
+                characterList[pointer++] = validChars[((l << 4) + letter) - 195];
+                l = -1;
             }
-            j1 = i1 & 0xf;
-            if(k == -1)
+            letter = encodedLetter & 0xf;
+            if(l == -1)
             {
-                if(j1 < 13)
-                    aCharArray631[j++] = validChars[j1];
+                if(letter < 13)
+                    characterList[pointer++] = validChars[letter];
                 else
-                    k = j1;
+                    l = letter;
             } else
             {
-                aCharArray631[j++] = validChars[((k << 4) + j1) - 195];
-                k = -1;
+                characterList[pointer++] = validChars[((l << 4) + letter) - 195];
+                l = -1;
             }
         }
 
-        boolean flag1 = true;
-        for(int k1 = 0; k1 < j; k1++)
+        boolean endOfSentence = true;
+        for(int c = 0; c < pointer; c++)
         {
-            char c = aCharArray631[k1];
-            if(flag1 && c >= 'a' && c <= 'z')
+            char character = characterList[c];
+            if(endOfSentence && character >= 'a' && character <= 'z')
             {
-                aCharArray631[k1] += '\uFFE0';
-                flag1 = false;
+                characterList[c] += '\uFFE0';
+                endOfSentence = false;
             }
-            if(c == '.' || c == '!' || c == '?')
-                flag1 = true;
+            if(character == '.' || character == '!' || character == '?')
+                endOfSentence = true;
         }
-        return new String(aCharArray631, 0, j);
+        return new String(characterList, 0, pointer);
     }
 
-    public static void method526(String s, Stream stream)
+    public static void writeToStream(String text, Stream stream)
     {
-        if(s.length() > 80)
-            s = s.substring(0, 80);
-        s = s.toLowerCase();
+        if(text.length() > 80)
+            text = text.substring(0, 80);
+        text = text.toLowerCase();
         int i = -1;
-        for(int j = 0; j < s.length(); j++)
+        for(int c = 0; c < text.length(); c++)
         {
-            char c = s.charAt(j);
-            int k = 0;
+            char character = text.charAt(c);
+            int characterCode = 0;
             for(int l = 0; l < validChars.length; l++)
             {
-                if(c != validChars[l])
+                if(character != validChars[l])
                     continue;
-                k = l;
+                characterCode = l;
                 break;
             }
 
-            if(k > 12)
-                k += 195;
+            if(characterCode > 12)
+                characterCode += 195;
             if(i == -1)
             {
-                if(k < 13)
-                    i = k;
+                if(characterCode < 13)
+                    i = characterCode;
                 else
-                    stream.put(k);
+                    stream.put(characterCode);
             } else
-            if(k < 13)
+            if(characterCode < 13)
             {
-                stream.put((i << 4) + k);
+                stream.put((i << 4) + characterCode);
                 i = -1;
             } else
             {
-                stream.put((i << 4) + (k >> 4));
-                i = k & 0xf;
+                stream.put((i << 4) + (characterCode >> 4));
+                i = characterCode & 0xf;
             }
         }
         if(i != -1)
@@ -96,15 +92,14 @@ final class TextInput {
     public static String processText(String s)
     {
         stream.currentOffset = 0;
-        method526(s, stream);
-        int j = stream.currentOffset;
+        writeToStream(s, stream);
+        int offset = stream.currentOffset;
         stream.currentOffset = 0;
-        String s1 = method525(j, stream);
-        return s1;
+        String text = readFromStream(offset, stream);
+        return text;
     }
 
-    private static final boolean aBoolean630 = true;
-    private static final char[] aCharArray631 = new char[100];
+    private static final char[] characterList = new char[100];
     private static final Stream stream = new Stream(new byte[100]);
     private static final char[] validChars = {
         ' ', 'e', 't', 'a', 'o', 'i', 'h', 'n', 's', 'r', 

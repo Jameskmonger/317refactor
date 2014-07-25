@@ -4720,7 +4720,7 @@ public final class client extends RSApplet {
                         stream.put(0);
                         int k = stream.currentOffset;
                         stream.writeQWord(aLong953);
-                        TextInput.method526(promptInput, stream);
+                        TextInput.writeToStream(promptInput, stream);
                         stream.writeBytes(stream.currentOffset - k);
                         promptInput = TextInput.processText(promptInput);
                         promptInput = Censor.doCensor(promptInput);
@@ -4946,7 +4946,7 @@ public final class client extends RSApplet {
                         stream.method425(i3);
                         stream.method425(j2);
                         aStream_834.currentOffset = 0;
-                        TextInput.method526(inputString, aStream_834);
+                        TextInput.writeToStream(inputString, aStream_834);
                         stream.method441(0, aStream_834.buffer, aStream_834.currentOffset);
                         stream.writeBytes(stream.currentOffset - j3);
                         inputString = TextInput.processText(inputString);
@@ -8245,7 +8245,7 @@ public final class client extends RSApplet {
                         aStream_834.currentOffset = 0;
                         stream.method442(j3, 0, aStream_834.buffer);
                         aStream_834.currentOffset = 0;
-                        String s = TextInput.method525(j3, aStream_834);
+                        String s = TextInput.readFromStream(j3, aStream_834);
                         s = Censor.doCensor(s);
                         player.textSpoken = s;
                         player.anInt1513 = i1 >> 8;
@@ -11111,7 +11111,7 @@ public final class client extends RSApplet {
                     {
                         anIntArray1240[anInt1169] = j18;
                         anInt1169 = (anInt1169 + 1) % 100;
-                        String s9 = TextInput.method525(packetSize - 13, inStream);
+                        String s9 = TextInput.readFromStream(packetSize - 13, inStream);
                         if(l21 != 3)
                             s9 = Censor.doCensor(s9);
                         if(l21 == 2 || l21 == 3)
