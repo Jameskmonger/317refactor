@@ -18,17 +18,17 @@ public final class Ground extends Node {
     final int anInt1308;
     final int anInt1309;
     final int anInt1310;
-    public Class43 aClass43_1311;
-    public Class40 aClass40_1312;
+    public PlainTile plainTile;
+    public ShapedTile shapedTile;
     public WallObject wallObject;
     public WallDecoration wallDecoration;
     public GroundDecoration groundDecoration;
-    public Object4 groundItemTile;
+    public GroundItemTile groundItemTile;
     int entityCount;
     public final InteractiveObject[] interactiveObjects;
     final int[] interactiveObjectsSize;
     int interactiveObjectsSizeOR;
-    int anInt1321;
+    int logicHeight;
     boolean aBoolean1322;
     boolean aBoolean1323;
     boolean aBoolean1324;
@@ -36,5 +36,5 @@ public final class Ground extends Node {
     int anInt1326;
     int anInt1327;
     int anInt1328;
-    public Ground aClass30_Sub3_1329;
+    public Ground tileBelow;
 }

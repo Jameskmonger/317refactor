@@ -4,27 +4,27 @@
 
 import sign.signlink;
 
-final class Class40
+final class ShapedTile
 {
 
-    public Class40(int i, int j, int k, int l, int i1, int j1, int k1,
+    public ShapedTile(int i, int j, int k, int l, int i1, int j1, int k1,
                    int l1, int i2, int j2, int k2, int l2, int i3, int j3,
                    int k3, int l3, int i4, int k4, int l4)
     {
-        aBoolean683 = !(i3 != l2 || i3 != l || i3 != k2);
-        anInt684 = j3;
-        anInt685 = k1;
-        anInt686 = i2;
-        anInt687 = l4;
+        flat = !(i3 != l2 || i3 != l || i3 != k2);
+        shape = j3;
+        rotation = k1;
+        underlayRGB = i2;
+        overlayRGB = l4;
         char c = '\200';
         int i5 = c / 2;
         int j5 = c / 4;
         int k5 = (c * 3) / 4;
         int ai[] = anIntArrayArray696[j3];
         int l5 = ai.length;
-        anIntArray673 = new int[l5];
-        anIntArray674 = new int[l5];
-        anIntArray675 = new int[l5];
+        originalVertexX = new int[l5];
+        originalVertexY = new int[l5];
+        originalVertexZ = new int[l5];
         int ai1[] = new int[l5];
         int ai2[] = new int[l5];
         int i6 = k4 * c;
@@ -170,23 +170,23 @@ final class Class40
                 k8 = k;
                 j9 = k3;
             }
-            anIntArray673[k6] = i7;
-            anIntArray674[k6] = i8;
-            anIntArray675[k6] = k7;
+            originalVertexX[k6] = i7;
+            originalVertexY[k6] = i8;
+            originalVertexZ[k6] = k7;
             ai1[k6] = k8;
             ai2[k6] = j9;
         }
 
         int ai3[] = anIntArrayArray697[j3];
         int j7 = ai3.length / 4;
-        anIntArray679 = new int[j7];
-        anIntArray680 = new int[j7];
-        anIntArray681 = new int[j7];
-        anIntArray676 = new int[j7];
-        anIntArray677 = new int[j7];
-        anIntArray678 = new int[j7];
+        triangleA = new int[j7];
+        triangleB = new int[j7];
+        triangleC = new int[j7];
+        triangleHSLA = new int[j7];
+        triangleHSLB = new int[j7];
+        triangleHSLC = new int[j7];
         if(i1 != -1)
-            anIntArray682 = new int[j7];
+            triangleTexture = new int[j7];
         int l7 = 0;
         for(int j8 = 0; j8 < j7; j8++)
         {
@@ -201,23 +201,23 @@ final class Class40
                 i10 = i10 - k1 & 3;
             if(k10 < 4)
                 k10 = k10 - k1 & 3;
-            anIntArray679[j8] = k9;
-            anIntArray680[j8] = i10;
-            anIntArray681[j8] = k10;
+            triangleA[j8] = k9;
+            triangleB[j8] = i10;
+            triangleC[j8] = k10;
             if(l8 == 0)
             {
-                anIntArray676[j8] = ai1[k9];
-                anIntArray677[j8] = ai1[i10];
-                anIntArray678[j8] = ai1[k10];
-                if(anIntArray682 != null)
-                    anIntArray682[j8] = -1;
+                triangleHSLA[j8] = ai1[k9];
+                triangleHSLB[j8] = ai1[i10];
+                triangleHSLC[j8] = ai1[k10];
+                if(triangleTexture != null)
+                    triangleTexture[j8] = -1;
             } else
             {
-                anIntArray676[j8] = ai2[k9];
-                anIntArray677[j8] = ai2[i10];
-                anIntArray678[j8] = ai2[k10];
-                if(anIntArray682 != null)
-                    anIntArray682[j8] = i1;
+                triangleHSLA[j8] = ai2[k9];
+                triangleHSLB[j8] = ai2[i10];
+                triangleHSLC[j8] = ai2[k10];
+                if(triangleTexture != null)
+                    triangleTexture[j8] = i1;
             }
         }
 
@@ -239,26 +239,26 @@ final class Class40
         l9 /= 14;
     }
 
-    final int[] anIntArray673;
-    final int[] anIntArray674;
-    final int[] anIntArray675;
-    final int[] anIntArray676;
-    final int[] anIntArray677;
-    final int[] anIntArray678;
-    final int[] anIntArray679;
-    final int[] anIntArray680;
-    final int[] anIntArray681;
-    int anIntArray682[];
-    final boolean aBoolean683;
-    final int anInt684;
-    final int anInt685;
-    final int anInt686;
-    final int anInt687;
-    static final int[] anIntArray688 = new int[6];
-    static final int[] anIntArray689 = new int[6];
-    static final int[] anIntArray690 = new int[6];
-    static final int[] anIntArray691 = new int[6];
-    static final int[] anIntArray692 = new int[6];
+    final int[] originalVertexX;
+    final int[] originalVertexY;
+    final int[] originalVertexZ;
+    final int[] triangleHSLA;
+    final int[] triangleHSLB;
+    final int[] triangleHSLC;
+    final int[] triangleA;
+    final int[] triangleB;
+    final int[] triangleC;
+    int triangleTexture[];
+    final boolean flat;
+    final int shape;
+    final int rotation;
+    final int underlayRGB;
+    final int overlayRGB;
+    static final int[] screenX = new int[6];
+    static final int[] screenY = new int[6];
+    static final int[] viewspaceX = new int[6];
+    static final int[] viewspaceY = new int[6];
+    static final int[] viewspaceZ = new int[6];
     static final int[] anIntArray693 = {
         1, 0
     };

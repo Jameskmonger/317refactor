@@ -576,9 +576,9 @@ public final class client extends RSApplet {
             if(k3 < plane - 1)
                 k3 = plane - 1;
             if(lowMemory)
-                worldController.method275(ObjectManager.anInt145);
+                worldController.setHeightLevel(ObjectManager.anInt145);
             else
-                worldController.method275(0);
+                worldController.setHeightLevel(0);
             for(int i5 = 0; i5 < 104; i5++)
             {
                 for(int i7 = 0; i7 < 104; i7++)
@@ -667,9 +667,9 @@ public final class client extends RSApplet {
             for(int k1 = 1; k1 < 103; k1++)
             {
                 if((byteGroundArray[i][k1][l] & 0x18) == 0)
-                    worldController.method309(ai, i1, i, k1, l);
+                    worldController.drawMinimapTile(k1, l, i, ai, i1);
                 if(i < 3 && (byteGroundArray[i + 1][k1][l] & 8) != 0)
-                    worldController.method309(ai, i1, i + 1, k1, l);
+                    worldController.drawMinimapTile(k1, l, i + 1, ai, i1);
                 i1 += 4;
             }
 
@@ -773,7 +773,7 @@ public final class client extends RSApplet {
         }
 
         int i1 = i + (j << 7) + 0x60000000;
-        worldController.method281(i, i1, ((Animable) (obj1)), method42(plane, j * 128 + 64, i * 128 + 64), ((Animable) (obj2)), ((Animable) (obj)), plane, j);
+        worldController.addGroundItemTile(i, j, plane, method42(plane, j * 128 + 64, i * 128 + 64), i1, ((Animable) (obj)), ((Animable) (obj1)), ((Animable) (obj2)));
     }
 
     private void method26(boolean flag)
@@ -796,7 +796,7 @@ public final class client extends RSApplet {
             }
             if(!npc.desc.aBoolean84)
                 k += 0x80000000;
-            worldController.addEntityA(plane, npc.anInt1552, method42(plane, npc.y, npc.x), k, npc.y, (npc.anInt1540 - 1) * 64 + 60, npc.x, npc, npc.aBoolean1541);
+            worldController.addEntityA(plane, npc.x, npc.y, method42(plane, npc.y, npc.x), npc.anInt1552, npc, k, (npc.anInt1540 - 1) * 64 + 60, npc.aBoolean1541);
         }
     }
 
@@ -1997,7 +1997,7 @@ public final class client extends RSApplet {
             {
                 player.aBoolean1699 = false;
                 player.anInt1709 = method42(plane, player.y, player.x);
-                worldController.method286(plane, player.y, player, player.anInt1552, player.anInt1722, player.x, player.anInt1709, player.anInt1719, player.anInt1721, i1, player.anInt1720);
+                worldController.addEntity(player.anInt1719, player.anInt1720, plane, player.x, player.y, player.anInt1709, player.anInt1552, player.anInt1722, player.anInt1721, player, i1);
                 continue;
             }
             if((player.x & 0x7f) == 64 && (player.y & 0x7f) == 64)
@@ -2007,7 +2007,7 @@ public final class client extends RSApplet {
                 anIntArrayArray929[j1][k1] = anInt1265;
             }
             player.anInt1709 = method42(plane, player.y, player.x);
-            worldController.addEntityA(plane, player.anInt1552, player.anInt1709, i1, player.y, 60, player.x, player, player.aBoolean1541);
+            worldController.addEntityA(plane, player.x, player.y, player.anInt1709, player.anInt1552, player, i1, 60, player.aBoolean1541);
         }
 
     }
@@ -2381,7 +2381,7 @@ public final class client extends RSApplet {
 
     private static void setHighMem()
     {
-        WorldController.lowMem = false;
+        WorldController.lowMemory = false;
         Texture.lowMem = false;
         lowMemory = false;
         ObjectManager.lowMem = false;
@@ -2527,7 +2527,7 @@ public final class client extends RSApplet {
                         class30_sub2_sub4_sub4.method455(loopCycle, player.y, method42(class30_sub2_sub4_sub4.anInt1597, player.y, player.x) - class30_sub2_sub4_sub4.anInt1583, player.x);
                 }
                 class30_sub2_sub4_sub4.method456(animationTimePassed);
-                worldController.addEntityA(plane, class30_sub2_sub4_sub4.anInt1595, (int)class30_sub2_sub4_sub4.aDouble1587, -1, (int)class30_sub2_sub4_sub4.aDouble1586, 60, (int)class30_sub2_sub4_sub4.aDouble1585, class30_sub2_sub4_sub4, false);
+                worldController.addEntityA(plane, (int)class30_sub2_sub4_sub4.aDouble1585, (int)class30_sub2_sub4_sub4.aDouble1586, (int)class30_sub2_sub4_sub4.aDouble1587, class30_sub2_sub4_sub4.anInt1595, class30_sub2_sub4_sub4, -1, 60, false);
             }
 
     }
@@ -2983,12 +2983,12 @@ public final class client extends RSApplet {
                 super.clickType = 0;
             }
         }
-        if(WorldController.anInt470 != -1)
+        if(WorldController.clickedTileX != -1)
         {
-            int k = WorldController.anInt470;
-            int k1 = WorldController.anInt471;
+            int k = WorldController.clickedTileX;
+            int k1 = WorldController.clickedTileY;
             boolean flag = doWalkTo(0, 0, 0, 0, myPlayer.smallY[0], 0, 0, k1, myPlayer.smallX[0], true, k);
-            WorldController.anInt470 = -1;
+            WorldController.clickedTileX = -1;
             if(flag)
             {
                 crossX = super.clickX;
@@ -3576,9 +3576,9 @@ public final class client extends RSApplet {
         }
         if(l == 516)
             if(!menuOpen)
-                worldController.method312(super.clickY - 4, super.clickX - 4);
+                worldController.request2DTrace(super.clickX - 4, super.clickY - 4);
             else
-                worldController.method312(k - 4, j - 4);
+                worldController.request2DTrace(j - 4, k - 4);
         if(l == 1062)
         {
             anInt924 += baseX;
@@ -7787,7 +7787,7 @@ public final class client extends RSApplet {
                 if(stationaryGraphic.transformationCompleted)
                     stationaryGraphic.unlink();
                 else
-                    worldController.addEntityA(stationaryGraphic.plane, 0, stationaryGraphic.anInt1563, -1, stationaryGraphic.anInt1562, 60, stationaryGraphic.anInt1561, stationaryGraphic, false);
+                    worldController.addEntityA(stationaryGraphic.plane, stationaryGraphic.anInt1561, stationaryGraphic.anInt1562, stationaryGraphic.anInt1563, 0, stationaryGraphic, -1, 60, false);
             }
 
     }
@@ -9789,7 +9789,7 @@ public final class client extends RSApplet {
                 {
                     WallDecoration class26 = worldController.getWallDecoration(j4, i7, plane);
                     if(class26 != null)
-                        class26.aClass30_Sub2_Sub4_504 = new Animable_Sub5(class26.uid >> 14 & 0x7fff, 0, 4, i19, l19, j18, k20, j17, false);
+                        class26.renderable = new Animable_Sub5(class26.uid >> 14 & 0x7fff, 0, 4, i19, l19, j18, k20, j17, false);
                 }
                 if(j16 == 2)
                 {
@@ -9966,7 +9966,7 @@ public final class client extends RSApplet {
 
     private static void setLowMem()
     {
-        WorldController.lowMem = true;
+        WorldController.lowMemory = true;
         Texture.lowMem = true;
         lowMemory = true;
         ObjectManager.lowMem = true;
@@ -11588,8 +11588,8 @@ public final class client extends RSApplet {
             Model.cursorY = super.mouseY - 4;
             DrawingArea.setAllPixelsToZero();
 //xxx disables graphics            if(graphicsEnabled){
-            worldController.method313(xCameraPos, yCameraPos, xCameraCurve, zCameraPos, j, yCameraCurve);
-            worldController.clearObj5Cache();
+            worldController.render(xCameraPos, yCameraPos, xCameraCurve, zCameraPos, j, yCameraCurve);
+            worldController.clearInteractiveObjectCache();
             updateEntities();
             drawHeadIcon();
             method37(k2);

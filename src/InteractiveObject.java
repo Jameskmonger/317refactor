@@ -11,11 +11,11 @@ public final class InteractiveObject
     }
 
     int z;
-    int anInt518;
-    int anInt519;
-    int anInt520;
+    int worldZ;
+    int worldX;
+    int worldY;
     public Animable renderable;
-    public int anInt522;
+    public int rotation;
     int tileLeft;
     int tileRight;
     int tileTop;

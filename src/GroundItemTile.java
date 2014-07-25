@@ -3,18 +3,18 @@
 // Decompiler options: packimports(3) 
 
 
-final class Object4 {
+final class GroundItemTile {
 
-    Object4()
+    GroundItemTile()
     {
     }
 
-    int anInt45;
-    int anInt46;
-    int anInt47;
-    Animable aClass30_Sub2_Sub4_48;
-    Animable aClass30_Sub2_Sub4_49;
-    Animable aClass30_Sub2_Sub4_50;
+    int z;
+    int x;
+    int y;
+    Animable firstGroundItem;
+    Animable secondGroundItem;
+    Animable thirdGroundItem;
     int uid;
     int anInt52;
 }

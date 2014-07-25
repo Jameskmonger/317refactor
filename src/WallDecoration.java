@@ -10,12 +10,12 @@ public final class WallDecoration
     {
     }
 
-    int anInt499;
+    int z;
     int x;
     int y;
-    int anInt502;
-    int anInt503;
-    public Animable aClass30_Sub2_Sub4_504;
+    int configBits;
+    int face;
+    public Animable renderable;
     public int uid;
     byte objConf;
 }

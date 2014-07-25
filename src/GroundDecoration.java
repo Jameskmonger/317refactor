@@ -10,9 +10,9 @@ public final class GroundDecoration
     {
     }
 
-    int anInt811;
-    int anInt812;
-    int anInt813;
+    int z;
+    int x;
+    int y;
     public Animable renderable;
     public int uid;
     byte objConf;

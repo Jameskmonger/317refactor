@@ -10,11 +10,11 @@ public final class WallObject
     {
     }
 
-    int anInt273;
-    int anInt274;
-    int anInt275;
+    int z;
+    int x;
+    int y;
     int orientation;
-    int orientation1;
+    int orientation2;
     public Animable renderable;
     public Animable renderable2;
     public int uid;
