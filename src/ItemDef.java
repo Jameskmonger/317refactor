@@ -279,7 +279,7 @@ public final class ItemDef
         Sprite sprite2 = new Sprite(32, 32);
         int k1 = Texture.centreX;
         int l1 = Texture.centreY;
-        int ai[] = Texture.anIntArray1472;
+        int ai[] = Texture.lineOffsets;
         int ai1[] = DrawingArea.pixels;
         int i2 = DrawingArea.width;
         int j2 = DrawingArea.height;
@@ -290,7 +290,7 @@ public final class ItemDef
         Texture.aBoolean1464 = false;
         DrawingArea.initDrawingArea(32, 32, sprite2.myPixels);
         DrawingArea.method336(32, 0, 0, 0, 32);
-        Texture.method364();
+        Texture.setDefaultBounds();
         int k3 = itemDef.modelZoom;
         if(k == -1)
             k3 = (int)((double)k3 * 1.5D);
@@ -365,7 +365,7 @@ public final class ItemDef
         DrawingArea.setDrawingArea(j3, k2, l2, i3);
         Texture.centreX = k1;
         Texture.centreY = l1;
-        Texture.anIntArray1472 = ai;
+        Texture.lineOffsets = ai;
         Texture.aBoolean1464 = true;
         if(itemDef.stackable)
             sprite2.anInt1444 = 33;

@@ -9,12 +9,12 @@ public final class Background extends DrawingArea {
         Stream stream = new Stream(streamLoader.getDataForName(s + ".dat"));
         Stream stream_1 = new Stream(streamLoader.getDataForName("index.dat"));
         stream_1.currentOffset = stream.getUnsignedLEShort();
-        anInt1456 = stream_1.getUnsignedLEShort();
+        libWidth = stream_1.getUnsignedLEShort();
         anInt1457 = stream_1.getUnsignedLEShort();
         int j = stream_1.getUnsignedByte();
-        anIntArray1451 = new int[j];
+        palette = new int[j];
         for(int k = 0; k < j - 1; k++)
-            anIntArray1451[k + 1] = stream_1.read3Bytes();
+            palette[k + 1] = stream_1.read3Bytes();
 
         for(int l = 0; l < i; l++)
         {
@@ -25,24 +25,24 @@ public final class Background extends DrawingArea {
 
         anInt1454 = stream_1.getUnsignedByte();
         anInt1455 = stream_1.getUnsignedByte();
-        anInt1452 = stream_1.getUnsignedLEShort();
+        imageWidth = stream_1.getUnsignedLEShort();
         anInt1453 = stream_1.getUnsignedLEShort();
         int i1 = stream_1.getUnsignedByte();
-        int j1 = anInt1452 * anInt1453;
-        aByteArray1450 = new byte[j1];
+        int j1 = imageWidth * anInt1453;
+        imagePixels = new byte[j1];
         if(i1 == 0)
         {
             for(int k1 = 0; k1 < j1; k1++)
-                aByteArray1450[k1] = stream.readSignedByte();
+                imagePixels[k1] = stream.readSignedByte();
 
             return;
         }
         if(i1 == 1)
         {
-            for(int l1 = 0; l1 < anInt1452; l1++)
+            for(int l1 = 0; l1 < imageWidth; l1++)
             {
                 for(int i2 = 0; i2 < anInt1453; i2++)
-                    aByteArray1450[l1 + i2 * anInt1452] = stream.readSignedByte();
+                    imagePixels[l1 + i2 * imageWidth] = stream.readSignedByte();
 
             }
 
@@ -51,19 +51,19 @@ public final class Background extends DrawingArea {
 
     public void method356()
     {
-        anInt1456 /= 2;
+        libWidth /= 2;
         anInt1457 /= 2;
-        byte abyte0[] = new byte[anInt1456 * anInt1457];
+        byte abyte0[] = new byte[libWidth * anInt1457];
         int i = 0;
         for(int j = 0; j < anInt1453; j++)
         {
-            for(int k = 0; k < anInt1452; k++)
-                abyte0[(k + anInt1454 >> 1) + (j + anInt1455 >> 1) * anInt1456] = aByteArray1450[i++];
+            for(int k = 0; k < imageWidth; k++)
+                abyte0[(k + anInt1454 >> 1) + (j + anInt1455 >> 1) * libWidth] = imagePixels[i++];
 
         }
 
-        aByteArray1450 = abyte0;
-        anInt1452 = anInt1456;
+        imagePixels = abyte0;
+        imageWidth = libWidth;
         anInt1453 = anInt1457;
         anInt1454 = 0;
             anInt1455 = 0;
@@ -71,19 +71,19 @@ public final class Background extends DrawingArea {
 
     public void method357()
     {
-        if(anInt1452 == anInt1456 && anInt1453 == anInt1457)
+        if(imageWidth == libWidth && anInt1453 == anInt1457)
             return;
-        byte abyte0[] = new byte[anInt1456 * anInt1457];
+        byte abyte0[] = new byte[libWidth * anInt1457];
         int i = 0;
         for(int j = 0; j < anInt1453; j++)
         {
-            for(int k = 0; k < anInt1452; k++)
-                abyte0[k + anInt1454 + (j + anInt1455) * anInt1456] = aByteArray1450[i++];
+            for(int k = 0; k < imageWidth; k++)
+                abyte0[k + anInt1454 + (j + anInt1455) * libWidth] = imagePixels[i++];
 
         }
 
-        aByteArray1450 = abyte0;
-        anInt1452 = anInt1456;
+        imagePixels = abyte0;
+        imageWidth = libWidth;
         anInt1453 = anInt1457;
         anInt1454 = 0;
         anInt1455 = 0;
@@ -91,60 +91,60 @@ public final class Background extends DrawingArea {
 
     public void method358()
     {
-        byte abyte0[] = new byte[anInt1452 * anInt1453];
+        byte abyte0[] = new byte[imageWidth * anInt1453];
         int j = 0;
         for(int k = 0; k < anInt1453; k++)
         {
-            for(int l = anInt1452 - 1; l >= 0; l--)
-                abyte0[j++] = aByteArray1450[l + k * anInt1452];
+            for(int l = imageWidth - 1; l >= 0; l--)
+                abyte0[j++] = imagePixels[l + k * imageWidth];
 
         }
 
-        aByteArray1450 = abyte0;
-        anInt1454 = anInt1456 - anInt1452 - anInt1454;
+        imagePixels = abyte0;
+        anInt1454 = libWidth - imageWidth - anInt1454;
     }
 
     public void method359()
     {
-        byte abyte0[] = new byte[anInt1452 * anInt1453];
+        byte abyte0[] = new byte[imageWidth * anInt1453];
         int i = 0;
         for(int j = anInt1453 - 1; j >= 0; j--)
         {
-            for(int k = 0; k < anInt1452; k++)
-                abyte0[i++] = aByteArray1450[k + j * anInt1452];
+            for(int k = 0; k < imageWidth; k++)
+                abyte0[i++] = imagePixels[k + j * imageWidth];
 
         }
 
-        aByteArray1450 = abyte0;
+        imagePixels = abyte0;
         anInt1455 = anInt1457 - anInt1453 - anInt1455;
     }
 
     public void method360(int i, int j, int k)
     {
-        for(int i1 = 0; i1 < anIntArray1451.length; i1++)
+        for(int i1 = 0; i1 < palette.length; i1++)
         {
-            int j1 = anIntArray1451[i1] >> 16 & 0xff;
+            int j1 = palette[i1] >> 16 & 0xff;
             j1 += i;
             if(j1 < 0)
                 j1 = 0;
             else
             if(j1 > 255)
                 j1 = 255;
-            int k1 = anIntArray1451[i1] >> 8 & 0xff;
+            int k1 = palette[i1] >> 8 & 0xff;
             k1 += j;
             if(k1 < 0)
                 k1 = 0;
             else
             if(k1 > 255)
                 k1 = 255;
-            int l1 = anIntArray1451[i1] & 0xff;
+            int l1 = palette[i1] & 0xff;
             l1 += k;
             if(l1 < 0)
                 l1 = 0;
             else
             if(l1 > 255)
                 l1 = 255;
-            anIntArray1451[i1] = (j1 << 16) + (k1 << 8) + l1;
+            palette[i1] = (j1 << 16) + (k1 << 8) + l1;
         }
     }
 
@@ -155,7 +155,7 @@ public final class Background extends DrawingArea {
         int l = i + k * DrawingArea.width;
         int i1 = 0;
         int j1 = anInt1453;
-        int k1 = anInt1452;
+        int k1 = imageWidth;
         int l1 = DrawingArea.width - k1;
         int i2 = 0;
         if(k < DrawingArea.topY)
@@ -187,7 +187,7 @@ public final class Background extends DrawingArea {
         }
         if(!(k1 <= 0 || j1 <= 0))
         {
-            method362(j1, DrawingArea.pixels, aByteArray1450, l1, l, k1, i1, anIntArray1451, i2);
+            method362(j1, DrawingArea.pixels, imagePixels, l1, l, k1, i1, palette, i2);
         }
     }
 
@@ -237,12 +237,12 @@ public final class Background extends DrawingArea {
 
     }
 
-    public byte aByteArray1450[];
-    public final int[] anIntArray1451;
-    public int anInt1452;
+    public byte imagePixels[];
+    public final int[] palette;
+    public int imageWidth;
     public int anInt1453;
     public int anInt1454;
     public int anInt1455;
-    public int anInt1456;
+    public int libWidth;
     private int anInt1457;
 }

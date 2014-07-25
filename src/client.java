@@ -120,7 +120,7 @@ public final class client extends RSApplet {
     private void drawChatArea()
     {
         aRSImageProducer_1166.initDrawingArea();
-        Texture.anIntArray1472 = anIntArray1180;
+        Texture.lineOffsets = anIntArray1180;
         chatBack.method361(0, 0);
         if(messagePromptRaised)
         {
@@ -267,7 +267,7 @@ public final class client extends RSApplet {
             drawMenu();
         aRSImageProducer_1166.drawGraphics(357, super.gameGraphics, 17);
         aRSImageProducer_1165.initDrawingArea();
-        Texture.anIntArray1472 = anIntArray1182;
+        Texture.lineOffsets = anIntArray1182;
     }
 
     public void init()
@@ -432,7 +432,7 @@ public final class client extends RSApplet {
             anInt985 = -1;
             stationaryGraphicDeque.removeAll();
             aClass19_1013.removeAll();
-            Texture.method366();
+            Texture.clearTextureCache();
             unlinkMRUNodes();
             worldController.initToNull();
             System.gc();
@@ -613,7 +613,7 @@ public final class client extends RSApplet {
 
         }
         System.gc();
-        Texture.method367();
+        Texture.resetTextures();
         onDemandFetcher.method566();
         int k = (anInt1069 - 6) / 8 - 1;
         int j1 = (anInt1069 + 6) / 8 + 1;
@@ -1186,13 +1186,13 @@ public final class client extends RSApplet {
         if(j == 1)
         {
             if(k == 1)
-                Texture.method372(0.90000000000000002D);
+                Texture.calculatePalette(0.90000000000000002D);
             if(k == 2)
-                Texture.method372(0.80000000000000004D);
+                Texture.calculatePalette(0.80000000000000004D);
             if(k == 3)
-                Texture.method372(0.69999999999999996D);
+                Texture.calculatePalette(0.69999999999999996D);
             if(k == 4)
-                Texture.method372(0.59999999999999998D);
+                Texture.calculatePalette(0.59999999999999998D);
             ItemDef.mruNodes1.unlinkAll();
             welcomeScreenRaised = true;
         }
@@ -1554,7 +1554,7 @@ public final class client extends RSApplet {
     private void drawTabArea()
     {
         aRSImageProducer_1163.initDrawingArea();
-        Texture.anIntArray1472 = anIntArray1181;
+        Texture.lineOffsets = anIntArray1181;
         invBack.method361(0, 0);
         if(invOverlayInterfaceID != -1)
             drawInterface(0, 0, RSInterface.interfaceCache[invOverlayInterfaceID], 0);
@@ -1565,26 +1565,26 @@ public final class client extends RSApplet {
             drawMenu();
         aRSImageProducer_1163.drawGraphics(205, super.gameGraphics, 553);
         aRSImageProducer_1165.initDrawingArea();
-        Texture.anIntArray1472 = anIntArray1182;
+        Texture.lineOffsets = anIntArray1182;
     }
 
     private void method37(int j)
     {
         if(!lowMemory)
         {
-            if(Texture.anIntArray1480[17] >= j)
+            if(Texture.textureLastUsed[17] >= j)
             {
-                Background background = Texture.aBackgroundArray1474s[17];
-                int k = background.anInt1452 * background.anInt1453 - 1;
-                int j1 = background.anInt1452 * animationTimePassed * 2;
-                byte abyte0[] = background.aByteArray1450;
+                Background background = Texture.textureImages[17];
+                int k = background.imageWidth * background.anInt1453 - 1;
+                int j1 = background.imageWidth * animationTimePassed * 2;
+                byte abyte0[] = background.imagePixels;
                 byte abyte3[] = aByteArray912;
                 for(int i2 = 0; i2 <= k; i2++)
                     abyte3[i2] = abyte0[i2 - j1 & k];
 
-                background.aByteArray1450 = abyte3;
+                background.imagePixels = abyte3;
                 aByteArray912 = abyte0;
-                Texture.method370(17);
+                Texture.resetTexture(17);
                 anInt854++;
                 if(anInt854 > 1235)
                 {
@@ -1606,33 +1606,33 @@ public final class client extends RSApplet {
                     stream.writeBytes(stream.currentOffset - l2);
                 }
             }
-            if(Texture.anIntArray1480[24] >= j)
+            if(Texture.textureLastUsed[24] >= j)
             {
-                Background background_1 = Texture.aBackgroundArray1474s[24];
-                int l = background_1.anInt1452 * background_1.anInt1453 - 1;
-                int k1 = background_1.anInt1452 * animationTimePassed * 2;
-                byte abyte1[] = background_1.aByteArray1450;
+                Background background_1 = Texture.textureImages[24];
+                int l = background_1.imageWidth * background_1.anInt1453 - 1;
+                int k1 = background_1.imageWidth * animationTimePassed * 2;
+                byte abyte1[] = background_1.imagePixels;
                 byte abyte4[] = aByteArray912;
                 for(int j2 = 0; j2 <= l; j2++)
                     abyte4[j2] = abyte1[j2 - k1 & l];
 
-                background_1.aByteArray1450 = abyte4;
+                background_1.imagePixels = abyte4;
                 aByteArray912 = abyte1;
-                Texture.method370(24);
+                Texture.resetTexture(24);
             }
-            if(Texture.anIntArray1480[34] >= j)
+            if(Texture.textureLastUsed[34] >= j)
             {
-                Background background_2 = Texture.aBackgroundArray1474s[34];
-                int i1 = background_2.anInt1452 * background_2.anInt1453 - 1;
-                int l1 = background_2.anInt1452 * animationTimePassed * 2;
-                byte abyte2[] = background_2.aByteArray1450;
+                Background background_2 = Texture.textureImages[34];
+                int i1 = background_2.imageWidth * background_2.anInt1453 - 1;
+                int l1 = background_2.imageWidth * animationTimePassed * 2;
+                byte abyte2[] = background_2.imagePixels;
                 byte abyte5[] = aByteArray912;
                 for(int k2 = 0; k2 <= i1; k2++)
                     abyte5[k2] = abyte2[k2 - l1 & i1];
 
-                background_2.aByteArray1450 = abyte5;
+                background_2.imagePixels = abyte5;
                 aByteArray912 = abyte2;
-                Texture.method370(34);
+                Texture.resetTexture(34);
             }
         }
     }
@@ -2161,7 +2161,7 @@ public final class client extends RSApplet {
                 Background background_2 = mapScenes[class46_2.anInt758];
                 if(background_2 != null)
                 {
-                    int i6 = (class46_2.anInt744 * 4 - background_2.anInt1452) / 2;
+                    int i6 = (class46_2.anInt744 * 4 - background_2.imageWidth) / 2;
                     int j6 = (class46_2.anInt761 * 4 - background_2.anInt1453) / 2;
                     background_2.method361(48 + l * 4 + i6, 48 + (104 - i - class46_2.anInt761) * 4 + j6);
                 }
@@ -2252,7 +2252,7 @@ public final class client extends RSApplet {
                 Background background_1 = mapScenes[class46_1.anInt758];
                 if(background_1 != null)
                 {
-                    int j5 = (class46_1.anInt744 * 4 - background_1.anInt1452) / 2;
+                    int j5 = (class46_1.anInt744 * 4 - background_1.imageWidth) / 2;
                     int k5 = (class46_1.anInt761 * 4 - background_1.anInt1453) / 2;
                     background_1.method361(48 + l * 4 + j5, 48 + (104 - i - class46_1.anInt761) * 4 + k5);
                 }
@@ -2289,7 +2289,7 @@ public final class client extends RSApplet {
                 Background background = mapScenes[class46.anInt758];
                 if(background != null)
                 {
-                    int i4 = (class46.anInt744 * 4 - background.anInt1452) / 2;
+                    int i4 = (class46.anInt744 * 4 - background.imageWidth) / 2;
                     int j4 = (class46.anInt761 * 4 - background.anInt1453) / 2;
                     background.method361(48 + l * 4 + i4, 48 + (104 - i - class46.anInt761) * 4 + j4);
                 }
@@ -6937,9 +6937,9 @@ public final class client extends RSApplet {
             }
 
             drawLoadingText(83, "Unpacking textures");
-            Texture.method368(streamLoader_3);
-            Texture.method372(0.80000000000000004D);
-            Texture.method367();
+            Texture.unpackTextures(streamLoader_3);
+            Texture.calculatePalette(0.80000000000000004D);
+            Texture.resetTextures();
             drawLoadingText(86, "Unpacking config");
             Animation.unpackConfig(streamLoader);
             ObjectDef.unpackConfig(streamLoader);
@@ -6970,7 +6970,7 @@ public final class client extends RSApplet {
                 int i7 = 0;
                 for(int k7 = 0; k7 < 34; k7++)
                 {
-                    if(mapBack.aByteArray1450[k7 + j6 * mapBack.anInt1452] == 0)
+                    if(mapBack.imagePixels[k7 + j6 * mapBack.imageWidth] == 0)
                     {
                         if(k6 == 999)
                             k6 = k7;
@@ -6992,7 +6992,7 @@ public final class client extends RSApplet {
                 int l7 = 0;
                 for(int j8 = 25; j8 < 172; j8++)
                 {
-                    if(mapBack.aByteArray1450[j8 + l6 * mapBack.anInt1452] == 0 && (j8 > 34 || l6 > 34))
+                    if(mapBack.imagePixels[j8 + l6 * mapBack.imageWidth] == 0 && (j8 > 34 || l6 > 34))
                     {
                         if(j7 == 999)
                             j7 = j8;
@@ -7008,12 +7008,12 @@ public final class client extends RSApplet {
                 anIntArray1229[l6 - 5] = l7 - j7;
             }
 
-            Texture.method365(479, 96);
-            anIntArray1180 = Texture.anIntArray1472;
-            Texture.method365(190, 261);
-            anIntArray1181 = Texture.anIntArray1472;
-            Texture.method365(512, 334);
-            anIntArray1182 = Texture.anIntArray1472;
+            Texture.setBounds(479, 96);
+            anIntArray1180 = Texture.lineOffsets;
+            Texture.setBounds(190, 261);
+            anIntArray1181 = Texture.lineOffsets;
+            Texture.setBounds(512, 334);
+            anIntArray1182 = Texture.lineOffsets;
             int ai[] = new int[9];
             for(int i8 = 0; i8 < 9; i8++)
             {
@@ -8135,8 +8135,8 @@ public final class client extends RSApplet {
             int l1 = 0;
             for(int j2 = 0; j2 < background.anInt1453; j2++)
             {
-                for(int l2 = 0; l2 < background.anInt1452; l2++)
-                    if(background.aByteArray1450[l1++] != 0)
+                for(int l2 = 0; l2 < background.imageWidth; l2++)
+                    if(background.imagePixels[l1++] != 0)
                     {
                         int i3 = l2 + 16 + background.anInt1454;
                         int j3 = j2 + 16 + background.anInt1455;
@@ -9083,7 +9083,7 @@ public final class client extends RSApplet {
         aRSImageProducer_1164.initDrawingArea();
         if(anInt1021 == 2)
         {
-            byte abyte0[] = mapBack.aByteArray1450;
+            byte abyte0[] = mapBack.imagePixels;
             int ai[] = DrawingArea.pixels;
             int k2 = abyte0.length;
             for(int i5 = 0; i5 < k2; i5++)
@@ -11581,7 +11581,7 @@ public final class client extends RSApplet {
                 }
             }
 
-        int k2 = Texture.anInt1481;
+        int k2 = Texture.textureGetCount;
         Model.aBoolean1684 = true;
             Model.anInt1687 = 0;
             Model.cursorX = super.mouseX - 4;

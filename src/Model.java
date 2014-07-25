@@ -2003,7 +2003,7 @@ public final class Model extends Animable {
     {
         SINE = Texture.anIntArray1470;
         COSINE = Texture.anIntArray1471;
-        HSLtoRGB = Texture.anIntArray1482;
+        HSLtoRGB = Texture.HSL_TO_RGB;
         modelIntArray4 = Texture.anIntArray1469;
     }
 }
