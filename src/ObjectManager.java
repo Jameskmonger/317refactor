@@ -109,10 +109,10 @@ final class ObjectManager {
                         if(l12 > 0)
                         {
                             Flo flo = Flo.cache[l12 - 1];
-                            anIntArray124[i8] += flo.anInt397;
-                            anIntArray125[i8] += flo.anInt395;
-                            anIntArray126[i8] += flo.anInt396;
-                            anIntArray127[i8] += flo.anInt398;
+                            anIntArray124[i8] += flo.hue2;
+                            anIntArray125[i8] += flo.saturation;
+                            anIntArray126[i8] += flo.lightness;
+                            anIntArray127[i8] += flo.pCDivider;
                             anIntArray128[i8]++;
                         }
                     }
@@ -123,10 +123,10 @@ final class ObjectManager {
                         if(i14 > 0)
                         {
                             Flo flo_1 = Flo.cache[i14 - 1];
-                            anIntArray124[i8] -= flo_1.anInt397;
-                            anIntArray125[i8] -= flo_1.anInt395;
-                            anIntArray126[i8] -= flo_1.anInt396;
-                            anIntArray127[i8] -= flo_1.anInt398;
+                            anIntArray124[i8] -= flo_1.hue2;
+                            anIntArray125[i8] -= flo_1.saturation;
+                            anIntArray126[i8] -= flo_1.lightness;
+                            anIntArray127[i8] -= flo_1.pCDivider;
                             anIntArray128[i8]--;
                         }
                     }
@@ -197,7 +197,7 @@ final class ObjectManager {
                                     boolean flag = true;
                                     if(l18 == 0 && aByteArrayArrayArray136[l][l6][k17] != 0)
                                         flag = false;
-                                    if(i19 > 0 && !Flo.cache[i19 - 1].aBoolean393)
+                                    if(i19 > 0 && !Flo.cache[i19 - 1].occlude)
                                         flag = false;
                                     if(flag && j19 == k19 && j19 == l19 && j19 == i20)
                                         anIntArrayArrayArray135[l][l6][k17] |= 0x924;
@@ -213,7 +213,7 @@ final class ObjectManager {
                                     int k22 = aByteArrayArrayArray136[l][l6][k17] + 1;
                                     byte byte4 = aByteArrayArrayArray148[l][l6][k17];
                                     Flo flo_2 = Flo.cache[i19 - 1];
-                                    int i23 = flo_2.anInt391;
+                                    int i23 = flo_2.texture;
                                     int j23;
                                     int k23;
                                     if(i23 >= 0)
@@ -221,15 +221,15 @@ final class ObjectManager {
                                         k23 = Texture.getAverageTextureColour(i23);
                                         j23 = -1;
                                     } else
-                                    if(flo_2.anInt390 == 0xff00ff)
+                                    if(flo_2.colour2 == 0xff00ff)
                                     {
                                         k23 = 0;
                                         j23 = -2;
                                         i23 = -1;
                                     } else
                                     {
-                                        j23 = method177(flo_2.anInt394, flo_2.anInt395, flo_2.anInt396);
-                                        k23 = Texture.HSL_TO_RGB[method185(flo_2.anInt399, 96)];
+                                        j23 = method177(flo_2.hue, flo_2.saturation, flo_2.lightness);
+                                        k23 = Texture.HSL_TO_RGB[method185(flo_2.hsl, 96)];
                                     }
                                     worldController.method279(l, l6, k17, k22, byte4, i23, j19, k19, l19, i20, method187(j21, j20), method187(j21, k20), method187(j21, l20), method187(j21, i21), method185(j23, j20), method185(j23, k20), method185(j23, l20), method185(j23, i21), i22, k23);
                                 }

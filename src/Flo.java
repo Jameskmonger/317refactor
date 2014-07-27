@@ -1,12 +1,8 @@
-// Decompiled by Jad v1.5.8f. Copyright 2001 Pavel Kouznetsov.
-// Jad home page: http://www.kpdus.com/jad.html
-// Decompiler options: packimports(3) 
-
 public final class Flo {
 
-    public static void unpackConfig(StreamLoader streamLoader)
+    public static void unpackConfig(StreamLoader archive)
     {
-        Stream stream = new Stream(streamLoader.getDataForName("flo.dat"));
+        Stream stream = new Stream(archive.getDataForName("flo.dat"));
         int cacheSize = stream.getUnsignedLEShort();
         if(cache == null)
             cache = new Flo[cacheSize];
@@ -23,150 +19,150 @@ public final class Flo {
     {
         do
         {
-            int i = stream.getUnsignedByte();
+            int opcode = stream.getUnsignedByte();
             boolean dummy;
-            if(i == 0)
+            if(opcode == 0)
                 return;
             else
-            if(i == 1)
+            if(opcode == 1)
             {
-                anInt390 = stream.read3Bytes();
-                method262(anInt390);
+                colour2 = stream.read3Bytes();
+                rgbToHls(colour2);
             } else
-            if(i == 2)
-                anInt391 = stream.getUnsignedByte();
+            if(opcode == 2)
+                texture = stream.getUnsignedByte();
             else
-            if(i == 3)
+            if(opcode == 3)
                 dummy = true;
             else
-            if(i == 5)
-                aBoolean393 = false;
+            if(opcode == 5)
+                occlude = false;
             else
-            if(i == 6)
+            if(opcode == 6)
                 stream.readString();
             else
-            if(i == 7)
+            if(opcode == 7)
             {
-                int j = anInt394;
-                int k = anInt395;
-                int l = anInt396;
-                int i1 = anInt397;
-                int j1 = stream.read3Bytes();
-                method262(j1);
-                anInt394 = j;
-                anInt395 = k;
-                anInt396 = l;
-                anInt397 = i1;
-                anInt398 = i1;
+                int h = hue;
+                int s = saturation;
+                int l = lightness;
+                int h2 = hue2;
+                int rgb = stream.read3Bytes();
+                rgbToHls(rgb);
+                hue = h;
+                saturation = s;
+                lightness = l;
+                hue2 = h2;
+                pCDivider = h2;
             } else
             {
-                System.out.println("Error unrecognised config code: " + i);
+                System.out.println("Error unrecognised config code: " + opcode);
             }
         } while(true);
     }
 
-    private void method262(int i)
+    private void rgbToHls(int rgb)
     {
-        double d = (double)(i >> 16 & 0xff) / 256D;
-        double d1 = (double)(i >> 8 & 0xff) / 256D;
-        double d2 = (double)(i & 0xff) / 256D;
-        double d3 = d;
-        if(d1 < d3)
-            d3 = d1;
-        if(d2 < d3)
-            d3 = d2;
-        double d4 = d;
-        if(d1 > d4)
-            d4 = d1;
-        if(d2 > d4)
-            d4 = d2;
-        double d5 = 0.0D;
-        double d6 = 0.0D;
-        double d7 = (d3 + d4) / 2D;
-        if(d3 != d4)
+        double red = (double)(rgb >> 16 & 0xff) / 256D;
+        double green = (double)(rgb >> 8 & 0xff) / 256D;
+        double blue = (double)(rgb & 0xff) / 256D;
+        double minC = red;
+        if(green < minC)
+            minC = green;
+        if(blue < minC)
+            minC = blue;
+        double maxC = red;
+        if(green > maxC)
+            maxC = green;
+        if(blue > maxC)
+            maxC = blue;
+        double h = 0.0D;
+        double s = 0.0D;
+        double l = (minC + maxC) / 2D;
+        if(minC != maxC)
         {
-            if(d7 < 0.5D)
-                d6 = (d4 - d3) / (d4 + d3);
-            if(d7 >= 0.5D)
-                d6 = (d4 - d3) / (2D - d4 - d3);
-            if(d == d4)
-                d5 = (d1 - d2) / (d4 - d3);
+            if(l < 0.5D)
+                s = (maxC - minC) / (maxC + minC);
+            if(l >= 0.5D)
+                s = (maxC - minC) / (2D - maxC - minC);
+            if(red == maxC)
+                h = (green - blue) / (maxC - minC);
             else
-            if(d1 == d4)
-                d5 = 2D + (d2 - d) / (d4 - d3);
+            if(green == maxC)
+                h = 2D + (blue - red) / (maxC - minC);
             else
-            if(d2 == d4)
-                d5 = 4D + (d - d1) / (d4 - d3);
+            if(blue == maxC)
+                h = 4D + (red - green) / (maxC - minC);
         }
-        d5 /= 6D;
-        anInt394 = (int)(d5 * 256D);
-        anInt395 = (int)(d6 * 256D);
-        anInt396 = (int)(d7 * 256D);
-        if(anInt395 < 0)
-            anInt395 = 0;
+        h /= 6D;
+        hue = (int)(h * 256D);
+        saturation = (int)(s * 256D);
+        lightness = (int)(l * 256D);
+        if(saturation < 0)
+            saturation = 0;
         else
-        if(anInt395 > 255)
-            anInt395 = 255;
-        if(anInt396 < 0)
-            anInt396 = 0;
+        if(saturation > 255)
+            saturation = 255;
+        if(lightness < 0)
+            lightness = 0;
         else
-        if(anInt396 > 255)
-            anInt396 = 255;
-        if(d7 > 0.5D)
-            anInt398 = (int)((1.0D - d7) * d6 * 512D);
+        if(lightness > 255)
+            lightness = 255;
+        if(l > 0.5D)
+            pCDivider = (int)((1.0D - l) * s * 512D);
         else
-            anInt398 = (int)(d7 * d6 * 512D);
-        if(anInt398 < 1)
-            anInt398 = 1;
-        anInt397 = (int)(d5 * (double)anInt398);
-        int k = (anInt394 + (int)(Math.random() * 16D)) - 8;
-        if(k < 0)
-            k = 0;
+            pCDivider = (int)(l * s * 512D);
+        if(pCDivider < 1)
+            pCDivider = 1;
+        hue2 = (int)(h * (double)pCDivider);
+        int randomHue = (hue + (int)(Math.random() * 16D)) - 8;
+        if(randomHue < 0)
+            randomHue = 0;
         else
-        if(k > 255)
-            k = 255;
-        int l = (anInt395 + (int)(Math.random() * 48D)) - 24;
-        if(l < 0)
-            l = 0;
+        if(randomHue > 255)
+            randomHue = 255;
+        int randomSaturation = (saturation + (int)(Math.random() * 48D)) - 24;
+        if(randomSaturation < 0)
+            randomSaturation = 0;
         else
-        if(l > 255)
-            l = 255;
-        int i1 = (anInt396 + (int)(Math.random() * 48D)) - 24;
-        if(i1 < 0)
-            i1 = 0;
+        if(randomSaturation > 255)
+            randomSaturation = 255;
+        int randomLightness = (lightness + (int)(Math.random() * 48D)) - 24;
+        if(randomLightness < 0)
+            randomLightness = 0;
         else
-        if(i1 > 255)
-            i1 = 255;
-        anInt399 = method263(k, l, i1);
+        if(randomLightness > 255)
+            randomLightness = 255;
+        hsl = packHSL(randomHue, randomSaturation, randomLightness);
     }
 
-    private int method263(int i, int j, int k)
+    private int packHSL(int h, int s, int l)
     {
-        if(k > 179)
-            j /= 2;
-        if(k > 192)
-            j /= 2;
-        if(k > 217)
-            j /= 2;
-        if(k > 243)
-            j /= 2;
-        return (i / 4 << 10) + (j / 32 << 7) + k / 2;
+        if(l > 179)
+            s /= 2;
+        if(l > 192)
+            s /= 2;
+        if(l > 217)
+            s /= 2;
+        if(l > 243)
+            s /= 2;
+        return (h / 4 << 10) + (s / 32 << 7) + l / 2;
     }
 
     private Flo()
     {
-        anInt391 = -1;
-        aBoolean393 = true;
+        texture = -1;
+        occlude = true;
     }
 
     public static Flo cache[];
-    public int anInt390;
-    public int anInt391;
-    public boolean aBoolean393;
-    public int anInt394;
-    public int anInt395;
-    public int anInt396;
-    public int anInt397;
-    public int anInt398;
-    public int anInt399;
+    public int colour2;
+    public int texture;
+    public boolean occlude;
+    public int hue;
+    public int saturation;
+    public int lightness;
+    public int hue2;
+    public int pCDivider;
+    public int hsl;
 }
