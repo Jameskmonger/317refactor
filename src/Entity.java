@@ -1,106 +1,102 @@
-// Decompiled by Jad v1.5.8f. Copyright 2001 Pavel Kouznetsov.
-// Jad home page: http://www.kpdus.com/jad.html
-// Decompiler options: packimports(3) 
-
 public class Entity extends Animable {
 
-    public final void setPos(int i, int j, boolean flag)
+    public final void setPos(int x, int y, boolean flag)
     {
-        if(anim != -1 && Animation.anims[anim].anInt364 == 1)
-            anim = -1;
+        if(animation != -1 && Animation.anims[animation].priority == 1)
+            animation = -1;
         if(!flag)
         {
-            int k = i - smallX[0];
-            int l = j - smallY[0];
-            if(k >= -8 && k <= 8 && l >= -8 && l <= 8)
+            int distanceX = x - smallX[0];
+            int distanceY = y - smallY[0];
+            if(distanceX >= -8 && distanceX <= 8 && distanceY >= -8 && distanceY <= 8)
             {
-                if(smallXYIndex < 9)
-                    smallXYIndex++;
-                for(int i1 = smallXYIndex; i1 > 0; i1--)
+                if(pathLength < 9)
+                    pathLength++;
+                for(int i = pathLength; i > 0; i--)
                 {
-                    smallX[i1] = smallX[i1 - 1];
-                    smallY[i1] = smallY[i1 - 1];
-                    aBooleanArray1553[i1] = aBooleanArray1553[i1 - 1];
+                    smallX[i] = smallX[i - 1];
+                    smallY[i] = smallY[i - 1];
+                    pathRun[i] = pathRun[i - 1];
                 }
 
-                smallX[0] = i;
-                smallY[0] = j;
-                aBooleanArray1553[0] = false;
+                smallX[0] = x;
+                smallY[0] = y;
+                pathRun[0] = false;
                 return;
             }
         }
-        smallXYIndex = 0;
+        pathLength = 0;
         anInt1542 = 0;
         anInt1503 = 0;
-        smallX[0] = i;
-        smallY[0] = j;
-        x = smallX[0] * 128 + anInt1540 * 64;
-        y = smallY[0] * 128 + anInt1540 * 64;
+        smallX[0] = x;
+        smallY[0] = y;
+        this.x = smallX[0] * 128 + boundaryDimension * 64;
+        this.y = smallY[0] * 128 + boundaryDimension * 64;
     }
 
     public final void method446()
     {
-        smallXYIndex = 0;
+        pathLength = 0;
         anInt1542 = 0;
     }
 
-    public final void updateHitData(int j, int k, int l)
+    public final void updateHitData(int type, int damage, int currentTime)
     {
-        for(int i1 = 0; i1 < 4; i1++)
-            if(hitsLoopCycle[i1] <= l)
+        for(int hit = 0; hit < 4; hit++)
+            if(hitsLoopCycle[hit] <= currentTime)
             {
-                hitArray[i1] = k;
-                hitMarkTypes[i1] = j;
-                hitsLoopCycle[i1] = l + 70;
+                hitArray[hit] = damage;
+                hitMarkTypes[hit] = type;
+                hitsLoopCycle[hit] = currentTime + 70;
                 return;
             }
     }
 
-    public final void moveInDir(boolean flag, int i)
+    public final void move(boolean flag, int direction)
     {
-        int j = smallX[0];
-        int k = smallY[0];
-        if(i == 0)
+        int x = smallX[0];
+        int y = smallY[0];
+        if(direction == 0)
         {
-            j--;
-            k++;
+            x--;
+            y++;
         }
-        if(i == 1)
-            k++;
-        if(i == 2)
+        if(direction == 1)
+            y++;
+        if(direction == 2)
         {
-            j++;
-            k++;
+            x++;
+            y++;
         }
-        if(i == 3)
-            j--;
-        if(i == 4)
-            j++;
-        if(i == 5)
+        if(direction == 3)
+            x--;
+        if(direction == 4)
+            x++;
+        if(direction == 5)
         {
-            j--;
-            k--;
+            x--;
+            y--;
         }
-        if(i == 6)
-            k--;
-        if(i == 7)
+        if(direction == 6)
+            y--;
+        if(direction == 7)
         {
-            j++;
-            k--;
+            x++;
+            y--;
         }
-        if(anim != -1 && Animation.anims[anim].anInt364 == 1)
-            anim = -1;
-        if(smallXYIndex < 9)
-            smallXYIndex++;
-        for(int l = smallXYIndex; l > 0; l--)
+        if(animation != -1 && Animation.anims[animation].priority == 1)
+            animation = -1;
+        if(pathLength < 9)
+            pathLength++;
+        for(int l = pathLength; l > 0; l--)
         {
             smallX[l] = smallX[l - 1];
             smallY[l] = smallY[l - 1];
-            aBooleanArray1553[l] = aBooleanArray1553[l - 1];
+            pathRun[l] = pathRun[l - 1];
         }
-            smallX[0] = j;
-            smallY[0] = k;
-            aBooleanArray1553[0] = flag;
+            smallX[0] = x;
+            smallY[0] = y;
+            pathRun[0] = flag;
     }
 
     public int entScreenX;
@@ -125,17 +121,17 @@ public class Entity extends Animable {
         hitMarkTypes = new int[4];
         hitsLoopCycle = new int[4];
         anInt1517 = -1;
-        anInt1520 = -1;
-        anim = -1;
+        spotAnimationId = -1;
+        animation = -1;
         loopCycleStatus = -1000;
         textCycle = 100;
-        anInt1540 = 1;
+        boundaryDimension = 1;
         aBoolean1541 = false;
-        aBooleanArray1553 = new boolean[10];
-        anInt1554 = -1;
-        anInt1555 = -1;
-        anInt1556 = -1;
-        anInt1557 = -1;
+        pathRun = new boolean[10];
+        walkAnimationId = -1;
+        turnAboutAnimationId = -1;
+        turnRightAnimationId = -1;
+        turnLeftAnimationId = -1;
     }
 
     public final int[] smallX;
@@ -156,16 +152,16 @@ public class Entity extends Animable {
     int anInt1517;
     int anInt1518;
     int anInt1519;
-    int anInt1520;
+    int spotAnimationId;
     int anInt1521;
     int anInt1522;
-    int anInt1523;
+    int spotAnimationEndCycle;
     int anInt1524;
-    int smallXYIndex;
-    public int anim;
+    int pathLength;
+    public int animation;
     int anInt1527;
     int anInt1528;
-    int anInt1529;
+    int animationDelay;
     int anInt1530;
     int anInt1531;
     public int loopCycleStatus;
@@ -175,7 +171,7 @@ public class Entity extends Animable {
     int anInt1537;
     int anInt1538;
     int anInt1539;
-    int anInt1540;
+    int boundaryDimension;
     boolean aBoolean1541;
     int anInt1542;
     int anInt1543;
@@ -187,10 +183,10 @@ public class Entity extends Animable {
     int anInt1549;
     public int x;
     public int y;
-    int anInt1552;
-    final boolean[] aBooleanArray1553;
-    int anInt1554;
-    int anInt1555;
-    int anInt1556;
-    int anInt1557;
+    int currentRotation;
+    final boolean[] pathRun;
+    int walkAnimationId;
+    int turnAboutAnimationId;
+    int turnRightAnimationId;
+    int turnLeftAnimationId;
 }

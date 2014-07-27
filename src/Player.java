@@ -16,9 +16,9 @@ public final class Player extends Entity
         model.singleTile = true;
         if(aBoolean1699)
             return model;
-        if(super.anInt1520 != -1 && super.anInt1521 != -1)
+        if(super.spotAnimationId != -1 && super.anInt1521 != -1)
         {
-            SpotAnim spotAnim = SpotAnim.cache[super.anInt1520];
+            SpotAnim spotAnim = SpotAnim.cache[super.spotAnimationId];
             Model model_2 = spotAnim.getModel();
             if(model_2 != null)
             {
@@ -127,18 +127,18 @@ public final class Player extends Entity
         super.anInt1512 = stream.getUnsignedLEShort();
         if(super.anInt1512 == 65535)
             super.anInt1512 = -1;
-        super.anInt1554 = stream.getUnsignedLEShort();
-        if(super.anInt1554 == 65535)
-            super.anInt1554 = -1;
-        super.anInt1555 = stream.getUnsignedLEShort();
-        if(super.anInt1555 == 65535)
-            super.anInt1555 = -1;
-        super.anInt1556 = stream.getUnsignedLEShort();
-        if(super.anInt1556 == 65535)
-            super.anInt1556 = -1;
-        super.anInt1557 = stream.getUnsignedLEShort();
-        if(super.anInt1557 == 65535)
-            super.anInt1557 = -1;
+        super.walkAnimationId = stream.getUnsignedLEShort();
+        if(super.walkAnimationId == 65535)
+            super.walkAnimationId = -1;
+        super.turnAboutAnimationId = stream.getUnsignedLEShort();
+        if(super.turnAboutAnimationId == 65535)
+            super.turnAboutAnimationId = -1;
+        super.turnRightAnimationId = stream.getUnsignedLEShort();
+        if(super.turnRightAnimationId == 65535)
+            super.turnRightAnimationId = -1;
+        super.turnLeftAnimationId = stream.getUnsignedLEShort();
+        if(super.turnLeftAnimationId == 65535)
+            super.turnLeftAnimationId = -1;
         super.anInt1505 = stream.getUnsignedLEShort();
         if(super.anInt1505 == 65535)
             super.anInt1505 = -1;
@@ -173,8 +173,8 @@ public final class Player extends Entity
         if(desc != null)
         {
             int j = -1;
-            if(super.anim >= 0 && super.anInt1529 == 0)
-                j = Animation.anims[super.anim].frame2Ids[super.anInt1527];
+            if(super.animation >= 0 && super.animationDelay == 0)
+                j = Animation.anims[super.animation].frame2Ids[super.anInt1527];
             else
             if(super.anInt1517 >= 0)
                 j = Animation.anims[super.anInt1517].frame2Ids[super.anInt1518];
@@ -186,9 +186,9 @@ public final class Player extends Entity
         int i1 = -1;
         int j1 = -1;
         int k1 = -1;
-        if(super.anim >= 0 && super.anInt1529 == 0)
+        if(super.animation >= 0 && super.animationDelay == 0)
         {
-            Animation animation = Animation.anims[super.anim];
+            Animation animation = Animation.anims[super.animation];
             k = animation.frame2Ids[super.anInt1527];
             if(super.anInt1517 >= 0 && super.anInt1517 != super.anInt1511)
                 i1 = Animation.anims[super.anInt1517].frame2Ids[super.anInt1518];
@@ -274,7 +274,7 @@ public final class Player extends Entity
         Model model_2 = Model.aModel_1621;
         model_2.replaceWithModel(model_1, Class36.isNullFrame(k) & Class36.isNullFrame(i1));
         if(k != -1 && i1 != -1)
-            model_2.mixAnimationFrames(Animation.anims[super.anim].anIntArray357, i1, k);
+            model_2.mixAnimationFrames(Animation.anims[super.animation].anIntArray357, i1, k);
         else
         if(k != -1)
             model_2.applyTransformation(k);

@@ -7,13 +7,13 @@ public final class NPC extends Entity
 
     private Model method450()
     {
-        if(super.anim >= 0 && super.anInt1529 == 0)
+        if(super.animation >= 0 && super.animationDelay == 0)
         {
-            int k = Animation.anims[super.anim].frame2Ids[super.anInt1527];
+            int k = Animation.anims[super.animation].frame2Ids[super.anInt1527];
             int i1 = -1;
             if(super.anInt1517 >= 0 && super.anInt1517 != super.anInt1511)
                 i1 = Animation.anims[super.anInt1517].frame2Ids[super.anInt1518];
-            return desc.method164(i1, k, Animation.anims[super.anim].anIntArray357);
+            return desc.method164(i1, k, Animation.anims[super.animation].anIntArray357);
         }
         int l = -1;
         if(super.anInt1517 >= 0)
@@ -29,9 +29,9 @@ public final class NPC extends Entity
         if(model == null)
             return null;
         super.height = model.modelHeight;
-        if(super.anInt1520 != -1 && super.anInt1521 != -1)
+        if(super.spotAnimationId != -1 && super.anInt1521 != -1)
         {
-            SpotAnim spotAnim = SpotAnim.cache[super.anInt1520];
+            SpotAnim spotAnim = SpotAnim.cache[super.spotAnimationId];
             Model model_1 = spotAnim.getModel();
             if(model_1 != null)
             {

@@ -86,7 +86,7 @@ public final class Animation {
                 anInt363 = stream.getUnsignedByte();
             else
             if(i == 10)
-                anInt364 = stream.getUnsignedByte();
+                priority = stream.getUnsignedByte();
             else
             if(i == 11)
                 anInt365 = stream.getUnsignedByte();
@@ -111,14 +111,14 @@ public final class Animation {
                 anInt363 = 2;
             else
                 anInt363 = 0;
-        if(anInt364 == -1)
+        if(priority == -1)
         {
             if(anIntArray357 != null)
             {
-                anInt364 = 2;
+                priority = 2;
                 return;
             }
-            anInt364 = 0;
+            priority = 0;
         }
     }
 
@@ -131,7 +131,7 @@ public final class Animation {
         anInt361 = -1;
         anInt362 = 99;
         anInt363 = -1;
-        anInt364 = -1;
+        priority = -1;
         anInt365 = 2;
     }
 
@@ -148,7 +148,7 @@ public final class Animation {
     public int anInt361;
     public int anInt362;
     public int anInt363;
-    public int anInt364;
+    public int priority;
     public int anInt365;
     public static int anInt367;
 }
