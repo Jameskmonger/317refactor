@@ -1,7 +1,3 @@
-// Decompiled by Jad v1.5.8f. Copyright 2001 Pavel Kouznetsov.
-// Jad home page: http://www.kpdus.com/jad.html
-// Decompiler options: packimports(3) 
-
 public final class SpotAnim {
 
     public static void unpackConfig(StreamLoader streamLoader)
@@ -14,7 +10,7 @@ public final class SpotAnim {
         {
             if(cache[j] == null)
                 cache[j] = new SpotAnim();
-            cache[j].anInt404 = j;
+            cache[j].id = j;
             cache[j].readValues(stream);
         }
 
@@ -24,82 +20,81 @@ public final class SpotAnim {
     {
         do
         {
-            int i = stream.getUnsignedByte();
-            if(i == 0)
+            int opcode = stream.getUnsignedByte();
+            if(opcode == 0)
                 return;
-            if(i == 1)
-                anInt405 = stream.getUnsignedLEShort();
+            if(opcode == 1)
+                modelId = stream.getUnsignedLEShort();
             else
-            if(i == 2)
+            if(opcode == 2)
             {
-                anInt406 = stream.getUnsignedLEShort();
+                animationId = stream.getUnsignedLEShort();
                 if(Animation.anims != null)
-                    sequences = Animation.anims[anInt406];
+                    sequences = Animation.anims[animationId];
             } else
-            if(i == 4)
+            if(opcode == 4)
                 resizeXY = stream.getUnsignedLEShort();
             else
-            if(i == 5)
+            if(opcode == 5)
                 resizeZ = stream.getUnsignedLEShort();
             else
-            if(i == 6)
+            if(opcode == 6)
                 rotation = stream.getUnsignedLEShort();
             else
-            if(i == 7)
+            if(opcode == 7)
                 modelLightFalloff = stream.getUnsignedByte();
             else
-            if(i == 8)
+            if(opcode == 8)
                 modelLightAmbient = stream.getUnsignedByte();
             else
-            if(i >= 40 && i < 50)
-                anIntArray408[i - 40] = stream.getUnsignedLEShort();
+            if(opcode >= 40 && opcode < 50)
+                originalModelColours[opcode - 40] = stream.getUnsignedLEShort();
             else
-            if(i >= 50 && i < 60)
-                anIntArray409[i - 50] = stream.getUnsignedLEShort();
+            if(opcode >= 50 && opcode < 60)
+                modifiedModelColours[opcode - 50] = stream.getUnsignedLEShort();
             else
-                System.out.println("Error unrecognised spotanim config code: " + i);
+                System.out.println("Error unrecognised spotanim config code: " + opcode);
         } while(true);
     }
 
     public Model getModel()
     {
-        Model model = (Model) aMRUNodes_415.insertFromCache(anInt404);
+        Model model = (Model) modelCache.insertFromCache(id);
         if(model != null)
             return model;
-        model = Model.getModel(anInt405);
+        model = Model.getModel(modelId);
         if(model == null)
             return null;
         for(int i = 0; i < 6; i++)
-            if(anIntArray408[0] != 0)
-                model.recolour(anIntArray408[i], anIntArray409[i]);
+            if(originalModelColours[0] != 0)
+                model.recolour(originalModelColours[i], modifiedModelColours[i]);
 
-        aMRUNodes_415.removeFromCache(model, anInt404);
+        modelCache.removeFromCache(model, id);
         return model;
     }
 
     private SpotAnim()
     {
         anInt400 = 9;
-        anInt406 = -1;
-        anIntArray408 = new int[6];
-        anIntArray409 = new int[6];
+        animationId = -1;
+        originalModelColours = new int[6];
+        modifiedModelColours = new int[6];
         resizeXY = 128;
         resizeZ = 128;
     }
 
     private final int anInt400;
     public static SpotAnim cache[];
-    private int anInt404;
-    private int anInt405;
-    private int anInt406;
+    private int id;
+    private int modelId;
+    private int animationId;
     public Animation sequences;
-    private final int[] anIntArray408;
-    private final int[] anIntArray409;
+    private final int[] originalModelColours;
+    private final int[] modifiedModelColours;
     public int resizeXY;
     public int resizeZ;
     public int rotation;
     public int modelLightFalloff;
     public int modelLightAmbient;
-    public static MRUNodes aMRUNodes_415 = new MRUNodes(30);
-
+    public static MRUNodes modelCache = new MRUNodes(30);
 }

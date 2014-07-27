@@ -4,9 +4,9 @@
 
 public final class  Varp {
 
-    public static void unpackConfig(StreamLoader streamLoader)
+    public static void unpackConfig(StreamLoader archive)
     {
-        Stream stream = new Stream(streamLoader.getDataForName("varp.dat"));
+        Stream stream = new Stream(archive.getDataForName("varp.dat"));
         anInt702 = 0;
         int cacheSize = stream.getUnsignedLEShort();
         if(cache == null)
@@ -27,47 +27,47 @@ public final class  Varp {
     {
         do
         {
-            int j = stream.getUnsignedByte();
-            if(j == 0)
+            int opcode = stream.getUnsignedByte();
+            if(opcode == 0)
                 return;
             int dummy;
-            if(j == 1)
+            if(opcode == 1)
                  stream.getUnsignedByte();
             else
-            if(j == 2)
+            if(opcode == 2)
                 stream.getUnsignedByte();
             else
-            if(j == 3)
+            if(opcode == 3)
                 anIntArray703[anInt702++] = i;
             else
-            if(j == 4)
+            if(opcode == 4)
                 dummy = 2;
             else
-            if(j == 5)
+            if(opcode == 5)
                 anInt709 = stream.getUnsignedLEShort();
             else
-            if(j == 6)
+            if(opcode == 6)
                 dummy = 2;
             else
-            if(j == 7)
+            if(opcode == 7)
                 stream.readDWord();
             else
-            if(j == 8)
+            if(opcode == 8)
                 aBoolean713 = true;
              else
-            if(j == 10)
+            if(opcode == 10)
                  stream.readString();
             else
-            if(j == 11)
+            if(opcode == 11)
                 aBoolean713 = true;
             else
-            if(j == 12)
+            if(opcode == 12)
                 stream.readDWord();
             else
-            if(j == 13)
+            if(opcode == 13)
                 dummy = 2;
             else
-                System.out.println("Error unrecognised config code: " + j);
+                System.out.println("Error unrecognised config code: " + opcode);
         } while(true);
     }
 

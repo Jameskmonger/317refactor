@@ -651,7 +651,7 @@ public final class client extends RSApplet {
         ItemDef.mruNodes2.unlinkAll();
         ItemDef.mruNodes1.unlinkAll();
         Player.mruNodes.unlinkAll();
-        SpotAnim.aMRUNodes_415.unlinkAll();
+        SpotAnim.modelCache.unlinkAll();
     }
 
     private void method24(int i)
@@ -4638,7 +4638,7 @@ public final class client extends RSApplet {
         DummyClass.cache = null;
         Animation.anims = null;
         SpotAnim.cache = null;
-        SpotAnim.aMRUNodes_415 = null;
+        SpotAnim.modelCache = null;
         Varp.cache = null;
         super.fullGameScreen = null;
         Player.mruNodes = null;
