@@ -270,7 +270,7 @@ public final class RSInterface
 
     private static Sprite method207(int i, StreamLoader streamLoader, String s)
     {
-        long l = (TextClass.method585(s) << 8) + (long)i;
+        long l = (TextClass.encodeSpriteName(s) << 8) + (long)i;
         Sprite sprite = (Sprite) aMRUNodes_238.insertFromCache(l);
         if(sprite != null)
             return sprite;

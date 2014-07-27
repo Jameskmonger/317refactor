@@ -1,102 +1,98 @@
-// Decompiled by Jad v1.5.8f. Copyright 2001 Pavel Kouznetsov.
-// Jad home page: http://www.kpdus.com/jad.html
-// Decompiler options: packimports(3) 
-
 import sign.signlink;
 
 final class TextClass {
 
-    public static long longForName(String s)
+    public static long longForName(String name)
     {
-        long l = 0L;
-        for(int i = 0; i < s.length() && i < 12; i++)
+        long longName = 0L;
+        for(int c = 0; c < name.length() && c < 12; c++)
         {
-            char c = s.charAt(i);
-            l *= 37L;
-            if(c >= 'A' && c <= 'Z')
-                l += (1 + c) - 65;
+            char character = name.charAt(c);
+            longName *= 37L;
+            if(character >= 'A' && character <= 'Z')
+                longName += (1 + character) - 65;
             else
-            if(c >= 'a' && c <= 'z')
-                l += (1 + c) - 97;
+            if(character >= 'a' && character <= 'z')
+                longName += (1 + character) - 97;
             else
-            if(c >= '0' && c <= '9')
-                l += (27 + c) - 48;
+            if(character >= '0' && character <= '9')
+                longName += (27 + character) - 48;
         }
 
-        for(; l % 37L == 0L && l != 0L; l /= 37L);
-        return l;
+        for(; longName % 37L == 0L && longName != 0L; longName /= 37L);
+        return longName;
     }
 
-    public static String nameForLong(long l)
+    public static String nameForLong(long name)
     {
         try
         {
-            if(l <= 0L || l >= 0x5b5b57f8a98a5dd1L)
+            if(name <= 0L || name >= 0x5b5b57f8a98a5dd1L)
                 return "invalid_name";
-            if(l % 37L == 0L)
+            if(name % 37L == 0L)
                 return "invalid_name";
             int i = 0;
             char ac[] = new char[12];
-            while(l != 0L) 
+            while(name != 0L) 
             {
-                long l1 = l;
-                l /= 37L;
-                ac[11 - i++] = validChars[(int)(l1 - l * 37L)];
+                long n = name;
+                name /= 37L;
+                ac[11 - i++] = validChars[(int)(n - name * 37L)];
             }
             return new String(ac, 12 - i, i);
         }
         catch(RuntimeException runtimeexception)
         {
-            signlink.reporterror("81570, " + l + ", " + (byte)-99 + ", " + runtimeexception.toString());
+            signlink.reporterror("81570, " + name + ", " + (byte)-99 + ", " + runtimeexception.toString());
         }
         throw new RuntimeException();
     }
 
-    public static long method585(String s)
+    public static long encodeSpriteName(String spriteName)
     {
-        s = s.toUpperCase();
-        long l = 0L;
-        for(int i = 0; i < s.length(); i++)
+        spriteName = spriteName.toUpperCase();
+        long longSpriteName = 0L;
+        for(int c = 0; c < spriteName.length(); c++)
         {
-            l = (l * 61L + (long)s.charAt(i)) - 32L;
-            l = l + (l >> 56) & 0xffffffffffffffL;
+            longSpriteName = (longSpriteName * 61L + (long)spriteName.charAt(c)) - 32L;
+            longSpriteName = longSpriteName + (longSpriteName >> 56) & 0xffffffffffffffL;
         }
-        return l;
+        return longSpriteName;
     }
 
-    public static String method586(int i)
+    public static String decodeDNS(int address)
     {
-            return (i >> 24 & 0xff) + "." + (i >> 16 & 0xff) + "." + (i >> 8 & 0xff) + "." + (i & 0xff);
+            return (address >> 24 & 0xff) + "." + (address >> 16 & 0xff) + "." + (address >> 8 & 0xff) + "." + (address & 0xff);
     }
 
-    public static String fixName(String s)
+    public static String formatName(String name)
     {
-        if(s.length() > 0)
+        if(name.length() > 0)
         {
-            char ac[] = s.toCharArray();
-            for(int j = 0; j < ac.length; j++)
-                if(ac[j] == '_')
+            char characters[] = name.toCharArray();
+            for(int c = 0; c < characters.length; c++)
+                if(characters[c] == '_')
                 {
-                    ac[j] = ' ';
-                    if(j + 1 < ac.length && ac[j + 1] >= 'a' && ac[j + 1] <= 'z')
-                        ac[j + 1] = (char)((ac[j + 1] + 65) - 97);
+                    characters[c] = ' ';
+                    if(c + 1 < characters.length && characters[c + 1] >= 'a' && characters[c + 1] <= 'z')
+                        characters[c + 1] = (char)((characters[c + 1] + 65) - 97);
                 }
 
-            if(ac[0] >= 'a' && ac[0] <= 'z')
-                ac[0] = (char)((ac[0] + 65) - 97);
-            return new String(ac);
+            if(characters[0] >= 'a' && characters[0] <= 'z')
+                characters[0] = (char)((characters[0] + 65) - 97);
+            return new String(characters);
         } else
         {
-            return s;
+            return name;
         }
     }
 
-    public static String passwordAsterisks(String s)
+    public static String asterisksForString(String string)
     {
-        StringBuffer stringbuffer = new StringBuffer();
-        for(int j = 0; j < s.length(); j++)
-            stringbuffer.append("*");
-        return stringbuffer.toString();
+        StringBuffer asterisks = new StringBuffer();
+        for(int c = 0; c < string.length(); c++)
+            asterisks.append("*");
+        return asterisks.toString();
     }
 
     private static final char[] validChars = {

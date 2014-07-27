@@ -258,7 +258,7 @@ public final class client extends RSApplet {
             if(myPlayer != null && myPlayer.name != null)
                 s = myPlayer.name;
             else
-                s = TextClass.fixName(myUsername);
+                s = TextClass.formatName(myUsername);
             textDrawingArea.drawTextHLeftVTop(s + ":", 4, 90, 0);
             textDrawingArea.drawTextHLeftVTop(inputString + "*", 6 + textDrawingArea.getFormattedStringWidth(s + ": "), 90, 255);
             DrawingArea.drawHLine(77, 0, 479, 0);
@@ -1814,7 +1814,7 @@ public final class client extends RSApplet {
                 pushMessage("Your friendlist is full. Max of 100 for free users, and 200 for members", 0, "");
                 return;
             }
-            String s = TextClass.fixName(TextClass.nameForLong(l));
+            String s = TextClass.formatName(TextClass.nameForLong(l));
             for(int i = 0; i < friendsCount; i++)
                 if(friendsListAsLongs[i] == l)
                 {
@@ -3669,7 +3669,7 @@ public final class client extends RSApplet {
             if(l1 != -1)
             {
                 s1 = s1.substring(l1 + 5).trim();
-                String s7 = TextClass.fixName(TextClass.nameForLong(TextClass.longForName(s1)));
+                String s7 = TextClass.formatName(TextClass.nameForLong(TextClass.longForName(s1)));
                 boolean flag9 = false;
                 for(int j3 = 0; j3 < playerCount; j3++)
                 {
@@ -4724,7 +4724,7 @@ public final class client extends RSApplet {
                         stream.writeBytes(stream.currentOffset - k);
                         promptInput = TextInput.processText(promptInput);
                         promptInput = Censor.doCensor(promptInput);
-                        pushMessage(promptInput, 6, TextClass.fixName(TextClass.nameForLong(aLong953)));
+                        pushMessage(promptInput, 6, TextClass.formatName(TextClass.nameForLong(aLong953)));
                         if(privateChatMode == 2)
                         {
                             privateChatMode = 1;
@@ -5169,7 +5169,7 @@ public final class client extends RSApplet {
                 return;
             } else
             {
-                class9.message = TextClass.fixName(TextClass.nameForLong(ignoreListAsLongs[j]));
+                class9.message = TextClass.formatName(TextClass.nameForLong(ignoreListAsLongs[j]));
                 class9.atActionType = 1;
                 return;
             }
@@ -8542,7 +8542,7 @@ public final class client extends RSApplet {
                 pushMessage("Your ignore list is full. Max of 100 hit", 0, "");
                 return;
             }
-            String s = TextClass.fixName(TextClass.nameForLong(l));
+            String s = TextClass.formatName(TextClass.nameForLong(l));
             for(int j = 0; j < ignoreCount; j++)
                 if(ignoreListAsLongs[j] == l)
                 {
@@ -9579,7 +9579,7 @@ public final class client extends RSApplet {
             }
             chatTextDrawingArea.drawShadowTextHLeftVTop("Username: " + myUsername + ((loginScreenCursorPos == 0) & (loopCycle % 40 < 20) ? "@yel@|" : ""), c / 2 - 90, j, 0xffffff, true);
             j += 15;
-            chatTextDrawingArea.drawShadowTextHLeftVTop("Password: " + TextClass.passwordAsterisks(myPassword) + ((loginScreenCursorPos == 1) & (loopCycle % 40 < 20) ? "@yel@|" : ""), c / 2 - 88, j, 0xffffff, true);
+            chatTextDrawingArea.drawShadowTextHLeftVTop("Password: " + TextClass.asterisksForString(myPassword) + ((loginScreenCursorPos == 1) & (loopCycle % 40 < 20) ? "@yel@|" : ""), c / 2 - 88, j, 0xffffff, true);
             j += 15;
             if(!flag)
             {
@@ -10349,7 +10349,7 @@ public final class client extends RSApplet {
                 daysSinceLastLogin = inStream.getUnsignedLEShort();
                 if(anInt1193 != 0 && openInterfaceID == -1)
                 {
-                    signlink.dnslookup(TextClass.method586(anInt1193));
+                    signlink.dnslookup(TextClass.decodeDNS(anInt1193));
                     clearTopInterfaces();
                     char c = '\u028A';
                     if(daysSinceRecovChange != 201 || membersInt == 1)
@@ -10930,7 +10930,7 @@ public final class client extends RSApplet {
             {
                 long l4 = inStream.readQWord();
                 int i18 = inStream.getUnsignedByte();
-                String s7 = TextClass.fixName(TextClass.nameForLong(l4));
+                String s7 = TextClass.formatName(TextClass.nameForLong(l4));
                 for(int k24 = 0; k24 < friendsCount; k24++)
                 {
                     if(l4 != friendsListAsLongs[k24])
@@ -11115,12 +11115,12 @@ public final class client extends RSApplet {
                         if(l21 != 3)
                             s9 = Censor.doCensor(s9);
                         if(l21 == 2 || l21 == 3)
-                            pushMessage(s9, 7, "@cr2@" + TextClass.fixName(TextClass.nameForLong(l5)));
+                            pushMessage(s9, 7, "@cr2@" + TextClass.formatName(TextClass.nameForLong(l5)));
                         else
                         if(l21 == 1)
-                            pushMessage(s9, 7, "@cr1@" + TextClass.fixName(TextClass.nameForLong(l5)));
+                            pushMessage(s9, 7, "@cr1@" + TextClass.formatName(TextClass.nameForLong(l5)));
                         else
-                            pushMessage(s9, 3, TextClass.fixName(TextClass.nameForLong(l5)));
+                            pushMessage(s9, 3, TextClass.formatName(TextClass.nameForLong(l5)));
                     }
                     catch(Exception exception1)
                     {
