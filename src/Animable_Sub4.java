@@ -40,8 +40,8 @@ final class Animable_Sub4 extends Animable {
             model_1.triangleSkin = null;
             model_1.vertexSkin = null;
         }
-        if(aSpotAnim_1592.anInt410 != 128 || aSpotAnim_1592.anInt411 != 128)
-            model_1.scaleT(aSpotAnim_1592.anInt410, aSpotAnim_1592.anInt410, aSpotAnim_1592.anInt411);
+        if(aSpotAnim_1592.resizeXY != 128 || aSpotAnim_1592.resizeZ != 128)
+            model_1.scaleT(aSpotAnim_1592.resizeXY, aSpotAnim_1592.resizeXY, aSpotAnim_1592.resizeZ);
         model_1.rotateX(anInt1596);
         model_1.applyLighting(64 + aSpotAnim_1592.modelLightFalloff, 850 + aSpotAnim_1592.modelLightAmbient, -30, -50, -30, true);
             return model_1;

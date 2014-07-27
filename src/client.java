@@ -7778,7 +7778,7 @@ public final class client extends RSApplet {
     {
         StationaryGraphic stationaryGraphic = (StationaryGraphic)stationaryGraphicDeque.reverseGetFirst();
         for(; stationaryGraphic != null; stationaryGraphic = (StationaryGraphic)stationaryGraphicDeque.reverseGetNext())
-            if(stationaryGraphic.plane != plane || stationaryGraphic.transformationCompleted)
+            if(stationaryGraphic.z != plane || stationaryGraphic.transformationCompleted)
                 stationaryGraphic.unlink();
             else
             if(loopCycle >= stationaryGraphic.stationaryGraphicLoopCycle)
@@ -7787,7 +7787,7 @@ public final class client extends RSApplet {
                 if(stationaryGraphic.transformationCompleted)
                     stationaryGraphic.unlink();
                 else
-                    worldController.addEntityA(stationaryGraphic.plane, stationaryGraphic.anInt1561, stationaryGraphic.anInt1562, stationaryGraphic.anInt1563, 0, stationaryGraphic, -1, 60, false);
+                    worldController.addEntityA(stationaryGraphic.z, stationaryGraphic.x, stationaryGraphic.y, stationaryGraphic.drawHeight, 0, stationaryGraphic, -1, 60, false);
             }
 
     }
@@ -9899,7 +9899,7 @@ public final class client extends RSApplet {
             {
                 i5 = i5 * 128 + 64;
                 l7 = l7 * 128 + 64;
-                StationaryGraphic class30_sub2_sub4_sub3 = new StationaryGraphic(plane, loopCycle, j15, k10, method42(plane, l7, i5) - l12, l7, i5);
+                StationaryGraphic class30_sub2_sub4_sub3 = new StationaryGraphic(i5, l7, plane, method42(plane, l7, i5) - l12, k10, loopCycle, j15);
                 stationaryGraphicDeque.insertHead(class30_sub2_sub4_sub3);
             }
             return;

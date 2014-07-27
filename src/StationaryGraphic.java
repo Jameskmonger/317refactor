@@ -1,14 +1,14 @@
 final class StationaryGraphic extends Animable {
 
-    public StationaryGraphic(int plane, int loopCycle, int loopCycleOffset, int animationIndex, int j1, int k1,
-                         int l1)
+    public StationaryGraphic(int x, int y, int z, int drawHeight, int animationIndex, int loopCycle,
+                         int loopCycleOffset)
     {
         transformationCompleted = false;
         animation = SpotAnim.cache[animationIndex];
-        this.plane = plane;
-        anInt1561 = l1;
-        anInt1562 = k1;
-        anInt1563 = j1;
+        this.z = z;
+        this.x = x;
+        this.y = y;
+        this.drawHeight = drawHeight;
         this.stationaryGraphicLoopCycle = loopCycle + loopCycleOffset;
         transformationCompleted = false;
     }
@@ -27,8 +27,8 @@ final class StationaryGraphic extends Animable {
             animatedModel.triangleSkin = null;
             animatedModel.vertexSkin = null;
         }
-        if(animation.anInt410 != 128 || animation.anInt411 != 128)
-            animatedModel.scaleT(animation.anInt410, animation.anInt410, animation.anInt411);
+        if(animation.resizeXY != 128 || animation.resizeZ != 128)
+            animatedModel.scaleT(animation.resizeXY, animation.resizeXY, animation.resizeZ);
         if(animation.rotation != 0)
         {
             if(animation.rotation == 90)
@@ -64,10 +64,10 @@ final class StationaryGraphic extends Animable {
 
     }
 
-    public final int plane;
-    public final int anInt1561;
-    public final int anInt1562;
-    public final int anInt1563;
+    public final int z;
+    public final int x;
+    public final int y;
+    public final int drawHeight;
     public final int stationaryGraphicLoopCycle;
     public boolean transformationCompleted;
     private final SpotAnim animation;

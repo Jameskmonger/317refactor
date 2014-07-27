@@ -37,10 +37,10 @@ public final class SpotAnim {
                     sequences = Animation.anims[anInt406];
             } else
             if(i == 4)
-                anInt410 = stream.getUnsignedLEShort();
+                resizeXY = stream.getUnsignedLEShort();
             else
             if(i == 5)
-                anInt411 = stream.getUnsignedLEShort();
+                resizeZ = stream.getUnsignedLEShort();
             else
             if(i == 6)
                 rotation = stream.getUnsignedLEShort();
@@ -83,8 +83,8 @@ public final class SpotAnim {
         anInt406 = -1;
         anIntArray408 = new int[6];
         anIntArray409 = new int[6];
-        anInt410 = 128;
-        anInt411 = 128;
+        resizeXY = 128;
+        resizeZ = 128;
     }
 
     private final int anInt400;
@@ -95,8 +95,8 @@ public final class SpotAnim {
     public Animation sequences;
     private final int[] anIntArray408;
     private final int[] anIntArray409;
-    public int anInt410;
-    public int anInt411;
+    public int resizeXY;
+    public int resizeZ;
     public int rotation;
     public int modelLightFalloff;
     public int modelLightAmbient;

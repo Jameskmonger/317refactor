@@ -42,8 +42,8 @@ public final class NPC extends Entity
                 model_2.applyTransformation(j);
                 model_2.triangleSkin = null;
                 model_2.vertexSkin = null;
-                if(spotAnim.anInt410 != 128 || spotAnim.anInt411 != 128)
-                    model_2.scaleT(spotAnim.anInt410, spotAnim.anInt410, spotAnim.anInt411);
+                if(spotAnim.resizeXY != 128 || spotAnim.resizeZ != 128)
+                    model_2.scaleT(spotAnim.resizeXY, spotAnim.resizeXY, spotAnim.resizeZ);
                 model_2.applyLighting(64 + spotAnim.modelLightFalloff, 850 + spotAnim.modelLightAmbient, -30, -50, -30, true);
                 Model aModel[] = {
                         model, model_2
