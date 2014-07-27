@@ -131,7 +131,7 @@ final class WorldController {
     {
         if(l == 0)
         {
-            PlainTile tile = new PlainTile(k2, l2, i3, j3, -1, k4, false);
+            PlainTile tile = new PlainTile(k2, l2, j3, i3, k4, -1, false);
             for(int _z = z; _z >= 0; _z--)
                 if(groundArray[_z][x][y] == null)
                     groundArray[_z][x][y] = new Ground(_z, x, y);
@@ -141,7 +141,7 @@ final class WorldController {
         }
         if(l == 1)
         {
-            PlainTile tile = new PlainTile(k3, l3, i4, j4, j1, l4, k1 == l1 && k1 == i2 && k1 == j2);
+            PlainTile tile = new PlainTile(k3, l3, j4, i4, l4, j1, k1 == l1 && k1 == i2 && k1 == j2);
             for(int _z = z; _z >= 0; _z--)
                 if(groundArray[_z][x][y] == null)
                     groundArray[_z][x][y] = new Ground(_z, x, y);

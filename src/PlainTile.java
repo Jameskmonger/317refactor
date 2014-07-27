@@ -1,16 +1,16 @@
 final class PlainTile
 {
 
-    public PlainTile(int i, int j, int k, int l, int i1, int j1, boolean flag)
+    public PlainTile(int colourA, int colourB, int colourC, int colourD, int colourRGB, int texture, boolean flat)
     {
-        flat = true;
-        colourA = i;
-        colourB = j;
-        colourD = k;
-        colourC = l;
-        texture = i1;
-        colourRGB = j1;
-        flat = flag;
+        this.flat = true;
+        this.colourA = colourA;
+        this.colourB = colourB;
+        this.colourD = colourD;
+        this.colourC = colourC;
+        this.texture = texture;
+        this.colourRGB = colourRGB;
+        this.flat = flat;
     }
 
     final int colourA;
