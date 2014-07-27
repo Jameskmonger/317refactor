@@ -48,9 +48,9 @@ final class Animable_Sub5 extends Animable {
         if(anInt1601 != -1)
         {
             VarBit varBit = VarBit.cache[anInt1601];
-            int k = varBit.anInt648;
-            int l = varBit.anInt649;
-            int i1 = varBit.anInt650;
+            int k = varBit.configId;
+            int l = varBit.leastSignificantBit;
+            int i1 = varBit.mostSignificantBit;
             int j1 = client.anIntArray1232[i1 - l];
             i = clientInstance.variousSettings[k] >> l & j1;
         } else

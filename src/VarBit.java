@@ -1,12 +1,8 @@
-// Decompiled by Jad v1.5.8f. Copyright 2001 Pavel Kouznetsov.
-// Jad home page: http://www.kpdus.com/jad.html
-// Decompiler options: packimports(3) 
-
 public final class VarBit {
 
-    public static void unpackConfig(StreamLoader streamLoader)
+    public static void unpackConfig(StreamLoader archive)
     {
-        Stream stream = new Stream(streamLoader.getDataForName("varbit.dat"));
+        Stream stream = new Stream(archive.getDataForName("varbit.dat"));
         int cacheSize = stream.getUnsignedLEShort();
         if(cache == null)
             cache = new VarBit[cacheSize];
@@ -16,7 +12,7 @@ public final class VarBit {
                 cache[j] = new VarBit();
             cache[j].readValues(stream);
             if(cache[j].aBoolean651)
-                Varp.cache[cache[j].anInt648].aBoolean713 = true;
+                Varp.cache[cache[j].configId].aBoolean713 = true;
         }
 
         if(stream.currentOffset != stream.buffer.length)
@@ -32,9 +28,9 @@ public final class VarBit {
                 return;
             if(j == 1)
             {
-                anInt648 = stream.getUnsignedLEShort();
-                anInt649 = stream.getUnsignedByte();
-                anInt650 = stream.getUnsignedByte();
+                configId = stream.getUnsignedLEShort();
+                leastSignificantBit = stream.getUnsignedByte();
+                mostSignificantBit = stream.getUnsignedByte();
             } else
             if(j == 10)
                 stream.readString();
@@ -58,8 +54,8 @@ public final class VarBit {
     }
 
     public static VarBit cache[];
-    public int anInt648;
-    public int anInt649;
-    public int anInt650;
+    public int configId;
+    public int leastSignificantBit;
+    public int mostSignificantBit;
     private boolean aBoolean651;
 }

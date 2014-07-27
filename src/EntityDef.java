@@ -62,9 +62,9 @@ public final class EntityDef
         if(anInt57 != -1)
         {
             VarBit varBit = VarBit.cache[anInt57];
-            int k = varBit.anInt648;
-            int l = varBit.anInt649;
-            int i1 = varBit.anInt650;
+            int k = varBit.configId;
+            int l = varBit.leastSignificantBit;
+            int i1 = varBit.mostSignificantBit;
             int j1 = client.anIntArray1232[i1 - l];
             j = clientInstance.variousSettings[k] >> l & j1;
         } else

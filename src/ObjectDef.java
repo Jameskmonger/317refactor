@@ -158,9 +158,9 @@ stream = null;
         if(anInt774 != -1)
         {
             VarBit varBit = VarBit.cache[anInt774];
-            int j = varBit.anInt648;
-            int k = varBit.anInt649;
-            int l = varBit.anInt650;
+            int j = varBit.configId;
+            int k = varBit.leastSignificantBit;
+            int l = varBit.mostSignificantBit;
             int i1 = client.anIntArray1232[l - k];
             i = clientInstance.variousSettings[j] >> k & i1;
         } else
