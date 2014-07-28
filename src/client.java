@@ -1997,8 +1997,8 @@ public final class client extends RSApplet {
             if(player.playerModel != null && loopCycle >= player.anInt1707 && loopCycle < player.anInt1708)
             {
                 player.aBoolean1699 = false;
-                player.anInt1709 = getFloorDrawHeight(plane, player.y, player.x);
-                worldController.addEntity(player.anInt1719, player.anInt1720, plane, player.x, player.y, player.anInt1709, player.currentRotation, player.anInt1722, player.anInt1721, player, i1);
+                player.drawHeight2 = getFloorDrawHeight(plane, player.y, player.x);
+                worldController.addEntity(player.localX, player.localY, plane, player.x, player.y, player.drawHeight2, player.currentRotation, player.playerTileWidth, player.playerTileHeight, player, i1);
                 continue;
             }
             if((player.x & 0x7f) == 64 && (player.y & 0x7f) == 64)
@@ -2007,8 +2007,8 @@ public final class client extends RSApplet {
                     continue;
                 anIntArrayArray929[j1][k1] = anInt1265;
             }
-            player.anInt1709 = getFloorDrawHeight(plane, player.y, player.x);
-            worldController.addEntityA(plane, player.x, player.y, player.anInt1709, player.currentRotation, player, i1, 60, player.aBoolean1541);
+            player.drawHeight2 = getFloorDrawHeight(plane, player.y, player.x);
+            worldController.addEntityA(plane, player.x, player.y, player.drawHeight2, player.currentRotation, player, i1, 60, player.aBoolean1541);
         }
 
     }
@@ -9813,17 +9813,17 @@ public final class client extends RSApplet {
             int x = playerPositionX + (positionOffset >> 4 & 7);
             int y = playerPositionY + (positionOffset & 7);
             int targetPlayer = stream.getUnsignedLEShort();
-            byte byte0 = stream.getByteS();
-            int l14 = stream.getUnsignedShort();
-            byte byte1 = stream.getByteC();
-            int k17 = stream.getUnsignedLEShort();
+            byte tileHeight = stream.getByteS();
+            int spawnDelay = stream.getUnsignedShort();
+            byte tileWidth = stream.getByteC();
+            int respawnDelay = stream.getUnsignedLEShort();
             int objectData = stream.getUnsignedByteS();
             int objectType = objectData >> 2;
             int objectOrientation = objectData & 3;
             int type = objectTypes[objectType];
-            byte byte2 = stream.get();
+            byte offsetX = stream.get();
             int objectId = stream.getUnsignedLEShort();
-            byte byte3 = stream.getByteC();
+            byte offsetY = stream.getByteC();
             Player player;
             if(targetPlayer == playerListId)
                 player = localPlayer;
@@ -9839,9 +9839,9 @@ public final class client extends RSApplet {
                 Model model = object.getModelAt(objectType, objectOrientation, tileHeightX0Y0, tileHeightX1Y0, tileHeightX1Y1, tileHeightX0Y1, -1);
                 if(model != null)
                 {
-                    createObjectSpawnRequest(k17 + 1, -1, 0, type, y, 0, plane, x, l14 + 1);
-                    player.anInt1707 = l14 + loopCycle;
-                    player.anInt1708 = k17 + loopCycle;
+                    createObjectSpawnRequest(respawnDelay + 1, -1, 0, type, y, 0, plane, x, spawnDelay + 1);
+                    player.anInt1707 = spawnDelay + loopCycle;
+                    player.anInt1708 = respawnDelay + loopCycle;
                     player.playerModel = model;
                     int sizeX = object.sizeX;
                     int sizeY = object.sizeY;
@@ -9853,22 +9853,22 @@ public final class client extends RSApplet {
                     player.anInt1711 = x * 128 + sizeX * 64;
                     player.anInt1713 = y * 128 + sizeY * 64;
                     player.drawHeight = getFloorDrawHeight(plane, player.anInt1713, player.anInt1711);
-                    if(byte2 > byte0)
+                    if(offsetX > tileHeight)
                     {
-                        byte byte4 = byte2;
-                        byte2 = byte0;
-                        byte0 = byte4;
+                        byte temp = offsetX;
+                        offsetX = tileHeight;
+                        tileHeight = temp;
                     }
-                    if(byte3 > byte1)
+                    if(offsetY > tileWidth)
                     {
-                        byte byte5 = byte3;
-                        byte3 = byte1;
-                        byte1 = byte5;
+                        byte temp = offsetY;
+                        offsetY = tileWidth;
+                        tileWidth = temp;
                     }
-                    player.anInt1719 = x + byte2;
-                    player.anInt1721 = x + byte0;
-                    player.anInt1720 = y + byte3;
-                    player.anInt1722 = y + byte1;
+                    player.localX = x + offsetX;
+                    player.playerTileHeight = x + tileHeight;
+                    player.localY = y + offsetY;
+                    player.playerTileWidth = y + tileWidth;
                 }
             }
         }

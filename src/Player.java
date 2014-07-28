@@ -44,7 +44,7 @@ public final class Player extends Entity
             if(client.loopCycle >= anInt1707 && client.loopCycle < anInt1708)
             {
                 Model model_1 = playerModel;
-                model_1.translate(anInt1711 - super.x, drawHeight - anInt1709, anInt1713 - super.y);
+                model_1.translate(anInt1711 - super.x, drawHeight - drawHeight2, anInt1713 - super.y);
                 if(super.turnDirection == 512)
                 {
                     model_1.rotate90Degrees();
@@ -76,7 +76,7 @@ public final class Player extends Entity
                     model_1.rotate90Degrees();
                     model_1.rotate90Degrees();
                 }
-                model_1.translate(super.x - anInt1711, anInt1709 - drawHeight, super.y - anInt1713);
+                model_1.translate(super.x - anInt1711, drawHeight2 - drawHeight, super.y - anInt1713);
             }
         }
         model.singleTile = true;
@@ -361,7 +361,7 @@ public final class Player extends Entity
     public int headIcon;
     public int anInt1707;
     int anInt1708;
-    int anInt1709;
+    int drawHeight2;
     boolean visible;
     int anInt1711;
     int drawHeight;
@@ -370,10 +370,10 @@ public final class Player extends Entity
     private int anInt1715;
     public final int[] appearance;
     private long appearanceOffset;
-    int anInt1719;
-    int anInt1720;
-    int anInt1721;
-    int anInt1722;
+    int localX;
+    int localY;
+    int playerTileHeight;
+    int playerTileWidth;
     int skill;
 
 }
