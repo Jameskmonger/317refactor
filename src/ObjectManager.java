@@ -33,7 +33,7 @@ final class ObjectManager {
         return l >> 19 & 0xff;
     }
 
-    public final void method171(Class11 aclass11[], WorldController worldController)
+    public final void method171(CollisionMap aclass11[], WorldController worldController)
     {
         for(int j = 0; j < 4; j++)
         {
@@ -46,7 +46,7 @@ final class ObjectManager {
                         if((aByteArrayArrayArray149[1][k][i1] & 2) == 2)
                             k1--;
                         if(k1 >= 0)
-                            aclass11[k1].method213(i1, k);
+                            aclass11[k1].markBlocked(k, i1);
                     }
 
             }
@@ -465,7 +465,7 @@ label0:
         }
     }
 
-    private void method175(int i, WorldController worldController, Class11 class11, int j, int k, int l, int i1,
+    private void method175(int i, WorldController worldController, CollisionMap class11, int j, int k, int l, int i1,
                                  int j1)
     {
         if(lowMem && (aByteArrayArrayArray149[0][l][i] & 2) == 0)
@@ -498,7 +498,7 @@ label0:
                 obj = new Animable_Sub5(i1, j1, 22, l1, i2, k1, j2, class46.anInt781, true);
             worldController.addGroundDecoration(l, i, k, k2, l2, ((Animable) (obj)), byte0);
             if(class46.aBoolean767 && class46.hasActions && class11 != null)
-                class11.method213(i, l);
+                class11.markBlocked(l, i);
             return;
         }
         if(j == 10 || j == 11)
@@ -550,7 +550,7 @@ label0:
                 }
             }
             if(class46.aBoolean767 && class11 != null)
-                class11.method212(class46.aBoolean757, class46.anInt744, class46.anInt761, l, i, j1);
+                class11.markSolidOccupant(l, i, class46.anInt744, class46.anInt761, j1, class46.aBoolean757);
             return;
         }
         if(j >= 12)
@@ -564,7 +564,7 @@ label0:
             if(j >= 12 && j <= 17 && j != 13 && k > 0)
                 anIntArrayArrayArray135[k][l][i] |= 0x924;
             if(class46.aBoolean767 && class11 != null)
-                class11.method212(class46.aBoolean757, class46.anInt744, class46.anInt761, l, i, j1);
+                class11.markSolidOccupant(l, i, class46.anInt744, class46.anInt761, j1, class46.aBoolean757);
             return;
         }
         if(j == 0)
@@ -616,7 +616,7 @@ label0:
                     anIntArrayArrayArray135[k][l][i] |= 0x492;
             }
             if(class46.aBoolean767 && class11 != null)
-                class11.method211(i, j1, l, j, class46.aBoolean757);
+                class11.markWall(i, j1, l, j, class46.aBoolean757);
             if(class46.anInt775 != 16)
                 worldController.method290(i, class46.anInt775, l, k);
             return;
@@ -642,7 +642,7 @@ label0:
                 if(j1 == 3)
                     aByteArrayArrayArray134[k][l][i] = 50;
             if(class46.aBoolean767 && class11 != null)
-                class11.method211(i, j1, l, j, class46.aBoolean757);
+                class11.markWall(i, j1, l, j, class46.aBoolean757);
             return;
         }
         if(j == 2)
@@ -682,7 +682,7 @@ label0:
                     anIntArrayArrayArray135[k][l][i] |= 0x249;
                 }
             if(class46.aBoolean767 && class11 != null)
-                class11.method211(i, j1, l, j, class46.aBoolean757);
+                class11.markWall(i, j1, l, j, class46.aBoolean757);
             if(class46.anInt775 != 16)
                 worldController.method290(i, class46.anInt775, l, k);
             return;
@@ -708,7 +708,7 @@ label0:
                 if(j1 == 3)
                     aByteArrayArrayArray134[k][l][i] = 50;
             if(class46.aBoolean767 && class11 != null)
-                class11.method211(i, j1, l, j, class46.aBoolean757);
+                class11.markWall(i, j1, l, j, class46.aBoolean757);
             return;
         }
         if(j == 9)
@@ -720,7 +720,7 @@ label0:
                 obj6 = new Animable_Sub5(i1, j1, j, l1, i2, k1, j2, class46.anInt781, true);
             worldController.addEntityB(l, i, k, k2, 0, 1, 1, l2, ((Animable) (obj6)), byte0);
             if(class46.aBoolean767 && class11 != null)
-                class11.method212(class46.aBoolean757, class46.anInt744, class46.anInt761, l, i, j1);
+                class11.markSolidOccupant(l, i, class46.anInt744, class46.anInt761, j1, class46.aBoolean757);
             return;
         }
         if(class46.aBoolean762)
@@ -842,14 +842,14 @@ label0:
         return class46.method577(j);
     }
 
-    public final void method179(int i, int j, Class11 aclass11[], int l, int i1, byte abyte0[],
+    public final void method179(int i, int j, CollisionMap aclass11[], int l, int i1, byte abyte0[],
                                 int j1, int k1, int l1)
     {
         for(int i2 = 0; i2 < 8; i2++)
         {
             for(int j2 = 0; j2 < 8; j2++)
                 if(l + i2 > 0 && l + i2 < 103 && l1 + j2 > 0 && l1 + j2 < 103)
-                    aclass11[k1].adjacency[l + i2][l1 + j2] &= 0xfeffffff;
+                    aclass11[k1].clippingData[l + i2][l1 + j2] &= 0xfeffffff;
 
         }
         Stream stream = new Stream(abyte0);
@@ -869,7 +869,7 @@ label0:
 
     }
 
-    public final void method180(byte abyte0[], int i, int j, int k, int l, Class11 aclass11[])
+    public final void method180(byte abyte0[], int i, int j, int k, int l, CollisionMap aclass11[])
     {
         for(int i1 = 0; i1 < 4; i1++)
         {
@@ -877,7 +877,7 @@ label0:
             {
                 for(int k1 = 0; k1 < 64; k1++)
                     if(j + j1 > 0 && j + j1 < 103 && i + k1 > 0 && i + k1 < 103)
-                        aclass11[i1].adjacency[j + j1][i + k1] &= 0xfeffffff;
+                        aclass11[i1].clippingData[j + j1][i + k1] &= 0xfeffffff;
 
             }
 
@@ -967,7 +967,7 @@ label0:
             return j;
     }
 
-    public final void method183(Class11 aclass11[], WorldController worldController, int i, int j, int k, int l,
+    public final void method183(CollisionMap aclass11[], WorldController worldController, int i, int j, int k, int l,
                                 byte abyte0[], int i1, int j1, int k1)
     {
 label0:
@@ -1003,7 +1003,7 @@ label0:
                             int l4 = j3;
                             if((aByteArrayArrayArray149[1][j4][k4] & 2) == 2)
                                 l4--;
-                            Class11 class11 = null;
+                            CollisionMap class11 = null;
                             if(l4 >= 0)
                                 class11 = aclass11[l4];
                             method175(k4, worldController, class11, l3, l, j4, l1, i4 + j1 & 3);
@@ -1064,7 +1064,7 @@ label0:
         return (i & 0xff80) + j;
     }
 
-    public static void method188(WorldController worldController, int i, int j, int k, int l, Class11 class11, int ai[][][], int i1,
+    public static void method188(WorldController worldController, int i, int j, int k, int l, CollisionMap collisionMap, int ai[][][], int i1,
                                  int j1, int k1)
     {
         int l1 = ai[l][i1][j];
@@ -1086,7 +1086,7 @@ label0:
                 obj = new Animable_Sub5(j1, i, 22, i2, j2, l1, k2, class46.anInt781, true);
             worldController.addGroundDecoration(i1, j, k1, l2, i3, ((Animable) (obj)), byte1);
             if(class46.aBoolean767 && class46.hasActions)
-                class11.method213(j, i1);
+                collisionMap.markBlocked(i1, j);
             return;
         }
         if(k == 10 || k == 11)
@@ -1115,7 +1115,7 @@ label0:
                 worldController.addEntityB(i1, j, k1, l2, j5, i5, k4, i3, ((Animable) (obj1)), byte1);
             }
             if(class46.aBoolean767)
-                class11.method212(class46.aBoolean757, class46.anInt744, class46.anInt761, i1, j, i);
+                collisionMap.markSolidOccupant(i1, j, class46.anInt744, class46.anInt761, i, class46.aBoolean757);
             return;
         }
         if(k >= 12)
@@ -1127,7 +1127,7 @@ label0:
                 obj2 = new Animable_Sub5(j1, i, k, i2, j2, l1, k2, class46.anInt781, true);
             worldController.addEntityB(i1, j, k1, l2, 0, 1, 1, i3, ((Animable) (obj2)), byte1);
             if(class46.aBoolean767)
-                class11.method212(class46.aBoolean757, class46.anInt744, class46.anInt761, i1, j, i);
+                collisionMap.markSolidOccupant(i1, j, class46.anInt744, class46.anInt761, i, class46.aBoolean757);
             return;
         }
         if(k == 0)
@@ -1139,7 +1139,7 @@ label0:
                 obj3 = new Animable_Sub5(j1, i, 0, i2, j2, l1, k2, class46.anInt781, true);
             worldController.addWallObject(i1, j, k1, l2, anIntArray152[i], 0, i3, ((Animable) (obj3)), null, byte1);
             if(class46.aBoolean767)
-                class11.method211(j, i, i1, k, class46.aBoolean757);
+                collisionMap.markWall(j, i, i1, k, class46.aBoolean757);
             return;
         }
         if(k == 1)
@@ -1151,7 +1151,7 @@ label0:
                 obj4 = new Animable_Sub5(j1, i, 1, i2, j2, l1, k2, class46.anInt781, true);
             worldController.addWallObject(i1, j, k1, l2, anIntArray140[i], 0, i3, ((Animable) (obj4)), null, byte1);
             if(class46.aBoolean767)
-                class11.method211(j, i, i1, k, class46.aBoolean757);
+                collisionMap.markWall(j, i, i1, k, class46.aBoolean757);
             return;
         }
         if(k == 2)
@@ -1170,7 +1170,7 @@ label0:
             }
             worldController.addWallObject(i1, j, k1, l2, anIntArray152[i], anIntArray152[j3], i3, ((Animable) (obj11)), ((Animable) (obj12)), byte1);
             if(class46.aBoolean767)
-                class11.method211(j, i, i1, k, class46.aBoolean757);
+                collisionMap.markWall(j, i, i1, k, class46.aBoolean757);
             return;
         }
         if(k == 3)
@@ -1182,7 +1182,7 @@ label0:
                 obj5 = new Animable_Sub5(j1, i, 3, i2, j2, l1, k2, class46.anInt781, true);
             worldController.addWallObject(i1, j, k1, l2, anIntArray140[i], 0, i3, ((Animable) (obj5)), null, byte1);
             if(class46.aBoolean767)
-                class11.method211(j, i, i1, k, class46.aBoolean757);
+                collisionMap.markWall(j, i, i1, k, class46.aBoolean757);
             return;
         }
         if(k == 9)
@@ -1194,7 +1194,7 @@ label0:
                 obj6 = new Animable_Sub5(j1, i, k, i2, j2, l1, k2, class46.anInt781, true);
             worldController.addEntityB(i1, j, k1, l2, 0, 1, 1, i3, ((Animable) (obj6)), byte1);
             if(class46.aBoolean767)
-                class11.method212(class46.aBoolean757, class46.anInt744, class46.anInt761, i1, j, i);
+                collisionMap.markSolidOccupant(i1, j, class46.anInt744, class46.anInt761, i, class46.aBoolean757);
             return;
         }
         if(class46.aBoolean762)
@@ -1328,7 +1328,7 @@ label0:
     return bool;
   }
 
-    public final void method190(int i, Class11 aclass11[], int j, WorldController worldController, byte abyte0[])
+    public final void method190(int i, CollisionMap aclass11[], int j, WorldController worldController, byte abyte0[])
     {
 label0:
         {
@@ -1360,7 +1360,7 @@ label0:
                         int l3 = j2;
                         if((aByteArrayArrayArray149[1][j3][k3] & 2) == 2)
                             l3--;
-                        Class11 class11 = null;
+                        CollisionMap class11 = null;
                         if(l3 >= 0)
                             class11 = aclass11[l3];
                         method175(k3, worldController, class11, l2, j2, j3, l, i3);

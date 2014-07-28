@@ -437,7 +437,7 @@ public final class client extends RSApplet {
             worldController.initToNull();
             System.gc();
             for(int i = 0; i < 4; i++)
-                currentCollisionMap[i].method210();
+                currentCollisionMap[i].reset();
 
             for(int l = 0; l < 4; l++)
             {
@@ -709,7 +709,7 @@ public final class client extends RSApplet {
                         {
                             byte byte0 = 104;
                             byte byte1 = 104;
-                            int ai1[][] = currentCollisionMap[plane].adjacency;
+                            int ai1[][] = currentCollisionMap[plane].clippingData;
                             for(int i4 = 0; i4 < 10; i4++)
                             {
                                 int j4 = (int)(Math.random() * 4D);
@@ -1076,7 +1076,7 @@ public final class client extends RSApplet {
         npcsAwaitingUpdatePointer = 0;
         method139(stream);
         method46(i, stream);
-        readNPCUpdateMask(stream);
+        updateNPCs(stream);
         for(int k = 0; k < anInt839; k++)
         {
             int l = anIntArray840[k];
@@ -1892,7 +1892,7 @@ public final class client extends RSApplet {
         unlinkMRUNodes();
         worldController.initToNull();
         for(int i = 0; i < 4; i++)
-            currentCollisionMap[i].method210();
+            currentCollisionMap[i].reset();
 
         System.gc();
         stopMidi();
@@ -2136,7 +2136,7 @@ public final class client extends RSApplet {
             int l = stream.getUnsignedByte();
             if((l & 0x40) != 0)
                 l += stream.getUnsignedByte() << 8;
-            updatePlayerMask(l, k, stream, player);
+            updatePlayerMask(stream, l, player, k);
         }
 
     }
@@ -4839,7 +4839,7 @@ public final class client extends RSApplet {
                                 for(int x = 1; x < 103; x++)
                                 {
                                     for(int y = 1; y < 103; y++)
-                                        currentCollisionMap[z].adjacency[x][y] = 0;
+                                        currentCollisionMap[z].clippingData[x][y] = 0;
 
                                 }
 
@@ -6036,7 +6036,7 @@ public final class client extends RSApplet {
     }
 
     private boolean doWalkTo(int clickType, int objectRotation, int objectSizeY, int objectType, int startY, int objectSizeX,
-                             int l1, int endY, int startX, boolean flag, int endX)
+                             int targetSurroundings, int endY, int startX, boolean flag, int endX)
     {
         byte mapSizeX = 104;
         byte mapSizeY = 104;
@@ -6059,7 +6059,7 @@ public final class client extends RSApplet {
         walkingQueueY[nextIndex++] = startY;
         boolean foundDestination = false;
         int maxPathSize = walkingQueueX.length;
-        int clippingPaths[][] = currentCollisionMap[plane].adjacency;
+        int clippingPaths[][] = currentCollisionMap[plane].clippingData;
         while(currentIndex != nextIndex) 
         {
             currentX = walkingQueueX[currentIndex];
@@ -6072,18 +6072,18 @@ public final class client extends RSApplet {
             }
             if(objectType != 0)
             {
-                if((objectType < 5 || objectType == 10) && currentCollisionMap[plane].reachedWall(endX, currentX, currentY, objectRotation, objectType - 1, endY))
+                if((objectType < 5 || objectType == 10) && currentCollisionMap[plane].reachedWall(currentX, currentY, endX, endY, objectType - 1, objectRotation))
                 {
                     foundDestination = true;
                     break;
                 }
-                if(objectType < 10 && currentCollisionMap[plane].reachedWallDecoration(endX, endY, currentY, objectType - 1, objectRotation, currentX))
+                if(objectType < 10 && currentCollisionMap[plane].reachedWallDecoration(currentX, currentY, endX, endY, objectType - 1, objectRotation))
                 {
                     foundDestination = true;
                     break;
                 }
             }
-            if(objectSizeX != 0 && objectSizeY != 0 && currentCollisionMap[plane].reachedFacingObject(endY, endX, currentX, objectSizeY, l1, objectSizeX, currentY))
+            if(objectSizeX != 0 && objectSizeY != 0 && currentCollisionMap[plane].reachedFacingObject(currentX, currentY, endX, endY, objectSizeX, objectSizeY, targetSurroundings))
             {
                 foundDestination = true;
                 break;
@@ -6207,8 +6207,6 @@ public final class client extends RSApplet {
             if((waypoint & 4) != 0)
                 currentY--;
         }
-//	if(cancelWalk) { return i4 > 0; }
-	
 
         if(currentIndex > 0)
         {
@@ -6257,7 +6255,7 @@ public final class client extends RSApplet {
         return clickType != 1;
     }
 
-    private void readNPCUpdateMask(Stream stream)
+    private void updateNPCs(Stream stream)
     {
         for(int n = 0; n < npcsAwaitingUpdatePointer; n++)
         {
@@ -6324,9 +6322,7 @@ public final class client extends RSApplet {
             if((mask & 1) != 0)
             {
                 npc.textSpoken = stream.getString();
-                npc.textCycle = 100;
-//	entityMessage(npc);
-	
+                npc.textCycle = 100;	
             }
             if((mask & 0x40) != 0)
             {
@@ -6677,7 +6673,7 @@ public final class client extends RSApplet {
             intGroundArray = new int[4][105][105];
             worldController = new WorldController(intGroundArray);
             for(int j = 0; j < 4; j++)
-                currentCollisionMap[j] = new Class11();
+                currentCollisionMap[j] = new CollisionMap();
 
             aClass30_Sub2_Sub1_Sub1_1263 = new Sprite(512, 512);
             StreamLoader streamLoader_6 = streamLoaderForName(5, "update list", "versionlist", expectedCRCs[5], 60);
@@ -7233,7 +7229,7 @@ public final class client extends RSApplet {
             entity.speedToEnd = 0;
             entity.x = entity.smallX[0] * 128 + entity.boundaryDimension * 64;
             entity.y = entity.smallY[0] * 128 + entity.boundaryDimension * 64;
-            entity.method446();
+            entity.resetPath();
         }
         if(entity == localPlayer && (entity.x < 1536 || entity.y < 1536 || entity.x >= 11776 || entity.y >= 11776))
         {
@@ -7243,7 +7239,7 @@ public final class client extends RSApplet {
             entity.speedToEnd = 0;
             entity.x = entity.smallX[0] * 128 + entity.boundaryDimension * 64;
             entity.y = entity.smallY[0] * 128 + entity.boundaryDimension * 64;
-            entity.method446();
+            entity.resetPath();
         }
         if(entity.speedToStart > loopCycle)
             method97(entity);
@@ -7253,7 +7249,7 @@ public final class client extends RSApplet {
         else
             processWalkingStep(entity);
         method100(entity);
-        method101(entity);
+        appendAnimation(entity);
     }
 
     private void method97(Entity entity)
@@ -7479,7 +7475,7 @@ public final class client extends RSApplet {
         }
     }
 
-    private void method101(Entity entity)
+    private void appendAnimation(Entity entity)
     {
         entity.aBoolean1541 = false;
         if(entity.anInt1517 != -1)
@@ -8151,7 +8147,7 @@ public final class client extends RSApplet {
         }
     }
 
-    private void updatePlayerMask(int mask, int playerId, Stream stream, Player player)
+    private void updatePlayerMask(Stream stream, int mask, Player player, int playerId)
     {
         if((mask & 0x400) != 0)
         {
@@ -8162,7 +8158,7 @@ public final class client extends RSApplet {
             player.speedToStart = stream.getUnsignedShortA() + loopCycle;
             player.speedToEnd = stream.getUnsignedLEShortA() + loopCycle;
             player.direction = stream.getUnsignedByteS();
-            player.method446();
+            player.resetPath();
         }
         if((mask & 0x100) != 0)
         {
@@ -10186,7 +10182,7 @@ public final class client extends RSApplet {
                     worldController.removeWallObject(i1, j, i);
                     ObjectDef class46 = ObjectDef.forID(j2);
                     if(class46.aBoolean767)
-                        currentCollisionMap[j].method215(l2, k2, class46.aBoolean757, i1, i);
+                        currentCollisionMap[j].unmarkWall(i1, i, k2, l2, class46.aBoolean757);
                 }
                 if(j1 == 1)
                     worldController.removeWallDecoration(i1, i, j);
@@ -10197,14 +10193,14 @@ public final class client extends RSApplet {
                     if(i1 + class46_1.anInt744 > 103 || i + class46_1.anInt744 > 103 || i1 + class46_1.anInt761 > 103 || i + class46_1.anInt761 > 103)
                         return;
                     if(class46_1.aBoolean767)
-                        currentCollisionMap[j].method216(l2, class46_1.anInt744, i1, i, class46_1.anInt761, class46_1.aBoolean757);
+                        currentCollisionMap[j].unmarkSolidOccupant(i1, i, class46_1.anInt744, class46_1.anInt761, l2, class46_1.aBoolean757);
                 }
                 if(j1 == 3)
                 {
                     worldController.removeGroundDecoration(i1, i, j);
                     ObjectDef class46_2 = ObjectDef.forID(j2);
                     if(class46_2.aBoolean767 && class46_2.hasActions)
-                        currentCollisionMap[j].method218(i, i1);
+                        currentCollisionMap[j].unmarkConcealed(i1, i);
                 }
             }
             if(k1 >= 0)
@@ -11758,7 +11754,7 @@ public final class client extends RSApplet {
         inputTaken = false;
         songChanging = true;
         anIntArray1229 = new int[151];
-        currentCollisionMap = new Class11[4];
+        currentCollisionMap = new CollisionMap[4];
         updateChatSettings = false;
         anIntArray1240 = new int[100];
         anIntArray1241 = new int[50];
@@ -12169,7 +12165,7 @@ public final class client extends RSApplet {
     private int nextSong;
     private boolean songChanging;
     private final int[] anIntArray1229;
-    private Class11[] currentCollisionMap;
+    private CollisionMap[] currentCollisionMap;
     public static int anIntArray1232[];
     private boolean updateChatSettings;
     private int[] anIntArray1234;

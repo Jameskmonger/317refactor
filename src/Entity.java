@@ -34,7 +34,7 @@ public class Entity extends Animable {
         this.y = smallY[0] * 128 + boundaryDimension * 64;
     }
 
-    public final void method446()
+    public final void resetPath()
     {
         pathLength = 0;
         anInt1542 = 0;
