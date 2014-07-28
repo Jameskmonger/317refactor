@@ -180,7 +180,7 @@ public final class EntityDef
                 description = stream.readBytes();
             else
             if(i == 12)
-                boundaryDimension = stream.readSignedByte();
+                boundaryDimension = stream.get();
             else
             if(i == 13)
                 standAnimationId = stream.getUnsignedLEShort();
@@ -248,10 +248,10 @@ public final class EntityDef
                 aBoolean93 = true;
             else
             if(i == 100)
-                anInt85 = stream.readSignedByte();
+                anInt85 = stream.get();
             else
             if(i == 101)
-                anInt92 = stream.readSignedByte() * 5;
+                anInt92 = stream.get() * 5;
             else
             if(i == 102)
                 anInt75 = stream.getUnsignedLEShort();

@@ -30,7 +30,7 @@ public final class TextDrawingArea extends DrawingArea {
             if(rectangular == 0)
             {
                 for(int p = 0; p < area; p++)
-                    glyphPixels[c][p] = data.readSignedByte();
+                    glyphPixels[c][p] = data.get();
 
             } else
             if(rectangular == 1)
@@ -38,7 +38,7 @@ public final class TextDrawingArea extends DrawingArea {
                 for(int w = 0; w < width; w++)
                 {
                     for(int h = 0; h < height; h++)
-                        glyphPixels[c][w + h * width] = data.readSignedByte();
+                        glyphPixels[c][w + h * width] = data.get();
 
                 }
 

@@ -156,8 +156,8 @@ public final class ItemDef
         modifiedModelColors = null;
         originalModelColors = null;
         modelZoom = 2000;
-        modelRotation1 = 0;
-        modelRotation2 = 0;
+        modelRotationX = 0;
+        modelRotationY = 0;
         anInt204 = 0;
         modelOffset1 = 0;
         modelOffset2 = 0;
@@ -220,8 +220,8 @@ public final class ItemDef
         ItemDef itemDef = forID(certTemplateID);
         modelID = itemDef.modelID;
         modelZoom = itemDef.modelZoom;
-        modelRotation1 = itemDef.modelRotation1;
-        modelRotation2 = itemDef.modelRotation2;
+        modelRotationX = itemDef.modelRotationX;
+        modelRotationY = itemDef.modelRotationY;
 
         anInt204 = itemDef.anInt204;
         modelOffset1 = itemDef.modelOffset1;
@@ -296,9 +296,9 @@ public final class ItemDef
             k3 = (int)((double)k3 * 1.5D);
         if(k > 0)
             k3 = (int)((double)k3 * 1.04D);
-        int l3 = Texture.SINE[itemDef.modelRotation1] * k3 >> 16;
-        int i4 = Texture.COSINE[itemDef.modelRotation1] * k3 >> 16;
-        model.renderSingle(itemDef.modelRotation2, itemDef.anInt204, itemDef.modelRotation1, itemDef.modelOffset1, l3 + model.modelHeight / 2 + itemDef.modelOffset2, i4 + itemDef.modelOffset2);
+        int l3 = Texture.SINE[itemDef.modelRotationX] * k3 >> 16;
+        int i4 = Texture.COSINE[itemDef.modelRotationX] * k3 >> 16;
+        model.renderSingle(itemDef.modelRotationY, itemDef.anInt204, itemDef.modelRotationX, itemDef.modelOffset1, l3 + model.modelHeight / 2 + itemDef.modelOffset2, i4 + itemDef.modelOffset2);
         for(int i5 = 31; i5 >= 0; i5--)
         {
             for(int j4 = 31; j4 >= 0; j4--)
@@ -451,10 +451,10 @@ public final class ItemDef
                 modelZoom = stream.getUnsignedLEShort();
             else
             if(i == 5)
-                modelRotation1 = stream.getUnsignedLEShort();
+                modelRotationX = stream.getUnsignedLEShort();
             else
             if(i == 6)
-                modelRotation2 = stream.getUnsignedLEShort();
+                modelRotationY = stream.getUnsignedLEShort();
             else
             if(i == 7)
             {
@@ -483,7 +483,7 @@ public final class ItemDef
             if(i == 23)
             {
                 anInt165 = stream.getUnsignedLEShort();
-                aByte205 = stream.readSignedByte();
+                aByte205 = stream.get();
             } else
             if(i == 24)
                 anInt188 = stream.getUnsignedLEShort();
@@ -491,7 +491,7 @@ public final class ItemDef
             if(i == 25)
             {
                 anInt200 = stream.getUnsignedLEShort();
-                aByte154 = stream.readSignedByte();
+                aByte154 = stream.get();
             } else
             if(i == 26)
                 anInt164 = stream.getUnsignedLEShort();
@@ -569,10 +569,10 @@ public final class ItemDef
                 anInt191 = stream.getUnsignedLEShort();
             else
             if(i == 113)
-                anInt196 = stream.readSignedByte();
+                anInt196 = stream.get();
             else
             if(i == 114)
-                anInt184 = stream.readSignedByte() * 5;
+                anInt184 = stream.get() * 5;
             else
             if(i == 115)
                 team = stream.getUnsignedByte();
@@ -616,7 +616,7 @@ public final class ItemDef
     private int anInt185;
     private int anInt188;
     public String actions[];
-    public int modelRotation1;
+    public int modelRotationX;
     private int anInt191;
     private int anInt192;
     private int[] stackIDs;
@@ -624,7 +624,7 @@ public final class ItemDef
     private static int[] streamIndices;
     private int anInt196;
     private int anInt197;
-    public int modelRotation2;
+    public int modelRotationY;
     private int anInt200;
     private int[] stackAmounts;
     public int team;

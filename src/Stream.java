@@ -129,7 +129,7 @@ public final class Stream extends NodeSub {
         return buffer[currentOffset++] & 0xff;
     }
 
-    public byte readSignedByte()
+    public byte get()
     {
         return buffer[currentOffset++];
     }
@@ -140,7 +140,7 @@ public final class Stream extends NodeSub {
         return ((buffer[currentOffset - 2] & 0xff) << 8) + (buffer[currentOffset - 1] & 0xff);
     }
 
-    public int readSignedWord()
+    public int getShort()
     {
         currentOffset += 2;
         int i = ((buffer[currentOffset - 2] & 0xff) << 8) + (buffer[currentOffset - 1] & 0xff);
@@ -161,7 +161,7 @@ public final class Stream extends NodeSub {
         return ((buffer[currentOffset - 4] & 0xff) << 24) + ((buffer[currentOffset - 3] & 0xff) << 16) + ((buffer[currentOffset - 2] & 0xff) << 8) + (buffer[currentOffset - 1] & 0xff);
     }
 
-    public long readLong()
+    public long getLong()
     {
         long l = (long) getInt() & 0xffffffffL;
         long l1 = (long) getInt() & 0xffffffffL;
@@ -275,12 +275,12 @@ public final class Stream extends NodeSub {
         return 128 - buffer[currentOffset++] & 0xff;
     }
 
-    public byte method429()
+    public byte getByteC()
     {
             return (byte)(-buffer[currentOffset++]);
     }
 
-    public byte method430()
+    public byte getByteS()
     {
         return (byte)(128 - buffer[currentOffset++]);
     }
@@ -321,7 +321,7 @@ public final class Stream extends NodeSub {
         return ((buffer[currentOffset - 1] & 0xff) << 8) + (buffer[currentOffset - 2] - 128 & 0xff);
     }
 
-    public int method437()
+    public int getForceLEShort()
     {
         currentOffset += 2;
         int j = ((buffer[currentOffset - 1] & 0xff) << 8) + (buffer[currentOffset - 2] & 0xff);
@@ -330,7 +330,7 @@ public final class Stream extends NodeSub {
         return j;
     }
 
-    public int method438()
+    public int getForceLEShortA()
     {
         currentOffset += 2;
         int j = ((buffer[currentOffset - 1] & 0xff) << 8) + (buffer[currentOffset - 2] - 128 & 0xff);
@@ -339,13 +339,13 @@ public final class Stream extends NodeSub {
         return j;
     }
 
-    public int method439()
+    public int getInt2()
     {
             currentOffset += 4;
             return ((buffer[currentOffset - 2] & 0xff) << 24) + ((buffer[currentOffset - 1] & 0xff) << 16) + ((buffer[currentOffset - 4] & 0xff) << 8) + (buffer[currentOffset - 3] & 0xff);
     }
 
-    public int method440()
+    public int getInt1()
     {
         currentOffset += 4;
         return ((buffer[currentOffset - 3] & 0xff) << 24) + ((buffer[currentOffset - 4] & 0xff) << 16) + ((buffer[currentOffset - 1] & 0xff) << 8) + (buffer[currentOffset - 2] & 0xff);

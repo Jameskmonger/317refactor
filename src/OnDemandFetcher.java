@@ -40,7 +40,7 @@ public final class OnDemandFetcher extends OnDemandFetcherParent
                 current = null;
                 for(OnDemandData onDemandData = (OnDemandData) requested.reverseGetFirst(); onDemandData != null; onDemandData = (OnDemandData) requested.reverseGetNext())
                 {
-                    if(onDemandData.dataType == l && onDemandData.ID == j1)
+                    if(onDemandData.dataType == l && onDemandData.id == j1)
                         current = onDemandData;
                     if(current != null)
                         onDemandData.loopCycle = 0;
@@ -88,7 +88,7 @@ public final class OnDemandFetcher extends OnDemandFetcherParent
                 if(expectedSize + completedSize >= abyte0.length && current != null)
                 {
                     if(clientInstance.decompressors[0] != null)
-                        clientInstance.decompressors[current.dataType + 1].method234(abyte0.length, abyte0, current.ID);
+                        clientInstance.decompressors[current.dataType + 1].method234(abyte0.length, abyte0, current.id);
                     if(!current.incomplete && current.dataType == 3)
                     {
                         current.incomplete = true;
@@ -130,7 +130,7 @@ public final class OnDemandFetcher extends OnDemandFetcherParent
             int j = abyte0.length / 2;
             Stream stream = new Stream(abyte0);
             versions[i] = new int[j];
-            fileStatus[i] = new byte[j];
+            filePriorities[i] = new byte[j];
             for(int l = 0; l < j; l++)
                 versions[i][l] = stream.getUnsignedLEShort();
 
@@ -243,8 +243,8 @@ public final class OnDemandFetcher extends OnDemandFetcherParent
                 loopCycle = 0;
             }
             ioBuffer[0] = (byte)onDemandData.dataType;
-            ioBuffer[1] = (byte)(onDemandData.ID >> 8);
-            ioBuffer[2] = (byte)onDemandData.ID;
+            ioBuffer[1] = (byte)(onDemandData.id >> 8);
+            ioBuffer[2] = (byte)onDemandData.id;
             if(onDemandData.incomplete)
                 ioBuffer[3] = 2;
             else
@@ -275,7 +275,7 @@ public final class OnDemandFetcher extends OnDemandFetcherParent
         return anIntArray1360.length;
     }
 
-    public void method558(int i, int j)
+    public void request(int i, int j)
     {
         if(i < 0 || i > versions.length || j < 0 || j > versions[i].length)
             return;
@@ -284,12 +284,12 @@ public final class OnDemandFetcher extends OnDemandFetcherParent
         synchronized(nodeSubList)
         {
             for(OnDemandData onDemandData = (OnDemandData) nodeSubList.reverseGetFirst(); onDemandData != null; onDemandData = (OnDemandData) nodeSubList.reverseGetNext())
-                if(onDemandData.dataType == i && onDemandData.ID == j)
+                if(onDemandData.dataType == i && onDemandData.id == j)
                     return;
 
             OnDemandData onDemandData_1 = new OnDemandData();
             onDemandData_1.dataType = i;
-            onDemandData_1.ID = j;
+            onDemandData_1.id = j;
             onDemandData_1.incomplete = true;
             synchronized(aClass19_1370)
             {
@@ -312,7 +312,7 @@ public final class OnDemandFetcher extends OnDemandFetcherParent
             {
                 onDemandCycle++;
                 int i = 20;
-                if(anInt1332 == 0 && clientInstance.decompressors[0] != null)
+                if(highestPriority == 0 && clientInstance.decompressors[0] != null)
                     i = 50;
                 try
                 {
@@ -381,7 +381,7 @@ public final class OnDemandFetcher extends OnDemandFetcherParent
                     loopCycle = 0;
                     statusString = "";
                 }
-                if(clientInstance.loggedIn && socket != null && outputStream != null && (anInt1332 > 0 || clientInstance.decompressors[0] == null))
+                if(clientInstance.loggedIn && socket != null && outputStream != null && (highestPriority > 0 || clientInstance.decompressors[0] == null))
                 {
                     writeLoopCycle++;
                     if(writeLoopCycle > 500)
@@ -409,23 +409,23 @@ public final class OnDemandFetcher extends OnDemandFetcherParent
         }
     }
 
-    public void method560(int i, int j)
+    public void passiveRequest(int id, int type)
     {
         if(clientInstance.decompressors[0] == null)
             return;
-        if(versions[j][i] == 0)
+        if(versions[type][id] == 0)
             return;
-        if(fileStatus[j][i] == 0)
+        if(filePriorities[type][id] == 0)
             return;
-        if(anInt1332 == 0)
+        if(highestPriority == 0)
             return;
         OnDemandData onDemandData = new OnDemandData();
-        onDemandData.dataType = j;
-        onDemandData.ID = i;
+        onDemandData.dataType = type;
+        onDemandData.id = id;
         onDemandData.incomplete = false;
-        synchronized(aClass19_1344)
+        synchronized(passiveRequests)
         {
-            aClass19_1344.insertHead(onDemandData);
+            passiveRequests.insertHead(onDemandData);
         }
     }
 
@@ -468,21 +468,21 @@ public final class OnDemandFetcher extends OnDemandFetcherParent
         return onDemandData;
     }
 
-    public int method562(int i, int k, int l)
+    public int getMapIndex(int i, int mapY, int mapX)
     {
-        int i1 = (l << 8) + k;
-        for(int j1 = 0; j1 < mapIndices1.length; j1++)
-            if(mapIndices1[j1] == i1)
+        int coordinates = (mapX << 8) + mapY;
+        for(int pointer = 0; pointer < mapIndices1.length; pointer++)
+            if(mapIndices1[pointer] == coordinates)
                 if(i == 0)
-                    return mapIndices2[j1];
+                    return mapIndices2[pointer];
                 else
-                    return mapIndices3[j1];
+                    return mapIndices3[pointer];
         return -1;
     }
 
     public void request(int i)
     {
-        method558(0, i);
+        request(0, i);
     }
 
     public void method563(byte byte0, int i, int j)
@@ -494,9 +494,9 @@ public final class OnDemandFetcher extends OnDemandFetcherParent
         byte abyte0[] = clientInstance.decompressors[i + 1].decompress(j);
         if(crcMatches(versions[i][j], crcs[i][j], abyte0))
             return;
-        fileStatus[i][j] = byte0;
-        if(byte0 > anInt1332)
-            anInt1332 = byte0;
+        filePriorities[i][j] = byte0;
+        if(byte0 > highestPriority)
+            highestPriority = byte0;
         totalFiles++;
     }
 
@@ -523,9 +523,9 @@ public final class OnDemandFetcher extends OnDemandFetcherParent
             OnDemandData onDemandData_1 = (OnDemandData)aClass19_1368.popHead();
             if(onDemandData_1 == null)
                 break;
-            if(fileStatus[onDemandData_1.dataType][onDemandData_1.ID] != 0)
+            if(filePriorities[onDemandData_1.dataType][onDemandData_1.id] != 0)
                 filesLoaded++;
-            fileStatus[onDemandData_1.dataType][onDemandData_1.ID] = 0;
+            filePriorities[onDemandData_1.dataType][onDemandData_1.id] = 0;
             requested.insertHead(onDemandData_1);
             uncompletedCount++;
             closeRequest(onDemandData_1);
@@ -533,11 +533,11 @@ public final class OnDemandFetcher extends OnDemandFetcherParent
         }
     }
 
-    public void method566()
+    public void clearPassiveRequests()
     {
-        synchronized(aClass19_1344)
+        synchronized(passiveRequests)
         {
-            aClass19_1344.removeAll();
+            passiveRequests.removeAll();
         }
     }
 
@@ -553,8 +553,8 @@ public final class OnDemandFetcher extends OnDemandFetcherParent
             waiting = true;
             byte abyte0[] = null;
             if(clientInstance.decompressors[0] != null)
-                abyte0 = clientInstance.decompressors[onDemandData.dataType + 1].decompress(onDemandData.ID);
-            if(!crcMatches(versions[onDemandData.dataType][onDemandData.ID], crcs[onDemandData.dataType][onDemandData.ID], abyte0))
+                abyte0 = clientInstance.decompressors[onDemandData.dataType + 1].decompress(onDemandData.id);
+            if(!crcMatches(versions[onDemandData.dataType][onDemandData.id], crcs[onDemandData.dataType][onDemandData.id], abyte0))
                 abyte0 = null;
             synchronized(aClass19_1370)
             {
@@ -578,18 +578,18 @@ public final class OnDemandFetcher extends OnDemandFetcherParent
     {
         while(uncompletedCount == 0 && completedCount < 10)
         {
-            if(anInt1332 == 0)
+            if(highestPriority == 0)
                 break;
             OnDemandData onDemandData;
-            synchronized(aClass19_1344)
+            synchronized(passiveRequests)
             {
-                onDemandData = (OnDemandData)aClass19_1344.popHead();
+                onDemandData = (OnDemandData)passiveRequests.popHead();
             }
             while(onDemandData != null)
             {
-                if(fileStatus[onDemandData.dataType][onDemandData.ID] != 0)
+                if(filePriorities[onDemandData.dataType][onDemandData.id] != 0)
                 {
-                    fileStatus[onDemandData.dataType][onDemandData.ID] = 0;
+                    filePriorities[onDemandData.dataType][onDemandData.id] = 0;
                     requested.insertHead(onDemandData);
                     closeRequest(onDemandData);
                     waiting = true;
@@ -600,22 +600,22 @@ public final class OnDemandFetcher extends OnDemandFetcherParent
                     if(completedCount == 10)
                         return;
                 }
-                synchronized(aClass19_1344)
+                synchronized(passiveRequests)
                 {
-                    onDemandData = (OnDemandData)aClass19_1344.popHead();
+                    onDemandData = (OnDemandData)passiveRequests.popHead();
                 }
             }
             for(int j = 0; j < 4; j++)
             {
-                byte abyte0[] = fileStatus[j];
+                byte abyte0[] = filePriorities[j];
                 int k = abyte0.length;
                 for(int l = 0; l < k; l++)
-                    if(abyte0[l] == anInt1332)
+                    if(abyte0[l] == highestPriority)
                     {
                         abyte0[l] = 0;
                         OnDemandData onDemandData_1 = new OnDemandData();
                         onDemandData_1.dataType = j;
-                        onDemandData_1.ID = l;
+                        onDemandData_1.id = l;
                         onDemandData_1.incomplete = false;
                         requested.insertHead(onDemandData_1);
                         closeRequest(onDemandData_1);
@@ -630,7 +630,7 @@ public final class OnDemandFetcher extends OnDemandFetcherParent
 
             }
 
-            anInt1332--;
+            highestPriority--;
         }
     }
 
@@ -645,8 +645,8 @@ public final class OnDemandFetcher extends OnDemandFetcherParent
         statusString = "";
         crc32 = new CRC32();
         ioBuffer = new byte[500];
-        fileStatus = new byte[4][];
-        aClass19_1344 = new NodeList();
+        filePriorities = new byte[4][];
+        passiveRequests = new NodeList();
         running = true;
         waiting = false;
         aClass19_1358 = new NodeList();
@@ -660,7 +660,7 @@ public final class OnDemandFetcher extends OnDemandFetcherParent
 
     private int totalFiles;
     private final NodeList requested;
-    private int anInt1332;
+    private int highestPriority;
     public String statusString;
     private int writeLoopCycle;
     private long openSocketTime;
@@ -668,9 +668,9 @@ public final class OnDemandFetcher extends OnDemandFetcherParent
     private final CRC32 crc32;
     private final byte[] ioBuffer;
     public int onDemandCycle;
-    private final byte[][] fileStatus;
+    private final byte[][] filePriorities;
     private client clientInstance;
-    private final NodeList aClass19_1344;
+    private final NodeList passiveRequests;
     private int completedSize;
     private int expectedSize;
     private int[] anIntArray1348;

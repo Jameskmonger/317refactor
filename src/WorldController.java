@@ -540,7 +540,7 @@ final class WorldController {
         return 0;
     }
 
-    public int getGroundDecorationUID(int y, int x, int z)
+    public int getGroundDecorationUID(int x, int y, int z)
     {
         Ground tile = groundArray[z][x][y];
         if(tile == null || tile.groundDecoration == null)
@@ -549,7 +549,7 @@ final class WorldController {
             return tile.groundDecoration.uid;
     }
 
-    public int getIDforLocation(int uid, int x, int y, int z)
+    public int getConfig(int uid, int x, int y, int z)
     {
         Ground tile = groundArray[z][x][y];
         if(tile == null)

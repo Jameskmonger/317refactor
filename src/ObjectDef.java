@@ -28,10 +28,10 @@ public final class ObjectDef
         description = null;
         modifiedModelColors = null;
         originalModelColors = null;
-        anInt744 = 1;
-        anInt761 = 1;
-        aBoolean767 = true;
-        aBoolean757 = true;
+        sizeX = 1;
+        sizeY = 1;
+        unwalkable = true;
+        walkable = true;
         hasActions = false;
         aBoolean762 = false;
         aBoolean769 = false;
@@ -65,12 +65,12 @@ public final class ObjectDef
         if(anIntArray773 == null)
             return;
         for(int j = 0; j < anIntArray773.length; j++)
-            class42_sub1.method560(anIntArray773[j] & 0xffff, 0);
+            class42_sub1.passiveRequest(anIntArray773[j] & 0xffff, 0);
     }
 
     public static void nullLoader()
     {
-        mruNodes1 = null;
+        modelCache = null;
         mruNodes2 = null;
         streamIndices = null;
         cache = null;
@@ -117,7 +117,7 @@ stream = null;
         return true;
     }
 
-    public Model method578(int i, int j, int k, int l, int i1, int j1, int k1)
+    public Model getModelAt(int i, int j, int k, int l, int i1, int j1, int k1)
     {
         Model model = method581(i, k1, j);
         if(model == null)
@@ -193,7 +193,7 @@ stream = null;
                 int l2 = anIntArray773[i2];
                 if(flag1)
                     l2 += 0x10000;
-                model = (Model) mruNodes1.insertFromCache(l2);
+                model = (Model) modelCache.insertFromCache(l2);
                 if(model == null)
                 {
                     model = Model.getModel(l2 & 0xffff);
@@ -201,7 +201,7 @@ stream = null;
                         return null;
                     if(flag1)
                         model.mirror();
-                    mruNodes1.removeFromCache(model, l2);
+                    modelCache.removeFromCache(model, l2);
                 }
                 if(k1 > 1)
                     aModelArray741s[i2] = model;
@@ -230,7 +230,7 @@ stream = null;
             boolean flag3 = aBoolean751 ^ (l > 3);
             if(flag3)
                 j2 += 0x10000;
-            model = (Model) mruNodes1.insertFromCache(j2);
+            model = (Model) modelCache.insertFromCache(j2);
             if(model == null)
             {
                 model = Model.getModel(j2 & 0xffff);
@@ -238,7 +238,7 @@ stream = null;
                     return null;
                 if(flag3)
                     model.mirror();
-                mruNodes1.removeFromCache(model, j2);
+                modelCache.removeFromCache(model, j2);
             }
         }
         boolean flag;
@@ -326,16 +326,16 @@ label0:
                         }
                 } else
                 if(j == 14)
-                    anInt744 = stream.getUnsignedByte();
+                    sizeX = stream.getUnsignedByte();
                 else
                 if(j == 15)
-                    anInt761 = stream.getUnsignedByte();
+                    sizeY = stream.getUnsignedByte();
                 else
                 if(j == 17)
-                    aBoolean767 = false;
+                    unwalkable = false;
                 else
                 if(j == 18)
-                    aBoolean757 = false;
+                    walkable = false;
                 else
                 if(j == 19)
                 {
@@ -362,10 +362,10 @@ label0:
                     anInt775 = stream.getUnsignedByte();
                 else
                 if(j == 29)
-                    aByte737 = stream.readSignedByte();
+                    aByte737 = stream.get();
                 else
                 if(j == 39)
-                    aByte742 = stream.readSignedByte();
+                    aByte742 = stream.get();
                 else
                 if(j >= 30 && j < 39)
                 {
@@ -412,13 +412,13 @@ label0:
                     anInt768 = stream.getUnsignedByte();
                 else
                 if(j == 70)
-                    anInt738 = stream.readSignedWord();
+                    anInt738 = stream.getShort();
                 else
                 if(j == 71)
-                    anInt745 = stream.readSignedWord();
+                    anInt745 = stream.getShort();
                 else
                 if(j == 72)
-                    anInt783 = stream.readSignedWord();
+                    anInt783 = stream.getShort();
                 else
                 if(j == 73)
                     aBoolean736 = true;
@@ -458,11 +458,11 @@ label0:
         }
         if(aBoolean766)
         {
-            aBoolean767 = false;
-            aBoolean757 = false;
+            unwalkable = false;
+            walkable = false;
         }
         if(anInt760 == -1)
-            anInt760 = aBoolean767 ? 1 : 0;
+            anInt760 = unwalkable ? 1 : 0;
     }
 
     private ObjectDef()
@@ -477,7 +477,7 @@ label0:
     private int anInt740;
     private static final Model[] aModelArray741s = new Model[4];
     private byte aByte742;
-    public int anInt744;
+    public int sizeX;
     private int anInt745;
     public int anInt746;
     private int[] originalModelColors;
@@ -488,16 +488,16 @@ label0:
     private static Stream stream;
     public int type;
     private static int[] streamIndices;
-    public boolean aBoolean757;
+    public boolean walkable;
     public int anInt758;
     public int childrenIDs[];
     private int anInt760;
-    public int anInt761;
+    public int sizeY;
     public boolean aBoolean762;
     public boolean aBoolean764;
     public static client clientInstance;
     private boolean aBoolean766;
-    public boolean aBoolean767;
+    public boolean unwalkable;
     public int anInt768;
     private boolean aBoolean769;
     private static int cacheIndex;
@@ -514,7 +514,7 @@ label0:
     private static ObjectDef[] cache;
     private int anInt783;
     private int[] modifiedModelColors;
-    public static MRUNodes mruNodes1 = new MRUNodes(500);
+    public static MRUNodes modelCache = new MRUNodes(500);
     public String actions[];
 
 }

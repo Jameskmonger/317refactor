@@ -21,7 +21,7 @@ final class Sounds {
                 return;
             aSoundsArray325s[j] = new Sounds();
             aSoundsArray325s[j].method242(stream);
-            anIntArray326[j] = aSoundsArray325s[j].method243();
+            trackDelays[j] = aSoundsArray325s[j].method243();
         } while(true);
     }
 
@@ -148,7 +148,7 @@ final class Sounds {
     }
 
     private static final Sounds[] aSoundsArray325s = new Sounds[5000];
-    public static final int[] anIntArray326 = new int[5000];
+    public static final int[] trackDelays = new int[5000];
     private static byte[] aByteArray327;
     private static Stream aStream_328;
     private final SoundInstrument[] samples;

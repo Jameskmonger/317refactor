@@ -33,7 +33,7 @@ public final class Background extends DrawingArea {
         if(i1 == 0)
         {
             for(int k1 = 0; k1 < j1; k1++)
-                imagePixels[k1] = stream.readSignedByte();
+                imagePixels[k1] = stream.get();
 
             return;
         }
@@ -42,7 +42,7 @@ public final class Background extends DrawingArea {
             for(int l1 = 0; l1 < imageWidth; l1++)
             {
                 for(int i2 = 0; i2 < anInt1453; i2++)
-                    imagePixels[l1 + i2 * imageWidth] = stream.readSignedByte();
+                    imagePixels[l1 + i2 * imageWidth] = stream.get();
 
             }
 

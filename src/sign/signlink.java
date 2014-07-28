@@ -110,11 +110,13 @@ public final class signlink
                     String wave = s + savereq;
                     waveplay = false;
                 }
+                
                 if(midiplay)
                 {
                     midi = s + savereq;
                     midiplay = false;
                 }
+                
                 savereq = null;
             } else
             if(urlreq != null)

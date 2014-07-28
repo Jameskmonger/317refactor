@@ -12,7 +12,7 @@ public final class OnDemandData extends NodeSub {
 
     int dataType;
     byte buffer[];
-    int ID;
+    int id;
     boolean incomplete;
     int loopCycle;
 }

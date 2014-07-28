@@ -37,14 +37,14 @@ public final class Player extends Entity
                 model = new Model(aclass30_sub2_sub4_sub6_1s);
             }
         }
-        if(aModel_1714 != null)
+        if(playerModel != null)
         {
             if(client.loopCycle >= anInt1708)
-                aModel_1714 = null;
+                playerModel = null;
             if(client.loopCycle >= anInt1707 && client.loopCycle < anInt1708)
             {
-                Model model_1 = aModel_1714;
-                model_1.translate(anInt1711 - super.x, anInt1712 - anInt1709, anInt1713 - super.y);
+                Model model_1 = playerModel;
+                model_1.translate(anInt1711 - super.x, drawHeight - anInt1709, anInt1713 - super.y);
                 if(super.turnDirection == 512)
                 {
                     model_1.rotate90Degrees();
@@ -76,7 +76,7 @@ public final class Player extends Entity
                     model_1.rotate90Degrees();
                     model_1.rotate90Degrees();
                 }
-                model_1.translate(super.x - anInt1711, anInt1709 - anInt1712, super.y - anInt1713);
+                model_1.translate(super.x - anInt1711, anInt1709 - drawHeight, super.y - anInt1713);
             }
         }
         model.singleTile = true;
@@ -142,7 +142,7 @@ public final class Player extends Entity
         super.runAnimationId = stream.getUnsignedLEShort();
         if(super.runAnimationId == 65535)
             super.runAnimationId = -1;
-        name = TextClass.formatName(TextClass.nameForLong(stream.readLong()));
+        name = TextClass.formatName(TextClass.nameForLong(stream.getLong()));
         combatLevel = stream.getUnsignedByte();
         skill = stream.getUnsignedLEShort();
         visible = true;
@@ -364,9 +364,9 @@ public final class Player extends Entity
     int anInt1709;
     boolean visible;
     int anInt1711;
-    int anInt1712;
+    int drawHeight;
     int anInt1713;
-    Model aModel_1714;
+    Model playerModel;
     private int anInt1715;
     public final int[] appearance;
     private long appearanceOffset;

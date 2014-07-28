@@ -56,7 +56,7 @@ public final class Animation {
 
             } else
             if(i == 2)
-                anInt356 = stream.getUnsignedLEShort();
+                frameStep = stream.getUnsignedLEShort();
             else
             if(i == 3)
             {
@@ -124,7 +124,7 @@ public final class Animation {
 
     private Animation()
     {
-        anInt356 = -1;
+        frameStep = -1;
         aBoolean358 = false;
         anInt359 = 5;
         anInt360 = -1;
@@ -140,7 +140,7 @@ public final class Animation {
     public int frame2Ids[];
     public int anIntArray354[];
     private int[] anIntArray355;
-    public int anInt356;
+    public int frameStep;
     public int anIntArray357[];
     public boolean aBoolean358;
     public int anInt359;

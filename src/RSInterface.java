@@ -7,12 +7,12 @@ public final class RSInterface
 
     public void swapInventoryItems(int i, int j)
     {
-        int k = inv[i];
-        inv[i] = inv[j];
-        inv[j] = k;
-        k = invStackSizes[i];
-        invStackSizes[i] = invStackSizes[j];
-        invStackSizes[j] = k;
+        int k = inventoryItemId[i];
+        inventoryItemId[i] = inventoryItemId[j];
+        inventoryItemId[j] = k;
+        k = inventoryStackSize[i];
+        inventoryStackSize[i] = inventoryStackSize[j];
+        inventoryStackSize[j] = k;
     }
 
     public static void unpack(StreamLoader streamLoader, TextDrawingArea textDrawingAreas[], StreamLoader streamLoader_1)
@@ -35,7 +35,7 @@ public final class RSInterface
             rsInterface.parentID = i;
             rsInterface.type = stream.getUnsignedByte();
             rsInterface.atActionType = stream.getUnsignedByte();
-            rsInterface.anInt214 = stream.getUnsignedLEShort();
+            rsInterface.contentType = stream.getUnsignedLEShort();
             rsInterface.width = stream.getUnsignedLEShort();
             rsInterface.height = stream.getUnsignedLEShort();
             rsInterface.aByte254 = (byte) stream.getUnsignedByte();
@@ -81,8 +81,8 @@ public final class RSInterface
                 for(int j3 = 0; j3 < i2; j3++)
                 {
                     rsInterface.children[j3] = stream.getUnsignedLEShort();
-                    rsInterface.childX[j3] = stream.readSignedWord();
-                    rsInterface.childY[j3] = stream.readSignedWord();
+                    rsInterface.childX[j3] = stream.getShort();
+                    rsInterface.childY[j3] = stream.getShort();
                 }
 
             }
@@ -93,8 +93,8 @@ public final class RSInterface
             }
             if(rsInterface.type == 2)
             {
-                rsInterface.inv = new int[rsInterface.width * rsInterface.height];
-                rsInterface.invStackSizes = new int[rsInterface.width * rsInterface.height];
+                rsInterface.inventoryItemId = new int[rsInterface.width * rsInterface.height];
+                rsInterface.inventoryStackSize = new int[rsInterface.width * rsInterface.height];
                 rsInterface.aBoolean259 = stream.getUnsignedByte() == 1;
                 rsInterface.isInventoryInterface = stream.getUnsignedByte() == 1;
                 rsInterface.usableItemInterface = stream.getUnsignedByte() == 1;
@@ -109,8 +109,8 @@ public final class RSInterface
                     int k3 = stream.getUnsignedByte();
                     if(k3 == 1)
                     {
-                        rsInterface.spritesX[j2] = stream.readSignedWord();
-                        rsInterface.spritesY[j2] = stream.readSignedWord();
+                        rsInterface.spritesX[j2] = stream.getShort();
+                        rsInterface.spritesY[j2] = stream.getShort();
                         String s1 = stream.getString();
                         if(streamLoader_1 != null && s1.length() > 0)
                         {
@@ -172,8 +172,8 @@ public final class RSInterface
                 int l = stream.getUnsignedByte();
                 if(l != 0)
                 {
-                    rsInterface.anInt233 = 1;
-                    rsInterface.mediaID = (l - 1 << 8) + stream.getUnsignedByte();
+                    rsInterface.modelType = 1;
+                    rsInterface.modelId = (l - 1 << 8) + stream.getUnsignedByte();
                 }
                 l = stream.getUnsignedByte();
                 if(l != 0)
@@ -183,30 +183,30 @@ public final class RSInterface
                 }
                 l = stream.getUnsignedByte();
                 if(l != 0)
-                    rsInterface.anInt257 = (l - 1 << 8) + stream.getUnsignedByte();
+                    rsInterface.animationId = (l - 1 << 8) + stream.getUnsignedByte();
                 else
-                    rsInterface.anInt257 = -1;
+                    rsInterface.animationId = -1;
                 l = stream.getUnsignedByte();
                 if(l != 0)
                     rsInterface.anInt258 = (l - 1 << 8) + stream.getUnsignedByte();
                 else
                     rsInterface.anInt258 = -1;
-                rsInterface.anInt269 = stream.getUnsignedLEShort();
-                rsInterface.anInt270 = stream.getUnsignedLEShort();
-                rsInterface.anInt271 = stream.getUnsignedLEShort();
+                rsInterface.modelZoom = stream.getUnsignedLEShort();
+                rsInterface.modelRotationX = stream.getUnsignedLEShort();
+                rsInterface.modelRotationY = stream.getUnsignedLEShort();
             }
             if(rsInterface.type == 7)
             {
-                rsInterface.inv = new int[rsInterface.width * rsInterface.height];
-                rsInterface.invStackSizes = new int[rsInterface.width * rsInterface.height];
+                rsInterface.inventoryItemId = new int[rsInterface.width * rsInterface.height];
+                rsInterface.inventoryStackSize = new int[rsInterface.width * rsInterface.height];
                 rsInterface.aBoolean223 = stream.getUnsignedByte() == 1;
                 int l2 = stream.getUnsignedByte();
                 if(textDrawingAreas != null)
                     rsInterface.textDrawingAreas = textDrawingAreas[l2];
                 rsInterface.aBoolean268 = stream.getUnsignedByte() == 1;
                 rsInterface.textColor = stream.getInt();
-                rsInterface.invSpritePadX = stream.readSignedWord();
-                rsInterface.invSpritePadY = stream.readSignedWord();
+                rsInterface.invSpritePadX = stream.getShort();
+                rsInterface.invSpritePadY = stream.getShort();
                 rsInterface.isInventoryInterface = stream.getUnsignedByte() == 1;
                 rsInterface.actions = new String[5];
                 for(int k4 = 0; k4 < 5; k4++)
@@ -303,7 +303,7 @@ public final class RSInterface
         if(flag)
             model = method206(anInt255, anInt256);
         else
-            model = method206(anInt233, mediaID);
+            model = method206(modelType, modelId);
         if(model == null)
             return null;
         if(k == -1 && j == -1 && model.triangleColours == null)
@@ -328,7 +328,7 @@ public final class RSInterface
     public Sprite sprites[];
     public static RSInterface interfaceCache[];
     public int anIntArray212[];
-    public int anInt214;
+    public int contentType;
     public int spritesX[];
     public int anInt216;
     public int atActionType;
@@ -346,8 +346,8 @@ public final class RSInterface
     public int anInt230;
     public int invSpritePadX;
     public int textColor;
-    public int anInt233;
-    public int mediaID;
+    public int modelType;
+    public int modelId;
     public boolean aBoolean235;
     public int parentID;
     public int spellUsableOn;
@@ -364,26 +364,26 @@ public final class RSInterface
     public String message;
     public boolean isInventoryInterface;
     public int id;
-    public int invStackSizes[];
-    public int inv[];
+    public int inventoryStackSize[];
+    public int inventoryItemId[];
     public byte aByte254;
     private int anInt255;
     private int anInt256;
-    public int anInt257;
+    public int animationId;
     public int anInt258;
     public boolean aBoolean259;
     public Sprite sprite2;
     public int scrollMax;
     public int type;
-    public int anInt263;
+    public int x;
     private static final MRUNodes aMRUNodes_264 = new MRUNodes(30);
-    public int anInt265;
+    public int y;
     public boolean aBoolean266;
     public int height;
     public boolean aBoolean268;
-    public int anInt269;
-    public int anInt270;
-    public int anInt271;
+    public int modelZoom;
+    public int modelRotationX;
+    public int modelRotationY;
     public int childY[];
 
 }

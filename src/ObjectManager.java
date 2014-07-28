@@ -6,7 +6,7 @@ final class ObjectManager {
 
     public ObjectManager(byte abyte0[][][], int ai[][][])
     {
-        anInt145 = 99;
+        setZ = 99;
         anInt146 = 104;
         anInt147 = 104;
         anIntArrayArrayArray129 = ai;
@@ -33,7 +33,7 @@ final class ObjectManager {
         return l >> 19 & 0xff;
     }
 
-    public final void method171(CollisionMap aclass11[], WorldController worldController)
+    public final void addTiles(CollisionMap aclass11[], WorldController worldController)
     {
         for(int j = 0; j < 4; j++)
         {
@@ -161,8 +161,8 @@ final class ObjectManager {
                         }
                         if(k17 >= 1 && k17 < anInt147 - 1 && (!lowMem || (aByteArrayArrayArray149[0][l6][k17] & 2) != 0 || (aByteArrayArrayArray149[l][l6][k17] & 0x10) == 0 && method182(k17, l, l6) == anInt131))
                         {
-                            if(l < anInt145)
-                                anInt145 = l;
+                            if(l < setZ)
+                                setZ = l;
                             int l18 = aByteArrayArrayArray142[l][l6][k17] & 0xff;
                             int i19 = aByteArrayArrayArray130[l][l6][k17] & 0xff;
                             if(l18 > 0 || i19 > 0)
@@ -444,7 +444,7 @@ label0:
         }
     }
 
-    public final void method174(int i, int j, int l, int i1)
+    public final void clearRegion(int i, int j, int l, int i1)
     {
         for(int j1 = i; j1 <= i + j; j1++)
         {
@@ -475,8 +475,8 @@ label0:
             if(method182(i, k, l) != anInt131)
                 return;
         }
-        if(k < anInt145)
-            anInt145 = k;
+        if(k < setZ)
+            setZ = k;
         int k1 = anIntArrayArrayArray129[k][l][i];
         int l1 = anIntArrayArrayArray129[k][l + 1][i];
         int i2 = anIntArrayArrayArray129[k][l + 1][i + 1];
@@ -493,11 +493,11 @@ label0:
                 return;
             Object obj;
             if(class46.anInt781 == -1 && class46.childrenIDs == null)
-                obj = class46.method578(22, j1, k1, l1, i2, j2, -1);
+                obj = class46.getModelAt(22, j1, k1, l1, i2, j2, -1);
             else
-                obj = new Animable_Sub5(i1, j1, 22, l1, i2, k1, j2, class46.anInt781, true);
+                obj = new ObjectInstance(i1, j1, 22, l1, i2, k1, j2, class46.anInt781, true);
             worldController.addGroundDecoration(l, i, k, k2, l2, ((Animable) (obj)), byte0);
-            if(class46.aBoolean767 && class46.hasActions && class11 != null)
+            if(class46.unwalkable && class46.hasActions && class11 != null)
                 class11.markBlocked(l, i);
             return;
         }
@@ -505,9 +505,9 @@ label0:
         {
             Object obj1;
             if(class46.anInt781 == -1 && class46.childrenIDs == null)
-                obj1 = class46.method578(10, j1, k1, l1, i2, j2, -1);
+                obj1 = class46.getModelAt(10, j1, k1, l1, i2, j2, -1);
             else
-                obj1 = new Animable_Sub5(i1, j1, 10, l1, i2, k1, j2, class46.anInt781, true);
+                obj1 = new ObjectInstance(i1, j1, 10, l1, i2, k1, j2, class46.anInt781, true);
             if(obj1 != null)
             {
                 int i5 = 0;
@@ -517,12 +517,12 @@ label0:
                 int l4;
                 if(j1 == 1 || j1 == 3)
                 {
-                    j4 = class46.anInt761;
-                    l4 = class46.anInt744;
+                    j4 = class46.sizeY;
+                    l4 = class46.sizeX;
                 } else
                 {
-                    j4 = class46.anInt744;
-                    l4 = class46.anInt761;
+                    j4 = class46.sizeX;
+                    l4 = class46.sizeY;
                 }
                 if(worldController.addEntityB(l, i, k, k2, i5, l4, j4, l2, ((Animable) (obj1)), byte0) && class46.aBoolean779)
                 {
@@ -530,7 +530,7 @@ label0:
                     if(obj1 instanceof Model)
                         model = (Model)obj1;
                     else
-                        model = class46.method578(10, j1, k1, l1, i2, j2, -1);
+                        model = class46.getModelAt(10, j1, k1, l1, i2, j2, -1);
                     if(model != null)
                     {
                         for(int j5 = 0; j5 <= j4; j5++)
@@ -549,31 +549,31 @@ label0:
                     }
                 }
             }
-            if(class46.aBoolean767 && class11 != null)
-                class11.markSolidOccupant(l, i, class46.anInt744, class46.anInt761, j1, class46.aBoolean757);
+            if(class46.unwalkable && class11 != null)
+                class11.markSolidOccupant(l, i, class46.sizeX, class46.sizeY, j1, class46.walkable);
             return;
         }
         if(j >= 12)
         {
             Object obj2;
             if(class46.anInt781 == -1 && class46.childrenIDs == null)
-                obj2 = class46.method578(j, j1, k1, l1, i2, j2, -1);
+                obj2 = class46.getModelAt(j, j1, k1, l1, i2, j2, -1);
             else
-                obj2 = new Animable_Sub5(i1, j1, j, l1, i2, k1, j2, class46.anInt781, true);
+                obj2 = new ObjectInstance(i1, j1, j, l1, i2, k1, j2, class46.anInt781, true);
             worldController.addEntityB(l, i, k, k2, 0, 1, 1, l2, ((Animable) (obj2)), byte0);
             if(j >= 12 && j <= 17 && j != 13 && k > 0)
                 anIntArrayArrayArray135[k][l][i] |= 0x924;
-            if(class46.aBoolean767 && class11 != null)
-                class11.markSolidOccupant(l, i, class46.anInt744, class46.anInt761, j1, class46.aBoolean757);
+            if(class46.unwalkable && class11 != null)
+                class11.markSolidOccupant(l, i, class46.sizeX, class46.sizeY, j1, class46.walkable);
             return;
         }
         if(j == 0)
         {
             Object obj3;
             if(class46.anInt781 == -1 && class46.childrenIDs == null)
-                obj3 = class46.method578(0, j1, k1, l1, i2, j2, -1);
+                obj3 = class46.getModelAt(0, j1, k1, l1, i2, j2, -1);
             else
-                obj3 = new Animable_Sub5(i1, j1, 0, l1, i2, k1, j2, class46.anInt781, true);
+                obj3 = new ObjectInstance(i1, j1, 0, l1, i2, k1, j2, class46.anInt781, true);
             worldController.addWallObject(l, i, k, k2, anIntArray152[j1], 0, l2, ((Animable) (obj3)), null, byte0);
             if(j1 == 0)
             {
@@ -615,8 +615,8 @@ label0:
                 if(class46.aBoolean764)
                     anIntArrayArrayArray135[k][l][i] |= 0x492;
             }
-            if(class46.aBoolean767 && class11 != null)
-                class11.markWall(i, j1, l, j, class46.aBoolean757);
+            if(class46.unwalkable && class11 != null)
+                class11.markWall(i, j1, l, j, class46.walkable);
             if(class46.anInt775 != 16)
                 worldController.method290(i, class46.anInt775, l, k);
             return;
@@ -625,9 +625,9 @@ label0:
         {
             Object obj4;
             if(class46.anInt781 == -1 && class46.childrenIDs == null)
-                obj4 = class46.method578(1, j1, k1, l1, i2, j2, -1);
+                obj4 = class46.getModelAt(1, j1, k1, l1, i2, j2, -1);
             else
-                obj4 = new Animable_Sub5(i1, j1, 1, l1, i2, k1, j2, class46.anInt781, true);
+                obj4 = new ObjectInstance(i1, j1, 1, l1, i2, k1, j2, class46.anInt781, true);
             worldController.addWallObject(l, i, k, k2, anIntArray140[j1], 0, l2, ((Animable) (obj4)), null, byte0);
             if(class46.aBoolean779)
                 if(j1 == 0)
@@ -641,8 +641,8 @@ label0:
                 else
                 if(j1 == 3)
                     aByteArrayArrayArray134[k][l][i] = 50;
-            if(class46.aBoolean767 && class11 != null)
-                class11.markWall(i, j1, l, j, class46.aBoolean757);
+            if(class46.unwalkable && class11 != null)
+                class11.markWall(i, j1, l, j, class46.walkable);
             return;
         }
         if(j == 2)
@@ -652,12 +652,12 @@ label0:
             Object obj12;
             if(class46.anInt781 == -1 && class46.childrenIDs == null)
             {
-                obj11 = class46.method578(2, 4 + j1, k1, l1, i2, j2, -1);
-                obj12 = class46.method578(2, i3, k1, l1, i2, j2, -1);
+                obj11 = class46.getModelAt(2, 4 + j1, k1, l1, i2, j2, -1);
+                obj12 = class46.getModelAt(2, i3, k1, l1, i2, j2, -1);
             } else
             {
-                obj11 = new Animable_Sub5(i1, 4 + j1, 2, l1, i2, k1, j2, class46.anInt781, true);
-                obj12 = new Animable_Sub5(i1, i3, 2, l1, i2, k1, j2, class46.anInt781, true);
+                obj11 = new ObjectInstance(i1, 4 + j1, 2, l1, i2, k1, j2, class46.anInt781, true);
+                obj12 = new ObjectInstance(i1, i3, 2, l1, i2, k1, j2, class46.anInt781, true);
             }
             worldController.addWallObject(l, i, k, k2, anIntArray152[j1], anIntArray152[i3], l2, ((Animable) (obj11)), ((Animable) (obj12)), byte0);
             if(class46.aBoolean764)
@@ -681,8 +681,8 @@ label0:
                     anIntArrayArrayArray135[k][l][i] |= 0x492;
                     anIntArrayArrayArray135[k][l][i] |= 0x249;
                 }
-            if(class46.aBoolean767 && class11 != null)
-                class11.markWall(i, j1, l, j, class46.aBoolean757);
+            if(class46.unwalkable && class11 != null)
+                class11.markWall(i, j1, l, j, class46.walkable);
             if(class46.anInt775 != 16)
                 worldController.method290(i, class46.anInt775, l, k);
             return;
@@ -691,9 +691,9 @@ label0:
         {
             Object obj5;
             if(class46.anInt781 == -1 && class46.childrenIDs == null)
-                obj5 = class46.method578(3, j1, k1, l1, i2, j2, -1);
+                obj5 = class46.getModelAt(3, j1, k1, l1, i2, j2, -1);
             else
-                obj5 = new Animable_Sub5(i1, j1, 3, l1, i2, k1, j2, class46.anInt781, true);
+                obj5 = new ObjectInstance(i1, j1, 3, l1, i2, k1, j2, class46.anInt781, true);
             worldController.addWallObject(l, i, k, k2, anIntArray140[j1], 0, l2, ((Animable) (obj5)), null, byte0);
             if(class46.aBoolean779)
                 if(j1 == 0)
@@ -707,20 +707,20 @@ label0:
                 else
                 if(j1 == 3)
                     aByteArrayArrayArray134[k][l][i] = 50;
-            if(class46.aBoolean767 && class11 != null)
-                class11.markWall(i, j1, l, j, class46.aBoolean757);
+            if(class46.unwalkable && class11 != null)
+                class11.markWall(i, j1, l, j, class46.walkable);
             return;
         }
         if(j == 9)
         {
             Object obj6;
             if(class46.anInt781 == -1 && class46.childrenIDs == null)
-                obj6 = class46.method578(j, j1, k1, l1, i2, j2, -1);
+                obj6 = class46.getModelAt(j, j1, k1, l1, i2, j2, -1);
             else
-                obj6 = new Animable_Sub5(i1, j1, j, l1, i2, k1, j2, class46.anInt781, true);
+                obj6 = new ObjectInstance(i1, j1, j, l1, i2, k1, j2, class46.anInt781, true);
             worldController.addEntityB(l, i, k, k2, 0, 1, 1, l2, ((Animable) (obj6)), byte0);
-            if(class46.aBoolean767 && class11 != null)
-                class11.markSolidOccupant(l, i, class46.anInt744, class46.anInt761, j1, class46.aBoolean757);
+            if(class46.unwalkable && class11 != null)
+                class11.markSolidOccupant(l, i, class46.sizeX, class46.sizeY, j1, class46.walkable);
             return;
         }
         if(class46.aBoolean762)
@@ -753,9 +753,9 @@ label0:
         {
             Object obj7;
             if(class46.anInt781 == -1 && class46.childrenIDs == null)
-                obj7 = class46.method578(4, 0, k1, l1, i2, j2, -1);
+                obj7 = class46.getModelAt(4, 0, k1, l1, i2, j2, -1);
             else
-                obj7 = new Animable_Sub5(i1, 0, 4, l1, i2, k1, j2, class46.anInt781, true);
+                obj7 = new ObjectInstance(i1, 0, 4, l1, i2, k1, j2, class46.anInt781, true);
             worldController.addWallDecoration(l, i, k, k2, 0, 0, j1 * 512, l2, ((Animable) (obj7)), byte0, anIntArray152[j1]);
             return;
         }
@@ -767,9 +767,9 @@ label0:
                 i4 = ObjectDef.forID(k4 >> 14 & 0x7fff).anInt775;
             Object obj13;
             if(class46.anInt781 == -1 && class46.childrenIDs == null)
-                obj13 = class46.method578(4, 0, k1, l1, i2, j2, -1);
+                obj13 = class46.getModelAt(4, 0, k1, l1, i2, j2, -1);
             else
-                obj13 = new Animable_Sub5(i1, 0, 4, l1, i2, k1, j2, class46.anInt781, true);
+                obj13 = new ObjectInstance(i1, 0, 4, l1, i2, k1, j2, class46.anInt781, true);
             worldController.addWallDecoration(l, i, k, k2, anIntArray137[j1] * i4, anIntArray144[j1] * i4, j1 * 512, l2, ((Animable) (obj13)), byte0, anIntArray152[j1]);
             return;
         }
@@ -777,9 +777,9 @@ label0:
         {
             Object obj8;
             if(class46.anInt781 == -1 && class46.childrenIDs == null)
-                obj8 = class46.method578(4, 0, k1, l1, i2, j2, -1);
+                obj8 = class46.getModelAt(4, 0, k1, l1, i2, j2, -1);
             else
-                obj8 = new Animable_Sub5(i1, 0, 4, l1, i2, k1, j2, class46.anInt781, true);
+                obj8 = new ObjectInstance(i1, 0, 4, l1, i2, k1, j2, class46.anInt781, true);
             worldController.addWallDecoration(l, i, k, k2, 0, 0, j1, l2, ((Animable) (obj8)), byte0, 256);
             return;
         }
@@ -787,9 +787,9 @@ label0:
         {
             Object obj9;
             if(class46.anInt781 == -1 && class46.childrenIDs == null)
-                obj9 = class46.method578(4, 0, k1, l1, i2, j2, -1);
+                obj9 = class46.getModelAt(4, 0, k1, l1, i2, j2, -1);
             else
-                obj9 = new Animable_Sub5(i1, 0, 4, l1, i2, k1, j2, class46.anInt781, true);
+                obj9 = new ObjectInstance(i1, 0, 4, l1, i2, k1, j2, class46.anInt781, true);
             worldController.addWallDecoration(l, i, k, k2, 0, 0, j1, l2, ((Animable) (obj9)), byte0, 512);
             return;
         }
@@ -797,9 +797,9 @@ label0:
         {
             Object obj10;
             if(class46.anInt781 == -1 && class46.childrenIDs == null)
-                obj10 = class46.method578(4, 0, k1, l1, i2, j2, -1);
+                obj10 = class46.getModelAt(4, 0, k1, l1, i2, j2, -1);
             else
-                obj10 = new Animable_Sub5(i1, 0, 4, l1, i2, k1, j2, class46.anInt781, true);
+                obj10 = new ObjectInstance(i1, 0, 4, l1, i2, k1, j2, class46.anInt781, true);
             worldController.addWallDecoration(l, i, k, k2, 0, 0, j1, l2, ((Animable) (obj10)), byte0, 768);
         }
     }
@@ -832,9 +832,9 @@ label0:
         return (i / 4 << 10) + (j / 32 << 7) + k / 2;
     }
 
-    public static boolean method178(int i, int j)
+    public static boolean method178(int objectId, int j)
     {
-        ObjectDef class46 = ObjectDef.forID(i);
+        ObjectDef class46 = ObjectDef.forID(objectId);
         if(j == 11)
             j = 10;
         if(j >= 5 && j <= 8)
@@ -842,7 +842,7 @@ label0:
         return class46.method577(j);
     }
 
-    public final void method179(int i, int j, CollisionMap aclass11[], int l, int i1, byte abyte0[],
+    public final void loadTerrainSubblock(int i, int j, CollisionMap aclass11[], int l, int i1, byte abyte0[],
                                 int j1, int k1, int l1)
     {
         for(int i2 = 0; i2 < 8; i2++)
@@ -869,7 +869,7 @@ label0:
 
     }
 
-    public final void method180(byte abyte0[], int i, int j, int k, int l, CollisionMap aclass11[])
+    public final void loadTerrainBlock(byte abyte0[], int i, int j, int k, int l, CollisionMap aclass11[])
     {
         for(int i1 = 0; i1 < 4; i1++)
         {
@@ -932,7 +932,7 @@ label0:
                 }
                 if(l1 <= 49)
                 {
-                    aByteArrayArrayArray130[l][k][i] = stream.readSignedByte();
+                    aByteArrayArrayArray130[l][k][i] = stream.get();
                     aByteArrayArrayArray136[l][k][i] = (byte)((l1 - 2) / 4);
                     aByteArrayArrayArray148[l][k][i] = (byte)((l1 - 2) + i1 & 3);
                 } else
@@ -967,7 +967,7 @@ label0:
             return j;
     }
 
-    public final void method183(CollisionMap aclass11[], WorldController worldController, int i, int j, int k, int l,
+    public final void loadObjectSubblock(CollisionMap aclass11[], WorldController worldController, int i, int j, int k, int l,
                                 byte abyte0[], int i1, int j1, int k1)
     {
 label0:
@@ -996,8 +996,8 @@ label0:
                     if(j3 == i && i3 >= i1 && i3 < i1 + 8 && l2 >= k && l2 < k + 8)
                     {
                         ObjectDef class46 = ObjectDef.forID(l1);
-                        int j4 = j + Class4.method157(j1, class46.anInt761, i3 & 7, l2 & 7, class46.anInt744);
-                        int k4 = k1 + Class4.method158(l2 & 7, class46.anInt761, j1, class46.anInt744, i3 & 7);
+                        int j4 = j + Class4.method157(j1, class46.sizeY, i3 & 7, l2 & 7, class46.sizeX);
+                        int k4 = k1 + Class4.method158(l2 & 7, class46.sizeY, j1, class46.sizeX, i3 & 7);
                         if(j4 > 0 && k4 > 0 && j4 < 103 && k4 < 103)
                         {
                             int l4 = j3;
@@ -1081,11 +1081,11 @@ label0:
         {
             Object obj;
             if(class46.anInt781 == -1 && class46.childrenIDs == null)
-                obj = class46.method578(22, i, l1, i2, j2, k2, -1);
+                obj = class46.getModelAt(22, i, l1, i2, j2, k2, -1);
             else
-                obj = new Animable_Sub5(j1, i, 22, i2, j2, l1, k2, class46.anInt781, true);
+                obj = new ObjectInstance(j1, i, 22, i2, j2, l1, k2, class46.anInt781, true);
             worldController.addGroundDecoration(i1, j, k1, l2, i3, ((Animable) (obj)), byte1);
-            if(class46.aBoolean767 && class46.hasActions)
+            if(class46.unwalkable && class46.hasActions)
                 collisionMap.markBlocked(i1, j);
             return;
         }
@@ -1093,9 +1093,9 @@ label0:
         {
             Object obj1;
             if(class46.anInt781 == -1 && class46.childrenIDs == null)
-                obj1 = class46.method578(10, i, l1, i2, j2, k2, -1);
+                obj1 = class46.getModelAt(10, i, l1, i2, j2, k2, -1);
             else
-                obj1 = new Animable_Sub5(j1, i, 10, i2, j2, l1, k2, class46.anInt781, true);
+                obj1 = new ObjectInstance(j1, i, 10, i2, j2, l1, k2, class46.anInt781, true);
             if(obj1 != null)
             {
                 int j5 = 0;
@@ -1105,53 +1105,53 @@ label0:
                 int i5;
                 if(i == 1 || i == 3)
                 {
-                    k4 = class46.anInt761;
-                    i5 = class46.anInt744;
+                    k4 = class46.sizeY;
+                    i5 = class46.sizeX;
                 } else
                 {
-                    k4 = class46.anInt744;
-                    i5 = class46.anInt761;
+                    k4 = class46.sizeX;
+                    i5 = class46.sizeY;
                 }
                 worldController.addEntityB(i1, j, k1, l2, j5, i5, k4, i3, ((Animable) (obj1)), byte1);
             }
-            if(class46.aBoolean767)
-                collisionMap.markSolidOccupant(i1, j, class46.anInt744, class46.anInt761, i, class46.aBoolean757);
+            if(class46.unwalkable)
+                collisionMap.markSolidOccupant(i1, j, class46.sizeX, class46.sizeY, i, class46.walkable);
             return;
         }
         if(k >= 12)
         {
             Object obj2;
             if(class46.anInt781 == -1 && class46.childrenIDs == null)
-                obj2 = class46.method578(k, i, l1, i2, j2, k2, -1);
+                obj2 = class46.getModelAt(k, i, l1, i2, j2, k2, -1);
             else
-                obj2 = new Animable_Sub5(j1, i, k, i2, j2, l1, k2, class46.anInt781, true);
+                obj2 = new ObjectInstance(j1, i, k, i2, j2, l1, k2, class46.anInt781, true);
             worldController.addEntityB(i1, j, k1, l2, 0, 1, 1, i3, ((Animable) (obj2)), byte1);
-            if(class46.aBoolean767)
-                collisionMap.markSolidOccupant(i1, j, class46.anInt744, class46.anInt761, i, class46.aBoolean757);
+            if(class46.unwalkable)
+                collisionMap.markSolidOccupant(i1, j, class46.sizeX, class46.sizeY, i, class46.walkable);
             return;
         }
         if(k == 0)
         {
             Object obj3;
             if(class46.anInt781 == -1 && class46.childrenIDs == null)
-                obj3 = class46.method578(0, i, l1, i2, j2, k2, -1);
+                obj3 = class46.getModelAt(0, i, l1, i2, j2, k2, -1);
             else
-                obj3 = new Animable_Sub5(j1, i, 0, i2, j2, l1, k2, class46.anInt781, true);
+                obj3 = new ObjectInstance(j1, i, 0, i2, j2, l1, k2, class46.anInt781, true);
             worldController.addWallObject(i1, j, k1, l2, anIntArray152[i], 0, i3, ((Animable) (obj3)), null, byte1);
-            if(class46.aBoolean767)
-                collisionMap.markWall(j, i, i1, k, class46.aBoolean757);
+            if(class46.unwalkable)
+                collisionMap.markWall(j, i, i1, k, class46.walkable);
             return;
         }
         if(k == 1)
         {
             Object obj4;
             if(class46.anInt781 == -1 && class46.childrenIDs == null)
-                obj4 = class46.method578(1, i, l1, i2, j2, k2, -1);
+                obj4 = class46.getModelAt(1, i, l1, i2, j2, k2, -1);
             else
-                obj4 = new Animable_Sub5(j1, i, 1, i2, j2, l1, k2, class46.anInt781, true);
+                obj4 = new ObjectInstance(j1, i, 1, i2, j2, l1, k2, class46.anInt781, true);
             worldController.addWallObject(i1, j, k1, l2, anIntArray140[i], 0, i3, ((Animable) (obj4)), null, byte1);
-            if(class46.aBoolean767)
-                collisionMap.markWall(j, i, i1, k, class46.aBoolean757);
+            if(class46.unwalkable)
+                collisionMap.markWall(j, i, i1, k, class46.walkable);
             return;
         }
         if(k == 2)
@@ -1161,40 +1161,40 @@ label0:
             Object obj12;
             if(class46.anInt781 == -1 && class46.childrenIDs == null)
             {
-                obj11 = class46.method578(2, 4 + i, l1, i2, j2, k2, -1);
-                obj12 = class46.method578(2, j3, l1, i2, j2, k2, -1);
+                obj11 = class46.getModelAt(2, 4 + i, l1, i2, j2, k2, -1);
+                obj12 = class46.getModelAt(2, j3, l1, i2, j2, k2, -1);
             } else
             {
-                obj11 = new Animable_Sub5(j1, 4 + i, 2, i2, j2, l1, k2, class46.anInt781, true);
-                obj12 = new Animable_Sub5(j1, j3, 2, i2, j2, l1, k2, class46.anInt781, true);
+                obj11 = new ObjectInstance(j1, 4 + i, 2, i2, j2, l1, k2, class46.anInt781, true);
+                obj12 = new ObjectInstance(j1, j3, 2, i2, j2, l1, k2, class46.anInt781, true);
             }
             worldController.addWallObject(i1, j, k1, l2, anIntArray152[i], anIntArray152[j3], i3, ((Animable) (obj11)), ((Animable) (obj12)), byte1);
-            if(class46.aBoolean767)
-                collisionMap.markWall(j, i, i1, k, class46.aBoolean757);
+            if(class46.unwalkable)
+                collisionMap.markWall(j, i, i1, k, class46.walkable);
             return;
         }
         if(k == 3)
         {
             Object obj5;
             if(class46.anInt781 == -1 && class46.childrenIDs == null)
-                obj5 = class46.method578(3, i, l1, i2, j2, k2, -1);
+                obj5 = class46.getModelAt(3, i, l1, i2, j2, k2, -1);
             else
-                obj5 = new Animable_Sub5(j1, i, 3, i2, j2, l1, k2, class46.anInt781, true);
+                obj5 = new ObjectInstance(j1, i, 3, i2, j2, l1, k2, class46.anInt781, true);
             worldController.addWallObject(i1, j, k1, l2, anIntArray140[i], 0, i3, ((Animable) (obj5)), null, byte1);
-            if(class46.aBoolean767)
-                collisionMap.markWall(j, i, i1, k, class46.aBoolean757);
+            if(class46.unwalkable)
+                collisionMap.markWall(j, i, i1, k, class46.walkable);
             return;
         }
         if(k == 9)
         {
             Object obj6;
             if(class46.anInt781 == -1 && class46.childrenIDs == null)
-                obj6 = class46.method578(k, i, l1, i2, j2, k2, -1);
+                obj6 = class46.getModelAt(k, i, l1, i2, j2, k2, -1);
             else
-                obj6 = new Animable_Sub5(j1, i, k, i2, j2, l1, k2, class46.anInt781, true);
+                obj6 = new ObjectInstance(j1, i, k, i2, j2, l1, k2, class46.anInt781, true);
             worldController.addEntityB(i1, j, k1, l2, 0, 1, 1, i3, ((Animable) (obj6)), byte1);
-            if(class46.aBoolean767)
-                collisionMap.markSolidOccupant(i1, j, class46.anInt744, class46.anInt761, i, class46.aBoolean757);
+            if(class46.unwalkable)
+                collisionMap.markSolidOccupant(i1, j, class46.sizeX, class46.sizeY, i, class46.walkable);
             return;
         }
         if(class46.aBoolean762)
@@ -1227,9 +1227,9 @@ label0:
         {
             Object obj7;
             if(class46.anInt781 == -1 && class46.childrenIDs == null)
-                obj7 = class46.method578(4, 0, l1, i2, j2, k2, -1);
+                obj7 = class46.getModelAt(4, 0, l1, i2, j2, k2, -1);
             else
-                obj7 = new Animable_Sub5(j1, 0, 4, i2, j2, l1, k2, class46.anInt781, true);
+                obj7 = new ObjectInstance(j1, 0, 4, i2, j2, l1, k2, class46.anInt781, true);
             worldController.addWallDecoration(i1, j, k1, l2, 0, 0, i * 512, i3, ((Animable) (obj7)), byte1, anIntArray152[i]);
             return;
         }
@@ -1241,9 +1241,9 @@ label0:
                 j4 = ObjectDef.forID(l4 >> 14 & 0x7fff).anInt775;
             Object obj13;
             if(class46.anInt781 == -1 && class46.childrenIDs == null)
-                obj13 = class46.method578(4, 0, l1, i2, j2, k2, -1);
+                obj13 = class46.getModelAt(4, 0, l1, i2, j2, k2, -1);
             else
-                obj13 = new Animable_Sub5(j1, 0, 4, i2, j2, l1, k2, class46.anInt781, true);
+                obj13 = new ObjectInstance(j1, 0, 4, i2, j2, l1, k2, class46.anInt781, true);
             worldController.addWallDecoration(i1, j, k1, l2, anIntArray137[i] * j4, anIntArray144[i] * j4, i * 512, i3, ((Animable) (obj13)), byte1, anIntArray152[i]);
             return;
         }
@@ -1251,9 +1251,9 @@ label0:
         {
             Object obj8;
             if(class46.anInt781 == -1 && class46.childrenIDs == null)
-                obj8 = class46.method578(4, 0, l1, i2, j2, k2, -1);
+                obj8 = class46.getModelAt(4, 0, l1, i2, j2, k2, -1);
             else
-                obj8 = new Animable_Sub5(j1, 0, 4, i2, j2, l1, k2, class46.anInt781, true);
+                obj8 = new ObjectInstance(j1, 0, 4, i2, j2, l1, k2, class46.anInt781, true);
             worldController.addWallDecoration(i1, j, k1, l2, 0, 0, i, i3, ((Animable) (obj8)), byte1, 256);
             return;
         }
@@ -1261,9 +1261,9 @@ label0:
         {
             Object obj9;
             if(class46.anInt781 == -1 && class46.childrenIDs == null)
-                obj9 = class46.method578(4, 0, l1, i2, j2, k2, -1);
+                obj9 = class46.getModelAt(4, 0, l1, i2, j2, k2, -1);
             else
-                obj9 = new Animable_Sub5(j1, 0, 4, i2, j2, l1, k2, class46.anInt781, true);
+                obj9 = new ObjectInstance(j1, 0, 4, i2, j2, l1, k2, class46.anInt781, true);
             worldController.addWallDecoration(i1, j, k1, l2, 0, 0, i, i3, ((Animable) (obj9)), byte1, 512);
             return;
         }
@@ -1271,9 +1271,9 @@ label0:
         {
             Object obj10;
             if(class46.anInt781 == -1 && class46.childrenIDs == null)
-                obj10 = class46.method578(4, 0, l1, i2, j2, k2, -1);
+                obj10 = class46.getModelAt(4, 0, l1, i2, j2, k2, -1);
             else
-                obj10 = new Animable_Sub5(j1, 0, 4, i2, j2, l1, k2, class46.anInt781, true);
+                obj10 = new ObjectInstance(j1, 0, 4, i2, j2, l1, k2, class46.anInt781, true);
             worldController.addWallDecoration(i1, j, k1, l2, 0, 0, i, i3, ((Animable) (obj10)), byte1, 768);
         }
     }
@@ -1328,7 +1328,7 @@ label0:
     return bool;
   }
 
-    public final void method190(int i, CollisionMap aclass11[], int j, WorldController worldController, byte abyte0[])
+    public final void loadObjectBlock(int i, CollisionMap aclass11[], int j, WorldController worldController, byte abyte0[])
     {
 label0:
         {
@@ -1395,7 +1395,7 @@ label0:
     private static final int anIntArray144[] = {
         0, -1, 0, 1
     };
-    static int anInt145 = 99;
+    static int setZ = 99;
     private final int anInt146;
     private final int anInt147;
     private final byte[][][] aByteArrayArrayArray148;
