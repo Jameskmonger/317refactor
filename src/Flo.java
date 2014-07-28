@@ -39,7 +39,7 @@ public final class Flo {
                 occlude = false;
             else
             if(opcode == 6)
-                stream.readString();
+                stream.getString();
             else
             if(opcode == 7)
             {

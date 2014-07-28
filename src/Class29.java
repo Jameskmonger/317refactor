@@ -8,8 +8,8 @@ final class Class29
     public void method325(Stream stream)
     {
         anInt540 = stream.getUnsignedByte();
-            anInt538 = stream.readDWord();
-            anInt539 = stream.readDWord();
+            anInt538 = stream.getInt();
+            anInt539 = stream.getInt();
             method326(stream);
     }
 

@@ -33,16 +33,16 @@ public final class VarBit {
                 mostSignificantBit = stream.getUnsignedByte();
             } else
             if(j == 10)
-                stream.readString();
+                stream.getString();
             else
             if(j == 2)
                 aBoolean651 = true;
             else
             if(j == 3)
-                stream.readDWord();
+                stream.getInt();
             else
             if(j == 4)
-                stream.readDWord();
+                stream.getInt();
             else
                 System.out.println("Error unrecognised config code: " + j);
         } while(true);

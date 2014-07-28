@@ -11,7 +11,7 @@ final class Class11
         anInt291 = 0;
         anInt292 = 104;
         anInt293 = 104;
-        anIntArrayArray294 = new int[anInt292][anInt293];
+        adjacency = new int[anInt292][anInt293];
         method210();
     }
 
@@ -21,9 +21,9 @@ final class Class11
         {
             for(int j = 0; j < anInt293; j++)
                 if(i == 0 || j == 0 || i == anInt292 - 1 || j == anInt293 - 1)
-                    anIntArrayArray294[i][j] = 0xffffff;
+                    adjacency[i][j] = 0xffffff;
                 else
-                    anIntArrayArray294[i][j] = 0x1000000;
+                    adjacency[i][j] = 0x1000000;
 
         }
 
@@ -212,12 +212,12 @@ final class Class11
     {
         k -= anInt290;
         i -= anInt291;
-        anIntArrayArray294[k][i] |= 0x200000;
+        adjacency[k][i] |= 0x200000;
     }
 
     private void method214(int i, int j, int k)
     {
-        anIntArrayArray294[i][j] |= k;
+        adjacency[i][j] |= k;
     }
 
     public void method215(int i, int j, boolean flag, int k, int l)
@@ -401,17 +401,17 @@ final class Class11
 
     private void method217(int i, int j, int k)
     {
-        anIntArrayArray294[j][k] &= 0xffffff - i;
+        adjacency[j][k] &= 0xffffff - i;
     }
 
     public void method218(int j, int k)
     {
         k -= anInt290;
         j -= anInt291;
-        anIntArrayArray294[k][j] &= 0xdfffff;
+        adjacency[k][j] &= 0xdfffff;
     }
 
-    public boolean method219(int i, int j, int k, int i1, int j1, int k1)
+    public boolean reachedWall(int i, int j, int k, int i1, int j1, int k1)
     {
         if(j == i && k == k1)
             return true;
@@ -424,36 +424,36 @@ final class Class11
             {
                 if(j == i - 1 && k == k1)
                     return true;
-                if(j == i && k == k1 + 1 && (anIntArrayArray294[j][k] & 0x1280120) == 0)
+                if(j == i && k == k1 + 1 && (adjacency[j][k] & 0x1280120) == 0)
                     return true;
-                if(j == i && k == k1 - 1 && (anIntArrayArray294[j][k] & 0x1280102) == 0)
+                if(j == i && k == k1 - 1 && (adjacency[j][k] & 0x1280102) == 0)
                     return true;
             } else
             if(i1 == 1)
             {
                 if(j == i && k == k1 + 1)
                     return true;
-                if(j == i - 1 && k == k1 && (anIntArrayArray294[j][k] & 0x1280108) == 0)
+                if(j == i - 1 && k == k1 && (adjacency[j][k] & 0x1280108) == 0)
                     return true;
-                if(j == i + 1 && k == k1 && (anIntArrayArray294[j][k] & 0x1280180) == 0)
+                if(j == i + 1 && k == k1 && (adjacency[j][k] & 0x1280180) == 0)
                     return true;
             } else
             if(i1 == 2)
             {
                 if(j == i + 1 && k == k1)
                     return true;
-                if(j == i && k == k1 + 1 && (anIntArrayArray294[j][k] & 0x1280120) == 0)
+                if(j == i && k == k1 + 1 && (adjacency[j][k] & 0x1280120) == 0)
                     return true;
-                if(j == i && k == k1 - 1 && (anIntArrayArray294[j][k] & 0x1280102) == 0)
+                if(j == i && k == k1 - 1 && (adjacency[j][k] & 0x1280102) == 0)
                     return true;
             } else
             if(i1 == 3)
             {
                 if(j == i && k == k1 - 1)
                     return true;
-                if(j == i - 1 && k == k1 && (anIntArrayArray294[j][k] & 0x1280108) == 0)
+                if(j == i - 1 && k == k1 && (adjacency[j][k] & 0x1280108) == 0)
                     return true;
-                if(j == i + 1 && k == k1 && (anIntArrayArray294[j][k] & 0x1280180) == 0)
+                if(j == i + 1 && k == k1 && (adjacency[j][k] & 0x1280180) == 0)
                     return true;
             }
         if(j1 == 2)
@@ -463,27 +463,27 @@ final class Class11
                     return true;
                 if(j == i && k == k1 + 1)
                     return true;
-                if(j == i + 1 && k == k1 && (anIntArrayArray294[j][k] & 0x1280180) == 0)
+                if(j == i + 1 && k == k1 && (adjacency[j][k] & 0x1280180) == 0)
                     return true;
-                if(j == i && k == k1 - 1 && (anIntArrayArray294[j][k] & 0x1280102) == 0)
+                if(j == i && k == k1 - 1 && (adjacency[j][k] & 0x1280102) == 0)
                     return true;
             } else
             if(i1 == 1)
             {
-                if(j == i - 1 && k == k1 && (anIntArrayArray294[j][k] & 0x1280108) == 0)
+                if(j == i - 1 && k == k1 && (adjacency[j][k] & 0x1280108) == 0)
                     return true;
                 if(j == i && k == k1 + 1)
                     return true;
                 if(j == i + 1 && k == k1)
                     return true;
-                if(j == i && k == k1 - 1 && (anIntArrayArray294[j][k] & 0x1280102) == 0)
+                if(j == i && k == k1 - 1 && (adjacency[j][k] & 0x1280102) == 0)
                     return true;
             } else
             if(i1 == 2)
             {
-                if(j == i - 1 && k == k1 && (anIntArrayArray294[j][k] & 0x1280108) == 0)
+                if(j == i - 1 && k == k1 && (adjacency[j][k] & 0x1280108) == 0)
                     return true;
-                if(j == i && k == k1 + 1 && (anIntArrayArray294[j][k] & 0x1280120) == 0)
+                if(j == i && k == k1 + 1 && (adjacency[j][k] & 0x1280120) == 0)
                     return true;
                 if(j == i + 1 && k == k1)
                     return true;
@@ -494,28 +494,28 @@ final class Class11
             {
                 if(j == i - 1 && k == k1)
                     return true;
-                if(j == i && k == k1 + 1 && (anIntArrayArray294[j][k] & 0x1280120) == 0)
+                if(j == i && k == k1 + 1 && (adjacency[j][k] & 0x1280120) == 0)
                     return true;
-                if(j == i + 1 && k == k1 && (anIntArrayArray294[j][k] & 0x1280180) == 0)
+                if(j == i + 1 && k == k1 && (adjacency[j][k] & 0x1280180) == 0)
                     return true;
                 if(j == i && k == k1 - 1)
                     return true;
             }
         if(j1 == 9)
         {
-            if(j == i && k == k1 + 1 && (anIntArrayArray294[j][k] & 0x20) == 0)
+            if(j == i && k == k1 + 1 && (adjacency[j][k] & 0x20) == 0)
                 return true;
-            if(j == i && k == k1 - 1 && (anIntArrayArray294[j][k] & 2) == 0)
+            if(j == i && k == k1 - 1 && (adjacency[j][k] & 2) == 0)
                 return true;
-            if(j == i - 1 && k == k1 && (anIntArrayArray294[j][k] & 8) == 0)
+            if(j == i - 1 && k == k1 && (adjacency[j][k] & 8) == 0)
                 return true;
-            if(j == i + 1 && k == k1 && (anIntArrayArray294[j][k] & 0x80) == 0)
+            if(j == i + 1 && k == k1 && (adjacency[j][k] & 0x80) == 0)
                 return true;
         }
         return false;
     }
 
-    public boolean method220(int i, int j, int k, int l, int i1, int j1)
+    public boolean reachedWallDecoration(int i, int j, int k, int l, int i1, int j1)
     {
         if(j1 == i && k == j)
             return true;
@@ -529,64 +529,64 @@ final class Class11
                 i1 = i1 + 2 & 3;
             if(i1 == 0)
             {
-                if(j1 == i + 1 && k == j && (anIntArrayArray294[j1][k] & 0x80) == 0)
+                if(j1 == i + 1 && k == j && (adjacency[j1][k] & 0x80) == 0)
                     return true;
-                if(j1 == i && k == j - 1 && (anIntArrayArray294[j1][k] & 2) == 0)
+                if(j1 == i && k == j - 1 && (adjacency[j1][k] & 2) == 0)
                     return true;
             } else
             if(i1 == 1)
             {
-                if(j1 == i - 1 && k == j && (anIntArrayArray294[j1][k] & 8) == 0)
+                if(j1 == i - 1 && k == j && (adjacency[j1][k] & 8) == 0)
                     return true;
-                if(j1 == i && k == j - 1 && (anIntArrayArray294[j1][k] & 2) == 0)
+                if(j1 == i && k == j - 1 && (adjacency[j1][k] & 2) == 0)
                     return true;
             } else
             if(i1 == 2)
             {
-                if(j1 == i - 1 && k == j && (anIntArrayArray294[j1][k] & 8) == 0)
+                if(j1 == i - 1 && k == j && (adjacency[j1][k] & 8) == 0)
                     return true;
-                if(j1 == i && k == j + 1 && (anIntArrayArray294[j1][k] & 0x20) == 0)
+                if(j1 == i && k == j + 1 && (adjacency[j1][k] & 0x20) == 0)
                     return true;
             } else
             if(i1 == 3)
             {
-                if(j1 == i + 1 && k == j && (anIntArrayArray294[j1][k] & 0x80) == 0)
+                if(j1 == i + 1 && k == j && (adjacency[j1][k] & 0x80) == 0)
                     return true;
-                if(j1 == i && k == j + 1 && (anIntArrayArray294[j1][k] & 0x20) == 0)
+                if(j1 == i && k == j + 1 && (adjacency[j1][k] & 0x20) == 0)
                     return true;
             }
         }
         if(l == 8)
         {
-            if(j1 == i && k == j + 1 && (anIntArrayArray294[j1][k] & 0x20) == 0)
+            if(j1 == i && k == j + 1 && (adjacency[j1][k] & 0x20) == 0)
                 return true;
-            if(j1 == i && k == j - 1 && (anIntArrayArray294[j1][k] & 2) == 0)
+            if(j1 == i && k == j - 1 && (adjacency[j1][k] & 2) == 0)
                 return true;
-            if(j1 == i - 1 && k == j && (anIntArrayArray294[j1][k] & 8) == 0)
+            if(j1 == i - 1 && k == j && (adjacency[j1][k] & 8) == 0)
                 return true;
-            if(j1 == i + 1 && k == j && (anIntArrayArray294[j1][k] & 0x80) == 0)
+            if(j1 == i + 1 && k == j && (adjacency[j1][k] & 0x80) == 0)
                 return true;
         }
         return false;
     }
 
-    public boolean method221(int i, int j, int k, int l, int i1, int j1,
+    public boolean reachedFacingObject(int i, int j, int k, int l, int i1, int j1,
                              int k1)
     {
         int l1 = (j + j1) - 1;
         int i2 = (i + l) - 1;
         if(k >= j && k <= l1 && k1 >= i && k1 <= i2)
             return true;
-        if(k == j - 1 && k1 >= i && k1 <= i2 && (anIntArrayArray294[k - anInt290][k1 - anInt291] & 8) == 0 && (i1 & 8) == 0)
+        if(k == j - 1 && k1 >= i && k1 <= i2 && (adjacency[k - anInt290][k1 - anInt291] & 8) == 0 && (i1 & 8) == 0)
             return true;
-        if(k == l1 + 1 && k1 >= i && k1 <= i2 && (anIntArrayArray294[k - anInt290][k1 - anInt291] & 0x80) == 0 && (i1 & 2) == 0)
+        if(k == l1 + 1 && k1 >= i && k1 <= i2 && (adjacency[k - anInt290][k1 - anInt291] & 0x80) == 0 && (i1 & 2) == 0)
             return true;
-        return k1 == i - 1 && k >= j && k <= l1 && (anIntArrayArray294[k - anInt290][k1 - anInt291] & 2) == 0 && (i1 & 4) == 0 || k1 == i2 + 1 && k >= j && k <= l1 && (anIntArrayArray294[k - anInt290][k1 - anInt291] & 0x20) == 0 && (i1 & 1) == 0;
+        return k1 == i - 1 && k >= j && k <= l1 && (adjacency[k - anInt290][k1 - anInt291] & 2) == 0 && (i1 & 4) == 0 || k1 == i2 + 1 && k >= j && k <= l1 && (adjacency[k - anInt290][k1 - anInt291] & 0x20) == 0 && (i1 & 1) == 0;
     }
 
     private final int anInt290;
     private final int anInt291;
     private final int anInt292;
     private final int anInt293;
-    public final int[][] anIntArrayArray294;
+    public final int[][] adjacency;
 }

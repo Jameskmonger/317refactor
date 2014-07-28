@@ -11,33 +11,33 @@ public final class NPC extends Entity
         {
             int k = Animation.anims[super.animation].frame2Ids[super.anInt1527];
             int i1 = -1;
-            if(super.anInt1517 >= 0 && super.anInt1517 != super.anInt1511)
+            if(super.anInt1517 >= 0 && super.anInt1517 != super.standAnimationId)
                 i1 = Animation.anims[super.anInt1517].frame2Ids[super.anInt1518];
-            return desc.method164(i1, k, Animation.anims[super.animation].anIntArray357);
+            return npcDefinition.method164(i1, k, Animation.anims[super.animation].anIntArray357);
         }
         int l = -1;
         if(super.anInt1517 >= 0)
             l = Animation.anims[super.anInt1517].frame2Ids[super.anInt1518];
-        return desc.method164(-1, l, null);
+        return npcDefinition.method164(-1, l, null);
     }
 
     public Model getRotatedModel()
     {
-        if(desc == null)
+        if(npcDefinition == null)
             return null;
         Model model = method450();
         if(model == null)
             return null;
         super.height = model.modelHeight;
-        if(super.spotAnimationId != -1 && super.anInt1521 != -1)
+        if(super.spotAnimationId != -1 && super.currentAnimation != -1)
         {
             SpotAnim spotAnim = SpotAnim.cache[super.spotAnimationId];
             Model model_1 = spotAnim.getModel();
             if(model_1 != null)
             {
-                int j = spotAnim.sequences.frame2Ids[super.anInt1521];
+                int j = spotAnim.sequences.frame2Ids[super.currentAnimation];
                 Model model_2 = new Model(true, Class36.isNullFrame(j), false, model_1);
-                model_2.translate(0, -super.anInt1524, 0);
+                model_2.translate(0, -super.graphicHeight, 0);
                 model_2.createBones();
                 model_2.applyTransformation(j);
                 model_2.triangleSkin = null;
@@ -51,19 +51,19 @@ public final class NPC extends Entity
                 model = new Model(aModel);
             }
         }
-        if(desc.aByte68 == 1)
+        if(npcDefinition.boundaryDimension == 1)
             model.singleTile = true;
         return model;
     }
 
     public boolean isVisible()
     {
-        return desc != null;
+        return npcDefinition != null;
     }
 
     NPC()
     {
     }
 
-    public EntityDef desc;
+    public EntityDef npcDefinition;
 }

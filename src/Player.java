@@ -16,16 +16,16 @@ public final class Player extends Entity
         model.singleTile = true;
         if(aBoolean1699)
             return model;
-        if(super.spotAnimationId != -1 && super.anInt1521 != -1)
+        if(super.spotAnimationId != -1 && super.currentAnimation != -1)
         {
             SpotAnim spotAnim = SpotAnim.cache[super.spotAnimationId];
             Model model_2 = spotAnim.getModel();
             if(model_2 != null)
             {
-                Model model_3 = new Model(true, Class36.isNullFrame(super.anInt1521), false, model_2);
-                model_3.translate(0, -super.anInt1524, 0);
+                Model model_3 = new Model(true, Class36.isNullFrame(super.currentAnimation), false, model_2);
+                model_3.translate(0, -super.graphicHeight, 0);
                 model_3.createBones();
-                model_3.applyTransformation(spotAnim.sequences.frame2Ids[super.anInt1521]);
+                model_3.applyTransformation(spotAnim.sequences.frame2Ids[super.currentAnimation]);
                 model_3.triangleSkin = null;
                 model_3.vertexSkin = null;
                 if(spotAnim.resizeXY != 128 || spotAnim.resizeZ != 128)
@@ -121,9 +121,9 @@ public final class Player extends Entity
             anIntArray1700[l] = j1;
         }
 
-        super.anInt1511 = stream.getUnsignedLEShort();
-        if(super.anInt1511 == 65535)
-            super.anInt1511 = -1;
+        super.standAnimationId = stream.getUnsignedLEShort();
+        if(super.standAnimationId == 65535)
+            super.standAnimationId = -1;
         super.anInt1512 = stream.getUnsignedLEShort();
         if(super.anInt1512 == 65535)
             super.anInt1512 = -1;
@@ -190,7 +190,7 @@ public final class Player extends Entity
         {
             Animation animation = Animation.anims[super.animation];
             k = animation.frame2Ids[super.anInt1527];
-            if(super.anInt1517 >= 0 && super.anInt1517 != super.anInt1511)
+            if(super.anInt1517 >= 0 && super.anInt1517 != super.standAnimationId)
                 i1 = Animation.anims[super.anInt1517].frame2Ids[super.anInt1518];
             if(animation.anInt360 >= 0)
             {

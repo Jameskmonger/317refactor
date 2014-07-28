@@ -111,7 +111,7 @@ public final class RSInterface
                     {
                         rsInterface.spritesX[j2] = stream.readSignedWord();
                         rsInterface.spritesY[j2] = stream.readSignedWord();
-                        String s1 = stream.readString();
+                        String s1 = stream.getString();
                         if(streamLoader_1 != null && s1.length() > 0)
                         {
                             int i5 = s1.lastIndexOf(",");
@@ -123,7 +123,7 @@ public final class RSInterface
                 rsInterface.actions = new String[5];
                 for(int l3 = 0; l3 < 5; l3++)
                 {
-                    rsInterface.actions[l3] = stream.readString();
+                    rsInterface.actions[l3] = stream.getString();
                     if(rsInterface.actions[l3].length() == 0)
                         rsInterface.actions[l3] = null;
                 }
@@ -141,26 +141,26 @@ public final class RSInterface
             }
             if(rsInterface.type == 4)
             {
-                rsInterface.message = stream.readString();
-                rsInterface.aString228 = stream.readString();
+                rsInterface.message = stream.getString();
+                rsInterface.aString228 = stream.getString();
             }
             if(rsInterface.type == 1 || rsInterface.type == 3 || rsInterface.type == 4)
-                rsInterface.textColor = stream.readDWord();
+                rsInterface.textColor = stream.getInt();
             if(rsInterface.type == 3 || rsInterface.type == 4)
             {
-                rsInterface.anInt219 = stream.readDWord();
-                rsInterface.anInt216 = stream.readDWord();
-                rsInterface.anInt239 = stream.readDWord();
+                rsInterface.anInt219 = stream.getInt();
+                rsInterface.anInt216 = stream.getInt();
+                rsInterface.anInt239 = stream.getInt();
             }
             if(rsInterface.type == 5)
             {
-                String s = stream.readString();
+                String s = stream.getString();
                 if(streamLoader_1 != null && s.length() > 0)
                 {
                     int i4 = s.lastIndexOf(",");
                     rsInterface.sprite1 = method207(Integer.parseInt(s.substring(i4 + 1)), streamLoader_1, s.substring(0, i4));
                 }
-                s = stream.readString();
+                s = stream.getString();
                 if(streamLoader_1 != null && s.length() > 0)
                 {
                     int j4 = s.lastIndexOf(",");
@@ -204,14 +204,14 @@ public final class RSInterface
                 if(textDrawingAreas != null)
                     rsInterface.textDrawingAreas = textDrawingAreas[l2];
                 rsInterface.aBoolean268 = stream.getUnsignedByte() == 1;
-                rsInterface.textColor = stream.readDWord();
+                rsInterface.textColor = stream.getInt();
                 rsInterface.invSpritePadX = stream.readSignedWord();
                 rsInterface.invSpritePadY = stream.readSignedWord();
                 rsInterface.isInventoryInterface = stream.getUnsignedByte() == 1;
                 rsInterface.actions = new String[5];
                 for(int k4 = 0; k4 < 5; k4++)
                 {
-                    rsInterface.actions[k4] = stream.readString();
+                    rsInterface.actions[k4] = stream.getString();
                     if(rsInterface.actions[k4].length() == 0)
                         rsInterface.actions[k4] = null;
                 }
@@ -219,17 +219,17 @@ public final class RSInterface
             }
             if(rsInterface.atActionType == 2 || rsInterface.type == 2)
             {
-                rsInterface.selectedActionName = stream.readString();
-                rsInterface.spellName = stream.readString();
+                rsInterface.selectedActionName = stream.getString();
+                rsInterface.spellName = stream.getString();
                 rsInterface.spellUsableOn = stream.getUnsignedLEShort();
             }
 
             if(rsInterface.type == 8)
-			  rsInterface.message = stream.readString();
+			  rsInterface.message = stream.getString();
 
             if(rsInterface.atActionType == 1 || rsInterface.atActionType == 4 || rsInterface.atActionType == 5 || rsInterface.atActionType == 6)
             {
-                rsInterface.tooltip = stream.readString();
+                rsInterface.tooltip = stream.getString();
                 if(rsInterface.tooltip.length() == 0)
                 {
                     if(rsInterface.atActionType == 1)

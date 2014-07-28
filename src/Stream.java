@@ -39,7 +39,7 @@ public final class Stream extends NodeSub {
             currentOffset = 0;
     }
 
-    public void createFrame(int i)
+    public void putOpcode(int i)
     {
         buffer[currentOffset++] = (byte)(i + encryption.getNextKey());
     }
@@ -155,7 +155,7 @@ public final class Stream extends NodeSub {
         return ((buffer[currentOffset - 3] & 0xff) << 16) + ((buffer[currentOffset - 2] & 0xff) << 8) + (buffer[currentOffset - 1] & 0xff);
     }
 
-    public int readDWord()
+    public int getInt()
     {
         currentOffset += 4;
         return ((buffer[currentOffset - 4] & 0xff) << 24) + ((buffer[currentOffset - 3] & 0xff) << 16) + ((buffer[currentOffset - 2] & 0xff) << 8) + (buffer[currentOffset - 1] & 0xff);
@@ -163,12 +163,12 @@ public final class Stream extends NodeSub {
 
     public long readQWord()
     {
-        long l = (long) readDWord() & 0xffffffffL;
-        long l1 = (long) readDWord() & 0xffffffffL;
+        long l = (long) getInt() & 0xffffffffL;
+        long l1 = (long) getInt() & 0xffffffffL;
         return (l << 32) + l1;
     }
 
-    public String readString()
+    public String getString()
     {
         int i = currentOffset;
         while(buffer[currentOffset++] != 10) ;
@@ -250,7 +250,7 @@ public final class Stream extends NodeSub {
         putBytes(abyte1, abyte1.length, 0);
     }
 
-    public void method424(int i)
+    public void putByteC(int i)
     {
         buffer[currentOffset++] = (byte)(-i);
     }
@@ -260,17 +260,17 @@ public final class Stream extends NodeSub {
         buffer[currentOffset++] = (byte)(128 - j);
     }
 
-    public int method426()
+    public int getUnsignedByteA()
     {
             return buffer[currentOffset++] - 128 & 0xff;
     }
 
-    public int method427()
+    public int getUnsignedByteC()
     {
         return -buffer[currentOffset++] & 0xff;
     }
 
-    public int method428()
+    public int getUnsignedByteS()
     {
         return 128 - buffer[currentOffset++] & 0xff;
     }
@@ -285,7 +285,7 @@ public final class Stream extends NodeSub {
         return (byte)(128 - buffer[currentOffset++]);
     }
 
-    public void method431(int i)
+    public void putLEShort(int i)
     {
         buffer[currentOffset++] = (byte)i;
         buffer[currentOffset++] = (byte)(i >> 8);
@@ -297,13 +297,13 @@ public final class Stream extends NodeSub {
         buffer[currentOffset++] = (byte)(j + 128);
     }
 
-    public void method433(int j)
+    public void putLEShortA(int j)
     {
         buffer[currentOffset++] = (byte)(j + 128);
         buffer[currentOffset++] = (byte)(j >> 8);
     }
 
-    public int method434()
+    public int getUnsignedShort()
     {
         currentOffset += 2;
             return ((buffer[currentOffset - 1] & 0xff) << 8) + (buffer[currentOffset - 2] & 0xff);
@@ -315,7 +315,7 @@ public final class Stream extends NodeSub {
         return ((buffer[currentOffset - 2] & 0xff) << 8) + (buffer[currentOffset - 1] - 128 & 0xff);
     }
 
-    public int method436()
+    public int getUnsignedShortA()
     {
         currentOffset += 2;
         return ((buffer[currentOffset - 1] & 0xff) << 8) + (buffer[currentOffset - 2] - 128 & 0xff);

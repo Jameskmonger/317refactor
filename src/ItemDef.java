@@ -296,8 +296,8 @@ public final class ItemDef
             k3 = (int)((double)k3 * 1.5D);
         if(k > 0)
             k3 = (int)((double)k3 * 1.04D);
-        int l3 = Texture.anIntArray1470[itemDef.modelRotation1] * k3 >> 16;
-        int i4 = Texture.anIntArray1471[itemDef.modelRotation1] * k3 >> 16;
+        int l3 = Texture.SINE[itemDef.modelRotation1] * k3 >> 16;
+        int i4 = Texture.COSINE[itemDef.modelRotation1] * k3 >> 16;
         model.renderSingle(itemDef.modelRotation2, itemDef.anInt204, itemDef.modelRotation1, itemDef.modelOffset1, l3 + model.modelHeight / 2 + itemDef.modelOffset2, i4 + itemDef.modelOffset2);
         for(int i5 = 31; i5 >= 0; i5--)
         {
@@ -442,7 +442,7 @@ public final class ItemDef
                 modelID = stream.getUnsignedLEShort();
             else
             if(i == 2)
-                name = stream.readString();
+                name = stream.getString();
             else
             if(i == 3)
                 description = stream.readBytes();
@@ -475,7 +475,7 @@ public final class ItemDef
                 stackable = true;
             else
             if(i == 12)
-                value = stream.readDWord();
+                value = stream.getInt();
             else
             if(i == 16)
                 membersObject = true;
@@ -500,7 +500,7 @@ public final class ItemDef
             {
                 if(groundActions == null)
                     groundActions = new String[5];
-                groundActions[i - 30] = stream.readString();
+                groundActions[i - 30] = stream.getString();
                 if(groundActions[i - 30].equalsIgnoreCase("hidden"))
                     groundActions[i - 30] = null;
             } else
@@ -508,7 +508,7 @@ public final class ItemDef
             {
                 if(actions == null)
                     actions = new String[5];
-                actions[i - 35] = stream.readString();
+                actions[i - 35] = stream.getString();
             } else
             if(i == 40)
             {

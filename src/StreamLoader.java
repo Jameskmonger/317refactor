@@ -29,7 +29,7 @@ final class StreamLoader {
         int k = stream.currentOffset + dataSize * 10;
         for(int l = 0; l < dataSize; l++)
         {
-            anIntArray728[l] = stream.readDWord();
+            anIntArray728[l] = stream.getInt();
             anIntArray729[l] = stream.read3Bytes();
             anIntArray730[l] = stream.read3Bytes();
             anIntArray731[l] = k;

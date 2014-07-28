@@ -153,7 +153,7 @@ public final class EntityDef
         model_1.calculateDiagonals();
         model_1.triangleSkin = null;
         model_1.vertexSkin = null;
-        if(aByte68 == 1)
+        if(boundaryDimension == 1)
             model_1.singleTile = true;
         return model_1;
     }
@@ -174,32 +174,32 @@ public final class EntityDef
 
             } else
             if(i == 2)
-                name = stream.readString();
+                name = stream.getString();
             else
             if(i == 3)
                 description = stream.readBytes();
             else
             if(i == 12)
-                aByte68 = stream.readSignedByte();
+                boundaryDimension = stream.readSignedByte();
             else
             if(i == 13)
-                anInt77 = stream.getUnsignedLEShort();
+                standAnimationId = stream.getUnsignedLEShort();
             else
             if(i == 14)
-                anInt67 = stream.getUnsignedLEShort();
+                walkAnimationId = stream.getUnsignedLEShort();
             else
             if(i == 17)
             {
-                anInt67 = stream.getUnsignedLEShort();
-                anInt58 = stream.getUnsignedLEShort();
-                anInt83 = stream.getUnsignedLEShort();
-                anInt55 = stream.getUnsignedLEShort();
+                walkAnimationId = stream.getUnsignedLEShort();
+                turnAboutAnimationId = stream.getUnsignedLEShort();
+                turnRightAnimationId = stream.getUnsignedLEShort();
+                turnLeftAnimationId = stream.getUnsignedLEShort();
             } else
             if(i >= 30 && i < 40)
             {
                 if(actions == null)
                     actions = new String[5];
-                actions[i - 30] = stream.readString();
+                actions[i - 30] = stream.getString();
                 if(actions[i - 30].equalsIgnoreCase("hidden"))
                     actions[i - 30] = null;
             } else
@@ -257,7 +257,7 @@ public final class EntityDef
                 anInt75 = stream.getUnsignedLEShort();
             else
             if(i == 103)
-                anInt79 = stream.getUnsignedLEShort();
+                degreesToTurn = stream.getUnsignedLEShort();
             else
             if(i == 106)
             {
@@ -284,19 +284,19 @@ public final class EntityDef
 
     private EntityDef()
     {
-        anInt55 = -1;
+        turnLeftAnimationId = -1;
         anInt57 = -1;
-        anInt58 = -1;
+        turnAboutAnimationId = -1;
         anInt59 = -1;
         combatLevel = -1;
         anInt64 = 1834;
-        anInt67 = -1;
-        aByte68 = 1;
+        walkAnimationId = -1;
+        boundaryDimension = 1;
         anInt75 = -1;
-        anInt77 = -1;
+        standAnimationId = -1;
         type = -1L;
-        anInt79 = 32;
-        anInt83 = -1;
+        degreesToTurn = 32;
+        turnRightAnimationId = -1;
         aBoolean84 = true;
         anInt86 = 128;
         aBoolean87 = true;
@@ -304,29 +304,29 @@ public final class EntityDef
         aBoolean93 = false;
     }
 
-    public int anInt55;
+    public int turnLeftAnimationId;
     private static int anInt56;
     private int anInt57;
-    public int anInt58;
+    public int turnAboutAnimationId;
     private int anInt59;
     private static Stream stream;
     public int combatLevel;
     private final int anInt64;
     public String name;
     public String actions[];
-    public int anInt67;
-    public byte aByte68;
+    public int walkAnimationId;
+    public byte boundaryDimension;
     private int[] anIntArray70;
     private static int[] streamIndices;
     private int[] anIntArray73;
     public int anInt75;
     private int[] anIntArray76;
-    public int anInt77;
+    public int standAnimationId;
     public long type;
-    public int anInt79;
+    public int degreesToTurn;
     private static EntityDef[] cache;
     public static client clientInstance;
-    public int anInt83;
+    public int turnRightAnimationId;
     public boolean aBoolean84;
     private int anInt85;
     private int anInt86;

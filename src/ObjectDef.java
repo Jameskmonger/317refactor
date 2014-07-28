@@ -304,7 +304,7 @@ label0:
                         }
                 } else
                 if(j == 2)
-                    name = stream.readString();
+                    name = stream.getString();
                 else
                 if(j == 3)
                     description = stream.readBytes();
@@ -371,7 +371,7 @@ label0:
                 {
                     if(actions == null)
                         actions = new String[5];
-                    actions[j - 30] = stream.readString();
+                    actions[j - 30] = stream.getString();
                     if(actions[j - 30].equalsIgnoreCase("hidden"))
                         actions[j - 30] = null;
                 } else

@@ -2001,8 +2001,8 @@ public final class Model extends Animable {
 
     static 
     {
-        SINE = Texture.anIntArray1470;
-        COSINE = Texture.anIntArray1471;
+        SINE = Texture.SINE;
+        COSINE = Texture.COSINE;
         HSLtoRGB = Texture.HSL_TO_RGB;
         modelIntArray4 = Texture.anIntArray1469;
     }

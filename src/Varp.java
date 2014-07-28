@@ -50,19 +50,19 @@ public final class  Varp {
                 dummy = 2;
             else
             if(opcode == 7)
-                stream.readDWord();
+                stream.getInt();
             else
             if(opcode == 8)
                 aBoolean713 = true;
              else
             if(opcode == 10)
-                 stream.readString();
+                 stream.getString();
             else
             if(opcode == 11)
                 aBoolean713 = true;
             else
             if(opcode == 12)
-                stream.readDWord();
+                stream.getInt();
             else
             if(opcode == 13)
                 dummy = 2;

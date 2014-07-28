@@ -146,7 +146,7 @@ public final class OnDemandFetcher extends OnDemandFetcherParent
             Stream stream_1 = new Stream(abyte1);
             crcs[k] = new int[i1];
             for(int l1 = 0; l1 < i1; l1++)
-                crcs[k][l1] = stream_1.readDWord();
+                crcs[k][l1] = stream_1.getInt();
 
         }
 

@@ -8,8 +8,8 @@ final class Texture extends DrawingArea {
     {
         anIntArray1468 = null;
         anIntArray1468 = null;
-        anIntArray1470 = null;
-        anIntArray1471 = null;
+        SINE = null;
+        COSINE = null;
         lineOffsets = null;
         textureImages = null;
         transparent = null;
@@ -2179,8 +2179,8 @@ final class Texture extends DrawingArea {
     public static int centreY;
     private static int[] anIntArray1468;
     public static final int[] anIntArray1469;
-    public static int anIntArray1470[];
-    public static int anIntArray1471[];
+    public static int SINE[];
+    public static int COSINE[];
     public static int lineOffsets[];
     private static int loadedTextureCount;
     public static Background textureImages[] = new Background[50];
@@ -2198,8 +2198,8 @@ final class Texture extends DrawingArea {
     {
         anIntArray1468 = new int[512];
         anIntArray1469 = new int[2048];
-        anIntArray1470 = new int[2048];
-        anIntArray1471 = new int[2048];
+        SINE = new int[2048];
+        COSINE = new int[2048];
         for(int i = 1; i < 512; i++)
             anIntArray1468[i] = 32768 / i;
 
@@ -2208,8 +2208,8 @@ final class Texture extends DrawingArea {
 
         for(int k = 0; k < 2048; k++)
         {
-            anIntArray1470[k] = (int)(65536D * Math.sin((double)k * 0.0030679614999999999D));
-            anIntArray1471[k] = (int)(65536D * Math.cos((double)k * 0.0030679614999999999D));
+            SINE[k] = (int)(65536D * Math.sin((double)k * 0.0030679614999999999D));
+            COSINE[k] = (int)(65536D * Math.cos((double)k * 0.0030679614999999999D));
         }
 
     }

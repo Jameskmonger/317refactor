@@ -92,7 +92,7 @@ public final class Animation {
                 anInt365 = stream.getUnsignedByte();
             else
             if(i == 12)
-                stream.readDWord();
+                stream.getInt();
             else
                 System.out.println("Error unrecognised seq config code: " + i);
         } while(true);
