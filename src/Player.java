@@ -16,9 +16,9 @@ public final class Player extends Entity
         model.singleTile = true;
         if(aBoolean1699)
             return model;
-        if(super.spotAnimationId != -1 && super.currentAnimation != -1)
+        if(super.graphicId != -1 && super.currentAnimation != -1)
         {
-            SpotAnim spotAnim = SpotAnim.cache[super.spotAnimationId];
+            SpotAnim spotAnim = SpotAnim.cache[super.graphicId];
             Model model_2 = spotAnim.getModel();
             if(model_2 != null)
             {
@@ -289,7 +289,7 @@ public final class Player extends Entity
         return visible;
     }
 
-    public int privelage;
+    public int rights;
 	public Model method453()
     {
         if(!visible)

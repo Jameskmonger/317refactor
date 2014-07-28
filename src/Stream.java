@@ -84,7 +84,7 @@ public final class Stream extends NodeSub {
             buffer[currentOffset++] = (byte)(j >> 24);
     }
 
-    public void writeQWord(long l)
+    public void putLong(long l)
     {
         try
         {
@@ -119,7 +119,7 @@ public final class Stream extends NodeSub {
 
     }
 
-    public void writeBytes(int i)
+    public void putSizeByte(int i)
     {
         buffer[currentOffset - i - 1] = (byte)i;
     }
@@ -255,7 +255,7 @@ public final class Stream extends NodeSub {
         buffer[currentOffset++] = (byte)(-i);
     }
 
-    public void method425(int j)
+    public void putByteS(int j)
     {
         buffer[currentOffset++] = (byte)(128 - j);
     }
@@ -291,7 +291,7 @@ public final class Stream extends NodeSub {
         buffer[currentOffset++] = (byte)(i >> 8);
     }
 
-    public void method432(int j)
+    public void putShortA(int j)
     {
         buffer[currentOffset++] = (byte)(j >> 8);
         buffer[currentOffset++] = (byte)(j + 128);
@@ -309,7 +309,7 @@ public final class Stream extends NodeSub {
             return ((buffer[currentOffset - 1] & 0xff) << 8) + (buffer[currentOffset - 2] & 0xff);
     }
 
-    public int method435()
+    public int getUnsignedLEShortA()
     {
         currentOffset += 2;
         return ((buffer[currentOffset - 2] & 0xff) << 8) + (buffer[currentOffset - 1] - 128 & 0xff);
@@ -351,14 +351,14 @@ public final class Stream extends NodeSub {
         return ((buffer[currentOffset - 3] & 0xff) << 24) + ((buffer[currentOffset - 4] & 0xff) << 16) + ((buffer[currentOffset - 1] & 0xff) << 8) + (buffer[currentOffset - 2] & 0xff);
     }
 
-    public void method441(int i, byte abyte0[], int j)
+    public void putBytesA(int i, byte abyte0[], int j)
     {
         for(int k = (i + j) - 1; k >= i; k--)
             buffer[currentOffset++] = (byte)(abyte0[k] + 128);
 
     }
 
-    public void method442(int i, int j, byte abyte0[])
+    public void getBytes(int i, int j, byte abyte0[])
     {
         for(int k = (j + i) - 1; k >= j; k--)
             abyte0[k] = buffer[currentOffset++];

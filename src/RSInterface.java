@@ -258,7 +258,7 @@ public final class RSInterface
         if(i == 2)
             model = EntityDef.forID(j).method160();
         if(i == 3)
-            model = client.myPlayer.method453();
+            model = client.localPlayer.method453();
         if(i == 4)
             model = ItemDef.forID(j).method202(50);
         if(i == 5)

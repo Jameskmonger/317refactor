@@ -29,9 +29,9 @@ public final class NPC extends Entity
         if(model == null)
             return null;
         super.height = model.modelHeight;
-        if(super.spotAnimationId != -1 && super.currentAnimation != -1)
+        if(super.graphicId != -1 && super.currentAnimation != -1)
         {
-            SpotAnim spotAnim = SpotAnim.cache[super.spotAnimationId];
+            SpotAnim spotAnim = SpotAnim.cache[super.graphicId];
             Model model_1 = spotAnim.getModel();
             if(model_1 != null)
             {
