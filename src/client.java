@@ -11464,7 +11464,7 @@ public final class client extends RSApplet {
                 RSInterface class9_2 = RSInterface.interfaceCache[i9];
                 while(inStream.currentOffset < packetSize)
                 {
-                    int j20 = inStream.method422();
+                    int j20 = inStream.getSmartB();
                     int i23 = inStream.getUnsignedLEShort();
                     int l25 = inStream.getUnsignedByte();
                     if(l25 == 255)

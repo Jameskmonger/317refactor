@@ -427,7 +427,7 @@ label0:
             int i = -1;
             do
             {
-                int j = stream.method422();
+                int j = stream.getSmartB();
                 if(j == 0)
                     break label0;
                 i += j;
@@ -435,7 +435,7 @@ label0:
                 class46.method574(class42_sub1);
                 do
                 {
-                    int k = stream.method422();
+                    int k = stream.getSmartB();
                     if(k == 0)
                         break;
                     stream.getUnsignedByte();
@@ -976,14 +976,14 @@ label0:
             int l1 = -1;
             do
             {
-                int i2 = stream.method422();
+                int i2 = stream.getSmartB();
                 if(i2 == 0)
                     break label0;
                 l1 += i2;
                 int j2 = 0;
                 do
                 {
-                    int k2 = stream.method422();
+                    int k2 = stream.getSmartB();
                     if(k2 == 0)
                         break;
                     j2 += k2 - 1;
@@ -1286,7 +1286,7 @@ label0:
     int i_252_ = -1;
     for (;;)
       {
-	int i_253_ = stream.method422 ();
+	int i_253_ = stream.getSmartB ();
 	if (i_253_ == 0)
 	  break;
 	i_252_ += i_253_;
@@ -1296,14 +1296,14 @@ label0:
 	  {
 	    if (bool_255_)
 	      {
-		int i_256_ = stream.method422 ();
+		int i_256_ = stream.getSmartB ();
 		if (i_256_ == 0)
 		  break;
 		stream.getUnsignedByte();
 	      }
 	    else
 	      {
-		int i_257_ = stream.method422 ();
+		int i_257_ = stream.getSmartB ();
 		if (i_257_ == 0)
 		  break;
 		i_254_ += i_257_ - 1;
@@ -1336,14 +1336,14 @@ label0:
             int l = -1;
             do
             {
-                int i1 = stream.method422();
+                int i1 = stream.getSmartB();
                 if(i1 == 0)
                     break label0;
                 l += i1;
                 int j1 = 0;
                 do
                 {
-                    int k1 = stream.method422();
+                    int k1 = stream.getSmartB();
                     if(k1 == 0)
                         break;
                     j1 += k1 - 1;

@@ -227,7 +227,7 @@ public final class Stream extends NodeSub {
             return getUnsignedLEShort() - 49152;
     }
 
-    public int method422()
+    public int getSmartB()
     {
         int i = buffer[currentOffset] & 0xff;
         if(i < 128)

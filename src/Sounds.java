@@ -6,14 +6,14 @@ final class Sounds {
 
     private Sounds()
     {
-        samples = new Synthesiser[10];
+        samples = new SoundInstrument[10];
     }
 
     public static void unpack(Stream stream)
     {
         aByteArray327 = new byte[0x6baa8];
         aStream_328 = new Stream(aByteArray327);
-        Synthesiser.method166();
+        SoundInstrument.initialise();
         do
         {
             int j = stream.getUnsignedLEShort();
@@ -45,7 +45,7 @@ final class Sounds {
             if(j != 0)
             {
                 stream.currentOffset--;
-                samples[i] = new Synthesiser();
+                samples[i] = new SoundInstrument();
                 samples[i].decode(stream);
             }
         }
@@ -57,8 +57,8 @@ final class Sounds {
     {
         int j = 0x98967f;
         for(int k = 0; k < 10; k++)
-            if(samples[k] != null && samples[k].anInt114 / 20 < j)
-                j = samples[k].anInt114 / 20;
+            if(samples[k] != null && samples[k].begin / 20 < j)
+                j = samples[k].begin / 20;
 
         if(anInt330 < anInt331 && anInt330 / 20 < j)
             j = anInt330 / 20;
@@ -66,7 +66,7 @@ final class Sounds {
             return 0;
         for(int l = 0; l < 10; l++)
             if(samples[l] != null)
-                samples[l].anInt114 -= j * 20;
+                samples[l].begin -= j * 20;
 
         if(anInt330 < anInt331)
         {
@@ -101,8 +101,8 @@ final class Sounds {
     {
         int j = 0;
         for(int k = 0; k < 10; k++)
-            if(samples[k] != null && samples[k].anInt113 + samples[k].anInt114 > j)
-                j = samples[k].anInt113 + samples[k].anInt114;
+            if(samples[k] != null && samples[k].duration + samples[k].begin > j)
+                j = samples[k].duration + samples[k].begin;
 
         if(j == 0)
             return 0;
@@ -118,9 +118,9 @@ final class Sounds {
         for(int i2 = 0; i2 < 10; i2++)
             if(samples[i2] != null)
             {
-                int j2 = (samples[i2].anInt113 * 22050) / 1000;
-                int i3 = (samples[i2].anInt114 * 22050) / 1000;
-                int ai[] = samples[i2].method167(j2, samples[i2].anInt113);
+                int j2 = (samples[i2].duration * 22050) / 1000;
+                int i3 = (samples[i2].begin * 22050) / 1000;
+                int ai[] = samples[i2].synthesise(j2, samples[i2].duration);
                 for(int l3 = 0; l3 < j2; l3++)
                     aByteArray327[l3 + i3 + 44] += (byte)(ai[l3] >> 8);
 
@@ -151,7 +151,7 @@ final class Sounds {
     public static final int[] anIntArray326 = new int[5000];
     private static byte[] aByteArray327;
     private static Stream aStream_328;
-    private final Synthesiser[] samples;
+    private final SoundInstrument[] samples;
     private int anInt330;
     private int anInt331;
 

@@ -2,7 +2,7 @@
 // Jad home page: http://www.kpdus.com/jad.html
 // Decompiler options: packimports(3) 
 
-final class Class39
+final class SoundFilter
 {
 
     private float method541(int i, int j, float f)
@@ -25,21 +25,21 @@ final class Class39
         return method542(f1);
     }
 
-    public int method544(int i, float f)
+    public int compute(int i, float f)
     {
         if(i == 0)
         {
             float f1 = (float)anIntArray668[0] + (float)(anIntArray668[1] - anIntArray668[0]) * f;
             f1 *= 0.003051758F;
             aFloat671 = (float)Math.pow(0.10000000000000001D, f1 / 20F);
-            anInt672 = (int)(aFloat671 * 65536F);
+            invUnity = (int)(aFloat671 * 65536F);
         }
-        if(anIntArray665[i] == 0)
+        if(pairCount[i] == 0)
             return 0;
         float f2 = method541(i, 0, f);
         aFloatArrayArray669[i][0] = -2F * f2 * (float)Math.cos(method543(f, 0, i));
         aFloatArrayArray669[i][1] = f2 * f2;
-        for(int k = 1; k < anIntArray665[i]; k++)
+        for(int k = 1; k < pairCount[i]; k++)
         {
             float f3 = method541(i, k, f);
             float f4 = -2F * f3 * (float)Math.cos(method543(f, k, i));
@@ -55,21 +55,21 @@ final class Class39
 
         if(i == 0)
         {
-            for(int l = 0; l < anIntArray665[0] * 2; l++)
+            for(int l = 0; l < pairCount[0] * 2; l++)
                 aFloatArrayArray669[0][l] *= aFloat671;
 
         }
-        for(int i1 = 0; i1 < anIntArray665[i] * 2; i1++)
-            anIntArrayArray670[i][i1] = (int)(aFloatArrayArray669[i][i1] * 65536F);
+        for(int i1 = 0; i1 < pairCount[i] * 2; i1++)
+            coefficient[i][i1] = (int)(aFloatArrayArray669[i][i1] * 65536F);
 
-        return anIntArray665[i] * 2;
+        return pairCount[i] * 2;
     }
 
-    public void method545(Stream stream, SoundEnvelope class29)
+    public void decode(Stream stream, SoundEnvelope class29)
     {
         int i = stream.getUnsignedByte();
-        anIntArray665[0] = i >> 4;
-        anIntArray665[1] = i & 0xf;
+        pairCount[0] = i >> 4;
+        pairCount[1] = i & 0xf;
         if(i != 0)
         {
             anIntArray668[0] = stream.getUnsignedLEShort();
@@ -77,7 +77,7 @@ final class Class39
             int j = stream.getUnsignedByte();
             for(int k = 0; k < 2; k++)
             {
-                for(int l = 0; l < anIntArray665[k]; l++)
+                for(int l = 0; l < pairCount[k]; l++)
                 {
                     anIntArrayArrayArray666[k][0][l] = stream.getUnsignedLEShort();
                     anIntArrayArrayArray667[k][0][l] = stream.getUnsignedLEShort();
@@ -87,7 +87,7 @@ final class Class39
 
             for(int i1 = 0; i1 < 2; i1++)
             {
-                for(int j1 = 0; j1 < anIntArray665[i1]; j1++)
+                for(int j1 = 0; j1 < pairCount[i1]; j1++)
                     if((j & 1 << i1 * 4 << j1) != 0)
                     {
                         anIntArrayArrayArray666[i1][1][j1] = stream.getUnsignedLEShort();
@@ -108,21 +108,21 @@ final class Class39
         }
     }
 
-    public Class39()
+    public SoundFilter()
     {
-        anIntArray665 = new int[2];
+        pairCount = new int[2];
         anIntArrayArrayArray666 = new int[2][2][4];
         anIntArrayArrayArray667 = new int[2][2][4];
         anIntArray668 = new int[2];
     }
 
-    final int[] anIntArray665;
+    final int[] pairCount;
     private final int[][][] anIntArrayArrayArray666;
     private final int[][][] anIntArrayArrayArray667;
     private final int[] anIntArray668;
     private static final float[][] aFloatArrayArray669 = new float[2][8];
-    static final int[][] anIntArrayArray670 = new int[2][8];
+    static final int[][] coefficient = new int[2][8];
     private static float aFloat671;
-    static int anInt672;
+    static int invUnity;
 
 }
