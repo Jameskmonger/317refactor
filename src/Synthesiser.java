@@ -2,7 +2,7 @@
 // Jad home page: http://www.kpdus.com/jad.html
 // Decompiler options: packimports(3) 
 
-final class Class6
+final class Synthesiser
 {
 
     public static void method166()
@@ -38,8 +38,8 @@ final class Class6
         {
             aClass29_100.resetValues();
             aClass29_101.resetValues();
-            l = (int)(((double)(aClass29_100.anInt539 - aClass29_100.anInt538) * 32.768000000000001D) / d);
-            i1 = (int)(((double)aClass29_100.anInt538 * 32.768000000000001D) / d);
+            l = (int)(((double)(aClass29_100.end - aClass29_100.smart) * 32.768000000000001D) / d);
+            i1 = (int)(((double)aClass29_100.smart * 32.768000000000001D) / d);
         }
         int k1 = 0;
         int l1 = 0;
@@ -48,8 +48,8 @@ final class Class6
         {
             aClass29_102.resetValues();
             aClass29_103.resetValues();
-            k1 = (int)(((double)(aClass29_102.anInt539 - aClass29_102.anInt538) * 32.768000000000001D) / d);
-            l1 = (int)(((double)aClass29_102.anInt538 * 32.768000000000001D) / d);
+            k1 = (int)(((double)(aClass29_102.end - aClass29_102.smart) * 32.768000000000001D) / d);
+            l1 = (int)(((double)aClass29_102.smart * 32.768000000000001D) / d);
         }
         for(int j2 = 0; j2 < 5; j2++)
             if(anIntArray106[j2] != 0)
@@ -57,26 +57,26 @@ final class Class6
                 anIntArray118[j2] = 0;
                 anIntArray119[j2] = (int)((double)anIntArray108[j2] * d);
                 anIntArray120[j2] = (anIntArray106[j2] << 14) / 100;
-                anIntArray121[j2] = (int)(((double)(aClass29_98.anInt539 - aClass29_98.anInt538) * 32.768000000000001D * Math.pow(1.0057929410678534D, anIntArray107[j2])) / d);
-                anIntArray122[j2] = (int)(((double)aClass29_98.anInt538 * 32.768000000000001D) / d);
+                anIntArray121[j2] = (int)(((double)(aClass29_98.end - aClass29_98.smart) * 32.768000000000001D * Math.pow(1.0057929410678534D, anIntArray107[j2])) / d);
+                anIntArray122[j2] = (int)(((double)aClass29_98.smart * 32.768000000000001D) / d);
             }
 
         for(int k2 = 0; k2 < i; k2++)
         {
-            int l2 = aClass29_98.method328(i);
-            int j4 = aClass29_99.method328(i);
+            int l2 = aClass29_98.step(i);
+            int j4 = aClass29_99.step(i);
             if(aClass29_100 != null)
             {
-                int j5 = aClass29_100.method328(i);
-                int j6 = aClass29_101.method328(i);
-                l2 += method168(j6, j1, aClass29_100.anInt540) >> 1;
+                int j5 = aClass29_100.step(i);
+                int j6 = aClass29_101.step(i);
+                l2 += method168(j6, j1, aClass29_100.form) >> 1;
                 j1 += (j5 * l >> 16) + i1;
             }
             if(aClass29_102 != null)
             {
-                int k5 = aClass29_102.method328(i);
-                int k6 = aClass29_103.method328(i);
-                j4 = j4 * ((method168(k6, i2, aClass29_102.anInt540) >> 1) + 32768) >> 15;
+                int k5 = aClass29_102.step(i);
+                int k6 = aClass29_103.step(i);
+                j4 = j4 * ((method168(k6, i2, aClass29_102.form) >> 1) + 32768) >> 15;
                 i2 += (k5 * k1 >> 16) + l1;
             }
             for(int l5 = 0; l5 < 5; l5++)
@@ -85,7 +85,7 @@ final class Class6
                     int l6 = k2 + anIntArray119[l5];
                     if(l6 < i)
                     {
-                        anIntArray115[l6] += method168(j4 * anIntArray120[l5] >> 15, anIntArray118[l5], aClass29_98.anInt540);
+                        anIntArray115[l6] += method168(j4 * anIntArray120[l5] >> 15, anIntArray118[l5], aClass29_98.form);
                         anIntArray118[l5] += (l2 * anIntArray121[l5] >> 16) + anIntArray122[l5];
                     }
                 }
@@ -101,13 +101,13 @@ final class Class6
             boolean flag1 = true;
             for(int i7 = 0; i7 < i; i7++)
             {
-                int k7 = aClass29_104.method328(i);
-                int i8 = aClass29_105.method328(i);
+                int k7 = aClass29_104.step(i);
+                int i8 = aClass29_105.step(i);
                 int k4;
                 if(flag1)
-                    k4 = aClass29_104.anInt538 + ((aClass29_104.anInt539 - aClass29_104.anInt538) * k7 >> 8);
+                    k4 = aClass29_104.smart + ((aClass29_104.end - aClass29_104.smart) * k7 >> 8);
                 else
-                    k4 = aClass29_104.anInt538 + ((aClass29_104.anInt539 - aClass29_104.anInt538) * i8 >> 8);
+                    k4 = aClass29_104.smart + ((aClass29_104.end - aClass29_104.smart) * i8 >> 8);
                 if((i3 += 256) >= k4)
                 {
                     i3 = 0;
@@ -128,7 +128,7 @@ final class Class6
         if(aClass39_111.anIntArray665[0] > 0 || aClass39_111.anIntArray665[1] > 0)
         {
             aClass29_112.resetValues();
-            int k3 = aClass29_112.method328(i + 1);
+            int k3 = aClass29_112.step(i + 1);
             int i5 = aClass39_111.method544(0, (float)k3 / 65536F);
             int i6 = aClass39_111.method544(1, (float)k3 / 65536F);
             if(i >= i5 + i6)
@@ -147,7 +147,7 @@ final class Class6
                         j8 -= (int)((long)anIntArray115[j7 - 1 - j9] * (long)Class39.anIntArrayArray670[1][j9] >> 16);
 
                     anIntArray115[j7] = j8;
-                    k3 = aClass29_112.method328(i + 1);
+                    k3 = aClass29_112.step(i + 1);
                 }
 
                 char c = '\200';
@@ -166,7 +166,7 @@ final class Class6
                             l8 -= (int)((long)anIntArray115[j7 - 1 - i10] * (long)Class39.anIntArrayArray670[1][i10] >> 16);
 
                         anIntArray115[j7] = l8;
-                        k3 = aClass29_112.method328(i + 1);
+                        k3 = aClass29_112.step(i + 1);
                     }
 
                     if(j7 >= i - i5)
@@ -185,7 +185,7 @@ final class Class6
                         i9 -= (int)((long)anIntArray115[j7 - 1 - j10] * (long)Class39.anIntArrayArray670[1][j10] >> 16);
 
                     anIntArray115[j7] = i9;
-                    int l3 = aClass29_112.method328(i + 1);
+                    int l3 = aClass29_112.step(i + 1);
                 }
 
             }
@@ -218,38 +218,38 @@ final class Class6
             return 0;
     }
 
-    public void method169(Stream stream)
+    public void decode(Stream stream)
     {
-        aClass29_98 = new Class29();
-        aClass29_98.method325(stream);
-        aClass29_99 = new Class29();
-        aClass29_99.method325(stream);
+        aClass29_98 = new SoundEnvelope();
+        aClass29_98.decode(stream);
+        aClass29_99 = new SoundEnvelope();
+        aClass29_99.decode(stream);
         int i = stream.getUnsignedByte();
         if(i != 0)
         {
             stream.currentOffset--;
-            aClass29_100 = new Class29();
-            aClass29_100.method325(stream);
-            aClass29_101 = new Class29();
-            aClass29_101.method325(stream);
+            aClass29_100 = new SoundEnvelope();
+            aClass29_100.decode(stream);
+            aClass29_101 = new SoundEnvelope();
+            aClass29_101.decode(stream);
         }
         i = stream.getUnsignedByte();
         if(i != 0)
         {
             stream.currentOffset--;
-            aClass29_102 = new Class29();
-            aClass29_102.method325(stream);
-            aClass29_103 = new Class29();
-            aClass29_103.method325(stream);
+            aClass29_102 = new SoundEnvelope();
+            aClass29_102.decode(stream);
+            aClass29_103 = new SoundEnvelope();
+            aClass29_103.decode(stream);
         }
         i = stream.getUnsignedByte();
         if(i != 0)
         {
             stream.currentOffset--;
-            aClass29_104 = new Class29();
-            aClass29_104.method325(stream);
-            aClass29_105 = new Class29();
-            aClass29_105.method325(stream);
+            aClass29_104 = new SoundEnvelope();
+            aClass29_104.decode(stream);
+            aClass29_105 = new SoundEnvelope();
+            aClass29_105.decode(stream);
         }
         for(int j = 0; j < 10; j++)
         {
@@ -266,11 +266,11 @@ final class Class6
         anInt113 = stream.getUnsignedLEShort();
         anInt114 = stream.getUnsignedLEShort();
         aClass39_111 = new Class39();
-        aClass29_112 = new Class29();
+        aClass29_112 = new SoundEnvelope();
         aClass39_111.method545(stream, aClass29_112);
     }
 
-    public Class6()
+    public Synthesiser()
     {
         anIntArray106 = new int[5];
         anIntArray107 = new int[5];
@@ -279,21 +279,21 @@ final class Class6
         anInt113 = 500;
     }
 
-    private Class29 aClass29_98;
-    private Class29 aClass29_99;
-    private Class29 aClass29_100;
-    private Class29 aClass29_101;
-    private Class29 aClass29_102;
-    private Class29 aClass29_103;
-    private Class29 aClass29_104;
-    private Class29 aClass29_105;
+    private SoundEnvelope aClass29_98;
+    private SoundEnvelope aClass29_99;
+    private SoundEnvelope aClass29_100;
+    private SoundEnvelope aClass29_101;
+    private SoundEnvelope aClass29_102;
+    private SoundEnvelope aClass29_103;
+    private SoundEnvelope aClass29_104;
+    private SoundEnvelope aClass29_105;
     private final int[] anIntArray106;
     private final int[] anIntArray107;
     private final int[] anIntArray108;
     private int anInt109;
     private int anInt110;
     private Class39 aClass39_111;
-    private Class29 aClass29_112;
+    private SoundEnvelope aClass29_112;
     int anInt113;
     int anInt114;
     private static int[] anIntArray115;

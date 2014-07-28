@@ -6,14 +6,14 @@ final class Sounds {
 
     private Sounds()
     {
-        aClass6Array329 = new Class6[10];
+        samples = new Synthesiser[10];
     }
 
     public static void unpack(Stream stream)
     {
         aByteArray327 = new byte[0x6baa8];
         aStream_328 = new Stream(aByteArray327);
-        Class6.method166();
+        Synthesiser.method166();
         do
         {
             int j = stream.getUnsignedLEShort();
@@ -45,8 +45,8 @@ final class Sounds {
             if(j != 0)
             {
                 stream.currentOffset--;
-                aClass6Array329[i] = new Class6();
-                aClass6Array329[i].method169(stream);
+                samples[i] = new Synthesiser();
+                samples[i].decode(stream);
             }
         }
         anInt330 = stream.getUnsignedLEShort();
@@ -57,16 +57,16 @@ final class Sounds {
     {
         int j = 0x98967f;
         for(int k = 0; k < 10; k++)
-            if(aClass6Array329[k] != null && aClass6Array329[k].anInt114 / 20 < j)
-                j = aClass6Array329[k].anInt114 / 20;
+            if(samples[k] != null && samples[k].anInt114 / 20 < j)
+                j = samples[k].anInt114 / 20;
 
         if(anInt330 < anInt331 && anInt330 / 20 < j)
             j = anInt330 / 20;
         if(j == 0x98967f || j == 0)
             return 0;
         for(int l = 0; l < 10; l++)
-            if(aClass6Array329[l] != null)
-                aClass6Array329[l].anInt114 -= j * 20;
+            if(samples[l] != null)
+                samples[l].anInt114 -= j * 20;
 
         if(anInt330 < anInt331)
         {
@@ -101,8 +101,8 @@ final class Sounds {
     {
         int j = 0;
         for(int k = 0; k < 10; k++)
-            if(aClass6Array329[k] != null && aClass6Array329[k].anInt113 + aClass6Array329[k].anInt114 > j)
-                j = aClass6Array329[k].anInt113 + aClass6Array329[k].anInt114;
+            if(samples[k] != null && samples[k].anInt113 + samples[k].anInt114 > j)
+                j = samples[k].anInt113 + samples[k].anInt114;
 
         if(j == 0)
             return 0;
@@ -116,11 +116,11 @@ final class Sounds {
             aByteArray327[l1] = -128;
 
         for(int i2 = 0; i2 < 10; i2++)
-            if(aClass6Array329[i2] != null)
+            if(samples[i2] != null)
             {
-                int j2 = (aClass6Array329[i2].anInt113 * 22050) / 1000;
-                int i3 = (aClass6Array329[i2].anInt114 * 22050) / 1000;
-                int ai[] = aClass6Array329[i2].method167(j2, aClass6Array329[i2].anInt113);
+                int j2 = (samples[i2].anInt113 * 22050) / 1000;
+                int i3 = (samples[i2].anInt114 * 22050) / 1000;
+                int ai[] = samples[i2].method167(j2, samples[i2].anInt113);
                 for(int l3 = 0; l3 < j2; l3++)
                     aByteArray327[l3 + i3 + 44] += (byte)(ai[l3] >> 8);
 
@@ -151,7 +151,7 @@ final class Sounds {
     public static final int[] anIntArray326 = new int[5000];
     private static byte[] aByteArray327;
     private static Stream aStream_328;
-    private final Class6[] aClass6Array329;
+    private final Synthesiser[] samples;
     private int anInt330;
     private int anInt331;
 

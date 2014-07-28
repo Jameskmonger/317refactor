@@ -65,7 +65,7 @@ final class Class39
         return anIntArray665[i] * 2;
     }
 
-    public void method545(Stream stream, Class29 class29)
+    public void method545(Stream stream, SoundEnvelope class29)
     {
         int i = stream.getUnsignedByte();
         anIntArray665[0] = i >> 4;
@@ -101,7 +101,7 @@ final class Class39
             }
 
             if(j != 0 || anIntArray668[1] != anIntArray668[0])
-                class29.method326(stream);
+                class29.decodeShape(stream);
         } else
         {
             anIntArray668[0] = anIntArray668[1] = 0;
