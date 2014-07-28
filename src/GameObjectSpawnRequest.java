@@ -3,9 +3,9 @@
 // Decompiler options: packimports(3) 
 
 
-final class Class30_Sub1 extends Node {
+final class GameObjectSpawnRequest extends Node {
 
-    Class30_Sub1()
+    GameObjectSpawnRequest()
     {
         anInt1294 = -1;
     }

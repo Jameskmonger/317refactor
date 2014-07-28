@@ -113,10 +113,10 @@ public class Entity extends Animable {
         smallY = new int[10];
         interactingEntity = -1;
         degreesToTurn = 32;
-        anInt1505 = -1;
+        runAnimationId = -1;
         height = 200;
         standAnimationId = -1;
-        anInt1512 = -1;
+        standTurnAnimationId = -1;
         hitArray = new int[4];
         hitMarkTypes = new int[4];
         hitsLoopCycle = new int[4];
@@ -139,12 +139,12 @@ public class Entity extends Animable {
     public int interactingEntity;
     int anInt1503;
     int degreesToTurn;
-    int anInt1505;
+    int runAnimationId;
     public String textSpoken;
     public int height;
     public int turnDirection;
     int standAnimationId;
-    int anInt1512;
+    int standTurnAnimationId;
     int chatColour;
     final int[] hitArray;
     final int[] hitMarkTypes;
@@ -168,7 +168,7 @@ public class Entity extends Animable {
     public int currentHealth;
     public int maxHealth;
     int textCycle;
-    int anInt1537;
+    int lastUpdateTime;
     int faceTowardX;
     int faceTowardY;
     int boundaryDimension;

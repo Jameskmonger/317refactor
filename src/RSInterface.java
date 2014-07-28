@@ -324,7 +324,7 @@ public final class RSInterface
     }
 
     public Sprite sprite1;
-    public int anInt208;
+    public int animationDuration;
     public Sprite sprites[];
     public static RSInterface interfaceCache[];
     public int anIntArray212[];
@@ -359,7 +359,7 @@ public final class RSInterface
     public TextDrawingArea textDrawingAreas;
     public int invSpritePadY;
     public int anIntArray245[];
-    public int anInt246;
+    public int animationFrame;
     public int spritesY[];
     public String message;
     public boolean isInventoryInterface;

@@ -161,7 +161,7 @@ public final class Stream extends NodeSub {
         return ((buffer[currentOffset - 4] & 0xff) << 24) + ((buffer[currentOffset - 3] & 0xff) << 16) + ((buffer[currentOffset - 2] & 0xff) << 8) + (buffer[currentOffset - 1] & 0xff);
     }
 
-    public long readQWord()
+    public long readLong()
     {
         long l = (long) getInt() & 0xffffffffL;
         long l1 = (long) getInt() & 0xffffffffL;
