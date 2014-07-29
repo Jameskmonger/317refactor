@@ -152,7 +152,7 @@ stream = null;
             return flag1;
     }
 
-    public ObjectDef method580()
+    public ObjectDef getChildDefinition()
     {
         int i = -1;
         if(anInt774 != -1)

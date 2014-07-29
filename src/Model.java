@@ -1456,7 +1456,7 @@ public final class Model extends Animable {
             int k6 = cursorY - Texture.centreY;
             if(i6 > k3 && i6 < l3 && k6 > i5 && k6 < k4)
                 if(singleTile)
-                    anIntArray1688[resourceCount++] = i2;
+                    resourceId[resourceCount++] = i2;
                 else
                     flag1 = true;
         }
@@ -1540,7 +1540,7 @@ public final class Model extends Animable {
                 {
                     if(flag1 && method486(cursorX, cursorY, vertexScreenY[x], vertexScreenY[y], vertexScreenY[z], screenXX, screenXY, screenXZ))
                     {
-                        anIntArray1688[resourceCount++] = i;
+                        resourceId[resourceCount++] = i;
                         flag1 = false;
                     }
                     if((screenXX - screenXY) * (vertexScreenY[z] - vertexScreenY[y]) - (vertexScreenY[x] - vertexScreenY[y]) * (screenXZ - screenXY) > 0)
@@ -1993,7 +1993,7 @@ public final class Model extends Animable {
     public static int cursorX;
     public static int cursorY;
     public static int resourceCount;
-    public static final int[] anIntArray1688 = new int[1000];
+    public static final int[] resourceId = new int[1000];
     public static int SINE[];
     public static int COSINE[];
     private static int[] HSLtoRGB;

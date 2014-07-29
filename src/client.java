@@ -4336,121 +4336,121 @@ public final class client extends RSApplet {
         int j = -1;
         for(int k = 0; k < Model.resourceCount; k++)
         {
-            int l = Model.anIntArray1688[k];
-            int i1 = l & 0x7f;
-            int j1 = l >> 7 & 0x7f;
-            int k1 = l >> 29 & 3;
-            int l1 = l >> 14 & 0x7fff;
-            if(l == j)
+            int hash = Model.resourceId[k];
+            int x = hash & 0x7f;
+            int y = hash >> 7 & 0x7f;
+            int k1 = hash >> 29 & 3;
+            int objectId = hash >> 14 & 0x7fff;
+            if(hash == j)
                 continue;
-            j = l;
-            if(k1 == 2 && worldController.getConfig(l, i1, j1, plane) >= 0)
+            j = hash;
+            if(k1 == 2 && worldController.getConfig(hash, x, y, plane) >= 0)
             {
-                ObjectDef class46 = ObjectDef.forID(l1);
-                if(class46.childrenIDs != null)
-                    class46 = class46.method580();
-                if(class46 == null)
+                ObjectDef object = ObjectDef.forID(objectId);
+                if(object.childrenIDs != null)
+                    object = object.getChildDefinition();
+                if(object == null)
                     continue;
                 if(itemSelected == 1)
                 {
-                    menuActionName[menuActionRow] = "Use " + selectedItemName + " with @cya@" + class46.name;
+                    menuActionName[menuActionRow] = "Use " + selectedItemName + " with @cya@" + object.name;
                     menuActionId[menuActionRow] = 62;
-                    menuActionData1[menuActionRow] = l;
-                    menuActionData2[menuActionRow] = i1;
-                    menuActionData3[menuActionRow] = j1;
+                    menuActionData1[menuActionRow] = hash;
+                    menuActionData2[menuActionRow] = x;
+                    menuActionData3[menuActionRow] = y;
                     menuActionRow++;
                 } else
                 if(spellSelected == 1)
                 {
                     if((spellUsableOn & 4) == 4)
                     {
-                        menuActionName[menuActionRow] = spellTooltip + " @cya@" + class46.name;
+                        menuActionName[menuActionRow] = spellTooltip + " @cya@" + object.name;
                         menuActionId[menuActionRow] = 956;
-                        menuActionData1[menuActionRow] = l;
-                        menuActionData2[menuActionRow] = i1;
-                        menuActionData3[menuActionRow] = j1;
+                        menuActionData1[menuActionRow] = hash;
+                        menuActionData2[menuActionRow] = x;
+                        menuActionData3[menuActionRow] = y;
                         menuActionRow++;
                     }
                 } else
                 {
-                    if(class46.actions != null)
+                    if(object.actions != null)
                     {
-                        for(int i2 = 4; i2 >= 0; i2--)
-                            if(class46.actions[i2] != null)
+                        for(int action = 4; action >= 0; action--)
+                            if(object.actions[action] != null)
                             {
-                                menuActionName[menuActionRow] = class46.actions[i2] + " @cya@" + class46.name;
-                                if(i2 == 0)
+                                menuActionName[menuActionRow] = object.actions[action] + " @cya@" + object.name;
+                                if(action == 0)
                                     menuActionId[menuActionRow] = 502;
-                                if(i2 == 1)
+                                if(action == 1)
                                     menuActionId[menuActionRow] = 900;
-                                if(i2 == 2)
+                                if(action == 2)
                                     menuActionId[menuActionRow] = 113;
-                                if(i2 == 3)
+                                if(action == 3)
                                     menuActionId[menuActionRow] = 872;
-                                if(i2 == 4)
+                                if(action == 4)
                                     menuActionId[menuActionRow] = 1062;
-                                menuActionData1[menuActionRow] = l;
-                                menuActionData2[menuActionRow] = i1;
-                                menuActionData3[menuActionRow] = j1;
+                                menuActionData1[menuActionRow] = hash;
+                                menuActionData2[menuActionRow] = x;
+                                menuActionData3[menuActionRow] = y;
                                 menuActionRow++;
                             }
 
                     }
-                    menuActionName[menuActionRow] = "Examine @cya@" + class46.name + " @gre@(@whi@" + l1 + "@gre@) (@whi@" + (i1 + baseX) + "," + (j1 + baseY) + "@gre@)";
+                    menuActionName[menuActionRow] = "Examine @cya@" + object.name + " @gre@(@whi@" + objectId + "@gre@) (@whi@" + (x + baseX) + "," + (y + baseY) + "@gre@)";
                     menuActionId[menuActionRow] = 1226;
-                    menuActionData1[menuActionRow] = class46.type << 14;
-                    menuActionData2[menuActionRow] = i1;
-                    menuActionData3[menuActionRow] = j1;
+                    menuActionData1[menuActionRow] = object.type << 14;
+                    menuActionData2[menuActionRow] = x;
+                    menuActionData3[menuActionRow] = y;
                     menuActionRow++;
                 }
             }
             if(k1 == 1)
             {
-                NPC npc = npcArray[l1];
+                NPC npc = npcArray[objectId];
                 if(npc.npcDefinition.boundaryDimension == 1 && (npc.x & 0x7f) == 64 && (npc.y & 0x7f) == 64)
                 {
                     for(int j2 = 0; j2 < npcCount; j2++)
                     {
                         NPC npc2 = npcArray[npcIndices[j2]];
                         if(npc2 != null && npc2 != npc && npc2.npcDefinition.boundaryDimension == 1 && npc2.x == npc.x && npc2.y == npc.y)
-                            buildAtNPCMenu(npc2.npcDefinition, npcIndices[j2], j1, i1);
+                            buildAtNPCMenu(npc2.npcDefinition, npcIndices[j2], y, x);
                     }
 
                     for(int l2 = 0; l2 < playerCount; l2++)
                     {
                         Player player = playerArray[playerId[l2]];
                         if(player != null && player.x == npc.x && player.y == npc.y)
-                            buildAtPlayerMenu(i1, playerId[l2], player, j1);
+                            buildAtPlayerMenu(x, playerId[l2], player, y);
                     }
 
                 }
-                buildAtNPCMenu(npc.npcDefinition, l1, j1, i1);
+                buildAtNPCMenu(npc.npcDefinition, objectId, y, x);
             }
             if(k1 == 0)
             {
-                Player player = playerArray[l1];
+                Player player = playerArray[objectId];
                 if((player.x & 0x7f) == 64 && (player.y & 0x7f) == 64)
                 {
                     for(int k2 = 0; k2 < npcCount; k2++)
                     {
                         NPC class30_sub2_sub4_sub1_sub1_2 = npcArray[npcIndices[k2]];
                         if(class30_sub2_sub4_sub1_sub1_2 != null && class30_sub2_sub4_sub1_sub1_2.npcDefinition.boundaryDimension == 1 && class30_sub2_sub4_sub1_sub1_2.x == player.x && class30_sub2_sub4_sub1_sub1_2.y == player.y)
-                            buildAtNPCMenu(class30_sub2_sub4_sub1_sub1_2.npcDefinition, npcIndices[k2], j1, i1);
+                            buildAtNPCMenu(class30_sub2_sub4_sub1_sub1_2.npcDefinition, npcIndices[k2], y, x);
                     }
 
                     for(int i3 = 0; i3 < playerCount; i3++)
                     {
                         Player class30_sub2_sub4_sub1_sub2_2 = playerArray[playerId[i3]];
                         if(class30_sub2_sub4_sub1_sub2_2 != null && class30_sub2_sub4_sub1_sub2_2 != player && class30_sub2_sub4_sub1_sub2_2.x == player.x && class30_sub2_sub4_sub1_sub2_2.y == player.y)
-                            buildAtPlayerMenu(i1, playerId[i3], class30_sub2_sub4_sub1_sub2_2, j1);
+                            buildAtPlayerMenu(x, playerId[i3], class30_sub2_sub4_sub1_sub2_2, y);
                     }
 
                 }
-                buildAtPlayerMenu(i1, l1, player, j1);
+                buildAtPlayerMenu(x, objectId, player, y);
             }
             if(k1 == 3)
             {
-                NodeList class19 = groundArray[plane][i1][j1];
+                NodeList class19 = groundArray[plane][x][y];
                 if(class19 != null)
                 {
                     for(Item item = (Item)class19.getFirst(); item != null; item = (Item)class19.getNext())
@@ -4461,8 +4461,8 @@ public final class client extends RSApplet {
                             menuActionName[menuActionRow] = "Use " + selectedItemName + " with @lre@" + itemDef.name;
                             menuActionId[menuActionRow] = 511;
                             menuActionData1[menuActionRow] = item.itemId;
-                            menuActionData2[menuActionRow] = i1;
-                            menuActionData3[menuActionRow] = j1;
+                            menuActionData2[menuActionRow] = x;
+                            menuActionData3[menuActionRow] = y;
                             menuActionRow++;
                         } else
                         if(spellSelected == 1)
@@ -4472,8 +4472,8 @@ public final class client extends RSApplet {
                                 menuActionName[menuActionRow] = spellTooltip + " @lre@" + itemDef.name;
                                 menuActionId[menuActionRow] = 94;
                                 menuActionData1[menuActionRow] = item.itemId;
-                                menuActionData2[menuActionRow] = i1;
-                                menuActionData3[menuActionRow] = j1;
+                                menuActionData2[menuActionRow] = x;
+                                menuActionData3[menuActionRow] = y;
                                 menuActionRow++;
                             }
                         } else
@@ -4493,8 +4493,8 @@ public final class client extends RSApplet {
                                     if(j3 == 4)
                                         menuActionId[menuActionRow] = 213;
                                     menuActionData1[menuActionRow] = item.itemId;
-                                    menuActionData2[menuActionRow] = i1;
-                                    menuActionData3[menuActionRow] = j1;
+                                    menuActionData2[menuActionRow] = x;
+                                    menuActionData3[menuActionRow] = y;
                                     menuActionRow++;
                                 } else
                                 if(j3 == 2)
@@ -4502,16 +4502,16 @@ public final class client extends RSApplet {
                                     menuActionName[menuActionRow] = "Take @lre@" + itemDef.name;
                                     menuActionId[menuActionRow] = 234;
                                     menuActionData1[menuActionRow] = item.itemId;
-                                    menuActionData2[menuActionRow] = i1;
-                                    menuActionData3[menuActionRow] = j1;
+                                    menuActionData2[menuActionRow] = x;
+                                    menuActionData3[menuActionRow] = y;
                                     menuActionRow++;
                                 }
 
                             menuActionName[menuActionRow] = "Examine @lre@" + itemDef.name + " @gre@(@whi@" + item.itemId + "@gre@)";
                             menuActionId[menuActionRow] = 1448;
                             menuActionData1[menuActionRow] = item.itemId;
-                            menuActionData2[menuActionRow] = i1;
-                            menuActionData3[menuActionRow] = j1;
+                            menuActionData2[menuActionRow] = x;
+                            menuActionData3[menuActionRow] = y;
                             menuActionRow++;
                         }
                     }
