@@ -126,7 +126,7 @@ public class Entity extends Animable {
         loopCycleStatus = -1000;
         textCycle = 100;
         boundaryDimension = 1;
-        aBoolean1541 = false;
+        isDynamic = false;
         pathRun = new boolean[10];
         walkAnimationId = -1;
         turnAboutAnimationId = -1;
@@ -172,7 +172,7 @@ public class Entity extends Animable {
     int faceTowardX;
     int faceTowardY;
     int boundaryDimension;
-    boolean aBoolean1541;
+    boolean isDynamic;
     int anInt1542;
     int startX;
     int endX;

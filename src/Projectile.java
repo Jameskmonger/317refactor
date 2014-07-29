@@ -15,7 +15,7 @@ final class Projectile extends Animable {
             aDouble1586 = (double)anInt1581 + (d2 * (double)anInt1589) / d3;
             aDouble1587 = anInt1582;
         }
-        double d1 = (anInt1572 + 1) - i;
+        double d1 = (endCycle + 1) - i;
         aDouble1574 = ((double)l - aDouble1585) / d1;
         aDouble1575 = ((double)j - aDouble1586) / d1;
         aDouble1576 = Math.sqrt(aDouble1574 * aDouble1574 + aDouble1575 * aDouble1575);
@@ -52,20 +52,20 @@ final class Projectile extends Animable {
     {
         aBoolean1579 = false;
         aSpotAnim_1592 = SpotAnim.cache[l2];
-        anInt1597 = k1;
+        plane = k1;
         anInt1580 = j2;
         anInt1581 = i2;
         anInt1582 = l1;
-        anInt1571 = l;
-        anInt1572 = i1;
+        delay = l;
+        endCycle = i1;
         anInt1588 = i;
         anInt1589 = j1;
-        anInt1590 = k2;
+        targetId = k2;
         anInt1583 = j;
         aBoolean1579 = false;
     }
 
-    public void method456(int i)
+    public void move(int i)
     {
         aBoolean1579 = true;
         aDouble1585 += aDouble1574 * (double)i;
@@ -85,8 +85,8 @@ final class Projectile extends Animable {
 
     }
 
-    public final int anInt1571;
-    public final int anInt1572;
+    public final int delay;
+    public final int endCycle;
     private double aDouble1574;
     private double aDouble1575;
     private double aDouble1576;
@@ -102,11 +102,11 @@ final class Projectile extends Animable {
     public double aDouble1587;
     private final int anInt1588;
     private final int anInt1589;
-    public final int anInt1590;
+    public final int targetId;
     private final SpotAnim aSpotAnim_1592;
     private int anInt1593;
     private int anInt1594;
     public int anInt1595;
     private int anInt1596;
-    public final int anInt1597;
+    public final int plane;
 }

@@ -43,14 +43,14 @@ public final class Animation {
             {
                 frameCount = stream.getUnsignedByte();
                 frame2Ids = new int[frameCount];
-                anIntArray354 = new int[frameCount];
+                frame1Ids = new int[frameCount];
                 anIntArray355 = new int[frameCount];
                 for(int j = 0; j < frameCount; j++)
                 {
                     frame2Ids[j] = stream.getUnsignedLEShort();
-                    anIntArray354[j] = stream.getUnsignedLEShort();
-                    if(anIntArray354[j] == 65535)
-                        anIntArray354[j] = -1;
+                    frame1Ids[j] = stream.getUnsignedLEShort();
+                    if(frame1Ids[j] == 65535)
+                        frame1Ids[j] = -1;
                     anIntArray355[j] = stream.getUnsignedLEShort();
                 }
 
@@ -101,8 +101,8 @@ public final class Animation {
             frameCount = 1;
             frame2Ids = new int[1];
             frame2Ids[0] = -1;
-            anIntArray354 = new int[1];
-            anIntArray354[0] = -1;
+            frame1Ids = new int[1];
+            frame1Ids[0] = -1;
             anIntArray355 = new int[1];
             anIntArray355[0] = -1;
         }
@@ -138,7 +138,7 @@ public final class Animation {
     public static Animation anims[];
     public int frameCount;
     public int frame2Ids[];
-    public int anIntArray354[];
+    public int frame1Ids[];
     private int[] anIntArray355;
     public int frameStep;
     public int anIntArray357[];

@@ -14,7 +14,7 @@ public final class Player extends Entity
             return null;
         super.height = model.modelHeight;
         model.singleTile = true;
-        if(aBoolean1699)
+        if(preventRotation)
             return model;
         if(super.graphicId != -1 && super.currentAnimation != -1)
         {
@@ -269,7 +269,7 @@ public final class Player extends Entity
             mruNodes.removeFromCache(model_1, l);
             aLong1697 = l;
         }
-        if(aBoolean1699)
+        if(preventRotation)
             return model_1;
         Model model_2 = Model.aModel_1621;
         model_2.replaceWithModel(model_1, Class36.isNullFrame(k) & Class36.isNullFrame(i1));
@@ -342,7 +342,7 @@ public final class Player extends Entity
     Player()
     {
         aLong1697 = -1L;
-        aBoolean1699 = false;
+        preventRotation = false;
         bodyPartColour = new int[5];
         visible = false;
         anInt1715 = 9;
@@ -351,7 +351,7 @@ public final class Player extends Entity
 
     private long aLong1697;
     public EntityDef npcAppearance;
-    boolean aBoolean1699;
+    boolean preventRotation;
     final int[] bodyPartColour;
     public int team;
     private int gender;

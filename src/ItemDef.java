@@ -245,7 +245,7 @@ public final class ItemDef
         if(k == 0)
         {
             Sprite sprite = (Sprite) mruNodes1.insertFromCache(i);
-            if(sprite != null && sprite.anInt1445 != j && sprite.anInt1445 != -1)
+            if(sprite != null && sprite.maxHeight != j && sprite.maxHeight != -1)
             {
                 sprite.unlink();
                 sprite = null;
@@ -288,8 +288,8 @@ public final class ItemDef
         int i3 = DrawingArea.topY;
         int j3 = DrawingArea.bottomY;
         Texture.aBoolean1464 = false;
-        DrawingArea.initDrawingArea(32, 32, sprite2.myPixels);
-        DrawingArea.method336(32, 0, 0, 0, 32);
+        DrawingArea.initDrawingArea(32, 32, sprite2.pixels);
+        DrawingArea.drawFilledRectangle(0, 0, 32, 32, 0);
         Texture.setDefaultBounds();
         int k3 = itemDef.modelZoom;
         if(k == -1)
@@ -302,18 +302,18 @@ public final class ItemDef
         for(int i5 = 31; i5 >= 0; i5--)
         {
             for(int j4 = 31; j4 >= 0; j4--)
-                if(sprite2.myPixels[i5 + j4 * 32] == 0)
-                    if(i5 > 0 && sprite2.myPixels[(i5 - 1) + j4 * 32] > 1)
-                        sprite2.myPixels[i5 + j4 * 32] = 1;
+                if(sprite2.pixels[i5 + j4 * 32] == 0)
+                    if(i5 > 0 && sprite2.pixels[(i5 - 1) + j4 * 32] > 1)
+                        sprite2.pixels[i5 + j4 * 32] = 1;
                     else
-                    if(j4 > 0 && sprite2.myPixels[i5 + (j4 - 1) * 32] > 1)
-                        sprite2.myPixels[i5 + j4 * 32] = 1;
+                    if(j4 > 0 && sprite2.pixels[i5 + (j4 - 1) * 32] > 1)
+                        sprite2.pixels[i5 + j4 * 32] = 1;
                     else
-                    if(i5 < 31 && sprite2.myPixels[i5 + 1 + j4 * 32] > 1)
-                        sprite2.myPixels[i5 + j4 * 32] = 1;
+                    if(i5 < 31 && sprite2.pixels[i5 + 1 + j4 * 32] > 1)
+                        sprite2.pixels[i5 + j4 * 32] = 1;
                     else
-                    if(j4 < 31 && sprite2.myPixels[i5 + (j4 + 1) * 32] > 1)
-                        sprite2.myPixels[i5 + j4 * 32] = 1;
+                    if(j4 < 31 && sprite2.pixels[i5 + (j4 + 1) * 32] > 1)
+                        sprite2.pixels[i5 + j4 * 32] = 1;
 
         }
 
@@ -322,18 +322,18 @@ public final class ItemDef
             for(int j5 = 31; j5 >= 0; j5--)
             {
                 for(int k4 = 31; k4 >= 0; k4--)
-                    if(sprite2.myPixels[j5 + k4 * 32] == 0)
-                        if(j5 > 0 && sprite2.myPixels[(j5 - 1) + k4 * 32] == 1)
-                            sprite2.myPixels[j5 + k4 * 32] = k;
+                    if(sprite2.pixels[j5 + k4 * 32] == 0)
+                        if(j5 > 0 && sprite2.pixels[(j5 - 1) + k4 * 32] == 1)
+                            sprite2.pixels[j5 + k4 * 32] = k;
                         else
-                        if(k4 > 0 && sprite2.myPixels[j5 + (k4 - 1) * 32] == 1)
-                            sprite2.myPixels[j5 + k4 * 32] = k;
+                        if(k4 > 0 && sprite2.pixels[j5 + (k4 - 1) * 32] == 1)
+                            sprite2.pixels[j5 + k4 * 32] = k;
                         else
-                        if(j5 < 31 && sprite2.myPixels[j5 + 1 + k4 * 32] == 1)
-                            sprite2.myPixels[j5 + k4 * 32] = k;
+                        if(j5 < 31 && sprite2.pixels[j5 + 1 + k4 * 32] == 1)
+                            sprite2.pixels[j5 + k4 * 32] = k;
                         else
-                        if(k4 < 31 && sprite2.myPixels[j5 + (k4 + 1) * 32] == 1)
-                            sprite2.myPixels[j5 + k4 * 32] = k;
+                        if(k4 < 31 && sprite2.pixels[j5 + (k4 + 1) * 32] == 1)
+                            sprite2.pixels[j5 + k4 * 32] = k;
 
             }
 
@@ -343,21 +343,21 @@ public final class ItemDef
             for(int k5 = 31; k5 >= 0; k5--)
             {
                 for(int l4 = 31; l4 >= 0; l4--)
-                    if(sprite2.myPixels[k5 + l4 * 32] == 0 && k5 > 0 && l4 > 0 && sprite2.myPixels[(k5 - 1) + (l4 - 1) * 32] > 0)
-                        sprite2.myPixels[k5 + l4 * 32] = 0x302020;
+                    if(sprite2.pixels[k5 + l4 * 32] == 0 && k5 > 0 && l4 > 0 && sprite2.pixels[(k5 - 1) + (l4 - 1) * 32] > 0)
+                        sprite2.pixels[k5 + l4 * 32] = 0x302020;
 
             }
 
         }
         if(itemDef.certTemplateID != -1)
         {
-            int l5 = sprite.anInt1444;
-            int j6 = sprite.anInt1445;
-            sprite.anInt1444 = 32;
-            sprite.anInt1445 = 32;
+            int l5 = sprite.maxWidth;
+            int j6 = sprite.maxHeight;
+            sprite.maxWidth = 32;
+            sprite.maxHeight = 32;
             sprite.drawSprite(0, 0);
-            sprite.anInt1444 = l5;
-            sprite.anInt1445 = j6;
+            sprite.maxWidth = l5;
+            sprite.maxHeight = j6;
         }
         if(k == 0)
             mruNodes1.removeFromCache(sprite2, i);
@@ -368,10 +368,10 @@ public final class ItemDef
         Texture.lineOffsets = ai;
         Texture.aBoolean1464 = true;
         if(itemDef.stackable)
-            sprite2.anInt1444 = 33;
+            sprite2.maxWidth = 33;
         else
-            sprite2.anInt1444 = 32;
-        sprite2.anInt1445 = j;
+            sprite2.maxWidth = 32;
+        sprite2.maxHeight = j;
         return sprite2;
     }
 

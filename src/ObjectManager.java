@@ -159,7 +159,7 @@ final class ObjectManager {
                             k15 -= anIntArray127[k18];
                             k16 -= anIntArray128[k18];
                         }
-                        if(k17 >= 1 && k17 < anInt147 - 1 && (!lowMem || (aByteArrayArrayArray149[0][l6][k17] & 2) != 0 || (aByteArrayArrayArray149[l][l6][k17] & 0x10) == 0 && method182(k17, l, l6) == anInt131))
+                        if(k17 >= 1 && k17 < anInt147 - 1 && (!lowMem || (aByteArrayArrayArray149[0][l6][k17] & 2) != 0 || (aByteArrayArrayArray149[l][l6][k17] & 0x10) == 0 && method182(k17, l, l6) == plane))
                         {
                             if(l < setZ)
                                 setZ = l;
@@ -472,7 +472,7 @@ label0:
         {
             if((aByteArrayArrayArray149[k][l][i] & 0x10) != 0)
                 return;
-            if(method182(i, k, l) != anInt131)
+            if(method182(i, k, l) != plane)
                 return;
         }
         if(k < setZ)
@@ -1278,7 +1278,7 @@ label0:
         }
     }
 
-  public static boolean method189(int i, byte[] is, int i_250_
+  public static boolean objectBlockCached(int i, byte[] is, int i_250_
   ) //xxx bad method, decompiled with JODE
   {
     boolean bool = true;
@@ -1378,7 +1378,7 @@ label0:
     private final int[] anIntArray128;
     private final int[][][] anIntArrayArrayArray129;
     private final byte[][][] aByteArrayArrayArray130;
-    static int anInt131;
+    static int plane;
     private static int anInt133 = (int)(Math.random() * 33D) - 16;
     private final byte[][][] aByteArrayArrayArray134;
     private final int[][][] anIntArrayArrayArray135;

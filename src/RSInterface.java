@@ -34,11 +34,11 @@ public final class RSInterface
             rsInterface.id = k;
             rsInterface.parentID = i;
             rsInterface.type = stream.getUnsignedByte();
-            rsInterface.atActionType = stream.getUnsignedByte();
+            rsInterface.actionType = stream.getUnsignedByte();
             rsInterface.contentType = stream.getUnsignedLEShort();
             rsInterface.width = stream.getUnsignedLEShort();
             rsInterface.height = stream.getUnsignedLEShort();
-            rsInterface.aByte254 = (byte) stream.getUnsignedByte();
+            rsInterface.alpha = (byte) stream.getUnsignedByte();
             rsInterface.anInt230 = stream.getUnsignedByte();
             if(rsInterface.anInt230 != 0)
                 rsInterface.anInt230 = (rsInterface.anInt230 - 1 << 8) + stream.getUnsignedByte();
@@ -73,7 +73,7 @@ public final class RSInterface
             if(rsInterface.type == 0)
             {
                 rsInterface.scrollMax = stream.getUnsignedLEShort();
-                rsInterface.aBoolean266 = stream.getUnsignedByte() == 1;
+                rsInterface.hoverOnly = stream.getUnsignedByte() == 1;
                 int i2 = stream.getUnsignedLEShort();
                 rsInterface.children = new int[i2];
                 rsInterface.childX = new int[i2];
@@ -95,12 +95,12 @@ public final class RSInterface
             {
                 rsInterface.inventoryItemId = new int[rsInterface.width * rsInterface.height];
                 rsInterface.inventoryStackSize = new int[rsInterface.width * rsInterface.height];
-                rsInterface.aBoolean259 = stream.getUnsignedByte() == 1;
+                rsInterface.itemSwappable = stream.getUnsignedByte() == 1;
                 rsInterface.isInventoryInterface = stream.getUnsignedByte() == 1;
                 rsInterface.usableItemInterface = stream.getUnsignedByte() == 1;
-                rsInterface.aBoolean235 = stream.getUnsignedByte() == 1;
-                rsInterface.invSpritePadX = stream.getUnsignedByte();
-                rsInterface.invSpritePadY = stream.getUnsignedByte();
+                rsInterface.itemDeletesDragged = stream.getUnsignedByte() == 1;
+                rsInterface.inventorySpritePaddingColumn = stream.getUnsignedByte();
+                rsInterface.inventorySpritePaddingRow = stream.getUnsignedByte();
                 rsInterface.spritesX = new int[20];
                 rsInterface.spritesY = new int[20];
                 rsInterface.sprites = new Sprite[20];
@@ -130,10 +130,10 @@ public final class RSInterface
 
             }
             if(rsInterface.type == 3)
-                rsInterface.aBoolean227 = stream.getUnsignedByte() == 1;
+                rsInterface.filled = stream.getUnsignedByte() == 1;
             if(rsInterface.type == 4 || rsInterface.type == 1)
             {
-                rsInterface.aBoolean223 = stream.getUnsignedByte() == 1;
+                rsInterface.textCentred = stream.getUnsignedByte() == 1;
                 int k2 = stream.getUnsignedByte();
                 if(textDrawingAreas != null)
                     rsInterface.textDrawingAreas = textDrawingAreas[k2];
@@ -145,12 +145,12 @@ public final class RSInterface
                 rsInterface.aString228 = stream.getString();
             }
             if(rsInterface.type == 1 || rsInterface.type == 3 || rsInterface.type == 4)
-                rsInterface.textColor = stream.getInt();
+                rsInterface.colourDefault = stream.getInt();
             if(rsInterface.type == 3 || rsInterface.type == 4)
             {
-                rsInterface.anInt219 = stream.getInt();
-                rsInterface.anInt216 = stream.getInt();
-                rsInterface.anInt239 = stream.getInt();
+                rsInterface.colourActive = stream.getInt();
+                rsInterface.colourDefaultHover = stream.getInt();
+                rsInterface.colourActiveHover = stream.getInt();
             }
             if(rsInterface.type == 5)
             {
@@ -158,13 +158,13 @@ public final class RSInterface
                 if(streamLoader_1 != null && s.length() > 0)
                 {
                     int i4 = s.lastIndexOf(",");
-                    rsInterface.sprite1 = method207(Integer.parseInt(s.substring(i4 + 1)), streamLoader_1, s.substring(0, i4));
+                    rsInterface.spriteDefault = method207(Integer.parseInt(s.substring(i4 + 1)), streamLoader_1, s.substring(0, i4));
                 }
                 s = stream.getString();
                 if(streamLoader_1 != null && s.length() > 0)
                 {
                     int j4 = s.lastIndexOf(",");
-                    rsInterface.sprite2 = method207(Integer.parseInt(s.substring(j4 + 1)), streamLoader_1, s.substring(0, j4));
+                    rsInterface.spriteSelected = method207(Integer.parseInt(s.substring(j4 + 1)), streamLoader_1, s.substring(0, j4));
                 }
             }
             if(rsInterface.type == 6)
@@ -183,14 +183,14 @@ public final class RSInterface
                 }
                 l = stream.getUnsignedByte();
                 if(l != 0)
-                    rsInterface.animationId = (l - 1 << 8) + stream.getUnsignedByte();
+                    rsInterface.animationDefaultId = (l - 1 << 8) + stream.getUnsignedByte();
                 else
-                    rsInterface.animationId = -1;
+                    rsInterface.animationDefaultId = -1;
                 l = stream.getUnsignedByte();
                 if(l != 0)
-                    rsInterface.anInt258 = (l - 1 << 8) + stream.getUnsignedByte();
+                    rsInterface.animationActiveId = (l - 1 << 8) + stream.getUnsignedByte();
                 else
-                    rsInterface.anInt258 = -1;
+                    rsInterface.animationActiveId = -1;
                 rsInterface.modelZoom = stream.getUnsignedLEShort();
                 rsInterface.modelRotationX = stream.getUnsignedLEShort();
                 rsInterface.modelRotationY = stream.getUnsignedLEShort();
@@ -199,14 +199,14 @@ public final class RSInterface
             {
                 rsInterface.inventoryItemId = new int[rsInterface.width * rsInterface.height];
                 rsInterface.inventoryStackSize = new int[rsInterface.width * rsInterface.height];
-                rsInterface.aBoolean223 = stream.getUnsignedByte() == 1;
+                rsInterface.textCentred = stream.getUnsignedByte() == 1;
                 int l2 = stream.getUnsignedByte();
                 if(textDrawingAreas != null)
                     rsInterface.textDrawingAreas = textDrawingAreas[l2];
                 rsInterface.aBoolean268 = stream.getUnsignedByte() == 1;
-                rsInterface.textColor = stream.getInt();
-                rsInterface.invSpritePadX = stream.getShort();
-                rsInterface.invSpritePadY = stream.getShort();
+                rsInterface.colourDefault = stream.getInt();
+                rsInterface.inventorySpritePaddingColumn = stream.getShort();
+                rsInterface.inventorySpritePaddingRow = stream.getShort();
                 rsInterface.isInventoryInterface = stream.getUnsignedByte() == 1;
                 rsInterface.actions = new String[5];
                 for(int k4 = 0; k4 < 5; k4++)
@@ -217,7 +217,7 @@ public final class RSInterface
                 }
 
             }
-            if(rsInterface.atActionType == 2 || rsInterface.type == 2)
+            if(rsInterface.actionType == 2 || rsInterface.type == 2)
             {
                 rsInterface.selectedActionName = stream.getString();
                 rsInterface.spellName = stream.getString();
@@ -227,18 +227,18 @@ public final class RSInterface
             if(rsInterface.type == 8)
 			  rsInterface.message = stream.getString();
 
-            if(rsInterface.atActionType == 1 || rsInterface.atActionType == 4 || rsInterface.atActionType == 5 || rsInterface.atActionType == 6)
+            if(rsInterface.actionType == 1 || rsInterface.actionType == 4 || rsInterface.actionType == 5 || rsInterface.actionType == 6)
             {
                 rsInterface.tooltip = stream.getString();
                 if(rsInterface.tooltip.length() == 0)
                 {
-                    if(rsInterface.atActionType == 1)
+                    if(rsInterface.actionType == 1)
                         rsInterface.tooltip = "Ok";
-                    if(rsInterface.atActionType == 4)
+                    if(rsInterface.actionType == 4)
                         rsInterface.tooltip = "Select";
-                    if(rsInterface.atActionType == 5)
+                    if(rsInterface.actionType == 5)
                         rsInterface.tooltip = "Select";
-                    if(rsInterface.atActionType == 6)
+                    if(rsInterface.actionType == 6)
                         rsInterface.tooltip = "Continue";
                 }
             }
@@ -297,7 +297,7 @@ public final class RSInterface
             aMRUNodes_264.removeFromCache(model, (j << 16) + i);
     }
 
-    public Model method209(int j, int k, boolean flag)
+    public Model getAnimatedModel(int j, int k, boolean flag)
     {
         Model model;
         if(flag)
@@ -323,41 +323,41 @@ public final class RSInterface
     {
     }
 
-    public Sprite sprite1;
+    public Sprite spriteDefault;
     public int animationDuration;
     public Sprite sprites[];
     public static RSInterface interfaceCache[];
     public int anIntArray212[];
     public int contentType;
     public int spritesX[];
-    public int anInt216;
-    public int atActionType;
+    public int colourDefaultHover;
+    public int actionType;
     public String spellName;
-    public int anInt219;
+    public int colourActive;
     public int width;
     public String tooltip;
     public String selectedActionName;
-    public boolean aBoolean223;
+    public boolean textCentred;
     public int scrollPosition;
     public String actions[];
     public int valueIndexArray[][];
-    public boolean aBoolean227;
+    public boolean filled;
     public String aString228;
     public int anInt230;
-    public int invSpritePadX;
-    public int textColor;
+    public int inventorySpritePaddingColumn;
+    public int colourDefault;
     public int modelType;
     public int modelId;
-    public boolean aBoolean235;
+    public boolean itemDeletesDragged;
     public int parentID;
     public int spellUsableOn;
     private static MRUNodes aMRUNodes_238;
-    public int anInt239;
+    public int colourActiveHover;
     public int children[];
     public int childX[];
     public boolean usableItemInterface;
     public TextDrawingArea textDrawingAreas;
-    public int invSpritePadY;
+    public int inventorySpritePaddingRow;
     public int anIntArray245[];
     public int animationFrame;
     public int spritesY[];
@@ -366,19 +366,19 @@ public final class RSInterface
     public int id;
     public int inventoryStackSize[];
     public int inventoryItemId[];
-    public byte aByte254;
+    public byte alpha;
     private int anInt255;
     private int anInt256;
-    public int animationId;
-    public int anInt258;
-    public boolean aBoolean259;
-    public Sprite sprite2;
+    public int animationDefaultId;
+    public int animationActiveId;
+    public boolean itemSwappable;
+    public Sprite spriteSelected;
     public int scrollMax;
     public int type;
     public int x;
     private static final MRUNodes aMRUNodes_264 = new MRUNodes(30);
     public int y;
-    public boolean aBoolean266;
+    public boolean hoverOnly;
     public int height;
     public boolean aBoolean268;
     public int modelZoom;

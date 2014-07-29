@@ -26,7 +26,7 @@ public final class IDK {
             if(i == 0)
                 return;
             if(i == 1)
-                anInt657 = stream.getUnsignedByte();
+                partId = stream.getUnsignedByte();
             else
             if(i == 2)
             {
@@ -37,7 +37,7 @@ public final class IDK {
 
             } else
             if(i == 3)
-                aBoolean662 = true;
+                widgetDisplayed = true;
             else
             if(i >= 40 && i < 50)
                 anIntArray659[i - 40] = stream.getUnsignedLEShort();
@@ -118,20 +118,20 @@ public final class IDK {
 
     private IDK()
     {
-        anInt657 = -1;
+        partId = -1;
         anIntArray659 = new int[6];
         anIntArray660 = new int[6];
-        aBoolean662 = false;
+        widgetDisplayed = false;
     }
 
     public static int length;
     public static IDK cache[];
-    public int anInt657;
+    public int partId;
     private int[] anIntArray658;
     private final int[] anIntArray659;
     private final int[] anIntArray660;
     private final int[] anIntArray661 = {
         -1, -1, -1, -1, -1
     };
-    public boolean aBoolean662;
+    public boolean widgetDisplayed;
 }

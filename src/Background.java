@@ -23,12 +23,12 @@ public final class Background extends DrawingArea {
             stream_1.currentOffset++;
         }
 
-        anInt1454 = stream_1.getUnsignedByte();
-        anInt1455 = stream_1.getUnsignedByte();
+        drawOffsetX = stream_1.getUnsignedByte();
+        drawOffsetY = stream_1.getUnsignedByte();
         imageWidth = stream_1.getUnsignedLEShort();
-        anInt1453 = stream_1.getUnsignedLEShort();
+        imageHeight = stream_1.getUnsignedLEShort();
         int i1 = stream_1.getUnsignedByte();
-        int j1 = imageWidth * anInt1453;
+        int j1 = imageWidth * imageHeight;
         imagePixels = new byte[j1];
         if(i1 == 0)
         {
@@ -41,7 +41,7 @@ public final class Background extends DrawingArea {
         {
             for(int l1 = 0; l1 < imageWidth; l1++)
             {
-                for(int i2 = 0; i2 < anInt1453; i2++)
+                for(int i2 = 0; i2 < imageHeight; i2++)
                     imagePixels[l1 + i2 * imageWidth] = stream.get();
 
             }
@@ -55,45 +55,45 @@ public final class Background extends DrawingArea {
         anInt1457 /= 2;
         byte abyte0[] = new byte[libWidth * anInt1457];
         int i = 0;
-        for(int j = 0; j < anInt1453; j++)
+        for(int j = 0; j < imageHeight; j++)
         {
             for(int k = 0; k < imageWidth; k++)
-                abyte0[(k + anInt1454 >> 1) + (j + anInt1455 >> 1) * libWidth] = imagePixels[i++];
+                abyte0[(k + drawOffsetX >> 1) + (j + drawOffsetY >> 1) * libWidth] = imagePixels[i++];
 
         }
 
         imagePixels = abyte0;
         imageWidth = libWidth;
-        anInt1453 = anInt1457;
-        anInt1454 = 0;
-            anInt1455 = 0;
+        imageHeight = anInt1457;
+        drawOffsetX = 0;
+            drawOffsetY = 0;
     }
 
     public void method357()
     {
-        if(imageWidth == libWidth && anInt1453 == anInt1457)
+        if(imageWidth == libWidth && imageHeight == anInt1457)
             return;
         byte abyte0[] = new byte[libWidth * anInt1457];
         int i = 0;
-        for(int j = 0; j < anInt1453; j++)
+        for(int j = 0; j < imageHeight; j++)
         {
             for(int k = 0; k < imageWidth; k++)
-                abyte0[k + anInt1454 + (j + anInt1455) * libWidth] = imagePixels[i++];
+                abyte0[k + drawOffsetX + (j + drawOffsetY) * libWidth] = imagePixels[i++];
 
         }
 
         imagePixels = abyte0;
         imageWidth = libWidth;
-        anInt1453 = anInt1457;
-        anInt1454 = 0;
-        anInt1455 = 0;
+        imageHeight = anInt1457;
+        drawOffsetX = 0;
+        drawOffsetY = 0;
     }
 
     public void method358()
     {
-        byte abyte0[] = new byte[imageWidth * anInt1453];
+        byte abyte0[] = new byte[imageWidth * imageHeight];
         int j = 0;
-        for(int k = 0; k < anInt1453; k++)
+        for(int k = 0; k < imageHeight; k++)
         {
             for(int l = imageWidth - 1; l >= 0; l--)
                 abyte0[j++] = imagePixels[l + k * imageWidth];
@@ -101,14 +101,14 @@ public final class Background extends DrawingArea {
         }
 
         imagePixels = abyte0;
-        anInt1454 = libWidth - imageWidth - anInt1454;
+        drawOffsetX = libWidth - imageWidth - drawOffsetX;
     }
 
     public void method359()
     {
-        byte abyte0[] = new byte[imageWidth * anInt1453];
+        byte abyte0[] = new byte[imageWidth * imageHeight];
         int i = 0;
-        for(int j = anInt1453 - 1; j >= 0; j--)
+        for(int j = imageHeight - 1; j >= 0; j--)
         {
             for(int k = 0; k < imageWidth; k++)
                 abyte0[i++] = imagePixels[k + j * imageWidth];
@@ -116,7 +116,7 @@ public final class Background extends DrawingArea {
         }
 
         imagePixels = abyte0;
-        anInt1455 = anInt1457 - anInt1453 - anInt1455;
+        drawOffsetY = anInt1457 - imageHeight - drawOffsetY;
     }
 
     public void method360(int i, int j, int k)
@@ -148,13 +148,13 @@ public final class Background extends DrawingArea {
         }
     }
 
-    public void method361(int i, int k)
+    public void drawImage(int i, int k)
     {
-        i += anInt1454;
-        k += anInt1455;
+        i += drawOffsetX;
+        k += drawOffsetY;
         int l = i + k * DrawingArea.width;
         int i1 = 0;
-        int j1 = anInt1453;
+        int j1 = imageHeight;
         int k1 = imageWidth;
         int l1 = DrawingArea.width - k1;
         int i2 = 0;
@@ -240,9 +240,9 @@ public final class Background extends DrawingArea {
     public byte imagePixels[];
     public final int[] palette;
     public int imageWidth;
-    public int anInt1453;
-    public int anInt1454;
-    public int anInt1455;
+    public int imageHeight;
+    public int drawOffsetX;
+    public int drawOffsetY;
     public int libWidth;
     private int anInt1457;
 }

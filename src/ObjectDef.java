@@ -41,8 +41,8 @@ public final class ObjectDef
         aByte737 = 0;
         aByte742 = 0;
         actions = null;
-        anInt746 = -1;
-        anInt758 = -1;
+        icon = -1;
+        mapScene = -1;
         aBoolean751 = false;
         aBoolean779 = true;
         anInt748 = 128;
@@ -388,7 +388,7 @@ label0:
 
                 } else
                 if(j == 60)
-                    anInt746 = stream.getUnsignedLEShort();
+                    icon = stream.getUnsignedLEShort();
                 else
                 if(j == 62)
                     aBoolean751 = true;
@@ -406,7 +406,7 @@ label0:
                     anInt740 = stream.getUnsignedLEShort();
                 else
                 if(j == 68)
-                    anInt758 = stream.getUnsignedLEShort();
+                    mapScene = stream.getUnsignedLEShort();
                 else
                 if(j == 69)
                     anInt768 = stream.getUnsignedByte();
@@ -479,7 +479,7 @@ label0:
     private byte aByte742;
     public int sizeX;
     private int anInt745;
-    public int anInt746;
+    public int icon;
     private int[] originalModelColors;
     private int anInt748;
     public int anInt749;
@@ -489,7 +489,7 @@ label0:
     public int type;
     private static int[] streamIndices;
     public boolean walkable;
-    public int anInt758;
+    public int mapScene;
     public int childrenIDs[];
     private int anInt760;
     public int sizeY;

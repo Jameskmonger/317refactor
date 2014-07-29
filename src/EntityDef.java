@@ -278,7 +278,7 @@ public final class EntityDef
 
             } else
             if(i == 107)
-                aBoolean84 = false;
+                clickable = false;
         } while(true);
     }
 
@@ -297,7 +297,7 @@ public final class EntityDef
         type = -1L;
         degreesToTurn = 32;
         turnRightAnimationId = -1;
-        aBoolean84 = true;
+        clickable = true;
         anInt86 = 128;
         aBoolean87 = true;
         anInt91 = 128;
@@ -327,7 +327,7 @@ public final class EntityDef
     private static EntityDef[] cache;
     public static client clientInstance;
     public int turnRightAnimationId;
-    public boolean aBoolean84;
+    public boolean clickable;
     private int anInt85;
     private int anInt86;
     public boolean aBoolean87;

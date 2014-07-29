@@ -203,7 +203,7 @@ public final class TextDrawingArea extends DrawingArea {
                 x += characterEffectiveWidth[character];
             }
         if(strikethrough)
-            DrawingArea.drawHLine(y + (int)((double)charHeight * 0.69999999999999996D), 0x800000, x - originalX, originalX);
+            DrawingArea.drawHorizontalLine(y + (int)((double)charHeight * 0.69999999999999996D), originalX, x - originalX, 0x800000);
     }
 
     public void drawShadowedTextRight(String text, int x, int y, int colour, int seed)

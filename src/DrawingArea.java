@@ -41,7 +41,7 @@ public class DrawingArea extends NodeSub {
         viewportCentreY = bottomY / 2;
     }
 
-    public static void setAllPixelsToZero()
+    public static void clear()
     {
         int i = width * height;
         for(int j = 0; j < i; j++)
@@ -86,40 +86,40 @@ public class DrawingArea extends NodeSub {
         }
     }
 
-    public static void method336(int i, int j, int k, int l, int i1)
+    public static void drawFilledRectangle(int x, int y, int width, int height, int colour)
     {
-        if(k < topX)
+        if(x < topX)
         {
-            i1 -= topX - k;
-            k = topX;
+            width -= topX - x;
+            x = topX;
         }
-        if(j < topY)
+        if(y < topY)
         {
-            i -= topY - j;
-            j = topY;
+            height -= topY - y;
+            y = topY;
         }
-        if(k + i1 > bottomX)
-            i1 = bottomX - k;
-        if(j + i > bottomY)
-            i = bottomY - j;
-        int k1 = width - i1;
-        int l1 = k + j * width;
-        for(int i2 = -i; i2 < 0; i2++)
+        if(x + width > bottomX)
+            width = bottomX - x;
+        if(y + height > bottomY)
+            height = bottomY - y;
+        int increment = DrawingArea.width - width;
+        int pointer = x + y * DrawingArea.width;
+        for(int row = -height; row < 0; row++)
         {
-            for(int j2 = -i1; j2 < 0; j2++)
-                pixels[l1++] = l;
+            for(int column = -width; column < 0; column++)
+                pixels[pointer++] = colour;
 
-            l1 += k1;
+            pointer += increment;
         }
 
     }
 
     public static void fillPixels(int i, int j, int k, int l, int i1)
     {
-        drawHLine(i1, l, j, i);
-        drawHLine((i1 + k) - 1, l, j, i);
-        method341(i1, l, k, i);
-        method341(i1, l, k, (i + j) - 1);
+        drawHorizontalLine(i1, i, j, l);
+        drawHorizontalLine((i1 + k) - 1, i, j, l);
+        drawVerticalLine(i, i1, k, l);
+        drawVerticalLine((i + j) - 1, i1, k, l);
     }
 
     public static void method338(int i, int j, int k, int l, int i1, int j1)
@@ -133,20 +133,20 @@ public class DrawingArea extends NodeSub {
         }
     }
 
-    public static void drawHLine(int i, int j, int k, int l)
+    public static void drawHorizontalLine(int x, int y, int width, int colour)
     {
-        if(i < topY || i >= bottomY)
+        if(x < topY || x >= bottomY)
             return;
-        if(l < topX)
+        if(y < topX)
         {
-            k -= topX - l;
-            l = topX;
+            width -= topX - y;
+            y = topX;
         }
-        if(l + k > bottomX)
-            k = bottomX - l;
-        int i1 = l + i * width;
-        for(int j1 = 0; j1 < k; j1++)
-            pixels[i1 + j1] = j;
+        if(y + width > bottomX)
+            width = bottomX - y;
+        int pointer = y + x * DrawingArea.width;
+        for(int column = 0; column < width; column++)
+            pixels[pointer + column] = colour;
 
     }
 
@@ -177,20 +177,20 @@ public class DrawingArea extends NodeSub {
 
     }
 
-    public static void method341(int i, int j, int k, int l)
+    public static void drawVerticalLine(int x, int y, int height, int colour)
     {
-        if(l < topX || l >= bottomX)
+        if(x < topX || x >= bottomX)
             return;
-        if(i < topY)
+        if(y < topY)
         {
-            k -= topY - i;
-            i = topY;
+            height -= topY - y;
+            y = topY;
         }
-        if(i + k > bottomY)
-            k = bottomY - i;
-        int j1 = l + i * width;
-        for(int k1 = 0; k1 < k; k1++)
-            pixels[j1 + k1 * width] = j;
+        if(y + height > bottomY)
+            height = bottomY - y;
+        int pointer = x + y * DrawingArea.width;
+        for(int row = 0; row < height; row++)
+            pixels[pointer + row * DrawingArea.width] = colour;
 
     }
 

@@ -262,7 +262,7 @@ final class WorldController {
     }
 
     public boolean addEntityA(int z, int worldX, int worldY, int worldZ, int rotation, Animable entity,
-                             int uid, int j1, boolean flag)
+                             int uid, int j1, boolean isDynamic)
     {
         if(entity == null)
             return true;
@@ -270,7 +270,7 @@ final class WorldController {
         int y = worldY - j1;
         int tileHeight = worldX + j1;
         int tileWidth = worldY + j1;
-        if(flag)
+        if(isDynamic)
         {
             if(rotation > 640 && rotation < 1408)
                 tileWidth += 128;
