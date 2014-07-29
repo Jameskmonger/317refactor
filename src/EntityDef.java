@@ -23,7 +23,7 @@ public final class EntityDef
     {
         if(childrenIDs != null)
         {
-            EntityDef entityDef = method161();
+            EntityDef entityDef = getChildDefinition();
             if(entityDef == null)
                 return null;
             else
@@ -56,7 +56,7 @@ public final class EntityDef
         return model;
     }
 
-    public EntityDef method161()
+    public EntityDef getChildDefinition()
     {
         int j = -1;
         if(anInt57 != -1)
@@ -107,7 +107,7 @@ public final class EntityDef
     {
         if(childrenIDs != null)
         {
-            EntityDef entityDef = method161();
+            EntityDef entityDef = getChildDefinition();
             if(entityDef == null)
                 return null;
             else

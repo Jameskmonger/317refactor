@@ -48,11 +48,11 @@ public final class RSInterface
             if(i1 > 0)
             {
                 rsInterface.anIntArray245 = new int[i1];
-                rsInterface.anIntArray212 = new int[i1];
+                rsInterface.conditionOperand = new int[i1];
                 for(int j1 = 0; j1 < i1; j1++)
                 {
                     rsInterface.anIntArray245[j1] = stream.getUnsignedByte();
-                    rsInterface.anIntArray212[j1] = stream.getUnsignedLEShort();
+                    rsInterface.conditionOperand[j1] = stream.getUnsignedLEShort();
                 }
 
             }
@@ -327,7 +327,7 @@ public final class RSInterface
     public int animationDuration;
     public Sprite sprites[];
     public static RSInterface interfaceCache[];
-    public int anIntArray212[];
+    public int conditionOperand[];
     public int contentType;
     public int spritesX[];
     public int colourDefaultHover;

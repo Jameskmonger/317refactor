@@ -48,7 +48,7 @@ public final class ObjectDef
         anInt748 = 128;
         anInt772 = 128;
         anInt740 = 128;
-        anInt768 = 0;
+        face = 0;
         anInt738 = 0;
         anInt745 = 0;
         anInt783 = 0;
@@ -409,7 +409,7 @@ label0:
                     mapScene = stream.getUnsignedLEShort();
                 else
                 if(j == 69)
-                    anInt768 = stream.getUnsignedByte();
+                    face = stream.getUnsignedByte();
                 else
                 if(j == 70)
                     anInt738 = stream.getShort();
@@ -498,7 +498,7 @@ label0:
     public static client clientInstance;
     private boolean aBoolean766;
     public boolean unwalkable;
-    public int anInt768;
+    public int face;
     private boolean aBoolean769;
     private static int cacheIndex;
     private int anInt772;

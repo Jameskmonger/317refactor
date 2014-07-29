@@ -124,23 +124,23 @@ public final class client extends RSApplet {
         chatBack.drawImage(0, 0);
         if(messagePromptRaised)
         {
-            chatTextDrawingArea.drawTextHMidVTop(aString1121, 239, 40, 0);
-            chatTextDrawingArea.drawTextHMidVTop(promptInput + "*", 239, 60, 128);
+            boldFont.drawTextHMidVTop(chatboxInputNeededString, 239, 40, 0);
+            boldFont.drawTextHMidVTop(promptInput + "*", 239, 60, 128);
         } else
         if(inputDialogState == 1)
         {
-            chatTextDrawingArea.drawTextHMidVTop("Enter amount:", 239, 40, 0);
-            chatTextDrawingArea.drawTextHMidVTop(amountOrNameInput + "*", 239, 60, 128);
+            boldFont.drawTextHMidVTop("Enter amount:", 239, 40, 0);
+            boldFont.drawTextHMidVTop(amountOrNameInput + "*", 239, 60, 128);
         } else
         if(inputDialogState == 2)
         {
-            chatTextDrawingArea.drawTextHMidVTop("Enter name:", 239, 40, 0);
-            chatTextDrawingArea.drawTextHMidVTop(amountOrNameInput + "*", 239, 60, 128);
+            boldFont.drawTextHMidVTop("Enter name:", 239, 40, 0);
+            boldFont.drawTextHMidVTop(amountOrNameInput + "*", 239, 60, 128);
         } else
         if(aString844 != null)
         {
-            chatTextDrawingArea.drawTextHMidVTop(aString844, 239, 40, 0);
-            chatTextDrawingArea.drawTextHMidVTop("Click to continue", 239, 60, 128);
+            boldFont.drawTextHMidVTop(aString844, 239, 40, 0);
+            boldFont.drawTextHMidVTop("Click to continue", 239, 60, 128);
         } else
         if(backDialogID != -1)
             drawInterface(0, 0, RSInterface.interfaceCache[backDialogID], 0);
@@ -398,7 +398,7 @@ public final class client extends RSApplet {
                         aBoolean1242 = false;
                         anInt989 = 0;
                         moveItemInterfaceId = interfaceId;
-                        moveItemStartSlot = slot;
+                        moveItemSlotStart = slot;
                         activeInterfaceType = 2;
                         lastMouseX = super.clickX;
                         lastMouseY = super.clickY;
@@ -850,7 +850,7 @@ public final class client extends RSApplet {
             {
                 buildInterfaceMenu(i2, childInterface, k, j2, i1, childInterface.scrollPosition);
                 if(childInterface.scrollMax > childInterface.height)
-                    method65(i2 + childInterface.width, childInterface.height, k, i1, childInterface, j2, true, childInterface.scrollMax);
+                    scrollInterface(i2 + childInterface.width, childInterface.height, k, i1, childInterface, j2, true, childInterface.scrollMax);
             } else
             {
                 if(childInterface.actionType == 1 && k >= i2 && i1 >= j2 && k < i2 + childInterface.width && i1 < j2 + childInterface.height)
@@ -900,7 +900,7 @@ public final class client extends RSApplet {
                     menuActionData3[menuActionRow] = childInterface.id;
                     menuActionRow++;
                 }
-                if(childInterface.actionType == 6 && !aBoolean1149 && k >= i2 && i1 >= j2 && k < i2 + childInterface.width && i1 < j2 + childInterface.height)
+                if(childInterface.actionType == 6 && !continuedDialogue && k >= i2 && i1 >= j2 && k < i2 + childInterface.width && i1 < j2 + childInterface.height)
                 {
                     //System.out.println("4"+class9_1.tooltip + ", " + class9_1.interfaceID);
                     menuActionName[menuActionRow] = childInterface.tooltip + ", " + childInterface.id;
@@ -924,7 +924,7 @@ public final class client extends RSApplet {
                             }
                             if(k >= j3 && i1 >= k3 && k < j3 + 32 && i1 < k3 + 32)
                             {
-                                moveItemEndSlot = slot;
+                                moveItemSlotEnd = slot;
                                 lastActiveInventoryInterface = childInterface.id;
                                 if(childInterface.inventoryItemId[slot] > 0)
                                 {
@@ -1073,14 +1073,14 @@ public final class client extends RSApplet {
 
     private void updateNPCs(Stream stream, int amount)
     {
-        anInt839 = 0;
+        actorsToUpdateCount = 0;
         actorsAwaitingUpdatePointer = 0;
         updateNPCMovement(stream);
         updateNPCList(amount, stream);
         updateNPCBlock(stream);
-        for(int k = 0; k < anInt839; k++)
+        for(int k = 0; k < actorsToUpdateCount; k++)
         {
-            int npcId = anIntArray840[k];
+            int npcId = actorsToUpdateIds[k];
             if(npcArray[npcId].lastUpdateTime != loopCycle)
             {
                 npcArray[npcId].npcDefinition = null;
@@ -1141,7 +1141,7 @@ public final class client extends RSApplet {
                 {
                     clearTopInterfaces();
                     reportAbuseInput = "";
-                    canMute = false;
+                    reportAbuseMute = false;
                     for(int i = 0; i < RSInterface.interfaceCache.length; i++)
                     {
                         if(RSInterface.interfaceCache[i] == null || RSInterface.interfaceCache[i].contentType != 600)
@@ -1271,7 +1271,7 @@ public final class client extends RSApplet {
             inputTaken = true;
         }
         if(j == 9)
-            anInt913 = k;
+            bankInsertMode = k;
     }
 
     private void updateEntities()
@@ -1294,7 +1294,7 @@ public final class client extends RSApplet {
             {
                 EntityDef entityDef = ((NPC)obj).npcDefinition;
                 if(entityDef.childrenIDs != null)
-                    entityDef = entityDef.method161();
+                    entityDef = entityDef.getChildDefinition();
                 if(entityDef == null)
                     continue;
             }
@@ -1343,8 +1343,8 @@ public final class client extends RSApplet {
                 npcScreenPos(((Entity) (obj)), ((Entity) (obj)).height);
                 if(spriteDrawX > -1 && anInt974 < anInt975)
                 {
-                    anIntArray979[anInt974] = chatTextDrawingArea.getStringWidth(((Entity) (obj)).textSpoken) / 2;
-                    anIntArray978[anInt974] = chatTextDrawingArea.charHeight;
+                    anIntArray979[anInt974] = boldFont.getStringWidth(((Entity) (obj)).textSpoken) / 2;
+                    anIntArray978[anInt974] = boldFont.charHeight;
                     anIntArray976[anInt974] = spriteDrawX;
                     anIntArray977[anInt974] = spriteDrawY;
                     anIntArray980[anInt974] = ((Entity) (obj)).chatColour;
@@ -1470,31 +1470,31 @@ public final class client extends RSApplet {
                 }
                 if(anIntArray981[k] == 0)
                 {
-                    chatTextDrawingArea.drawTextHMidVTop(s, spriteDrawX, spriteDrawY + 1, 0);
-                    chatTextDrawingArea.drawTextHMidVTop(s, spriteDrawX, spriteDrawY, i3);
+                    boldFont.drawTextHMidVTop(s, spriteDrawX, spriteDrawY + 1, 0);
+                    boldFont.drawTextHMidVTop(s, spriteDrawX, spriteDrawY, i3);
                 }
                 if(anIntArray981[k] == 1)
                 {
-                    chatTextDrawingArea.drawTextHRMidVTopWaving(s, spriteDrawX, spriteDrawY + 1, 0, anInt1265);
-                    chatTextDrawingArea.drawTextHRMidVTopWaving(s, spriteDrawX, spriteDrawY, i3, anInt1265);
+                    boldFont.drawTextHRMidVTopWaving(s, spriteDrawX, spriteDrawY + 1, 0, anInt1265);
+                    boldFont.drawTextHRMidVTopWaving(s, spriteDrawX, spriteDrawY, i3, anInt1265);
                 }
                 if(anIntArray981[k] == 2)
                 {
-                    chatTextDrawingArea.drawTextHRMidVTopWaving2(s, spriteDrawX, spriteDrawY + 1, 0, anInt1265);
-                    chatTextDrawingArea.drawTextHRMidVTopWaving2(s, spriteDrawX, spriteDrawY, i3, anInt1265);
+                    boldFont.drawTextHRMidVTopWaving2(s, spriteDrawX, spriteDrawY + 1, 0, anInt1265);
+                    boldFont.drawTextHRMidVTopWaving2(s, spriteDrawX, spriteDrawY, i3, anInt1265);
                 }
                 if(anIntArray981[k] == 3)
                 {
-                    chatTextDrawingArea.drawTextHRMidVTopWaving(s, spriteDrawX, spriteDrawY + 1, 0, 150 - anIntArray982[k], anInt1265);
-                    chatTextDrawingArea.drawTextHRMidVTopWaving(s, spriteDrawX, spriteDrawY, i3, 150 - anIntArray982[k], anInt1265);
+                    boldFont.drawTextHRMidVTopWaving(s, spriteDrawX, spriteDrawY + 1, 0, 150 - anIntArray982[k], anInt1265);
+                    boldFont.drawTextHRMidVTopWaving(s, spriteDrawX, spriteDrawY, i3, 150 - anIntArray982[k], anInt1265);
                 }
                 if(anIntArray981[k] == 4)
                 {
-                    int i4 = chatTextDrawingArea.getStringWidth(s);
+                    int i4 = boldFont.getStringWidth(s);
                     int k4 = ((150 - anIntArray982[k]) * (i4 + 100)) / 150;
                     DrawingArea.setDrawingArea(334, spriteDrawX - 50, spriteDrawX + 50, 0);
-                    chatTextDrawingArea.drawTextHLeftVTop(s, (spriteDrawX + 50) - k4, spriteDrawY + 1, 0);
-                    chatTextDrawingArea.drawTextHLeftVTop(s, (spriteDrawX + 50) - k4, spriteDrawY, i3);
+                    boldFont.drawTextHLeftVTop(s, (spriteDrawX + 50) - k4, spriteDrawY + 1, 0);
+                    boldFont.drawTextHLeftVTop(s, (spriteDrawX + 50) - k4, spriteDrawY, i3);
                     DrawingArea.defaultDrawingAreaSize();
                 }
                 if(anIntArray981[k] == 5)
@@ -1506,15 +1506,15 @@ public final class client extends RSApplet {
                     else
                     if(j4 > 125)
                         l4 = j4 - 125;
-                    DrawingArea.setDrawingArea(spriteDrawY + 5, 0, 512, spriteDrawY - chatTextDrawingArea.charHeight - 1);
-                    chatTextDrawingArea.drawTextHMidVTop(s, spriteDrawX, spriteDrawY + 1 + l4, 0);
-                    chatTextDrawingArea.drawTextHMidVTop(s, spriteDrawX, spriteDrawY + l4, i3);
+                    DrawingArea.setDrawingArea(spriteDrawY + 5, 0, 512, spriteDrawY - boldFont.charHeight - 1);
+                    boldFont.drawTextHMidVTop(s, spriteDrawX, spriteDrawY + 1 + l4, 0);
+                    boldFont.drawTextHMidVTop(s, spriteDrawX, spriteDrawY + l4, i3);
                     DrawingArea.defaultDrawingAreaSize();
                 }
             } else
             {
-                chatTextDrawingArea.drawTextHMidVTop(s, spriteDrawX, spriteDrawY + 1, 0);
-                chatTextDrawingArea.drawTextHMidVTop(s, spriteDrawX, spriteDrawY, 0xffff00);
+                boldFont.drawTextHMidVTop(s, spriteDrawX, spriteDrawY + 1, 0);
+                boldFont.drawTextHMidVTop(s, spriteDrawX, spriteDrawY, 0xffff00);
             }
         }
     }catch(Exception e){ }
@@ -1638,16 +1638,16 @@ public final class client extends RSApplet {
         }
     }
 
-    private void method38()
+    private void cycleEntitySpokenText()
     {
-        for(int i = -1; i < playerCount; i++)
+        for(int p = -1; p < playerCount; p++)
         {
-            int j;
-            if(i == -1)
-                j = localPlayerId;
+            int pId;
+            if(p == -1)
+                pId = localPlayerId;
             else
-                j = playerId[i];
-            Player player = playerArray[j];
+                pId = playerId[p];
+            Player player = playerArray[pId];
             if(player != null && player.textCycle > 0)
             {
                 player.textCycle--;
@@ -1656,10 +1656,10 @@ public final class client extends RSApplet {
             }
         }
 
-        for(int k = 0; k < npcCount; k++)
+        for(int n = 0; n < npcCount; n++)
         {
-            int l = npcIndices[k];
-            NPC npc = npcArray[l];
+            int nId = npcIndices[n];
+            NPC npc = npcArray[nId];
             if(npc != null && npc.textCycle > 0)
             {
                 npc.textCycle--;
@@ -1667,7 +1667,6 @@ public final class client extends RSApplet {
                     npc.textSpoken = null;
             }
         }
-
     }
 
     private void calcCameraPos()
@@ -1770,7 +1769,7 @@ public final class client extends RSApplet {
         DrawingArea.drawFilledRectangle(i, j, k, l, i1);
         DrawingArea.drawFilledRectangle(i + 1, j + 1, k - 2, 16, 0);
         DrawingArea.fillPixels(i + 1, k - 2, l - 19, 0, j + 18);
-        chatTextDrawingArea.drawTextHLeftVTop("Choose Option", i + 3, j + 14, i1);
+        boldFont.drawTextHLeftVTop("Choose Option", i + 3, j + 14, i1);
         int j1 = super.mouseX;
         int k1 = super.mouseY;
         if(menuScreenArea == 0)
@@ -1794,7 +1793,7 @@ public final class client extends RSApplet {
             int j2 = 0xffffff;
             if(j1 > i && j1 < i + k && k1 > i2 - 13 && k1 < i2 + 3)
                 j2 = 0xffff00;
-            chatTextDrawingArea.drawShadowTextHLeftVTop(menuActionName[l1], i + 3, i2, j2, true);
+            boldFont.drawShadowTextHLeftVTop(menuActionName[l1], i + 3, i2, j2, true);
         }
 
     }
@@ -2014,116 +2013,116 @@ public final class client extends RSApplet {
 
     }
 
-    private boolean promptUserForInput(RSInterface class9)
+    private boolean promptUserForInput(RSInterface rsInterface)
     {
-        int j = class9.contentType;
+        int contentType = rsInterface.contentType;
         if(friendListStatus == 2)
         {
-            if(j == 201)
+            if(contentType == 201)
             {
                 inputTaken = true;
                 inputDialogState = 0;
                 messagePromptRaised = true;
                 promptInput = "";
                 friendsListAction = 1;
-                aString1121 = "Enter name of friend to add to list";
+                chatboxInputNeededString = "Enter name of friend to add to list";
             }
-            if(j == 202)
+            if(contentType == 202)
             {
                 inputTaken = true;
                 inputDialogState = 0;
                 messagePromptRaised = true;
                 promptInput = "";
                 friendsListAction = 2;
-                aString1121 = "Enter name of friend to delete from list";
+                chatboxInputNeededString = "Enter name of friend to delete from list";
             }
         }
-        if(j == 205)
+        if(contentType == 205)
         {
-            anInt1011 = 250;
+            idleLogout = 250;
             return true;
         }
-        if(j == 501)
+        if(contentType == 501)
         {
             inputTaken = true;
             inputDialogState = 0;
             messagePromptRaised = true;
             promptInput = "";
             friendsListAction = 4;
-            aString1121 = "Enter name of player to add to list";
+            chatboxInputNeededString = "Enter name of player to add to list";
         }
-        if(j == 502)
+        if(contentType == 502)
         {
             inputTaken = true;
             inputDialogState = 0;
             messagePromptRaised = true;
             promptInput = "";
             friendsListAction = 5;
-            aString1121 = "Enter name of player to delete from list";
+            chatboxInputNeededString = "Enter name of player to delete from list";
         }
-        if(j >= 300 && j <= 313)
+        if(contentType >= 300 && contentType <= 313)
         {
-            int k = (j - 300) / 2;
-            int j1 = j & 1;
-            int i2 = characterEditIdentityKits[k];
-            if(i2 != -1)
+            int type = (contentType - 300) / 2;
+            int direction = contentType & 1;
+            int currentId = characterEditIdentityKits[type];
+            if(currentId != -1)
             {
                 do
                 {
-                    if(j1 == 0 && --i2 < 0)
-                        i2 = IDK.length - 1;
-                    if(j1 == 1 && ++i2 >= IDK.length)
-                        i2 = 0;
-                } while(IDK.cache[i2].widgetDisplayed || IDK.cache[i2].partId != k + (characterEditChangeGender ? 0 : 7));
-                characterEditIdentityKits[k] = i2;
+                    if(direction == 0 && --currentId < 0)
+                        currentId = IDK.length - 1;
+                    if(direction == 1 && ++currentId >= IDK.length)
+                        currentId = 0;
+                } while(IDK.cache[currentId].widgetDisplayed || IDK.cache[currentId].partId != type + (characterEditChangeGender ? 0 : 7));
+                characterEditIdentityKits[type] = currentId;
                 characterModelChanged = true;
             }
         }
-        if(j >= 314 && j <= 323)
+        if(contentType >= 314 && contentType <= 323)
         {
-            int l = (j - 314) / 2;
-            int k1 = j & 1;
-            int j2 = anIntArray990[l];
-            if(k1 == 0 && --j2 < 0)
-                j2 = anIntArrayArray1003[l].length - 1;
-            if(k1 == 1 && ++j2 >= anIntArrayArray1003[l].length)
-                j2 = 0;
-            anIntArray990[l] = j2;
+            int type = (contentType - 314) / 2;
+            int direction = contentType & 1;
+            int currentId = characterEditColours[type];
+            if(direction == 0 && --currentId < 0)
+                currentId = playerBodyRecolours[type].length - 1;
+            if(direction == 1 && ++currentId >= playerBodyRecolours[type].length)
+                currentId = 0;
+            characterEditColours[type] = currentId;
             characterModelChanged = true;
         }
-        if(j == 324 && !characterEditChangeGender)
+        if(contentType == 324 && !characterEditChangeGender)
         {
             characterEditChangeGender = true;
             changeGender();
         }
-        if(j == 325 && characterEditChangeGender)
+        if(contentType == 325 && characterEditChangeGender)
         {
             characterEditChangeGender = false;
             changeGender();
         }
-        if(j == 326)
+        if(contentType == 326)
         {
             stream.putOpcode(101);
             stream.put(characterEditChangeGender ? 0 : 1);
-            for(int i1 = 0; i1 < 7; i1++)
-                stream.put(characterEditIdentityKits[i1]);
+            for(int part = 0; part < 7; part++)
+                stream.put(characterEditIdentityKits[part]);
 
-            for(int l1 = 0; l1 < 5; l1++)
-                stream.put(anIntArray990[l1]);
+            for(int part = 0; part < 5; part++)
+                stream.put(characterEditColours[part]);
 
             return true;
         }
-        if(j == 613)
-            canMute = !canMute;
-        if(j >= 601 && j <= 612)
+        if(contentType == 613)
+            reportAbuseMute = !reportAbuseMute;
+        if(contentType >= 601 && contentType <= 612)
         {
             clearTopInterfaces();
             if(reportAbuseInput.length() > 0)
             {
                 stream.putOpcode(218);
                 stream.putLong(TextClass.longForName(reportAbuseInput));
-                stream.put(j - 601);
-                stream.put(canMute ? 1 : 0);
+                stream.put(contentType - 601);
+                stream.put(reportAbuseMute ? 1 : 0);
             }
         }
         return false;
@@ -2301,70 +2300,70 @@ public final class client extends RSApplet {
 
     private void loadTitleScreen()
     {
-        aBackground_966 = new Background(titleStreamLoader, "titlebox", 0);
-        aBackground_967 = new Background(titleStreamLoader, "titlebutton", 0);
-        aBackgroundArray1152s = new Background[12];
-        int j = 0;
+        titleBoxImage = new Background(titleStreamLoader, "titlebox", 0);
+        titleButtonImage = new Background(titleStreamLoader, "titlebutton", 0);
+        flameRuneImage = new Background[12];
+        int icon = 0;
         try
         {
-            j = Integer.parseInt(getParameter("fl_icon"));
+            icon = Integer.parseInt(getParameter("fl_icon"));
         }
         catch(Exception _ex) { }
-        if(j == 0)
+        if(icon == 0)
         {
-            for(int k = 0; k < 12; k++)
-                aBackgroundArray1152s[k] = new Background(titleStreamLoader, "runes", k);
+            for(int r = 0; r < 12; r++)
+                flameRuneImage[r] = new Background(titleStreamLoader, "runes", r);
 
         } else
         {
-            for(int l = 0; l < 12; l++)
-                aBackgroundArray1152s[l] = new Background(titleStreamLoader, "runes", 12 + (l & 3));
+            for(int r = 0; r < 12; r++)
+                flameRuneImage[r] = new Background(titleStreamLoader, "runes", 12 + (r & 3));
 
         }
-        aClass30_Sub2_Sub1_Sub1_1201 = new Sprite(128, 265);
-        aClass30_Sub2_Sub1_Sub1_1202 = new Sprite(128, 265);
-        System.arraycopy(topLeft0BackgroundTile.anIntArray315, 0, aClass30_Sub2_Sub1_Sub1_1201.pixels, 0, 33920);
+        flameLeftBackground2 = new Sprite(128, 265);
+        flameRightBackground2 = new Sprite(128, 265);
+        System.arraycopy(flameLeftBackground.pixels, 0, flameLeftBackground2.pixels, 0, 33920);
 
-        System.arraycopy(aRSImageProducer_1111.anIntArray315, 0, aClass30_Sub2_Sub1_Sub1_1202.pixels, 0, 33920);
+        System.arraycopy(flameRightBackground.pixels, 0, flameRightBackground2.pixels, 0, 33920);
 
-        anIntArray851 = new int[256];
-        for(int k1 = 0; k1 < 64; k1++)
-            anIntArray851[k1] = k1 * 0x40000;
+        flameColour1 = new int[256];
+        for(int c = 0; c < 64; c++)
+            flameColour1[c] = c * 0x40000;
 
-        for(int l1 = 0; l1 < 64; l1++)
-            anIntArray851[l1 + 64] = 0xff0000 + 1024 * l1;
+        for(int c = 0; c < 64; c++)
+            flameColour1[c + 64] = 0xff0000 + 1024 * c;
 
-        for(int i2 = 0; i2 < 64; i2++)
-            anIntArray851[i2 + 128] = 0xffff00 + 4 * i2;
+        for(int c = 0; c < 64; c++)
+            flameColour1[c + 128] = 0xffff00 + 4 * c;
 
-        for(int j2 = 0; j2 < 64; j2++)
-            anIntArray851[j2 + 192] = 0xffffff;
+        for(int c = 0; c < 64; c++)
+            flameColour1[c + 192] = 0xffffff;
 
-        anIntArray852 = new int[256];
-        for(int k2 = 0; k2 < 64; k2++)
-            anIntArray852[k2] = k2 * 1024;
+        flameColour2 = new int[256];
+        for(int c = 0; c < 64; c++)
+            flameColour2[c] = c * 1024;
 
-        for(int l2 = 0; l2 < 64; l2++)
-            anIntArray852[l2 + 64] = 65280 + 4 * l2;
+        for(int c = 0; c < 64; c++)
+            flameColour2[c + 64] = 65280 + 4 * c;
 
-        for(int i3 = 0; i3 < 64; i3++)
-            anIntArray852[i3 + 128] = 65535 + 0x40000 * i3;
+        for(int c = 0; c < 64; c++)
+            flameColour2[c + 128] = 65535 + 0x40000 * c;
 
-        for(int j3 = 0; j3 < 64; j3++)
-            anIntArray852[j3 + 192] = 0xffffff;
+        for(int c = 0; c < 64; c++)
+            flameColour2[c + 192] = 0xffffff;
 
-        anIntArray853 = new int[256];
-        for(int k3 = 0; k3 < 64; k3++)
-            anIntArray853[k3] = k3 * 4;
+        flameColour3 = new int[256];
+        for(int c = 0; c < 64; c++)
+            flameColour3[c] = c * 4;
 
-        for(int l3 = 0; l3 < 64; l3++)
-            anIntArray853[l3 + 64] = 255 + 0x40000 * l3;
+        for(int c = 0; c < 64; c++)
+            flameColour3[c + 64] = 255 + 0x40000 * c;
 
-        for(int i4 = 0; i4 < 64; i4++)
-            anIntArray853[i4 + 128] = 0xff00ff + 1024 * i4;
+        for(int c = 0; c < 64; c++)
+            flameColour3[c + 128] = 0xff00ff + 1024 * c;
 
-        for(int j4 = 0; j4 < 64; j4++)
-            anIntArray853[j4 + 192] = 0xffffff;
+        for(int c = 0; c < 64; c++)
+            flameColour3[c + 192] = 0xffffff;
 
         anIntArray850 = new int[256];
         anIntArray1190 = new int[32768];
@@ -2546,9 +2545,9 @@ public final class client extends RSApplet {
     {
         byte titleData[] = titleStreamLoader.getDataForName("title.dat");
         Sprite sprite = new Sprite(titleData, this);
-        topLeft0BackgroundTile.initDrawingArea();
+        flameLeftBackground.initDrawingArea();
         sprite.drawInverse(0, 0);
-        aRSImageProducer_1111.initDrawingArea();
+        flameRightBackground.initDrawingArea();
         sprite.drawInverse(-637, 0);
         topLeft1BackgroundTile.initDrawingArea();
         sprite.drawInverse(-128, 0);
@@ -2574,9 +2573,9 @@ public final class client extends RSApplet {
 
         }
 
-        topLeft0BackgroundTile.initDrawingArea();
+        flameLeftBackground.initDrawingArea();
         sprite.drawInverse(382, 0);
-        aRSImageProducer_1111.initDrawingArea();
+        flameRightBackground.initDrawingArea();
         sprite.drawInverse(-255, 0);
         topLeft1BackgroundTile.initDrawingArea();
         sprite.drawInverse(254, 0);
@@ -2683,7 +2682,7 @@ public final class client extends RSApplet {
         {
             anInt1275 -= anIntArray1190.length;
             int i2 = (int)(Math.random() * 12D);
-            randomizeBackground(aBackgroundArray1152s[i2]);
+            randomizeBackground(flameRuneImage[i2]);
         }
         for(int j2 = 1; j2 < c - 1; j2++)
         {
@@ -2748,8 +2747,8 @@ public final class client extends RSApplet {
     {
         if(systemUpdateTime > 1)
             systemUpdateTime--;
-        if(anInt1011 > 0)
-            anInt1011--;
+        if(idleLogout > 0)
+            idleLogout--;
         for(int j = 0; j < 5; j++)
             if(!parsePacket())
                 break;
@@ -2764,72 +2763,72 @@ public final class client extends RSApplet {
                 {
                     stream.putOpcode(45);
                     stream.put(0);
-                    int j2 = stream.currentOffset;
-                    int j3 = 0;
-                    for(int j4 = 0; j4 < mouseDetection.coordsIndex; j4++)
+                    int originalOffset = stream.currentOffset;
+                    int coordinateCount = 0;
+                    for(int c = 0; c < mouseDetection.coordsIndex; c++)
                     {
-                        if(j2 - stream.currentOffset >= 240)
+                        if(originalOffset - stream.currentOffset >= 240)
                             break;
-                        j3++;
-                        int l4 = mouseDetection.coordsY[j4];
-                        if(l4 < 0)
-                            l4 = 0;
+                        coordinateCount++;
+                        int y = mouseDetection.coordsY[c];
+                        if(y < 0)
+                            y = 0;
                         else
-                        if(l4 > 502)
-                            l4 = 502;
-                        int k5 = mouseDetection.coordsX[j4];
-                        if(k5 < 0)
-                            k5 = 0;
+                        if(y > 502)
+                            y = 502;
+                        int x = mouseDetection.coordsX[c];
+                        if(x < 0)
+                            x = 0;
                         else
-                        if(k5 > 764)
-                            k5 = 764;
-                        int i6 = l4 * 765 + k5;
-                        if(mouseDetection.coordsY[j4] == -1 && mouseDetection.coordsX[j4] == -1)
+                        if(x > 764)
+                            x = 764;
+                        int pixelOffset = y * 765 + x;
+                        if(mouseDetection.coordsY[c] == -1 && mouseDetection.coordsX[c] == -1)
                         {
-                            k5 = -1;
-                            l4 = -1;
-                            i6 = 0x7ffff;
+                            x = -1;
+                            y = -1;
+                            pixelOffset = 0x7ffff;
                         }
-                        if(k5 == anInt1237 && l4 == anInt1238)
+                        if(x == lastClickX && y == lastClickY)
                         {
-                            if(anInt1022 < 2047)
-                                anInt1022++;
+                            if(sameClickPositionCounter < 2047)
+                                sameClickPositionCounter++;
                         } else
                         {
-                            int j6 = k5 - anInt1237;
-                            anInt1237 = k5;
-                            int k6 = l4 - anInt1238;
-                            anInt1238 = l4;
-                            if(anInt1022 < 8 && j6 >= -32 && j6 <= 31 && k6 >= -32 && k6 <= 31)
+                            int differenceX = x - lastClickX;
+                            lastClickX = x;
+                            int differenceY = y - lastClickY;
+                            lastClickY = y;
+                            if(sameClickPositionCounter < 8 && differenceX >= -32 && differenceX <= 31 && differenceY >= -32 && differenceY <= 31)
                             {
-                                j6 += 32;
-                                k6 += 32;
-                                stream.putShort((anInt1022 << 12) + (j6 << 6) + k6);
-                                anInt1022 = 0;
+                                differenceX += 32;
+                                differenceY += 32;
+                                stream.putShort((sameClickPositionCounter << 12) + (differenceX << 6) + differenceY);
+                                sameClickPositionCounter = 0;
                             } else
-                            if(anInt1022 < 8)
+                            if(sameClickPositionCounter < 8)
                             {
-                                stream.writeDWordBigEndian(0x800000 + (anInt1022 << 19) + i6);
-                                anInt1022 = 0;
+                                stream.put24BitInt(0x800000 + (sameClickPositionCounter << 19) + pixelOffset);
+                                sameClickPositionCounter = 0;
                             } else
                             {
-                                stream.putInt(0xc0000000 + (anInt1022 << 19) + i6);
-                                anInt1022 = 0;
+                                stream.putInt(0xc0000000 + (sameClickPositionCounter << 19) + pixelOffset);
+                                sameClickPositionCounter = 0;
                             }
                         }
                     }
 
-                    stream.putSizeByte(stream.currentOffset - j2);
-                    if(j3 >= mouseDetection.coordsIndex)
+                    stream.putSizeByte(stream.currentOffset - originalOffset);
+                    if(coordinateCount >= mouseDetection.coordsIndex)
                     {
                         mouseDetection.coordsIndex = 0;
                     } else
                     {
-                        mouseDetection.coordsIndex -= j3;
-                        for(int i5 = 0; i5 < mouseDetection.coordsIndex; i5++)
+                        mouseDetection.coordsIndex -= coordinateCount;
+                        for(int c = 0; c < mouseDetection.coordsIndex; c++)
                         {
-                            mouseDetection.coordsX[i5] = mouseDetection.coordsX[i5 + j3];
-                            mouseDetection.coordsY[i5] = mouseDetection.coordsY[i5 + j3];
+                            mouseDetection.coordsX[c] = mouseDetection.coordsX[c + coordinateCount];
+                            mouseDetection.coordsY[c] = mouseDetection.coordsY[c + coordinateCount];
                         }
 
                     }
@@ -2841,63 +2840,63 @@ public final class client extends RSApplet {
         }
         if(super.clickType != 0)
         {
-            long l = (super.clickTime - aLong1220) / 50L;
-            if(l > 4095L)
-                l = 4095L;
-            aLong1220 = super.clickTime;
-            int k2 = super.clickY;
-            if(k2 < 0)
-                k2 = 0;
+            long timeBetweenClicks = (super.clickTime - lastClickTime) / 50L;
+            if(timeBetweenClicks > 4095L)
+                timeBetweenClicks = 4095L;
+            lastClickTime = super.clickTime;
+            int y = super.clickY;
+            if(y < 0)
+                y = 0;
             else
-            if(k2 > 502)
-                k2 = 502;
-            int k3 = super.clickX;
-            if(k3 < 0)
-                k3 = 0;
+            if(y > 502)
+                y = 502;
+            int x = super.clickX;
+            if(x < 0)
+                x = 0;
             else
-            if(k3 > 764)
-                k3 = 764;
-            int k4 = k2 * 765 + k3;
-            int j5 = 0;
+            if(x > 764)
+                x = 764;
+            int pixelOffset = y * 765 + x;
+            int rightClick = 0;
             if(super.clickType == 2)
-                j5 = 1;
-            int l5 = (int)l;
+                rightClick = 1;
+            int timeDifference = (int)timeBetweenClicks;
             stream.putOpcode(241);
-            stream.putInt((l5 << 20) + (j5 << 19) + k4);
+            stream.putInt((timeDifference << 20) + (rightClick << 19) + pixelOffset);
         }
-        if(anInt1016 > 0)
-            anInt1016--;
+        if(cameraMovedWriteDelay > 0)
+            cameraMovedWriteDelay--;
         if(super.keyStatus[1] == 1 || super.keyStatus[2] == 1 || super.keyStatus[3] == 1 || super.keyStatus[4] == 1)
-            aBoolean1017 = true;
-        if(aBoolean1017 && anInt1016 <= 0)
+            cameraMovedWrite = true;
+        if(cameraMovedWrite && cameraMovedWriteDelay <= 0)
         {
-            anInt1016 = 20;
-            aBoolean1017 = false;
+            cameraMovedWriteDelay = 20;
+            cameraMovedWrite = false;
             stream.putOpcode(86);
-            stream.putShort(cameraY);
-            stream.putShortA(minimapInt1);
+            stream.putShort(cameraVertical);
+            stream.putShortA(cameraHorizontal);
         }
-        if(super.awtFocus && !aBoolean954)
+        if(super.awtFocus && !windowFocused)
         {
-            aBoolean954 = true;
+            windowFocused = true;
             stream.putOpcode(3);
             stream.put(1);
         }
-        if(!super.awtFocus && aBoolean954)
+        if(!super.awtFocus && windowFocused)
         {
-            aBoolean954 = false;
+            windowFocused = false;
             stream.putOpcode(3);
             stream.put(0);
         }
         loadingStages();
         updateSpawnedObjects();
-        method90();
+        handleMusic();
         anInt1009++;
         if(anInt1009 > 750)
             dropClient();
         updatePlayerInstances();
-        method95();
-        method38();
+        updateNPCInstances();
+        cycleEntitySpokenText();
         animationTimePassed++;
         if(crossType != 0)
         {
@@ -2933,47 +2932,47 @@ public final class client extends RSApplet {
                 {
                     lastActiveInventoryInterface = -1;
                     processRightClick();
-                    if(lastActiveInventoryInterface == moveItemInterfaceId && moveItemEndSlot != moveItemStartSlot)
+                    if(lastActiveInventoryInterface == moveItemInterfaceId && moveItemSlotEnd != moveItemSlotStart)
                     {
-                        RSInterface class9 = RSInterface.interfaceCache[moveItemInterfaceId];
-                        int j1 = 0;
-                        if(anInt913 == 1 && class9.contentType == 206)
-                            j1 = 1;
-                        if(class9.inventoryItemId[moveItemEndSlot] <= 0)
-                            j1 = 0;
-                        if(class9.itemDeletesDragged)
+                        RSInterface rsInterface = RSInterface.interfaceCache[moveItemInterfaceId];
+                        int moveItemInsetionMode = 0;
+                        if(bankInsertMode == 1 && rsInterface.contentType == 206)
+                            moveItemInsetionMode = 1;
+                        if(rsInterface.inventoryItemId[moveItemSlotEnd] <= 0)
+                            moveItemInsetionMode = 0;
+                        if(rsInterface.itemDeletesDragged)
                         {
-                            int l2 = moveItemStartSlot;
-                            int l3 = moveItemEndSlot;
-                            class9.inventoryItemId[l3] = class9.inventoryItemId[l2];
-                            class9.inventoryStackSize[l3] = class9.inventoryStackSize[l2];
-                            class9.inventoryItemId[l2] = -1;
-                            class9.inventoryStackSize[l2] = 0;
+                            int slotStart = moveItemSlotStart;
+                            int slotEnd = moveItemSlotEnd;
+                            rsInterface.inventoryItemId[slotEnd] = rsInterface.inventoryItemId[slotStart];
+                            rsInterface.inventoryStackSize[slotEnd] = rsInterface.inventoryStackSize[slotStart];
+                            rsInterface.inventoryItemId[slotStart] = -1;
+                            rsInterface.inventoryStackSize[slotStart] = 0;
                         } else
-                        if(j1 == 1)
+                        if(moveItemInsetionMode == 1)
                         {
-                            int i3 = moveItemStartSlot;
-                            for(int i4 = moveItemEndSlot; i3 != i4;)
-                                if(i3 > i4)
+                            int slotStart = moveItemSlotStart;
+                            for(int slotPointer = moveItemSlotEnd; slotStart != slotPointer;)
+                                if(slotStart > slotPointer)
                                 {
-                                    class9.swapInventoryItems(i3, i3 - 1);
-                                    i3--;
+                                    rsInterface.swapInventoryItems(slotStart, slotStart - 1);
+                                    slotStart--;
                                 } else
-                                if(i3 < i4)
+                                if(slotStart < slotPointer)
                                 {
-                                    class9.swapInventoryItems(i3, i3 + 1);
-                                    i3++;
+                                    rsInterface.swapInventoryItems(slotStart, slotStart + 1);
+                                    slotStart++;
                                 }
 
                         } else
                         {
-                            class9.swapInventoryItems(moveItemStartSlot, moveItemEndSlot);
+                            rsInterface.swapInventoryItems(moveItemSlotStart, moveItemSlotEnd);
                         }
                         stream.putOpcode(214);
                         stream.putLEShortA(moveItemInterfaceId);
-                        stream.putByteC(j1);
-                        stream.putLEShortA(moveItemStartSlot);
-                        stream.putLEShort(moveItemEndSlot);
+                        stream.putByteC(moveItemInsetionMode);
+                        stream.putLEShortA(moveItemSlotStart);
+                        stream.putLEShort(moveItemSlotEnd);
                     }
                 } else
                 if((anInt1253 == 1 || menuHasAddFriend(menuActionRow - 1)) && menuActionRow > 2)
@@ -2987,11 +2986,11 @@ public final class client extends RSApplet {
         }
         if(WorldController.clickedTileX != -1)
         {
-            int k = WorldController.clickedTileX;
-            int k1 = WorldController.clickedTileY;
-            boolean flag = doWalkTo(0, 0, 0, 0, localPlayer.smallY[0], 0, 0, k1, localPlayer.smallX[0], true, k);
+            int x = WorldController.clickedTileX;
+            int y = WorldController.clickedTileY;
+            boolean walkable = doWalkTo(0, 0, 0, 0, localPlayer.smallY[0], 0, 0, y, localPlayer.smallX[0], true, x);
             WorldController.clickedTileX = -1;
-            if(flag)
+            if(walkable)
             {
                 crossX = super.clickX;
                 crossY = super.clickY;
@@ -3012,64 +3011,64 @@ public final class client extends RSApplet {
         if(super.mouseButton == 1 || super.clickType == 1)
             anInt1213++;
         if(loadingStage == 2)
-            method108();
+            moveCameraWithArrowKeys();
         if(loadingStage == 2 && inCutscene)
             calcCameraPos();
-        for(int i1 = 0; i1 < 5; i1++)
-            anIntArray1030[i1]++;
+        for(int camera = 0; camera < 5; camera++)
+            anIntArray1030[camera]++;
 
         manageTextInput();
         super.idleTime++;
         if(super.idleTime > 4500)
         {
-            anInt1011 = 250;
+            idleLogout = 250;
             super.idleTime -= 500;
             stream.putOpcode(202);
         }
-        anInt988++;
-        if(anInt988 > 500)
+        cameraRandomisationCounter++;
+        if(cameraRandomisationCounter > 500)
         {
-            anInt988 = 0;
-            int l1 = (int)(Math.random() * 8D);
-            if((l1 & 1) == 1)
-                anInt1278 += anInt1279;
-            if((l1 & 2) == 2)
-                anInt1131 += anInt1132;
-            if((l1 & 4) == 4)
-                anInt896 += anInt897;
+            cameraRandomisationCounter = 0;
+            int type = (int)(Math.random() * 8D);
+            if((type & 1) == 1)
+                cameraRandomisationH += nextCameraRandomisationH;
+            if((type & 2) == 2)
+                cameraRandomisationV += nextCameraRandomisationV;
+            if((type & 4) == 4)
+                cameraRandomisationA += nextCameraRandomisationA;
         }
-        if(anInt1278 < -50)
-            anInt1279 = 2;
-        if(anInt1278 > 50)
-            anInt1279 = -2;
-        if(anInt1131 < -55)
-            anInt1132 = 2;
-        if(anInt1131 > 55)
-            anInt1132 = -2;
-        if(anInt896 < -40)
-            anInt897 = 1;
-        if(anInt896 > 40)
-            anInt897 = -1;
-        anInt1254++;
-        if(anInt1254 > 500)
+        if(cameraRandomisationH < -50)
+            nextCameraRandomisationH = 2;
+        if(cameraRandomisationH > 50)
+            nextCameraRandomisationH = -2;
+        if(cameraRandomisationV < -55)
+            nextCameraRandomisationV = 2;
+        if(cameraRandomisationV > 55)
+            nextCameraRandomisationV = -2;
+        if(cameraRandomisationA < -40)
+            nextCameraRandomisationA = 1;
+        if(cameraRandomisationA > 40)
+            nextCameraRandomisationA = -1;
+        minimapRandomisationCounter++;
+        if(minimapRandomisationCounter > 500)
         {
-            anInt1254 = 0;
-            int i2 = (int)(Math.random() * 8D);
-            if((i2 & 1) == 1)
-                minimapRotation += anInt1210;
-            if((i2 & 2) == 2)
-                minimapZoom += anInt1171;
+            minimapRandomisationCounter = 0;
+            int type = (int)(Math.random() * 8D);
+            if((type & 1) == 1)
+                minimapRotation += randomisationMinimapRotation;
+            if((type & 2) == 2)
+                minimapZoom += randomisationMinimapZoom;
         }
         if(minimapRotation < -60)
-            anInt1210 = 2;
+            randomisationMinimapRotation = 2;
         if(minimapRotation > 60)
-            anInt1210 = -2;
+            randomisationMinimapRotation = -2;
         if(minimapZoom < -20)
-            anInt1171 = 1;
+            randomisationMinimapZoom = 1;
         if(minimapZoom > 10)
-            anInt1171 = -1;
-        anInt1010++;
-        if(anInt1010 > 50)
+            randomisationMinimapZoom = -1;
+        idleCounter++;
+        if(idleCounter > 50)
             stream.putOpcode(0);
         try
         {
@@ -3077,7 +3076,7 @@ public final class client extends RSApplet {
             {
                 socket.write(stream.currentOffset, stream.buffer);
                 stream.currentOffset = 0;
-                anInt1010 = 0;
+                idleCounter = 0;
             }
         }
         catch(IOException _ex)
@@ -3117,9 +3116,9 @@ public final class client extends RSApplet {
         aRSImageProducer_1123 = null;
         aRSImageProducer_1124 = null;
         aRSImageProducer_1125 = null;
-        topLeft0BackgroundTile = new RSImageProducer(128, 265, getGameComponent());
+        flameLeftBackground = new RSImageProducer(128, 265, getGameComponent());
         DrawingArea.clear();
-        aRSImageProducer_1111 = new RSImageProducer(128, 265, getGameComponent());
+        flameRightBackground = new RSImageProducer(128, 265, getGameComponent());
         DrawingArea.clear();
         topLeft1BackgroundTile = new RSImageProducer(509, 171, getGameComponent());
         DrawingArea.clear();
@@ -3143,35 +3142,37 @@ public final class client extends RSApplet {
         welcomeScreenRaised = true;
     }
 
-    void drawLoadingText(int i, String s)
+    void drawLoadingText(int percentage, String text)
     {
-        anInt1079 = i;
-        aString1049 = s;
+        loadingBarPercentage = percentage;
+        loadingBarText = text;
         resetImageProducers();
         if(titleStreamLoader == null)
         {
-            super.drawLoadingText(i, s);
+            super.drawLoadingText(percentage, text);
             return;
         }
         loginBoxLeftBackgroundTile.initDrawingArea();
-        char c = '\u0168';
-        char c1 = '\310';
-        byte byte1 = 20;
-        chatTextDrawingArea.drawTextHMidVTop("RuneScape is loading - please wait...", c / 2, c1 / 2 - 26 - byte1, 0xffffff);
-        int j = c1 / 2 - 18 - byte1;
-        DrawingArea.fillPixels(c / 2 - 152, 304, 34, 0x8c1111, j);
-        DrawingArea.fillPixels(c / 2 - 151, 302, 32, 0, j + 1);
-        DrawingArea.drawFilledRectangle(c / 2 - 150, j + 2, i * 3, 30, 0x8c1111);
-        DrawingArea.drawFilledRectangle((c / 2 - 150) + i * 3, j + 2, 300 - i * 3, 30, 0);
-        chatTextDrawingArea.drawTextHMidVTop(s, c / 2, (c1 / 2 + 5) - byte1, 0xffffff);
+        
+        int horizontalOffset = 360;
+        int verticalOffset1 = 200;
+        int verticalOffset2 = 20;
+        boldFont.drawTextHMidVTop("RuneScape is loading - please wait...", horizontalOffset / 2, verticalOffset1 / 2 - 26 - verticalOffset2, 0xffffff);
+        int loadingBarHeight = verticalOffset1 / 2 - 18 - verticalOffset2;
+        
+        DrawingArea.fillPixels(horizontalOffset / 2 - 152, 304, 34, 0x8c1111, loadingBarHeight);
+        DrawingArea.fillPixels(horizontalOffset / 2 - 151, 302, 32, 0, loadingBarHeight + 1);
+        DrawingArea.drawFilledRectangle(horizontalOffset / 2 - 150, loadingBarHeight + 2, percentage * 3, 30, 0x8c1111);
+        DrawingArea.drawFilledRectangle((horizontalOffset / 2 - 150) + percentage * 3, loadingBarHeight + 2, 300 - percentage * 3, 30, 0);
+        boldFont.drawTextHMidVTop(text, horizontalOffset / 2, (verticalOffset1 / 2 + 5) - verticalOffset2, 0xffffff);
         loginBoxLeftBackgroundTile.drawGraphics(171, super.gameGraphics, 202);
         if(welcomeScreenRaised)
         {
             welcomeScreenRaised = false;
             if(!currentlyDrawingFlames)
             {
-                topLeft0BackgroundTile.drawGraphics(0, super.gameGraphics, 0);
-                aRSImageProducer_1111.drawGraphics(0, super.gameGraphics, 637);
+                flameLeftBackground.drawGraphics(0, super.gameGraphics, 0);
+                flameRightBackground.drawGraphics(0, super.gameGraphics, 637);
             }
             topLeft1BackgroundTile.drawGraphics(0, super.gameGraphics, 128);
             bottomLeft1BackgroundTile.drawGraphics(371, super.gameGraphics, 202);
@@ -3182,7 +3183,7 @@ public final class client extends RSApplet {
         }
     }
 
-    private void method65(int i, int j, int k, int l, RSInterface class9, int i1, boolean flag,
+    private void scrollInterface(int i, int j, int k, int l, RSInterface rsInterface, int i1, boolean redrawTabArea,
                           int j1)
     {
         int anInt992;
@@ -3193,16 +3194,16 @@ public final class client extends RSApplet {
         aBoolean972 = false;
         if(k >= i && k < i + 16 && l >= i1 && l < i1 + 16)
         {
-            class9.scrollPosition -= anInt1213 * 4;
-            if(flag)
+            rsInterface.scrollPosition -= anInt1213 * 4;
+            if(redrawTabArea)
             {
                 needDrawTabArea = true;
             }
         } else
         if(k >= i && k < i + 16 && l >= (i1 + j) - 16 && l < i1 + j)
         {
-            class9.scrollPosition += anInt1213 * 4;
-            if(flag)
+            rsInterface.scrollPosition += anInt1213 * 4;
+            if(redrawTabArea)
             {
                 needDrawTabArea = true;
             }
@@ -3214,42 +3215,42 @@ public final class client extends RSApplet {
                 l1 = 8;
             int i2 = l - i1 - 16 - l1 / 2;
             int j2 = j - 32 - l1;
-            class9.scrollPosition = ((j1 - j) * i2) / j2;
-            if(flag)
+            rsInterface.scrollPosition = ((j1 - j) * i2) / j2;
+            if(redrawTabArea)
                 needDrawTabArea = true;
             aBoolean972 = true;
         }
     }
 
-    private boolean method66(int i, int j, int k)
+    private boolean clickInteractiveObject(int hash, int y, int x)
     {
-        int i1 = i >> 14 & 0x7fff;
-        int j1 = worldController.getConfig(i, k, j, plane);
-        if(j1 == -1)
+        int objectId = hash >> 14 & 0x7fff;
+        int config = worldController.getConfig(hash, x, y, plane);
+        if(config == -1)
             return false;
-        int k1 = j1 & 0x1f;
-        int l1 = j1 >> 6 & 3;
-        if(k1 == 10 || k1 == 11 || k1 == 22)
+        int type = config & 0x1f;
+        int rotation = config >> 6 & 3;
+        if(type == 10 || type == 11 || type == 22)
         {
-            ObjectDef class46 = ObjectDef.forID(i1);
-            int i2;
-            int j2;
-            if(l1 == 0 || l1 == 2)
+            ObjectDef object = ObjectDef.forID(objectId);
+            int sizeX;
+            int sizeY;
+            if(rotation == 0 || rotation == 2)
             {
-                i2 = class46.sizeX;
-                j2 = class46.sizeY;
+                sizeX = object.sizeX;
+                sizeY = object.sizeY;
             } else
             {
-                i2 = class46.sizeY;
-                j2 = class46.sizeX;
+                sizeX = object.sizeY;
+                sizeY = object.sizeX;
             }
-            int k2 = class46.anInt768;
-            if(l1 != 0)
-                k2 = (k2 << l1 & 0xf) + (k2 >> 4 - l1);
-            doWalkTo(2, 0, j2, 0, localPlayer.smallY[0], i2, k2, j, localPlayer.smallX[0], false, k);
+            int surroundings = object.face;
+            if(rotation != 0)
+                surroundings = (surroundings << rotation & 0xf) + (surroundings >> 4 - rotation);
+            doWalkTo(2, 0, sizeY, 0, localPlayer.smallY[0], sizeX, surroundings, y, localPlayer.smallX[0], false, x);
         } else
         {
-            doWalkTo(2, l1, 0, k1 + 1, localPlayer.smallY[0], 0, 0, j, localPlayer.smallX[0], false, k);
+            doWalkTo(2, rotation, 0, type + 1, localPlayer.smallY[0], 0, 0, y, localPlayer.smallX[0], false, x);
         }
         crossX = super.clickX;
         crossY = super.clickY;
@@ -3400,7 +3401,7 @@ public final class client extends RSApplet {
 
     private void dropClient()
     {
-        if(anInt1011 > 0)
+        if(idleLogout > 0)
         {
             logout();
             return;
@@ -3437,15 +3438,15 @@ public final class client extends RSApplet {
             inputDialogState = 0;
             inputTaken = true;
         }
-        int j = menuActionData2[i];
-        int k = menuActionData3[i];
-        int l = menuActionId[i];
-        int i1 = menuActionData1[i];
-        if(l >= 2000)
-            l -= 2000;
-        if(l == 582)
+        int actionInformation2 = menuActionData2[i];
+        int actionInformation1 = menuActionData3[i];
+        int menuAction = menuActionId[i];
+        int actionTarget = menuActionData1[i];
+        if(menuAction >= 2000)
+            menuAction -= 2000;
+        if(menuAction == 582)
         {
-            NPC npc = npcArray[i1];
+            NPC npc = npcArray[actionTarget];
             if(npc != null)
             {
                 doWalkTo(2, 0, 1, 0, localPlayer.smallY[0], 1, 0, npc.smallY[0], localPlayer.smallX[0], false, npc.smallX[0]);
@@ -3454,83 +3455,83 @@ public final class client extends RSApplet {
                 crossType = 2;
                 crossIndex = 0;
                 stream.putOpcode(57);
-                stream.putShortA(anInt1285);
-                stream.putShortA(i1);
+                stream.putShortA(useItemId);
+                stream.putShortA(actionTarget);
                 stream.putLEShort(lastItemSelectedSlot);
                 stream.putShortA(lastItemSelectedInterface);
             }
         }
-        if(l == 234)
+        if(menuAction == 234)
         {
-            boolean flag1 = doWalkTo(2, 0, 0, 0, localPlayer.smallY[0], 0, 0, k, localPlayer.smallX[0], false, j);
+            boolean flag1 = doWalkTo(2, 0, 0, 0, localPlayer.smallY[0], 0, 0, actionInformation1, localPlayer.smallX[0], false, actionInformation2);
             if(!flag1)
-                flag1 = doWalkTo(2, 0, 1, 0, localPlayer.smallY[0], 1, 0, k, localPlayer.smallX[0], false, j);
+                flag1 = doWalkTo(2, 0, 1, 0, localPlayer.smallY[0], 1, 0, actionInformation1, localPlayer.smallX[0], false, actionInformation2);
             crossX = super.clickX;
             crossY = super.clickY;
             crossType = 2;
             crossIndex = 0;
             stream.putOpcode(236);
-            stream.putLEShort(k + baseY);
-            stream.putShort(i1);
-            stream.putLEShort(j + baseX);
+            stream.putLEShort(actionInformation1 + baseY);
+            stream.putShort(actionTarget);
+            stream.putLEShort(actionInformation2 + baseX);
         }
-        if(l == 62 && method66(i1, k, j))
+        if(menuAction == 62 && clickInteractiveObject(actionTarget, actionInformation1, actionInformation2))
         {
             stream.putOpcode(192);
             stream.putShort(lastItemSelectedInterface);
-            stream.putLEShort(i1 >> 14 & 0x7fff);
-            stream.putLEShortA(k + baseY);
+            stream.putLEShort(actionTarget >> 14 & 0x7fff);
+            stream.putLEShortA(actionInformation1 + baseY);
             stream.putLEShort(lastItemSelectedSlot);
-            stream.putLEShortA(j + baseX);
-            stream.putShort(anInt1285);
+            stream.putLEShortA(actionInformation2 + baseX);
+            stream.putShort(useItemId);
         }
-        if(l == 511)
+        if(menuAction == 511)
         {
-            boolean flag2 = doWalkTo(2, 0, 0, 0, localPlayer.smallY[0], 0, 0, k, localPlayer.smallX[0], false, j);
+            boolean flag2 = doWalkTo(2, 0, 0, 0, localPlayer.smallY[0], 0, 0, actionInformation1, localPlayer.smallX[0], false, actionInformation2);
             if(!flag2)
-                flag2 = doWalkTo(2, 0, 1, 0, localPlayer.smallY[0], 1, 0, k, localPlayer.smallX[0], false, j);
+                flag2 = doWalkTo(2, 0, 1, 0, localPlayer.smallY[0], 1, 0, actionInformation1, localPlayer.smallX[0], false, actionInformation2);
             crossX = super.clickX;
             crossY = super.clickY;
             crossType = 2;
             crossIndex = 0;
             stream.putOpcode(25);
             stream.putLEShort(lastItemSelectedInterface);
-            stream.putShortA(anInt1285);
-            stream.putShort(i1);
-            stream.putShortA(k + baseY);
+            stream.putShortA(useItemId);
+            stream.putShort(actionTarget);
+            stream.putShortA(actionInformation1 + baseY);
             stream.putLEShortA(lastItemSelectedSlot);
-            stream.putShort(j + baseX);
+            stream.putShort(actionInformation2 + baseX);
         }
-        if(l == 74)
+        if(menuAction == 74)
         {
             stream.putOpcode(122);
-            stream.putLEShortA(k);
-            stream.putShortA(j);
-            stream.putLEShort(i1);
+            stream.putLEShortA(actionInformation1);
+            stream.putShortA(actionInformation2);
+            stream.putLEShort(actionTarget);
             atInventoryLoopCycle = 0;
-            atInventoryInterface = k;
-            atInventoryIndex = j;
+            atInventoryInterface = actionInformation1;
+            atInventoryIndex = actionInformation2;
             atInventoryInterfaceType = 2;
-            if(RSInterface.interfaceCache[k].parentID == openInterfaceId)
+            if(RSInterface.interfaceCache[actionInformation1].parentID == openInterfaceId)
                 atInventoryInterfaceType = 1;
-            if(RSInterface.interfaceCache[k].parentID == backDialogID)
+            if(RSInterface.interfaceCache[actionInformation1].parentID == backDialogID)
                 atInventoryInterfaceType = 3;
         }
-        if(l == 315)
+        if(menuAction == 315)
         {
-            RSInterface class9 = RSInterface.interfaceCache[k];
+            RSInterface rsInterface = RSInterface.interfaceCache[actionInformation1];
             boolean flag8 = true;
-            if(class9.contentType > 0)
-                flag8 = promptUserForInput(class9);
+            if(rsInterface.contentType > 0)
+                flag8 = promptUserForInput(rsInterface);
             if(flag8)
             {
                 stream.putOpcode(185);
-                stream.putShort(k);
+                stream.putShort(actionInformation1);
             }
         }
-        if(l == 561)
+        if(menuAction == 561)
         {
-            Player player = playerArray[i1];
+            Player player = playerArray[actionTarget];
             if(player != null)
             {
                 doWalkTo(2, 0, 1, 0, localPlayer.smallY[0], 1, 0, player.smallY[0], localPlayer.smallX[0], false, player.smallX[0]);
@@ -3538,219 +3539,221 @@ public final class client extends RSApplet {
                 crossY = super.clickY;
                 crossType = 2;
                 crossIndex = 0;
-                anInt1188 += i1;
-                if(anInt1188 >= 90)
+                anticheat7 += actionTarget;
+                if(anticheat7 >= 90)
                 {
                     stream.putOpcode(136);
-                    anInt1188 = 0;
+                    anticheat7 = 0;
                 }
                 stream.putOpcode(128);
-                stream.putShort(i1);
+                stream.putShort(actionTarget);
             }
         }
-        if(l == 20)
+        if(menuAction == 20)
         {
-            NPC class30_sub2_sub4_sub1_sub1_1 = npcArray[i1];
-            if(class30_sub2_sub4_sub1_sub1_1 != null)
+            NPC npc = npcArray[actionTarget];
+            if(npc != null)
             {
-                doWalkTo(2, 0, 1, 0, localPlayer.smallY[0], 1, 0, class30_sub2_sub4_sub1_sub1_1.smallY[0], localPlayer.smallX[0], false, class30_sub2_sub4_sub1_sub1_1.smallX[0]);
+                doWalkTo(2, 0, 1, 0, localPlayer.smallY[0], 1, 0, npc.smallY[0], localPlayer.smallX[0], false, npc.smallX[0]);
                 crossX = super.clickX;
                 crossY = super.clickY;
                 crossType = 2;
                 crossIndex = 0;
                 stream.putOpcode(155);
-                stream.putLEShort(i1);
+                stream.putLEShort(actionTarget);
             }
         }
-        if(l == 779)
+        if(menuAction == 779)
         {
-            Player class30_sub2_sub4_sub1_sub2_1 = playerArray[i1];
-            if(class30_sub2_sub4_sub1_sub2_1 != null)
+            Player player = playerArray[actionTarget];
+            if(player != null)
             {
-                doWalkTo(2, 0, 1, 0, localPlayer.smallY[0], 1, 0, class30_sub2_sub4_sub1_sub2_1.smallY[0], localPlayer.smallX[0], false, class30_sub2_sub4_sub1_sub2_1.smallX[0]);
+                doWalkTo(2, 0, 1, 0, localPlayer.smallY[0], 1, 0, player.smallY[0], localPlayer.smallX[0], false, player.smallX[0]);
                 crossX = super.clickX;
                 crossY = super.clickY;
                 crossType = 2;
                 crossIndex = 0;
                 stream.putOpcode(153);
-                stream.putLEShort(i1);
+                stream.putLEShort(actionTarget);
             }
         }
-        if(l == 516)
+        if(menuAction == 516)
             if(!menuOpen)
                 worldController.request2DTrace(super.clickX - 4, super.clickY - 4);
             else
-                worldController.request2DTrace(j - 4, k - 4);
-        if(l == 1062)
+                worldController.request2DTrace(actionInformation2 - 4, actionInformation1 - 4);
+        if(menuAction == 1062)
         {
-            anInt924 += baseX;
-            if(anInt924 >= 113)
+            anticheat13 += baseX;
+            if(anticheat13 >= 113)
             {
                 stream.putOpcode(183);
-                stream.writeDWordBigEndian(0xe63271);
-                anInt924 = 0;
+                stream.put24BitInt(0xe63271);
+                anticheat13 = 0;
             }
-            method66(i1, k, j);
+            clickInteractiveObject(actionTarget, actionInformation1, actionInformation2);
             stream.putOpcode(228);
-            stream.putShortA(i1 >> 14 & 0x7fff);
-            stream.putShortA(k + baseY);
-            stream.putShort(j + baseX);
+            stream.putShortA(actionTarget >> 14 & 0x7fff);
+            stream.putShortA(actionInformation1 + baseY);
+            stream.putShort(actionInformation2 + baseX);
         }
-        if(l == 679 && !aBoolean1149)
+        if(menuAction == 679 && !continuedDialogue)
         {
             stream.putOpcode(40);
-            stream.putShort(k);
-            aBoolean1149 = true;
+            stream.putShort(actionInformation1);
+            continuedDialogue = true;
         }
-        if(l == 431)
+        if(menuAction == 431)
         {
             stream.putOpcode(129);
-            stream.putShortA(j);
-            stream.putShort(k);
-            stream.putShortA(i1);
+            stream.putShortA(actionInformation2);
+            stream.putShort(actionInformation1);
+            stream.putShortA(actionTarget);
             atInventoryLoopCycle = 0;
-            atInventoryInterface = k;
-            atInventoryIndex = j;
+            atInventoryInterface = actionInformation1;
+            atInventoryIndex = actionInformation2;
             atInventoryInterfaceType = 2;
-            if(RSInterface.interfaceCache[k].parentID == openInterfaceId)
+            if(RSInterface.interfaceCache[actionInformation1].parentID == openInterfaceId)
                 atInventoryInterfaceType = 1;
-            if(RSInterface.interfaceCache[k].parentID == backDialogID)
+            if(RSInterface.interfaceCache[actionInformation1].parentID == backDialogID)
                 atInventoryInterfaceType = 3;
         }
-        if(l == 337 || l == 42 || l == 792 || l == 322)
+        if(menuAction == 337 || menuAction == 42 || menuAction == 792 || menuAction == 322)
         {
-            String s = menuActionName[i];
-            int k1 = s.indexOf("@whi@");
-            if(k1 != -1)
+            String name = menuActionName[i];
+            int position = name.indexOf("@whi@");
+            if(position != -1)
             {
-                long l3 = TextClass.longForName(s.substring(k1 + 5).trim());
-                if(l == 337)
-                    addFriend(l3);
-                if(l == 42)
-                    addIgnore(l3);
-                if(l == 792)
-                    deleteFriend(l3);
-                if(l == 322)
-                    deleteIgnore(l3);
+                long targetAsLong = TextClass.longForName(name.substring(position + 5).trim());
+                if(menuAction == 337)
+                    addFriend(targetAsLong);
+                if(menuAction == 42)
+                    addIgnore(targetAsLong);
+                if(menuAction == 792)
+                    deleteFriend(targetAsLong);
+                if(menuAction == 322)
+                    deleteIgnore(targetAsLong);
             }
         }
-        if(l == 53)
+        if(menuAction == 53)
         {
             stream.putOpcode(135);
-            stream.putLEShort(j);
-            stream.putShortA(k);
-            stream.putLEShort(i1);
+            stream.putLEShort(actionInformation2);
+            stream.putShortA(actionInformation1);
+            stream.putLEShort(actionTarget);
             atInventoryLoopCycle = 0;
-            atInventoryInterface = k;
-            atInventoryIndex = j;
+            atInventoryInterface = actionInformation1;
+            atInventoryIndex = actionInformation2;
             atInventoryInterfaceType = 2;
-            if(RSInterface.interfaceCache[k].parentID == openInterfaceId)
+            if(RSInterface.interfaceCache[actionInformation1].parentID == openInterfaceId)
                 atInventoryInterfaceType = 1;
-            if(RSInterface.interfaceCache[k].parentID == backDialogID)
+            if(RSInterface.interfaceCache[actionInformation1].parentID == backDialogID)
                 atInventoryInterfaceType = 3;
         }
-        if(l == 539)
+        if(menuAction == 539)
         {
             stream.putOpcode(16);
-            stream.putShortA(i1);
-            stream.putLEShortA(j);
-            stream.putLEShortA(k);
+            stream.putShortA(actionTarget);
+            stream.putLEShortA(actionInformation2);
+            stream.putLEShortA(actionInformation1);
             atInventoryLoopCycle = 0;
-            atInventoryInterface = k;
-            atInventoryIndex = j;
+            atInventoryInterface = actionInformation1;
+            atInventoryIndex = actionInformation2;
             atInventoryInterfaceType = 2;
-            if(RSInterface.interfaceCache[k].parentID == openInterfaceId)
+            if(RSInterface.interfaceCache[actionInformation1].parentID == openInterfaceId)
                 atInventoryInterfaceType = 1;
-            if(RSInterface.interfaceCache[k].parentID == backDialogID)
+            if(RSInterface.interfaceCache[actionInformation1].parentID == backDialogID)
                 atInventoryInterfaceType = 3;
         }
-        if(l == 484 || l == 6)
+        if(menuAction == 484 || menuAction == 6)
         {
-            String s1 = menuActionName[i];
-            int l1 = s1.indexOf("@whi@");
-            if(l1 != -1)
+            String name = menuActionName[i];
+            int position = name.indexOf("@whi@");
+            if(position != -1)
             {
-                s1 = s1.substring(l1 + 5).trim();
-                String s7 = TextClass.formatName(TextClass.nameForLong(TextClass.longForName(s1)));
-                boolean flag9 = false;
-                for(int j3 = 0; j3 < playerCount; j3++)
+                name = name.substring(position + 5).trim();
+                String nameAsLong = TextClass.formatName(TextClass.nameForLong(TextClass.longForName(name)));
+                boolean foundPlayer = false;
+                for(int p = 0; p < playerCount; p++)
                 {
-                    Player class30_sub2_sub4_sub1_sub2_7 = playerArray[playerId[j3]];
-                    if(class30_sub2_sub4_sub1_sub2_7 == null || class30_sub2_sub4_sub1_sub2_7.name == null || !class30_sub2_sub4_sub1_sub2_7.name.equalsIgnoreCase(s7))
+                    Player player = playerArray[playerId[p]];
+                    if(player == null || player.name == null || !player.name.equalsIgnoreCase(nameAsLong))
                         continue;
-                    doWalkTo(2, 0, 1, 0, localPlayer.smallY[0], 1, 0, class30_sub2_sub4_sub1_sub2_7.smallY[0], localPlayer.smallX[0], false, class30_sub2_sub4_sub1_sub2_7.smallX[0]);
-                    if(l == 484)
+                    doWalkTo(2, 0, 1, 0, localPlayer.smallY[0], 1, 0, player.smallY[0], localPlayer.smallX[0], false, player.smallX[0]);
+                    if(menuAction == 484)
                     {
+                    	// Follow another player
+                    	
                         stream.putOpcode(139);
-                        stream.putLEShort(playerId[j3]);
+                        stream.putLEShort(playerId[p]);
                     }
-                    if(l == 6)
+                    if(menuAction == 6)
                     {
-                        anInt1188 += i1;
-                        if(anInt1188 >= 90)
+                        anticheat7 += actionTarget;
+                        if(anticheat7 >= 90)
                         {
                             stream.putOpcode(136);
-                            anInt1188 = 0;
+                            anticheat7 = 0;
                         }
                         stream.putOpcode(128);
-                        stream.putShort(playerId[j3]);
+                        stream.putShort(playerId[p]);
                     }
-                    flag9 = true;
+                    foundPlayer = true;
                     break;
                 }
 
-                if(!flag9)
-                    pushMessage("Unable to find " + s7, 0, "");
+                if(!foundPlayer)
+                    pushMessage("Unable to find " + nameAsLong, 0, "");
             }
         }
-        if(l == 870)
+        if(menuAction == 870)
         {
             stream.putOpcode(53);
-            stream.putShort(j);
+            stream.putShort(actionInformation2);
             stream.putShortA(lastItemSelectedSlot);
-            stream.putLEShortA(i1);
+            stream.putLEShortA(actionTarget);
             stream.putShort(lastItemSelectedInterface);
-            stream.putLEShort(anInt1285);
-            stream.putShort(k);
+            stream.putLEShort(useItemId);
+            stream.putShort(actionInformation1);
             atInventoryLoopCycle = 0;
-            atInventoryInterface = k;
-            atInventoryIndex = j;
+            atInventoryInterface = actionInformation1;
+            atInventoryIndex = actionInformation2;
             atInventoryInterfaceType = 2;
-            if(RSInterface.interfaceCache[k].parentID == openInterfaceId)
+            if(RSInterface.interfaceCache[actionInformation1].parentID == openInterfaceId)
                 atInventoryInterfaceType = 1;
-            if(RSInterface.interfaceCache[k].parentID == backDialogID)
+            if(RSInterface.interfaceCache[actionInformation1].parentID == backDialogID)
                 atInventoryInterfaceType = 3;
         }
-        if(l == 847)
+        if(menuAction == 847)
         {
             stream.putOpcode(87);
-            stream.putShortA(i1);
-            stream.putShort(k);
-            stream.putShortA(j);
+            stream.putShortA(actionTarget);
+            stream.putShort(actionInformation1);
+            stream.putShortA(actionInformation2);
             atInventoryLoopCycle = 0;
-            atInventoryInterface = k;
-            atInventoryIndex = j;
+            atInventoryInterface = actionInformation1;
+            atInventoryIndex = actionInformation2;
             atInventoryInterfaceType = 2;
-            if(RSInterface.interfaceCache[k].parentID == openInterfaceId)
+            if(RSInterface.interfaceCache[actionInformation1].parentID == openInterfaceId)
                 atInventoryInterfaceType = 1;
-            if(RSInterface.interfaceCache[k].parentID == backDialogID)
+            if(RSInterface.interfaceCache[actionInformation1].parentID == backDialogID)
                 atInventoryInterfaceType = 3;
         }
-        if(l == 626)
+        if(menuAction == 626)
         {
-            RSInterface class9_1 = RSInterface.interfaceCache[k];
+            RSInterface rsInterface = RSInterface.interfaceCache[actionInformation1];
             spellSelected = 1;
-            anInt1137 = k;
-            spellUsableOn = class9_1.spellUsableOn;
+            selectedSpellId = actionInformation1;
+            spellUsableOn = rsInterface.spellUsableOn;
             itemSelected = 0;
             needDrawTabArea = true;
-            String s4 = class9_1.selectedActionName;
-            if(s4.indexOf(" ") != -1)
-                s4 = s4.substring(0, s4.indexOf(" "));
-            String s8 = class9_1.selectedActionName;
-            if(s8.indexOf(" ") != -1)
-                s8 = s8.substring(s8.indexOf(" ") + 1);
-            spellTooltip = s4 + " " + class9_1.spellName + " " + s8;
+            String namePartOne = rsInterface.selectedActionName;
+            if(namePartOne.indexOf(" ") != -1)
+                namePartOne = namePartOne.substring(0, namePartOne.indexOf(" "));
+            String namePartTwo = rsInterface.selectedActionName;
+            if(namePartTwo.indexOf(" ") != -1)
+                namePartTwo = namePartTwo.substring(namePartTwo.indexOf(" ") + 1);
+            spellTooltip = namePartOne + " " + rsInterface.spellName + " " + namePartTwo;
             if(spellUsableOn == 16)
             {
                 needDrawTabArea = true;
@@ -3759,350 +3762,350 @@ public final class client extends RSApplet {
             }
             return;
         }
-        if(l == 78)
+        if(menuAction == 78)
         {
             stream.putOpcode(117);
-            stream.putLEShortA(k);
-            stream.putLEShortA(i1);
-            stream.putLEShort(j);
+            stream.putLEShortA(actionInformation1);
+            stream.putLEShortA(actionTarget);
+            stream.putLEShort(actionInformation2);
             atInventoryLoopCycle = 0;
-            atInventoryInterface = k;
-            atInventoryIndex = j;
+            atInventoryInterface = actionInformation1;
+            atInventoryIndex = actionInformation2;
             atInventoryInterfaceType = 2;
-            if(RSInterface.interfaceCache[k].parentID == openInterfaceId)
+            if(RSInterface.interfaceCache[actionInformation1].parentID == openInterfaceId)
                 atInventoryInterfaceType = 1;
-            if(RSInterface.interfaceCache[k].parentID == backDialogID)
+            if(RSInterface.interfaceCache[actionInformation1].parentID == backDialogID)
                 atInventoryInterfaceType = 3;
         }
-        if(l == 27)
+        if(menuAction == 27)
         {
-            Player class30_sub2_sub4_sub1_sub2_2 = playerArray[i1];
-            if(class30_sub2_sub4_sub1_sub2_2 != null)
+            Player player = playerArray[actionTarget];
+            if(player != null)
             {
-                doWalkTo(2, 0, 1, 0, localPlayer.smallY[0], 1, 0, class30_sub2_sub4_sub1_sub2_2.smallY[0], localPlayer.smallX[0], false, class30_sub2_sub4_sub1_sub2_2.smallX[0]);
+                doWalkTo(2, 0, 1, 0, localPlayer.smallY[0], 1, 0, player.smallY[0], localPlayer.smallX[0], false, player.smallX[0]);
                 crossX = super.clickX;
                 crossY = super.clickY;
                 crossType = 2;
                 crossIndex = 0;
-                anInt986 += i1;
-                if(anInt986 >= 54)
+                anticheat15 += actionTarget;
+                if(anticheat15 >= 54)
                 {
                     stream.putOpcode(189);
                     stream.put(234);
-                    anInt986 = 0;
+                    anticheat15 = 0;
                 }
                 stream.putOpcode(73);
-                stream.putLEShort(i1);
+                stream.putLEShort(actionTarget);
             }
         }
-        if(l == 213)
+        if(menuAction == 213)
         {
-            boolean flag3 = doWalkTo(2, 0, 0, 0, localPlayer.smallY[0], 0, 0, k, localPlayer.smallX[0], false, j);
+            boolean flag3 = doWalkTo(2, 0, 0, 0, localPlayer.smallY[0], 0, 0, actionInformation1, localPlayer.smallX[0], false, actionInformation2);
             if(!flag3)
-                flag3 = doWalkTo(2, 0, 1, 0, localPlayer.smallY[0], 1, 0, k, localPlayer.smallX[0], false, j);
+                flag3 = doWalkTo(2, 0, 1, 0, localPlayer.smallY[0], 1, 0, actionInformation1, localPlayer.smallX[0], false, actionInformation2);
             crossX = super.clickX;
             crossY = super.clickY;
             crossType = 2;
             crossIndex = 0;
             stream.putOpcode(79);
-            stream.putLEShort(k + baseY);
-            stream.putShort(i1);
-            stream.putShortA(j + baseX);
+            stream.putLEShort(actionInformation1 + baseY);
+            stream.putShort(actionTarget);
+            stream.putShortA(actionInformation2 + baseX);
         }
-        if(l == 632)
+        if(menuAction == 632)
         {
             stream.putOpcode(145);
-            stream.putShortA(k);
-            stream.putShortA(j);
-            stream.putShortA(i1);
+            stream.putShortA(actionInformation1);
+            stream.putShortA(actionInformation2);
+            stream.putShortA(actionTarget);
             atInventoryLoopCycle = 0;
-            atInventoryInterface = k;
-            atInventoryIndex = j;
+            atInventoryInterface = actionInformation1;
+            atInventoryIndex = actionInformation2;
             atInventoryInterfaceType = 2;
-            if(RSInterface.interfaceCache[k].parentID == openInterfaceId)
+            if(RSInterface.interfaceCache[actionInformation1].parentID == openInterfaceId)
                 atInventoryInterfaceType = 1;
-            if(RSInterface.interfaceCache[k].parentID == backDialogID)
+            if(RSInterface.interfaceCache[actionInformation1].parentID == backDialogID)
                 atInventoryInterfaceType = 3;
         }
-        if(l == 493)
+        if(menuAction == 493)
         {
             stream.putOpcode(75);
-            stream.putLEShortA(k);
-            stream.putLEShort(j);
-            stream.putShortA(i1);
+            stream.putLEShortA(actionInformation1);
+            stream.putLEShort(actionInformation2);
+            stream.putShortA(actionTarget);
             atInventoryLoopCycle = 0;
-            atInventoryInterface = k;
-            atInventoryIndex = j;
+            atInventoryInterface = actionInformation1;
+            atInventoryIndex = actionInformation2;
             atInventoryInterfaceType = 2;
-            if(RSInterface.interfaceCache[k].parentID == openInterfaceId)
+            if(RSInterface.interfaceCache[actionInformation1].parentID == openInterfaceId)
                 atInventoryInterfaceType = 1;
-            if(RSInterface.interfaceCache[k].parentID == backDialogID)
+            if(RSInterface.interfaceCache[actionInformation1].parentID == backDialogID)
                 atInventoryInterfaceType = 3;
         }
-        if(l == 652)
+        if(menuAction == 652)
         {
-            boolean flag4 = doWalkTo(2, 0, 0, 0, localPlayer.smallY[0], 0, 0, k, localPlayer.smallX[0], false, j);
+            boolean flag4 = doWalkTo(2, 0, 0, 0, localPlayer.smallY[0], 0, 0, actionInformation1, localPlayer.smallX[0], false, actionInformation2);
             if(!flag4)
-                flag4 = doWalkTo(2, 0, 1, 0, localPlayer.smallY[0], 1, 0, k, localPlayer.smallX[0], false, j);
+                flag4 = doWalkTo(2, 0, 1, 0, localPlayer.smallY[0], 1, 0, actionInformation1, localPlayer.smallX[0], false, actionInformation2);
             crossX = super.clickX;
             crossY = super.clickY;
             crossType = 2;
             crossIndex = 0;
             stream.putOpcode(156);
-            stream.putShortA(j + baseX);
-            stream.putLEShort(k + baseY);
-            stream.putLEShortA(i1);
+            stream.putShortA(actionInformation2 + baseX);
+            stream.putLEShort(actionInformation1 + baseY);
+            stream.putLEShortA(actionTarget);
         }
-        if(l == 94)
+        if(menuAction == 94)
         {
-            boolean flag5 = doWalkTo(2, 0, 0, 0, localPlayer.smallY[0], 0, 0, k, localPlayer.smallX[0], false, j);
+            boolean flag5 = doWalkTo(2, 0, 0, 0, localPlayer.smallY[0], 0, 0, actionInformation1, localPlayer.smallX[0], false, actionInformation2);
             if(!flag5)
-                flag5 = doWalkTo(2, 0, 1, 0, localPlayer.smallY[0], 1, 0, k, localPlayer.smallX[0], false, j);
+                flag5 = doWalkTo(2, 0, 1, 0, localPlayer.smallY[0], 1, 0, actionInformation1, localPlayer.smallX[0], false, actionInformation2);
             crossX = super.clickX;
             crossY = super.clickY;
             crossType = 2;
             crossIndex = 0;
             stream.putOpcode(181);
-            stream.putLEShort(k + baseY);
-            stream.putShort(i1);
-            stream.putLEShort(j + baseX);
-            stream.putShortA(anInt1137);
+            stream.putLEShort(actionInformation1 + baseY);
+            stream.putShort(actionTarget);
+            stream.putLEShort(actionInformation2 + baseX);
+            stream.putShortA(selectedSpellId);
         }
-        if(l == 646)
+        if(menuAction == 646)
         {
             stream.putOpcode(185);
-            stream.putShort(k);
-            RSInterface class9_2 = RSInterface.interfaceCache[k];
-            if(class9_2.valueIndexArray != null && class9_2.valueIndexArray[0][0] == 5)
+            stream.putShort(actionInformation1);
+            RSInterface rsInterface = RSInterface.interfaceCache[actionInformation1];
+            if(rsInterface.valueIndexArray != null && rsInterface.valueIndexArray[0][0] == 5)
             {
-                int i2 = class9_2.valueIndexArray[0][1];
-                if(variousSettings[i2] != class9_2.anIntArray212[0])
+                int setting = rsInterface.valueIndexArray[0][1];
+                if(variousSettings[setting] != rsInterface.conditionOperand[0])
                 {
-                    variousSettings[i2] = class9_2.anIntArray212[0];
-                    handleInterfaceSetting(i2);
+                    variousSettings[setting] = rsInterface.conditionOperand[0];
+                    handleInterfaceSetting(setting);
                     needDrawTabArea = true;
                 }
             }
         }
-        if(l == 225)
+        if(menuAction == 225)
         {
-            NPC class30_sub2_sub4_sub1_sub1_2 = npcArray[i1];
-            if(class30_sub2_sub4_sub1_sub1_2 != null)
+            NPC npc = npcArray[actionTarget];
+            if(npc != null)
             {
-                doWalkTo(2, 0, 1, 0, localPlayer.smallY[0], 1, 0, class30_sub2_sub4_sub1_sub1_2.smallY[0], localPlayer.smallX[0], false, class30_sub2_sub4_sub1_sub1_2.smallX[0]);
+                doWalkTo(2, 0, 1, 0, localPlayer.smallY[0], 1, 0, npc.smallY[0], localPlayer.smallX[0], false, npc.smallX[0]);
                 crossX = super.clickX;
                 crossY = super.clickY;
                 crossType = 2;
                 crossIndex = 0;
-                anInt1226 += i1;
-                if(anInt1226 >= 85)
+                anticheat8 += actionTarget;
+                if(anticheat8 >= 85)
                 {
                     stream.putOpcode(230);
                     stream.put(239);
-                    anInt1226 = 0;
+                    anticheat8 = 0;
                 }
                 stream.putOpcode(17);
-                stream.putLEShortA(i1);
+                stream.putLEShortA(actionTarget);
             }
         }
-        if(l == 965)
+        if(menuAction == 965)
         {
-            NPC class30_sub2_sub4_sub1_sub1_3 = npcArray[i1];
-            if(class30_sub2_sub4_sub1_sub1_3 != null)
+            NPC npc = npcArray[actionTarget];
+            if(npc != null)
             {
-                doWalkTo(2, 0, 1, 0, localPlayer.smallY[0], 1, 0, class30_sub2_sub4_sub1_sub1_3.smallY[0], localPlayer.smallX[0], false, class30_sub2_sub4_sub1_sub1_3.smallX[0]);
+                doWalkTo(2, 0, 1, 0, localPlayer.smallY[0], 1, 0, npc.smallY[0], localPlayer.smallX[0], false, npc.smallX[0]);
                 crossX = super.clickX;
                 crossY = super.clickY;
                 crossType = 2;
                 crossIndex = 0;
-                anInt1134++;
-                if(anInt1134 >= 96)
+                anticheat3++;
+                if(anticheat3 >= 96)
                 {
                     stream.putOpcode(152);
                     stream.put(88);
-                    anInt1134 = 0;
+                    anticheat3 = 0;
                 }
                 stream.putOpcode(21);
-                stream.putShort(i1);
+                stream.putShort(actionTarget);
             }
         }
-        if(l == 413)
+        if(menuAction == 413)
         {
-            NPC class30_sub2_sub4_sub1_sub1_4 = npcArray[i1];
-            if(class30_sub2_sub4_sub1_sub1_4 != null)
+            NPC npc = npcArray[actionTarget];
+            if(npc != null)
             {
-                doWalkTo(2, 0, 1, 0, localPlayer.smallY[0], 1, 0, class30_sub2_sub4_sub1_sub1_4.smallY[0], localPlayer.smallX[0], false, class30_sub2_sub4_sub1_sub1_4.smallX[0]);
+                doWalkTo(2, 0, 1, 0, localPlayer.smallY[0], 1, 0, npc.smallY[0], localPlayer.smallX[0], false, npc.smallX[0]);
                 crossX = super.clickX;
                 crossY = super.clickY;
                 crossType = 2;
                 crossIndex = 0;
                 stream.putOpcode(131);
-                stream.putLEShortA(i1);
-                stream.putShortA(anInt1137);
+                stream.putLEShortA(actionTarget);
+                stream.putShortA(selectedSpellId);
             }
         }
-        if(l == 200)
+        if(menuAction == 200)
             clearTopInterfaces();
-        if(l == 1025)
+        if(menuAction == 1025)
         {
-            NPC class30_sub2_sub4_sub1_sub1_5 = npcArray[i1];
-            if(class30_sub2_sub4_sub1_sub1_5 != null)
+            NPC npc = npcArray[actionTarget];
+            if(npc != null)
             {
-                EntityDef entityDef = class30_sub2_sub4_sub1_sub1_5.npcDefinition;
+                EntityDef entityDef = npc.npcDefinition;
                 if(entityDef.childrenIDs != null)
-                    entityDef = entityDef.method161();
+                    entityDef = entityDef.getChildDefinition();
                 if(entityDef != null)
                 {
-                    String s9;
+                    String description;
                     if(entityDef.description != null)
-                        s9 = new String(entityDef.description);
+                        description = new String(entityDef.description);
                     else
-                        s9 = "It's a " + entityDef.name + ".";
-                    pushMessage(s9, 0, "");
+                        description = "It's a " + entityDef.name + ".";
+                    pushMessage(description, 0, "");
                 }
             }
         }
-        if(l == 900)
+        if(menuAction == 900)
         {
-            method66(i1, k, j);
+            clickInteractiveObject(actionTarget, actionInformation1, actionInformation2);
             stream.putOpcode(252);
-            stream.putLEShortA(i1 >> 14 & 0x7fff);
-            stream.putLEShort(k + baseY);
-            stream.putShortA(j + baseX);
+            stream.putLEShortA(actionTarget >> 14 & 0x7fff);
+            stream.putLEShort(actionInformation1 + baseY);
+            stream.putShortA(actionInformation2 + baseX);
         }
-        if(l == 412)
+        if(menuAction == 412)
         {
-            NPC class30_sub2_sub4_sub1_sub1_6 = npcArray[i1];
-            if(class30_sub2_sub4_sub1_sub1_6 != null)
+            NPC npc = npcArray[actionTarget];
+            if(npc != null)
             {
-                doWalkTo(2, 0, 1, 0, localPlayer.smallY[0], 1, 0, class30_sub2_sub4_sub1_sub1_6.smallY[0], localPlayer.smallX[0], false, class30_sub2_sub4_sub1_sub1_6.smallX[0]);
+                doWalkTo(2, 0, 1, 0, localPlayer.smallY[0], 1, 0, npc.smallY[0], localPlayer.smallX[0], false, npc.smallX[0]);
                 crossX = super.clickX;
                 crossY = super.clickY;
                 crossType = 2;
                 crossIndex = 0;
                 stream.putOpcode(72);
-                stream.putShortA(i1);
+                stream.putShortA(actionTarget);
             }
         }
-        if(l == 365)
+        if(menuAction == 365)
         {
-            Player class30_sub2_sub4_sub1_sub2_3 = playerArray[i1];
-            if(class30_sub2_sub4_sub1_sub2_3 != null)
+            Player player = playerArray[actionTarget];
+            if(player != null)
             {
-                doWalkTo(2, 0, 1, 0, localPlayer.smallY[0], 1, 0, class30_sub2_sub4_sub1_sub2_3.smallY[0], localPlayer.smallX[0], false, class30_sub2_sub4_sub1_sub2_3.smallX[0]);
+                doWalkTo(2, 0, 1, 0, localPlayer.smallY[0], 1, 0, player.smallY[0], localPlayer.smallX[0], false, player.smallX[0]);
                 crossX = super.clickX;
                 crossY = super.clickY;
                 crossType = 2;
                 crossIndex = 0;
                 stream.putOpcode(249);
-                stream.putShortA(i1);
-                stream.putLEShort(anInt1137);
+                stream.putShortA(actionTarget);
+                stream.putLEShort(selectedSpellId);
             }
         }
-        if(l == 729)
+        if(menuAction == 729)
         {
-            Player class30_sub2_sub4_sub1_sub2_4 = playerArray[i1];
-            if(class30_sub2_sub4_sub1_sub2_4 != null)
+            Player player = playerArray[actionTarget];
+            if(player != null)
             {
-                doWalkTo(2, 0, 1, 0, localPlayer.smallY[0], 1, 0, class30_sub2_sub4_sub1_sub2_4.smallY[0], localPlayer.smallX[0], false, class30_sub2_sub4_sub1_sub2_4.smallX[0]);
+                doWalkTo(2, 0, 1, 0, localPlayer.smallY[0], 1, 0, player.smallY[0], localPlayer.smallX[0], false, player.smallX[0]);
                 crossX = super.clickX;
                 crossY = super.clickY;
                 crossType = 2;
                 crossIndex = 0;
                 stream.putOpcode(39);
-                stream.putLEShort(i1);
+                stream.putLEShort(actionTarget);
             }
         }
-        if(l == 577)
+        if(menuAction == 577)
         {
-            Player class30_sub2_sub4_sub1_sub2_5 = playerArray[i1];
-            if(class30_sub2_sub4_sub1_sub2_5 != null)
+            Player player = playerArray[actionTarget];
+            if(player != null)
             {
-                doWalkTo(2, 0, 1, 0, localPlayer.smallY[0], 1, 0, class30_sub2_sub4_sub1_sub2_5.smallY[0], localPlayer.smallX[0], false, class30_sub2_sub4_sub1_sub2_5.smallX[0]);
+                doWalkTo(2, 0, 1, 0, localPlayer.smallY[0], 1, 0, player.smallY[0], localPlayer.smallX[0], false, player.smallX[0]);
                 crossX = super.clickX;
                 crossY = super.clickY;
                 crossType = 2;
                 crossIndex = 0;
                 stream.putOpcode(139);
-                stream.putLEShort(i1);
+                stream.putLEShort(actionTarget);
             }
         }
-        if(l == 956 && method66(i1, k, j))
+        if(menuAction == 956 && clickInteractiveObject(actionTarget, actionInformation1, actionInformation2))
         {
             stream.putOpcode(35);
-            stream.putLEShort(j + baseX);
-            stream.putShortA(anInt1137);
-            stream.putShortA(k + baseY);
-            stream.putLEShort(i1 >> 14 & 0x7fff);
+            stream.putLEShort(actionInformation2 + baseX);
+            stream.putShortA(selectedSpellId);
+            stream.putShortA(actionInformation1 + baseY);
+            stream.putLEShort(actionTarget >> 14 & 0x7fff);
         }
-        if(l == 567)
+        if(menuAction == 567)
         {
-            boolean flag6 = doWalkTo(2, 0, 0, 0, localPlayer.smallY[0], 0, 0, k, localPlayer.smallX[0], false, j);
+            boolean flag6 = doWalkTo(2, 0, 0, 0, localPlayer.smallY[0], 0, 0, actionInformation1, localPlayer.smallX[0], false, actionInformation2);
             if(!flag6)
-                flag6 = doWalkTo(2, 0, 1, 0, localPlayer.smallY[0], 1, 0, k, localPlayer.smallX[0], false, j);
+                flag6 = doWalkTo(2, 0, 1, 0, localPlayer.smallY[0], 1, 0, actionInformation1, localPlayer.smallX[0], false, actionInformation2);
             crossX = super.clickX;
             crossY = super.clickY;
             crossType = 2;
             crossIndex = 0;
             stream.putOpcode(23);
-            stream.putLEShort(k + baseY);
-            stream.putLEShort(i1);
-            stream.putLEShort(j + baseX);
+            stream.putLEShort(actionInformation1 + baseY);
+            stream.putLEShort(actionTarget);
+            stream.putLEShort(actionInformation2 + baseX);
         }
-        if(l == 867)
+        if(menuAction == 867)
         {
-            if((i1 & 3) == 0)
-                anInt1175++;
-            if(anInt1175 >= 59)
+            if((actionTarget & 3) == 0)
+                anticheat6++;
+            if(anticheat6 >= 59)
             {
                 stream.putOpcode(200);
                 stream.putShort(25501);
-                anInt1175 = 0;
+                anticheat6 = 0;
             }
             stream.putOpcode(43);
-            stream.putLEShort(k);
-            stream.putShortA(i1);
-            stream.putShortA(j);
+            stream.putLEShort(actionInformation1);
+            stream.putShortA(actionTarget);
+            stream.putShortA(actionInformation2);
             atInventoryLoopCycle = 0;
-            atInventoryInterface = k;
-            atInventoryIndex = j;
+            atInventoryInterface = actionInformation1;
+            atInventoryIndex = actionInformation2;
             atInventoryInterfaceType = 2;
-            if(RSInterface.interfaceCache[k].parentID == openInterfaceId)
+            if(RSInterface.interfaceCache[actionInformation1].parentID == openInterfaceId)
                 atInventoryInterfaceType = 1;
-            if(RSInterface.interfaceCache[k].parentID == backDialogID)
+            if(RSInterface.interfaceCache[actionInformation1].parentID == backDialogID)
                 atInventoryInterfaceType = 3;
         }
-        if(l == 543)
+        if(menuAction == 543)
         {
             stream.putOpcode(237);
-            stream.putShort(j);
-            stream.putShortA(i1);
-            stream.putShort(k);
-            stream.putShortA(anInt1137);
+            stream.putShort(actionInformation2);
+            stream.putShortA(actionTarget);
+            stream.putShort(actionInformation1);
+            stream.putShortA(selectedSpellId);
             atInventoryLoopCycle = 0;
-            atInventoryInterface = k;
-            atInventoryIndex = j;
+            atInventoryInterface = actionInformation1;
+            atInventoryIndex = actionInformation2;
             atInventoryInterfaceType = 2;
-            if(RSInterface.interfaceCache[k].parentID == openInterfaceId)
+            if(RSInterface.interfaceCache[actionInformation1].parentID == openInterfaceId)
                 atInventoryInterfaceType = 1;
-            if(RSInterface.interfaceCache[k].parentID == backDialogID)
+            if(RSInterface.interfaceCache[actionInformation1].parentID == backDialogID)
                 atInventoryInterfaceType = 3;
         }
-        if(l == 606)
+        if(menuAction == 606)
         {
-            String s2 = menuActionName[i];
-            int j2 = s2.indexOf("@whi@");
-            if(j2 != -1)
+            String name = menuActionName[i];
+            int position = name.indexOf("@whi@");
+            if(position != -1)
                 if(openInterfaceId == -1)
                 {
                     clearTopInterfaces();
-                    reportAbuseInput = s2.substring(j2 + 5).trim();
-                    canMute = false;
-                    for(int i3 = 0; i3 < RSInterface.interfaceCache.length; i3++)
+                    reportAbuseInput = name.substring(position + 5).trim();
+                    reportAbuseMute = false;
+                    for(int rsInterface = 0; rsInterface < RSInterface.interfaceCache.length; rsInterface++)
                     {
-                        if(RSInterface.interfaceCache[i3] == null || RSInterface.interfaceCache[i3].contentType != 600)
+                        if(RSInterface.interfaceCache[rsInterface] == null || RSInterface.interfaceCache[rsInterface].contentType != 600)
                             continue;
-                        reportAbuseInterfaceID = openInterfaceId = RSInterface.interfaceCache[i3].parentID;
+                        reportAbuseInterfaceID = openInterfaceId = RSInterface.interfaceCache[rsInterface].parentID;
                         break;
                     }
 
@@ -4111,9 +4114,9 @@ public final class client extends RSApplet {
                     pushMessage("Please close the interface you have open before using 'report abuse'", 0, "");
                 }
         }
-        if(l == 491)
+        if(menuAction == 491)
         {
-            Player player = playerArray[i1];
+            Player player = playerArray[actionTarget];
             if(player != null)
             {
                 doWalkTo(2, 0, 1, 0, localPlayer.smallY[0], 1, 0, player.smallY[0], localPlayer.smallX[0], false, player.smallX[0]);
@@ -4123,24 +4126,24 @@ public final class client extends RSApplet {
                 crossIndex = 0;
                 stream.putOpcode(14);
                 stream.putShortA(lastItemSelectedInterface);
-                stream.putShort(i1);
-                stream.putShort(anInt1285);
+                stream.putShort(actionTarget);
+                stream.putShort(useItemId);
                 stream.putLEShort(lastItemSelectedSlot);
             }
         }
-        if(l == 639)
+        if(menuAction == 639)
         {
-            String s3 = menuActionName[i];
-            int k2 = s3.indexOf("@whi@");
-            if(k2 != -1)
+            String name = menuActionName[i];
+            int position = name.indexOf("@whi@");
+            if(position != -1)
             {
-                long l4 = TextClass.longForName(s3.substring(k2 + 5).trim());
+                long nameAsLong = TextClass.longForName(name.substring(position + 5).trim());
                 int target = -1;
-                for(int f = 0; f < friendsCount; f++)
+                for(int friend = 0; friend < friendsCount; friend++)
                 {
-                    if(friendsListAsLongs[f] != l4)
+                    if(friendsListAsLongs[friend] != nameAsLong)
                         continue;
-                    target = f;
+                    target = friend;
                     break;
                 }
 
@@ -4152,143 +4155,143 @@ public final class client extends RSApplet {
                     promptInput = "";
                     friendsListAction = 3;
                     privateMessageTarget = friendsListAsLongs[target];
-                    aString1121 = "Enter message to send to " + friendsList[target];
+                    chatboxInputNeededString = "Enter message to send to " + friendsList[target];
                 }
             }
         }
-        if(l == 454)
+        if(menuAction == 454)
         {
             stream.putOpcode(41);
-            stream.putShort(i1);
-            stream.putShortA(j);
-            stream.putShortA(k);
+            stream.putShort(actionTarget);
+            stream.putShortA(actionInformation2);
+            stream.putShortA(actionInformation1);
             atInventoryLoopCycle = 0;
-            atInventoryInterface = k;
-            atInventoryIndex = j;
+            atInventoryInterface = actionInformation1;
+            atInventoryIndex = actionInformation2;
             atInventoryInterfaceType = 2;
-            if(RSInterface.interfaceCache[k].parentID == openInterfaceId)
+            if(RSInterface.interfaceCache[actionInformation1].parentID == openInterfaceId)
                 atInventoryInterfaceType = 1;
-            if(RSInterface.interfaceCache[k].parentID == backDialogID)
+            if(RSInterface.interfaceCache[actionInformation1].parentID == backDialogID)
                 atInventoryInterfaceType = 3;
         }
-        if(l == 478)
+        if(menuAction == 478)
         {
-            NPC class30_sub2_sub4_sub1_sub1_7 = npcArray[i1];
-            if(class30_sub2_sub4_sub1_sub1_7 != null)
+            NPC npc = npcArray[actionTarget];
+            if(npc != null)
             {
-                doWalkTo(2, 0, 1, 0, localPlayer.smallY[0], 1, 0, class30_sub2_sub4_sub1_sub1_7.smallY[0], localPlayer.smallX[0], false, class30_sub2_sub4_sub1_sub1_7.smallX[0]);
+                doWalkTo(2, 0, 1, 0, localPlayer.smallY[0], 1, 0, npc.smallY[0], localPlayer.smallX[0], false, npc.smallX[0]);
                 crossX = super.clickX;
                 crossY = super.clickY;
                 crossType = 2;
                 crossIndex = 0;
-                if((i1 & 3) == 0)
-                    anInt1155++;
-                if(anInt1155 >= 53)
+                if((actionTarget & 3) == 0)
+                    anticheat5++;
+                if(anticheat5 >= 53)
                 {
                     stream.putOpcode(85);
                     stream.put(66);
-                    anInt1155 = 0;
+                    anticheat5 = 0;
                 }
                 stream.putOpcode(18);
-                stream.putLEShort(i1);
+                stream.putLEShort(actionTarget);
             }
         }
-        if(l == 113)
+        if(menuAction == 113)
         {
-            method66(i1, k, j);
+            clickInteractiveObject(actionTarget, actionInformation1, actionInformation2);
             stream.putOpcode(70);
-            stream.putLEShort(j + baseX);
-            stream.putShort(k + baseY);
-            stream.putLEShortA(i1 >> 14 & 0x7fff);
+            stream.putLEShort(actionInformation2 + baseX);
+            stream.putShort(actionInformation1 + baseY);
+            stream.putLEShortA(actionTarget >> 14 & 0x7fff);
         }
-        if(l == 872)
+        if(menuAction == 872)
         {
-            method66(i1, k, j);
+            clickInteractiveObject(actionTarget, actionInformation1, actionInformation2);
             stream.putOpcode(234);
-            stream.putLEShortA(j + baseX);
-            stream.putShortA(i1 >> 14 & 0x7fff);
-            stream.putLEShortA(k + baseY);
+            stream.putLEShortA(actionInformation2 + baseX);
+            stream.putShortA(actionTarget >> 14 & 0x7fff);
+            stream.putLEShortA(actionInformation1 + baseY);
         }
-        if(l == 502)
+        if(menuAction == 502)
         {
-            method66(i1, k, j);
+            clickInteractiveObject(actionTarget, actionInformation1, actionInformation2);
             stream.putOpcode(132);
-            stream.putLEShortA(j + baseX);
-            stream.putShort(i1 >> 14 & 0x7fff);
-            stream.putShortA(k + baseY);
+            stream.putLEShortA(actionInformation2 + baseX);
+            stream.putShort(actionTarget >> 14 & 0x7fff);
+            stream.putShortA(actionInformation1 + baseY);
         }
-        if(l == 1125)
+        if(menuAction == 1125)
         {
-            ItemDef itemDef = ItemDef.forID(i1);
-            RSInterface class9_4 = RSInterface.interfaceCache[k];
-            String s5;
-            if(class9_4 != null && class9_4.inventoryStackSize[j] >= 0x186a0)
-                s5 = class9_4.inventoryStackSize[j] + " x " + itemDef.name;
+            ItemDef item = ItemDef.forID(actionTarget);
+            RSInterface rsInterface = RSInterface.interfaceCache[actionInformation1];
+            String description;
+            if(rsInterface != null && rsInterface.inventoryStackSize[actionInformation2] >= 0x186a0)
+                description = rsInterface.inventoryStackSize[actionInformation2] + " x " + item.name;
             else
-            if(itemDef.description != null)
-                s5 = new String(itemDef.description);
+            if(item.description != null)
+                description = new String(item.description);
             else
-                s5 = "It's a " + itemDef.name + ".";
-            pushMessage(s5, 0, "");
+                description = "It's a " + item.name + ".";
+            pushMessage(description, 0, "");
         }
-        if(l == 169)
+        if(menuAction == 169)
         {
             stream.putOpcode(185);
-            stream.putShort(k);
-            RSInterface class9_3 = RSInterface.interfaceCache[k];
-            if(class9_3.valueIndexArray != null && class9_3.valueIndexArray[0][0] == 5)
+            stream.putShort(actionInformation1);
+            RSInterface rsInterface = RSInterface.interfaceCache[actionInformation1];
+            if(rsInterface.valueIndexArray != null && rsInterface.valueIndexArray[0][0] == 5)
             {
-                int l2 = class9_3.valueIndexArray[0][1];
-                variousSettings[l2] = 1 - variousSettings[l2];
-                handleInterfaceSetting(l2);
+                int setting = rsInterface.valueIndexArray[0][1];
+                variousSettings[setting] = 1 - variousSettings[setting];
+                handleInterfaceSetting(setting);
                 needDrawTabArea = true;
             }
         }
-        if(l == 447)
+        if(menuAction == 447)
         {
             itemSelected = 1;
-            lastItemSelectedSlot = j;
-            lastItemSelectedInterface = k;
-            anInt1285 = i1;
-            selectedItemName = ItemDef.forID(i1).name;
+            lastItemSelectedSlot = actionInformation2;
+            lastItemSelectedInterface = actionInformation1;
+            useItemId = actionTarget;
+            selectedItemName = ItemDef.forID(actionTarget).name;
             spellSelected = 0;
             needDrawTabArea = true;
             return;
         }
-        if(l == 1226)
+        if(menuAction == 1226)
         {
-            int j1 = i1 >> 14 & 0x7fff;
-            ObjectDef class46 = ObjectDef.forID(j1);
-            String s10;
-            if(class46.description != null)
-                s10 = new String(class46.description);
+            int objectId = actionTarget >> 14 & 0x7fff;
+            ObjectDef object = ObjectDef.forID(objectId);
+            String description;
+            if(object.description != null)
+                description = new String(object.description);
             else
-                s10 = "It's a " + class46.name + ".";
-            pushMessage(s10, 0, "");
+                description = "It's a " + object.name + ".";
+            pushMessage(description, 0, "");
         }
-        if(l == 244)
+        if(menuAction == 244)
         {
-            boolean flag7 = doWalkTo(2, 0, 0, 0, localPlayer.smallY[0], 0, 0, k, localPlayer.smallX[0], false, j);
+            boolean flag7 = doWalkTo(2, 0, 0, 0, localPlayer.smallY[0], 0, 0, actionInformation1, localPlayer.smallX[0], false, actionInformation2);
             if(!flag7)
-                flag7 = doWalkTo(2, 0, 1, 0, localPlayer.smallY[0], 1, 0, k, localPlayer.smallX[0], false, j);
+                flag7 = doWalkTo(2, 0, 1, 0, localPlayer.smallY[0], 1, 0, actionInformation1, localPlayer.smallX[0], false, actionInformation2);
             crossX = super.clickX;
             crossY = super.clickY;
             crossType = 2;
             crossIndex = 0;
             stream.putOpcode(253);
-            stream.putLEShort(j + baseX);
-            stream.putLEShortA(k + baseY);
-            stream.putShortA(i1);
+            stream.putLEShort(actionInformation2 + baseX);
+            stream.putLEShortA(actionInformation1 + baseY);
+            stream.putShortA(actionTarget);
         }
-        if(l == 1448)
+        if(menuAction == 1448)
         {
-            ItemDef itemDef_1 = ItemDef.forID(i1);
-            String s6;
-            if(itemDef_1.description != null)
-                s6 = new String(itemDef_1.description);
+            ItemDef item = ItemDef.forID(actionTarget);
+            String description;
+            if(item.description != null)
+                description = new String(item.description);
             else
-                s6 = "It's a " + itemDef_1.name + ".";
-            pushMessage(s6, 0, "");
+                description = "It's a " + item.name + ".";
+            pushMessage(description, 0, "");
         }
         itemSelected = 0;
             spellSelected = 0;
@@ -4296,16 +4299,16 @@ public final class client extends RSApplet {
 
     }
 
-    private void method70()
+    private void checkTutorialIsland()
     {
         inTutorial = 0;
-        int j = (localPlayer.x >> 7) + baseX;
-        int k = (localPlayer.y >> 7) + baseY;
-        if(j >= 3053 && j <= 3156 && k >= 3056 && k <= 3136)
+        int x = (localPlayer.x >> 7) + baseX;
+        int y = (localPlayer.y >> 7) + baseY;
+        if(x >= 3053 && x <= 3156 && y >= 3056 && y <= 3136)
             inTutorial = 1;
-        if(j >= 3072 && j <= 3118 && k >= 9492 && k <= 9535)
+        if(x >= 3072 && x <= 3118 && y >= 9492 && y <= 9535)
             inTutorial = 1;
-        if(inTutorial == 1 && j >= 3139 && j <= 3199 && k >= 3008 && k <= 3062)
+        if(inTutorial == 1 && x >= 3139 && x <= 3199 && y >= 3008 && y <= 3062)
             inTutorial = 0;
     }
 
@@ -4601,7 +4604,7 @@ public final class client extends RSApplet {
         playerId = null;
         playersAwaitingUpdate = null;
         playerBuffer = null;
-        anIntArray840 = null;
+        actorsToUpdateIds = null;
         npcArray = null;
         npcIndices = null;
         groundArray = null;
@@ -4621,8 +4624,8 @@ public final class client extends RSApplet {
         friendsList = null;
         friendsListAsLongs = null;
         friendsWorldIds = null;
-        topLeft0BackgroundTile = null;
-        aRSImageProducer_1111 = null;
+        flameLeftBackground = null;
+        flameRightBackground = null;
         topLeft1BackgroundTile = null;
         bottomLeft1BackgroundTile = null;
         loginBoxLeftBackgroundTile = null;
@@ -4658,7 +4661,7 @@ public final class client extends RSApplet {
         if(onDemandFetcher != null)
             System.out.println("Od-cycle:" + onDemandFetcher.onDemandCycle);
         System.out.println("loop-cycle:" + loopCycle);
-        System.out.println("draw-cycle:" + anInt1061);
+        System.out.println("draw-cycle:" + drawCycle);
         System.out.println("ptype:" + packetOpcode);
         System.out.println("psize:" + packetSize);
         if(socket != null)
@@ -4831,9 +4834,9 @@ public final class client extends RSApplet {
 
                         }
                         if(inputString.equals("::fpson"))
-                            fpsOn = true;
+                            displayFpsAndMemory = true;
                         if(inputString.equals("::fpsoff"))
-                            fpsOn = false;
+                            displayFpsAndMemory = false;
                         if(inputString.equals("::noclip"))
                         {
                             for(int z = 0; z < 4; z++)
@@ -5210,11 +5213,11 @@ public final class client extends RSApplet {
 
                 Model model = new Model(i2, aclass30_sub2_sub4_sub6s);
                 for(int l2 = 0; l2 < 5; l2++)
-                    if(anIntArray990[l2] != 0)
+                    if(characterEditColours[l2] != 0)
                     {
-                        model.recolour(anIntArrayArray1003[l2][0], anIntArrayArray1003[l2][anIntArray990[l2]]);
+                        model.recolour(playerBodyRecolours[l2][0], playerBodyRecolours[l2][characterEditColours[l2]]);
                         if(l2 == 1)
-                            model.recolour(anIntArray1204[0], anIntArray1204[anIntArray990[l2]]);
+                            model.recolour(anIntArray1204[0], anIntArray1204[characterEditColours[l2]]);
                     }
 
                 model.createBones();
@@ -5276,7 +5279,7 @@ public final class client extends RSApplet {
         if(j == 613)
             if(playerRights >= 1)
             {
-                if(canMute)
+                if(reportAbuseMute)
                 {
                     class9.colourDefault = 0xff0000;
                     class9.message = "Moderator option: Mute player for 48 hours: <ON>";
@@ -5566,8 +5569,8 @@ public final class client extends RSApplet {
         topLeft1BackgroundTile = null;
         bottomLeft1BackgroundTile = null;
         loginBoxLeftBackgroundTile = null;
-        topLeft0BackgroundTile = null;
-        aRSImageProducer_1111 = null;
+        flameLeftBackground = null;
+        flameRightBackground = null;
         bottomLeft0BackgroundTile = null;
         aRSImageProducer_1113 = null;
         middleLeft1BackgroundTile = null;
@@ -5600,7 +5603,7 @@ public final class client extends RSApplet {
         int l = x * x + y * y;
         if(l > 4225 && l < 0x15f90)
         {
-            int i1 = minimapInt1 + minimapRotation & 0x7ff;
+            int i1 = cameraHorizontal + minimapRotation & 0x7ff;
             int sine = Model.SINE[i1];
             int cosine = Model.COSINE[i1];
             sine = (sine * 256) / (minimapZoom + 256);
@@ -5769,11 +5772,11 @@ public final class client extends RSApplet {
             {
                 playerRights = socket.read();
                 flagged = socket.read() == 1;
-                aLong1220 = 0L;
-                anInt1022 = 0;
+                lastClickTime = 0L;
+                sameClickPositionCounter = 0;
                 mouseDetection.coordsIndex = 0;
                 super.awtFocus = true;
-                aBoolean954 = true;
+                windowFocused = true;
                 loggedIn = true;
                 stream.currentOffset = 0;
                 inStream.currentOffset = 0;
@@ -5784,7 +5787,7 @@ public final class client extends RSApplet {
                 packetSize = 0;
                 anInt1009 = 0;
                 systemUpdateTime = 0;
-                anInt1011 = 0;
+                idleLogout = 0;
                 hintIconType = 0;
                 menuActionRow = 0;
                 menuOpen = false;
@@ -5796,12 +5799,12 @@ public final class client extends RSApplet {
                 spellSelected = 0;
                 loadingStage = 0;
                 trackCount = 0;
-                anInt1278 = (int)(Math.random() * 100D) - 50;
-                anInt1131 = (int)(Math.random() * 110D) - 55;
-                anInt896 = (int)(Math.random() * 80D) - 40;
+                cameraRandomisationH = (int)(Math.random() * 100D) - 50;
+                cameraRandomisationV = (int)(Math.random() * 110D) - 55;
+                cameraRandomisationA = (int)(Math.random() * 80D) - 40;
                 minimapRotation = (int)(Math.random() * 120D) - 60;
                 minimapZoom = (int)(Math.random() * 30D) - 20;
-                minimapInt1 = (int)(Math.random() * 20D) - 10 & 0x7ff;
+                cameraHorizontal = (int)(Math.random() * 20D) - 10 & 0x7ff;
                 minimapState = 0;
                 lastRegionId = -1;
                 destX = 0;
@@ -5839,7 +5842,7 @@ public final class client extends RSApplet {
                 openInterfaceId = -1;
                 inventoryOverlayInterfaceID = -1;
                 walkableInterfaceId = -1;
-                aBoolean1149 = false;
+                continuedDialogue = false;
                 tabID = 3;
                 inputDialogState = 0;
                 menuOpen = false;
@@ -5850,7 +5853,7 @@ public final class client extends RSApplet {
                 characterEditChangeGender = true;
                 changeGender();
                 for(int j3 = 0; j3 < 5; j3++)
-                    anIntArray990[j3] = 0;
+                    characterEditColours[j3] = 0;
 
                 for(int l3 = 0; l3 < 5; l3++)
                 {
@@ -5858,14 +5861,14 @@ public final class client extends RSApplet {
                     atPlayerArray[l3] = false;
                 }
 
-                anInt1175 = 0;
-                anInt1134 = 0;
-                anInt986 = 0;
+                anticheat6 = 0;
+                anticheat3 = 0;
+                anticheat15 = 0;
                 currentWalkingQueueSize = 0;
-                anInt924 = 0;
-                anInt1188 = 0;
-                anInt1155 = 0;
-                anInt1226 = 0;
+                anticheat13 = 0;
+                anticheat7 = 0;
+                anticheat5 = 0;
+                anticheat8 = 0;
                 int anInt941 = 0;
                 int anInt1260 = 0;
                 resetImageProducers2();
@@ -6358,7 +6361,7 @@ public final class client extends RSApplet {
         if(menuActionRow >= 400)
             return;
         if(entityDef.childrenIDs != null)
-            entityDef = entityDef.method161();
+            entityDef = entityDef.getChildDefinition();
         if(entityDef == null)
             return;
         if(!entityDef.clickable)
@@ -6549,29 +6552,29 @@ public final class client extends RSApplet {
         spawnRequest.face = face;
     }
 
-    private void method90()
+    private void handleMusic()
     {
-        for(int i = 0; i < trackCount; i++)
-            if(trackDelay[i] <= 0)
+        for(int track = 0; track < trackCount; track++)
+            if(trackDelay[track] <= 0)
             {
                 boolean flag1 = false;
                 try
                 {
-                    if(trackIds[i] == anInt874 && trackLoop[i] == anInt1289)
+                    if(trackIds[track] == currentTrackId && trackLoop[track] == currentTrackLoop)
                     {
                         if(!replayWave())
                             flag1 = true;
                     } else
                     {
-                        Stream stream = Sounds.method241(trackLoop[i], trackIds[i]);
+                        Stream stream = Sounds.data(trackLoop[track], trackIds[track]);
                         if(System.currentTimeMillis() + (long)(stream.currentOffset / 22) > aLong1172 + (long)(anInt1257 / 22))
                         {
                             anInt1257 = stream.currentOffset;
                             aLong1172 = System.currentTimeMillis();
                             if(saveWave(stream.buffer, stream.currentOffset))
                             {
-                                anInt874 = trackIds[i];
-                                anInt1289 = trackLoop[i];
+                                currentTrackId = trackIds[track];
+                                currentTrackLoop = trackLoop[track];
                             } else
                             {
                                 flag1 = true;
@@ -6580,24 +6583,24 @@ public final class client extends RSApplet {
                     }
                 }
                 catch(Exception exception) { }
-                if(!flag1 || trackDelay[i] == -5)
+                if(!flag1 || trackDelay[track] == -5)
                 {
                     trackCount--;
-                    for(int j = i; j < trackCount; j++)
+                    for(int _track = track; _track < trackCount; _track++)
                     {
-                        trackIds[j] = trackIds[j + 1];
-                        trackLoop[j] = trackLoop[j + 1];
-                        trackDelay[j] = trackDelay[j + 1];
+                        trackIds[_track] = trackIds[_track + 1];
+                        trackLoop[_track] = trackLoop[_track + 1];
+                        trackDelay[_track] = trackDelay[_track + 1];
                     }
 
-                    i--;
+                    track--;
                 } else
                 {
-                    trackDelay[i] = -5;
+                    trackDelay[track] = -5;
                 }
             } else
             {
-                trackDelay[i]--;
+                trackDelay[track]--;
             }
 
         if(prevSong > 0)
@@ -6660,7 +6663,7 @@ public final class client extends RSApplet {
             titleStreamLoader = streamLoaderForName(1, "title screen", "title", expectedCRCs[1], 25);
             smallFont = new TextDrawingArea(false, "p11_full", titleStreamLoader);
             plainFont = new TextDrawingArea(false, "p12_full", titleStreamLoader);
-            chatTextDrawingArea = new TextDrawingArea(false, "b12_full", titleStreamLoader);
+            boldFont = new TextDrawingArea(false, "b12_full", titleStreamLoader);
             TextDrawingArea aTextDrawingArea_1273 = new TextDrawingArea(true, "q8_full", titleStreamLoader);
             drawLogo();
             loadTitleScreen();
@@ -6959,7 +6962,7 @@ public final class client extends RSApplet {
             }
             drawLoadingText(95, "Unpacking interfaces");
             TextDrawingArea aclass30_sub2_sub1_sub4s[] = {
-                    smallFont, plainFont, chatTextDrawingArea, aTextDrawingArea_1273
+                    smallFont, plainFont, boldFont, aTextDrawingArea_1273
             };
             RSInterface.unpack(streamLoader_1, aclass30_sub2_sub1_sub4s, streamLoader_2);
             drawLoadingText(100, "Preparing game engine");
@@ -7033,7 +7036,7 @@ public final class client extends RSApplet {
         }
         catch(Exception exception)
         {
-            signlink.reporterror("loaderror " + aString1049 + " " + anInt1079);
+            signlink.reporterror("loaderror " + loadingBarText + " " + loadingBarPercentage);
         }
         loadingError = true;
     }
@@ -7081,7 +7084,7 @@ public final class client extends RSApplet {
             {
                 i -= 73;
                 j -= 75;
-                int k = minimapInt1 + minimapRotation & 0x7ff;
+                int k = cameraHorizontal + minimapRotation & 0x7ff;
                 int sine = Texture.SINE[k];
                 int cosine = Texture.COSINE[k];
                 sine = sine * (minimapZoom + 256) >> 8;
@@ -7095,7 +7098,7 @@ public final class client extends RSApplet {
                 {
                     stream.put(i);
                     stream.put(j);
-                    stream.putShort(minimapInt1);
+                    stream.putShort(cameraHorizontal);
                     stream.put(57);
                     stream.put(minimapRotation);
                     stream.put(minimapZoom);
@@ -7209,7 +7212,7 @@ public final class client extends RSApplet {
         return super.getCodeBase();
     }
 
-    private void method95()
+    private void updateNPCInstances()
     {
         for(int j = 0; j < npcCount; j++)
         {
@@ -7565,7 +7568,7 @@ public final class client extends RSApplet {
             needDrawTabArea = true;
         if(inventoryOverlayInterfaceID != -1)
         {
-            boolean flag1 = method119(animationTimePassed, inventoryOverlayInterfaceID);
+            boolean flag1 = animateInterface(animationTimePassed, inventoryOverlayInterfaceID);
             if(flag1)
                 needDrawTabArea = true;
         }
@@ -7582,7 +7585,7 @@ public final class client extends RSApplet {
         {
             aClass9_1059.scrollPosition = anInt1211 - anInt1089 - 77;
             if(super.mouseX > 448 && super.mouseX < 560 && super.mouseY > 332)
-                method65(463, 77, super.mouseX - 17, super.mouseY - 357, aClass9_1059, 0, false, anInt1211);
+                scrollInterface(463, 77, super.mouseX - 17, super.mouseY - 357, aClass9_1059, 0, false, anInt1211);
             int i = anInt1211 - 77 - aClass9_1059.scrollPosition;
             if(i < 0)
                 i = 0;
@@ -7596,7 +7599,7 @@ public final class client extends RSApplet {
         }
         if(backDialogID != -1)
         {
-            boolean flag2 = method119(animationTimePassed, backDialogID);
+            boolean flag2 = animateInterface(animationTimePassed, backDialogID);
             if(flag2)
                 inputTaken = true;
         }
@@ -7842,7 +7845,7 @@ public final class client extends RSApplet {
                                 int differenceX = 0;
                                 int differenceY = 0;
                                 int itemId = childInterface.inventoryItemId[item] - 1;
-                                if(tileX > DrawingArea.topX - 32 && tileX < DrawingArea.bottomX && tileY > DrawingArea.topY - 32 && tileY < DrawingArea.bottomY || activeInterfaceType != 0 && moveItemStartSlot == item)
+                                if(tileX > DrawingArea.topX - 32 && tileX < DrawingArea.bottomX && tileY > DrawingArea.topY - 32 && tileY < DrawingArea.bottomY || activeInterfaceType != 0 && moveItemSlotStart == item)
                                 {
                                     int outlineColour = 0;
                                     if(itemSelected == 1 && lastItemSelectedSlot == item && lastItemSelectedInterface == childInterface.id)
@@ -7850,7 +7853,7 @@ public final class client extends RSApplet {
                                     Sprite sprite = ItemDef.getSprite(itemId, childInterface.inventoryStackSize[item], outlineColour);
                                     if(sprite != null)
                                     {
-                                        if(activeInterfaceType != 0 && moveItemStartSlot == item && moveItemInterfaceId == childInterface.id)
+                                        if(activeInterfaceType != 0 && moveItemSlotStart == item && moveItemInterfaceId == childInterface.id)
                                         {
                                             differenceX = super.mouseX - lastMouseX;
                                             differenceY = super.mouseY - lastMouseY;
@@ -7960,7 +7963,7 @@ public final class client extends RSApplet {
                         if(hover && childInterface.colourDefaultHover != 0)
                             colour = childInterface.colourDefaultHover;
                     }
-                    if(childInterface.actionType == 6 && aBoolean1149)
+                    if(childInterface.actionType == 6 && continuedDialogue)
                     {
                         s = "Please wait...";
                         colour = childInterface.colourDefault;
@@ -8309,69 +8312,71 @@ public final class client extends RSApplet {
         }
     }
 
-    private void method108()
+    private void moveCameraWithArrowKeys()
     {
         try
         {
-            int j = localPlayer.x + anInt1278;
-            int k = localPlayer.y + anInt1131;
-            if(anInt1014 - j < -500 || anInt1014 - j > 500 || anInt1015 - k < -500 || anInt1015 - k > 500)
+            int x = localPlayer.x + cameraRandomisationH;
+            int y = localPlayer.y + cameraRandomisationV;
+            if(currentCameraPositionH - x < -500 || currentCameraPositionH - x > 500 || currentCameraPositionV - y < -500 || currentCameraPositionV - y > 500)
             {
-                anInt1014 = j;
-                anInt1015 = k;
+                currentCameraPositionH = x;
+                currentCameraPositionV = y;
             }
-            if(anInt1014 != j)
-                anInt1014 += (j - anInt1014) / 16;
-            if(anInt1015 != k)
-                anInt1015 += (k - anInt1015) / 16;
+            
+            if(currentCameraPositionH != x)
+                currentCameraPositionH += (x - currentCameraPositionH) / 16;
+            if(currentCameraPositionV != y)
+                currentCameraPositionV += (y - currentCameraPositionV) / 16;
             if(super.keyStatus[1] == 1)
-                anInt1186 += (-24 - anInt1186) / 2;
+                cameraModificationH += (-24 - cameraModificationH) / 2;
             else
             if(super.keyStatus[2] == 1)
-                anInt1186 += (24 - anInt1186) / 2;
+                cameraModificationH += (24 - cameraModificationH) / 2;
             else
-                anInt1186 /= 2;
+                cameraModificationH /= 2;
             if(super.keyStatus[3] == 1)
-                anInt1187 += (12 - anInt1187) / 2;
+                cameraModificationV += (12 - cameraModificationV) / 2;
             else
             if(super.keyStatus[4] == 1)
-                anInt1187 += (-12 - anInt1187) / 2;
+                cameraModificationV += (-12 - cameraModificationV) / 2;
             else
-                anInt1187 /= 2;
-              minimapInt1 = minimapInt1 + anInt1186 / 2 & 0x7ff;
-              cameraY += anInt1187 / 2;
-            if(cameraY < 128)
-                cameraY = 128;
-            if(cameraY > 383)
-                cameraY = 383;
-            int l = anInt1014 >> 7;
-            int i1 = anInt1015 >> 7;
-            int j1 = getFloorDrawHeight(plane, anInt1015, anInt1014);
-            int k1 = 0;
-            if(l > 3 && i1 > 3 && l < 100 && i1 < 100)
+                cameraModificationV /= 2;
+              cameraHorizontal = cameraHorizontal + cameraModificationH / 2 & 0x7ff;
+              cameraVertical += cameraModificationV / 2;
+            if(cameraVertical < 128)
+                cameraVertical = 128;
+            if(cameraVertical > 383)
+                cameraVertical = 383;
+            
+            int maximumX = currentCameraPositionH >> 7;
+            int maximumY = currentCameraPositionV >> 7;
+            int drawHeight = getFloorDrawHeight(plane, currentCameraPositionV, currentCameraPositionH);
+            int maximumDrawHeight = 0;
+            if(maximumX > 3 && maximumY > 3 && maximumX < 100 && maximumY < 100)
             {
-                for(int l1 = l - 4; l1 <= l + 4; l1++)
+                for(int _x = maximumX - 4; _x <= maximumX + 4; _x++)
                 {
-                    for(int k2 = i1 - 4; k2 <= i1 + 4; k2++)
+                    for(int _y = maximumY - 4; _y <= maximumY + 4; _y++)
                     {
-                        int l2 = plane;
-                        if(l2 < 3 && (tileFlags[1][l1][k2] & 2) == 2)
-                            l2++;
-                        int i3 = j1 - intGroundArray[l2][l1][k2];
-                        if(i3 > k1)
-                            k1 = i3;
+                        int _z = plane;
+                        if(_z < 3 && (tileFlags[1][_x][_y] & 2) == 2)
+                            _z++;
+                        int h = drawHeight - intGroundArray[_z][_x][_y];
+                        if(h > maximumDrawHeight)
+                            maximumDrawHeight = h;
                     }
 
                 }
 
             }
-            anInt1005++;
-            if(anInt1005 > 1512)
+            anticheat1++;
+            if(anticheat1 > 1512)
             {
-                anInt1005 = 0;
+                anticheat1 = 0;
                 stream.putOpcode(77);
                 stream.put(0);
-                int i2 = stream.currentOffset;
+                int offset = stream.currentOffset;
                 stream.put((int)(Math.random() * 256D));
                 stream.put(101);
                 stream.put(233);
@@ -8383,26 +8388,26 @@ public final class client extends RSApplet {
                 stream.put(38);
                 stream.putShort((int)(Math.random() * 65536D));
                 stream.putShort((int)(Math.random() * 65536D));
-                stream.putSizeByte(stream.currentOffset - i2);
+                stream.putSizeByte(stream.currentOffset - offset);
             }
-            int j2 = k1 * 192;
-            if(j2 > 0x17f00)
-                j2 = 0x17f00;
-            if(j2 < 32768)
-                j2 = 32768;
-            if(j2 > anInt984)
+            int h = maximumDrawHeight * 192;
+            if(h > 0x17f00)
+                h = 0x17f00;
+            if(h < 32768)
+                h = 32768;
+            if(h > secondaryCameraVertical)
             {
-                anInt984 += (j2 - anInt984) / 24;
+                secondaryCameraVertical += (h - secondaryCameraVertical) / 24;
                 return;
             }
-            if(j2 < anInt984)
+            if(h < secondaryCameraVertical)
             {
-                anInt984 += (j2 - anInt984) / 80;
+                secondaryCameraVertical += (h - secondaryCameraVertical) / 80;
             }
         }
         catch(Exception _ex)
         {
-            signlink.reporterror("glfc_ex " + localPlayer.x + "," + localPlayer.y + "," + anInt1014 + "," + anInt1015 + "," + regionX + "," + regionY + "," + baseX + "," + baseY);
+            signlink.reporterror("glfc_ex " + localPlayer.x + "," + localPlayer.y + "," + currentCameraPositionH + "," + currentCameraPositionV + "," + regionX + "," + regionY + "," + baseX + "," + baseY);
             throw new RuntimeException("eek");
         }
     }
@@ -8414,7 +8419,7 @@ public final class client extends RSApplet {
             showErrorScreen();
             return;
         }
-        anInt1061++;
+        drawCycle++;
         if(!loggedIn)
             drawLoginScreen(false);
         else
@@ -8422,34 +8427,34 @@ public final class client extends RSApplet {
         anInt1213 = 0;
     }
 
-    private boolean isFriendOrSelf(String s)
+    private boolean isFriendOrSelf(String name)
     {
-        if(s == null)
+        if(name == null)
             return false;
         for(int i = 0; i < friendsCount; i++)
-            if(s.equalsIgnoreCase(friendsList[i]))
+            if(name.equalsIgnoreCase(friendsList[i]))
                 return true;
-        return s.equalsIgnoreCase(localPlayer.name);
+        return name.equalsIgnoreCase(localPlayer.name);
     }
 
-    private static String combatDiffColor(int i, int j)
+    private static String combatDiffColor(int localLevel, int otherLevel)
     {
-        int k = i - j;
-        if(k < -9)
+        int difference = localLevel - otherLevel;
+        if(difference < -9)
             return "@red@";
-        if(k < -6)
+        if(difference < -6)
             return "@or3@";
-        if(k < -3)
+        if(difference < -3)
             return "@or2@";
-        if(k < 0)
+        if(difference < 0)
             return "@or1@";
-        if(k > 9)
+        if(difference > 9)
             return "@gre@";
-        if(k > 6)
+        if(difference > 6)
             return "@gr3@";
-        if(k > 3)
+        if(difference > 3)
             return "@gr2@";
-        if(k > 0)
+        if(difference > 0)
             return "@gr1@";
         else
             return "@yel@";
@@ -8466,10 +8471,10 @@ public final class client extends RSApplet {
         if(crossType == 1)
         {
             crosses[crossIndex / 100].drawSprite(crossX - 8 - 4, crossY - 8 - 4);
-            anInt1142++;
-            if(anInt1142 > 67)
+            anticheat4++;
+            if(anticheat4 > 67)
             {
-                anInt1142 = 0;
+                anticheat4 = 0;
                 stream.putOpcode(78);
             }
         }
@@ -8477,15 +8482,15 @@ public final class client extends RSApplet {
             crosses[4 + crossIndex / 100].drawSprite(crossX - 8 - 4, crossY - 8 - 4);
         if(walkableInterfaceId != -1)
         {
-            method119(animationTimePassed, walkableInterfaceId);
+            animateInterface(animationTimePassed, walkableInterfaceId);
             drawInterface(0, 0, RSInterface.interfaceCache[walkableInterfaceId], 0);
         }
         if(openInterfaceId != -1)
         {
-            method119(animationTimePassed, openInterfaceId);
+            animateInterface(animationTimePassed, openInterfaceId);
             drawInterface(0, 0, RSInterface.interfaceCache[openInterfaceId], 0);
         }
-        method70();
+        checkTutorialIsland();
         if(!menuOpen)
         {
             processRightClick();
@@ -8495,75 +8500,75 @@ public final class client extends RSApplet {
             drawMenu();
         if(multiCombatZone == 1)
             headIcons[1].drawSprite(472, 296);
-        if(fpsOn)
+        if(displayFpsAndMemory)
         {
-            char c = '\u01FB';
-            int k = 20;
-            int i1 = 0xffff00;
+            int x = 507;
+            int y = 20;
+            int colour = 0xffff00;
             if(super.fps < 15)
-                i1 = 0xff0000;
-            plainFont.drawTextHRightVTop("Fps:" + super.fps, c, k, i1);
-            k += 15;
+                colour = 0xff0000;
+            plainFont.drawTextHRightVTop("Fps:" + super.fps, x, y, colour);
+            y += 15;
             Runtime runtime = Runtime.getRuntime();
-            int j1 = (int)((runtime.totalMemory() - runtime.freeMemory()) / 1024L);
-            i1 = 0xffff00;
-            if(j1 > 0x2000000 && lowMemory)
-                i1 = 0xff0000;
-            plainFont.drawTextHRightVTop("Mem:" + j1 + "k", c, k, 0xffff00);
-            k += 15;
+            int memory = (int)((runtime.totalMemory() - runtime.freeMemory()) / 1024L);
+            colour = 0xffff00;
+            if(memory > 0x2000000 && lowMemory)
+                colour = 0xff0000;
+            plainFont.drawTextHRightVTop("Mem:" + memory + "k", x, y, 0xffff00);
+            y += 15;
         }
         if(systemUpdateTime != 0)
         {
-            int j = systemUpdateTime / 50;
-            int l = j / 60;
-            j %= 60;
-            if(j < 10)
-                plainFont.drawTextHLeftVTop("System update in: " + l + ":0" + j, 4, 329, 0xffff00);
+            int seconds = systemUpdateTime / 50;
+            int minutes = seconds / 60;
+            seconds %= 60;
+            if(seconds < 10)
+                plainFont.drawTextHLeftVTop("System update in: " + minutes + ":0" + seconds, 4, 329, 0xffff00);
             else
-                plainFont.drawTextHLeftVTop("System update in: " + l + ":" + j, 4, 329, 0xffff00);
-            anInt849++;
-            if(anInt849 > 75)
+                plainFont.drawTextHLeftVTop("System update in: " + minutes + ":" + seconds, 4, 329, 0xffff00);
+            anticheat10++;
+            if(anticheat10 > 75)
             {
-                anInt849 = 0;
+                anticheat10 = 0;
                 stream.putOpcode(148);
             }
         }
     }
 
-    private void addIgnore(long l)
+    private void addIgnore(long target)
     {
         try
         {
-            if(l == 0L)
+            if(target == 0L)
                 return;
             if(ignoreCount >= 100)
             {
                 pushMessage("Your ignore list is full. Max of 100 hit", 0, "");
                 return;
             }
-            String s = TextClass.formatName(TextClass.nameForLong(l));
-            for(int j = 0; j < ignoreCount; j++)
-                if(ignoreListAsLongs[j] == l)
+            String targetName = TextClass.formatName(TextClass.nameForLong(target));
+            for(int p = 0; p < ignoreCount; p++)
+                if(ignoreListAsLongs[p] == target)
                 {
-                    pushMessage(s + " is already on your ignore list", 0, "");
+                    pushMessage(targetName + " is already on your ignore list", 0, "");
                     return;
                 }
-            for(int k = 0; k < friendsCount; k++)
-                if(friendsListAsLongs[k] == l)
+            for(int p = 0; p < friendsCount; p++)
+                if(friendsListAsLongs[p] == target)
                 {
-                    pushMessage("Please remove " + s + " from your friend list first", 0, "");
+                    pushMessage("Please remove " + targetName + " from your friend list first", 0, "");
                     return;
                 }
 
-            ignoreListAsLongs[ignoreCount++] = l;
+            ignoreListAsLongs[ignoreCount++] = target;
             needDrawTabArea = true;
             stream.putOpcode(133);
-            stream.putLong(l);
+            stream.putLong(target);
             return;
         }
         catch(RuntimeException runtimeexception)
         {
-            signlink.reporterror("45688, " + l + ", " + 4 + ", " + runtimeexception.toString());
+            signlink.reporterror("45688, " + target + ", " + 4 + ", " + runtimeexception.toString());
         }
         throw new RuntimeException();
     }
@@ -8621,10 +8626,10 @@ public final class client extends RSApplet {
 
     private void processMenuHovering()
     {
-        int width = chatTextDrawingArea.getFormattedStringWidth("Choose Option");
+        int width = boldFont.getFormattedStringWidth("Choose Option");
         for(int row = 0; row < menuActionRow; row++)
         {
-            int rowWidth = chatTextDrawingArea.getFormattedStringWidth(menuActionName[row]);
+            int rowWidth = boldFont.getFormattedStringWidth(menuActionName[row]);
             if(rowWidth > width)
                 width = rowWidth;
         }
@@ -8751,22 +8756,22 @@ public final class client extends RSApplet {
             }
             catch(Exception _ex) { }
         }
-        aBackground_966 = null;
-        aBackground_967 = null;
-        aBackgroundArray1152s = null;
+        titleBoxImage = null;
+        titleButtonImage = null;
+        flameRuneImage = null;
         anIntArray850 = null;
-        anIntArray851 = null;
-        anIntArray852 = null;
-        anIntArray853 = null;
+        flameColour1 = null;
+        flameColour2 = null;
+        flameColour3 = null;
         anIntArray1190 = null;
         anIntArray1191 = null;
         anIntArray828 = null;
         anIntArray829 = null;
-        aClass30_Sub2_Sub1_Sub1_1201 = null;
-        aClass30_Sub2_Sub1_Sub1_1202 = null;
+        flameLeftBackground2 = null;
+        flameRightBackground2 = null;
     }
 
-    private boolean method119(int i, int j)
+    private boolean animateInterface(int i, int j)
     {
         boolean flag1 = false;
         RSInterface class9 = RSInterface.interfaceCache[j];
@@ -8776,7 +8781,7 @@ public final class client extends RSApplet {
                 break;
             RSInterface class9_1 = RSInterface.interfaceCache[class9.children[k]];
             if(class9_1.type == 1)
-                flag1 |= method119(i, class9_1.id);
+                flag1 |= animateInterface(i, class9_1.id);
             if(class9_1.type == 6 && (class9_1.animationDefaultId != -1 || class9_1.animationActiveId != -1))
             {
                 boolean flag2 = interfaceIsSelected(class9_1);
@@ -9074,7 +9079,7 @@ public final class client extends RSApplet {
             s = menuActionName[menuActionRow - 1];
         if(menuActionRow > 2)
             s = s + "@whi@ / " + (menuActionRow - 2) + " more options";
-        chatTextDrawingArea.drawShadowedTextRight(s, 4, 15, 0xffffff, loopCycle / 1000);
+        boldFont.drawShadowedTextRight(s, 4, 15, 0xffffff, loopCycle / 1000);
     }
 
     private void drawMinimap()
@@ -9089,15 +9094,15 @@ public final class client extends RSApplet {
                 if(abyte0[i5] == 0)
                     ai[i5] = 0;
 
-            compass.method352(33, minimapInt1, anIntArray1057, 256, anIntArray968, 25, 0, 0, 33, 25);
+            compass.method352(33, cameraHorizontal, anIntArray1057, 256, anIntArray968, 25, 0, 0, 33, 25);
             gameScreenCanvas.initDrawingArea();
             return;
         }
-        int i = minimapInt1 + minimapRotation & 0x7ff;
+        int i = cameraHorizontal + minimapRotation & 0x7ff;
         int j = 48 + localPlayer.x / 32;
         int l2 = 464 - localPlayer.y / 32;
         minimapImage.method352(151, i, anIntArray1229, 256 + minimapZoom, anIntArray1052, l2, 5, 25, 146, j);
-        compass.method352(33, minimapInt1, anIntArray1057, 256, anIntArray968, 25, 0, 0, 33, 25);
+        compass.method352(33, cameraHorizontal, anIntArray1057, 256, anIntArray968, 25, 0, 0, 33, 25);
         for(int j5 = 0; j5 < minimapHintCount; j5++)
         {
             int mapX = (minimapHintX[j5] * 4 + 2) - localPlayer.x / 32;
@@ -9127,7 +9132,7 @@ public final class client extends RSApplet {
             {
                 EntityDef entityDef = npc.npcDefinition;
                 if(entityDef.childrenIDs != null)
-                    entityDef = entityDef.method161();
+                    entityDef = entityDef.getChildDefinition();
                 if(entityDef != null && entityDef.aBoolean87 && entityDef.clickable)
                 {
                     int i1 = npc.x / 32 - localPlayer.x / 32;
@@ -9339,7 +9344,7 @@ public final class client extends RSApplet {
         for(int i = 0; i < class9.anIntArray245.length; i++)
         {
             int j = extractInterfaceValues(class9, i);
-            int k = class9.anIntArray212[i];
+            int k = class9.conditionOperand[i];
             if(class9.anIntArray245[i] == 2)
             {
                 if(j >= k)
@@ -9394,31 +9399,31 @@ public final class client extends RSApplet {
         {
             for(int i = 0; i < 256; i++)
                 if(anInt1040 > 768)
-                    anIntArray850[i] = method83(anIntArray851[i], anIntArray852[i], 1024 - anInt1040);
+                    anIntArray850[i] = method83(flameColour1[i], flameColour2[i], 1024 - anInt1040);
                 else
                 if(anInt1040 > 256)
-                    anIntArray850[i] = anIntArray852[i];
+                    anIntArray850[i] = flameColour2[i];
                 else
-                    anIntArray850[i] = method83(anIntArray852[i], anIntArray851[i], 256 - anInt1040);
+                    anIntArray850[i] = method83(flameColour2[i], flameColour1[i], 256 - anInt1040);
 
         } else
         if(anInt1041 > 0)
         {
             for(int j = 0; j < 256; j++)
                 if(anInt1041 > 768)
-                    anIntArray850[j] = method83(anIntArray851[j], anIntArray853[j], 1024 - anInt1041);
+                    anIntArray850[j] = method83(flameColour1[j], flameColour3[j], 1024 - anInt1041);
                 else
                 if(anInt1041 > 256)
-                    anIntArray850[j] = anIntArray853[j];
+                    anIntArray850[j] = flameColour3[j];
                 else
-                    anIntArray850[j] = method83(anIntArray853[j], anIntArray851[j], 256 - anInt1041);
+                    anIntArray850[j] = method83(flameColour3[j], flameColour1[j], 256 - anInt1041);
 
         } else
         {
-            System.arraycopy(anIntArray851, 0, anIntArray850, 0, 256);
+            System.arraycopy(flameColour1, 0, anIntArray850, 0, 256);
 
         }
-        System.arraycopy(aClass30_Sub2_Sub1_Sub1_1201.pixels, 0, topLeft0BackgroundTile.anIntArray315, 0, 33920);
+        System.arraycopy(flameLeftBackground2.pixels, 0, flameLeftBackground.pixels, 0, 33920);
 
         int i1 = 0;
         int j1 = 1152;
@@ -9437,8 +9442,8 @@ public final class client extends RSApplet {
                     int l3 = j3;
                     int j4 = 256 - j3;
                     j3 = anIntArray850[j3];
-                    int l4 = topLeft0BackgroundTile.anIntArray315[j1];
-                    topLeft0BackgroundTile.anIntArray315[j1++] = ((j3 & 0xff00ff) * l3 + (l4 & 0xff00ff) * j4 & 0xff00ff00) + ((j3 & 0xff00) * l3 + (l4 & 0xff00) * j4 & 0xff0000) >> 8;
+                    int l4 = flameLeftBackground.pixels[j1];
+                    flameLeftBackground.pixels[j1++] = ((j3 & 0xff00ff) * l3 + (l4 & 0xff00ff) * j4 & 0xff00ff00) + ((j3 & 0xff00) * l3 + (l4 & 0xff00) * j4 & 0xff0000) >> 8;
                 } else
                 {
                     j1++;
@@ -9448,8 +9453,8 @@ public final class client extends RSApplet {
             j1 += j2;
         }
 
-        topLeft0BackgroundTile.drawGraphics(0, super.gameGraphics, 0);
-        System.arraycopy(aClass30_Sub2_Sub1_Sub1_1202.pixels, 0, aRSImageProducer_1111.anIntArray315, 0, 33920);
+        flameLeftBackground.drawGraphics(0, super.gameGraphics, 0);
+        System.arraycopy(flameRightBackground2.pixels, 0, flameRightBackground.pixels, 0, 33920);
 
         i1 = 0;
         j1 = 1176;
@@ -9466,8 +9471,8 @@ public final class client extends RSApplet {
                     int i5 = k4;
                     int j5 = 256 - k4;
                     k4 = anIntArray850[k4];
-                    int k5 = aRSImageProducer_1111.anIntArray315[j1];
-                    aRSImageProducer_1111.anIntArray315[j1++] = ((k4 & 0xff00ff) * i5 + (k5 & 0xff00ff) * j5 & 0xff00ff00) + ((k4 & 0xff00) * i5 + (k5 & 0xff00) * j5 & 0xff0000) >> 8;
+                    int k5 = flameRightBackground.pixels[j1];
+                    flameRightBackground.pixels[j1++] = ((k4 & 0xff00ff) * i5 + (k5 & 0xff00ff) * j5 & 0xff00ff00) + ((k4 & 0xff00) * i5 + (k5 & 0xff00) * j5 & 0xff0000) >> 8;
                 } else
                 {
                     j1++;
@@ -9478,7 +9483,7 @@ public final class client extends RSApplet {
             j1 += 128 - k3 - i3;
         }
 
-        aRSImageProducer_1111.drawGraphics(0, super.gameGraphics, 637);
+        flameRightBackground.drawGraphics(0, super.gameGraphics, 637);
     }
 
     private void updateOtherPlayerMovement(Stream stream)
@@ -9487,7 +9492,7 @@ public final class client extends RSApplet {
         if(playersToUpdate < playerCount)
         {
             for(int p = playersToUpdate; p < playerCount; p++)
-                anIntArray840[anInt839++] = playerId[p];
+                actorsToUpdateIds[actorsToUpdateCount++] = playerId[p];
 
         }
         if(playersToUpdate > playerCount)
@@ -9537,7 +9542,7 @@ public final class client extends RSApplet {
                         playersAwaitingUpdate[actorsAwaitingUpdatePointer++] = pId;
                 } else
                 if(movementUpdateType == 3)
-                    anIntArray840[anInt839++] = pId;
+                    actorsToUpdateIds[actorsToUpdateCount++] = pId;
             }
         }
     }
@@ -9546,7 +9551,7 @@ public final class client extends RSApplet {
     {
         resetImageProducers();
         loginBoxLeftBackgroundTile.initDrawingArea();
-        aBackground_966.drawImage(0, 0);
+        titleBoxImage.drawImage(0, 0);
         char c = '\u0168';
         char c1 = '\310';
         if(loginScreenState == 0)
@@ -9554,60 +9559,60 @@ public final class client extends RSApplet {
             int i = c1 / 2 + 80;
             smallFont.drawShadowTextHMidVTop(0x75a9a9, c / 2, onDemandFetcher.statusString, i, true);
             i = c1 / 2 - 20;
-            chatTextDrawingArea.drawShadowTextHMidVTop(0xffff00, c / 2, "Welcome to RuneScape", i, true);
+            boldFont.drawShadowTextHMidVTop(0xffff00, c / 2, "Welcome to RuneScape", i, true);
             i += 30;
             int l = c / 2 - 80;
             int k1 = c1 / 2 + 20;
-            aBackground_967.drawImage(l - 73, k1 - 20);
-            chatTextDrawingArea.drawShadowTextHMidVTop(0xffffff, l, "New User", k1 + 5, true);
+            titleButtonImage.drawImage(l - 73, k1 - 20);
+            boldFont.drawShadowTextHMidVTop(0xffffff, l, "New User", k1 + 5, true);
             l = c / 2 + 80;
-            aBackground_967.drawImage(l - 73, k1 - 20);
-            chatTextDrawingArea.drawShadowTextHMidVTop(0xffffff, l, "Existing User", k1 + 5, true);
+            titleButtonImage.drawImage(l - 73, k1 - 20);
+            boldFont.drawShadowTextHMidVTop(0xffffff, l, "Existing User", k1 + 5, true);
         }
         if(loginScreenState == 2)
         {
             int j = c1 / 2 - 40;
             if(loginMessage1.length() > 0)
             {
-                chatTextDrawingArea.drawShadowTextHMidVTop(0xffff00, c / 2, loginMessage1, j - 15, true);
-                chatTextDrawingArea.drawShadowTextHMidVTop(0xffff00, c / 2, loginMessage2, j, true);
+                boldFont.drawShadowTextHMidVTop(0xffff00, c / 2, loginMessage1, j - 15, true);
+                boldFont.drawShadowTextHMidVTop(0xffff00, c / 2, loginMessage2, j, true);
                 j += 30;
             } else
             {
-                chatTextDrawingArea.drawShadowTextHMidVTop(0xffff00, c / 2, loginMessage2, j - 7, true);
+                boldFont.drawShadowTextHMidVTop(0xffff00, c / 2, loginMessage2, j - 7, true);
                 j += 30;
             }
-            chatTextDrawingArea.drawShadowTextHLeftVTop("Username: " + myUsername + ((loginScreenCursorPos == 0) & (loopCycle % 40 < 20) ? "@yel@|" : ""), c / 2 - 90, j, 0xffffff, true);
+            boldFont.drawShadowTextHLeftVTop("Username: " + myUsername + ((loginScreenCursorPos == 0) & (loopCycle % 40 < 20) ? "@yel@|" : ""), c / 2 - 90, j, 0xffffff, true);
             j += 15;
-            chatTextDrawingArea.drawShadowTextHLeftVTop("Password: " + TextClass.asterisksForString(myPassword) + ((loginScreenCursorPos == 1) & (loopCycle % 40 < 20) ? "@yel@|" : ""), c / 2 - 88, j, 0xffffff, true);
+            boldFont.drawShadowTextHLeftVTop("Password: " + TextClass.asterisksForString(myPassword) + ((loginScreenCursorPos == 1) & (loopCycle % 40 < 20) ? "@yel@|" : ""), c / 2 - 88, j, 0xffffff, true);
             j += 15;
             if(!flag)
             {
                 int i1 = c / 2 - 80;
                 int l1 = c1 / 2 + 50;
-                aBackground_967.drawImage(i1 - 73, l1 - 20);
-                chatTextDrawingArea.drawShadowTextHMidVTop(0xffffff, i1, "Login", l1 + 5, true);
+                titleButtonImage.drawImage(i1 - 73, l1 - 20);
+                boldFont.drawShadowTextHMidVTop(0xffffff, i1, "Login", l1 + 5, true);
                 i1 = c / 2 + 80;
-                aBackground_967.drawImage(i1 - 73, l1 - 20);
-                chatTextDrawingArea.drawShadowTextHMidVTop(0xffffff, i1, "Cancel", l1 + 5, true);
+                titleButtonImage.drawImage(i1 - 73, l1 - 20);
+                boldFont.drawShadowTextHMidVTop(0xffffff, i1, "Cancel", l1 + 5, true);
             }
         }
         if(loginScreenState == 3)
         {
-                        chatTextDrawingArea.drawShadowTextHMidVTop(0xffff00, c / 2, "Create a free account", c1 / 2 - 60, true);
+                        boldFont.drawShadowTextHMidVTop(0xffff00, c / 2, "Create a free account", c1 / 2 - 60, true);
             int k = c1 / 2 - 35;
-            chatTextDrawingArea.drawShadowTextHMidVTop(0xffffff, c / 2, "To create a new account you need to", k, true);
+            boldFont.drawShadowTextHMidVTop(0xffffff, c / 2, "To create a new account you need to", k, true);
             k += 15;
-            chatTextDrawingArea.drawShadowTextHMidVTop(0xffffff, c / 2, "go back to the main RuneScape webpage", k, true);
+            boldFont.drawShadowTextHMidVTop(0xffffff, c / 2, "go back to the main RuneScape webpage", k, true);
             k += 15;
-            chatTextDrawingArea.drawShadowTextHMidVTop(0xffffff, c / 2, "and choose the red 'create account'", k, true);
+            boldFont.drawShadowTextHMidVTop(0xffffff, c / 2, "and choose the red 'create account'", k, true);
             k += 15;
-            chatTextDrawingArea.drawShadowTextHMidVTop(0xffffff, c / 2, "button at the top right of that page.", k, true);
+            boldFont.drawShadowTextHMidVTop(0xffffff, c / 2, "button at the top right of that page.", k, true);
             k += 15;
             int j1 = c / 2;
             int i2 = c1 / 2 + 50;
-            aBackground_967.drawImage(j1 - 73, i2 - 20);
-            chatTextDrawingArea.drawShadowTextHMidVTop(0xffffff, j1, "Cancel", i2 + 5, true);
+            titleButtonImage.drawImage(j1 - 73, i2 - 20);
+            boldFont.drawShadowTextHMidVTop(0xffffff, j1, "Cancel", i2 + 5, true);
         }
         loginBoxLeftBackgroundTile.drawGraphics(171, super.gameGraphics, 202);
         if(welcomeScreenRaised)
@@ -9980,7 +9985,7 @@ public final class client extends RSApplet {
         if(npcsToUpdate < npcCount)
         {
             for(int n = npcsToUpdate; n < npcCount; n++)
-                anIntArray840[anInt839++] = npcIndices[n];
+                actorsToUpdateIds[actorsToUpdateCount++] = npcIndices[n];
 
         }
         if(npcsToUpdate > npcCount)
@@ -10030,7 +10035,7 @@ public final class client extends RSApplet {
                         playersAwaitingUpdate[actorsAwaitingUpdatePointer++] = npcId;
                 } else
                 if(movementUpdateType == 3)
-                    anIntArray840[anInt839++] = npcId;
+                    actorsToUpdateIds[actorsToUpdateCount++] = npcId;
             }
         }
     }
@@ -10137,7 +10142,7 @@ public final class client extends RSApplet {
 
     private void markMinimap(Sprite sprite, int i, int j)
     {
-        int k = minimapInt1 + minimapRotation & 0x7ff;
+        int k = cameraHorizontal + minimapRotation & 0x7ff;
         int l = i * i + j * j;
         if(l > 6400)
             return;
@@ -10216,17 +10221,17 @@ public final class client extends RSApplet {
 
     private void updatePlayers(int i, Stream stream)
     {
-        anInt839 = 0;
+        actorsToUpdateCount = 0;
         actorsAwaitingUpdatePointer = 0;
         updateLocalPlayerMovement(stream);
         updateOtherPlayerMovement(stream);
         updatePlayerList(stream, i);
         updatePlayersBlock(stream);
-        for(int k = 0; k < anInt839; k++)
+        for(int p = 0; p < actorsToUpdateCount; p++)
         {
-            int l = anIntArray840[k];
-            if(playerArray[l].lastUpdateTime != loopCycle)
-                playerArray[l] = null;
+            int playerId = actorsToUpdateIds[p];
+            if(playerArray[playerId].lastUpdateTime != loopCycle)
+                playerArray[playerId] = null;
         }
 
         if(stream.currentOffset != i)
@@ -10234,10 +10239,10 @@ public final class client extends RSApplet {
             signlink.reporterror("Error packet size mismatch in getplayer pos:" + stream.currentOffset + " psize:" + i);
             throw new RuntimeException("eek");
         }
-        for(int i1 = 0; i1 < playerCount; i1++)
-            if(playerArray[playerId[i1]] == null)
+        for(int p = 0; p < playerCount; p++)
+            if(playerArray[playerId[p]] == null)
             {
-                signlink.reporterror(myUsername + " null entry in pl list - pos:" + i1 + " size:" + playerCount);
+                signlink.reporterror(myUsername + " null entry in pl list - pos:" + p + " size:" + playerCount);
                 throw new RuntimeException("eek");
             }
 
@@ -10354,7 +10359,7 @@ public final class client extends RSApplet {
                     if(daysSinceRecoveryChange != 201 || membership == 1)
                         contentType = 655;
                     reportAbuseInput = "";
-                    canMute = false;
+                    reportAbuseMute = false;
                     for(int interfaceId = 0; interfaceId < RSInterface.interfaceCache.length; interfaceId++)
                     {
                         if(RSInterface.interfaceCache[interfaceId] == null || RSInterface.interfaceCache[interfaceId].contentType != contentType)
@@ -11047,7 +11052,7 @@ public final class client extends RSApplet {
                 inventoryOverlayInterfaceID = inventoryInterfaceId;
                 needDrawTabArea = true;
                 tabAreaAltered = true;
-                aBoolean1149 = false;
+                continuedDialogue = false;
                 packetOpcode = -1;
                 return true;
             }
@@ -11197,7 +11202,7 @@ public final class client extends RSApplet {
                 needDrawTabArea = true;
                 tabAreaAltered = true;
                 openInterfaceId = -1;
-                aBoolean1149 = false;
+                continuedDialogue = false;
                 packetOpcode = -1;
                 return true;
             }
@@ -11371,7 +11376,7 @@ public final class client extends RSApplet {
                     inputTaken = true;
                 }
                 openInterfaceId = interfaceId;
-                aBoolean1149 = false;
+                continuedDialogue = false;
                 packetOpcode = -1;
                 return true;
             }
@@ -11454,7 +11459,7 @@ public final class client extends RSApplet {
                     inputTaken = true;
                 }
                 openInterfaceId = -1;
-                aBoolean1149 = false;
+                continuedDialogue = false;
                 packetOpcode = -1;
                 return true;
             }
@@ -11506,7 +11511,7 @@ public final class client extends RSApplet {
                 backDialogID = interfaceId;
                 inputTaken = true;
                 openInterfaceId = -1;
-                aBoolean1149 = false;
+                continuedDialogue = false;
                 packetOpcode = -1;
                 return true;
             }
@@ -11540,13 +11545,13 @@ public final class client extends RSApplet {
         renderStationaryGraphics();
         if(!inCutscene)
         {
-            int i = cameraY;
-            if(anInt984 / 256 > i)
-                i = anInt984 / 256;
+        	int i = cameraVertical;
+            if(secondaryCameraVertical / 256 > i)
+                i = secondaryCameraVertical / 256;
             if(customCamera[4] && cameraAmplitude[4] + 128 > i)
                 i = cameraAmplitude[4] + 128;
-            int k = minimapInt1 + anInt896 & 0x7ff;
-            setCameraPos(600 + i * 3, i, anInt1014, getFloorDrawHeight(plane, localPlayer.y, localPlayer.x) - 50, k, anInt1015);
+            int k = cameraHorizontal + cameraRandomisationA & 0x7ff;
+            setCameraPos(600 + i * 3, i, currentCameraPositionH, getFloorDrawHeight(plane, localPlayer.y, localPlayer.x) - 50, k, currentCameraPositionV);
         }
         int cameraPlane;
         if(!inCutscene)
@@ -11609,14 +11614,14 @@ public final class client extends RSApplet {
         {
             inventoryOverlayInterfaceID = -1;
             needDrawTabArea = true;
-            aBoolean1149 = false;
+            continuedDialogue = false;
             tabAreaAltered = true;
         }
         if(backDialogID != -1)
         {
             backDialogID = -1;
             inputTaken = true;
-            aBoolean1149 = false;
+            continuedDialogue = false;
         }
         openInterfaceId = -1;
     }
@@ -11630,14 +11635,14 @@ public final class client extends RSApplet {
         textStream = new Stream(new byte[5000]);
         npcArray = new NPC[16384];
         npcIndices = new int[16384];
-        anIntArray840 = new int[1000];
+        actorsToUpdateIds = new int[1000];
         aStream_847 = Stream.create();
         aBoolean848 = true;
         openInterfaceId = -1;
         currentExp = new int[Skills.skillsCount];
         aBoolean872 = false;
         cameraJitter = new int[5];
-        anInt874 = -1;
+        currentTrackId = -1;
         customCamera = new boolean[5];
         drawFlames = false;
         reportAbuseInput = "";
@@ -11650,7 +11655,7 @@ public final class client extends RSApplet {
         playerId = new int[maxPlayers];
         playersAwaitingUpdate = new int[maxPlayers];
         playerBuffer = new Stream[maxPlayers];
-        anInt897 = 1;
+        nextCameraRandomisationA = 1;
         wayPoints = new int[104][104];
         scrollBarColourLeft = 0x766654;
         animatedPixels = new byte[16384];
@@ -11664,7 +11669,7 @@ public final class client extends RSApplet {
         chatNames = new String[100];
         chatMessages = new String[100];
         sideIcons = new Background[13];
-        aBoolean954 = true;
+        windowFocused = true;
         friendsListAsLongs = new long[200];
         currentSong = -1;
         drawingFlames = false;
@@ -11686,12 +11691,12 @@ public final class client extends RSApplet {
         aStringArray983 = new String[anInt975];
         lastRegionId = -1;
         hitMarks = new Sprite[20];
-        anIntArray990 = new int[5];
+        characterEditColours = new int[5];
         aBoolean994 = false;
         scrollBackgroundColour = 0x23201b;
         amountOrNameInput = "";
         projectileQueue = new NodeList();
-        aBoolean1017 = false;
+        cameraMovedWrite = false;
         walkableInterfaceId = -1;
         anIntArray1030 = new int[5];
         characterModelChanged = false;
@@ -11720,34 +11725,34 @@ public final class client extends RSApplet {
         menuActionData1 = new int[500];
         headIcons = new Sprite[20];
         tabAreaAltered = false;
-        aString1121 = "";
+        chatboxInputNeededString = "";
         atPlayerActions = new String[5];
         atPlayerArray = new boolean[5];
         constructMapTiles = new int[4][13][13];
-        anInt1132 = 2;
+        nextCameraRandomisationV = 2;
         minimapHint = new Sprite[1000];
         tutorialIsland = false;
-        aBoolean1149 = false;
+        continuedDialogue = false;
         crosses = new Sprite[8];
         musicEnabled = true;
         needDrawTabArea = false;
         loggedIn = false;
-        canMute = false;
+        reportAbuseMute = false;
         loadGeneratedMap = false;
         inCutscene = false;
-        anInt1171 = 1;
+        randomisationMinimapZoom = 1;
         myUsername = "mopar";
         myPassword = "bob";
         genericLoadingError = false;
         reportAbuseInterfaceID = -1;
         spawnObjectList = new NodeList();
-        cameraY = 128;
+        cameraVertical = 128;
         inventoryOverlayInterfaceID = -1;
         stream = Stream.create();
         menuActionName = new String[500];
         cameraAmplitude = new int[5];
         trackIds = new int[50];
-        anInt1210 = 2;
+        randomisationMinimapRotation = 2;
         anInt1211 = 78;
         promptInput = "";
         modIcons = new Background[2];
@@ -11767,10 +11772,10 @@ public final class client extends RSApplet {
         loginMessage1 = "";
         loginMessage2 = "";
         backDialogID = -1;
-        anInt1279 = 2;
+        nextCameraRandomisationH = 2;
         walkingQueueX = new int[4000];
         walkingQueueY = new int[4000];
-        anInt1289 = -1;
+        currentTrackLoop = -1;
     }
 
     private int ignoreCount;
@@ -11787,8 +11792,8 @@ public final class client extends RSApplet {
     private NPC[] npcArray;
     private int npcCount;
     private int[] npcIndices;
-    private int anInt839;
-    private int[] anIntArray840;
+    private int actorsToUpdateCount;
+    private int[] actorsToUpdateIds;
     private int anInt841;
     private int anInt842;
     private int anInt843;
@@ -11796,11 +11801,11 @@ public final class client extends RSApplet {
     private int privateChatMode;
     private Stream aStream_847;
     private boolean aBoolean848;
-    private static int anInt849;
+    private static int anticheat10;
     private int[] anIntArray850;
-    private int[] anIntArray851;
-    private int[] anIntArray852;
-    private int[] anIntArray853;
+    private int[] flameColour1;
+    private int[] flameColour2;
+    private int[] flameColour3;
     private static int anInt854;
     private int hintIconType;
     private int openInterfaceId;
@@ -11820,7 +11825,7 @@ public final class client extends RSApplet {
     private Sprite mapMarker;
     private boolean aBoolean872;
     private final int[] cameraJitter;
-    private int anInt874;
+    private int currentTrackId;
     private final boolean[] customCamera;
     private int weight;
     private MouseDetection mouseDetection;
@@ -11838,8 +11843,8 @@ public final class client extends RSApplet {
     private int actorsAwaitingUpdatePointer;
     private int[] playersAwaitingUpdate;
     private Stream[] playerBuffer;
-    private int anInt896;
-    private int anInt897;
+    private int cameraRandomisationA;
+    private int nextCameraRandomisationA;
     private int friendsCount;
     private int friendListStatus;
     private int[][] wayPoints;
@@ -11854,14 +11859,14 @@ public final class client extends RSApplet {
     private RSImageProducer backVmidIP3;
     private RSImageProducer backVmidIP2_2;
     private byte[] animatedPixels;
-    private int anInt913;
+    private int bankInsertMode;
     private int crossX;
     private int crossY;
     private int crossIndex;
     private int crossType;
     private int plane;
     private final int[] currentStats;
-    private static int anInt924;
+    private static int anticheat13;
     private final long[] ignoreListAsLongs;
     private boolean loadingError;
     private final int scrollBarColourRight;
@@ -11888,7 +11893,7 @@ public final class client extends RSApplet {
     private int menuWidth;
     private int menuHeight;
     private long privateMessageTarget;
-    private boolean aBoolean954;
+    private boolean windowFocused;
     private long[] friendsListAsLongs;
     private int currentSong;
     private static int nodeID = 10;
@@ -11901,8 +11906,8 @@ public final class client extends RSApplet {
     private final int[] anIntArray965 = {
         0xffff00, 0xff0000, 65280, 65535, 0xff00ff, 0xffffff
     };
-    private Background aBackground_966;
-    private Background aBackground_967;
+    private Background titleBoxImage;
+    private Background titleButtonImage;
     private final int[] anIntArray968;
     private final int[] anIntArray969;
     final Decompressor[] decompressors;
@@ -11917,13 +11922,13 @@ public final class client extends RSApplet {
     private final int[] anIntArray981;
     private final int[] anIntArray982;
     private final String[] aStringArray983;
-    private int anInt984;
+    private int secondaryCameraVertical;
     private int lastRegionId;
-    private static int anInt986;
+    private static int anticheat15;
     private Sprite[] hitMarks;
-    private int anInt988;
+    private int cameraRandomisationCounter;
     private int anInt989;
-    private final int[] anIntArray990;
+    private final int[] characterEditColours;
     private static boolean aBoolean993;
     private final boolean aBoolean994;
     private int anInt995;
@@ -11934,7 +11939,7 @@ public final class client extends RSApplet {
     private ISAACRandomGen encryption;
     private Sprite mapEdge;
     private final int scrollBackgroundColour;
-    static final int[][] anIntArrayArray1003 = {
+    static final int[][] playerBodyRecolours = {
         {
             6798, 107, 10283, 16, 4797, 7744, 5799, 4634, 33697, 22433, 
             2983, 54193
@@ -11951,22 +11956,22 @@ public final class client extends RSApplet {
         }
     };
     private String amountOrNameInput;
-    private static int anInt1005;
+    private static int anticheat1;
     private int daysSinceLogin;
     private int packetSize;
     private int packetOpcode;
     private int anInt1009;
-    private int anInt1010;
-    private int anInt1011;
+    private int idleCounter;
+    private int idleLogout;
     private NodeList projectileQueue;
-    private int anInt1014;
-    private int anInt1015;
-    private int anInt1016;
-    private boolean aBoolean1017;
+    private int currentCameraPositionH;
+    private int currentCameraPositionV;
+    private int cameraMovedWriteDelay;
+    private boolean cameraMovedWrite;
     private int walkableInterfaceId;
     private static final int[] xpForLevel;
     private int minimapState;
-    private int anInt1022;
+    private int sameClickPositionCounter;
     private int loadingStage;
     private Background scrollBarUp;
     private Background scrollBarDown;
@@ -11991,7 +11996,7 @@ public final class client extends RSApplet {
     private int membershipStatus;
     private boolean characterEditChangeGender;
     private int anInt1048;
-    private String aString1049;
+    private String loadingBarText;
     private static int loadedRegions;
     private final int[] anIntArray1052;
     private StreamLoader titleStreamLoader;
@@ -12001,12 +12006,12 @@ public final class client extends RSApplet {
     private final int[] anIntArray1057;
     private final RSInterface aClass9_1059;
     private Background[] mapScenes;
-    private static int anInt1061;
+    private static int drawCycle;
     private int trackCount;
     private final int scrollBarColourMain;
     private int friendsListAction;
     private final int[] characterEditIdentityKits;
-    private int moveItemEndSlot;
+    private int moveItemSlotEnd;
     private int lastActiveInventoryInterface;
     private OnDemandFetcher onDemandFetcher;
     private int regionX;
@@ -12019,12 +12024,12 @@ public final class client extends RSApplet {
     private Sprite mapDotPlayer;
     private Sprite mapDotFriend;
     private Sprite mapDotTeam;
-    private int anInt1079;
+    private int loadingBarPercentage;
     private boolean loadingMap;
     private String[] friendsList;
     private Stream inStream;
     private int moveItemInterfaceId;
-    private int moveItemStartSlot;
+    private int moveItemSlotStart;
     private int activeInterfaceType;
     private int lastMouseX;
     private int lastMouseY;
@@ -12046,15 +12051,15 @@ public final class client extends RSApplet {
     private RSImageProducer topLeft1BackgroundTile;
     private RSImageProducer bottomLeft1BackgroundTile;
     private RSImageProducer loginBoxLeftBackgroundTile;
-    private RSImageProducer topLeft0BackgroundTile;
-    private RSImageProducer aRSImageProducer_1111;
+    private RSImageProducer flameLeftBackground;
+    private RSImageProducer flameRightBackground;
     private RSImageProducer bottomLeft0BackgroundTile;
     private RSImageProducer aRSImageProducer_1113;
     private RSImageProducer middleLeft1BackgroundTile;
     private RSImageProducer aRSImageProducer_1115;
     private static int mouseClickCounter;
     private int membership;
-    private String aString1121;
+    private String chatboxInputNeededString;
     private Sprite compass;
     private RSImageProducer aRSImageProducer_1123;
     private RSImageProducer aRSImageProducer_1124;
@@ -12067,33 +12072,33 @@ public final class client extends RSApplet {
         -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 
         -1, -1, -1, -1, -1
     };
-    private int anInt1131;
-    private int anInt1132;
+    private int cameraRandomisationV;
+    private int nextCameraRandomisationV;
     private int menuActionRow;
-    private static int anInt1134;
+    private static int anticheat3;
     private int spellSelected;
-    private int anInt1137;
+    private int selectedSpellId;
     private int spellUsableOn;
     private String spellTooltip;
     private Sprite[] minimapHint;
     private boolean tutorialIsland;
-    private static int anInt1142;
+    private static int anticheat4;
     private Background redStone1;
     private Background redStone2;
     private Background redStone3;
     private Background redStone1_2;
     private Background redStone2_2;
     private int runEnergy;
-    private boolean aBoolean1149;
+    private boolean continuedDialogue;
     private Sprite[] crosses;
     private boolean musicEnabled;
-    private Background[] aBackgroundArray1152s;
+    private Background[] flameRuneImage;
     private boolean needDrawTabArea;
     private int unreadMessages;
-    private static int anInt1155;
-    private static boolean fpsOn;
+    private static int anticheat5;
+    private static boolean displayFpsAndMemory;
     public boolean loggedIn;
-    private boolean canMute;
+    private boolean reportAbuseMute;
     private boolean loadGeneratedMap;
     private boolean inCutscene;
     static int loopCycle;
@@ -12106,11 +12111,11 @@ public final class client extends RSApplet {
     private RSSocket socket;
     private int privateMessagePointer;
     private int minimapZoom;
-    private int anInt1171;
+    private int randomisationMinimapZoom;
     private long aLong1172;
     private String myUsername;
     private String myPassword;
-    private static int anInt1175;
+    private static int anticheat6;
     private boolean genericLoadingError;
     private final int[] objectTypes = {
         0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 
@@ -12123,11 +12128,11 @@ public final class client extends RSApplet {
     private int[] anIntArray1181;
     private int[] anIntArray1182;
     private byte[][] terrainData;
-    private int cameraY;
-    private int minimapInt1;
-    private int anInt1186;
-    private int anInt1187;
-    private static int anInt1188;
+    private int cameraVertical;
+    private int cameraHorizontal;
+    private int cameraModificationH;
+    private int cameraModificationV;
+    private static int anticheat7;
     private int inventoryOverlayInterfaceID;
     private int[] anIntArray1190;
     private int[] anIntArray1191;
@@ -12138,8 +12143,8 @@ public final class client extends RSApplet {
     private Background mapBack;
     private Background chatBack;
     private String[] menuActionName;
-    private Sprite aClass30_Sub2_Sub1_Sub1_1201;
-    private Sprite aClass30_Sub2_Sub1_Sub1_1202;
+    private Sprite flameLeftBackground2;
+    private Sprite flameRightBackground2;
     private final int[] cameraAmplitude;
     static final int[] anIntArray1204 = {
         9104, 10275, 7595, 3610, 7975, 8526, 918, 38802, 24466, 10145, 
@@ -12149,7 +12154,7 @@ public final class client extends RSApplet {
     private final int[] trackIds;
     private int anInt1208;
     private int minimapRotation;
-    private int anInt1210;
+    private int randomisationMinimapRotation;
     private int anInt1211;
     private String promptInput;
     private int anInt1213;
@@ -12157,12 +12162,12 @@ public final class client extends RSApplet {
     private long serverSessionKey;
     private int loginScreenCursorPos;
     private final Background[] modIcons;
-    private long aLong1220;
+    private long lastClickTime;
     private int tabID;
     private int hintIconNpcId;
     private boolean inputTaken;
     private int inputDialogState;
-    private static int anInt1226;
+    private static int anticheat8;
     private int nextSong;
     private boolean songChanging;
     private final int[] anIntArray1229;
@@ -12172,8 +12177,8 @@ public final class client extends RSApplet {
     private int[] mapCoordinates;
     private int[] anIntArray1235;
     private int[] anIntArray1236;
-    private int anInt1237;
-    private int anInt1238;
+    private int lastClickX;
+    private int lastClickY;
     public final int anInt1239 = 100;
     private final int[] privateMessages;
     private final int[] trackLoop;
@@ -12189,7 +12194,7 @@ public final class client extends RSApplet {
     private int inTutorial;
     private final boolean rsAlreadyLoaded;
     private int anInt1253;
-    private int anInt1254;
+    private int minimapRandomisationCounter;
     private boolean welcomeScreenRaised;
     private boolean messagePromptRaised;
     private int anInt1257;
@@ -12206,21 +12211,21 @@ public final class client extends RSApplet {
     private int playerPositionY;
     private TextDrawingArea smallFont;
     private TextDrawingArea plainFont;
-    private TextDrawingArea chatTextDrawingArea;
+    private TextDrawingArea boldFont;
     private int anInt1275;
     private int backDialogID;
-    private int anInt1278;
-    private int anInt1279;
+    private int cameraRandomisationH;
+    private int nextCameraRandomisationH;
     private int[] walkingQueueX;
     private int[] walkingQueueY;
     private int itemSelected;
     private int lastItemSelectedSlot;
     private int lastItemSelectedInterface;
-    private int anInt1285;
+    private int useItemId;
     private String selectedItemName;
     private int publicChatMode;
     private static int currentWalkingQueueSize;
-    private int anInt1289;
+    private int currentTrackLoop;
 	public static int anInt1290;
 
     static 

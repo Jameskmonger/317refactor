@@ -61,7 +61,7 @@ public final class Stream extends NodeSub {
         buffer[currentOffset++] = (byte)(i >> 8);
     }
 
-    public void writeDWordBigEndian(int i)
+    public void put24BitInt(int i)
     {
         buffer[currentOffset++] = (byte)(i >> 16);
         buffer[currentOffset++] = (byte)(i >> 8);

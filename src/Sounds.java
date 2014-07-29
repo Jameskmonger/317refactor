@@ -25,7 +25,7 @@ final class Sounds {
         } while(true);
     }
 
-    public static Stream method241(int i, int j)
+    public static Stream data(int i, int j)
     {
         if(aSoundsArray325s[j] != null)
         {

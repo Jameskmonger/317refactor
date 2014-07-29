@@ -116,7 +116,7 @@ public final class Player extends Entity
         for(int bodyPart = 0; bodyPart < 5; bodyPart++)
         {
             int colour = stream.getUnsignedByte();
-            if(colour < 0 || colour >= client.anIntArrayArray1003[bodyPart].length)
+            if(colour < 0 || colour >= client.playerBodyRecolours[bodyPart].length)
                 colour = 0;
             bodyPartColour[bodyPart] = colour;
         }
@@ -259,7 +259,7 @@ public final class Player extends Entity
             for(int j3 = 0; j3 < 5; j3++)
                 if(bodyPartColour[j3] != 0)
                 {
-                    model_1.recolour(client.anIntArrayArray1003[j3][0], client.anIntArrayArray1003[j3][bodyPartColour[j3]]);
+                    model_1.recolour(client.playerBodyRecolours[j3][0], client.playerBodyRecolours[j3][bodyPartColour[j3]]);
                     if(j3 == 1)
                         model_1.recolour(client.anIntArray1204[0], client.anIntArray1204[bodyPartColour[j3]]);
                 }
@@ -331,7 +331,7 @@ public final class Player extends Entity
         for(int j1 = 0; j1 < 5; j1++)
             if(bodyPartColour[j1] != 0)
             {
-                model.recolour(client.anIntArrayArray1003[j1][0], client.anIntArrayArray1003[j1][bodyPartColour[j1]]);
+                model.recolour(client.playerBodyRecolours[j1][0], client.playerBodyRecolours[j1][bodyPartColour[j1]]);
                 if(j1 == 1)
                     model.recolour(client.anIntArray1204[0], client.anIntArray1204[bodyPartColour[j1]]);
             }
