@@ -432,7 +432,7 @@ label0:
                     break label0;
                 i += j;
                 GameObjectDefinition class46 = GameObjectDefinition.forID(i);
-                class46.method574(class42_sub1);
+                class46.passivelyRequestModels(class42_sub1);
                 do
                 {
                     int k = stream.getSmartB();
@@ -723,7 +723,7 @@ label0:
                 class11.markSolidOccupant(l, i, class46.sizeX, class46.sizeY, j1, class46.walkable);
             return;
         }
-        if(class46.aBoolean762)
+        if(class46.adjustToTerrain)
             if(j1 == 1)
             {
                 int j3 = j2;
@@ -839,7 +839,7 @@ label0:
             j = 10;
         if(j >= 5 && j <= 8)
             j = 4;
-        return class46.method577(j);
+        return class46.modelTypeCached(j);
     }
 
     public final void loadTerrainSubblock(int i, int j, CollisionMap aclass11[], int l, int i1, byte abyte0[],
@@ -1197,7 +1197,7 @@ label0:
                 collisionMap.markSolidOccupant(i1, j, class46.sizeX, class46.sizeY, i, class46.walkable);
             return;
         }
-        if(class46.aBoolean762)
+        if(class46.adjustToTerrain)
             if(i == 1)
             {
                 int k3 = k2;
@@ -1318,7 +1318,7 @@ label0:
 		    if (i_260_ != 22 || !lowMem || class46.hasActions
                     || class46.aBoolean736)
 		      {
-			bool &= class46.method579 ();
+			bool &= class46.modelCached ();
 			bool_255_ = true;
 		      }
 		  }

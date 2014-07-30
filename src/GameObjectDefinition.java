@@ -1,29 +1,25 @@
-// Decompiled by Jad v1.5.8f. Copyright 2001 Pavel Kouznetsov.
-// Jad home page: http://www.kpdus.com/jad.html
-// Decompiler options: packimports(3) 
-
 public final class GameObjectDefinition
 {
 
-    public static GameObjectDefinition forID(int i)
+    public static GameObjectDefinition forID(int objectId)
     {
-        for(int j = 0; j < 20; j++)
-            if(cache[j].type == i)
-                return cache[j];
+        for(int c = 0; c < 20; c++)
+            if(cache[c].type == objectId)
+                return cache[c];
 
         cacheIndex = (cacheIndex + 1) % 20;
-        GameObjectDefinition class46 = cache[cacheIndex];
-        stream.currentOffset = streamIndices[i];
-        class46.type = i;
-        class46.setDefaults();
-        class46.readValues(stream);
-        return class46;
+        GameObjectDefinition definition = cache[cacheIndex];
+        stream.currentOffset = streamIndices[objectId];
+        definition.type = objectId;
+        definition.setDefaults();
+        definition.readValues(stream);
+        return definition;
     }
 
     private void setDefaults()
     {
-        anIntArray773 = null;
-        anIntArray776 = null;
+        modelIds = null;
+        modelTypes = null;
         name = null;
         description = null;
         modifiedModelColors = null;
@@ -33,8 +29,8 @@ public final class GameObjectDefinition
         unwalkable = true;
         walkable = true;
         hasActions = false;
-        aBoolean762 = false;
-        aBoolean769 = false;
+        adjustToTerrain = false;
+        delayShading = false;
         aBoolean764 = false;
         anInt781 = -1;
         anInt775 = 16;
@@ -60,12 +56,12 @@ public final class GameObjectDefinition
         childrenIds = null;
     }
 
-    public void method574(OnDemandFetcher class42_sub1)
+    public void passivelyRequestModels(OnDemandFetcher requester)
     {
-        if(anIntArray773 == null)
+        if(modelIds == null)
             return;
-        for(int j = 0; j < anIntArray773.length; j++)
-            class42_sub1.passiveRequest(anIntArray773[j] & 0xffff, 0);
+        for(int modelId = 0; modelId < modelIds.length; modelId++)
+            requester.passiveRequest(modelIds[modelId] & 0xffff, 0);
     }
 
     public static void nullLoader()
@@ -74,67 +70,67 @@ public final class GameObjectDefinition
         mruNodes2 = null;
         streamIndices = null;
         cache = null;
-stream = null;
+        stream = null;
     }
 
-    public static void unpackConfig(StreamLoader streamLoader)
+    public static void load(StreamLoader archive)
     {
-        stream = new Stream(streamLoader.getDataForName("loc.dat"));
-        Stream stream = new Stream(streamLoader.getDataForName("loc.idx"));
+        stream = new Stream(archive.getDataForName("loc.dat"));
+        Stream stream = new Stream(archive.getDataForName("loc.idx"));
         int totalObjects = stream.getUnsignedLEShort();
         streamIndices = new int[totalObjects];
-        int i = 2;
-        for(int j = 0; j < totalObjects; j++)
+        int offset = 2;
+        for(int index = 0; index < totalObjects; index++)
         {
-            streamIndices[j] = i;
-            i += stream.getUnsignedLEShort();
+            streamIndices[index] = offset;
+            offset += stream.getUnsignedLEShort();
         }
 
         cache = new GameObjectDefinition[20];
-        for(int k = 0; k < 20; k++)
-            cache[k] = new GameObjectDefinition();
+        for(int c = 0; c < 20; c++)
+            cache[c] = new GameObjectDefinition();
 
     }
 
-    public boolean method577(int i)
+    public boolean modelTypeCached(int modelType)
     {
-        if(anIntArray776 == null)
+        if(modelTypes == null)
         {
-            if(anIntArray773 == null)
+            if(modelIds == null)
                 return true;
-            if(i != 10)
+            if(modelType != 10)
                 return true;
-            boolean flag1 = true;
-            for(int k = 0; k < anIntArray773.length; k++)
-                flag1 &= Model.isCached(anIntArray773[k] & 0xffff);
+            boolean cached = true;
+            for(int id = 0; id < modelIds.length; id++)
+                cached &= Model.isCached(modelIds[id] & 0xffff);
 
-            return flag1;
+            return cached;
         }
-        for(int j = 0; j < anIntArray776.length; j++)
-            if(anIntArray776[j] == i)
-                return Model.isCached(anIntArray773[j] & 0xffff);
+        for(int type = 0; type < modelTypes.length; type++)
+            if(modelTypes[type] == modelType)
+                return Model.isCached(modelIds[type] & 0xffff);
 
         return true;
     }
 
     public Model getModelAt(int i, int j, int k, int l, int i1, int j1, int k1)
     {
-        Model model = method581(i, k1, j);
+        Model model = getAnimatedModel(i, k1, j);
         if(model == null)
             return null;
-        if(aBoolean762 || aBoolean769)
-            model = new Model(aBoolean762, aBoolean769, model);
-        if(aBoolean762)
+        if(adjustToTerrain || delayShading)
+            model = new Model(adjustToTerrain, delayShading, model);
+        if(adjustToTerrain)
         {
             int l1 = (k + l + i1 + j1) / 4;
-            for(int i2 = 0; i2 < model.vertexCount; i2++)
+            for(int v = 0; v < model.vertexCount; v++)
             {
-                int j2 = model.verticesX[i2];
-                int k2 = model.verticesZ[i2];
-                int l2 = k + ((l - k) * (j2 + 64)) / 128;
-                int i3 = j1 + ((i1 - j1) * (j2 + 64)) / 128;
-                int j3 = l2 + ((i3 - l2) * (k2 + 64)) / 128;
-                model.verticesY[i2] += j3 - l1;
+                int x = model.verticesX[v];
+                int z = model.verticesZ[v];
+                int l2 = k + ((l - k) * (x + 64)) / 128;
+                int i3 = j1 + ((i1 - j1) * (x + 64)) / 128;
+                int j3 = l2 + ((i3 - l2) * (z + 64)) / 128;
+                model.verticesY[v] += j3 - l1;
             }
 
             model.normalise();
@@ -142,41 +138,41 @@ stream = null;
         return model;
     }
 
-    public boolean method579()
+    public boolean modelCached()
     {
-        if(anIntArray773 == null)
+        if(modelIds == null)
             return true;
-        boolean flag1 = true;
-        for(int i = 0; i < anIntArray773.length; i++)
-            flag1 &= Model.isCached(anIntArray773[i] & 0xffff);
-            return flag1;
+        boolean cached = true;
+        for(int m = 0; m < modelIds.length; m++)
+            cached &= Model.isCached(modelIds[m] & 0xffff);
+            return cached;
     }
 
     public GameObjectDefinition getChildDefinition()
     {
-        int i = -1;
+        int child = -1;
         if(varBitId != -1)
         {
             VarBit varBit = VarBit.cache[varBitId];
-            int j = varBit.configId;
-            int k = varBit.leastSignificantBit;
-            int l = varBit.mostSignificantBit;
-            int i1 = client.BITFIELD_MAX_VALUE[l - k];
-            i = clientInstance.variousSettings[j] >> k & i1;
+            int configId = varBit.configId;
+            int lsb = varBit.leastSignificantBit;
+            int msb = varBit.mostSignificantBit;
+            int bit = client.BITFIELD_MAX_VALUE[msb - lsb];
+            child = clientInstance.variousSettings[configId] >> lsb & bit;
         } else
         if(configIds != -1)
-            i = clientInstance.variousSettings[configIds];
-        if(i < 0 || i >= childrenIds.length || childrenIds[i] == -1)
+            child = clientInstance.variousSettings[configIds];
+        if(child < 0 || child >= childrenIds.length || childrenIds[child] == -1)
             return null;
         else
-            return forID(childrenIds[i]);
+            return forID(childrenIds[child]);
     }
 
-    private Model method581(int j, int k, int l)
+    private Model getAnimatedModel(int j, int k, int l)
     {
         Model model = null;
         long l1;
-        if(anIntArray776 == null)
+        if(modelTypes == null)
         {
             if(j != 10)
                 return null;
@@ -184,13 +180,13 @@ stream = null;
             Model model_1 = (Model) mruNodes2.get(l1);
             if(model_1 != null)
                 return model_1;
-            if(anIntArray773 == null)
+            if(modelIds == null)
                 return null;
             boolean flag1 = aBoolean751 ^ (l > 3);
-            int k1 = anIntArray773.length;
+            int k1 = modelIds.length;
             for(int i2 = 0; i2 < k1; i2++)
             {
-                int l2 = anIntArray773[i2];
+                int l2 = modelIds[i2];
                 if(flag1)
                     l2 += 0x10000;
                 model = (Model) modelCache.get(l2);
@@ -212,9 +208,9 @@ stream = null;
         } else
         {
             int i1 = -1;
-            for(int j1 = 0; j1 < anIntArray776.length; j1++)
+            for(int j1 = 0; j1 < modelTypes.length; j1++)
             {
-                if(anIntArray776[j1] != j)
+                if(modelTypes[j1] != j)
                     continue;
                 i1 = j1;
                 break;
@@ -226,7 +222,7 @@ stream = null;
             Model model_2 = (Model) mruNodes2.get(l1);
             if(model_2 != null)
                 return model_2;
-            int j2 = anIntArray773[i1];
+            int j2 = modelIds[i1];
             boolean flag3 = aBoolean751 ^ (l > 3);
             if(flag3)
                 j2 += 0x10000;
@@ -265,7 +261,7 @@ stream = null;
             model_3.scaleT(anInt748, anInt740, anInt772);
         if(flag2)
             model_3.translate(anInt738, anInt745, anInt783);
-        model_3.applyLighting(64 + aByte737, 768 + aByte742 * 5, -50, -10, -50, !aBoolean769);
+        model_3.applyLighting(64 + aByte737, 768 + aByte742 * 5, -50, -10, -50, !delayShading);
         if(anInt760 == 1)
             model_3.anInt1654 = model_3.modelHeight;
         mruNodes2.put(model_3, l1);
@@ -288,14 +284,14 @@ label0:
                 {
                     int k = stream.getUnsignedByte();
                     if(k > 0)
-                        if(anIntArray773 == null || lowMem)
+                        if(modelIds == null || lowMem)
                         {
-                            anIntArray776 = new int[k];
-                            anIntArray773 = new int[k];
+                            modelTypes = new int[k];
+                            modelIds = new int[k];
                             for(int k1 = 0; k1 < k; k1++)
                             {
-                                anIntArray773[k1] = stream.getUnsignedLEShort();
-                                anIntArray776[k1] = stream.getUnsignedByte();
+                                modelIds[k1] = stream.getUnsignedLEShort();
+                                modelTypes[k1] = stream.getUnsignedByte();
                             }
 
                         } else
@@ -313,12 +309,12 @@ label0:
                 {
                     int l = stream.getUnsignedByte();
                     if(l > 0)
-                        if(anIntArray773 == null || lowMem)
+                        if(modelIds == null || lowMem)
                         {
-                            anIntArray776 = null;
-                            anIntArray773 = new int[l];
+                            modelTypes = null;
+                            modelIds = new int[l];
                             for(int l1 = 0; l1 < l; l1++)
-                                anIntArray773[l1] = stream.getUnsignedLEShort();
+                                modelIds[l1] = stream.getUnsignedLEShort();
 
                         } else
                         {
@@ -344,10 +340,10 @@ label0:
                         hasActions = true;
                 } else
                 if(j == 21)
-                    aBoolean762 = true;
+                    adjustToTerrain = true;
                 else
                 if(j == 22)
-                    aBoolean769 = true;
+                    delayShading = true;
                 else
                 if(j == 23)
                     aBoolean764 = true;
@@ -452,7 +448,7 @@ label0:
         } while(true);
         if(i == -1)
         {
-            hasActions = anIntArray773 != null && (anIntArray776 == null || anIntArray776[0] == 10);
+            hasActions = modelIds != null && (modelTypes == null || modelTypes[0] == 10);
             if(actions != null)
                 hasActions = true;
         }
@@ -493,19 +489,19 @@ label0:
     public int childrenIds[];
     private int anInt760;
     public int sizeY;
-    public boolean aBoolean762;
+    public boolean adjustToTerrain;
     public boolean aBoolean764;
     public static client clientInstance;
     private boolean aBoolean766;
     public boolean unwalkable;
     public int face;
-    private boolean aBoolean769;
+    private boolean delayShading;
     private static int cacheIndex;
     private int anInt772;
-    private int[] anIntArray773;
+    private int[] modelIds;
     public int varBitId;
     public int anInt775;
-    private int[] anIntArray776;
+    private int[] modelTypes;
     public byte description[];
     public boolean hasActions;
     public boolean aBoolean779;

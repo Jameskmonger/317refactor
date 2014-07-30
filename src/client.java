@@ -6944,7 +6944,7 @@ public final class client extends RSApplet {
             Texture.resetTextures();
             drawLoadingText(86, "Unpacking config");
             AnimationSequence.unpackConfig(streamLoader);
-            GameObjectDefinition.unpackConfig(streamLoader);
+            GameObjectDefinition.load(streamLoader);
             Flo.unpackConfig(streamLoader);
             ItemDef.unpackConfig(streamLoader);
             EntityDefinition.unpackConfig(streamLoader);
