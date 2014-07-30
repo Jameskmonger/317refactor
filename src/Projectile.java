@@ -61,17 +61,17 @@ final class Projectile extends Animable {
         this.moving = false;
     }
 
-    public void move(int i)
+    public void move(int time)
     {
         moving = true;
-        currentX += speedVectorX * (double)i;
-        currentY += speedVectorY * (double)i;
-        currentZ += speedVectorZ * (double)i + 0.5D * offsetZ * (double)i * (double)i;
-        speedVectorZ += offsetZ * (double)i;
+        currentX += speedVectorX * (double)time;
+        currentY += speedVectorY * (double)time;
+        currentZ += speedVectorZ * (double)time + 0.5D * offsetZ * (double)time * (double)time;
+        speedVectorZ += offsetZ * (double)time;
         rotationY = (int)(Math.atan2(speedVectorX, speedVectorY) * 325.94900000000001D) + 1024 & 0x7ff;
         rotationX = (int)(Math.atan2(speedVectorZ, speedScalar) * 325.94900000000001D) & 0x7ff;
         if(animation.sequences != null)
-            for(duration += i; duration > animation.sequences.getFrameLength(animationFrame);)
+            for(duration += time; duration > animation.sequences.getFrameLength(animationFrame);)
             {
                 duration -= animation.sequences.getFrameLength(animationFrame) + 1;
                 animationFrame++;
