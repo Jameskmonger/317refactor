@@ -595,7 +595,7 @@ public final class client extends RSApplet {
             clearObjectSpawnRequests();
         }
         catch(Exception exception) { }
-        ObjectDef.modelCache.unlinkAll();
+        GameObjectDefinition.modelCache.unlinkAll();
         if(super.gameFrame != null)
         {
             stream.putOpcode(210);
@@ -645,8 +645,8 @@ public final class client extends RSApplet {
 
     private void resetModelCaches()
     {
-        ObjectDef.modelCache.unlinkAll();
-        ObjectDef.mruNodes2.unlinkAll();
+        GameObjectDefinition.modelCache.unlinkAll();
+        GameObjectDefinition.mruNodes2.unlinkAll();
         EntityDefinition.modelCache.unlinkAll();
         ItemDef.mruNodes2.unlinkAll();
         ItemDef.mruNodes1.unlinkAll();
@@ -700,7 +700,7 @@ public final class client extends RSApplet {
                 if(hash != 0)
                 {
                     hash = hash >> 14 & 0x7fff;
-                    int icon = ObjectDef.forID(hash).icon;
+                    int icon = GameObjectDefinition.forID(hash).icon;
                     
                     if(icon >= 0)
                     {
@@ -2156,7 +2156,7 @@ public final class client extends RSApplet {
             int pixels[] = minimapImage.pixels;
             int pixel = 24624 + x * 4 + (103 - y) * 512 * 4;
             int objectId = uid >> 14 & 0x7fff;
-            ObjectDef object = ObjectDef.forID(objectId);
+            GameObjectDefinition object = GameObjectDefinition.forID(objectId);
             if(object.mapScene != -1)
             {
                 Background background = mapScenes[object.mapScene];
@@ -2247,7 +2247,7 @@ public final class client extends RSApplet {
             int direction = config >> 6 & 3;
             int type = config & 0x1f;
             int objectId = uid >> 14 & 0x7fff;
-            ObjectDef object = ObjectDef.forID(objectId);
+            GameObjectDefinition object = GameObjectDefinition.forID(objectId);
             if(object.mapScene != -1)
             {
                 Background background = mapScenes[object.mapScene];
@@ -2284,7 +2284,7 @@ public final class client extends RSApplet {
         if(uid != 0)
         {
             int objectId = uid >> 14 & 0x7fff;
-            ObjectDef object = ObjectDef.forID(objectId);
+            GameObjectDefinition object = GameObjectDefinition.forID(objectId);
             if(object.mapScene != -1)
             {
                 Background background = mapScenes[object.mapScene];
@@ -2386,7 +2386,7 @@ public final class client extends RSApplet {
         Texture.lowMem = false;
         lowMemory = false;
         ObjectManager.lowMem = false;
-        ObjectDef.lowMem = false;
+        GameObjectDefinition.lowMem = false;
     }
 
     public static void main(String args[])
@@ -3232,7 +3232,7 @@ public final class client extends RSApplet {
         int rotation = config >> 6 & 3;
         if(type == 10 || type == 11 || type == 22)
         {
-            ObjectDef object = ObjectDef.forID(objectId);
+            GameObjectDefinition object = GameObjectDefinition.forID(objectId);
             int sizeX;
             int sizeY;
             if(rotation == 0 || rotation == 2)
@@ -4261,7 +4261,7 @@ public final class client extends RSApplet {
         if(menuAction == 1226)
         {
             int objectId = actionTarget >> 14 & 0x7fff;
-            ObjectDef object = ObjectDef.forID(objectId);
+            GameObjectDefinition object = GameObjectDefinition.forID(objectId);
             String description;
             if(object.description != null)
                 description = new String(object.description);
@@ -4346,8 +4346,8 @@ public final class client extends RSApplet {
             j = hash;
             if(k1 == 2 && worldController.getConfig(hash, x, y, plane) >= 0)
             {
-                ObjectDef object = ObjectDef.forID(objectId);
-                if(object.childrenIDs != null)
+                GameObjectDefinition object = GameObjectDefinition.forID(objectId);
+                if(object.childrenIds != null)
                     object = object.getChildDefinition();
                 if(object == null)
                     continue;
@@ -4634,7 +4634,7 @@ public final class client extends RSApplet {
         middleLeft1BackgroundTile = null;
         aRSImageProducer_1115 = null;
         nullLoader();
-        ObjectDef.nullLoader();
+        GameObjectDefinition.nullLoader();
         EntityDefinition.nullLoader();
         ItemDef.nullLoader();
         Flo.cache = null;
@@ -6944,7 +6944,7 @@ public final class client extends RSApplet {
             Texture.resetTextures();
             drawLoadingText(86, "Unpacking config");
             AnimationSequence.unpackConfig(streamLoader);
-            ObjectDef.unpackConfig(streamLoader);
+            GameObjectDefinition.unpackConfig(streamLoader);
             Flo.unpackConfig(streamLoader);
             ItemDef.unpackConfig(streamLoader);
             EntityDefinition.unpackConfig(streamLoader);
@@ -7029,8 +7029,8 @@ public final class client extends RSApplet {
             Censor.loadConfig(streamLoader_4);
             mouseDetection = new MouseDetection(this);
             startRunnable(mouseDetection, 10);
-            ObjectInstance.clientInstance = this;
-            ObjectDef.clientInstance = this;
+            GameObject.clientInstance = this;
+            GameObjectDefinition.clientInstance = this;
             EntityDefinition.clientInstance = this;
             return;
         }
@@ -9027,7 +9027,7 @@ public final class client extends RSApplet {
                     int l3 = varBit.configId;
                     int i4 = varBit.leastSignificantBit;
                     int j4 = varBit.mostSignificantBit;
-                    int k4 = anIntArray1232[j4 - i4];
+                    int k4 = BITFIELD_MAX_VALUE[j4 - i4];
                     k1 = variousSettings[l3] >> i4 & k4;
                 }
                 if(j1 == 15)
@@ -9782,11 +9782,11 @@ public final class client extends RSApplet {
                         int uid = wallObject.uid >> 14 & 0x7fff;
                         if(objectType == 2)
                         {
-                            wallObject.renderable = new ObjectInstance(uid, 4 + orientation, 2, tileHeightX1Y0, tileHeightX1Y1, tileHeightX0Y0, tileHeightX0Y1, animationId, false);
-                            wallObject.renderable2 = new ObjectInstance(uid, orientation + 1 & 3, 2, tileHeightX1Y0, tileHeightX1Y1, tileHeightX0Y0, tileHeightX0Y1, animationId, false);
+                            wallObject.renderable = new GameObject(uid, 4 + orientation, 2, tileHeightX1Y0, tileHeightX1Y1, tileHeightX0Y0, tileHeightX0Y1, animationId, false);
+                            wallObject.renderable2 = new GameObject(uid, orientation + 1 & 3, 2, tileHeightX1Y0, tileHeightX1Y1, tileHeightX0Y0, tileHeightX0Y1, animationId, false);
                         } else
                         {
-                            wallObject.renderable = new ObjectInstance(uid, orientation, objectType, tileHeightX1Y0, tileHeightX1Y1, tileHeightX0Y0, tileHeightX0Y1, animationId, false);
+                            wallObject.renderable = new GameObject(uid, orientation, objectType, tileHeightX1Y0, tileHeightX1Y1, tileHeightX0Y0, tileHeightX0Y1, animationId, false);
                         }
                     }
                 }
@@ -9794,7 +9794,7 @@ public final class client extends RSApplet {
                 {
                     WallDecoration wallDecoration = worldController.getWallDecoration(x, y, plane);
                     if(wallDecoration != null)
-                        wallDecoration.renderable = new ObjectInstance(wallDecoration.uid >> 14 & 0x7fff, 0, 4, tileHeightX1Y0, tileHeightX1Y1, tileHeightX0Y0, tileHeightX0Y1, animationId, false);
+                        wallDecoration.renderable = new GameObject(wallDecoration.uid >> 14 & 0x7fff, 0, 4, tileHeightX1Y0, tileHeightX1Y1, tileHeightX0Y0, tileHeightX0Y1, animationId, false);
                 }
                 if(type == 2)
                 {
@@ -9802,13 +9802,13 @@ public final class client extends RSApplet {
                     if(objectType == 11)
                         objectType = 10;
                     if(interactiveObject != null)
-                        interactiveObject.renderable = new ObjectInstance(interactiveObject.uid >> 14 & 0x7fff, orientation, objectType, tileHeightX1Y0, tileHeightX1Y1, tileHeightX0Y0, tileHeightX0Y1, animationId, false);
+                        interactiveObject.renderable = new GameObject(interactiveObject.uid >> 14 & 0x7fff, orientation, objectType, tileHeightX1Y0, tileHeightX1Y1, tileHeightX0Y0, tileHeightX0Y1, animationId, false);
                 }
                 if(type == 3)
                 {
                     GroundDecoration groundDecoration = worldController.getGroundDecoration(x, y, plane);
                     if(groundDecoration != null)
-                        groundDecoration.renderable = new ObjectInstance(groundDecoration.uid >> 14 & 0x7fff, orientation, 22, tileHeightX1Y0, tileHeightX1Y1, tileHeightX0Y0, tileHeightX0Y1, animationId, false);
+                        groundDecoration.renderable = new GameObject(groundDecoration.uid >> 14 & 0x7fff, orientation, 22, tileHeightX1Y0, tileHeightX1Y1, tileHeightX0Y0, tileHeightX0Y1, animationId, false);
                 }
             }
             return;
@@ -9837,7 +9837,7 @@ public final class client extends RSApplet {
                 player = playerArray[targetPlayer];
             if(player != null)
             {
-                ObjectDef object = ObjectDef.forID(objectId);
+                GameObjectDefinition object = GameObjectDefinition.forID(objectId);
                 int tileHeightX0Y0 = intGroundArray[plane][x][y];
                 int tileHeightX1Y0 = intGroundArray[plane][x + 1][y];
                 int tileHeightX1Y1 = intGroundArray[plane][x + 1][y + 1];
@@ -9975,7 +9975,7 @@ public final class client extends RSApplet {
         Texture.lowMem = true;
         lowMemory = true;
         ObjectManager.lowMem = true;
-        ObjectDef.lowMem = true;
+        GameObjectDefinition.lowMem = true;
     }
 
     private void updateNPCMovement(Stream stream)
@@ -10186,7 +10186,7 @@ public final class client extends RSApplet {
                 if(objectType == 0)
                 {
                     worldController.removeWallObject(x, z, y);
-                    ObjectDef object = ObjectDef.forID(objectId);
+                    GameObjectDefinition object = GameObjectDefinition.forID(objectId);
                     if(object.unwalkable)
                         currentCollisionMap[z].unmarkWall(x, y, position, orientation, object.walkable);
                 }
@@ -10195,7 +10195,7 @@ public final class client extends RSApplet {
                 if(objectType == 2)
                 {
                     worldController.removeInteractiveObject(x, y, z);
-                    ObjectDef object = ObjectDef.forID(objectId);
+                    GameObjectDefinition object = GameObjectDefinition.forID(objectId);
                     if(x + object.sizeX > 103 || y + object.sizeX > 103 || x + object.sizeY > 103 || y + object.sizeY > 103)
                         return;
                     if(object.unwalkable)
@@ -10204,7 +10204,7 @@ public final class client extends RSApplet {
                 if(objectType == 3)
                 {
                     worldController.removeGroundDecoration(x, y, z);
-                    ObjectDef object = ObjectDef.forID(objectId);
+                    GameObjectDefinition object = GameObjectDefinition.forID(objectId);
                     if(object.unwalkable && object.hasActions)
                         currentCollisionMap[z].unmarkConcealed(x, y);
                 }
@@ -12172,7 +12172,7 @@ public final class client extends RSApplet {
     private boolean songChanging;
     private final int[] anIntArray1229;
     private CollisionMap[] currentCollisionMap;
-    public static int anIntArray1232[];
+    public static int BITFIELD_MAX_VALUE[];
     private boolean updateChatSettings;
     private int[] mapCoordinates;
     private int[] anIntArray1235;
@@ -12240,11 +12240,11 @@ public final class client extends RSApplet {
             xpForLevel[j] = i / 4;
         }
 
-        anIntArray1232 = new int[32];
+        BITFIELD_MAX_VALUE = new int[32];
         i = 2;
         for(int k = 0; k < 32; k++)
         {
-            anIntArray1232[k] = i - 1;
+            BITFIELD_MAX_VALUE[k] = i - 1;
             i += i;
         }
 

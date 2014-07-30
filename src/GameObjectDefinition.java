@@ -2,17 +2,17 @@
 // Jad home page: http://www.kpdus.com/jad.html
 // Decompiler options: packimports(3) 
 
-public final class ObjectDef
+public final class GameObjectDefinition
 {
 
-    public static ObjectDef forID(int i)
+    public static GameObjectDefinition forID(int i)
     {
         for(int j = 0; j < 20; j++)
             if(cache[j].type == i)
                 return cache[j];
 
         cacheIndex = (cacheIndex + 1) % 20;
-        ObjectDef class46 = cache[cacheIndex];
+        GameObjectDefinition class46 = cache[cacheIndex];
         stream.currentOffset = streamIndices[i];
         class46.type = i;
         class46.setDefaults();
@@ -55,9 +55,9 @@ public final class ObjectDef
         aBoolean736 = false;
         aBoolean766 = false;
         anInt760 = -1;
-        anInt774 = -1;
-        anInt749 = -1;
-        childrenIDs = null;
+        varBitId = -1;
+        configIds = -1;
+        childrenIds = null;
     }
 
     public void method574(OnDemandFetcher class42_sub1)
@@ -90,9 +90,9 @@ stream = null;
             i += stream.getUnsignedLEShort();
         }
 
-        cache = new ObjectDef[20];
+        cache = new GameObjectDefinition[20];
         for(int k = 0; k < 20; k++)
-            cache[k] = new ObjectDef();
+            cache[k] = new GameObjectDefinition();
 
     }
 
@@ -152,24 +152,24 @@ stream = null;
             return flag1;
     }
 
-    public ObjectDef getChildDefinition()
+    public GameObjectDefinition getChildDefinition()
     {
         int i = -1;
-        if(anInt774 != -1)
+        if(varBitId != -1)
         {
-            VarBit varBit = VarBit.cache[anInt774];
+            VarBit varBit = VarBit.cache[varBitId];
             int j = varBit.configId;
             int k = varBit.leastSignificantBit;
             int l = varBit.mostSignificantBit;
-            int i1 = client.anIntArray1232[l - k];
+            int i1 = client.BITFIELD_MAX_VALUE[l - k];
             i = clientInstance.variousSettings[j] >> k & i1;
         } else
-        if(anInt749 != -1)
-            i = clientInstance.variousSettings[anInt749];
-        if(i < 0 || i >= childrenIDs.length || childrenIDs[i] == -1)
+        if(configIds != -1)
+            i = clientInstance.variousSettings[configIds];
+        if(i < 0 || i >= childrenIds.length || childrenIds[i] == -1)
             return null;
         else
-            return forID(childrenIDs[i]);
+            return forID(childrenIds[i]);
     }
 
     private Model method581(int j, int k, int l)
@@ -434,19 +434,19 @@ label0:
                 }
                 continue label0;
             } while(j != 77);
-            anInt774 = stream.getUnsignedLEShort();
-            if(anInt774 == 65535)
-                anInt774 = -1;
-            anInt749 = stream.getUnsignedLEShort();
-            if(anInt749 == 65535)
-                anInt749 = -1;
+            varBitId = stream.getUnsignedLEShort();
+            if(varBitId == 65535)
+                varBitId = -1;
+            configIds = stream.getUnsignedLEShort();
+            if(configIds == 65535)
+                configIds = -1;
             int j1 = stream.getUnsignedByte();
-            childrenIDs = new int[j1 + 1];
+            childrenIds = new int[j1 + 1];
             for(int j2 = 0; j2 <= j1; j2++)
             {
-                childrenIDs[j2] = stream.getUnsignedLEShort();
-                if(childrenIDs[j2] == 65535)
-                    childrenIDs[j2] = -1;
+                childrenIds[j2] = stream.getUnsignedLEShort();
+                if(childrenIds[j2] == 65535)
+                    childrenIds[j2] = -1;
             }
 
         } while(true);
@@ -465,7 +465,7 @@ label0:
             anInt760 = unwalkable ? 1 : 0;
     }
 
-    private ObjectDef()
+    private GameObjectDefinition()
     {
         type = -1;
     }
@@ -482,7 +482,7 @@ label0:
     public int icon;
     private int[] originalModelColors;
     private int anInt748;
-    public int anInt749;
+    public int configIds;
     private boolean aBoolean751;
     public static boolean lowMem;
     private static Stream stream;
@@ -490,7 +490,7 @@ label0:
     private static int[] streamIndices;
     public boolean walkable;
     public int mapScene;
-    public int childrenIDs[];
+    public int childrenIds[];
     private int anInt760;
     public int sizeY;
     public boolean aBoolean762;
@@ -503,7 +503,7 @@ label0:
     private static int cacheIndex;
     private int anInt772;
     private int[] anIntArray773;
-    public int anInt774;
+    public int varBitId;
     public int anInt775;
     private int[] anIntArray776;
     public byte description[];
@@ -511,7 +511,7 @@ label0:
     public boolean aBoolean779;
     public static MRUNodes mruNodes2 = new MRUNodes(30);
     public int anInt781;
-    private static ObjectDef[] cache;
+    private static GameObjectDefinition[] cache;
     private int anInt783;
     private int[] modifiedModelColors;
     public static MRUNodes modelCache = new MRUNodes(500);

@@ -65,7 +65,7 @@ public final class EntityDefinition
             int k = varBit.configId;
             int l = varBit.leastSignificantBit;
             int i1 = varBit.mostSignificantBit;
-            int j1 = client.anIntArray1232[i1 - l];
+            int j1 = client.BITFIELD_MAX_VALUE[i1 - l];
             j = clientInstance.variousSettings[k] >> l & j1;
         } else
         if(anInt59 != -1)
