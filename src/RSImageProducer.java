@@ -1,7 +1,3 @@
-// Decompiled by Jad v1.5.8f. Copyright 2001 Pavel Kouznetsov.
-// Jad home page: http://www.kpdus.com/jad.html
-// Decompiler options: packimports(3) 
-
 import java.awt.*;
 import java.awt.image.*;
 
@@ -9,51 +5,51 @@ final class RSImageProducer
         implements ImageProducer, ImageObserver
 {
 
-    public RSImageProducer(int i, int j, Component component)
+    public RSImageProducer(int width, int height, Component component)
     {
-        anInt316 = i;
-        anInt317 = j;
-        pixels = new int[i * j];
-        aColorModel318 = new DirectColorModel(32, 0xff0000, 65280, 255);
-        anImage320 = component.createImage(this);
-        method239();
-        component.prepareImage(anImage320, this);
-        method239();
-        component.prepareImage(anImage320, this);
-        method239();
-        component.prepareImage(anImage320, this);
+        this.width = width;
+        this.height = height;
+        pixels = new int[width * height];
+        colourModel = new DirectColorModel(32, 0xff0000, 65280, 255);
+        image = component.createImage(this);
+        drawPixels();
+        component.prepareImage(image, this);
+        drawPixels();
+        component.prepareImage(image, this);
+        drawPixels();
+        component.prepareImage(image, this);
         initDrawingArea();
     }
 
     public void initDrawingArea()
     {
-        DrawingArea.initDrawingArea(anInt317, anInt316, pixels);
+        DrawingArea.initDrawingArea(height, width, pixels);
     }
 
-    public void drawGraphics(int i, Graphics g, int k)
+    public void drawGraphics(int y, Graphics g, int x)
     {
-        method239();
-        g.drawImage(anImage320, k, i, this);
+        drawPixels();
+        g.drawImage(image, x, y, this);
     }
 
-    public synchronized void addConsumer(ImageConsumer imageconsumer)
+    public synchronized void addConsumer(ImageConsumer imageConsumer)
     {
-        anImageConsumer319 = imageconsumer;
-        imageconsumer.setDimensions(anInt316, anInt317);
-        imageconsumer.setProperties(null);
-        imageconsumer.setColorModel(aColorModel318);
-        imageconsumer.setHints(14);
+        this.imageConsumer = imageConsumer;
+        imageConsumer.setDimensions(width, height);
+        imageConsumer.setProperties(null);
+        imageConsumer.setColorModel(colourModel);
+        imageConsumer.setHints(14);
     }
 
     public synchronized boolean isConsumer(ImageConsumer imageconsumer)
     {
-        return anImageConsumer319 == imageconsumer;
+        return imageConsumer == imageconsumer;
     }
 
     public synchronized void removeConsumer(ImageConsumer imageconsumer)
     {
-        if(anImageConsumer319 == imageconsumer)
-            anImageConsumer319 = null;
+        if(imageConsumer == imageconsumer)
+            imageConsumer = null;
     }
 
     public void startProduction(ImageConsumer imageconsumer)
@@ -66,12 +62,12 @@ final class RSImageProducer
         System.out.println("TDLR");
     }
 
-    private synchronized void method239()
+    private synchronized void drawPixels()
     {
-        if(anImageConsumer319 != null)
+        if(imageConsumer != null)
         {
-            anImageConsumer319.setPixels(0, 0, anInt316, anInt317, aColorModel318, pixels, 0, anInt316);
-            anImageConsumer319.imageComplete(2);
+            imageConsumer.setPixels(0, 0, width, height, colourModel, pixels, 0, width);
+            imageConsumer.imageComplete(2);
         }
     }
 
@@ -81,9 +77,9 @@ final class RSImageProducer
     }
 
     public final int[] pixels;
-    private final int anInt316;
-    private final int anInt317;
-    private final ColorModel aColorModel318;
-    private ImageConsumer anImageConsumer319;
-    private final Image anImage320;
+    private final int width;
+    private final int height;
+    private final ColorModel colourModel;
+    private ImageConsumer imageConsumer;
+    private final Image image;
 }
