@@ -1,112 +1,108 @@
-// Decompiled by Jad v1.5.8f. Copyright 2001 Pavel Kouznetsov.
-// Jad home page: http://www.kpdus.com/jad.html
-// Decompiler options: packimports(3) 
-
 final class Projectile extends Animable {
 
-    public void trackTarget(int i, int j, int k, int l)
+    public void trackTarget(int currentCycle, int targetY, int targetZ, int targetX)
     {
-        if(!aBoolean1579)
+        if(!moving)
         {
-            double d = l - anInt1580;
-            double d2 = j - anInt1581;
-            double d3 = Math.sqrt(d * d + d2 * d2);
-            aDouble1585 = (double)anInt1580 + (d * (double)anInt1589) / d3;
-            aDouble1586 = (double)anInt1581 + (d2 * (double)anInt1589) / d3;
-            aDouble1587 = anInt1582;
+            double distanceX = targetX - startX;
+            double distanceY = targetY - startY;
+            double distanceScalar = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
+            currentX = (double)startX + (distanceX * (double)startDistance) / distanceScalar;
+            currentY = (double)startY + (distanceY * (double)startDistance) / distanceScalar;
+            currentZ = startZ;
         }
-        double d1 = (endCycle + 1) - i;
-        aDouble1574 = ((double)l - aDouble1585) / d1;
-        aDouble1575 = ((double)j - aDouble1586) / d1;
-        aDouble1576 = Math.sqrt(aDouble1574 * aDouble1574 + aDouble1575 * aDouble1575);
-        if(!aBoolean1579)
-            aDouble1577 = -aDouble1576 * Math.tan((double)anInt1588 * 0.02454369D);
-        aDouble1578 = (2D * ((double)k - aDouble1587 - aDouble1577 * d1)) / (d1 * d1);
+        double cyclesRemaining = (endCycle + 1) - currentCycle;
+        speedVectorX = ((double)targetX - currentX) / cyclesRemaining;
+        speedVectorY = ((double)targetY - currentY) / cyclesRemaining;
+        speedScalar = Math.sqrt(speedVectorX * speedVectorX + speedVectorY * speedVectorY);
+        if(!moving)
+            speedVectorZ = -speedScalar * Math.tan((double)startSlope * 0.02454369D);
+        offsetZ = (2D * ((double)targetZ - currentZ - speedVectorZ * cyclesRemaining)) / (cyclesRemaining * cyclesRemaining);
     }
 
     public Model getRotatedModel()
     {
-        Model model = aSpotAnim_1592.getModel();
+        Model model = animation.getModel();
         if(model == null)
             return null;
-        int j = -1;
-        if(aSpotAnim_1592.sequences != null)
-            j = aSpotAnim_1592.sequences.frame2Ids[anInt1593];
-        Model model_1 = new Model(true, Animation.isNullFrame(j), false, model);
-        if(j != -1)
+        int frameId = -1;
+        if(animation.sequences != null)
+            frameId = animation.sequences.frame2Ids[animationFrame];
+        Model rotatedModel = new Model(true, Animation.isNullFrame(frameId), false, model);
+        if(frameId != -1)
         {
-            model_1.createBones();
-            model_1.applyTransformation(j);
-            model_1.triangleSkin = null;
-            model_1.vertexSkin = null;
+            rotatedModel.createBones();
+            rotatedModel.applyTransformation(frameId);
+            rotatedModel.triangleSkin = null;
+            rotatedModel.vertexSkin = null;
         }
-        if(aSpotAnim_1592.resizeXY != 128 || aSpotAnim_1592.resizeZ != 128)
-            model_1.scaleT(aSpotAnim_1592.resizeXY, aSpotAnim_1592.resizeXY, aSpotAnim_1592.resizeZ);
-        model_1.rotateX(anInt1596);
-        model_1.applyLighting(64 + aSpotAnim_1592.modelLightFalloff, 850 + aSpotAnim_1592.modelLightAmbient, -30, -50, -30, true);
-            return model_1;
+        if(animation.resizeXY != 128 || animation.resizeZ != 128)
+            rotatedModel.scaleT(animation.resizeXY, animation.resizeXY, animation.resizeZ);
+        rotatedModel.rotateX(rotationX);
+        rotatedModel.applyLighting(64 + animation.modelLightFalloff, 850 + animation.modelLightAmbient, -30, -50, -30, true);
+            return rotatedModel;
     }
 
-    public Projectile(int i, int j, int l, int i1, int j1, int k1,
-                         int l1, int i2, int j2, int k2, int l2)
+    public Projectile(int startSlope, int endZ, int delay, int endCycle, int startDistance, int plane,
+                         int startZ, int startY, int startX, int targetId, int l2)
     {
-        aBoolean1579 = false;
-        aSpotAnim_1592 = SpotAnim.cache[l2];
-        plane = k1;
-        anInt1580 = j2;
-        anInt1581 = i2;
-        anInt1582 = l1;
-        delay = l;
-        endCycle = i1;
-        anInt1588 = i;
-        anInt1589 = j1;
-        targetId = k2;
-        anInt1583 = j;
-        aBoolean1579 = false;
+        moving = false;
+        this.animation = SpotAnim.cache[l2];
+        this.plane = plane;
+        this.startX = startX;
+        this.startY = startY;
+        this.startZ = startZ;
+        this.delay = delay;
+        this.endCycle = endCycle;
+        this.startSlope = startSlope;
+        this.startDistance = startDistance;
+        this.targetId = targetId;
+        this.endZ = endZ;
+        this.moving = false;
     }
 
     public void move(int i)
     {
-        aBoolean1579 = true;
-        aDouble1585 += aDouble1574 * (double)i;
-        aDouble1586 += aDouble1575 * (double)i;
-        aDouble1587 += aDouble1577 * (double)i + 0.5D * aDouble1578 * (double)i * (double)i;
-        aDouble1577 += aDouble1578 * (double)i;
-        anInt1595 = (int)(Math.atan2(aDouble1574, aDouble1575) * 325.94900000000001D) + 1024 & 0x7ff;
-        anInt1596 = (int)(Math.atan2(aDouble1577, aDouble1576) * 325.94900000000001D) & 0x7ff;
-        if(aSpotAnim_1592.sequences != null)
-            for(anInt1594 += i; anInt1594 > aSpotAnim_1592.sequences.getFrameLength(anInt1593);)
+        moving = true;
+        currentX += speedVectorX * (double)i;
+        currentY += speedVectorY * (double)i;
+        currentZ += speedVectorZ * (double)i + 0.5D * offsetZ * (double)i * (double)i;
+        speedVectorZ += offsetZ * (double)i;
+        rotationY = (int)(Math.atan2(speedVectorX, speedVectorY) * 325.94900000000001D) + 1024 & 0x7ff;
+        rotationX = (int)(Math.atan2(speedVectorZ, speedScalar) * 325.94900000000001D) & 0x7ff;
+        if(animation.sequences != null)
+            for(duration += i; duration > animation.sequences.getFrameLength(animationFrame);)
             {
-                anInt1594 -= aSpotAnim_1592.sequences.getFrameLength(anInt1593) + 1;
-                anInt1593++;
-                if(anInt1593 >= aSpotAnim_1592.sequences.frameCount)
-                    anInt1593 = 0;
+                duration -= animation.sequences.getFrameLength(animationFrame) + 1;
+                animationFrame++;
+                if(animationFrame >= animation.sequences.frameCount)
+                    animationFrame = 0;
             }
 
     }
 
     public final int delay;
     public final int endCycle;
-    private double aDouble1574;
-    private double aDouble1575;
-    private double aDouble1576;
-    private double aDouble1577;
-    private double aDouble1578;
-    private boolean aBoolean1579;
-    private final int anInt1580;
-    private final int anInt1581;
-    private final int anInt1582;
-    public final int anInt1583;
-    public double aDouble1585;
-    public double aDouble1586;
-    public double aDouble1587;
-    private final int anInt1588;
-    private final int anInt1589;
+    private double speedVectorX;
+    private double speedVectorY;
+    private double speedScalar;
+    private double speedVectorZ;
+    private double offsetZ;
+    private boolean moving;
+    private final int startX;
+    private final int startY;
+    private final int startZ;
+    public final int endZ;
+    public double currentX;
+    public double currentY;
+    public double currentZ;
+    private final int startSlope;
+    private final int startDistance;
     public final int targetId;
-    private final SpotAnim aSpotAnim_1592;
-    private int anInt1593;
-    private int anInt1594;
-    public int anInt1595;
-    private int anInt1596;
+    private final SpotAnim animation;
+    private int animationFrame;
+    private int duration;
+    public int rotationY;
+    private int rotationX;
     public final int plane;
 }

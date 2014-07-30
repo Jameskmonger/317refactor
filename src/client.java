@@ -2514,7 +2514,7 @@ public final class client extends RSApplet {
                 {
                     NPC npc = npcArray[projectile.targetId - 1];
                     if(npc != null && npc.x >= 0 && npc.x < 13312 && npc.y >= 0 && npc.y < 13312)
-                        projectile.trackTarget(loopCycle, npc.y, getFloorDrawHeight(projectile.plane, npc.y, npc.x) - projectile.anInt1583, npc.x);
+                        projectile.trackTarget(loopCycle, npc.y, getFloorDrawHeight(projectile.plane, npc.y, npc.x) - projectile.endZ, npc.x);
                 }
                 if(projectile.targetId < 0)
                 {
@@ -2525,10 +2525,10 @@ public final class client extends RSApplet {
                     else
                         player = playerArray[playerId];
                     if(player != null && player.x >= 0 && player.x < 13312 && player.y >= 0 && player.y < 13312)
-                        projectile.trackTarget(loopCycle, player.y, getFloorDrawHeight(projectile.plane, player.y, player.x) - projectile.anInt1583, player.x);
+                        projectile.trackTarget(loopCycle, player.y, getFloorDrawHeight(projectile.plane, player.y, player.x) - projectile.endZ, player.x);
                 }
                 projectile.move(animationTimePassed);
-                worldController.addEntityA(plane, (int)projectile.aDouble1585, (int)projectile.aDouble1586, (int)projectile.aDouble1587, projectile.anInt1595, projectile, -1, 60, false);
+                worldController.addEntityA(plane, (int)projectile.currentX, (int)projectile.currentY, (int)projectile.currentZ, projectile.rotationY, projectile, -1, 60, false);
             }
 
     }
@@ -11313,8 +11313,8 @@ public final class client extends RSApplet {
                     int distanceX = x - cameraPositionX;
                     int distanceZ = z - cameraPositionZ;
                     int distanceY = y - cameraPositionY;
-                    int distanceXY = (int)Math.sqrt(distanceX * distanceX + distanceY * distanceY);
-                    cameraCurveY = (int)(Math.atan2(distanceZ, distanceXY) * 325.94900000000001D) & 0x7ff;
+                    int distanceScalar = (int)Math.sqrt(distanceX * distanceX + distanceY * distanceY);
+                    cameraCurveY = (int)(Math.atan2(distanceZ, distanceScalar) * 325.94900000000001D) & 0x7ff;
                     cameraCurveZ = (int)(Math.atan2(distanceX, distanceY) * -325.94900000000001D) & 0x7ff;
                     if(cameraCurveY < 128)
                         cameraCurveY = 128;
