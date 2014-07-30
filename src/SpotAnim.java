@@ -29,8 +29,8 @@ public final class SpotAnim {
             if(opcode == 2)
             {
                 animationId = stream.getUnsignedLEShort();
-                if(Animation.anims != null)
-                    sequences = Animation.anims[animationId];
+                if(AnimationSequence.anims != null)
+                    sequences = AnimationSequence.anims[animationId];
             } else
             if(opcode == 4)
                 resizeXY = stream.getUnsignedLEShort();
@@ -59,17 +59,17 @@ public final class SpotAnim {
 
     public Model getModel()
     {
-        Model model = (Model) modelCache.insertFromCache(id);
+        Model model = (Model) modelCache.get(id);
         if(model != null)
             return model;
         model = Model.getModel(modelId);
         if(model == null)
             return null;
-        for(int i = 0; i < 6; i++)
+        for(int c = 0; c < 6; c++)
             if(originalModelColours[0] != 0)
-                model.recolour(originalModelColours[i], modifiedModelColours[i]);
+                model.recolour(originalModelColours[c], modifiedModelColours[c]);
 
-        modelCache.removeFromCache(model, id);
+        modelCache.put(model, id);
         return model;
     }
 
@@ -88,7 +88,7 @@ public final class SpotAnim {
     private int id;
     private int modelId;
     private int animationId;
-    public Animation sequences;
+    public AnimationSequence sequences;
     private final int[] originalModelColours;
     private final int[] modifiedModelColours;
     public int resizeXY;

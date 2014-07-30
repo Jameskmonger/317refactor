@@ -882,7 +882,7 @@ public final class Model extends Animable {
             return;
         if(frameId == -1)
             return;
-        Class36 animationFrame = Class36.forFrameId(frameId);
+        Animation animationFrame = Animation.forFrameId(frameId);
         if(animationFrame == null)
             return;
         Skins skins = animationFrame.animationSkins;
@@ -905,10 +905,10 @@ public final class Model extends Animable {
             applyTransformation(frameId1);
             return;
         }
-        Class36 animationFrame1 = Class36.forFrameId(frameId1);
+        Animation animationFrame1 = Animation.forFrameId(frameId1);
         if(animationFrame1 == null)
             return;
-        Class36 animationFrame2 = Class36.forFrameId(frameId2);
+        Animation animationFrame2 = Animation.forFrameId(frameId2);
         if(animationFrame2 == null)
         {
             applyTransformation(frameId1);

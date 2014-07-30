@@ -181,7 +181,7 @@ stream = null;
             if(j != 10)
                 return null;
             l1 = (long)((type << 6) + l) + ((long)(k + 1) << 32);
-            Model model_1 = (Model) mruNodes2.insertFromCache(l1);
+            Model model_1 = (Model) mruNodes2.get(l1);
             if(model_1 != null)
                 return model_1;
             if(anIntArray773 == null)
@@ -193,7 +193,7 @@ stream = null;
                 int l2 = anIntArray773[i2];
                 if(flag1)
                     l2 += 0x10000;
-                model = (Model) modelCache.insertFromCache(l2);
+                model = (Model) modelCache.get(l2);
                 if(model == null)
                 {
                     model = Model.getModel(l2 & 0xffff);
@@ -201,7 +201,7 @@ stream = null;
                         return null;
                     if(flag1)
                         model.mirror();
-                    modelCache.removeFromCache(model, l2);
+                    modelCache.put(model, l2);
                 }
                 if(k1 > 1)
                     aModelArray741s[i2] = model;
@@ -223,14 +223,14 @@ stream = null;
             if(i1 == -1)
                 return null;
             l1 = (long)((type << 6) + (i1 << 3) + l) + ((long)(k + 1) << 32);
-            Model model_2 = (Model) mruNodes2.insertFromCache(l1);
+            Model model_2 = (Model) mruNodes2.get(l1);
             if(model_2 != null)
                 return model_2;
             int j2 = anIntArray773[i1];
             boolean flag3 = aBoolean751 ^ (l > 3);
             if(flag3)
                 j2 += 0x10000;
-            model = (Model) modelCache.insertFromCache(j2);
+            model = (Model) modelCache.get(j2);
             if(model == null)
             {
                 model = Model.getModel(j2 & 0xffff);
@@ -238,14 +238,14 @@ stream = null;
                     return null;
                 if(flag3)
                     model.mirror();
-                modelCache.removeFromCache(model, j2);
+                modelCache.put(model, j2);
             }
         }
         boolean flag;
         flag = anInt748 != 128 || anInt772 != 128 || anInt740 != 128;
         boolean flag2;
         flag2 = anInt738 != 0 || anInt745 != 0 || anInt783 != 0;
-        Model model_3 = new Model(modifiedModelColors == null, Class36.isNullFrame(k), l == 0 && k == -1 && !flag && !flag2, model);
+        Model model_3 = new Model(modifiedModelColors == null, Animation.isNullFrame(k), l == 0 && k == -1 && !flag && !flag2, model);
         if(k != -1)
         {
             model_3.createBones();
@@ -268,7 +268,7 @@ stream = null;
         model_3.applyLighting(64 + aByte737, 768 + aByte742 * 5, -50, -10, -50, !aBoolean769);
         if(anInt760 == 1)
             model_3.anInt1654 = model_3.modelHeight;
-        mruNodes2.removeFromCache(model_3, l1);
+        mruNodes2.put(model_3, l1);
         return model_3;
     }
 

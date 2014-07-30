@@ -32,7 +32,7 @@ final class Projectile extends Animable {
         int j = -1;
         if(aSpotAnim_1592.sequences != null)
             j = aSpotAnim_1592.sequences.frame2Ids[anInt1593];
-        Model model_1 = new Model(true, Class36.isNullFrame(j), false, model);
+        Model model_1 = new Model(true, Animation.isNullFrame(j), false, model);
         if(j != -1)
         {
             model_1.createBones();

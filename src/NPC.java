@@ -9,16 +9,16 @@ public final class NPC extends Entity
     {
         if(super.animation >= 0 && super.animationDelay == 0)
         {
-            int k = Animation.anims[super.animation].frame2Ids[super.anInt1527];
+            int k = AnimationSequence.anims[super.animation].frame2Ids[super.anInt1527];
             int i1 = -1;
             if(super.anInt1517 >= 0 && super.anInt1517 != super.standAnimationId)
-                i1 = Animation.anims[super.anInt1517].frame2Ids[super.anInt1518];
-            return npcDefinition.method164(i1, k, Animation.anims[super.animation].anIntArray357);
+                i1 = AnimationSequence.anims[super.anInt1517].frame2Ids[super.anInt1518];
+            return npcDefinition.getChildModel(i1, k, AnimationSequence.anims[super.animation].flowControl);
         }
         int l = -1;
         if(super.anInt1517 >= 0)
-            l = Animation.anims[super.anInt1517].frame2Ids[super.anInt1518];
-        return npcDefinition.method164(-1, l, null);
+            l = AnimationSequence.anims[super.anInt1517].frame2Ids[super.anInt1518];
+        return npcDefinition.getChildModel(-1, l, null);
     }
 
     public Model getRotatedModel()
@@ -36,7 +36,7 @@ public final class NPC extends Entity
             if(model_1 != null)
             {
                 int j = spotAnim.sequences.frame2Ids[super.currentAnimation];
-                Model model_2 = new Model(true, Class36.isNullFrame(j), false, model_1);
+                Model model_2 = new Model(true, Animation.isNullFrame(j), false, model_1);
                 model_2.translate(0, -super.graphicHeight, 0);
                 model_2.createBones();
                 model_2.applyTransformation(j);
@@ -65,5 +65,5 @@ public final class NPC extends Entity
     {
     }
 
-    public EntityDef npcDefinition;
+    public EntityDefinition npcDefinition;
 }

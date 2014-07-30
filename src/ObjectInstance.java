@@ -74,7 +74,7 @@ final class ObjectInstance extends Animable {
         anInt1606 = k1;
         if(animationId != -1)
         {
-            animation = Animation.anims[animationId];
+            animation = AnimationSequence.anims[animationId];
             frame = 0;
             nextFrameTime = client.loopCycle;
             if(flag && animation.frameStep != -1)
@@ -97,7 +97,7 @@ final class ObjectInstance extends Animable {
     private final int anInt1604;
     private final int anInt1605;
     private final int anInt1606;
-    private Animation animation;
+    private AnimationSequence animation;
     private int nextFrameTime;
     public static client clientInstance;
     private final int objectId;

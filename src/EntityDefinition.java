@@ -2,32 +2,32 @@
 // Jad home page: http://www.kpdus.com/jad.html
 // Decompiler options: packimports(3) 
 
-public final class EntityDef
+public final class EntityDefinition
 {
 
-    public static EntityDef forID(int i)
+    public static EntityDefinition forID(int i)
     {
         for(int j = 0; j < 20; j++)
-            if(cache[j].type == (long)i)
+            if(cache[j].id == (long)i)
                 return cache[j];
 
         anInt56 = (anInt56 + 1) % 20;
-        EntityDef entityDef = cache[anInt56] = new EntityDef();
+        EntityDefinition entityDef = cache[anInt56] = new EntityDefinition();
         stream.currentOffset = streamIndices[i];
-        entityDef.type = i;
+        entityDef.id = i;
         entityDef.readValues(stream);
         return entityDef;
     }
 
-    public Model method160()
+    public Model getHeadModel()
     {
         if(childrenIDs != null)
         {
-            EntityDef entityDef = getChildDefinition();
+            EntityDefinition entityDef = getChildDefinition();
             if(entityDef == null)
                 return null;
             else
-                return entityDef.method160();
+                return entityDef.getHeadModel();
         }
         if(anIntArray73 == null)
             return null;
@@ -47,16 +47,16 @@ public final class EntityDef
             model = aclass30_sub2_sub4_sub6s[0];
         else
             model = new Model(aclass30_sub2_sub4_sub6s.length, aclass30_sub2_sub4_sub6s);
-        if(anIntArray76 != null)
+        if(modifiedModelColours != null)
         {
-            for(int k = 0; k < anIntArray76.length; k++)
-                model.recolour(anIntArray76[k], anIntArray70[k]);
+            for(int k = 0; k < modifiedModelColours.length; k++)
+                model.recolour(modifiedModelColours[k], originalModelColours[k]);
 
         }
         return model;
     }
 
-    public EntityDef getChildDefinition()
+    public EntityDefinition getChildDefinition()
     {
         int j = -1;
         if(anInt57 != -1)
@@ -89,73 +89,73 @@ public final class EntityDef
             i += stream2.getUnsignedLEShort();
         }
 
-        cache = new EntityDef[20];
+        cache = new EntityDefinition[20];
         for(int k = 0; k < 20; k++)
-            cache[k] = new EntityDef();
+            cache[k] = new EntityDefinition();
 
     }
 
     public static void nullLoader()
     {
-        mruNodes = null;
+        modelCache = null;
         streamIndices = null;
         cache = null;
         stream = null;
     }
 
-    public Model method164(int j, int k, int ai[])
+    public Model getChildModel(int frameId2, int frameId1, int framesFrom2[])
     {
         if(childrenIDs != null)
         {
-            EntityDef entityDef = getChildDefinition();
-            if(entityDef == null)
+            EntityDefinition childDefinition = getChildDefinition();
+            if(childDefinition == null)
                 return null;
             else
-                return entityDef.method164(j, k, ai);
+                return childDefinition.getChildModel(frameId2, frameId1, framesFrom2);
         }
-        Model model = (Model) mruNodes.insertFromCache(type);
+        Model model = (Model) modelCache.get(id);
         if(model == null)
         {
-            boolean flag = false;
-            for(int i1 = 0; i1 < anIntArray94.length; i1++)
-                if(!Model.isCached(anIntArray94[i1]))
-                    flag = true;
+            boolean notCached = false;
+            for(int m = 0; m < modelIds.length; m++)
+                if(!Model.isCached(modelIds[m]))
+                    notCached = true;
 
-            if(flag)
+            if(notCached)
                 return null;
-            Model aclass30_sub2_sub4_sub6s[] = new Model[anIntArray94.length];
-            for(int j1 = 0; j1 < anIntArray94.length; j1++)
-                aclass30_sub2_sub4_sub6s[j1] = Model.getModel(anIntArray94[j1]);
+            Model childModels[] = new Model[modelIds.length];
+            for(int m = 0; m < modelIds.length; m++)
+                childModels[m] = Model.getModel(modelIds[m]);
 
-            if(aclass30_sub2_sub4_sub6s.length == 1)
-                model = aclass30_sub2_sub4_sub6s[0];
+            if(childModels.length == 1)
+                model = childModels[0];
             else
-                model = new Model(aclass30_sub2_sub4_sub6s.length, aclass30_sub2_sub4_sub6s);
-            if(anIntArray76 != null)
+                model = new Model(childModels.length, childModels);
+            if(modifiedModelColours != null)
             {
-                for(int k1 = 0; k1 < anIntArray76.length; k1++)
-                    model.recolour(anIntArray76[k1], anIntArray70[k1]);
+                for(int c = 0; c < modifiedModelColours.length; c++)
+                    model.recolour(modifiedModelColours[c], originalModelColours[c]);
 
             }
             model.createBones();
-            model.applyLighting(64 + anInt85, 850 + anInt92, -30, -50, -30, true);
-            mruNodes.removeFromCache(model, type);
+            model.applyLighting(64 + brightness, 850 + contrast, -30, -50, -30, true);
+            modelCache.put(model, id);
         }
-        Model model_1 = Model.aModel_1621;
-        model_1.replaceWithModel(model, Class36.isNullFrame(k) & Class36.isNullFrame(j));
-        if(k != -1 && j != -1)
-            model_1.mixAnimationFrames(ai, j, k);
+        Model childModel = Model.aModel_1621;
+        childModel.replaceWithModel(model, Animation.isNullFrame(frameId1) & Animation.isNullFrame(frameId2));
+        if(frameId1 != -1 && frameId2 != -1)
+            childModel.mixAnimationFrames(framesFrom2, frameId2, frameId1);
         else
-        if(k != -1)
-            model_1.applyTransformation(k);
-        if(anInt91 != 128 || anInt86 != 128)
-            model_1.scaleT(anInt91, anInt91, anInt86);
-        model_1.calculateDiagonals();
-        model_1.triangleSkin = null;
-        model_1.vertexSkin = null;
+        if(frameId1 != -1)
+            childModel.applyTransformation(frameId1);
+        if(resizeXY != 128 || resizeZ != 128)
+            childModel.scaleT(resizeXY, resizeXY, resizeZ);
+        childModel.calculateDiagonals();
+        childModel.triangleSkin = null;
+        childModel.vertexSkin = null;
         if(boundaryDimension == 1)
-            model_1.singleTile = true;
-        return model_1;
+            childModel.singleTile = true;
+        return childModel;
     }
 
     private void readValues(Stream stream)
@@ -168,9 +168,9 @@ public final class EntityDef
             if(i == 1)
             {
                 int j = stream.getUnsignedByte();
-                anIntArray94 = new int[j];
+                modelIds = new int[j];
                 for(int j1 = 0; j1 < j; j1++)
-                    anIntArray94[j1] = stream.getUnsignedLEShort();
+                    modelIds[j1] = stream.getUnsignedLEShort();
 
             } else
             if(i == 2)
@@ -206,12 +206,12 @@ public final class EntityDef
             if(i == 40)
             {
                 int k = stream.getUnsignedByte();
-                anIntArray76 = new int[k];
-                anIntArray70 = new int[k];
+                modifiedModelColours = new int[k];
+                originalModelColours = new int[k];
                 for(int k1 = 0; k1 < k; k1++)
                 {
-                    anIntArray76[k1] = stream.getUnsignedLEShort();
-                    anIntArray70[k1] = stream.getUnsignedLEShort();
+                    modifiedModelColours[k1] = stream.getUnsignedLEShort();
+                    originalModelColours[k1] = stream.getUnsignedLEShort();
                 }
 
             } else
@@ -239,19 +239,19 @@ public final class EntityDef
                 combatLevel = stream.getUnsignedLEShort();
             else
             if(i == 97)
-                anInt91 = stream.getUnsignedLEShort();
+                resizeXY = stream.getUnsignedLEShort();
             else
             if(i == 98)
-                anInt86 = stream.getUnsignedLEShort();
+                resizeZ = stream.getUnsignedLEShort();
             else
             if(i == 99)
                 aBoolean93 = true;
             else
             if(i == 100)
-                anInt85 = stream.get();
+                brightness = stream.get();
             else
             if(i == 101)
-                anInt92 = stream.get() * 5;
+                contrast = stream.get() * 5;
             else
             if(i == 102)
                 anInt75 = stream.getUnsignedLEShort();
@@ -282,7 +282,7 @@ public final class EntityDef
         } while(true);
     }
 
-    private EntityDef()
+    private EntityDefinition()
     {
         turnLeftAnimationId = -1;
         anInt57 = -1;
@@ -294,13 +294,13 @@ public final class EntityDef
         boundaryDimension = 1;
         anInt75 = -1;
         standAnimationId = -1;
-        type = -1L;
+        id = -1L;
         degreesToTurn = 32;
         turnRightAnimationId = -1;
         clickable = true;
-        anInt86 = 128;
+        resizeZ = 128;
         aBoolean87 = true;
-        anInt91 = 128;
+        resizeXY = 128;
         aBoolean93 = false;
     }
 
@@ -316,27 +316,27 @@ public final class EntityDef
     public String actions[];
     public int walkAnimationId;
     public byte boundaryDimension;
-    private int[] anIntArray70;
+    private int[] originalModelColours;
     private static int[] streamIndices;
     private int[] anIntArray73;
     public int anInt75;
-    private int[] anIntArray76;
+    private int[] modifiedModelColours;
     public int standAnimationId;
-    public long type;
+    public long id;
     public int degreesToTurn;
-    private static EntityDef[] cache;
+    private static EntityDefinition[] cache;
     public static client clientInstance;
     public int turnRightAnimationId;
     public boolean clickable;
-    private int anInt85;
-    private int anInt86;
+    private int brightness;
+    private int resizeZ;
     public boolean aBoolean87;
     public int childrenIDs[];
     public byte description[];
-    private int anInt91;
-    private int anInt92;
+    private int resizeXY;
+    private int contrast;
     public boolean aBoolean93;
-    private int[] anIntArray94;
-    public static MRUNodes mruNodes = new MRUNodes(30);
+    private int[] modelIds;
+    public static MRUNodes modelCache = new MRUNodes(30);
 
 }

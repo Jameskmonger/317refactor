@@ -48,7 +48,7 @@ final class TextClass {
         throw new RuntimeException();
     }
 
-    public static long encodeSpriteName(String spriteName)
+    public static long spriteNameToHash(String spriteName)
     {
         spriteName = spriteName.toUpperCase();
         long longSpriteName = 0L;

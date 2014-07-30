@@ -2,7 +2,7 @@ public class Entity extends Animable {
 
     public final void setPos(int x, int y, boolean flag)
     {
-        if(animation != -1 && Animation.anims[animation].priority == 1)
+        if(animation != -1 && AnimationSequence.anims[animation].priority == 1)
             animation = -1;
         if(!flag)
         {
@@ -84,7 +84,7 @@ public class Entity extends Animable {
             x++;
             y--;
         }
-        if(animation != -1 && Animation.anims[animation].priority == 1)
+        if(animation != -1 && AnimationSequence.anims[animation].priority == 1)
             animation = -1;
         if(pathLength < 9)
             pathLength++;
@@ -126,7 +126,7 @@ public class Entity extends Animable {
         loopCycleStatus = -1000;
         textCycle = 100;
         boundaryDimension = 1;
-        isDynamic = false;
+        dynamic = false;
         pathRun = new boolean[10];
         walkAnimationId = -1;
         turnAboutAnimationId = -1;
@@ -172,7 +172,7 @@ public class Entity extends Animable {
     int faceTowardX;
     int faceTowardY;
     int boundaryDimension;
-    boolean isDynamic;
+    boolean dynamic;
     int anInt1542;
     int startX;
     int endX;

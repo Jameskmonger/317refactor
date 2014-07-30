@@ -244,7 +244,7 @@ public final class ItemDef
     {
         if(k == 0)
         {
-            Sprite sprite = (Sprite) mruNodes1.insertFromCache(i);
+            Sprite sprite = (Sprite) mruNodes1.get(i);
             if(sprite != null && sprite.maxHeight != j && sprite.maxHeight != -1)
             {
                 sprite.unlink();
@@ -360,7 +360,7 @@ public final class ItemDef
             sprite.maxHeight = j6;
         }
         if(k == 0)
-            mruNodes1.removeFromCache(sprite2, i);
+            mruNodes1.put(sprite2, i);
         DrawingArea.initDrawingArea(j2, i2, ai1);
         DrawingArea.setDrawingArea(j3, k2, l2, i3);
         Texture.centreX = k1;
@@ -387,7 +387,7 @@ public final class ItemDef
             if(j != -1)
                 return forID(j).method201(1);
         }
-        Model model = (Model) mruNodes2.insertFromCache(id);
+        Model model = (Model) mruNodes2.get(id);
         if(model != null)
             return model;
         model = Model.getModel(modelID);
@@ -403,11 +403,11 @@ public final class ItemDef
         }
         model.applyLighting(64 + anInt196, 768 + anInt184, -50, -10, -50, true);
         model.singleTile = true;
-        mruNodes2.removeFromCache(model, id);
+        mruNodes2.put(model, id);
         return model;
     }
 
-    public Model method202(int i)
+    public Model getInventoryModel(int i)
     {
         if(stackIDs != null && i > 1)
         {
@@ -417,7 +417,7 @@ public final class ItemDef
                     j = stackIDs[k];
 
             if(j != -1)
-                return forID(j).method202(1);
+                return forID(j).getInventoryModel(1);
         }
         Model model = Model.getModel(modelID);
         if(model == null)

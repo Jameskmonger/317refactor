@@ -2,153 +2,146 @@
 // Jad home page: http://www.kpdus.com/jad.html
 // Decompiler options: packimports(3) 
 
-public final class Animation {
+public final class Animation
+{
 
-    public static void unpackConfig(StreamLoader streamLoader)
+    public static void method528(int i)
     {
-        Stream stream = new Stream(streamLoader.getDataForName("seq.dat"));
-        int length = stream.getUnsignedLEShort();
-        if(anims == null)
-            anims = new Animation[length];
-        for(int j = 0; j < length; j++)
-        {
-            if(anims[j] == null)
-                anims[j] = new Animation();
-            anims[j].readValues(stream);
-        }
+        aClass36Array635 = new Animation[i + 1];
+        aBooleanArray643 = new boolean[i + 1];
+        for(int j = 0; j < i + 1; j++)
+            aBooleanArray643[j] = true;
+
     }
 
-    public int getFrameLength(int i)
+    public static void method529(byte abyte0[])
     {
-        int j = anIntArray355[i];
-        if(j == 0)
+        Stream stream = new Stream(abyte0);
+        stream.currentOffset = abyte0.length - 8;
+        int i = stream.getUnsignedLEShort();
+        int j = stream.getUnsignedLEShort();
+        int k = stream.getUnsignedLEShort();
+        int l = stream.getUnsignedLEShort();
+        int i1 = 0;
+        Stream stream_1 = new Stream(abyte0);
+        stream_1.currentOffset = i1;
+        i1 += i + 2;
+        Stream stream_2 = new Stream(abyte0);
+        stream_2.currentOffset = i1;
+        i1 += j;
+        Stream stream_3 = new Stream(abyte0);
+        stream_3.currentOffset = i1;
+        i1 += k;
+        Stream stream_4 = new Stream(abyte0);
+        stream_4.currentOffset = i1;
+        i1 += l;
+        Stream stream_5 = new Stream(abyte0);
+        stream_5.currentOffset = i1;
+        Skins class18 = new Skins(stream_5);
+        int k1 = stream_1.getUnsignedLEShort();
+        int ai[] = new int[500];
+        int ai1[] = new int[500];
+        int ai2[] = new int[500];
+        int ai3[] = new int[500];
+        for(int l1 = 0; l1 < k1; l1++)
         {
-            Class36 class36 = Class36.forFrameId(frame2Ids[i]);
-            if(class36 != null)
-                j = anIntArray355[i] = class36.anInt636;
-        }
-        if(j == 0)
-            j = 1;
-        return j;
-    }
-
-    private void readValues(Stream stream)
-    {
-        do
-        {
-            int i = stream.getUnsignedByte();
-            if(i == 0)
-                break;
-            if(i == 1)
+            int i2 = stream_1.getUnsignedLEShort();
+            Animation class36 = aClass36Array635[i2] = new Animation();
+            class36.displayLength = stream_4.getUnsignedByte();
+            class36.animationSkins = class18;
+            int j2 = stream_1.getUnsignedByte();
+            int k2 = -1;
+            int l2 = 0;
+            for(int i3 = 0; i3 < j2; i3++)
             {
-                frameCount = stream.getUnsignedByte();
-                frame2Ids = new int[frameCount];
-                frame1Ids = new int[frameCount];
-                anIntArray355 = new int[frameCount];
-                for(int j = 0; j < frameCount; j++)
+                int j3 = stream_2.getUnsignedByte();
+                if(j3 > 0)
                 {
-                    frame2Ids[j] = stream.getUnsignedLEShort();
-                    frame1Ids[j] = stream.getUnsignedLEShort();
-                    if(frame1Ids[j] == 65535)
-                        frame1Ids[j] = -1;
-                    anIntArray355[j] = stream.getUnsignedLEShort();
+                    if(class18.opcodes[i3] != 0)
+                    {
+                        for(int l3 = i3 - 1; l3 > k2; l3--)
+                        {
+                            if(class18.opcodes[l3] != 0)
+                                continue;
+                            ai[l2] = l3;
+                            ai1[l2] = 0;
+                            ai2[l2] = 0;
+                            ai3[l2] = 0;
+                            l2++;
+                            break;
+                        }
+
+                    }
+                    ai[l2] = i3;
+                    char c = '\0';
+                    if(class18.opcodes[i3] == 3)
+                        c = '\200';
+                    if((j3 & 1) != 0)
+                        ai1[l2] = stream_3.getSmartA();
+                    else
+                        ai1[l2] = c;
+                    if((j3 & 2) != 0)
+                        ai2[l2] = stream_3.getSmartA();
+                    else
+                        ai2[l2] = c;
+                    if((j3 & 4) != 0)
+                        ai3[l2] = stream_3.getSmartA();
+                    else
+                        ai3[l2] = c;
+                    k2 = i3;
+                    l2++;
+                    if(class18.opcodes[i3] == 5)
+                        aBooleanArray643[i2] = false;
                 }
-
-            } else
-            if(i == 2)
-                frameStep = stream.getUnsignedLEShort();
-            else
-            if(i == 3)
-            {
-                int k = stream.getUnsignedByte();
-                anIntArray357 = new int[k + 1];
-                for(int l = 0; l < k; l++)
-                    anIntArray357[l] = stream.getUnsignedByte();
-
-                anIntArray357[k] = 0x98967f;
-            } else
-            if(i == 4)
-                aBoolean358 = true;
-            else
-            if(i == 5)
-                anInt359 = stream.getUnsignedByte();
-            else
-            if(i == 6)
-                anInt360 = stream.getUnsignedLEShort();
-            else
-            if(i == 7)
-                anInt361 = stream.getUnsignedLEShort();
-            else
-            if(i == 8)
-                anInt362 = stream.getUnsignedByte();
-            else
-            if(i == 9)
-                anInt363 = stream.getUnsignedByte();
-            else
-            if(i == 10)
-                priority = stream.getUnsignedByte();
-            else
-            if(i == 11)
-                anInt365 = stream.getUnsignedByte();
-            else
-            if(i == 12)
-                stream.getInt();
-            else
-                System.out.println("Error unrecognised seq config code: " + i);
-        } while(true);
-        if(frameCount == 0)
-        {
-            frameCount = 1;
-            frame2Ids = new int[1];
-            frame2Ids[0] = -1;
-            frame1Ids = new int[1];
-            frame1Ids[0] = -1;
-            anIntArray355 = new int[1];
-            anIntArray355[0] = -1;
-        }
-        if(anInt363 == -1)
-            if(anIntArray357 != null)
-                anInt363 = 2;
-            else
-                anInt363 = 0;
-        if(priority == -1)
-        {
-            if(anIntArray357 != null)
-            {
-                priority = 2;
-                return;
             }
-            priority = 0;
+
+            class36.frameCount = l2;
+            class36.opcodeTable = new int[l2];
+            class36.transformationX = new int[l2];
+            class36.transformationY = new int[l2];
+            class36.transformationZ = new int[l2];
+            for(int k3 = 0; k3 < l2; k3++)
+            {
+                class36.opcodeTable[k3] = ai[k3];
+                class36.transformationX[k3] = ai1[k3];
+                class36.transformationY[k3] = ai2[k3];
+                class36.transformationZ[k3] = ai3[k3];
+            }
+
         }
+
+    }
+
+    public static void nullLoader()
+    {
+        aClass36Array635 = null;
+    }
+
+    public static Animation forFrameId(int j)
+    {
+        if(aClass36Array635 == null)
+            return null;
+        else
+            return aClass36Array635[j];
+    }
+
+    public static boolean isNullFrame(int i)
+    {
+        return i == -1;
     }
 
     private Animation()
     {
-        frameStep = -1;
-        aBoolean358 = false;
-        anInt359 = 5;
-        anInt360 = -1;
-        anInt361 = -1;
-        anInt362 = 99;
-        anInt363 = -1;
-        priority = -1;
-        anInt365 = 2;
     }
 
-    public static Animation anims[];
+    private static Animation[] aClass36Array635;
+    public int displayLength;
+    public Skins animationSkins;
     public int frameCount;
-    public int frame2Ids[];
-    public int frame1Ids[];
-    private int[] anIntArray355;
-    public int frameStep;
-    public int anIntArray357[];
-    public boolean aBoolean358;
-    public int anInt359;
-    public int anInt360;
-    public int anInt361;
-    public int anInt362;
-    public int anInt363;
-    public int priority;
-    public int anInt365;
-    public static int anInt367;
+    public int opcodeTable[];
+    public int transformationX[];
+    public int transformationY[];
+    public int transformationZ[];
+    private static boolean[] aBooleanArray643;
+
 }

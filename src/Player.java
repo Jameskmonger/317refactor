@@ -9,7 +9,7 @@ public final class Player extends Entity
     {
         if(!visible)
             return null;
-        Model model = method452();
+        Model model = getAnimatedModel();
         if(model == null)
             return null;
         super.height = model.modelHeight;
@@ -22,7 +22,7 @@ public final class Player extends Entity
             Model model_2 = spotAnim.getModel();
             if(model_2 != null)
             {
-                Model model_3 = new Model(true, Class36.isNullFrame(super.currentAnimation), false, model_2);
+                Model model_3 = new Model(true, Animation.isNullFrame(super.currentAnimation), false, model_2);
                 model_3.translate(0, -super.graphicHeight, 0);
                 model_3.createBones();
                 model_3.applyTransformation(spotAnim.sequences.frame2Ids[super.currentAnimation]);
@@ -102,7 +102,7 @@ public final class Player extends Entity
             appearance[slot] = (itemId1 << 8) + itemId2;
             if(slot == 0 && appearance[0] == 65535)
             {
-                npcAppearance = EntityDef.forID(stream.getUnsignedLEShort());
+                npcAppearance = EntityDefinition.forID(stream.getUnsignedLEShort());
                 break;
             }
             if(appearance[slot] >= 512 && appearance[slot] - 512 < ItemDef.totalItems)
@@ -168,17 +168,17 @@ public final class Player extends Entity
         appearanceOffset += gender;
     }
 
-    private Model method452()
+    private Model getAnimatedModel()
     {
         if(npcAppearance != null)
         {
-            int j = -1;
+            int frameId = -1;
             if(super.animation >= 0 && super.animationDelay == 0)
-                j = Animation.anims[super.animation].frame2Ids[super.anInt1527];
+                frameId = AnimationSequence.anims[super.animation].frame2Ids[super.anInt1527];
             else
             if(super.anInt1517 >= 0)
-                j = Animation.anims[super.anInt1517].frame2Ids[super.anInt1518];
-            Model model = npcAppearance.method164(-1, j, null);
+                frameId = AnimationSequence.anims[super.anInt1517].frame2Ids[super.anInt1518];
+            Model model = npcAppearance.getChildModel(-1, frameId, null);
             return model;
         }
         long l = appearanceOffset;
@@ -188,10 +188,10 @@ public final class Player extends Entity
         int k1 = -1;
         if(super.animation >= 0 && super.animationDelay == 0)
         {
-            Animation animation = Animation.anims[super.animation];
+            AnimationSequence animation = AnimationSequence.anims[super.animation];
             k = animation.frame2Ids[super.anInt1527];
             if(super.anInt1517 >= 0 && super.anInt1517 != super.standAnimationId)
-                i1 = Animation.anims[super.anInt1517].frame2Ids[super.anInt1518];
+                i1 = AnimationSequence.anims[super.anInt1517].frame2Ids[super.anInt1518];
             if(animation.anInt360 >= 0)
             {
                 j1 = animation.anInt360;
@@ -204,8 +204,8 @@ public final class Player extends Entity
             }
         } else
         if(super.anInt1517 >= 0)
-            k = Animation.anims[super.anInt1517].frame2Ids[super.anInt1518];
-        Model model_1 = (Model) mruNodes.insertFromCache(l);
+            k = AnimationSequence.anims[super.anInt1517].frame2Ids[super.anInt1518];
+        Model model_1 = (Model) mruNodes.get(l);
         if(model_1 == null)
         {
             boolean flag = false;
@@ -225,7 +225,7 @@ public final class Player extends Entity
             if(flag)
             {
                 if(aLong1697 != -1L)
-                    model_1 = (Model) mruNodes.insertFromCache(aLong1697);
+                    model_1 = (Model) mruNodes.get(aLong1697);
                 if(model_1 == null)
                     return null;
             }
@@ -256,25 +256,25 @@ public final class Player extends Entity
             }
 
             model_1 = new Model(j2, aclass30_sub2_sub4_sub6s);
-            for(int j3 = 0; j3 < 5; j3++)
-                if(bodyPartColour[j3] != 0)
+            for(int part = 0; part < 5; part++)
+                if(bodyPartColour[part] != 0)
                 {
-                    model_1.recolour(client.playerBodyRecolours[j3][0], client.playerBodyRecolours[j3][bodyPartColour[j3]]);
-                    if(j3 == 1)
-                        model_1.recolour(client.anIntArray1204[0], client.anIntArray1204[bodyPartColour[j3]]);
+                    model_1.recolour(client.playerBodyRecolours[part][0], client.playerBodyRecolours[part][bodyPartColour[part]]);
+                    if(part == 1)
+                        model_1.recolour(client.anIntArray1204[0], client.anIntArray1204[bodyPartColour[part]]);
                 }
 
             model_1.createBones();
             model_1.applyLighting(64, 850, -30, -50, -30, true);
-            mruNodes.removeFromCache(model_1, l);
+            mruNodes.put(model_1, l);
             aLong1697 = l;
         }
         if(preventRotation)
             return model_1;
         Model model_2 = Model.aModel_1621;
-        model_2.replaceWithModel(model_1, Class36.isNullFrame(k) & Class36.isNullFrame(i1));
+        model_2.replaceWithModel(model_1, Animation.isNullFrame(k) & Animation.isNullFrame(i1));
         if(k != -1 && i1 != -1)
-            model_2.mixAnimationFrames(Animation.anims[super.animation].anIntArray357, i1, k);
+            model_2.mixAnimationFrames(AnimationSequence.anims[super.animation].flowControl, i1, k);
         else
         if(k != -1)
             model_2.applyTransformation(k);
@@ -290,12 +290,12 @@ public final class Player extends Entity
     }
 
     public int rights;
-	public Model method453()
+	public Model getHeadModel()
     {
         if(!visible)
             return null;
         if(npcAppearance != null)
-            return npcAppearance.method160();
+            return npcAppearance.getHeadModel();
         boolean flag = false;
         for(int i = 0; i < 12; i++)
         {
@@ -350,7 +350,7 @@ public final class Player extends Entity
     }
 
     private long aLong1697;
-    public EntityDef npcAppearance;
+    public EntityDefinition npcAppearance;
     boolean preventRotation;
     final int[] bodyPartColour;
     public int team;

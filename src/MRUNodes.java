@@ -15,7 +15,7 @@ public final class MRUNodes {
         nodeCache = new NodeCache();
     }
 
-    public NodeSub insertFromCache(long l)
+    public NodeSub get(long l)
     {
         NodeSub nodeSub = (NodeSub) nodeCache.findNodeByID(l);
         if(nodeSub != null)
@@ -25,7 +25,7 @@ public final class MRUNodes {
         return nodeSub;
     }
 
-    public void removeFromCache(NodeSub nodeSub, long l)
+    public void put(NodeSub nodeSub, long l)
     {
         try
         {
