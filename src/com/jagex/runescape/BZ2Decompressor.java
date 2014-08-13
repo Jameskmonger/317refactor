@@ -2,7 +2,7 @@ package com.jagex.runescape;
 final class BZ2Decompressor
 {
 
-    public static int method225(byte abyte0[], int i, byte abyte1[], int j, int k)
+    public static int decompress(byte abyte0[], int i, byte abyte1[], int j, int k)
     {
         synchronized(aClass32_305)
         {

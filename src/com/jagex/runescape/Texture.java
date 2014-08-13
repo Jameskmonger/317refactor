@@ -65,7 +65,7 @@ final class Texture extends DrawingArea {
         }
     }
 
-    public static void unpackTextures(StreamLoader archive)
+    public static void unpackTextures(Archive archive)
     {
         loadedTextureCount = 0;
         for(int i = 0; i < 50; i++)

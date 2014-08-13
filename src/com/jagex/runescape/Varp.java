@@ -5,9 +5,9 @@ package com.jagex.runescape;
 
 public final class  Varp {
 
-    public static void unpackConfig(StreamLoader archive)
+    public static void unpackConfig(Archive archive)
     {
-        Stream stream = new Stream(archive.getDataForName("varp.dat"));
+        Stream stream = new Stream(archive.getFile("varp.dat"));
         anInt702 = 0;
         int cacheSize = stream.getUnsignedLEShort();
         if(cache == null)

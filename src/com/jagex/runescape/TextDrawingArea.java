@@ -3,7 +3,7 @@ import java.util.Random;
 
 public final class TextDrawingArea extends DrawingArea {
 
-    public TextDrawingArea(boolean flag, String s, StreamLoader streamLoader)
+    public TextDrawingArea(boolean flag, String s, Archive streamLoader)
     {
         glyphPixels = new byte[256][];
         glyphWidth = new int[256];
@@ -13,8 +13,8 @@ public final class TextDrawingArea extends DrawingArea {
         characterEffectiveWidth = new int[256];
         random = new Random();
         strikethrough = false;
-        Stream data = new Stream(streamLoader.getDataForName(s + ".dat"));
-        Stream index = new Stream(streamLoader.getDataForName("index.dat"));
+        Stream data = new Stream(streamLoader.getFile(s + ".dat"));
+        Stream index = new Stream(streamLoader.getFile("index.dat"));
         index.currentOffset = data.getUnsignedLEShort() + 4;
         int k = index.getUnsignedByte();
         if(k > 0)

@@ -2546,7 +2546,7 @@ public final class client extends RSApplet {
 
     private void drawLogo()
     {
-        byte titleData[] = archiveTitle.getDataForName("title.dat");
+        byte titleData[] = archiveTitle.getFile("title.dat");
         Sprite sprite = new Sprite(titleData, this);
         flameLeftBackground.initDrawingArea();
         sprite.drawInverse(0, 0);
@@ -3262,7 +3262,7 @@ public final class client extends RSApplet {
         return true;
     }
 
-    private StreamLoader requestArchive(int i, String s, String s1, int j, int k)
+    private Archive requestArchive(int i, String s, String s1, int j, int k)
     {
         byte abyte0[] = null;
         int l = 5;
@@ -3281,7 +3281,7 @@ public final class client extends RSApplet {
         }
         if(abyte0 != null)
         {
-            StreamLoader streamLoader = new StreamLoader(abyte0);
+            Archive streamLoader = new Archive(abyte0);
             return streamLoader;
         }
         int j1 = 0;
@@ -3398,7 +3398,7 @@ public final class client extends RSApplet {
 
         }
 
-        StreamLoader streamLoader_1 = new StreamLoader(abyte0);
+        Archive streamLoader_1 = new Archive(abyte0);
             return streamLoader_1;
     }
 
@@ -6670,12 +6670,12 @@ public final class client extends RSApplet {
             TextDrawingArea fontFancy = new TextDrawingArea(true, "q8_full", archiveTitle);
             drawLogo();
             loadTitleScreen();
-            StreamLoader archiveConfig = requestArchive(2, "config", "config", expectedCRCs[2], 30);
-            StreamLoader archiveInterface = requestArchive(3, "interface", "interface", expectedCRCs[3], 35);
-            StreamLoader archiveMedia = requestArchive(4, "2d graphics", "media", expectedCRCs[4], 40);
-            StreamLoader archiveTextures = requestArchive(6, "textures", "textures", expectedCRCs[6], 45);
-            StreamLoader archiveWord = requestArchive(7, "chat system", "wordenc", expectedCRCs[7], 50);
-            StreamLoader archiveSounds = requestArchive(8, "sound effects", "sounds", expectedCRCs[8], 55);
+            Archive archiveConfig = requestArchive(2, "config", "config", expectedCRCs[2], 30);
+            Archive archiveInterface = requestArchive(3, "interface", "interface", expectedCRCs[3], 35);
+            Archive archiveMedia = requestArchive(4, "2d graphics", "media", expectedCRCs[4], 40);
+            Archive archiveTextures = requestArchive(6, "textures", "textures", expectedCRCs[6], 45);
+            Archive archiveWord = requestArchive(7, "chat system", "wordenc", expectedCRCs[7], 50);
+            Archive archiveSounds = requestArchive(8, "sound effects", "sounds", expectedCRCs[8], 55);
             tileFlags = new byte[4][104][104];
             intGroundArray = new int[4][105][105];
             worldController = new WorldController(intGroundArray);
@@ -6683,7 +6683,7 @@ public final class client extends RSApplet {
                 currentCollisionMap[z] = new CollisionMap();
 
             minimapImage = new Sprite(512, 512);
-            StreamLoader archiveVersions = requestArchive(5, "update list", "versionlist", expectedCRCs[5], 60);
+            Archive archiveVersions = requestArchive(5, "update list", "versionlist", expectedCRCs[5], 60);
             drawLoadingText(60, "Connecting to update server");
             onDemandFetcher = new OnDemandFetcher();
             onDemandFetcher.start(archiveVersions, this);
@@ -6959,7 +6959,7 @@ public final class client extends RSApplet {
             if(!lowMemory)
             {
                 drawLoadingText(90, "Unpacking sounds");
-                byte soundData[] = archiveSounds.getDataForName("sounds.dat");
+                byte soundData[] = archiveSounds.getFile("sounds.dat");
                 Stream stream = new Stream(soundData);
                 Effect.load(stream);
             }
@@ -12002,7 +12002,7 @@ public final class client extends RSApplet {
     private String loadingBarText;
     private static int loadedRegions;
     private final int[] minimapShape1;
-    private StreamLoader archiveTitle;
+    private Archive archiveTitle;
     private int flashingSidebar;
     private int multiCombatZone;
     private NodeList stationaryGraphicQueue;

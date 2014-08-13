@@ -13,10 +13,10 @@ public final class RSInterface
         inventoryStackSize[newSlot] = originalItem;
     }
 
-    public static void unpack(StreamLoader streamLoader, TextDrawingArea fonts[], StreamLoader mediaArchive)
+    public static void unpack(Archive streamLoader, TextDrawingArea fonts[], Archive mediaArchive)
     {
         spriteCache = new MRUNodes(50000);
-        Stream stream = new Stream(streamLoader.getDataForName("data"));
+        Stream stream = new Stream(streamLoader.getFile("data"));
         int parentId = -1;
         int interfaceCount = stream.getUnsignedLEShort();
         interfaceCache = new RSInterface[interfaceCount];
@@ -264,7 +264,7 @@ public final class RSInterface
         return model;
     }
 
-    private static Sprite getImage(int spriteId, StreamLoader streamLoader, String spriteName)
+    private static Sprite getImage(int spriteId, Archive streamLoader, String spriteName)
     {
         long spriteHash = (TextClass.spriteNameToHash(spriteName) << 8) + (long)spriteId;
         Sprite sprite = (Sprite) spriteCache.get(spriteHash);

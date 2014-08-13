@@ -73,10 +73,10 @@ public final class EntityDefinition
             return getDefinition(childrenIDs[childId]);
     }
 
-    public static void load(StreamLoader streamLoader)
+    public static void load(Archive streamLoader)
     {
-    	EntityDefinition.stream = new Stream(streamLoader.getDataForName("npc.dat"));
-        Stream stream = new Stream(streamLoader.getDataForName("npc.idx"));
+    	EntityDefinition.stream = new Stream(streamLoader.getFile("npc.dat"));
+        Stream stream = new Stream(streamLoader.getFile("npc.idx"));
         int size = stream.getUnsignedLEShort();
         EntityDefinition.streamOffsets = new int[size];
         int offset = 2;

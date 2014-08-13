@@ -1,9 +1,9 @@
 package com.jagex.runescape;
 public final class VarBit {
 
-    public static void unpackConfig(StreamLoader archive)
+    public static void unpackConfig(Archive archive)
     {
-        Stream stream = new Stream(archive.getDataForName("varbit.dat"));
+        Stream stream = new Stream(archive.getFile("varbit.dat"));
         int cacheSize = stream.getUnsignedLEShort();
         if(cache == null)
             cache = new VarBit[cacheSize];

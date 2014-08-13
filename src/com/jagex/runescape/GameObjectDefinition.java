@@ -74,10 +74,10 @@ public final class GameObjectDefinition
         stream = null;
     }
 
-    public static void load(StreamLoader archive)
+    public static void load(Archive archive)
     {
-        stream = new Stream(archive.getDataForName("loc.dat"));
-        Stream stream = new Stream(archive.getDataForName("loc.idx"));
+        stream = new Stream(archive.getFile("loc.dat"));
+        Stream stream = new Stream(archive.getFile("loc.idx"));
         int totalObjects = stream.getUnsignedLEShort();
         streamIndices = new int[totalObjects];
         int offset = 2;

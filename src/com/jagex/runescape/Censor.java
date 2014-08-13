@@ -1,12 +1,12 @@
 package com.jagex.runescape;
 final class Censor {
 
-    public static void load(StreamLoader streamLoader)
+    public static void load(Archive streamLoader)
     {
-        Stream fragmentsEnc = new Stream(streamLoader.getDataForName("fragmentsenc.txt"));
-        Stream badEnc = new Stream(streamLoader.getDataForName("badenc.txt"));
-        Stream domainEnc = new Stream(streamLoader.getDataForName("domainenc.txt"));
-        Stream topLevelDomainList = new Stream(streamLoader.getDataForName("tldlist.txt"));
+        Stream fragmentsEnc = new Stream(streamLoader.getFile("fragmentsenc.txt"));
+        Stream badEnc = new Stream(streamLoader.getFile("badenc.txt"));
+        Stream domainEnc = new Stream(streamLoader.getFile("domainenc.txt"));
+        Stream topLevelDomainList = new Stream(streamLoader.getFile("tldlist.txt"));
         loadDictionaries(fragmentsEnc, badEnc, domainEnc, topLevelDomainList);
     }
 

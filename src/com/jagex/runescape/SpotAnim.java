@@ -1,9 +1,9 @@
 package com.jagex.runescape;
 public final class SpotAnim {
 
-    public static void unpackConfig(StreamLoader streamLoader)
+    public static void unpackConfig(Archive streamLoader)
     {
-        Stream stream = new Stream(streamLoader.getDataForName("spotanim.dat"));
+        Stream stream = new Stream(streamLoader.getFile("spotanim.dat"));
         int length = stream.getUnsignedLEShort();
         if(cache == null)
             cache = new SpotAnim[length];

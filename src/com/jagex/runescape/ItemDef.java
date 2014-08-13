@@ -34,10 +34,10 @@ public final class ItemDef
         return flag;
     }
 
-    public static void unpackConfig(StreamLoader streamLoader)
+    public static void unpackConfig(Archive streamLoader)
     {
-        stream = new Stream(streamLoader.getDataForName("obj.dat"));
-        Stream stream = new Stream(streamLoader.getDataForName("obj.idx"));
+        stream = new Stream(streamLoader.getFile("obj.dat"));
+        Stream stream = new Stream(streamLoader.getFile("obj.idx"));
         totalItems = stream.getUnsignedLEShort();
         streamIndices = new int[totalItems];
         int i = 2;

@@ -5,9 +5,9 @@ package com.jagex.runescape;
 
 public final class IDK {
 
-    public static void unpackConfig(StreamLoader streamLoader)
+    public static void unpackConfig(Archive streamLoader)
     {
-        Stream stream = new Stream(streamLoader.getDataForName("idk.dat"));
+        Stream stream = new Stream(streamLoader.getFile("idk.dat"));
         length = stream.getUnsignedLEShort();
         if(cache == null)
             cache = new IDK[length];

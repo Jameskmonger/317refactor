@@ -5,10 +5,10 @@ package com.jagex.runescape;
 
 public final class Background extends DrawingArea {
 
-    public Background(StreamLoader streamLoader, String s, int i)
+    public Background(Archive streamLoader, String s, int i)
     {
-        Stream stream = new Stream(streamLoader.getDataForName(s + ".dat"));
-        Stream stream_1 = new Stream(streamLoader.getDataForName("index.dat"));
+        Stream stream = new Stream(streamLoader.getFile(s + ".dat"));
+        Stream stream_1 = new Stream(streamLoader.getFile("index.dat"));
         stream_1.currentOffset = stream.getUnsignedLEShort();
         libWidth = stream_1.getUnsignedLEShort();
         anInt1457 = stream_1.getUnsignedLEShort();
