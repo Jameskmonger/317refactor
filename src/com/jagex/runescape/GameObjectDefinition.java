@@ -32,9 +32,9 @@ public final class GameObjectDefinition
         hasActions = false;
         adjustToTerrain = false;
         delayShading = false;
-        aBoolean764 = false;
+        unknownAttribute1 = false;
         animationId = -1;
-        anInt775 = 16;
+        unknownAttribute2 = 16;
         ambient = 0;
         diffuse = 0;
         actions = null;
@@ -49,7 +49,7 @@ public final class GameObjectDefinition
         translateX = 0;
         translateY = 0;
         translateZ = 0;
-        aBoolean736 = false;
+        unknownAttribute3 = false;
         unwalkableSolid = false;
         _solid = -1;
         varBitId = -1;
@@ -347,7 +347,7 @@ label0:
                     delayShading = true;
                 else
                 if(attribute == 23)
-                    aBoolean764 = true;
+                    unknownAttribute1 = true;
                 else
                 if(attribute == 24)
                 {
@@ -356,7 +356,7 @@ label0:
                         animationId = -1;
                 } else
                 if(attribute == 28)
-                    anInt775 = stream.getUnsignedByte();
+                    unknownAttribute2 = stream.getUnsignedByte();
                 else
                 if(attribute == 29)
                     ambient = stream.get();
@@ -418,7 +418,7 @@ label0:
                     translateZ = stream.getShort();
                 else
                 if(attribute == 73)
-                    aBoolean736 = true;
+                    unknownAttribute3 = true;
                 else
                 if(attribute == 74)
                 {
@@ -467,7 +467,7 @@ label0:
         id = -1;
     }
 
-    public boolean aBoolean736;
+    public boolean unknownAttribute3;
     private byte ambient;
     private int translateX;
     public String name;
@@ -491,7 +491,7 @@ label0:
     private int _solid;
     public int sizeY;
     public boolean adjustToTerrain;
-    public boolean aBoolean764;
+    public boolean unknownAttribute1;
     public static client clientInstance;
     private boolean unwalkableSolid;
     public boolean solid;
@@ -501,7 +501,7 @@ label0:
     private int scaleY;
     private int[] modelIds;
     public int varBitId;
-    public int anInt775;
+    public int unknownAttribute2;
     private int[] modelTypes;
     public byte description[];
     public boolean hasActions;
