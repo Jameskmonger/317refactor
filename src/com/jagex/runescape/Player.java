@@ -19,7 +19,7 @@ public final class Player extends Entity
             return model;
         if(super.graphicId != -1 && super.currentAnimation != -1)
         {
-            SpotAnim spotAnim = SpotAnim.cache[super.graphicId];
+            SpotAnimation spotAnim = SpotAnimation.cache[super.graphicId];
             Model model_2 = spotAnim.getModel();
             if(model_2 != null)
             {
@@ -29,8 +29,8 @@ public final class Player extends Entity
                 model_3.applyTransformation(spotAnim.sequences.frame2Ids[super.currentAnimation]);
                 model_3.triangleSkin = null;
                 model_3.vertexSkin = null;
-                if(spotAnim.resizeXY != 128 || spotAnim.resizeZ != 128)
-                    model_3.scaleT(spotAnim.resizeXY, spotAnim.resizeXY, spotAnim.resizeZ);
+                if(spotAnim.scaleXY != 128 || spotAnim.scaleZ != 128)
+                    model_3.scaleT(spotAnim.scaleXY, spotAnim.scaleXY, spotAnim.scaleZ);
                 model_3.applyLighting(64 + spotAnim.modelLightFalloff, 850 + spotAnim.modelLightAmbient, -30, -50, -30, true);
                 Model aclass30_sub2_sub4_sub6_1s[] = {
                         model, model_3

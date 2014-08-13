@@ -32,7 +32,7 @@ public final class NPC extends Entity
         super.height = model.modelHeight;
         if(super.graphicId != -1 && super.currentAnimation != -1)
         {
-            SpotAnim spotAnim = SpotAnim.cache[super.graphicId];
+            SpotAnimation spotAnim = SpotAnimation.cache[super.graphicId];
             Model model_1 = spotAnim.getModel();
             if(model_1 != null)
             {
@@ -43,8 +43,8 @@ public final class NPC extends Entity
                 model_2.applyTransformation(j);
                 model_2.triangleSkin = null;
                 model_2.vertexSkin = null;
-                if(spotAnim.resizeXY != 128 || spotAnim.resizeZ != 128)
-                    model_2.scaleT(spotAnim.resizeXY, spotAnim.resizeXY, spotAnim.resizeZ);
+                if(spotAnim.scaleXY != 128 || spotAnim.scaleZ != 128)
+                    model_2.scaleT(spotAnim.scaleXY, spotAnim.scaleXY, spotAnim.scaleZ);
                 model_2.applyLighting(64 + spotAnim.modelLightFalloff, 850 + spotAnim.modelLightAmbient, -30, -50, -30, true);
                 Model aModel[] = {
                         model, model_2

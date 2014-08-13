@@ -5,7 +5,7 @@ final class StationaryGraphic extends Animable {
                          int loopCycleOffset)
     {
         transformationCompleted = false;
-        animation = SpotAnim.cache[animationIndex];
+        animation = SpotAnimation.cache[animationIndex];
         this.z = z;
         this.x = x;
         this.y = y;
@@ -28,8 +28,8 @@ final class StationaryGraphic extends Animable {
             animatedModel.triangleSkin = null;
             animatedModel.vertexSkin = null;
         }
-        if(animation.resizeXY != 128 || animation.resizeZ != 128)
-            animatedModel.scaleT(animation.resizeXY, animation.resizeXY, animation.resizeZ);
+        if(animation.scaleXY != 128 || animation.scaleZ != 128)
+            animatedModel.scaleT(animation.scaleXY, animation.scaleXY, animation.scaleZ);
         if(animation.rotation != 0)
         {
             if(animation.rotation == 90)
@@ -71,7 +71,7 @@ final class StationaryGraphic extends Animable {
     public final int drawHeight;
     public final int stationaryGraphicLoopCycle;
     public boolean transformationCompleted;
-    private final SpotAnim animation;
+    private final SpotAnimation animation;
     private int elapsedFrames;
     private int duration;
 }

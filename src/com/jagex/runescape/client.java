@@ -654,7 +654,7 @@ public final class client extends RSApplet {
         ItemDef.mruNodes2.unlinkAll();
         ItemDef.mruNodes1.unlinkAll();
         Player.mruNodes.unlinkAll();
-        SpotAnim.modelCache.unlinkAll();
+        SpotAnimation.modelCache.unlinkAll();
     }
 
     private void renderMinimap(int z)
@@ -4645,8 +4645,8 @@ public final class client extends RSApplet {
         RSInterface.interfaceCache = null;
         DummyClass.cache = null;
         AnimationSequence.animations = null;
-        SpotAnim.cache = null;
-        SpotAnim.modelCache = null;
+        SpotAnimation.cache = null;
+        SpotAnimation.modelCache = null;
         Varp.cache = null;
         super.fullGameScreen = null;
         Player.mruNodes = null;
@@ -6952,7 +6952,7 @@ public final class client extends RSApplet {
             ItemDef.unpackConfig(archiveConfig);
             EntityDefinition.load(archiveConfig);
             IdentityKit.load(archiveConfig);
-            SpotAnim.unpackConfig(archiveConfig);
+            SpotAnimation.load(archiveConfig);
             Varp.unpackConfig(archiveConfig);
             VarBit.unpackConfig(archiveConfig);
             ItemDef.isMembers = isMembers;
@@ -7504,7 +7504,7 @@ public final class client extends RSApplet {
         {
             if(entity.currentAnimation < 0)
                 entity.currentAnimation = 0;
-            AnimationSequence animation_1 = SpotAnim.cache[entity.graphicId].sequences;
+            AnimationSequence animation_1 = SpotAnimation.cache[entity.graphicId].sequences;
             for(entity.anInt1522++; entity.currentAnimation < animation_1.frameCount && entity.anInt1522 > animation_1.getFrameLength(entity.currentAnimation); entity.currentAnimation++)
                 entity.anInt1522 -= animation_1.getFrameLength(entity.currentAnimation);
 

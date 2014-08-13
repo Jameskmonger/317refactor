@@ -12,7 +12,7 @@ public final class EntityDefinition
         EntityDefinition definition = EntityDefinition.cache[EntityDefinition.bufferIndex] = new EntityDefinition();
         EntityDefinition.stream.currentOffset = EntityDefinition.streamOffsets[id];
         definition.id = id;
-        definition.load(EntityDefinition.stream);
+        definition.loadDefinition(EntityDefinition.stream);
         return definition;
     }
 
@@ -155,7 +155,7 @@ public final class EntityDefinition
         return childModel;
     }
 
-    private void load(Stream stream)
+    private void loadDefinition(Stream stream)
     {
         do
         {

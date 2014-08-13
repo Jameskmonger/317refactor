@@ -37,8 +37,8 @@ final class Projectile extends Animable {
             rotatedModel.triangleSkin = null;
             rotatedModel.vertexSkin = null;
         }
-        if(animation.resizeXY != 128 || animation.resizeZ != 128)
-            rotatedModel.scaleT(animation.resizeXY, animation.resizeXY, animation.resizeZ);
+        if(animation.scaleXY != 128 || animation.scaleZ != 128)
+            rotatedModel.scaleT(animation.scaleXY, animation.scaleXY, animation.scaleZ);
         rotatedModel.rotateX(rotationX);
         rotatedModel.applyLighting(64 + animation.modelLightFalloff, 850 + animation.modelLightAmbient, -30, -50, -30, true);
             return rotatedModel;
@@ -48,7 +48,7 @@ final class Projectile extends Animable {
                          int startZ, int startY, int startX, int targetId, int l2)
     {
         moving = false;
-        this.animation = SpotAnim.cache[l2];
+        this.animation = SpotAnimation.cache[l2];
         this.plane = plane;
         this.startX = startX;
         this.startY = startY;
@@ -100,7 +100,7 @@ final class Projectile extends Animable {
     private final int startSlope;
     private final int startDistance;
     public final int targetId;
-    private final SpotAnim animation;
+    private final SpotAnimation animation;
     private int animationFrame;
     private int duration;
     public int rotationY;

@@ -13,7 +13,7 @@ public final class GameObjectDefinition
         stream.currentOffset = streamIndices[objectId];
         definition.type = objectId;
         definition.setDefaults();
-        definition.readValues(stream);
+        definition.loadDefinition(stream);
         return definition;
     }
 
@@ -269,7 +269,7 @@ public final class GameObjectDefinition
         return model_3;
     }
 
-    private void readValues(Stream stream)
+    private void loadDefinition(Stream stream)
     {
         int i = -1;
 label0:
