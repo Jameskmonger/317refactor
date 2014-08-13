@@ -1,3 +1,4 @@
+package com.jagex.runescape;
 final class TextInput {
 
     public static String readFromStream(int length, Stream stream)

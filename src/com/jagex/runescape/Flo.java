@@ -1,3 +1,4 @@
+package com.jagex.runescape;
 public final class Flo {
 
     public static void unpackConfig(StreamLoader archive)

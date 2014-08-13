@@ -1,3 +1,4 @@
+package com.jagex.runescape;
 public final class SpotAnim {
 
     public static void unpackConfig(StreamLoader streamLoader)

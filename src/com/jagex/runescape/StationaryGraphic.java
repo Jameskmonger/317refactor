@@ -1,3 +1,4 @@
+package com.jagex.runescape;
 final class StationaryGraphic extends Animable {
 
     public StationaryGraphic(int x, int y, int z, int drawHeight, int animationIndex, int loopCycle,

@@ -1,3 +1,4 @@
+package com.jagex.runescape;
 import java.awt.*;
 import java.awt.image.*;
 

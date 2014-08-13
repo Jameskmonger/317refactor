@@ -1,3 +1,4 @@
+package com.jagex.runescape;
 public class Entity extends Animable {
 
     public final void setPos(int x, int y, boolean teleported)

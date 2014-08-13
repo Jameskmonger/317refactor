@@ -1,3 +1,4 @@
+package com.jagex.runescape;
 final class Skills
 {
 

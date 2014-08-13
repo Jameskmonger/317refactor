@@ -1,3 +1,4 @@
+package com.jagex.runescape;
 import sign.signlink;
 
 final class TextClass {

@@ -1,3 +1,4 @@
+package com.jagex.runescape;
 import java.awt.*;
 
 final class RSFrame extends Frame

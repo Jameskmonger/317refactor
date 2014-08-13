@@ -1,3 +1,4 @@
+package com.jagex.runescape;
 final class Projectile extends Animable {
 
     public void trackTarget(int currentCycle, int targetY, int targetZ, int targetX)

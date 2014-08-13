@@ -1,3 +1,4 @@
+package com.jagex.runescape;
 final class Censor {
 
     public static void load(StreamLoader streamLoader)

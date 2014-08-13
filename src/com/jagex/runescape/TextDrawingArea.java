@@ -1,3 +1,4 @@
+package com.jagex.runescape;
 import java.util.Random;
 
 public final class TextDrawingArea extends DrawingArea {

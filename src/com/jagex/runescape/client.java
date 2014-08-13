@@ -1,3 +1,4 @@
+package com.jagex.runescape;
 // Decompiled by Jad v1.5.8f. Copyright 2001 Pavel Kouznetsov.
 // Jad home page: http://www.kpdus.com/jad.html
 // Decompiler options: packimports(3) 
@@ -8,6 +9,8 @@ import java.io.*;
 import java.math.BigInteger;
 import java.net.*;
 import java.util.zip.CRC32;
+
+import com.jagex.runescape.audio.Sounds;
 
 import sign.signlink;
 

@@ -1,3 +1,4 @@
+package com.jagex.runescape;
 final class BZ2Decompressor
 {
 

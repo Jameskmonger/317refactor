@@ -1,3 +1,7 @@
+package com.jagex.runescape.audio;
+
+import com.jagex.runescape.Stream;
+
 final class SoundInstrument
 {
 
