@@ -29,8 +29,8 @@ public final class SpotAnim {
             if(opcode == 2)
             {
                 animationId = stream.getUnsignedLEShort();
-                if(AnimationSequence.anims != null)
-                    sequences = AnimationSequence.anims[animationId];
+                if(AnimationSequence.animations != null)
+                    sequences = AnimationSequence.animations[animationId];
             } else
             if(opcode == 4)
                 resizeXY = stream.getUnsignedLEShort();

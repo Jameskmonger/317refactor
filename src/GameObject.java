@@ -5,7 +5,7 @@ final class GameObject extends Animable {
         int animationId = -1;
         if(animation != null)
         {
-            int step = client.loopCycle - nextFrameTime;
+            int step = client.tick - nextFrameTime;
             if(step > 100 && animation.frameStep > 0)
                 step = 100;
             while(step > animation.getFrameLength(frame))
@@ -20,7 +20,7 @@ final class GameObject extends Animable {
                 animation = null;
                 break;
             }
-            nextFrameTime = client.loopCycle - step;
+            nextFrameTime = client.tick - step;
             if(animation != null)
                 animationId = animation.frame2Ids[frame];
         }
@@ -70,9 +70,9 @@ final class GameObject extends Animable {
         this.vertexHeightTopLeft = vertexHeightTopLeft;
         if(animationId != -1)
         {
-            animation = AnimationSequence.anims[animationId];
+            animation = AnimationSequence.animations[animationId];
             frame = 0;
-            nextFrameTime = client.loopCycle;
+            nextFrameTime = client.tick;
             if(animating && animation.frameStep != -1)
             {
                 frame = (int)(Math.random() * (double) animation.frameCount);

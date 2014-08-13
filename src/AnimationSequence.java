@@ -8,13 +8,13 @@ public final class AnimationSequence {
     {
         Stream stream = new Stream(streamLoader.getDataForName("seq.dat"));
         int length = stream.getUnsignedLEShort();
-        if(anims == null)
-            anims = new AnimationSequence[length];
+        if(animations == null)
+            animations = new AnimationSequence[length];
         for(int animation = 0; animation < length; animation++)
         {
-            if(anims[animation] == null)
-                anims[animation] = new AnimationSequence();
-            anims[animation].readValues(stream);
+            if(animations[animation] == null)
+                animations[animation] = new AnimationSequence();
+            animations[animation].readValues(stream);
         }
     }
 
@@ -71,25 +71,27 @@ public final class AnimationSequence {
                 dynamic = true;
             else
             if(attribute == 5)
-                anInt359 = stream.getUnsignedByte();
-            else
-            if(attribute == 6)
-                anInt360 = stream.getUnsignedLEShort();
-            else
-            if(attribute == 7)
-                anInt361 = stream.getUnsignedLEShort();
-            else
-            if(attribute == 8)
-                anInt362 = stream.getUnsignedByte();
-            else
-            if(attribute == 9)
-                anInt363 = stream.getUnsignedByte();
-            else
-            if(attribute == 10)
                 priority = stream.getUnsignedByte();
             else
+            if(attribute == 6)
+                playerReplacementShield = stream.getUnsignedLEShort();
+            else
+            if(attribute == 7)
+                playerReplacementWeapon = stream.getUnsignedLEShort();
+            else
+            if(attribute == 8)
+                maximumLoops = stream.getUnsignedByte();
+            else
+            if(attribute == 9)
+            	/* when animating, 0 -> block walking, 1 -> yield to walking, 2 -> interleave with walking */
+                precedenceAnimating = stream.getUnsignedByte();
+            else
+            if(attribute == 10)
+            	/* when walking, 0 -> block walking, 1 -> yield to walking, 2 -> never used... interleave with walking? */
+                precedenceWalking = stream.getUnsignedByte();
+            else
             if(attribute == 11)
-                anInt365 = stream.getUnsignedByte();
+                replayMode = stream.getUnsignedByte();
             else
             if(attribute == 12)
                 stream.getInt();
@@ -106,19 +108,19 @@ public final class AnimationSequence {
             frameLengths = new int[1];
             frameLengths[0] = -1;
         }
-        if(anInt363 == -1)
+        if(precedenceAnimating == -1)
             if(flowControl != null)
-                anInt363 = 2;
+                precedenceAnimating = 2;
             else
-                anInt363 = 0;
-        if(priority == -1)
+                precedenceAnimating = 0;
+        if(precedenceWalking == -1)
         {
             if(flowControl != null)
             {
-                priority = 2;
+                precedenceWalking = 2;
                 return;
             }
-            priority = 0;
+            precedenceWalking = 0;
         }
     }
 
@@ -126,16 +128,16 @@ public final class AnimationSequence {
     {
         frameStep = -1;
         dynamic = false;
-        anInt359 = 5;
-        anInt360 = -1;
-        anInt361 = -1;
-        anInt362 = 99;
-        anInt363 = -1;
-        priority = -1;
-        anInt365 = 2;
+        priority = 5;
+        playerReplacementShield = -1;
+        playerReplacementWeapon = -1;
+        maximumLoops = 99;
+        precedenceAnimating = -1;
+        precedenceWalking = -1;
+        replayMode = 2;
     }
 
-    public static AnimationSequence anims[];
+    public static AnimationSequence animations[];
     public int frameCount;
     public int frame2Ids[];
     public int frame1Ids[];
@@ -143,12 +145,12 @@ public final class AnimationSequence {
     public int frameStep;
     public int flowControl[];
     public boolean dynamic;
-    public int anInt359;
-    public int anInt360;
-    public int anInt361;
-    public int anInt362;
-    public int anInt363;
     public int priority;
-    public int anInt365;
+    public int playerReplacementShield;
+    public int playerReplacementWeapon;
+    public int maximumLoops;
+    public int precedenceAnimating;
+    public int precedenceWalking;
+    public int replayMode;
     public static int anInt367;
 }

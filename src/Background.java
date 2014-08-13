@@ -119,32 +119,32 @@ public final class Background extends DrawingArea {
         drawOffsetY = anInt1457 - imageHeight - drawOffsetY;
     }
 
-    public void method360(int i, int j, int k)
+    public void mixPalette(int red, int green, int blue)
     {
-        for(int i1 = 0; i1 < palette.length; i1++)
+        for(int i = 0; i < palette.length; i++)
         {
-            int j1 = palette[i1] >> 16 & 0xff;
-            j1 += i;
-            if(j1 < 0)
-                j1 = 0;
+            int r = palette[i] >> 16 & 0xff;
+            r += red;
+            if(r < 0)
+                r = 0;
             else
-            if(j1 > 255)
-                j1 = 255;
-            int k1 = palette[i1] >> 8 & 0xff;
-            k1 += j;
-            if(k1 < 0)
-                k1 = 0;
+            if(r > 255)
+                r = 255;
+            int g = palette[i] >> 8 & 0xff;
+            g += green;
+            if(g < 0)
+                g = 0;
             else
-            if(k1 > 255)
-                k1 = 255;
-            int l1 = palette[i1] & 0xff;
-            l1 += k;
-            if(l1 < 0)
-                l1 = 0;
+            if(g > 255)
+                g = 255;
+            int b = palette[i] & 0xff;
+            b += blue;
+            if(b < 0)
+                b = 0;
             else
-            if(l1 > 255)
-                l1 = 255;
-            palette[i1] = (j1 << 16) + (k1 << 8) + l1;
+            if(b > 255)
+                b = 255;
+            palette[i] = (r << 16) + (g << 8) + b;
         }
     }
 

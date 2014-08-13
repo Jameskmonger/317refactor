@@ -1,43 +1,43 @@
 public class Entity extends Animable {
 
-    public final void setPos(int x, int y, boolean flag)
+    public final void setPos(int x, int y, boolean teleported)
     {
-        if(animation != -1 && AnimationSequence.anims[animation].priority == 1)
+        if(animation != -1 && AnimationSequence.animations[animation].precedenceWalking == 1)
             animation = -1;
-        if(!flag)
+        if(!teleported)
         {
-            int distanceX = x - smallX[0];
-            int distanceY = y - smallY[0];
+            int distanceX = x - waypointX[0];
+            int distanceY = y - waypointY[0];
             if(distanceX >= -8 && distanceX <= 8 && distanceY >= -8 && distanceY <= 8)
             {
-                if(pathLength < 9)
-                    pathLength++;
-                for(int i = pathLength; i > 0; i--)
+                if(waypointCount < 9)
+                    waypointCount++;
+                for(int waypoint = waypointCount; waypoint > 0; waypoint--)
                 {
-                    smallX[i] = smallX[i - 1];
-                    smallY[i] = smallY[i - 1];
-                    pathRun[i] = pathRun[i - 1];
+                    waypointX[waypoint] = waypointX[waypoint - 1];
+                    waypointY[waypoint] = waypointY[waypoint - 1];
+                    waypointRan[waypoint] = waypointRan[waypoint - 1];
                 }
 
-                smallX[0] = x;
-                smallY[0] = y;
-                pathRun[0] = false;
+                waypointX[0] = x;
+                waypointY[0] = y;
+                waypointRan[0] = false;
                 return;
             }
         }
-        pathLength = 0;
-        anInt1542 = 0;
-        anInt1503 = 0;
-        smallX[0] = x;
-        smallY[0] = y;
-        this.x = smallX[0] * 128 + boundaryDimension * 64;
-        this.y = smallY[0] * 128 + boundaryDimension * 64;
+        waypointCount = 0;
+        stepsRemaining = 0;
+        stepsDelayed = 0;
+        waypointX[0] = x;
+        waypointY[0] = y;
+        this.x = waypointX[0] * 128 + boundaryDimension * 64;
+        this.y = waypointY[0] * 128 + boundaryDimension * 64;
     }
 
     public final void resetPath()
     {
-        pathLength = 0;
-        anInt1542 = 0;
+        waypointCount = 0;
+        stepsRemaining = 0;
     }
 
     public final void updateHitData(int type, int damage, int currentTime)
@@ -54,8 +54,8 @@ public class Entity extends Animable {
 
     public final void move(boolean flag, int direction)
     {
-        int x = smallX[0];
-        int y = smallY[0];
+        int x = waypointX[0];
+        int y = waypointY[0];
         if(direction == 0)
         {
             x--;
@@ -84,19 +84,19 @@ public class Entity extends Animable {
             x++;
             y--;
         }
-        if(animation != -1 && AnimationSequence.anims[animation].priority == 1)
+        if(animation != -1 && AnimationSequence.animations[animation].precedenceWalking == 1)
             animation = -1;
-        if(pathLength < 9)
-            pathLength++;
-        for(int l = pathLength; l > 0; l--)
+        if(waypointCount < 9)
+            waypointCount++;
+        for(int l = waypointCount; l > 0; l--)
         {
-            smallX[l] = smallX[l - 1];
-            smallY[l] = smallY[l - 1];
-            pathRun[l] = pathRun[l - 1];
+            waypointX[l] = waypointX[l - 1];
+            waypointY[l] = waypointY[l - 1];
+            waypointRan[l] = waypointRan[l - 1];
         }
-            smallX[0] = x;
-            smallY[0] = y;
-            pathRun[0] = flag;
+            waypointX[0] = x;
+            waypointY[0] = y;
+            waypointRan[0] = flag;
     }
 
     public int entScreenX;
@@ -109,8 +109,8 @@ public class Entity extends Animable {
 
     Entity()
     {
-        smallX = new int[10];
-        smallY = new int[10];
+        waypointX = new int[10];
+        waypointY = new int[10];
         interactingEntity = -1;
         degreesToTurn = 32;
         runAnimationId = -1;
@@ -127,20 +127,20 @@ public class Entity extends Animable {
         textCycle = 100;
         boundaryDimension = 1;
         dynamic = false;
-        pathRun = new boolean[10];
+        waypointRan = new boolean[10];
         walkAnimationId = -1;
         turnAboutAnimationId = -1;
         turnRightAnimationId = -1;
         turnLeftAnimationId = -1;
     }
 
-    public final int[] smallX;
-    public final int[] smallY;
+    public final int[] waypointX;
+    public final int[] waypointY;
     public int interactingEntity;
-    int anInt1503;
+    int stepsDelayed;
     int degreesToTurn;
     int runAnimationId;
-    public String textSpoken;
+    public String overheadTextMessage;
     public int height;
     public int turnDirection;
     int standAnimationId;
@@ -157,10 +157,10 @@ public class Entity extends Animable {
     int anInt1522;
     int graphicEndCycle;
     int graphicHeight;
-    int pathLength;
+    int waypointCount;
     public int animation;
-    int anInt1527;
-    int anInt1528;
+    int currentFrame;
+    int frameLengthRemaining;
     int animationDelay;
     int anInt1530;
     int chatEffect;
@@ -168,12 +168,12 @@ public class Entity extends Animable {
     public int currentHealth;
     public int maxHealth;
     int textCycle;
-    int lastUpdateTime;
+    int lastUpdateTick;
     int faceTowardX;
     int faceTowardY;
     int boundaryDimension;
     boolean dynamic;
-    int anInt1542;
+    int stepsRemaining;
     int startX;
     int endX;
     int startY;
@@ -184,7 +184,7 @@ public class Entity extends Animable {
     public int x;
     public int y;
     int currentRotation;
-    final boolean[] pathRun;
+    final boolean[] waypointRan;
     int walkAnimationId;
     int turnAboutAnimationId;
     int turnRightAnimationId;

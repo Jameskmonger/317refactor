@@ -5,7 +5,7 @@
 public final class Animation
 {
 
-    public static void method528(int i)
+    public static void init(int i)
     {
         aClass36Array635 = new Animation[i + 1];
         aBooleanArray643 = new boolean[i + 1];

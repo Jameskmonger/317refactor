@@ -3,10 +3,10 @@
 // Decompiler options: packimports(3) 
 
 
-final class BZ2Block
+final class BZ2Context
 {
 
-    BZ2Block()
+    BZ2Context()
     {
         anIntArray583 = new int[256];
         anIntArray585 = new int[257];

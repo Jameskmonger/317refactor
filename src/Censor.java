@@ -1,118 +1,114 @@
-// Decompiled by Jad v1.5.8f. Copyright 2001 Pavel Kouznetsov.
-// Jad home page: http://www.kpdus.com/jad.html
-// Decompiler options: packimports(3) 
-
 final class Censor {
 
-    public static void loadConfig(StreamLoader streamLoader)
+    public static void load(StreamLoader streamLoader)
     {
-        Stream stream = new Stream(streamLoader.getDataForName("fragmentsenc.txt"));
-        Stream stream_1 = new Stream(streamLoader.getDataForName("badenc.txt"));
-        Stream stream_2 = new Stream(streamLoader.getDataForName("domainenc.txt"));
-        Stream stream_3 = new Stream(streamLoader.getDataForName("tldlist.txt"));
-        readValues(stream, stream_1, stream_2, stream_3);
+        Stream fragmentsEnc = new Stream(streamLoader.getDataForName("fragmentsenc.txt"));
+        Stream badEnc = new Stream(streamLoader.getDataForName("badenc.txt"));
+        Stream domainEnc = new Stream(streamLoader.getDataForName("domainenc.txt"));
+        Stream topLevelDomainList = new Stream(streamLoader.getDataForName("tldlist.txt"));
+        loadDictionaries(fragmentsEnc, badEnc, domainEnc, topLevelDomainList);
     }
 
-    private static void readValues(Stream stream, Stream stream_1, Stream stream_2, Stream stream_3)
+    private static void loadDictionaries(Stream fragment, Stream bad, Stream domain, Stream topLevelDomain)
     {
-        readBadEnc(stream_1);
-        readDomainEnc(stream_2);
-        readFragmentsEnc(stream);
-        readTldList(stream_3);
+        loadBadEnc(bad);
+        loadDomainEnc(domain);
+        loadFragmentsEnc(fragment);
+        loadTopLevelDomainList(topLevelDomain);
     }
 
-    private static void readTldList(Stream stream)
+    private static void loadTopLevelDomainList(Stream stream)
     {
-        int i = stream.getInt();
-        aCharArrayArray624 = new char[i][];
-        anIntArray625 = new int[i];
-        for(int j = 0; j < i; j++)
+        int length = stream.getInt();
+        topLevelDomains = new char[length][];
+        topLevelDomainType = new int[length];
+        for(int index = 0; index < length; index++)
         {
-            anIntArray625[j] = stream.getUnsignedByte();
-            char ac[] = new char[stream.getUnsignedByte()];
-            for(int k = 0; k < ac.length; k++)
-                ac[k] = (char) stream.getUnsignedByte();
+            topLevelDomainType[index] = stream.getUnsignedByte();
+            char topLevelDomain[] = new char[stream.getUnsignedByte()];
+            for(int d = 0; d < topLevelDomain.length; d++)
+                topLevelDomain[d] = (char) stream.getUnsignedByte();
 
-            aCharArrayArray624[j] = ac;
+            topLevelDomains[index] = topLevelDomain;
         }
 
     }
 
-    private static void readBadEnc(Stream stream)
+    private static void loadBadEnc(Stream stream)
     {
-        int j = stream.getInt();
-        aCharArrayArray621 = new char[j][];
-        aByteArrayArrayArray622 = new byte[j][][];
-        method493(stream, aCharArrayArray621, aByteArrayArrayArray622);
+        int length = stream.getInt();
+        badWords = new char[length][];
+        badBytes = new byte[length][][];
+        loadBadWords(stream, badWords, badBytes);
     }
 
-    private static void readDomainEnc(Stream stream)
+    private static void loadDomainEnc(Stream stream)
     {
-        int i = stream.getInt();
-        aCharArrayArray623 = new char[i][];
-            method494(aCharArrayArray623, stream);
+        int length = stream.getInt();
+        domains = new char[length][];
+            loadDomains(domains, stream);
     }
 
-    private static void readFragmentsEnc(Stream stream)
+    private static void loadFragmentsEnc(Stream stream)
     {
-        anIntArray620 = new int[stream.getInt()];
-        for(int i = 0; i < anIntArray620.length; i++)
-            anIntArray620[i] = stream.getUnsignedLEShort();
+        fragments = new int[stream.getInt()];
+        for(int i = 0; i < fragments.length; i++)
+            fragments[i] = stream.getUnsignedLEShort();
     }
 
-    private static void method493(Stream stream, char ac[][], byte abyte0[][][])
+    private static void loadBadWords(Stream stream, char badWords[][], byte badBytes[][][])
     {
-        for(int j = 0; j < ac.length; j++)
+        for(int w = 0; w < badWords.length; w++)
         {
-            char ac1[] = new char[stream.getUnsignedByte()];
-            for(int k = 0; k < ac1.length; k++)
-                ac1[k] = (char) stream.getUnsignedByte();
+            char badWord[] = new char[stream.getUnsignedByte()];
+            for(int c = 0; c < badWord.length; c++)
+                badWord[c] = (char) stream.getUnsignedByte();
 
-            ac[j] = ac1;
-            byte abyte1[][] = new byte[stream.getUnsignedByte()][2];
-            for(int l = 0; l < abyte1.length; l++)
+            badWords[w] = badWord;
+            byte badByte[][] = new byte[stream.getUnsignedByte()][2];
+            for(int l = 0; l < badByte.length; l++)
             {
-                abyte1[l][0] = (byte) stream.getUnsignedByte();
-                abyte1[l][1] = (byte) stream.getUnsignedByte();
+                badByte[l][0] = (byte) stream.getUnsignedByte();
+                badByte[l][1] = (byte) stream.getUnsignedByte();
             }
 
-            if(abyte1.length > 0)
-                abyte0[j] = abyte1;
+            if(badByte.length > 0)
+                badBytes[w] = badByte;
         }
 
     }
 
-    private static void method494(char ac[][], Stream stream)
+    private static void loadDomains(char domains[][], Stream stream)
     {
-        for(int j = 0; j < ac.length; j++)
+        for(int d = 0; d < domains.length; d++)
         {
-            char ac1[] = new char[stream.getUnsignedByte()];
-            for(int k = 0; k < ac1.length; k++)
-                ac1[k] = (char) stream.getUnsignedByte();
+            char domain[] = new char[stream.getUnsignedByte()];
+            for(int c = 0; c < domain.length; c++)
+                domain[c] = (char) stream.getUnsignedByte();
 
-            ac[j] = ac1;
+            domains[d] = domain;
         }
 
     }
 
-    private static void method495(char ac[])
+    private static void formatLegalCharacters(char characters[])
     {
-        int i = 0;
-        for(int j = 0; j < ac.length; j++)
+        int character = 0;
+        for(int c = 0; c < characters.length; c++)
         {
-            if(method496(ac[j]))
-                ac[i] = ac[j];
+            if(isLegalCharacter(characters[c]))
+                characters[character] = characters[c];
             else
-                ac[i] = ' ';
-            if(i == 0 || ac[i] != ' ' || ac[i - 1] != ' ')
-                i++;
+                characters[character] = ' ';
+            if(character == 0 || characters[character] != ' ' || characters[character - 1] != ' ')
+                character++;
         }
-        for(int k = i; k < ac.length; k++)
-            ac[k] = ' ';
+        for(int c = character; c < characters.length; c++)
+            characters[c] = ' ';
 
     }
 
-    private static boolean method496(char c)
+    private static boolean isLegalCharacter(char c)
     {
         return c >= ' ' && c <= '\177' || c == ' ' || c == '\n' || c == '\t' || c == '\243' || c == '\u20AC';
     }
@@ -121,7 +117,7 @@ final class Censor {
     {
         long l = System.currentTimeMillis();
         char ac[] = s.toCharArray();
-        method495(ac);
+        formatLegalCharacters(ac);
         String s1 = (new String(ac)).trim();
         ac = s1.toLowerCase().toCharArray();
         String s2 = s1.toLowerCase();
@@ -178,8 +174,8 @@ final class Censor {
     {
         for(int i = 0; i < 2; i++)
         {
-            for(int j = aCharArrayArray621.length - 1; j >= 0; j--)
-                method509(aByteArrayArrayArray622[j], ac, aCharArrayArray621[j]);
+            for(int j = badWords.length - 1; j >= 0; j--)
+                method509(badBytes[j], ac, badWords[j]);
 
         }
     }
@@ -196,8 +192,8 @@ final class Censor {
             'd', 'o', 't'
         };
         method509(null, ac3, ac4);
-        for(int i = aCharArrayArray623.length - 1; i >= 0; i--)
-            method502(ac, aCharArrayArray623[i], ac3, ac1);
+        for(int i = domains.length - 1; i >= 0; i--)
+            method502(ac, domains[i], ac3, ac1);
     }
 
     private static void method502(char ac[], char ac1[], char ac2[], char ac3[])
@@ -317,8 +313,8 @@ final class Censor {
             's', 'l', 'a', 's', 'h'
         };
         method509(null, ac3, ac4);
-        for(int i = 0; i < aCharArrayArray624.length; i++)
-            method506(ac3, aCharArrayArray624[i], anIntArray625[i], ac1, ac);
+        for(int i = 0; i < topLevelDomains.length; i++)
+            method506(ac3, topLevelDomains[i], topLevelDomainType[i], ac1, ac);
 
     }
 
@@ -887,15 +883,15 @@ final class Censor {
             return true;
         int j = method524(ac);
         int k = 0;
-        int l = anIntArray620.length - 1;
-        if(j == anIntArray620[k] || j == anIntArray620[l])
+        int l = fragments.length - 1;
+        if(j == fragments[k] || j == fragments[l])
             return true;
         do
         {
             int i1 = (k + l) / 2;
-            if(j == anIntArray620[i1])
+            if(j == fragments[i1])
                 return true;
-            if(j < anIntArray620[i1])
+            if(j < fragments[i1])
                 l = i1;
             else
                 k = i1;
@@ -927,12 +923,12 @@ final class Censor {
         return k;
     }
 
-    private static int[] anIntArray620;
-    private static char[][] aCharArrayArray621;
-    private static byte[][][] aByteArrayArrayArray622;
-    private static char[][] aCharArrayArray623;
-    private static char[][] aCharArrayArray624;
-    private static int[] anIntArray625;
+    private static int[] fragments;
+    private static char[][] badWords;
+    private static byte[][][] badBytes;
+    private static char[][] domains;
+    private static char[][] topLevelDomains;
+    private static int[] topLevelDomainType;
     private static final String[] exceptions = {
         "cook", "cook's", "cooks", "seeks", "sheet", "woop", "woops", "faq", "noob", "noobs"
     };

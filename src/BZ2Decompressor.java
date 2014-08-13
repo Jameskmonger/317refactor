@@ -24,19 +24,19 @@ final class BZ2Decompressor
         }
     }
 
-    private static void method226(BZ2Block class32)
+    private static void method226(BZ2Context context)
     {
-        byte byte4 = class32.aByte573;
-        int i = class32.anInt574;
-        int j = class32.anInt584;
-        int k = class32.anInt582;
-        int ai[] = BZ2Block.anIntArray587;
-        int l = class32.anInt581;
-        byte abyte0[] = class32.aByteArray568;
-        int i1 = class32.anInt569;
-        int j1 = class32.anInt570;
+        byte byte4 = context.aByte573;
+        int i = context.anInt574;
+        int j = context.anInt584;
+        int k = context.anInt582;
+        int ai[] = BZ2Context.anIntArray587;
+        int l = context.anInt581;
+        byte abyte0[] = context.aByteArray568;
+        int i1 = context.anInt569;
+        int j1 = context.anInt570;
         int k1 = j1;
-        int l1 = class32.anInt601 + 1;
+        int l1 = context.anInt601 + 1;
 label0:
         do
         {
@@ -136,30 +136,30 @@ label0:
                         }
                 }
         } while(true);
-        int i2 = class32.anInt571;
-        class32.anInt571 += k1 - j1;
-        if(class32.anInt571 < i2)
-            class32.anInt572++;
-        class32.aByte573 = byte4;
-        class32.anInt574 = i;
-        class32.anInt584 = j;
-        class32.anInt582 = k;
-        BZ2Block.anIntArray587 = ai;
-        class32.anInt581 = l;
-        class32.aByteArray568 = abyte0;
-        class32.anInt569 = i1;
-        class32.anInt570 = j1;
+        int i2 = context.anInt571;
+        context.anInt571 += k1 - j1;
+        if(context.anInt571 < i2)
+            context.anInt572++;
+        context.aByte573 = byte4;
+        context.anInt574 = i;
+        context.anInt584 = j;
+        context.anInt582 = k;
+        BZ2Context.anIntArray587 = ai;
+        context.anInt581 = l;
+        context.aByteArray568 = abyte0;
+        context.anInt569 = i1;
+        context.anInt570 = j1;
     }
 
-    private static void decompress(BZ2Block block)
+    private static void decompress(BZ2Context block)
     {
         int tMinLen = 0;
         int tLimit[] = null;
         int tBase[] = null;
         int tPerm[] = null;
         block.blockSize_100k = 1;
-        if(BZ2Block.anIntArray587 == null)
-            BZ2Block.anIntArray587 = new int[block.blockSize_100k * 0x186a0];
+        if(BZ2Context.anIntArray587 == null)
+            BZ2Context.anIntArray587 = new int[block.blockSize_100k * 0x186a0];
         boolean reading = true;
         while(reading) 
         {
@@ -357,7 +357,7 @@ label0:
                     block.anIntArray583[byte5 & 0xff] += j6;
                     for(; j6 > 0; j6--)
                     {
-                        BZ2Block.anIntArray587[i6] = byte5 & 0xff;
+                        BZ2Context.anIntArray587[i6] = byte5 & 0xff;
                         i6++;
                     }
 
@@ -417,7 +417,7 @@ label0:
                         }
                     }
                     block.anIntArray583[block.aByteArray591[byte6 & 0xff] & 0xff]++;
-                    BZ2Block.anIntArray587[i6] = block.aByteArray591[byte6 & 0xff] & 0xff;
+                    BZ2Context.anIntArray587[i6] = block.aByteArray591[byte6 & 0xff] & 0xff;
                     i6++;
                     if(j5 == 0)
                     {
@@ -453,14 +453,14 @@ label0:
 
             for(int l2 = 0; l2 < i6; l2++)
             {
-                byte byte7 = (byte)(BZ2Block.anIntArray587[l2] & 0xff);
-                BZ2Block.anIntArray587[block.anIntArray585[byte7 & 0xff]] |= l2 << 8;
+                byte byte7 = (byte)(BZ2Context.anIntArray587[l2] & 0xff);
+                BZ2Context.anIntArray587[block.anIntArray585[byte7 & 0xff]] |= l2 << 8;
                 block.anIntArray585[byte7 & 0xff]++;
             }
 
-            block.anInt581 = BZ2Block.anIntArray587[block.originalPointer] >> 8;
+            block.anInt581 = BZ2Context.anIntArray587[block.originalPointer] >> 8;
             block.anInt584 = 0;
-            block.anInt581 = BZ2Block.anIntArray587[block.anInt581];
+            block.anInt581 = BZ2Context.anIntArray587[block.anInt581];
             block.anInt582 = (byte)(block.anInt581 & 0xff);
             block.anInt581 >>= 8;
             block.anInt584++;
@@ -470,17 +470,17 @@ label0:
         }
     }
 
-    private static byte readUnsignedChar(BZ2Block class32)
+    private static byte readUnsignedChar(BZ2Context class32)
     {
         return (byte)readBits(8, class32);
     }
 
-    private static byte readBit(BZ2Block class32)
+    private static byte readBit(BZ2Context class32)
     {
         return (byte)readBits(1, class32);
     }
 
-    private static int readBits(int i, BZ2Block class32)
+    private static int readBits(int i, BZ2Context class32)
     {
         int j;
         do
@@ -503,7 +503,7 @@ label0:
         return j;
     }
 
-    private static void makeMaps(BZ2Block class32)
+    private static void makeMaps(BZ2Context class32)
     {
         class32.nInUse = 0;
         for(int i = 0; i < 256; i++)
@@ -554,6 +554,6 @@ label0:
 
     }
 
-    private static final BZ2Block aClass32_305 = new BZ2Block();
+    private static final BZ2Context aClass32_305 = new BZ2Context();
 
 }

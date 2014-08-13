@@ -9,15 +9,15 @@ public final class NPC extends Entity
     {
         if(super.animation >= 0 && super.animationDelay == 0)
         {
-            int k = AnimationSequence.anims[super.animation].frame2Ids[super.anInt1527];
+            int k = AnimationSequence.animations[super.animation].frame2Ids[super.currentFrame];
             int i1 = -1;
             if(super.anInt1517 >= 0 && super.anInt1517 != super.standAnimationId)
-                i1 = AnimationSequence.anims[super.anInt1517].frame2Ids[super.anInt1518];
-            return npcDefinition.getChildModel(i1, k, AnimationSequence.anims[super.animation].flowControl);
+                i1 = AnimationSequence.animations[super.anInt1517].frame2Ids[super.anInt1518];
+            return npcDefinition.getChildModel(i1, k, AnimationSequence.animations[super.animation].flowControl);
         }
         int l = -1;
         if(super.anInt1517 >= 0)
-            l = AnimationSequence.anims[super.anInt1517].frame2Ids[super.anInt1518];
+            l = AnimationSequence.animations[super.anInt1517].frame2Ids[super.anInt1518];
         return npcDefinition.getChildModel(-1, l, null);
     }
 

@@ -859,7 +859,7 @@ label0:
             {
                 for(int j3 = 0; j3 < 64; j3++)
                     if(l2 == i && i3 >= i1 && i3 < i1 + 8 && j3 >= j1 && j3 < j1 + 8)
-                        method181(l1 + Class4.method156(j3 & 7, j, i3 & 7), 0, stream, l + Class4.method155(j, j3 & 7, i3 & 7), k1, j, 0);
+                        method181(l1 + TiledUtils.getRotatedMapChunkY(j3 & 7, j, i3 & 7), 0, stream, l + TiledUtils.getRotatedMapChunkX(j, j3 & 7, i3 & 7), k1, j, 0);
                     else
                         method181(-1, 0, stream, -1, 0, 0, 0);
 
@@ -996,8 +996,8 @@ label0:
                     if(j3 == i && i3 >= i1 && i3 < i1 + 8 && l2 >= k && l2 < k + 8)
                     {
                         GameObjectDefinition class46 = GameObjectDefinition.forID(l1);
-                        int j4 = j + Class4.method157(j1, class46.sizeY, i3 & 7, l2 & 7, class46.sizeX);
-                        int k4 = k1 + Class4.method158(l2 & 7, class46.sizeY, j1, class46.sizeX, i3 & 7);
+                        int j4 = j + TiledUtils.getRotatedLandscapeChunkX(j1, class46.sizeY, i3 & 7, l2 & 7, class46.sizeX);
+                        int k4 = k1 + TiledUtils.getRotatedLandscapeChunkY(l2 & 7, class46.sizeY, j1, class46.sizeX, i3 & 7);
                         if(j4 > 0 && k4 > 0 && j4 < 103 && k4 < 103)
                         {
                             int l4 = j3;

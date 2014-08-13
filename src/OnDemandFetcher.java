@@ -193,7 +193,7 @@ public final class OnDemandFetcher extends OnDemandFetcherParent
         clientInstance.startRunnable(this, 2);
     }
 
-    public int getNodeCount()
+    public int immediateRequestCount()
     {
         synchronized(nodeSubList)
         {
@@ -206,19 +206,19 @@ public final class OnDemandFetcher extends OnDemandFetcherParent
         running = false;
     }
 
-    public void method554(boolean flag)
+    public void preloadRegions(boolean flag)
     {
         int j = mapIndices1.length;
         for(int k = 0; k < j; k++)
             if(flag || mapIndices4[k] != 0)
             {
-                method563((byte)2, 3, mapIndices3[k]);
-                method563((byte)2, 3, mapIndices2[k]);
+                setPriority((byte)2, 3, mapIndices3[k]);
+                setPriority((byte)2, 3, mapIndices2[k]);
             }
 
     }
 
-    public int getVersionCount(int j)
+    public int fileCount(int j)
     {
         return versions[j].length;
     }
@@ -254,7 +254,7 @@ public final class OnDemandFetcher extends OnDemandFetcherParent
                 ioBuffer[3] = 0;
             outputStream.write(ioBuffer, 0, 4);
             writeLoopCycle = 0;
-            anInt1349 = -10000;
+            failedRequests = -10000;
             return;
         }
         catch(IOException ioexception) { }
@@ -267,7 +267,7 @@ public final class OnDemandFetcher extends OnDemandFetcherParent
         inputStream = null;
         outputStream = null;
         expectedSize = 0;
-        anInt1349++;
+        failedRequests++;
     }
 
     public int getAnimCount()
@@ -299,7 +299,7 @@ public final class OnDemandFetcher extends OnDemandFetcherParent
         }
     }
 
-    public int getModelIndex(int i)
+    public int getModelId(int i)
     {
         return modelIndices[i] & 0xff;
     }
@@ -485,7 +485,7 @@ public final class OnDemandFetcher extends OnDemandFetcherParent
         request(0, i);
     }
 
-    public void method563(byte byte0, int i, int j)
+    public void setPriority(byte byte0, int i, int j)
     {
         if(clientInstance.decompressors[0] == null)
             return;
@@ -634,7 +634,7 @@ public final class OnDemandFetcher extends OnDemandFetcherParent
         }
     }
 
-    public boolean method569(int i)
+    public boolean midiIdEqualsOne(int i)
     {
         return anIntArray1348[i] == 1;
     }
@@ -674,7 +674,7 @@ public final class OnDemandFetcher extends OnDemandFetcherParent
     private int completedSize;
     private int expectedSize;
     private int[] anIntArray1348;
-    public int anInt1349;
+    public int failedRequests;
     private int[] mapIndices2;
     private int filesLoaded;
     private boolean running;

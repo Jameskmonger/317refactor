@@ -811,7 +811,7 @@ final class WorldController {
 
     }
 
-    public static void method310(int i, int j, int viewportWidth, int viewportHeight, int ai[])
+    public static void setupViewport(int i, int j, int viewportWidth, int viewportHeight, int ai[])
     {
         left = 0;
         top = 0;
