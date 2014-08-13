@@ -102,7 +102,7 @@ public final class Player extends Entity
             appearance[slot] = (itemId1 << 8) + itemId2;
             if(slot == 0 && appearance[0] == 65535)
             {
-                npcAppearance = EntityDefinition.forID(stream.getUnsignedLEShort());
+                npcAppearance = EntityDefinition.getDefinition(stream.getUnsignedLEShort());
                 break;
             }
             if(appearance[slot] >= 512 && appearance[slot] - 512 < ItemDef.totalItems)

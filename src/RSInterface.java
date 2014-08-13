@@ -251,7 +251,7 @@ public final class RSInterface
         if(modelType == 1)
             model = Model.getModel(modelId);
         if(modelType == 2)
-            model = EntityDefinition.forID(modelId).getHeadModel();
+            model = EntityDefinition.getDefinition(modelId).getHeadModel();
         if(modelType == 3)
             model = client.localPlayer.getHeadModel();
         if(modelType == 4)

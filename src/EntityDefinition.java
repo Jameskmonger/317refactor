@@ -1,104 +1,100 @@
-// Decompiled by Jad v1.5.8f. Copyright 2001 Pavel Kouznetsov.
-// Jad home page: http://www.kpdus.com/jad.html
-// Decompiler options: packimports(3) 
-
 public final class EntityDefinition
 {
 
-    public static EntityDefinition forID(int i)
+    public static EntityDefinition getDefinition(int id)
     {
-        for(int j = 0; j < 20; j++)
-            if(cache[j].id == (long)i)
-                return cache[j];
+        for(int c = 0; c < 20; c++)
+            if(EntityDefinition.cache[c].id == (long)id)
+                return EntityDefinition.cache[c];
 
-        anInt56 = (anInt56 + 1) % 20;
-        EntityDefinition entityDef = cache[anInt56] = new EntityDefinition();
-        stream.currentOffset = streamIndices[i];
-        entityDef.id = i;
-        entityDef.readValues(stream);
-        return entityDef;
+        EntityDefinition.bufferIndex = (EntityDefinition.bufferIndex + 1) % 20;
+        EntityDefinition definition = EntityDefinition.cache[EntityDefinition.bufferIndex] = new EntityDefinition();
+        EntityDefinition.stream.currentOffset = EntityDefinition.streamOffsets[id];
+        definition.id = id;
+        definition.load(EntityDefinition.stream);
+        return definition;
     }
 
     public Model getHeadModel()
     {
         if(childrenIDs != null)
         {
-            EntityDefinition entityDef = getChildDefinition();
-            if(entityDef == null)
+            EntityDefinition definition = getChildDefinition();
+            if(definition == null)
                 return null;
             else
-                return entityDef.getHeadModel();
+                return definition.getHeadModel();
         }
-        if(anIntArray73 == null)
+        if(headModelIds == null)
             return null;
-        boolean flag1 = false;
-        for(int i = 0; i < anIntArray73.length; i++)
-            if(!Model.isCached(anIntArray73[i]))
-                flag1 = true;
+        boolean someModelsNotCached = false;
+        for(int i = 0; i < headModelIds.length; i++)
+            if(!Model.isCached(headModelIds[i]))
+                someModelsNotCached = true;
 
-        if(flag1)
+        if(someModelsNotCached)
             return null;
-        Model aclass30_sub2_sub4_sub6s[] = new Model[anIntArray73.length];
-        for(int j = 0; j < anIntArray73.length; j++)
-            aclass30_sub2_sub4_sub6s[j] = Model.getModel(anIntArray73[j]);
+        Model headModels[] = new Model[headModelIds.length];
+        for(int j = 0; j < headModelIds.length; j++)
+            headModels[j] = Model.getModel(headModelIds[j]);
 
-        Model model;
-        if(aclass30_sub2_sub4_sub6s.length == 1)
-            model = aclass30_sub2_sub4_sub6s[0];
+        Model headModel;
+        if(headModels.length == 1)
+            headModel = headModels[0];
         else
-            model = new Model(aclass30_sub2_sub4_sub6s.length, aclass30_sub2_sub4_sub6s);
+            headModel = new Model(headModels.length, headModels);
         if(modifiedModelColours != null)
         {
-            for(int k = 0; k < modifiedModelColours.length; k++)
-                model.recolour(modifiedModelColours[k], originalModelColours[k]);
+            for(int c = 0; c < modifiedModelColours.length; c++)
+                headModel.recolour(modifiedModelColours[c], originalModelColours[c]);
 
         }
-        return model;
+        return headModel;
     }
 
     public EntityDefinition getChildDefinition()
     {
-        int j = -1;
-        if(anInt57 != -1)
+        int childId = -1;
+        if(varBitId != -1)
         {
-            VarBit varBit = VarBit.cache[anInt57];
-            int k = varBit.configId;
-            int l = varBit.leastSignificantBit;
-            int i1 = varBit.mostSignificantBit;
-            int j1 = client.BITFIELD_MAX_VALUE[i1 - l];
-            j = clientInstance.variousSettings[k] >> l & j1;
+            VarBit varBit = VarBit.cache[varBitId];
+            int configId = varBit.configId;
+            int lsb = varBit.leastSignificantBit;
+            int msb = varBit.mostSignificantBit;
+            int bit = client.BITFIELD_MAX_VALUE[msb - lsb];
+            childId = clientInstance.variousSettings[configId] >> lsb & bit;
         } else
-        if(anInt59 != -1)
-            j = clientInstance.variousSettings[anInt59];
-        if(j < 0 || j >= childrenIDs.length || childrenIDs[j] == -1)
+        if(settingId != -1)
+            childId = clientInstance.variousSettings[settingId];
+        if(childId < 0 || childId >= childrenIDs.length || childrenIDs[childId] == -1)
             return null;
         else
-            return forID(childrenIDs[j]);
+            return getDefinition(childrenIDs[childId]);
     }
 
-    public static void unpackConfig(StreamLoader streamLoader)
+    public static void load(StreamLoader streamLoader)
     {
-        stream = new Stream(streamLoader.getDataForName("npc.dat"));
-        Stream stream2 = new Stream(streamLoader.getDataForName("npc.idx"));
-        int totalNPCs = stream2.getUnsignedLEShort();
-        streamIndices = new int[totalNPCs];
-        int i = 2;
-        for(int j = 0; j < totalNPCs; j++)
+    	EntityDefinition.stream = new Stream(streamLoader.getDataForName("npc.dat"));
+        Stream stream = new Stream(streamLoader.getDataForName("npc.idx"));
+        int size = stream.getUnsignedLEShort();
+        EntityDefinition.streamOffsets = new int[size];
+        int offset = 2;
+        for(int n = 0; n < size; n++)
         {
-            streamIndices[j] = i;
-            i += stream2.getUnsignedLEShort();
+        	EntityDefinition.streamOffsets[n] = offset;
+            offset += stream.getUnsignedLEShort();
         }
 
-        cache = new EntityDefinition[20];
-        for(int k = 0; k < 20; k++)
-            cache[k] = new EntityDefinition();
+        EntityDefinition.cache = new EntityDefinition[20];
+        for(int c = 0; c < 20; c++)
+        	EntityDefinition.cache[c] = new EntityDefinition();
 
     }
 
     public static void nullLoader()
     {
         modelCache = null;
-        streamIndices = null;
+        streamOffsets = null;
         cache = null;
         stream = null;
     }
@@ -148,8 +144,8 @@ public final class EntityDefinition
         else
         if(frameId1 != -1)
             childModel.applyTransformation(frameId1);
-        if(resizeXY != 128 || resizeZ != 128)
-            childModel.scaleT(resizeXY, resizeXY, resizeZ);
+        if(scaleXY != 128 || scaleZ != 128)
+            childModel.scaleT(scaleXY, scaleXY, scaleZ);
         childModel.calculateDiagonals();
         childModel.triangleSkin = null;
         childModel.vertexSkin = null;
@@ -158,126 +154,126 @@ public final class EntityDefinition
         return childModel;
     }
 
-    private void readValues(Stream stream)
+    private void load(Stream stream)
     {
         do
         {
-            int i = stream.getUnsignedByte();
-            if(i == 0)
+            int attributeType = stream.getUnsignedByte();
+            if(attributeType == 0)
                 return;
-            if(i == 1)
+            if(attributeType == 1)
             {
-                int j = stream.getUnsignedByte();
-                modelIds = new int[j];
-                for(int j1 = 0; j1 < j; j1++)
-                    modelIds[j1] = stream.getUnsignedLEShort();
+                int modelCount = stream.getUnsignedByte();
+                modelIds = new int[modelCount];
+                for(int m = 0; m < modelCount; m++)
+                    modelIds[m] = stream.getUnsignedLEShort();
 
             } else
-            if(i == 2)
+            if(attributeType == 2)
                 name = stream.getString();
             else
-            if(i == 3)
+            if(attributeType == 3)
                 description = stream.readBytes();
             else
-            if(i == 12)
+            if(attributeType == 12)
                 boundaryDimension = stream.get();
             else
-            if(i == 13)
+            if(attributeType == 13)
                 standAnimationId = stream.getUnsignedLEShort();
             else
-            if(i == 14)
+            if(attributeType == 14)
                 walkAnimationId = stream.getUnsignedLEShort();
             else
-            if(i == 17)
+            if(attributeType == 17)
             {
                 walkAnimationId = stream.getUnsignedLEShort();
                 turnAboutAnimationId = stream.getUnsignedLEShort();
                 turnRightAnimationId = stream.getUnsignedLEShort();
                 turnLeftAnimationId = stream.getUnsignedLEShort();
             } else
-            if(i >= 30 && i < 40)
+            if(attributeType >= 30 && attributeType < 40)
             {
                 if(actions == null)
                     actions = new String[5];
-                actions[i - 30] = stream.getString();
-                if(actions[i - 30].equalsIgnoreCase("hidden"))
-                    actions[i - 30] = null;
+                actions[attributeType - 30] = stream.getString();
+                if(actions[attributeType - 30].equalsIgnoreCase("hidden"))
+                    actions[attributeType - 30] = null;
             } else
-            if(i == 40)
+            if(attributeType == 40)
             {
-                int k = stream.getUnsignedByte();
-                modifiedModelColours = new int[k];
-                originalModelColours = new int[k];
-                for(int k1 = 0; k1 < k; k1++)
+                int colourCount = stream.getUnsignedByte();
+                modifiedModelColours = new int[colourCount];
+                originalModelColours = new int[colourCount];
+                for(int c = 0; c < colourCount; c++)
                 {
-                    modifiedModelColours[k1] = stream.getUnsignedLEShort();
-                    originalModelColours[k1] = stream.getUnsignedLEShort();
+                    modifiedModelColours[c] = stream.getUnsignedLEShort();
+                    originalModelColours[c] = stream.getUnsignedLEShort();
                 }
 
             } else
-            if(i == 60)
+            if(attributeType == 60)
             {
-                int l = stream.getUnsignedByte();
-                anIntArray73 = new int[l];
-                for(int l1 = 0; l1 < l; l1++)
-                    anIntArray73[l1] = stream.getUnsignedLEShort();
+                int additionalModelCount = stream.getUnsignedByte();
+                headModelIds = new int[additionalModelCount];
+                for(int m = 0; m < additionalModelCount; m++)
+                    headModelIds[m] = stream.getUnsignedLEShort();
 
             } else
-            if(i == 90)
+            if(attributeType == 90)
                 stream.getUnsignedLEShort();
             else
-            if(i == 91)
+            if(attributeType == 91)
                 stream.getUnsignedLEShort();
             else
-            if(i == 92)
+            if(attributeType == 92)
                 stream.getUnsignedLEShort();
             else
-            if(i == 93)
-                aBoolean87 = false;
+            if(attributeType == 93)
+                visibleMinimap = false;
             else
-            if(i == 95)
+            if(attributeType == 95)
                 combatLevel = stream.getUnsignedLEShort();
             else
-            if(i == 97)
-                resizeXY = stream.getUnsignedLEShort();
+            if(attributeType == 97)
+                scaleXY = stream.getUnsignedLEShort();
             else
-            if(i == 98)
-                resizeZ = stream.getUnsignedLEShort();
+            if(attributeType == 98)
+                scaleZ = stream.getUnsignedLEShort();
             else
-            if(i == 99)
-                aBoolean93 = true;
+            if(attributeType == 99)
+                visible = true;
             else
-            if(i == 100)
+            if(attributeType == 100)
                 brightness = stream.get();
             else
-            if(i == 101)
+            if(attributeType == 101)
                 contrast = stream.get() * 5;
             else
-            if(i == 102)
-                anInt75 = stream.getUnsignedLEShort();
+            if(attributeType == 102)
+                headIcon = stream.getUnsignedLEShort();
             else
-            if(i == 103)
+            if(attributeType == 103)
                 degreesToTurn = stream.getUnsignedLEShort();
             else
-            if(i == 106)
+            if(attributeType == 106)
             {
-                anInt57 = stream.getUnsignedLEShort();
-                if(anInt57 == 65535)
-                    anInt57 = -1;
-                anInt59 = stream.getUnsignedLEShort();
-                if(anInt59 == 65535)
-                    anInt59 = -1;
-                int i1 = stream.getUnsignedByte();
-                childrenIDs = new int[i1 + 1];
-                for(int i2 = 0; i2 <= i1; i2++)
+                varBitId = stream.getUnsignedLEShort();
+                if(varBitId == 65535)
+                    varBitId = -1;
+                settingId = stream.getUnsignedLEShort();
+                if(settingId == 65535)
+                    settingId = -1;
+                int childCount = stream.getUnsignedByte();
+                childrenIDs = new int[childCount + 1];
+                for(int c = 0; c <= childCount; c++)
                 {
-                    childrenIDs[i2] = stream.getUnsignedLEShort();
-                    if(childrenIDs[i2] == 65535)
-                        childrenIDs[i2] = -1;
+                    childrenIDs[c] = stream.getUnsignedLEShort();
+                    if(childrenIDs[c] == 65535)
+                        childrenIDs[c] = -1;
                 }
 
             } else
-            if(i == 107)
+            if(attributeType == 107)
                 clickable = false;
         } while(true);
     }
@@ -285,30 +281,30 @@ public final class EntityDefinition
     private EntityDefinition()
     {
         turnLeftAnimationId = -1;
-        anInt57 = -1;
+        varBitId = -1;
         turnAboutAnimationId = -1;
-        anInt59 = -1;
+        settingId = -1;
         combatLevel = -1;
-        anInt64 = 1834;
+        anInt64 = 1834; // Unused
         walkAnimationId = -1;
         boundaryDimension = 1;
-        anInt75 = -1;
+        headIcon = -1;
         standAnimationId = -1;
         id = -1L;
         degreesToTurn = 32;
         turnRightAnimationId = -1;
         clickable = true;
-        resizeZ = 128;
-        aBoolean87 = true;
-        resizeXY = 128;
-        aBoolean93 = false;
+        scaleZ = 128;
+        visibleMinimap = true;
+        scaleXY = 128;
+        visible = false;
     }
 
     public int turnLeftAnimationId;
-    private static int anInt56;
-    private int anInt57;
+    private static int bufferIndex;
+    private int varBitId;
     public int turnAboutAnimationId;
-    private int anInt59;
+    private int settingId;
     private static Stream stream;
     public int combatLevel;
     private final int anInt64;
@@ -317,9 +313,9 @@ public final class EntityDefinition
     public int walkAnimationId;
     public byte boundaryDimension;
     private int[] originalModelColours;
-    private static int[] streamIndices;
-    private int[] anIntArray73;
-    public int anInt75;
+    private static int[] streamOffsets;
+    private int[] headModelIds;
+    public int headIcon;
     private int[] modifiedModelColours;
     public int standAnimationId;
     public long id;
@@ -329,13 +325,13 @@ public final class EntityDefinition
     public int turnRightAnimationId;
     public boolean clickable;
     private int brightness;
-    private int resizeZ;
-    public boolean aBoolean87;
+    private int scaleZ;
+    public boolean visibleMinimap;
     public int childrenIDs[];
     public byte description[];
-    private int resizeXY;
+    private int scaleXY;
     private int contrast;
-    public boolean aBoolean93;
+    public boolean visible;
     private int[] modelIds;
     public static MRUNodes modelCache = new MRUNodes(30);
 

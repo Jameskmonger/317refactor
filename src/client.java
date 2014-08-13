@@ -783,7 +783,7 @@ public final class client extends RSApplet {
         {
             NPC npc = npcArray[npcIndices[n]];
             int hash = 0x20000000 + (npcIndices[n] << 14);
-            if(npc == null || !npc.isVisible() || npc.npcDefinition.aBoolean93 != flag)
+            if(npc == null || !npc.isVisible() || npc.npcDefinition.visible != flag)
                 continue;
             int npcWidth = npc.x >> 7;
             int npcHeight = npc.y >> 7;
@@ -1325,11 +1325,11 @@ public final class client extends RSApplet {
             } else
             {
                 EntityDefinition entityDef_1 = ((NPC)obj).npcDefinition;
-                if(entityDef_1.anInt75 >= 0 && entityDef_1.anInt75 < headIcons.length)
+                if(entityDef_1.headIcon >= 0 && entityDef_1.headIcon < headIcons.length)
                 {
                     npcScreenPos(((Entity) (obj)), ((Entity) (obj)).height + 15);
                     if(spriteDrawX > -1)
-                        headIcons[entityDef_1.anInt75].drawSprite(spriteDrawX - 12, spriteDrawY - 30);
+                        headIcons[entityDef_1.headIcon].drawSprite(spriteDrawX - 12, spriteDrawY - 30);
                 }
                 if(hintIconType == 1 && hintIconNpcId == npcIndices[j - playerCount] && loopCycle % 20 < 10)
                 {
@@ -1939,7 +1939,7 @@ public final class client extends RSApplet {
             if(x > 15)
                 x -= 32;
             int clearWaypointQueue = stream.readBits(1);
-            npc.npcDefinition = EntityDefinition.forID(stream.readBits(12));
+            npc.npcDefinition = EntityDefinition.getDefinition(stream.readBits(12));
             int furtherUpdateRequired = stream.readBits(1);
             if(furtherUpdateRequired == 1)
                 playersAwaitingUpdate[actorsAwaitingUpdatePointer++] = npcId;
@@ -6339,7 +6339,7 @@ public final class client extends RSApplet {
             }
             if((updateType & 2) != 0)
             {
-                npc.npcDefinition = EntityDefinition.forID(stream.getUnsignedShortA());
+                npc.npcDefinition = EntityDefinition.getDefinition(stream.getUnsignedShortA());
                 npc.boundaryDimension = npc.npcDefinition.boundaryDimension;
                 npc.degreesToTurn = npc.npcDefinition.degreesToTurn;
                 npc.walkAnimationId = npc.npcDefinition.walkAnimationId;
@@ -6947,7 +6947,7 @@ public final class client extends RSApplet {
             GameObjectDefinition.load(streamLoader);
             Flo.unpackConfig(streamLoader);
             ItemDef.unpackConfig(streamLoader);
-            EntityDefinition.unpackConfig(streamLoader);
+            EntityDefinition.load(streamLoader);
             IDK.unpackConfig(streamLoader);
             SpotAnim.unpackConfig(streamLoader);
             Varp.unpackConfig(streamLoader);
@@ -9133,7 +9133,7 @@ public final class client extends RSApplet {
                 EntityDefinition entityDef = npc.npcDefinition;
                 if(entityDef.childrenIDs != null)
                     entityDef = entityDef.getChildDefinition();
-                if(entityDef != null && entityDef.aBoolean87 && entityDef.clickable)
+                if(entityDef != null && entityDef.visibleMinimap && entityDef.clickable)
                 {
                     int i1 = npc.x / 32 - localPlayer.x / 32;
                     int k3 = npc.y / 32 - localPlayer.y / 32;
