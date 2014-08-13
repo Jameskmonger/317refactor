@@ -2,13 +2,13 @@ package com.jagex.runescape.audio;
 
 import com.jagex.runescape.Stream;
 
-final class SoundEnvelope
+final class Envelope
 {
 
     public void decode(Stream stream)
     {
         form = stream.getUnsignedByte();
-            smart = stream.getInt();
+            start = stream.getInt();
             end = stream.getInt();
             decodeShape(stream);
     }
@@ -29,7 +29,7 @@ final class SoundEnvelope
     void resetValues()
     {
         critical = 0;
-        phaseIndex = 0;
+        phaseId = 0;
         step = 0;
         amplitude = 0;
         ticks = 0;
@@ -39,30 +39,30 @@ final class SoundEnvelope
     {
         if(ticks >= critical)
         {
-            amplitude = phasePeak[phaseIndex++] << 15;
-            if(phaseIndex >= phaseCount)
-                phaseIndex = phaseCount - 1;
-            critical = (int)(((double)phaseDuration[phaseIndex] / 65536D) * (double)period);
+            amplitude = phasePeak[phaseId++] << 15;
+            if(phaseId >= phaseCount)
+                phaseId = phaseCount - 1;
+            critical = (int)(((double)phaseDuration[phaseId] / 65536D) * (double)period);
             if(critical > ticks)
-                step = ((phasePeak[phaseIndex] << 15) - amplitude) / (critical - ticks);
+                step = ((phasePeak[phaseId] << 15) - amplitude) / (critical - ticks);
         }
         amplitude += step;
         ticks++;
         return amplitude - step >> 15;
     }
 
-    public SoundEnvelope()
+    public Envelope()
     {
     }
 
     private int phaseCount;
     private int[] phaseDuration;
     private int[] phasePeak;
-    int smart;
+    int start;
     int end;
     int form;
     private int critical;
-    private int phaseIndex;
+    private int phaseId;
     private int step;
     private int amplitude;
     private int ticks;

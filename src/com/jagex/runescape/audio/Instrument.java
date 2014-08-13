@@ -2,7 +2,7 @@ package com.jagex.runescape.audio;
 
 import com.jagex.runescape.Stream;
 
-final class SoundInstrument
+final class Instrument
 {
 
     public static void initialise()
@@ -18,16 +18,24 @@ final class SoundInstrument
         for(int sineId = 0; sineId < 32768; sineId++)
             sine[sineId] = (int)(Math.sin((double)sineId / 5215.1903000000002D) * 16384D);
 
-        buffer = new int[0x35d54];
+        output = new int[0x35d54];
     }
 
+    /*
+     * an impl of a wavetable synthesizer that
+     * generates square/sine/saw/noise/flat tables
+     * and supports phase and amplitude modulation
+     *
+     * more: http://musicdsp.org/files/Wavetable-101.pdf
+     */
+    
     public int[] synthesise(int steps, int j)
     {
         for(int position = 0; position < steps; position++)
-            buffer[position] = 0;
+            output[position] = 0;
 
         if(j < 10)
-            return buffer;
+            return output;
         double d = (double)steps / ((double)j + 0.0D);
         pitchEnvelope.resetValues();
         volumeEnvelope.resetValues();
@@ -38,8 +46,8 @@ final class SoundInstrument
         {
             pitchModulationEnvelope.resetValues();
             pitchModulationAmplitudeEnvelope.resetValues();
-            pitchModulationStep = (int)(((double)(pitchModulationEnvelope.end - pitchModulationEnvelope.smart) * 32.768000000000001D) / d);
-            pitchModulationBaseStep = (int)(((double)pitchModulationEnvelope.smart * 32.768000000000001D) / d);
+            pitchModulationStep = (int)(((double)(pitchModulationEnvelope.end - pitchModulationEnvelope.start) * 32.768000000000001D) / d);
+            pitchModulationBaseStep = (int)(((double)pitchModulationEnvelope.start * 32.768000000000001D) / d);
         }
         int volumeModulationStep = 0;
         int volumeModulationBaseStep = 0;
@@ -48,8 +56,8 @@ final class SoundInstrument
         {
             volumeModulationEnvelope.resetValues();
             volumeModulationAmplitude.resetValues();
-            volumeModulationStep = (int)(((double)(volumeModulationEnvelope.end - volumeModulationEnvelope.smart) * 32.768000000000001D) / d);
-            volumeModulationBaseStep = (int)(((double)volumeModulationEnvelope.smart * 32.768000000000001D) / d);
+            volumeModulationStep = (int)(((double)(volumeModulationEnvelope.end - volumeModulationEnvelope.start) * 32.768000000000001D) / d);
+            volumeModulationBaseStep = (int)(((double)volumeModulationEnvelope.start * 32.768000000000001D) / d);
         }
         for(int oscillationVolumeId = 0; oscillationVolumeId < 5; oscillationVolumeId++)
             if(oscillationVolume[oscillationVolumeId] != 0)
@@ -57,8 +65,8 @@ final class SoundInstrument
                 phases[oscillationVolumeId] = 0;
                 delays[oscillationVolumeId] = (int)((double)oscillationDelay[oscillationVolumeId] * d);
                 volumeStep[oscillationVolumeId] = (oscillationVolume[oscillationVolumeId] << 14) / 100;
-                pitchStep[oscillationVolumeId] = (int)(((double)(pitchEnvelope.end - pitchEnvelope.smart) * 32.768000000000001D * Math.pow(1.0057929410678534D, oscillationPitch[oscillationVolumeId])) / d);
-                pitchBaseStep[oscillationVolumeId] = (int)(((double)pitchEnvelope.smart * 32.768000000000001D) / d);
+                pitchStep[oscillationVolumeId] = (int)(((double)(pitchEnvelope.end - pitchEnvelope.start) * 32.768000000000001D * Math.pow(1.0057929410678534D, oscillationPitch[oscillationVolumeId])) / d);
+                pitchBaseStep[oscillationVolumeId] = (int)(((double)pitchEnvelope.start * 32.768000000000001D) / d);
             }
 
         for(int offset = 0; offset < steps; offset++)
@@ -85,7 +93,7 @@ final class SoundInstrument
                     int position = offset + delays[oscillationId];
                     if(position < steps)
                     {
-                        buffer[position] += evaluateWave(volumeChange * volumeStep[oscillationId] >> 15, phases[oscillationId], pitchEnvelope.form);
+                        output[position] += evaluateWave(volumeChange * volumeStep[oscillationId] >> 15, phases[oscillationId], pitchEnvelope.form);
                         phases[oscillationId] += (pitchChange * pitchStep[oscillationId] >> 16) + pitchBaseStep[oscillationId];
                     }
                 }
@@ -105,16 +113,16 @@ final class SoundInstrument
                 int stepOff = gatingAttackEnvelope.step(steps);
                 int threshold;
                 if(muted)
-                    threshold = gatingReleaseEnvelope.smart + ((gatingReleaseEnvelope.end - gatingReleaseEnvelope.smart) * stepOn >> 8);
+                    threshold = gatingReleaseEnvelope.start + ((gatingReleaseEnvelope.end - gatingReleaseEnvelope.start) * stepOn >> 8);
                 else
-                    threshold = gatingReleaseEnvelope.smart + ((gatingReleaseEnvelope.end - gatingReleaseEnvelope.smart) * stepOff >> 8);
+                    threshold = gatingReleaseEnvelope.start + ((gatingReleaseEnvelope.end - gatingReleaseEnvelope.start) * stepOff >> 8);
                 if((counter += 256) >= threshold)
                 {
                     counter = 0;
                     muted = !muted;
                 }
                 if(muted)
-                    buffer[position] = 0;
+                    output[position] = 0;
             }
 
         }
@@ -122,7 +130,7 @@ final class SoundInstrument
         {
             int delay = (int)((double)delayTime * d);
             for(int position = delay; position < steps; position++)
-                buffer[position] += (buffer[position - delay] * delayFeedback) / 100;
+                output[position] += (output[position - delay] * delayFeedback) / 100;
 
         }
         if(filter.pairCount[0] > 0 || filter.pairCount[1] > 0)
@@ -139,14 +147,14 @@ final class SoundInstrument
                     delay = steps - M;
                 for(; n < delay; n++)
                 {
-                    int y = (int)((long)buffer[n + M] * (long)SoundFilter.invUnity >> 16);
+                    int y = (int)((long)output[n + M] * (long)SoundFilter.invUnity >> 16);
                     for(int k8 = 0; k8 < M; k8++)
-                        y += (int)((long)buffer[(n + M) - 1 - k8] * (long)SoundFilter.coefficient[0][k8] >> 16);
+                        y += (int)((long)output[(n + M) - 1 - k8] * (long)SoundFilter.coefficient[0][k8] >> 16);
 
                     for(int j9 = 0; j9 < n; j9++)
-                        y -= (int)((long)buffer[n - 1 - j9] * (long)SoundFilter.coefficient[1][j9] >> 16);
+                        y -= (int)((long)output[n - 1 - j9] * (long)SoundFilter.coefficient[1][j9] >> 16);
 
-                    buffer[n] = y;
+                    output[n] = y;
                     t = filterEnvelope.step(steps + 1);
                 }
 
@@ -158,14 +166,14 @@ final class SoundInstrument
                         delay = steps - M;
                     for(; n < delay; n++)
                     {
-                        int y = (int)((long)buffer[n + M] * (long)SoundFilter.invUnity >> 16);
+                        int y = (int)((long)output[n + M] * (long)SoundFilter.invUnity >> 16);
                         for(int position = 0; position < M; position++)
-                            y += (int)((long)buffer[(n + M) - 1 - position] * (long)SoundFilter.coefficient[0][position] >> 16);
+                            y += (int)((long)output[(n + M) - 1 - position] * (long)SoundFilter.coefficient[0][position] >> 16);
 
                         for(int position = 0; position < N; position++)
-                            y -= (int)((long)buffer[n - 1 - position] * (long)SoundFilter.coefficient[1][position] >> 16);
+                            y -= (int)((long)output[n - 1 - position] * (long)SoundFilter.coefficient[1][position] >> 16);
 
-                        buffer[n] = y;
+                        output[n] = y;
                         t = filterEnvelope.step(steps + 1);
                     }
 
@@ -179,12 +187,12 @@ final class SoundInstrument
                 {
                     int y = 0;
                     for(int position = (n + M) - steps; position < M; position++)
-                        y += (int)((long)buffer[(n + M) - 1 - position] * (long)SoundFilter.coefficient[0][position] >> 16);
+                        y += (int)((long)output[(n + M) - 1 - position] * (long)SoundFilter.coefficient[0][position] >> 16);
 
                     for(int position = 0; position < N; position++)
-                        y -= (int)((long)buffer[n - 1 - position] * (long)SoundFilter.coefficient[1][position] >> 16);
+                        y -= (int)((long)output[n - 1 - position] * (long)SoundFilter.coefficient[1][position] >> 16);
 
-                    buffer[n] = y;
+                    output[n] = y;
                     int l3 = filterEnvelope.step(steps + 1);
                 }
 
@@ -192,13 +200,13 @@ final class SoundInstrument
         }
         for(int position = 0; position < steps; position++)
         {
-            if(buffer[position] < -32768)
-                buffer[position] = -32768;
-            if(buffer[position] > 32767)
-                buffer[position] = 32767;
+            if(output[position] < -32768)
+                output[position] = -32768;
+            if(output[position] > 32767)
+                output[position] = 32767;
         }
 
-        return buffer;
+        return output;
     }
 
     private int evaluateWave(int amplitude, int phase, int table)
@@ -220,35 +228,35 @@ final class SoundInstrument
 
     public void decode(Stream stream)
     {
-        pitchEnvelope = new SoundEnvelope();
+        pitchEnvelope = new Envelope();
         pitchEnvelope.decode(stream);
-        volumeEnvelope = new SoundEnvelope();
+        volumeEnvelope = new Envelope();
         volumeEnvelope.decode(stream);
         int option = stream.getUnsignedByte();
         if(option != 0)
         {
             stream.currentOffset--;
-            pitchModulationEnvelope = new SoundEnvelope();
+            pitchModulationEnvelope = new Envelope();
             pitchModulationEnvelope.decode(stream);
-            pitchModulationAmplitudeEnvelope = new SoundEnvelope();
+            pitchModulationAmplitudeEnvelope = new Envelope();
             pitchModulationAmplitudeEnvelope.decode(stream);
         }
         option = stream.getUnsignedByte();
         if(option != 0)
         {
             stream.currentOffset--;
-            volumeModulationEnvelope = new SoundEnvelope();
+            volumeModulationEnvelope = new Envelope();
             volumeModulationEnvelope.decode(stream);
-            volumeModulationAmplitude = new SoundEnvelope();
+            volumeModulationAmplitude = new Envelope();
             volumeModulationAmplitude.decode(stream);
         }
         option = stream.getUnsignedByte();
         if(option != 0)
         {
             stream.currentOffset--;
-            gatingReleaseEnvelope = new SoundEnvelope();
+            gatingReleaseEnvelope = new Envelope();
             gatingReleaseEnvelope.decode(stream);
-            gatingAttackEnvelope = new SoundEnvelope();
+            gatingAttackEnvelope = new Envelope();
             gatingAttackEnvelope.decode(stream);
         }
         for(int oscillationId = 0; oscillationId < 10; oscillationId++)
@@ -266,11 +274,11 @@ final class SoundInstrument
         duration = stream.getUnsignedLEShort();
         begin = stream.getUnsignedLEShort();
         filter = new SoundFilter();
-        filterEnvelope = new SoundEnvelope();
+        filterEnvelope = new Envelope();
         filter.decode(stream, filterEnvelope);
     }
 
-    public SoundInstrument()
+    public Instrument()
     {
         oscillationVolume = new int[5];
         oscillationPitch = new int[5];
@@ -279,24 +287,24 @@ final class SoundInstrument
         duration = 500;
     }
 
-    private SoundEnvelope pitchEnvelope;
-    private SoundEnvelope volumeEnvelope;
-    private SoundEnvelope pitchModulationEnvelope;
-    private SoundEnvelope pitchModulationAmplitudeEnvelope;
-    private SoundEnvelope volumeModulationEnvelope;
-    private SoundEnvelope volumeModulationAmplitude;
-    private SoundEnvelope gatingReleaseEnvelope;
-    private SoundEnvelope gatingAttackEnvelope;
+    private Envelope pitchEnvelope;
+    private Envelope volumeEnvelope;
+    private Envelope pitchModulationEnvelope;
+    private Envelope pitchModulationAmplitudeEnvelope;
+    private Envelope volumeModulationEnvelope;
+    private Envelope volumeModulationAmplitude;
+    private Envelope gatingReleaseEnvelope;
+    private Envelope gatingAttackEnvelope;
     private final int[] oscillationVolume;
     private final int[] oscillationPitch;
     private final int[] oscillationDelay;
     private int delayTime;
     private int delayFeedback;
     private SoundFilter filter;
-    private SoundEnvelope filterEnvelope;
+    private Envelope filterEnvelope;
     int duration;
     int begin;
-    private static int[] buffer;
+    private static int[] output;
     private static int[] noise;
     private static int[] sine;
     private static final int[] phases = new int[5];

@@ -56,12 +56,6 @@ public final class Stream extends NodeSub {
         buffer[currentOffset++] = (byte)i;
     }
 
-    public void method400(int i)
-    {
-        buffer[currentOffset++] = (byte)i;
-        buffer[currentOffset++] = (byte)(i >> 8);
-    }
-
     public void put24BitInt(int i)
     {
         buffer[currentOffset++] = (byte)(i >> 16);
@@ -77,7 +71,7 @@ public final class Stream extends NodeSub {
         buffer[currentOffset++] = (byte)i;
     }
 
-    public void method403(int j)
+    public void putLEInt(int j)
     {
         buffer[currentOffset++] = (byte)j;
         buffer[currentOffset++] = (byte)(j >> 8);

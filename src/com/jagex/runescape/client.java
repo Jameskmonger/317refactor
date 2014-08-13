@@ -10,7 +10,7 @@ import java.math.BigInteger;
 import java.net.*;
 import java.util.zip.CRC32;
 
-import com.jagex.runescape.audio.Sounds;
+import com.jagex.runescape.audio.Effect;
 
 import sign.signlink;
 
@@ -6569,7 +6569,7 @@ public final class client extends RSApplet {
                             flag1 = true;
                     } else
                     {
-                        Stream stream = Sounds.data(trackLoop[track], trackIds[track]);
+                        Stream stream = Effect.data(trackLoop[track], trackIds[track]);
                         if(System.currentTimeMillis() + (long)(stream.currentOffset / 22) > aLong1172 + (long)(anInt1257 / 22))
                         {
                             anInt1257 = stream.currentOffset;
@@ -6961,7 +6961,7 @@ public final class client extends RSApplet {
                 drawLoadingText(90, "Unpacking sounds");
                 byte soundData[] = archiveSounds.getDataForName("sounds.dat");
                 Stream stream = new Stream(soundData);
-                Sounds.unpack(stream);
+                Effect.load(stream);
             }
             drawLoadingText(95, "Unpacking interfaces");
             TextDrawingArea fonts[] = {
@@ -9711,7 +9711,7 @@ public final class client extends RSApplet {
             {
                 trackIds[trackCount] = trackId;
                 trackLoop[trackCount] = loop;
-                trackDelay[trackCount] = Sounds.trackDelays[trackId];
+                trackDelay[trackCount] = Effect.effectDelays[trackId];
                 trackCount++;
             }
         }
@@ -10833,7 +10833,7 @@ public final class client extends RSApplet {
                 {
                     trackIds[trackCount] = trackId;
                     trackLoop[trackCount] = loop;
-                    trackDelay[trackCount] = delay + Sounds.trackDelays[trackId];
+                    trackDelay[trackCount] = delay + Effect.effectDelays[trackId];
                     trackCount++;
                 }
                 packetOpcode = -1;

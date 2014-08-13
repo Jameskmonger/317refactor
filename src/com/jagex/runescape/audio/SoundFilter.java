@@ -1,131 +1,134 @@
 package com.jagex.runescape.audio;
 
 import com.jagex.runescape.Stream;
-// Decompiled by Jad v1.5.8f. Copyright 2001 Pavel Kouznetsov.
-// Jad home page: http://www.kpdus.com/jad.html
-// Decompiler options: packimports(3) 
 
+/*
+ * an impl of an adaptive iir filter that calculates
+ * coefficients from pole magnitude/phases and a serial
+ * configuration of cascading biquad sections
+ */
 final class SoundFilter
 {
 
-    private float method541(int i, int j, float f)
+    private float adaptMagnitude(int direction, int i, float f)
     {
-        float f1 = (float)anIntArrayArrayArray667[i][0][j] + f * (float)(anIntArrayArrayArray667[i][1][j] - anIntArrayArrayArray667[i][0][j]);
-            f1 *= 0.001525879F;
-            return 1.0F - (float)Math.pow(10D, -f1 / 20F);
+        float alpha = (float)pairMagnitude[direction][0][i] + f * (float)(pairMagnitude[direction][1][i] - pairMagnitude[direction][0][i]);
+            alpha *= 0.001525879F;
+            return 1.0F - (float)Math.pow(10D, -alpha / 20F);
     }
 
-    private float method542(float f)
+    private float normalise(float alpha)
     {
-        float f1 = 32.7032F * (float)Math.pow(2D, f);
-        return (f1 * 3.141593F) / 11025F;
+        float f = 32.7032F * (float)Math.pow(2D, alpha);
+        return (f * 3.141593F) / 11025F;
     }
 
-    private float method543(float f, int i, int j)
+    private float adaptPhase(float f, int i, int direction)
     {
-        float f1 = (float)anIntArrayArrayArray666[j][0][i] + f * (float)(anIntArrayArrayArray666[j][1][i] - anIntArrayArrayArray666[j][0][i]);
-        f1 *= 0.0001220703F;
-        return method542(f1);
+        float alpha = (float)pairPhase[direction][0][i] + f * (float)(pairPhase[direction][1][i] - pairPhase[direction][0][i]);
+        alpha *= 0.0001220703F;
+        return normalise(alpha);
     }
 
-    public int compute(int i, float f)
+    /* dir: 0 -> feedforward, 1 -> feedback */
+    public int compute(int direction, float f)
     {
-        if(i == 0)
+        if(direction == 0)
         {
-            float f1 = (float)anIntArray668[0] + (float)(anIntArray668[1] - anIntArray668[0]) * f;
+            float f1 = (float)unity[0] + (float)(unity[1] - unity[0]) * f;
             f1 *= 0.003051758F;
-            aFloat671 = (float)Math.pow(0.10000000000000001D, f1 / 20F);
-            invUnity = (int)(aFloat671 * 65536F);
+            _invUnity = (float)Math.pow(0.10000000000000001D, f1 / 20F);
+            invUnity = (int)(_invUnity * 65536F);
         }
-        if(pairCount[i] == 0)
+        if(pairCount[direction] == 0)
             return 0;
-        float f2 = method541(i, 0, f);
-        aFloatArrayArray669[i][0] = -2F * f2 * (float)Math.cos(method543(f, 0, i));
-        aFloatArrayArray669[i][1] = f2 * f2;
-        for(int k = 1; k < pairCount[i]; k++)
+        float _mag = adaptMagnitude(direction, 0, f);
+        _coefficient[direction][0] = -2F * _mag * (float)Math.cos(adaptPhase(f, 0, direction));
+        _coefficient[direction][1] = _mag * _mag;
+        for(int pair = 1; pair < pairCount[direction]; pair++)
         {
-            float f3 = method541(i, k, f);
-            float f4 = -2F * f3 * (float)Math.cos(method543(f, k, i));
-            float f5 = f3 * f3;
-            aFloatArrayArray669[i][k * 2 + 1] = aFloatArrayArray669[i][k * 2 - 1] * f5;
-            aFloatArrayArray669[i][k * 2] = aFloatArrayArray669[i][k * 2 - 1] * f4 + aFloatArrayArray669[i][k * 2 - 2] * f5;
-            for(int j1 = k * 2 - 1; j1 >= 2; j1--)
-                aFloatArrayArray669[i][j1] += aFloatArrayArray669[i][j1 - 1] * f4 + aFloatArrayArray669[i][j1 - 2] * f5;
+            float mag = adaptMagnitude(direction, pair, f);
+            float phase = -2F * mag * (float)Math.cos(adaptPhase(f, pair, direction));
+            float coeff = mag * mag;
+            _coefficient[direction][pair * 2 + 1] = _coefficient[direction][pair * 2 - 1] * coeff;
+            _coefficient[direction][pair * 2] = _coefficient[direction][pair * 2 - 1] * phase + _coefficient[direction][pair * 2 - 2] * coeff;
+            for(int j1 = pair * 2 - 1; j1 >= 2; j1--)
+                _coefficient[direction][j1] += _coefficient[direction][j1 - 1] * phase + _coefficient[direction][j1 - 2] * coeff;
 
-            aFloatArrayArray669[i][1] += aFloatArrayArray669[i][0] * f4 + f5;
-            aFloatArrayArray669[i][0] += f4;
+            _coefficient[direction][1] += _coefficient[direction][0] * phase + coeff;
+            _coefficient[direction][0] += phase;
         }
 
-        if(i == 0)
+        if(direction == 0)
         {
-            for(int l = 0; l < pairCount[0] * 2; l++)
-                aFloatArrayArray669[0][l] *= aFloat671;
+            for(int pair = 0; pair < pairCount[0] * 2; pair++)
+                _coefficient[0][pair] *= _invUnity;
 
         }
-        for(int i1 = 0; i1 < pairCount[i] * 2; i1++)
-            coefficient[i][i1] = (int)(aFloatArrayArray669[i][i1] * 65536F);
+        for(int pair = 0; pair < pairCount[direction] * 2; pair++)
+            coefficient[direction][pair] = (int)(_coefficient[direction][pair] * 65536F);
 
-        return pairCount[i] * 2;
+        return pairCount[direction] * 2;
     }
 
-    public void decode(Stream stream, SoundEnvelope class29)
+    public void decode(Stream stream, Envelope envelope)
     {
-        int i = stream.getUnsignedByte();
-        pairCount[0] = i >> 4;
-        pairCount[1] = i & 0xf;
-        if(i != 0)
+        int count = stream.getUnsignedByte();
+        pairCount[0] = count >> 4;
+        pairCount[1] = count & 0xf;
+        if(count != 0)
         {
-            anIntArray668[0] = stream.getUnsignedLEShort();
-            anIntArray668[1] = stream.getUnsignedLEShort();
-            int j = stream.getUnsignedByte();
-            for(int k = 0; k < 2; k++)
+            unity[0] = stream.getUnsignedLEShort();
+            unity[1] = stream.getUnsignedLEShort();
+            int migrated = stream.getUnsignedByte();
+            for(int direction = 0; direction < 2; direction++)
             {
-                for(int l = 0; l < pairCount[k]; l++)
+                for(int pair = 0; pair < pairCount[direction]; pair++)
                 {
-                    anIntArrayArrayArray666[k][0][l] = stream.getUnsignedLEShort();
-                    anIntArrayArrayArray667[k][0][l] = stream.getUnsignedLEShort();
+                    pairPhase[direction][0][pair] = stream.getUnsignedLEShort();
+                    pairMagnitude[direction][0][pair] = stream.getUnsignedLEShort();
                 }
 
             }
 
-            for(int i1 = 0; i1 < 2; i1++)
+            for(int direction = 0; direction < 2; direction++)
             {
-                for(int j1 = 0; j1 < pairCount[i1]; j1++)
-                    if((j & 1 << i1 * 4 << j1) != 0)
+                for(int pair = 0; pair < pairCount[direction]; pair++)
+                    if((migrated & 1 << direction * 4 << pair) != 0)
                     {
-                        anIntArrayArrayArray666[i1][1][j1] = stream.getUnsignedLEShort();
-                        anIntArrayArrayArray667[i1][1][j1] = stream.getUnsignedLEShort();
+                        pairPhase[direction][1][pair] = stream.getUnsignedLEShort();
+                        pairMagnitude[direction][1][pair] = stream.getUnsignedLEShort();
                     } else
                     {
-                        anIntArrayArrayArray666[i1][1][j1] = anIntArrayArrayArray666[i1][0][j1];
-                        anIntArrayArrayArray667[i1][1][j1] = anIntArrayArrayArray667[i1][0][j1];
+                        pairPhase[direction][1][pair] = pairPhase[direction][0][pair];
+                        pairMagnitude[direction][1][pair] = pairMagnitude[direction][0][pair];
                     }
 
             }
 
-            if(j != 0 || anIntArray668[1] != anIntArray668[0])
-                class29.decodeShape(stream);
+            if(migrated != 0 || unity[1] != unity[0])
+                envelope.decodeShape(stream);
         } else
         {
-            anIntArray668[0] = anIntArray668[1] = 0;
+            unity[0] = unity[1] = 0;
         }
     }
 
     public SoundFilter()
     {
         pairCount = new int[2];
-        anIntArrayArrayArray666 = new int[2][2][4];
-        anIntArrayArrayArray667 = new int[2][2][4];
-        anIntArray668 = new int[2];
+        pairPhase = new int[2][2][4];
+        pairMagnitude = new int[2][2][4];
+        unity = new int[2];
     }
 
     final int[] pairCount;
-    private final int[][][] anIntArrayArrayArray666;
-    private final int[][][] anIntArrayArrayArray667;
-    private final int[] anIntArray668;
-    private static final float[][] aFloatArrayArray669 = new float[2][8];
+    private final int[][][] pairPhase;
+    private final int[][][] pairMagnitude;
+    private final int[] unity;
+    private static final float[][] _coefficient = new float[2][8];
     static final int[][] coefficient = new int[2][8];
-    private static float aFloat671;
+    private static float _invUnity;
     static int invUnity;
 
 }
