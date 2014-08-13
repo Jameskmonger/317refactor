@@ -1911,9 +1911,9 @@ public final class client extends RSApplet {
         for(int type = 0; type < 7; type++)
         {
             characterEditIdentityKits[type] = -1;
-            for(int kit = 0; kit < IDK.length; kit++)
+            for(int kit = 0; kit < IdentityKit.count; kit++)
             {
-                if(IDK.cache[kit].widgetDisplayed || IDK.cache[kit].partId != type + (characterEditChangeGender ? 0 : 7))
+                if(IdentityKit.cache[kit].widgetDisplayed || IdentityKit.cache[kit].partId != type + (characterEditChangeGender ? 0 : 7))
                     continue;
                 characterEditIdentityKits[type] = kit;
                 break;
@@ -2073,10 +2073,10 @@ public final class client extends RSApplet {
                 do
                 {
                     if(direction == 0 && --currentId < 0)
-                        currentId = IDK.length - 1;
-                    if(direction == 1 && ++currentId >= IDK.length)
+                        currentId = IdentityKit.count - 1;
+                    if(direction == 1 && ++currentId >= IdentityKit.count)
                         currentId = 0;
-                } while(IDK.cache[currentId].widgetDisplayed || IDK.cache[currentId].partId != type + (characterEditChangeGender ? 0 : 7));
+                } while(IdentityKit.cache[currentId].widgetDisplayed || IdentityKit.cache[currentId].partId != type + (characterEditChangeGender ? 0 : 7));
                 characterEditIdentityKits[type] = currentId;
                 characterModelChanged = true;
             }
@@ -4641,7 +4641,7 @@ public final class client extends RSApplet {
         EntityDefinition.nullLoader();
         ItemDef.nullLoader();
         Flo.cache = null;
-        IDK.cache = null;
+        IdentityKit.cache = null;
         RSInterface.interfaceCache = null;
         DummyClass.cache = null;
         AnimationSequence.animations = null;
@@ -5200,7 +5200,7 @@ public final class client extends RSApplet {
                 for(int k1 = 0; k1 < 7; k1++)
                 {
                     int l1 = characterEditIdentityKits[k1];
-                    if(l1 >= 0 && !IDK.cache[l1].method537())
+                    if(l1 >= 0 && !IdentityKit.cache[l1].bodyModelCached())
                         return;
                 }
 
@@ -5211,7 +5211,7 @@ public final class client extends RSApplet {
                 {
                     int k2 = characterEditIdentityKits[j2];
                     if(k2 >= 0)
-                        aclass30_sub2_sub4_sub6s[i2++] = IDK.cache[k2].method538();
+                        aclass30_sub2_sub4_sub6s[i2++] = IdentityKit.cache[k2].getBodyModel();
                 }
 
                 Model model = new Model(i2, aclass30_sub2_sub4_sub6s);
@@ -6951,7 +6951,7 @@ public final class client extends RSApplet {
             Flo.unpackConfig(archiveConfig);
             ItemDef.unpackConfig(archiveConfig);
             EntityDefinition.load(archiveConfig);
-            IDK.unpackConfig(archiveConfig);
+            IdentityKit.load(archiveConfig);
             SpotAnim.unpackConfig(archiveConfig);
             Varp.unpackConfig(archiveConfig);
             VarBit.unpackConfig(archiveConfig);
