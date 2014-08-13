@@ -432,7 +432,7 @@ label0:
                 if(j == 0)
                     break label0;
                 i += j;
-                GameObjectDefinition class46 = GameObjectDefinition.forID(i);
+                GameObjectDefinition class46 = GameObjectDefinition.getDefinition(i);
                 class46.passivelyRequestModels(class42_sub1);
                 do
                 {
@@ -483,32 +483,32 @@ label0:
         int i2 = anIntArrayArrayArray129[k][l + 1][i + 1];
         int j2 = anIntArrayArrayArray129[k][l][i + 1];
         int k2 = k1 + l1 + i2 + j2 >> 2;
-        GameObjectDefinition class46 = GameObjectDefinition.forID(i1);
+        GameObjectDefinition objectDefinition = GameObjectDefinition.getDefinition(i1);
         int l2 = l + (i << 7) + (i1 << 14) + 0x40000000;
-        if(!class46.hasActions)
+        if(!objectDefinition.hasActions)
             l2 += 0x80000000;
         byte byte0 = (byte)((j1 << 6) + j);
         if(j == 22)
         {
-            if(lowMem && !class46.hasActions && !class46.aBoolean736)
+            if(lowMem && !objectDefinition.hasActions && !objectDefinition.aBoolean736)
                 return;
             Object obj;
-            if(class46.anInt781 == -1 && class46.childrenIds == null)
-                obj = class46.getModelAt(22, j1, k1, l1, i2, j2, -1);
+            if(objectDefinition.animationId == -1 && objectDefinition.childIds == null)
+                obj = objectDefinition.getModelAt(22, j1, k1, l1, i2, j2, -1);
             else
-                obj = new GameObject(i1, j1, 22, l1, i2, k1, j2, class46.anInt781, true);
+                obj = new GameObject(i1, j1, 22, l1, i2, k1, j2, objectDefinition.animationId, true);
             worldController.addGroundDecoration(l, i, k, k2, l2, ((Animable) (obj)), byte0);
-            if(class46.unwalkable && class46.hasActions && class11 != null)
+            if(objectDefinition.solid && objectDefinition.hasActions && class11 != null)
                 class11.markBlocked(l, i);
             return;
         }
         if(j == 10 || j == 11)
         {
             Object obj1;
-            if(class46.anInt781 == -1 && class46.childrenIds == null)
-                obj1 = class46.getModelAt(10, j1, k1, l1, i2, j2, -1);
+            if(objectDefinition.animationId == -1 && objectDefinition.childIds == null)
+                obj1 = objectDefinition.getModelAt(10, j1, k1, l1, i2, j2, -1);
             else
-                obj1 = new GameObject(i1, j1, 10, l1, i2, k1, j2, class46.anInt781, true);
+                obj1 = new GameObject(i1, j1, 10, l1, i2, k1, j2, objectDefinition.animationId, true);
             if(obj1 != null)
             {
                 int i5 = 0;
@@ -518,20 +518,20 @@ label0:
                 int l4;
                 if(j1 == 1 || j1 == 3)
                 {
-                    j4 = class46.sizeY;
-                    l4 = class46.sizeX;
+                    j4 = objectDefinition.sizeY;
+                    l4 = objectDefinition.sizeX;
                 } else
                 {
-                    j4 = class46.sizeX;
-                    l4 = class46.sizeY;
+                    j4 = objectDefinition.sizeX;
+                    l4 = objectDefinition.sizeY;
                 }
-                if(worldController.addEntityB(l, i, k, k2, i5, l4, j4, l2, ((Animable) (obj1)), byte0) && class46.aBoolean779)
+                if(worldController.addEntityB(l, i, k, k2, i5, l4, j4, l2, ((Animable) (obj1)), byte0) && objectDefinition.castsShadow)
                 {
                     Model model;
                     if(obj1 instanceof Model)
                         model = (Model)obj1;
                     else
-                        model = class46.getModelAt(10, j1, k1, l1, i2, j2, -1);
+                        model = objectDefinition.getModelAt(10, j1, k1, l1, i2, j2, -1);
                     if(model != null)
                     {
                         for(int j5 = 0; j5 <= j4; j5++)
@@ -550,87 +550,87 @@ label0:
                     }
                 }
             }
-            if(class46.unwalkable && class11 != null)
-                class11.markSolidOccupant(l, i, class46.sizeX, class46.sizeY, j1, class46.walkable);
+            if(objectDefinition.solid && class11 != null)
+                class11.markSolidOccupant(l, i, objectDefinition.sizeX, objectDefinition.sizeY, j1, objectDefinition.walkable);
             return;
         }
         if(j >= 12)
         {
             Object obj2;
-            if(class46.anInt781 == -1 && class46.childrenIds == null)
-                obj2 = class46.getModelAt(j, j1, k1, l1, i2, j2, -1);
+            if(objectDefinition.animationId == -1 && objectDefinition.childIds == null)
+                obj2 = objectDefinition.getModelAt(j, j1, k1, l1, i2, j2, -1);
             else
-                obj2 = new GameObject(i1, j1, j, l1, i2, k1, j2, class46.anInt781, true);
+                obj2 = new GameObject(i1, j1, j, l1, i2, k1, j2, objectDefinition.animationId, true);
             worldController.addEntityB(l, i, k, k2, 0, 1, 1, l2, ((Animable) (obj2)), byte0);
             if(j >= 12 && j <= 17 && j != 13 && k > 0)
                 anIntArrayArrayArray135[k][l][i] |= 0x924;
-            if(class46.unwalkable && class11 != null)
-                class11.markSolidOccupant(l, i, class46.sizeX, class46.sizeY, j1, class46.walkable);
+            if(objectDefinition.solid && class11 != null)
+                class11.markSolidOccupant(l, i, objectDefinition.sizeX, objectDefinition.sizeY, j1, objectDefinition.walkable);
             return;
         }
         if(j == 0)
         {
             Object obj3;
-            if(class46.anInt781 == -1 && class46.childrenIds == null)
-                obj3 = class46.getModelAt(0, j1, k1, l1, i2, j2, -1);
+            if(objectDefinition.animationId == -1 && objectDefinition.childIds == null)
+                obj3 = objectDefinition.getModelAt(0, j1, k1, l1, i2, j2, -1);
             else
-                obj3 = new GameObject(i1, j1, 0, l1, i2, k1, j2, class46.anInt781, true);
+                obj3 = new GameObject(i1, j1, 0, l1, i2, k1, j2, objectDefinition.animationId, true);
             worldController.addWallObject(l, i, k, k2, anIntArray152[j1], 0, l2, ((Animable) (obj3)), null, byte0);
             if(j1 == 0)
             {
-                if(class46.aBoolean779)
+                if(objectDefinition.castsShadow)
                 {
                     aByteArrayArrayArray134[k][l][i] = 50;
                     aByteArrayArrayArray134[k][l][i + 1] = 50;
                 }
-                if(class46.aBoolean764)
+                if(objectDefinition.aBoolean764)
                     anIntArrayArrayArray135[k][l][i] |= 0x249;
             } else
             if(j1 == 1)
             {
-                if(class46.aBoolean779)
+                if(objectDefinition.castsShadow)
                 {
                     aByteArrayArrayArray134[k][l][i + 1] = 50;
                     aByteArrayArrayArray134[k][l + 1][i + 1] = 50;
                 }
-                if(class46.aBoolean764)
+                if(objectDefinition.aBoolean764)
                     anIntArrayArrayArray135[k][l][i + 1] |= 0x492;
             } else
             if(j1 == 2)
             {
-                if(class46.aBoolean779)
+                if(objectDefinition.castsShadow)
                 {
                     aByteArrayArrayArray134[k][l + 1][i] = 50;
                     aByteArrayArrayArray134[k][l + 1][i + 1] = 50;
                 }
-                if(class46.aBoolean764)
+                if(objectDefinition.aBoolean764)
                     anIntArrayArrayArray135[k][l + 1][i] |= 0x249;
             } else
             if(j1 == 3)
             {
-                if(class46.aBoolean779)
+                if(objectDefinition.castsShadow)
                 {
                     aByteArrayArrayArray134[k][l][i] = 50;
                     aByteArrayArrayArray134[k][l + 1][i] = 50;
                 }
-                if(class46.aBoolean764)
+                if(objectDefinition.aBoolean764)
                     anIntArrayArrayArray135[k][l][i] |= 0x492;
             }
-            if(class46.unwalkable && class11 != null)
-                class11.markWall(i, j1, l, j, class46.walkable);
-            if(class46.anInt775 != 16)
-                worldController.method290(i, class46.anInt775, l, k);
+            if(objectDefinition.solid && class11 != null)
+                class11.markWall(i, j1, l, j, objectDefinition.walkable);
+            if(objectDefinition.anInt775 != 16)
+                worldController.method290(i, objectDefinition.anInt775, l, k);
             return;
         }
         if(j == 1)
         {
             Object obj4;
-            if(class46.anInt781 == -1 && class46.childrenIds == null)
-                obj4 = class46.getModelAt(1, j1, k1, l1, i2, j2, -1);
+            if(objectDefinition.animationId == -1 && objectDefinition.childIds == null)
+                obj4 = objectDefinition.getModelAt(1, j1, k1, l1, i2, j2, -1);
             else
-                obj4 = new GameObject(i1, j1, 1, l1, i2, k1, j2, class46.anInt781, true);
+                obj4 = new GameObject(i1, j1, 1, l1, i2, k1, j2, objectDefinition.animationId, true);
             worldController.addWallObject(l, i, k, k2, anIntArray140[j1], 0, l2, ((Animable) (obj4)), null, byte0);
-            if(class46.aBoolean779)
+            if(objectDefinition.castsShadow)
                 if(j1 == 0)
                     aByteArrayArrayArray134[k][l][i + 1] = 50;
                 else
@@ -642,8 +642,8 @@ label0:
                 else
                 if(j1 == 3)
                     aByteArrayArrayArray134[k][l][i] = 50;
-            if(class46.unwalkable && class11 != null)
-                class11.markWall(i, j1, l, j, class46.walkable);
+            if(objectDefinition.solid && class11 != null)
+                class11.markWall(i, j1, l, j, objectDefinition.walkable);
             return;
         }
         if(j == 2)
@@ -651,17 +651,17 @@ label0:
             int i3 = j1 + 1 & 3;
             Object obj11;
             Object obj12;
-            if(class46.anInt781 == -1 && class46.childrenIds == null)
+            if(objectDefinition.animationId == -1 && objectDefinition.childIds == null)
             {
-                obj11 = class46.getModelAt(2, 4 + j1, k1, l1, i2, j2, -1);
-                obj12 = class46.getModelAt(2, i3, k1, l1, i2, j2, -1);
+                obj11 = objectDefinition.getModelAt(2, 4 + j1, k1, l1, i2, j2, -1);
+                obj12 = objectDefinition.getModelAt(2, i3, k1, l1, i2, j2, -1);
             } else
             {
-                obj11 = new GameObject(i1, 4 + j1, 2, l1, i2, k1, j2, class46.anInt781, true);
-                obj12 = new GameObject(i1, i3, 2, l1, i2, k1, j2, class46.anInt781, true);
+                obj11 = new GameObject(i1, 4 + j1, 2, l1, i2, k1, j2, objectDefinition.animationId, true);
+                obj12 = new GameObject(i1, i3, 2, l1, i2, k1, j2, objectDefinition.animationId, true);
             }
             worldController.addWallObject(l, i, k, k2, anIntArray152[j1], anIntArray152[i3], l2, ((Animable) (obj11)), ((Animable) (obj12)), byte0);
-            if(class46.aBoolean764)
+            if(objectDefinition.aBoolean764)
                 if(j1 == 0)
                 {
                     anIntArrayArrayArray135[k][l][i] |= 0x249;
@@ -682,21 +682,21 @@ label0:
                     anIntArrayArrayArray135[k][l][i] |= 0x492;
                     anIntArrayArrayArray135[k][l][i] |= 0x249;
                 }
-            if(class46.unwalkable && class11 != null)
-                class11.markWall(i, j1, l, j, class46.walkable);
-            if(class46.anInt775 != 16)
-                worldController.method290(i, class46.anInt775, l, k);
+            if(objectDefinition.solid && class11 != null)
+                class11.markWall(i, j1, l, j, objectDefinition.walkable);
+            if(objectDefinition.anInt775 != 16)
+                worldController.method290(i, objectDefinition.anInt775, l, k);
             return;
         }
         if(j == 3)
         {
             Object obj5;
-            if(class46.anInt781 == -1 && class46.childrenIds == null)
-                obj5 = class46.getModelAt(3, j1, k1, l1, i2, j2, -1);
+            if(objectDefinition.animationId == -1 && objectDefinition.childIds == null)
+                obj5 = objectDefinition.getModelAt(3, j1, k1, l1, i2, j2, -1);
             else
-                obj5 = new GameObject(i1, j1, 3, l1, i2, k1, j2, class46.anInt781, true);
+                obj5 = new GameObject(i1, j1, 3, l1, i2, k1, j2, objectDefinition.animationId, true);
             worldController.addWallObject(l, i, k, k2, anIntArray140[j1], 0, l2, ((Animable) (obj5)), null, byte0);
-            if(class46.aBoolean779)
+            if(objectDefinition.castsShadow)
                 if(j1 == 0)
                     aByteArrayArrayArray134[k][l][i + 1] = 50;
                 else
@@ -708,23 +708,23 @@ label0:
                 else
                 if(j1 == 3)
                     aByteArrayArrayArray134[k][l][i] = 50;
-            if(class46.unwalkable && class11 != null)
-                class11.markWall(i, j1, l, j, class46.walkable);
+            if(objectDefinition.solid && class11 != null)
+                class11.markWall(i, j1, l, j, objectDefinition.walkable);
             return;
         }
         if(j == 9)
         {
             Object obj6;
-            if(class46.anInt781 == -1 && class46.childrenIds == null)
-                obj6 = class46.getModelAt(j, j1, k1, l1, i2, j2, -1);
+            if(objectDefinition.animationId == -1 && objectDefinition.childIds == null)
+                obj6 = objectDefinition.getModelAt(j, j1, k1, l1, i2, j2, -1);
             else
-                obj6 = new GameObject(i1, j1, j, l1, i2, k1, j2, class46.anInt781, true);
+                obj6 = new GameObject(i1, j1, j, l1, i2, k1, j2, objectDefinition.animationId, true);
             worldController.addEntityB(l, i, k, k2, 0, 1, 1, l2, ((Animable) (obj6)), byte0);
-            if(class46.unwalkable && class11 != null)
-                class11.markSolidOccupant(l, i, class46.sizeX, class46.sizeY, j1, class46.walkable);
+            if(objectDefinition.solid && class11 != null)
+                class11.markSolidOccupant(l, i, objectDefinition.sizeX, objectDefinition.sizeY, j1, objectDefinition.walkable);
             return;
         }
-        if(class46.adjustToTerrain)
+        if(objectDefinition.adjustToTerrain)
             if(j1 == 1)
             {
                 int j3 = j2;
@@ -753,10 +753,10 @@ label0:
         if(j == 4)
         {
             Object obj7;
-            if(class46.anInt781 == -1 && class46.childrenIds == null)
-                obj7 = class46.getModelAt(4, 0, k1, l1, i2, j2, -1);
+            if(objectDefinition.animationId == -1 && objectDefinition.childIds == null)
+                obj7 = objectDefinition.getModelAt(4, 0, k1, l1, i2, j2, -1);
             else
-                obj7 = new GameObject(i1, 0, 4, l1, i2, k1, j2, class46.anInt781, true);
+                obj7 = new GameObject(i1, 0, 4, l1, i2, k1, j2, objectDefinition.animationId, true);
             worldController.addWallDecoration(l, i, k, k2, 0, 0, j1 * 512, l2, ((Animable) (obj7)), byte0, anIntArray152[j1]);
             return;
         }
@@ -765,42 +765,42 @@ label0:
             int i4 = 16;
             int k4 = worldController.getWallObjectUID(l, i, k);
             if(k4 > 0)
-                i4 = GameObjectDefinition.forID(k4 >> 14 & 0x7fff).anInt775;
+                i4 = GameObjectDefinition.getDefinition(k4 >> 14 & 0x7fff).anInt775;
             Object obj13;
-            if(class46.anInt781 == -1 && class46.childrenIds == null)
-                obj13 = class46.getModelAt(4, 0, k1, l1, i2, j2, -1);
+            if(objectDefinition.animationId == -1 && objectDefinition.childIds == null)
+                obj13 = objectDefinition.getModelAt(4, 0, k1, l1, i2, j2, -1);
             else
-                obj13 = new GameObject(i1, 0, 4, l1, i2, k1, j2, class46.anInt781, true);
+                obj13 = new GameObject(i1, 0, 4, l1, i2, k1, j2, objectDefinition.animationId, true);
             worldController.addWallDecoration(l, i, k, k2, anIntArray137[j1] * i4, anIntArray144[j1] * i4, j1 * 512, l2, ((Animable) (obj13)), byte0, anIntArray152[j1]);
             return;
         }
         if(j == 6)
         {
             Object obj8;
-            if(class46.anInt781 == -1 && class46.childrenIds == null)
-                obj8 = class46.getModelAt(4, 0, k1, l1, i2, j2, -1);
+            if(objectDefinition.animationId == -1 && objectDefinition.childIds == null)
+                obj8 = objectDefinition.getModelAt(4, 0, k1, l1, i2, j2, -1);
             else
-                obj8 = new GameObject(i1, 0, 4, l1, i2, k1, j2, class46.anInt781, true);
+                obj8 = new GameObject(i1, 0, 4, l1, i2, k1, j2, objectDefinition.animationId, true);
             worldController.addWallDecoration(l, i, k, k2, 0, 0, j1, l2, ((Animable) (obj8)), byte0, 256);
             return;
         }
         if(j == 7)
         {
             Object obj9;
-            if(class46.anInt781 == -1 && class46.childrenIds == null)
-                obj9 = class46.getModelAt(4, 0, k1, l1, i2, j2, -1);
+            if(objectDefinition.animationId == -1 && objectDefinition.childIds == null)
+                obj9 = objectDefinition.getModelAt(4, 0, k1, l1, i2, j2, -1);
             else
-                obj9 = new GameObject(i1, 0, 4, l1, i2, k1, j2, class46.anInt781, true);
+                obj9 = new GameObject(i1, 0, 4, l1, i2, k1, j2, objectDefinition.animationId, true);
             worldController.addWallDecoration(l, i, k, k2, 0, 0, j1, l2, ((Animable) (obj9)), byte0, 512);
             return;
         }
         if(j == 8)
         {
             Object obj10;
-            if(class46.anInt781 == -1 && class46.childrenIds == null)
-                obj10 = class46.getModelAt(4, 0, k1, l1, i2, j2, -1);
+            if(objectDefinition.animationId == -1 && objectDefinition.childIds == null)
+                obj10 = objectDefinition.getModelAt(4, 0, k1, l1, i2, j2, -1);
             else
-                obj10 = new GameObject(i1, 0, 4, l1, i2, k1, j2, class46.anInt781, true);
+                obj10 = new GameObject(i1, 0, 4, l1, i2, k1, j2, objectDefinition.animationId, true);
             worldController.addWallDecoration(l, i, k, k2, 0, 0, j1, l2, ((Animable) (obj10)), byte0, 768);
         }
     }
@@ -835,7 +835,7 @@ label0:
 
     public static boolean method178(int objectId, int j)
     {
-        GameObjectDefinition class46 = GameObjectDefinition.forID(objectId);
+        GameObjectDefinition class46 = GameObjectDefinition.getDefinition(objectId);
         if(j == 11)
             j = 10;
         if(j >= 5 && j <= 8)
@@ -996,7 +996,7 @@ label0:
                     int i4 = k3 & 3;
                     if(j3 == i && i3 >= i1 && i3 < i1 + 8 && l2 >= k && l2 < k + 8)
                     {
-                        GameObjectDefinition class46 = GameObjectDefinition.forID(l1);
+                        GameObjectDefinition class46 = GameObjectDefinition.getDefinition(l1);
                         int j4 = j + TiledUtils.getRotatedLandscapeChunkX(j1, class46.sizeY, i3 & 7, l2 & 7, class46.sizeX);
                         int k4 = k1 + TiledUtils.getRotatedLandscapeChunkY(l2 & 7, class46.sizeY, j1, class46.sizeX, i3 & 7);
                         if(j4 > 0 && k4 > 0 && j4 < 103 && k4 < 103)
@@ -1073,7 +1073,7 @@ label0:
         int j2 = ai[l][i1 + 1][j + 1];
         int k2 = ai[l][i1][j + 1];
         int l2 = l1 + i2 + j2 + k2 >> 2;
-        GameObjectDefinition class46 = GameObjectDefinition.forID(j1);
+        GameObjectDefinition class46 = GameObjectDefinition.getDefinition(j1);
         int i3 = i1 + (j << 7) + (j1 << 14) + 0x40000000;
         if(!class46.hasActions)
             i3 += 0x80000000;
@@ -1081,22 +1081,22 @@ label0:
         if(k == 22)
         {
             Object obj;
-            if(class46.anInt781 == -1 && class46.childrenIds == null)
+            if(class46.animationId == -1 && class46.childIds == null)
                 obj = class46.getModelAt(22, i, l1, i2, j2, k2, -1);
             else
-                obj = new GameObject(j1, i, 22, i2, j2, l1, k2, class46.anInt781, true);
+                obj = new GameObject(j1, i, 22, i2, j2, l1, k2, class46.animationId, true);
             worldController.addGroundDecoration(i1, j, k1, l2, i3, ((Animable) (obj)), byte1);
-            if(class46.unwalkable && class46.hasActions)
+            if(class46.solid && class46.hasActions)
                 collisionMap.markBlocked(i1, j);
             return;
         }
         if(k == 10 || k == 11)
         {
             Object obj1;
-            if(class46.anInt781 == -1 && class46.childrenIds == null)
+            if(class46.animationId == -1 && class46.childIds == null)
                 obj1 = class46.getModelAt(10, i, l1, i2, j2, k2, -1);
             else
-                obj1 = new GameObject(j1, i, 10, i2, j2, l1, k2, class46.anInt781, true);
+                obj1 = new GameObject(j1, i, 10, i2, j2, l1, k2, class46.animationId, true);
             if(obj1 != null)
             {
                 int j5 = 0;
@@ -1115,43 +1115,43 @@ label0:
                 }
                 worldController.addEntityB(i1, j, k1, l2, j5, i5, k4, i3, ((Animable) (obj1)), byte1);
             }
-            if(class46.unwalkable)
+            if(class46.solid)
                 collisionMap.markSolidOccupant(i1, j, class46.sizeX, class46.sizeY, i, class46.walkable);
             return;
         }
         if(k >= 12)
         {
             Object obj2;
-            if(class46.anInt781 == -1 && class46.childrenIds == null)
+            if(class46.animationId == -1 && class46.childIds == null)
                 obj2 = class46.getModelAt(k, i, l1, i2, j2, k2, -1);
             else
-                obj2 = new GameObject(j1, i, k, i2, j2, l1, k2, class46.anInt781, true);
+                obj2 = new GameObject(j1, i, k, i2, j2, l1, k2, class46.animationId, true);
             worldController.addEntityB(i1, j, k1, l2, 0, 1, 1, i3, ((Animable) (obj2)), byte1);
-            if(class46.unwalkable)
+            if(class46.solid)
                 collisionMap.markSolidOccupant(i1, j, class46.sizeX, class46.sizeY, i, class46.walkable);
             return;
         }
         if(k == 0)
         {
             Object obj3;
-            if(class46.anInt781 == -1 && class46.childrenIds == null)
+            if(class46.animationId == -1 && class46.childIds == null)
                 obj3 = class46.getModelAt(0, i, l1, i2, j2, k2, -1);
             else
-                obj3 = new GameObject(j1, i, 0, i2, j2, l1, k2, class46.anInt781, true);
+                obj3 = new GameObject(j1, i, 0, i2, j2, l1, k2, class46.animationId, true);
             worldController.addWallObject(i1, j, k1, l2, anIntArray152[i], 0, i3, ((Animable) (obj3)), null, byte1);
-            if(class46.unwalkable)
+            if(class46.solid)
                 collisionMap.markWall(j, i, i1, k, class46.walkable);
             return;
         }
         if(k == 1)
         {
             Object obj4;
-            if(class46.anInt781 == -1 && class46.childrenIds == null)
+            if(class46.animationId == -1 && class46.childIds == null)
                 obj4 = class46.getModelAt(1, i, l1, i2, j2, k2, -1);
             else
-                obj4 = new GameObject(j1, i, 1, i2, j2, l1, k2, class46.anInt781, true);
+                obj4 = new GameObject(j1, i, 1, i2, j2, l1, k2, class46.animationId, true);
             worldController.addWallObject(i1, j, k1, l2, anIntArray140[i], 0, i3, ((Animable) (obj4)), null, byte1);
-            if(class46.unwalkable)
+            if(class46.solid)
                 collisionMap.markWall(j, i, i1, k, class46.walkable);
             return;
         }
@@ -1160,41 +1160,41 @@ label0:
             int j3 = i + 1 & 3;
             Object obj11;
             Object obj12;
-            if(class46.anInt781 == -1 && class46.childrenIds == null)
+            if(class46.animationId == -1 && class46.childIds == null)
             {
                 obj11 = class46.getModelAt(2, 4 + i, l1, i2, j2, k2, -1);
                 obj12 = class46.getModelAt(2, j3, l1, i2, j2, k2, -1);
             } else
             {
-                obj11 = new GameObject(j1, 4 + i, 2, i2, j2, l1, k2, class46.anInt781, true);
-                obj12 = new GameObject(j1, j3, 2, i2, j2, l1, k2, class46.anInt781, true);
+                obj11 = new GameObject(j1, 4 + i, 2, i2, j2, l1, k2, class46.animationId, true);
+                obj12 = new GameObject(j1, j3, 2, i2, j2, l1, k2, class46.animationId, true);
             }
             worldController.addWallObject(i1, j, k1, l2, anIntArray152[i], anIntArray152[j3], i3, ((Animable) (obj11)), ((Animable) (obj12)), byte1);
-            if(class46.unwalkable)
+            if(class46.solid)
                 collisionMap.markWall(j, i, i1, k, class46.walkable);
             return;
         }
         if(k == 3)
         {
             Object obj5;
-            if(class46.anInt781 == -1 && class46.childrenIds == null)
+            if(class46.animationId == -1 && class46.childIds == null)
                 obj5 = class46.getModelAt(3, i, l1, i2, j2, k2, -1);
             else
-                obj5 = new GameObject(j1, i, 3, i2, j2, l1, k2, class46.anInt781, true);
+                obj5 = new GameObject(j1, i, 3, i2, j2, l1, k2, class46.animationId, true);
             worldController.addWallObject(i1, j, k1, l2, anIntArray140[i], 0, i3, ((Animable) (obj5)), null, byte1);
-            if(class46.unwalkable)
+            if(class46.solid)
                 collisionMap.markWall(j, i, i1, k, class46.walkable);
             return;
         }
         if(k == 9)
         {
             Object obj6;
-            if(class46.anInt781 == -1 && class46.childrenIds == null)
+            if(class46.animationId == -1 && class46.childIds == null)
                 obj6 = class46.getModelAt(k, i, l1, i2, j2, k2, -1);
             else
-                obj6 = new GameObject(j1, i, k, i2, j2, l1, k2, class46.anInt781, true);
+                obj6 = new GameObject(j1, i, k, i2, j2, l1, k2, class46.animationId, true);
             worldController.addEntityB(i1, j, k1, l2, 0, 1, 1, i3, ((Animable) (obj6)), byte1);
-            if(class46.unwalkable)
+            if(class46.solid)
                 collisionMap.markSolidOccupant(i1, j, class46.sizeX, class46.sizeY, i, class46.walkable);
             return;
         }
@@ -1227,10 +1227,10 @@ label0:
         if(k == 4)
         {
             Object obj7;
-            if(class46.anInt781 == -1 && class46.childrenIds == null)
+            if(class46.animationId == -1 && class46.childIds == null)
                 obj7 = class46.getModelAt(4, 0, l1, i2, j2, k2, -1);
             else
-                obj7 = new GameObject(j1, 0, 4, i2, j2, l1, k2, class46.anInt781, true);
+                obj7 = new GameObject(j1, 0, 4, i2, j2, l1, k2, class46.animationId, true);
             worldController.addWallDecoration(i1, j, k1, l2, 0, 0, i * 512, i3, ((Animable) (obj7)), byte1, anIntArray152[i]);
             return;
         }
@@ -1239,42 +1239,42 @@ label0:
             int j4 = 16;
             int l4 = worldController.getWallObjectUID(i1, j, k1);
             if(l4 > 0)
-                j4 = GameObjectDefinition.forID(l4 >> 14 & 0x7fff).anInt775;
+                j4 = GameObjectDefinition.getDefinition(l4 >> 14 & 0x7fff).anInt775;
             Object obj13;
-            if(class46.anInt781 == -1 && class46.childrenIds == null)
+            if(class46.animationId == -1 && class46.childIds == null)
                 obj13 = class46.getModelAt(4, 0, l1, i2, j2, k2, -1);
             else
-                obj13 = new GameObject(j1, 0, 4, i2, j2, l1, k2, class46.anInt781, true);
+                obj13 = new GameObject(j1, 0, 4, i2, j2, l1, k2, class46.animationId, true);
             worldController.addWallDecoration(i1, j, k1, l2, anIntArray137[i] * j4, anIntArray144[i] * j4, i * 512, i3, ((Animable) (obj13)), byte1, anIntArray152[i]);
             return;
         }
         if(k == 6)
         {
             Object obj8;
-            if(class46.anInt781 == -1 && class46.childrenIds == null)
+            if(class46.animationId == -1 && class46.childIds == null)
                 obj8 = class46.getModelAt(4, 0, l1, i2, j2, k2, -1);
             else
-                obj8 = new GameObject(j1, 0, 4, i2, j2, l1, k2, class46.anInt781, true);
+                obj8 = new GameObject(j1, 0, 4, i2, j2, l1, k2, class46.animationId, true);
             worldController.addWallDecoration(i1, j, k1, l2, 0, 0, i, i3, ((Animable) (obj8)), byte1, 256);
             return;
         }
         if(k == 7)
         {
             Object obj9;
-            if(class46.anInt781 == -1 && class46.childrenIds == null)
+            if(class46.animationId == -1 && class46.childIds == null)
                 obj9 = class46.getModelAt(4, 0, l1, i2, j2, k2, -1);
             else
-                obj9 = new GameObject(j1, 0, 4, i2, j2, l1, k2, class46.anInt781, true);
+                obj9 = new GameObject(j1, 0, 4, i2, j2, l1, k2, class46.animationId, true);
             worldController.addWallDecoration(i1, j, k1, l2, 0, 0, i, i3, ((Animable) (obj9)), byte1, 512);
             return;
         }
         if(k == 8)
         {
             Object obj10;
-            if(class46.anInt781 == -1 && class46.childrenIds == null)
+            if(class46.animationId == -1 && class46.childIds == null)
                 obj10 = class46.getModelAt(4, 0, l1, i2, j2, k2, -1);
             else
-                obj10 = new GameObject(j1, 0, 4, i2, j2, l1, k2, class46.anInt781, true);
+                obj10 = new GameObject(j1, 0, 4, i2, j2, l1, k2, class46.animationId, true);
             worldController.addWallDecoration(i1, j, k1, l2, 0, 0, i, i3, ((Animable) (obj10)), byte1, 768);
         }
     }
@@ -1315,7 +1315,7 @@ label0:
 		int i_262_ = i_258_ + i_250_;
 		if (i_261_ > 0 && i_262_ > 0 && i_261_ < 103 && i_262_ < 103)
 		  {
-		    GameObjectDefinition class46 = GameObjectDefinition.forID (i_252_);
+		    GameObjectDefinition class46 = GameObjectDefinition.getDefinition (i_252_);
 		    if (i_260_ != 22 || !lowMem || class46.hasActions
                     || class46.aBoolean736)
 		      {

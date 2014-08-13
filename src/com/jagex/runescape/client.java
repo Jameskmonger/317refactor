@@ -649,7 +649,7 @@ public final class client extends RSApplet {
     private void resetModelCaches()
     {
         GameObjectDefinition.modelCache.unlinkAll();
-        GameObjectDefinition.mruNodes2.unlinkAll();
+        GameObjectDefinition.animatedModelCache.unlinkAll();
         EntityDefinition.modelCache.unlinkAll();
         ItemDef.mruNodes2.unlinkAll();
         ItemDef.mruNodes1.unlinkAll();
@@ -703,7 +703,7 @@ public final class client extends RSApplet {
                 if(hash != 0)
                 {
                     hash = hash >> 14 & 0x7fff;
-                    int icon = GameObjectDefinition.forID(hash).icon;
+                    int icon = GameObjectDefinition.getDefinition(hash).icon;
                     
                     if(icon >= 0)
                     {
@@ -2159,7 +2159,7 @@ public final class client extends RSApplet {
             int pixels[] = minimapImage.pixels;
             int pixel = 24624 + x * 4 + (103 - y) * 512 * 4;
             int objectId = uid >> 14 & 0x7fff;
-            GameObjectDefinition object = GameObjectDefinition.forID(objectId);
+            GameObjectDefinition object = GameObjectDefinition.getDefinition(objectId);
             if(object.mapScene != -1)
             {
                 Background background = mapSceneImage[object.mapScene];
@@ -2250,7 +2250,7 @@ public final class client extends RSApplet {
             int direction = config >> 6 & 3;
             int type = config & 0x1f;
             int objectId = uid >> 14 & 0x7fff;
-            GameObjectDefinition object = GameObjectDefinition.forID(objectId);
+            GameObjectDefinition object = GameObjectDefinition.getDefinition(objectId);
             if(object.mapScene != -1)
             {
                 Background background = mapSceneImage[object.mapScene];
@@ -2287,7 +2287,7 @@ public final class client extends RSApplet {
         if(uid != 0)
         {
             int objectId = uid >> 14 & 0x7fff;
-            GameObjectDefinition object = GameObjectDefinition.forID(objectId);
+            GameObjectDefinition object = GameObjectDefinition.getDefinition(objectId);
             if(object.mapScene != -1)
             {
                 Background background = mapSceneImage[object.mapScene];
@@ -3235,7 +3235,7 @@ public final class client extends RSApplet {
         int rotation = config >> 6 & 3;
         if(type == 10 || type == 11 || type == 22)
         {
-            GameObjectDefinition object = GameObjectDefinition.forID(objectId);
+            GameObjectDefinition object = GameObjectDefinition.getDefinition(objectId);
             int sizeX;
             int sizeY;
             if(rotation == 0 || rotation == 2)
@@ -4264,7 +4264,7 @@ public final class client extends RSApplet {
         if(menuAction == 1226)
         {
             int objectId = actionTarget >> 14 & 0x7fff;
-            GameObjectDefinition object = GameObjectDefinition.forID(objectId);
+            GameObjectDefinition object = GameObjectDefinition.getDefinition(objectId);
             String description;
             if(object.description != null)
                 description = new String(object.description);
@@ -4349,8 +4349,8 @@ public final class client extends RSApplet {
             j = hash;
             if(k1 == 2 && worldController.getConfig(hash, x, y, plane) >= 0)
             {
-                GameObjectDefinition object = GameObjectDefinition.forID(objectId);
-                if(object.childrenIds != null)
+                GameObjectDefinition object = GameObjectDefinition.getDefinition(objectId);
+                if(object.childIds != null)
                     object = object.getChildDefinition();
                 if(object == null)
                     continue;
@@ -4401,7 +4401,7 @@ public final class client extends RSApplet {
                     }
                     menuActionName[menuActionRow] = "Examine @cya@" + object.name + " @gre@(@whi@" + objectId + "@gre@) (@whi@" + (x + baseX) + "," + (y + baseY) + "@gre@)";
                     menuActionId[menuActionRow] = 1226;
-                    menuActionData1[menuActionRow] = object.type << 14;
+                    menuActionData1[menuActionRow] = object.id << 14;
                     menuActionData2[menuActionRow] = x;
                     menuActionData3[menuActionRow] = y;
                     menuActionRow++;
@@ -9840,7 +9840,7 @@ public final class client extends RSApplet {
                 player = players[targetPlayer];
             if(player != null)
             {
-                GameObjectDefinition object = GameObjectDefinition.forID(objectId);
+                GameObjectDefinition object = GameObjectDefinition.getDefinition(objectId);
                 int tileHeightX0Y0 = intGroundArray[plane][x][y];
                 int tileHeightX1Y0 = intGroundArray[plane][x + 1][y];
                 int tileHeightX1Y1 = intGroundArray[plane][x + 1][y + 1];
@@ -10189,8 +10189,8 @@ public final class client extends RSApplet {
                 if(objectType == 0)
                 {
                     worldController.removeWallObject(x, z, y);
-                    GameObjectDefinition object = GameObjectDefinition.forID(objectId);
-                    if(object.unwalkable)
+                    GameObjectDefinition object = GameObjectDefinition.getDefinition(objectId);
+                    if(object.solid)
                         currentCollisionMap[z].unmarkWall(x, y, position, orientation, object.walkable);
                 }
                 if(objectType == 1)
@@ -10198,17 +10198,17 @@ public final class client extends RSApplet {
                 if(objectType == 2)
                 {
                     worldController.removeInteractiveObject(x, y, z);
-                    GameObjectDefinition object = GameObjectDefinition.forID(objectId);
+                    GameObjectDefinition object = GameObjectDefinition.getDefinition(objectId);
                     if(x + object.sizeX > 103 || y + object.sizeX > 103 || x + object.sizeY > 103 || y + object.sizeY > 103)
                         return;
-                    if(object.unwalkable)
+                    if(object.solid)
                         currentCollisionMap[z].unmarkSolidOccupant(x, y, object.sizeX, object.sizeY, orientation, object.walkable);
                 }
                 if(objectType == 3)
                 {
                     worldController.removeGroundDecoration(x, y, z);
-                    GameObjectDefinition object = GameObjectDefinition.forID(objectId);
-                    if(object.unwalkable && object.hasActions)
+                    GameObjectDefinition object = GameObjectDefinition.getDefinition(objectId);
+                    if(object.solid && object.hasActions)
                         currentCollisionMap[z].unmarkConcealed(x, y);
                 }
             }

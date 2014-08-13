@@ -29,7 +29,7 @@ final class GameObject extends Animable {
         if(childrenIds != null)
             definition = getChildDefinition();
         else
-            definition = GameObjectDefinition.forID(objectId);
+            definition = GameObjectDefinition.getDefinition(objectId);
         if(definition == null)
         {
             return null;
@@ -56,7 +56,7 @@ final class GameObject extends Animable {
         if(child < 0 || child >= childrenIds.length || childrenIds[child] == -1)
             return null;
         else
-            return GameObjectDefinition.forID(childrenIds[child]);
+            return GameObjectDefinition.getDefinition(childrenIds[child]);
     }
 
     public GameObject(int objectId, int orientation, int type, int vertexHeightBottomRight, int vertexHeightTopRight, int vertexHeightBottomLEft,
@@ -80,10 +80,10 @@ final class GameObject extends Animable {
                 nextFrameTime -= (int)(Math.random() * (double) animation.getFrameLength(frame));
             }
         }
-        GameObjectDefinition definition = GameObjectDefinition.forID(this.objectId);
+        GameObjectDefinition definition = GameObjectDefinition.getDefinition(this.objectId);
         varBitId = definition.varBitId;
         configId = definition.configIds;
-        childrenIds = definition.childrenIds;
+        childrenIds = definition.childIds;
     }
 
     private int frame;

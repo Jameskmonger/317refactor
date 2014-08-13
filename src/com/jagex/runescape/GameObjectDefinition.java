@@ -2,16 +2,16 @@ package com.jagex.runescape;
 public final class GameObjectDefinition
 {
 
-    public static GameObjectDefinition forID(int objectId)
+    public static GameObjectDefinition getDefinition(int objectId)
     {
         for(int c = 0; c < 20; c++)
-            if(cache[c].type == objectId)
+            if(cache[c].id == objectId)
                 return cache[c];
 
         cacheIndex = (cacheIndex + 1) % 20;
         GameObjectDefinition definition = cache[cacheIndex];
-        stream.currentOffset = streamIndices[objectId];
-        definition.type = objectId;
+        stream.currentOffset = streamOffsets[objectId];
+        definition.id = objectId;
         definition.setDefaults();
         definition.loadDefinition(stream);
         return definition;
@@ -27,34 +27,34 @@ public final class GameObjectDefinition
         originalModelColors = null;
         sizeX = 1;
         sizeY = 1;
-        unwalkable = true;
+        solid = true;
         walkable = true;
         hasActions = false;
         adjustToTerrain = false;
         delayShading = false;
         aBoolean764 = false;
-        anInt781 = -1;
+        animationId = -1;
         anInt775 = 16;
-        aByte737 = 0;
-        aByte742 = 0;
+        ambient = 0;
+        diffuse = 0;
         actions = null;
         icon = -1;
         mapScene = -1;
-        aBoolean751 = false;
-        aBoolean779 = true;
-        anInt748 = 128;
-        anInt772 = 128;
-        anInt740 = 128;
+        rotated = false;
+        castsShadow = true;
+        scaleX = 128;
+        scaleY = 128;
+        scaleZ = 128;
         face = 0;
-        anInt738 = 0;
-        anInt745 = 0;
-        anInt783 = 0;
+        translateX = 0;
+        translateY = 0;
+        translateZ = 0;
         aBoolean736 = false;
-        aBoolean766 = false;
-        anInt760 = -1;
+        unwalkableSolid = false;
+        _solid = -1;
         varBitId = -1;
         configIds = -1;
-        childrenIds = null;
+        childIds = null;
     }
 
     public void passivelyRequestModels(OnDemandFetcher requester)
@@ -68,8 +68,8 @@ public final class GameObjectDefinition
     public static void nullLoader()
     {
         modelCache = null;
-        mruNodes2 = null;
-        streamIndices = null;
+        animatedModelCache = null;
+        streamOffsets = null;
         cache = null;
         stream = null;
     }
@@ -78,12 +78,12 @@ public final class GameObjectDefinition
     {
         stream = new Stream(archive.getFile("loc.dat"));
         Stream stream = new Stream(archive.getFile("loc.idx"));
-        int totalObjects = stream.getUnsignedLEShort();
-        streamIndices = new int[totalObjects];
+        int objectCount = stream.getUnsignedLEShort();
+        streamOffsets = new int[objectCount];
         int offset = 2;
-        for(int index = 0; index < totalObjects; index++)
+        for(int index = 0; index < objectCount; index++)
         {
-            streamIndices[index] = offset;
+            streamOffsets[index] = offset;
             offset += stream.getUnsignedLEShort();
         }
 
@@ -163,353 +163,353 @@ public final class GameObjectDefinition
         } else
         if(configIds != -1)
             child = clientInstance.variousSettings[configIds];
-        if(child < 0 || child >= childrenIds.length || childrenIds[child] == -1)
+        if(child < 0 || child >= childIds.length || childIds[child] == -1)
             return null;
         else
-            return forID(childrenIds[child]);
+            return getDefinition(childIds[child]);
     }
 
-    private Model getAnimatedModel(int j, int k, int l)
+    private Model getAnimatedModel(int type, int animationId, int face)
     {
-        Model model = null;
-        long l1;
+        Model subModel = null;
+        long hash;
         if(modelTypes == null)
         {
-            if(j != 10)
+            if(type != 10)
                 return null;
-            l1 = (long)((type << 6) + l) + ((long)(k + 1) << 32);
-            Model model_1 = (Model) mruNodes2.get(l1);
-            if(model_1 != null)
-                return model_1;
+            hash = (long)((id << 6) + face) + ((long)(animationId + 1) << 32);
+            Model cachedModel = (Model) animatedModelCache.get(hash);
+            if(cachedModel != null)
+                return cachedModel;
             if(modelIds == null)
                 return null;
-            boolean flag1 = aBoolean751 ^ (l > 3);
-            int k1 = modelIds.length;
-            for(int i2 = 0; i2 < k1; i2++)
+            boolean mirror = rotated ^ (face > 3);
+            int modelCount = modelIds.length;
+            for(int m = 0; m < modelCount; m++)
             {
-                int l2 = modelIds[i2];
-                if(flag1)
-                    l2 += 0x10000;
-                model = (Model) modelCache.get(l2);
-                if(model == null)
+                int subModelId = modelIds[m];
+                if(mirror)
+                    subModelId += 0x10000;
+                subModel = (Model) modelCache.get(subModelId);
+                if(subModel == null)
                 {
-                    model = Model.getModel(l2 & 0xffff);
-                    if(model == null)
+                    subModel = Model.getModel(subModelId & 0xffff);
+                    if(subModel == null)
                         return null;
-                    if(flag1)
-                        model.mirror();
-                    modelCache.put(model, l2);
+                    if(mirror)
+                        subModel.mirror();
+                    modelCache.put(subModel, subModelId);
                 }
-                if(k1 > 1)
-                    aModelArray741s[i2] = model;
+                if(modelCount > 1)
+                    models[m] = subModel;
             }
 
-            if(k1 > 1)
-                model = new Model(k1, aModelArray741s);
+            if(modelCount > 1)
+                subModel = new Model(modelCount, models);
         } else
         {
-            int i1 = -1;
-            for(int j1 = 0; j1 < modelTypes.length; j1++)
+            int modelType = -1;
+            for(int t = 0; t < modelTypes.length; t++)
             {
-                if(modelTypes[j1] != j)
+                if(modelTypes[t] != type)
                     continue;
-                i1 = j1;
+                modelType = t;
                 break;
             }
 
-            if(i1 == -1)
+            if(modelType == -1)
                 return null;
-            l1 = (long)((type << 6) + (i1 << 3) + l) + ((long)(k + 1) << 32);
-            Model model_2 = (Model) mruNodes2.get(l1);
-            if(model_2 != null)
-                return model_2;
-            int j2 = modelIds[i1];
-            boolean flag3 = aBoolean751 ^ (l > 3);
-            if(flag3)
-                j2 += 0x10000;
-            model = (Model) modelCache.get(j2);
-            if(model == null)
+            hash = (long)((id << 6) + (modelType << 3) + face) + ((long)(animationId + 1) << 32);
+            Model model = (Model) animatedModelCache.get(hash);
+            if(model != null)
+                return model;
+            int modelId = modelIds[modelType];
+            boolean mirror = rotated ^ (face > 3);
+            if(mirror)
+                modelId += 0x10000;
+            subModel = (Model) modelCache.get(modelId);
+            if(subModel == null)
             {
-                model = Model.getModel(j2 & 0xffff);
-                if(model == null)
+                subModel = Model.getModel(modelId & 0xffff);
+                if(subModel == null)
                     return null;
-                if(flag3)
-                    model.mirror();
-                modelCache.put(model, j2);
+                if(mirror)
+                    subModel.mirror();
+                modelCache.put(subModel, modelId);
             }
         }
-        boolean flag;
-        flag = anInt748 != 128 || anInt772 != 128 || anInt740 != 128;
-        boolean flag2;
-        flag2 = anInt738 != 0 || anInt745 != 0 || anInt783 != 0;
-        Model model_3 = new Model(modifiedModelColors == null, Animation.isNullFrame(k), l == 0 && k == -1 && !flag && !flag2, model);
-        if(k != -1)
+        boolean scale;
+        scale = scaleX != 128 || scaleY != 128 || scaleZ != 128;
+        boolean translate;
+        translate = translateX != 0 || translateY != 0 || translateZ != 0;
+        Model animatedModel = new Model(modifiedModelColors == null, Animation.isNullFrame(animationId), face == 0 && animationId == -1 && !scale && !translate, subModel);
+        if(animationId != -1)
         {
-            model_3.createBones();
-            model_3.applyTransformation(k);
-            model_3.triangleSkin = null;
-            model_3.vertexSkin = null;
+            animatedModel.createBones();
+            animatedModel.applyTransformation(animationId);
+            animatedModel.triangleSkin = null;
+            animatedModel.vertexSkin = null;
         }
-        while(l-- > 0) 
-            model_3.rotate90Degrees();
+        while(face-- > 0) 
+            animatedModel.rotate90Degrees();
         if(modifiedModelColors != null)
         {
-            for(int k2 = 0; k2 < modifiedModelColors.length; k2++)
-                model_3.recolour(modifiedModelColors[k2], originalModelColors[k2]);
+            for(int c = 0; c < modifiedModelColors.length; c++)
+                animatedModel.recolour(modifiedModelColors[c], originalModelColors[c]);
 
         }
-        if(flag)
-            model_3.scaleT(anInt748, anInt740, anInt772);
-        if(flag2)
-            model_3.translate(anInt738, anInt745, anInt783);
-        model_3.applyLighting(64 + aByte737, 768 + aByte742 * 5, -50, -10, -50, !delayShading);
-        if(anInt760 == 1)
-            model_3.anInt1654 = model_3.modelHeight;
-        mruNodes2.put(model_3, l1);
-        return model_3;
+        if(scale)
+            animatedModel.scaleT(scaleX, scaleZ, scaleY);
+        if(translate)
+            animatedModel.translate(translateX, translateY, translateZ);
+        animatedModel.applyLighting(64 + ambient, 768 + diffuse * 5, -50, -10, -50, !delayShading);
+        if(_solid == 1)
+            animatedModel.anInt1654 = animatedModel.modelHeight;
+        animatedModelCache.put(animatedModel, hash);
+        return animatedModel;
     }
 
     private void loadDefinition(Stream stream)
     {
-        int i = -1;
+        int _actions = -1;
 label0:
         do
         {
-            int j;
+            int attribute;
             do
             {
-                j = stream.getUnsignedByte();
-                if(j == 0)
+                attribute = stream.getUnsignedByte();
+                if(attribute == 0)
                     break label0;
-                if(j == 1)
+                if(attribute == 1)
                 {
-                    int k = stream.getUnsignedByte();
-                    if(k > 0)
+                    int modelCount = stream.getUnsignedByte();
+                    if(modelCount > 0)
                         if(modelIds == null || lowMem)
                         {
-                            modelTypes = new int[k];
-                            modelIds = new int[k];
-                            for(int k1 = 0; k1 < k; k1++)
+                            modelTypes = new int[modelCount];
+                            modelIds = new int[modelCount];
+                            for(int m = 0; m < modelCount; m++)
                             {
-                                modelIds[k1] = stream.getUnsignedLEShort();
-                                modelTypes[k1] = stream.getUnsignedByte();
+                                modelIds[m] = stream.getUnsignedLEShort();
+                                modelTypes[m] = stream.getUnsignedByte();
                             }
 
                         } else
                         {
-                            stream.currentOffset += k * 3;
+                            stream.currentOffset += modelCount * 3;
                         }
                 } else
-                if(j == 2)
+                if(attribute == 2)
                     name = stream.getString();
                 else
-                if(j == 3)
+                if(attribute == 3)
                     description = stream.readBytes();
                 else
-                if(j == 5)
+                if(attribute == 5)
                 {
-                    int l = stream.getUnsignedByte();
-                    if(l > 0)
+                    int modelCount = stream.getUnsignedByte();
+                    if(modelCount > 0)
                         if(modelIds == null || lowMem)
                         {
                             modelTypes = null;
-                            modelIds = new int[l];
-                            for(int l1 = 0; l1 < l; l1++)
-                                modelIds[l1] = stream.getUnsignedLEShort();
+                            modelIds = new int[modelCount];
+                            for(int m = 0; m < modelCount; m++)
+                                modelIds[m] = stream.getUnsignedLEShort();
 
                         } else
                         {
-                            stream.currentOffset += l * 2;
+                            stream.currentOffset += modelCount * 2;
                         }
                 } else
-                if(j == 14)
+                if(attribute == 14)
                     sizeX = stream.getUnsignedByte();
                 else
-                if(j == 15)
+                if(attribute == 15)
                     sizeY = stream.getUnsignedByte();
                 else
-                if(j == 17)
-                    unwalkable = false;
+                if(attribute == 17)
+                    solid = false;
                 else
-                if(j == 18)
+                if(attribute == 18)
                     walkable = false;
                 else
-                if(j == 19)
+                if(attribute == 19)
                 {
-                    i = stream.getUnsignedByte();
-                    if(i == 1)
+                    _actions = stream.getUnsignedByte();
+                    if(_actions == 1)
                         hasActions = true;
                 } else
-                if(j == 21)
+                if(attribute == 21)
                     adjustToTerrain = true;
                 else
-                if(j == 22)
+                if(attribute == 22)
                     delayShading = true;
                 else
-                if(j == 23)
+                if(attribute == 23)
                     aBoolean764 = true;
                 else
-                if(j == 24)
+                if(attribute == 24)
                 {
-                    anInt781 = stream.getUnsignedLEShort();
-                    if(anInt781 == 65535)
-                        anInt781 = -1;
+                    animationId = stream.getUnsignedLEShort();
+                    if(animationId == 65535)
+                        animationId = -1;
                 } else
-                if(j == 28)
+                if(attribute == 28)
                     anInt775 = stream.getUnsignedByte();
                 else
-                if(j == 29)
-                    aByte737 = stream.get();
+                if(attribute == 29)
+                    ambient = stream.get();
                 else
-                if(j == 39)
-                    aByte742 = stream.get();
+                if(attribute == 39)
+                    diffuse = stream.get();
                 else
-                if(j >= 30 && j < 39)
+                if(attribute >= 30 && attribute < 39)
                 {
                     if(actions == null)
                         actions = new String[5];
-                    actions[j - 30] = stream.getString();
-                    if(actions[j - 30].equalsIgnoreCase("hidden"))
-                        actions[j - 30] = null;
+                    actions[attribute - 30] = stream.getString();
+                    if(actions[attribute - 30].equalsIgnoreCase("hidden"))
+                        actions[attribute - 30] = null;
                 } else
-                if(j == 40)
+                if(attribute == 40)
                 {
-                    int i1 = stream.getUnsignedByte();
-                    modifiedModelColors = new int[i1];
-                    originalModelColors = new int[i1];
-                    for(int i2 = 0; i2 < i1; i2++)
+                    int colourCount = stream.getUnsignedByte();
+                    modifiedModelColors = new int[colourCount];
+                    originalModelColors = new int[colourCount];
+                    for(int c = 0; c < colourCount; c++)
                     {
-                        modifiedModelColors[i2] = stream.getUnsignedLEShort();
-                        originalModelColors[i2] = stream.getUnsignedLEShort();
+                        modifiedModelColors[c] = stream.getUnsignedLEShort();
+                        originalModelColors[c] = stream.getUnsignedLEShort();
                     }
 
                 } else
-                if(j == 60)
+                if(attribute == 60)
                     icon = stream.getUnsignedLEShort();
                 else
-                if(j == 62)
-                    aBoolean751 = true;
+                if(attribute == 62)
+                    rotated = true;
                 else
-                if(j == 64)
-                    aBoolean779 = false;
+                if(attribute == 64)
+                    castsShadow = false;
                 else
-                if(j == 65)
-                    anInt748 = stream.getUnsignedLEShort();
+                if(attribute == 65)
+                    scaleX = stream.getUnsignedLEShort();
                 else
-                if(j == 66)
-                    anInt772 = stream.getUnsignedLEShort();
+                if(attribute == 66)
+                    scaleY = stream.getUnsignedLEShort();
                 else
-                if(j == 67)
-                    anInt740 = stream.getUnsignedLEShort();
+                if(attribute == 67)
+                    scaleZ = stream.getUnsignedLEShort();
                 else
-                if(j == 68)
+                if(attribute == 68)
                     mapScene = stream.getUnsignedLEShort();
                 else
-                if(j == 69)
+                if(attribute == 69)
                     face = stream.getUnsignedByte();
                 else
-                if(j == 70)
-                    anInt738 = stream.getShort();
+                if(attribute == 70)
+                    translateX = stream.getShort();
                 else
-                if(j == 71)
-                    anInt745 = stream.getShort();
+                if(attribute == 71)
+                    translateY = stream.getShort();
                 else
-                if(j == 72)
-                    anInt783 = stream.getShort();
+                if(attribute == 72)
+                    translateZ = stream.getShort();
                 else
-                if(j == 73)
+                if(attribute == 73)
                     aBoolean736 = true;
                 else
-                if(j == 74)
+                if(attribute == 74)
                 {
-                    aBoolean766 = true;
+                    unwalkableSolid = true;
                 } else
                 {
-                    if(j != 75)
+                    if(attribute != 75)
                         continue;
-                    anInt760 = stream.getUnsignedByte();
+                    _solid = stream.getUnsignedByte();
                 }
                 continue label0;
-            } while(j != 77);
+            } while(attribute != 77);
             varBitId = stream.getUnsignedLEShort();
             if(varBitId == 65535)
                 varBitId = -1;
             configIds = stream.getUnsignedLEShort();
             if(configIds == 65535)
                 configIds = -1;
-            int j1 = stream.getUnsignedByte();
-            childrenIds = new int[j1 + 1];
-            for(int j2 = 0; j2 <= j1; j2++)
+            int childCount = stream.getUnsignedByte();
+            childIds = new int[childCount + 1];
+            for(int c = 0; c <= childCount; c++)
             {
-                childrenIds[j2] = stream.getUnsignedLEShort();
-                if(childrenIds[j2] == 65535)
-                    childrenIds[j2] = -1;
+                childIds[c] = stream.getUnsignedLEShort();
+                if(childIds[c] == 65535)
+                    childIds[c] = -1;
             }
 
         } while(true);
-        if(i == -1)
+        if(_actions == -1)
         {
             hasActions = modelIds != null && (modelTypes == null || modelTypes[0] == 10);
             if(actions != null)
                 hasActions = true;
         }
-        if(aBoolean766)
+        if(unwalkableSolid)
         {
-            unwalkable = false;
+            solid = false;
             walkable = false;
         }
-        if(anInt760 == -1)
-            anInt760 = unwalkable ? 1 : 0;
+        if(_solid == -1)
+            _solid = solid ? 1 : 0;
     }
 
     private GameObjectDefinition()
     {
-        type = -1;
+        id = -1;
     }
 
     public boolean aBoolean736;
-    private byte aByte737;
-    private int anInt738;
+    private byte ambient;
+    private int translateX;
     public String name;
-    private int anInt740;
-    private static final Model[] aModelArray741s = new Model[4];
-    private byte aByte742;
+    private int scaleZ;
+    private static final Model[] models = new Model[4];
+    private byte diffuse;
     public int sizeX;
-    private int anInt745;
+    private int translateY;
     public int icon;
     private int[] originalModelColors;
-    private int anInt748;
+    private int scaleX;
     public int configIds;
-    private boolean aBoolean751;
+    private boolean rotated;
     public static boolean lowMem;
     private static Stream stream;
-    public int type;
-    private static int[] streamIndices;
+    public int id;
+    private static int[] streamOffsets;
     public boolean walkable;
     public int mapScene;
-    public int childrenIds[];
-    private int anInt760;
+    public int childIds[];
+    private int _solid;
     public int sizeY;
     public boolean adjustToTerrain;
     public boolean aBoolean764;
     public static client clientInstance;
-    private boolean aBoolean766;
-    public boolean unwalkable;
+    private boolean unwalkableSolid;
+    public boolean solid;
     public int face;
     private boolean delayShading;
     private static int cacheIndex;
-    private int anInt772;
+    private int scaleY;
     private int[] modelIds;
     public int varBitId;
     public int anInt775;
     private int[] modelTypes;
     public byte description[];
     public boolean hasActions;
-    public boolean aBoolean779;
-    public static MRUNodes mruNodes2 = new MRUNodes(30);
-    public int anInt781;
+    public boolean castsShadow;
+    public static MRUNodes animatedModelCache = new MRUNodes(30);
+    public int animationId;
     private static GameObjectDefinition[] cache;
-    private int anInt783;
+    private int translateZ;
     private int[] modifiedModelColors;
     public static MRUNodes modelCache = new MRUNodes(500);
     public String actions[];
