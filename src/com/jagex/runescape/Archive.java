@@ -5,8 +5,8 @@ final class Archive {
     public Archive(byte dataBuffer[])
     {
         Stream stream = new Stream(dataBuffer);
-        int uncompressed = stream.read3Bytes();
-        int compressed = stream.read3Bytes();
+        int uncompressed = stream.get24BitInt();
+        int compressed = stream.get24BitInt();
         if(compressed != uncompressed)
         {
             byte data[] = new byte[uncompressed];
@@ -28,8 +28,8 @@ final class Archive {
         for(int index = 0; index < dataSize; index++)
         {
             nameHashes[index] = stream.getInt();
-            uncompressedSizes[index] = stream.read3Bytes();
-            compressedSizes[index] = stream.read3Bytes();
+            uncompressedSizes[index] = stream.get24BitInt();
+            compressedSizes[index] = stream.get24BitInt();
             startOffsets[index] = offset;
             offset += compressedSizes[index];
         }

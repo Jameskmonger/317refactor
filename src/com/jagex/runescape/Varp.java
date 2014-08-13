@@ -1,11 +1,8 @@
 package com.jagex.runescape;
-// Decompiled by Jad v1.5.8f. Copyright 2001 Pavel Kouznetsov.
-// Jad home page: http://www.kpdus.com/jad.html
-// Decompiler options: packimports(3) 
 
 public final class  Varp {
 
-    public static void unpackConfig(Archive archive)
+    public static void load(Archive archive)
     {
         Stream stream = new Stream(archive.getFile("varp.dat"));
         anInt702 = 0;
@@ -45,7 +42,7 @@ public final class  Varp {
                 dummy = 2;
             else
             if(opcode == 5)
-                anInt709 = stream.getUnsignedLEShort();
+                type = stream.getUnsignedLEShort();
             else
             if(opcode == 6)
                 dummy = 2;
@@ -80,7 +77,7 @@ public final class  Varp {
     public static Varp cache[];
     private static int anInt702;
     private static int[] anIntArray703;
-    public int anInt709;
+    public int type;
     public boolean aBoolean713;
 
 }

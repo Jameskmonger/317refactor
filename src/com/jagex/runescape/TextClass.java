@@ -1,9 +1,9 @@
 package com.jagex.runescape;
-import sign.signlink;
+import com.jagex.runescape.sign.signlink;
 
 final class TextClass {
 
-    public static long longForName(String name)
+    public static long nameToLong(String name)
     {
         long longName = 0L;
         for(int c = 0; c < name.length() && c < 12; c++)
@@ -24,27 +24,27 @@ final class TextClass {
         return longName;
     }
 
-    public static String nameForLong(long name)
+    public static String longToName(long longName)
     {
         try
         {
-            if(name <= 0L || name >= 0x5b5b57f8a98a5dd1L)
+            if(longName <= 0L || longName >= 0x5b5b57f8a98a5dd1L)
                 return "invalid_name";
-            if(name % 37L == 0L)
+            if(longName % 37L == 0L)
                 return "invalid_name";
             int i = 0;
-            char ac[] = new char[12];
-            while(name != 0L) 
+            char name[] = new char[12];
+            while(longName != 0L) 
             {
-                long n = name;
-                name /= 37L;
-                ac[11 - i++] = validChars[(int)(n - name * 37L)];
+                long n = longName;
+                longName /= 37L;
+                name[11 - i++] = VALID_CHARACTERS[(int)(n - longName * 37L)];
             }
-            return new String(ac, 12 - i, i);
+            return new String(name, 12 - i, i);
         }
         catch(RuntimeException runtimeexception)
         {
-            signlink.reporterror("81570, " + name + ", " + (byte)-99 + ", " + runtimeexception.toString());
+            signlink.reporterror("81570, " + longName + ", " + (byte)-99 + ", " + runtimeexception.toString());
         }
         throw new RuntimeException();
     }
@@ -96,7 +96,7 @@ final class TextClass {
         return asterisks.toString();
     }
 
-    private static final char[] validChars = {
+    private static final char[] VALID_CHARACTERS = {
         '_', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 
         'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 
         't', 'u', 'v', 'w', 'x', 'y', 'z', '0', '1', '2', 

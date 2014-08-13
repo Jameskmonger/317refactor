@@ -12,10 +12,10 @@ final class ObjectManager {
         anInt147 = 104;
         vertexHeights = ai;
         renderRuleFlags = abyte0;
-        aByteArrayArrayArray142 = new byte[4][anInt146][anInt147];
-        aByteArrayArrayArray130 = new byte[4][anInt146][anInt147];
-        aByteArrayArrayArray136 = new byte[4][anInt146][anInt147];
-        aByteArrayArrayArray148 = new byte[4][anInt146][anInt147];
+        tileTypeLayer0 = new byte[4][anInt146][anInt147];
+        tileTypeLayer1 = new byte[4][anInt146][anInt147];
+        tileShapeLayer1 = new byte[4][anInt146][anInt147];
+        tileOrientationLayer1 = new byte[4][anInt146][anInt147];
         tileCullingBitsets = new int[4][anInt146 + 1][anInt147 + 1];
         tileShadowIntensity = new byte[4][anInt146 + 1][anInt147 + 1];
         anIntArrayArray139 = new int[anInt146 + 1][anInt147 + 1];
@@ -26,7 +26,7 @@ final class ObjectManager {
         anIntArray128 = new int[anInt147];
     }
 
-    private static int method170(int i, int j)
+    private static int randomNoise(int i, int j)
     {
         int k = i + j * 57;
         k = k << 13 ^ k;
@@ -63,9 +63,9 @@ final class ObjectManager {
             anInt133 = -16;
         if(anInt133 > 16)
             anInt133 = 16;
-        for(int l = 0; l < 4; l++)
+        for(int _z = 0; _z < 4; _z++)
         {
-            byte abyte0[][] = tileShadowIntensity[l];
+            byte abyte0[][] = tileShadowIntensity[_z];
             byte byte0 = 96;
             char c = '\u0300';
             byte byte1 = -50;
@@ -77,8 +77,8 @@ final class ObjectManager {
             {
                 for(int j5 = 1; j5 < anInt146 - 1; j5++)
                 {
-                    int k6 = vertexHeights[l][j5 + 1][j4] - vertexHeights[l][j5 - 1][j4];
-                    int l7 = vertexHeights[l][j5][j4 + 1] - vertexHeights[l][j5][j4 - 1];
+                    int k6 = vertexHeights[_z][j5 + 1][j4] - vertexHeights[_z][j5 - 1][j4];
+                    int l7 = vertexHeights[_z][j5][j4 + 1] - vertexHeights[_z][j5][j4 - 1];
                     int j9 = (int)Math.sqrt(k6 * k6 + 0x10000 + l7 * l7);
                     int k12 = (k6 << 8) / j9;
                     int l13 = 0x10000 / j9;
@@ -99,50 +99,50 @@ final class ObjectManager {
                 anIntArray128[k5] = 0;
             }
 
-            for(int l6 = -5; l6 < anInt146 + 5; l6++)
+            for(int _x = -5; _x < anInt146 + 5; _x++)
             {
                 for(int i8 = 0; i8 < anInt147; i8++)
                 {
-                    int k9 = l6 + 5;
+                    int k9 = _x + 5;
                     if(k9 >= 0 && k9 < anInt146)
                     {
-                        int l12 = aByteArrayArrayArray142[l][k9][i8] & 0xff;
+                        int l12 = tileTypeLayer0[_z][k9][i8] & 0xff;
                         if(l12 > 0)
                         {
-                            Flo flo = Flo.cache[l12 - 1];
-                            anIntArray124[i8] += flo.hue2;
+                            FloorDefinition flo = FloorDefinition.cache[l12 - 1];
+                            anIntArray124[i8] += flo.hue;
                             anIntArray125[i8] += flo.saturation;
                             anIntArray126[i8] += flo.lightness;
-                            anIntArray127[i8] += flo.pCDivider;
+                            anIntArray127[i8] += flo.hueDivisor;
                             anIntArray128[i8]++;
                         }
                     }
-                    int i13 = l6 - 5;
+                    int i13 = _x - 5;
                     if(i13 >= 0 && i13 < anInt146)
                     {
-                        int i14 = aByteArrayArrayArray142[l][i13][i8] & 0xff;
+                        int i14 = tileTypeLayer0[_z][i13][i8] & 0xff;
                         if(i14 > 0)
                         {
-                            Flo flo_1 = Flo.cache[i14 - 1];
-                            anIntArray124[i8] -= flo_1.hue2;
+                            FloorDefinition flo_1 = FloorDefinition.cache[i14 - 1];
+                            anIntArray124[i8] -= flo_1.hue;
                             anIntArray125[i8] -= flo_1.saturation;
                             anIntArray126[i8] -= flo_1.lightness;
-                            anIntArray127[i8] -= flo_1.pCDivider;
+                            anIntArray127[i8] -= flo_1.hueDivisor;
                             anIntArray128[i8]--;
                         }
                     }
                 }
 
-                if(l6 >= 1 && l6 < anInt146 - 1)
+                if(_x >= 1 && _x < anInt146 - 1)
                 {
                     int l9 = 0;
                     int j13 = 0;
                     int j14 = 0;
                     int k15 = 0;
                     int k16 = 0;
-                    for(int k17 = -5; k17 < anInt147 + 5; k17++)
+                    for(int _y = -5; _y < anInt147 + 5; _y++)
                     {
-                        int j18 = k17 + 5;
+                        int j18 = _y + 5;
                         if(j18 >= 0 && j18 < anInt147)
                         {
                             l9 += anIntArray124[j18];
@@ -151,7 +151,7 @@ final class ObjectManager {
                             k15 += anIntArray127[j18];
                             k16 += anIntArray128[j18];
                         }
-                        int k18 = k17 - 5;
+                        int k18 = _y - 5;
                         if(k18 >= 0 && k18 < anInt147)
                         {
                             l9 -= anIntArray124[k18];
@@ -160,22 +160,22 @@ final class ObjectManager {
                             k15 -= anIntArray127[k18];
                             k16 -= anIntArray128[k18];
                         }
-                        if(k17 >= 1 && k17 < anInt147 - 1 && (!lowMem || (renderRuleFlags[0][l6][k17] & 2) != 0 || (renderRuleFlags[l][l6][k17] & 0x10) == 0 && getVisibilityPlane(k17, l, l6) == plane))
+                        if(_y >= 1 && _y < anInt147 - 1 && (!lowMem || (renderRuleFlags[0][_x][_y] & 2) != 0 || (renderRuleFlags[_z][_x][_y] & 0x10) == 0 && getVisibilityPlane(_y, _z, _x) == plane))
                         {
-                            if(l < setZ)
-                                setZ = l;
-                            int l18 = aByteArrayArrayArray142[l][l6][k17] & 0xff;
-                            int i19 = aByteArrayArrayArray130[l][l6][k17] & 0xff;
+                            if(_z < setZ)
+                                setZ = _z;
+                            int l18 = tileTypeLayer0[_z][_x][_y] & 0xff;
+                            int i19 = tileTypeLayer1[_z][_x][_y] & 0xff;
                             if(l18 > 0 || i19 > 0)
                             {
-                                int j19 = vertexHeights[l][l6][k17];
-                                int k19 = vertexHeights[l][l6 + 1][k17];
-                                int l19 = vertexHeights[l][l6 + 1][k17 + 1];
-                                int i20 = vertexHeights[l][l6][k17 + 1];
-                                int j20 = anIntArrayArray139[l6][k17];
-                                int k20 = anIntArrayArray139[l6 + 1][k17];
-                                int l20 = anIntArrayArray139[l6 + 1][k17 + 1];
-                                int i21 = anIntArrayArray139[l6][k17 + 1];
+                                int j19 = vertexHeights[_z][_x][_y];
+                                int k19 = vertexHeights[_z][_x + 1][_y];
+                                int l19 = vertexHeights[_z][_x + 1][_y + 1];
+                                int i20 = vertexHeights[_z][_x][_y + 1];
+                                int j20 = anIntArrayArray139[_x][_y];
+                                int k20 = anIntArrayArray139[_x + 1][_y];
+                                int l20 = anIntArrayArray139[_x + 1][_y + 1];
+                                int i21 = anIntArrayArray139[_x][_y + 1];
                                 int j21 = -1;
                                 int k21 = -1;
                                 if(l18 > 0)
@@ -193,46 +193,46 @@ final class ObjectManager {
                                         l22 = 255;
                                     k21 = method177(l21, j22, l22);
                                 }
-                                if(l > 0)
+                                if(_z > 0)
                                 {
                                     boolean flag = true;
-                                    if(l18 == 0 && aByteArrayArrayArray136[l][l6][k17] != 0)
+                                    if(l18 == 0 && tileShapeLayer1[_z][_x][_y] != 0)
                                         flag = false;
-                                    if(i19 > 0 && !Flo.cache[i19 - 1].occlude)
+                                    if(i19 > 0 && !FloorDefinition.cache[i19 - 1].occlude)
                                         flag = false;
                                     if(flag && j19 == k19 && j19 == l19 && j19 == i20)
-                                        tileCullingBitsets[l][l6][k17] |= 0x924;
+                                        tileCullingBitsets[_z][_x][_y] |= 0x924;
                                 }
                                 int i22 = 0;
                                 if(j21 != -1)
-                                    i22 = Texture.HSL_TO_RGB[method187(k21, 96)];
+                                    i22 = Texture.HSL_TO_RGB[mixLightness(k21, 96)];
                                 if(i19 == 0)
                                 {
-                                    worldController.method279(l, l6, k17, 0, 0, -1, j19, k19, l19, i20, method187(j21, j20), method187(j21, k20), method187(j21, l20), method187(j21, i21), 0, 0, 0, 0, i22, 0);
+                                    worldController.method279(_z, _x, _y, 0, 0, -1, j19, k19, l19, i20, mixLightness(j21, j20), mixLightness(j21, k20), mixLightness(j21, l20), mixLightness(j21, i21), 0, 0, 0, 0, i22, 0);
                                 } else
                                 {
-                                    int k22 = aByteArrayArrayArray136[l][l6][k17] + 1;
-                                    byte byte4 = aByteArrayArrayArray148[l][l6][k17];
-                                    Flo flo_2 = Flo.cache[i19 - 1];
-                                    int i23 = flo_2.texture;
-                                    int j23;
-                                    int k23;
-                                    if(i23 >= 0)
+                                    int clippingPath = tileShapeLayer1[_z][_x][_y] + 1;
+                                    byte clippingPathRotation = tileOrientationLayer1[_z][_x][_y];
+                                    FloorDefinition definition = FloorDefinition.cache[i19 - 1];
+                                    int textureId = definition.textureId;
+                                    int hslBitset;
+                                    int minimapColour;
+                                    if(textureId >= 0)
                                     {
-                                        k23 = Texture.getAverageTextureColour(i23);
-                                        j23 = -1;
+                                        minimapColour = Texture.getAverageTextureColour(textureId);
+                                        hslBitset = -1;
                                     } else
-                                    if(flo_2.colour2 == 0xff00ff)
+                                    if(definition.rgbColour == 0xff00ff)
                                     {
-                                        k23 = 0;
-                                        j23 = -2;
-                                        i23 = -1;
+                                        minimapColour = 0;
+                                        hslBitset = -2;
+                                        textureId = -1;
                                     } else
                                     {
-                                        j23 = method177(flo_2.hue, flo_2.saturation, flo_2.lightness);
-                                        k23 = Texture.HSL_TO_RGB[method185(flo_2.hsl, 96)];
+                                        hslBitset = method177(definition.hue2, definition.saturation, definition.lightness);
+                                        minimapColour = Texture.HSL_TO_RGB[mixLightnessSigned(definition.hsl, 96)];
                                     }
-                                    worldController.method279(l, l6, k17, k22, byte4, i23, j19, k19, l19, i20, method187(j21, j20), method187(j21, k20), method187(j21, l20), method187(j21, i21), method185(j23, j20), method185(j23, k20), method185(j23, l20), method185(j23, i21), i22, k23);
+                                    worldController.method279(_z, _x, _y, clippingPath, clippingPathRotation, textureId, j19, k19, l19, i20, mixLightness(j21, j20), mixLightness(j21, k20), mixLightness(j21, l20), mixLightness(j21, i21), mixLightnessSigned(hslBitset, j20), mixLightnessSigned(hslBitset, k20), mixLightnessSigned(hslBitset, l20), mixLightnessSigned(hslBitset, i21), i22, minimapColour);
                                 }
                             }
                         }
@@ -244,7 +244,7 @@ final class ObjectManager {
             for(int j8 = 1; j8 < anInt147 - 1; j8++)
             {
                 for(int i10 = 1; i10 < anInt146 - 1; i10++)
-                    worldController.setTileLogicHeight(i10, j8, l, getVisibilityPlane(j8, l, i10));
+                    worldController.setTileLogicHeight(i10, j8, _z, getVisibilityPlane(j8, _z, i10));
 
             }
 
@@ -409,7 +409,7 @@ label5:
 
     }
 
-    private static int method172(int i, int j)
+    private static int perlinNoise3Pass(int i, int j)
     {
         int k = (method176(i + 45365, j + 0x16713, 4) - 128) + (method176(i + 10294, j + 37821, 2) - 128 >> 1) + (method176(i, j, 1) - 128 >> 2);
         k = (int)((double)k * 0.29999999999999999D) + 35;
@@ -575,7 +575,7 @@ label0:
                 animable = objectDefinition.getModelAt(0, face, k1, l1, i2, j2, -1);
             else
                 animable = new GameObject(objectId, face, 0, l1, i2, k1, j2, objectDefinition.animationId, true);
-            worldController.addWallObject(x, y, z, k2, anIntArray152[face], 0, hash, ((Animable) (animable)), null, config);
+            worldController.addWallObject(x, y, z, k2, POWERS_OF_TWO[face], 0, hash, ((Animable) (animable)), null, config);
             if(face == 0)
             {
                 if(objectDefinition.castsShadow)
@@ -618,8 +618,8 @@ label0:
             }
             if(objectDefinition.solid && collisionMap != null)
                 collisionMap.markWall(y, face, x, type, objectDefinition.walkable);
-            if(objectDefinition.unknownAttribute2 != 16)
-                worldController.method290(y, objectDefinition.unknownAttribute2, x, z);
+            if(objectDefinition.offsetAmplifier != 16)
+                worldController.method290(y, objectDefinition.offsetAmplifier, x, z);
             return;
         }
         if(type == 1)
@@ -629,7 +629,7 @@ label0:
                 animable = objectDefinition.getModelAt(1, face, k1, l1, i2, j2, -1);
             else
                 animable = new GameObject(objectId, face, 1, l1, i2, k1, j2, objectDefinition.animationId, true);
-            worldController.addWallObject(x, y, z, k2, wallCornerOrientation[face], 0, hash, ((Animable) (animable)), null, config);
+            worldController.addWallObject(x, y, z, k2, WALL_CORNER_ORIENTATION[face], 0, hash, ((Animable) (animable)), null, config);
             if(objectDefinition.castsShadow)
                 if(face == 0)
                     tileShadowIntensity[z][x][y + 1] = 50;
@@ -660,7 +660,7 @@ label0:
                 obj11 = new GameObject(objectId, 4 + face, 2, l1, i2, k1, j2, objectDefinition.animationId, true);
                 obj12 = new GameObject(objectId, i3, 2, l1, i2, k1, j2, objectDefinition.animationId, true);
             }
-            worldController.addWallObject(x, y, z, k2, anIntArray152[face], anIntArray152[i3], hash, ((Animable) (obj11)), ((Animable) (obj12)), config);
+            worldController.addWallObject(x, y, z, k2, POWERS_OF_TWO[face], POWERS_OF_TWO[i3], hash, ((Animable) (obj11)), ((Animable) (obj12)), config);
             if(objectDefinition.unknownAttribute1)
                 if(face == 0)
                 {
@@ -684,8 +684,8 @@ label0:
                 }
             if(objectDefinition.solid && collisionMap != null)
                 collisionMap.markWall(y, face, x, type, objectDefinition.walkable);
-            if(objectDefinition.unknownAttribute2 != 16)
-                worldController.method290(y, objectDefinition.unknownAttribute2, x, z);
+            if(objectDefinition.offsetAmplifier != 16)
+                worldController.method290(y, objectDefinition.offsetAmplifier, x, z);
             return;
         }
         if(type == 3)
@@ -695,7 +695,7 @@ label0:
                 obj5 = objectDefinition.getModelAt(3, face, k1, l1, i2, j2, -1);
             else
                 obj5 = new GameObject(objectId, face, 3, l1, i2, k1, j2, objectDefinition.animationId, true);
-            worldController.addWallObject(x, y, z, k2, wallCornerOrientation[face], 0, hash, ((Animable) (obj5)), null, config);
+            worldController.addWallObject(x, y, z, k2, WALL_CORNER_ORIENTATION[face], 0, hash, ((Animable) (obj5)), null, config);
             if(objectDefinition.castsShadow)
                 if(face == 0)
                     tileShadowIntensity[z][x][y + 1] = 50;
@@ -757,21 +757,21 @@ label0:
                 obj7 = objectDefinition.getModelAt(4, 0, k1, l1, i2, j2, -1);
             else
                 obj7 = new GameObject(objectId, 0, 4, l1, i2, k1, j2, objectDefinition.animationId, true);
-            worldController.addWallDecoration(x, y, z, k2, 0, 0, face * 512, hash, ((Animable) (obj7)), config, anIntArray152[face]);
+            worldController.addWallDecoration(x, y, z, k2, 0, 0, face * 512, hash, ((Animable) (obj7)), config, POWERS_OF_TWO[face]);
             return;
         }
         if(type == 5)
         {
             int i4 = 16;
-            int k4 = worldController.getWallObjectUID(x, y, z);
+            int k4 = worldController.getWallObjectHash(x, y, z);
             if(k4 > 0)
-                i4 = GameObjectDefinition.getDefinition(k4 >> 14 & 0x7fff).unknownAttribute2;
+                i4 = GameObjectDefinition.getDefinition(k4 >> 14 & 0x7fff).offsetAmplifier;
             Object obj13;
             if(objectDefinition.animationId == -1 && objectDefinition.childIds == null)
                 obj13 = objectDefinition.getModelAt(4, 0, k1, l1, i2, j2, -1);
             else
                 obj13 = new GameObject(objectId, 0, 4, l1, i2, k1, j2, objectDefinition.animationId, true);
-            worldController.addWallDecoration(x, y, z, k2, anIntArray137[face] * i4, anIntArray144[face] * i4, face * 512, hash, ((Animable) (obj13)), config, anIntArray152[face]);
+            worldController.addWallDecoration(x, y, z, k2, FACE_OFFSET_X[face] * i4, FACE_OFFSET_Y[face] * i4, face * 512, hash, ((Animable) (obj13)), config, POWERS_OF_TWO[face]);
             return;
         }
         if(type == 6)
@@ -811,13 +811,13 @@ label0:
         int i1 = i & k - 1;
         int j1 = j / k;
         int k1 = j & k - 1;
-        int l1 = method186(l, j1);
-        int i2 = method186(l + 1, j1);
-        int j2 = method186(l, j1 + 1);
-        int k2 = method186(l + 1, j1 + 1);
-        int l2 = method184(l1, i2, i1, k);
-        int i3 = method184(j2, k2, i1, k);
-        return method184(l2, i3, k1, k);
+        int l1 = randomNoiseWeighedSum(l, j1);
+        int i2 = randomNoiseWeighedSum(l + 1, j1);
+        int j2 = randomNoiseWeighedSum(l, j1 + 1);
+        int k2 = randomNoiseWeighedSum(l + 1, j1 + 1);
+        int l2 = interpolate(l1, i2, i1, k);
+        int i3 = interpolate(j2, k2, i1, k);
+        return interpolate(l2, i3, k1, k);
     }
 
     private int method177(int i, int j, int k)
@@ -833,36 +833,36 @@ label0:
         return (i / 4 << 10) + (j / 32 << 7) + k / 2;
     }
 
-    public static boolean method178(int objectId, int j)
+    public static boolean modelTypeCached(int objectId, int type)
     {
-        GameObjectDefinition class46 = GameObjectDefinition.getDefinition(objectId);
-        if(j == 11)
-            j = 10;
-        if(j >= 5 && j <= 8)
-            j = 4;
-        return class46.modelTypeCached(j);
+        GameObjectDefinition definition = GameObjectDefinition.getDefinition(objectId);
+        if(type == 11)
+            type = 10;
+        if(type >= 5 && type <= 8)
+            type = 4;
+        return definition.modelTypeCached(type);
     }
 
-    public final void loadTerrainSubblock(int i, int j, CollisionMap aclass11[], int l, int i1, byte abyte0[],
-                                int j1, int k1, int l1)
+    public final void loadTerrainSubblock(int subBlockZ, int rotation, CollisionMap collisionMap[], int blockX, int subBlockX, byte blockData[],
+                                int subBlockY, int blockZ, int blockY)
     {
-        for(int i2 = 0; i2 < 8; i2++)
+        for(int tileX = 0; tileX < 8; tileX++)
         {
-            for(int j2 = 0; j2 < 8; j2++)
-                if(l + i2 > 0 && l + i2 < 103 && l1 + j2 > 0 && l1 + j2 < 103)
-                    aclass11[k1].clippingData[l + i2][l1 + j2] &= 0xfeffffff;
+            for(int tileY = 0; tileY < 8; tileY++)
+                if(blockX + tileX > 0 && blockX + tileX < 103 && blockY + tileY > 0 && blockY + tileY < 103)
+                    collisionMap[blockZ].clippingData[blockX + tileX][blockY + tileY] &= 0xfeffffff;
 
         }
-        Stream stream = new Stream(abyte0);
-        for(int l2 = 0; l2 < 4; l2++)
+        Stream stream = new Stream(blockData);
+        for(int tileZ = 0; tileZ < 4; tileZ++)
         {
-            for(int i3 = 0; i3 < 64; i3++)
+            for(int tileX = 0; tileX < 64; tileX++)
             {
-                for(int j3 = 0; j3 < 64; j3++)
-                    if(l2 == i && i3 >= i1 && i3 < i1 + 8 && j3 >= j1 && j3 < j1 + 8)
-                        method181(l1 + TiledUtils.getRotatedMapChunkY(j3 & 7, j, i3 & 7), 0, stream, l + TiledUtils.getRotatedMapChunkX(j, j3 & 7, i3 & 7), k1, j, 0);
+                for(int tileY = 0; tileY < 64; tileY++)
+                    if(tileZ == subBlockZ && tileX >= subBlockX && tileX < subBlockX + 8 && tileY >= subBlockY && tileY < subBlockY + 8)
+                        loadTerrainTile(blockY + TiledUtils.getRotatedMapChunkY(tileY & 7, rotation, tileX & 7), 0, stream, blockX + TiledUtils.getRotatedMapChunkX(rotation, tileY & 7, tileX & 7), blockZ, rotation, 0);
                     else
-                        method181(-1, 0, stream, -1, 0, 0, 0);
+                        loadTerrainTile(-1, 0, stream, -1, 0, 0, 0);
 
             }
 
@@ -870,7 +870,7 @@ label0:
 
     }
 
-    public final void loadTerrainBlock(byte abyte0[], int i, int j, int k, int l, CollisionMap aclass11[])
+    public final void loadTerrainBlock(byte abyte0[], int i, int j, int k, int l, CollisionMap collisionMap[])
     {
         for(int i1 = 0; i1 < 4; i1++)
         {
@@ -878,7 +878,7 @@ label0:
             {
                 for(int k1 = 0; k1 < 64; k1++)
                     if(j + j1 > 0 && j + j1 < 103 && i + k1 > 0 && i + k1 < 103)
-                        aclass11[i1].clippingData[j + j1][i + k1] &= 0xfeffffff;
+                        collisionMap[i1].clippingData[j + j1][i + k1] &= 0xfeffffff;
 
             }
 
@@ -890,70 +890,70 @@ label0:
             for(int i2 = 0; i2 < 64; i2++)
             {
                 for(int j2 = 0; j2 < 64; j2++)
-                    method181(j2 + i, l, stream, i2 + j, l1, 0, k);
+                    loadTerrainTile(j2 + i, l, stream, i2 + j, l1, 0, k);
 
             }
 
         }
     }
 
-    private void method181(int i, int j, Stream stream, int k, int l, int i1,
+    private void loadTerrainTile(int tileY, int j, Stream stream, int tileX, int tileZ, int i1,
                                  int k1)
     {
-        if(k >= 0 && k < 104 && i >= 0 && i < 104)
+        if(tileX >= 0 && tileX < 104 && tileY >= 0 && tileY < 104)
         {
-            renderRuleFlags[l][k][i] = 0;
+            renderRuleFlags[tileZ][tileX][tileY] = 0;
             do
             {
-                int l1 = stream.getUnsignedByte();
-                if(l1 == 0)
-                    if(l == 0)
+                int value = stream.getUnsignedByte();
+                if(value == 0)
+                    if(tileZ == 0)
                     {
-                        vertexHeights[0][k][i] = -method172(0xe3b7b + k + k1, 0x87cce + i + j) * 8;
+                        vertexHeights[0][tileX][tileY] = -perlinNoise3Pass(0xe3b7b + tileX + k1, 0x87cce + tileY + j) * 8;
                         return;
                     } else
                     {
-                        vertexHeights[l][k][i] = vertexHeights[l - 1][k][i] - 240;
+                        vertexHeights[tileZ][tileX][tileY] = vertexHeights[tileZ - 1][tileX][tileY] - 240;
                         return;
                     }
-                if(l1 == 1)
+                if(value == 1)
                 {
-                    int j2 = stream.getUnsignedByte();
-                    if(j2 == 1)
-                        j2 = 0;
-                    if(l == 0)
+                    int height = stream.getUnsignedByte();
+                    if(height == 1)
+                        height = 0;
+                    if(tileZ == 0)
                     {
-                        vertexHeights[0][k][i] = -j2 * 8;
+                        vertexHeights[0][tileX][tileY] = -height * 8;
                         return;
                     } else
                     {
-                        vertexHeights[l][k][i] = vertexHeights[l - 1][k][i] - j2 * 8;
+                        vertexHeights[tileZ][tileX][tileY] = vertexHeights[tileZ - 1][tileX][tileY] - height * 8;
                         return;
                     }
                 }
-                if(l1 <= 49)
+                if(value <= 49)
                 {
-                    aByteArrayArrayArray130[l][k][i] = stream.get();
-                    aByteArrayArrayArray136[l][k][i] = (byte)((l1 - 2) / 4);
-                    aByteArrayArrayArray148[l][k][i] = (byte)((l1 - 2) + i1 & 3);
+                    tileTypeLayer1[tileZ][tileX][tileY] = stream.get();
+                    tileShapeLayer1[tileZ][tileX][tileY] = (byte)((value - 2) / 4);
+                    tileOrientationLayer1[tileZ][tileX][tileY] = (byte)((value - 2) + i1 & 3);
                 } else
-                if(l1 <= 81)
-                    renderRuleFlags[l][k][i] = (byte)(l1 - 49);
+                if(value <= 81)
+                    renderRuleFlags[tileZ][tileX][tileY] = (byte)(value - 49);
                 else
-                    aByteArrayArrayArray142[l][k][i] = (byte)(l1 - 81);
+                    tileTypeLayer0[tileZ][tileX][tileY] = (byte)(value - 81);
             } while(true);
         }
         do
         {
-            int i2 = stream.getUnsignedByte();
-            if(i2 == 0)
+            int value = stream.getUnsignedByte();
+            if(value == 0)
                 break;
-            if(i2 == 1)
+            if(value == 1)
             {
                 stream.getUnsignedByte();
                 return;
             }
-            if(i2 <= 49)
+            if(value <= 49)
                 stream.getUnsignedByte();
         } while(true);
     }
@@ -1015,287 +1015,287 @@ label0:
         }
     }
 
-    private static int method184(int i, int j, int k, int l)
+    private static int interpolate(int a, int b, int delta, int deltaScale)
     {
-        int i1 = 0x10000 - Texture.COSINE[(k * 1024) / l] >> 1;
-        return (i * (0x10000 - i1) >> 16) + (j * i1 >> 16);
+        int f = 0x10000 - Texture.COSINE[(delta * 1024) / deltaScale] >> 1;
+        return (a * (0x10000 - f) >> 16) + (b * f >> 16);
     }
 
-    private int method185(int i, int j)
+    private int mixLightnessSigned(int hsl, int lightness)
     {
-        if(i == -2)
+        if(hsl == -2)
             return 0xbc614e;
-        if(i == -1)
+        if(hsl == -1)
         {
-            if(j < 0)
-                j = 0;
+            if(lightness < 0)
+                lightness = 0;
             else
-            if(j > 127)
-                j = 127;
-            j = 127 - j;
-            return j;
+            if(lightness > 127)
+                lightness = 127;
+            lightness = 127 - lightness;
+            return lightness;
         }
-        j = (j * (i & 0x7f)) / 128;
-        if(j < 2)
-            j = 2;
+        lightness = (lightness * (hsl & 0x7f)) / 128;
+        if(lightness < 2)
+            lightness = 2;
         else
-        if(j > 126)
-            j = 126;
-        return (i & 0xff80) + j;
+        if(lightness > 126)
+            lightness = 126;
+        return (hsl & 0xff80) + lightness;
     }
 
-    private static int method186(int i, int j)
+    private static int randomNoiseWeighedSum(int x, int y)
     {
-        int k = method170(i - 1, j - 1) + method170(i + 1, j - 1) + method170(i - 1, j + 1) + method170(i + 1, j + 1);
-        int l = method170(i - 1, j) + method170(i + 1, j) + method170(i, j - 1) + method170(i, j + 1);
-        int i1 = method170(i, j);
-        return k / 16 + l / 8 + i1 / 4;
+        int vDist2 = randomNoise(x - 1, y - 1) + randomNoise(x + 1, y - 1) + randomNoise(x - 1, y + 1) + randomNoise(x + 1, y + 1);
+        int vDist1 = randomNoise(x - 1, y) + randomNoise(x + 1, y) + randomNoise(x, y - 1) + randomNoise(x, y + 1);
+        int vLocal = randomNoise(x, y);
+        return vDist2 / 16 + vDist1 / 8 + vLocal / 4;
     }
 
-    private static int method187(int i, int j)
+    private static int mixLightness(int hsl, int lightness)
     {
-        if(i == -1)
+        if(hsl == -1)
             return 0xbc614e;
-        j = (j * (i & 0x7f)) / 128;
-        if(j < 2)
-            j = 2;
+        lightness = (lightness * (hsl & 0x7f)) / 128;
+        if(lightness < 2)
+            lightness = 2;
         else
-        if(j > 126)
-            j = 126;
-        return (i & 0xff80) + j;
+        if(lightness > 126)
+            lightness = 126;
+        return (hsl & 0xff80) + lightness;
     }
 
-    public static void method188(WorldController worldController, int i, int j, int k, int l, CollisionMap collisionMap, int ai[][][], int i1,
-                                 int j1, int k1)
+    public static void method188(WorldController worldController, int face, int y, int type, int plane, CollisionMap collisionMap, int groundArray[][][], int x,
+                                 int objectId, int z)
     {
-        int l1 = ai[l][i1][j];
-        int i2 = ai[l][i1 + 1][j];
-        int j2 = ai[l][i1 + 1][j + 1];
-        int k2 = ai[l][i1][j + 1];
-        int l2 = l1 + i2 + j2 + k2 >> 2;
-        GameObjectDefinition class46 = GameObjectDefinition.getDefinition(j1);
-        int i3 = i1 + (j << 7) + (j1 << 14) + 0x40000000;
-        if(!class46.hasActions)
-            i3 += 0x80000000;
-        byte byte1 = (byte)((i << 6) + k);
-        if(k == 22)
+        int vertexHeightBottomLeft = groundArray[plane][x][y];
+        int vertexHeightBottomRight = groundArray[plane][x + 1][y];
+        int vertexHeightTopRight = groundArray[plane][x + 1][y + 1];
+        int vertexHeightTopLeft = groundArray[plane][x][y + 1];
+        int drawHeight = vertexHeightBottomLeft + vertexHeightBottomRight + vertexHeightTopRight + vertexHeightTopLeft >> 2;
+        GameObjectDefinition definition = GameObjectDefinition.getDefinition(objectId);
+        int hash = x + (y << 7) + (objectId << 14) + 0x40000000;
+        if(!definition.hasActions)
+            hash += 0x80000000;
+        byte config = (byte)((face << 6) + type);
+        if(type == 22)
         {
-            Object obj;
-            if(class46.animationId == -1 && class46.childIds == null)
-                obj = class46.getModelAt(22, i, l1, i2, j2, k2, -1);
+            Animable animable;
+            if(definition.animationId == -1 && definition.childIds == null)
+                animable = definition.getModelAt(22, face, vertexHeightBottomLeft, vertexHeightBottomRight, vertexHeightTopRight, vertexHeightTopLeft, -1);
             else
-                obj = new GameObject(j1, i, 22, i2, j2, l1, k2, class46.animationId, true);
-            worldController.addGroundDecoration(i1, j, k1, l2, i3, ((Animable) (obj)), byte1);
-            if(class46.solid && class46.hasActions)
-                collisionMap.markBlocked(i1, j);
+                animable = new GameObject(objectId, face, 22, vertexHeightBottomRight, vertexHeightTopRight, vertexHeightBottomLeft, vertexHeightTopLeft, definition.animationId, true);
+            worldController.addGroundDecoration(x, y, z, drawHeight, hash, ((Animable) (animable)), config);
+            if(definition.solid && definition.hasActions)
+                collisionMap.markBlocked(x, y);
             return;
         }
-        if(k == 10 || k == 11)
+        if(type == 10 || type == 11)
         {
-            Object obj1;
-            if(class46.animationId == -1 && class46.childIds == null)
-                obj1 = class46.getModelAt(10, i, l1, i2, j2, k2, -1);
+            Animable animable;
+            if(definition.animationId == -1 && definition.childIds == null)
+                animable = definition.getModelAt(10, face, vertexHeightBottomLeft, vertexHeightBottomRight, vertexHeightTopRight, vertexHeightTopLeft, -1);
             else
-                obj1 = new GameObject(j1, i, 10, i2, j2, l1, k2, class46.animationId, true);
-            if(obj1 != null)
+                animable = new GameObject(objectId, face, 10, vertexHeightBottomRight, vertexHeightTopRight, vertexHeightBottomLeft, vertexHeightTopLeft, definition.animationId, true);
+            if(animable != null)
             {
-                int j5 = 0;
-                if(k == 11)
-                    j5 += 256;
-                int k4;
-                int i5;
-                if(i == 1 || i == 3)
+                int rotation = 0;
+                if(type == 11)
+                    rotation += 256;
+                int sizeX;
+                int sizeY;
+                if(face == 1 || face == 3)
                 {
-                    k4 = class46.sizeY;
-                    i5 = class46.sizeX;
+                    sizeX = definition.sizeY;
+                    sizeY = definition.sizeX;
                 } else
                 {
-                    k4 = class46.sizeX;
-                    i5 = class46.sizeY;
+                    sizeX = definition.sizeX;
+                    sizeY = definition.sizeY;
                 }
-                worldController.addEntityB(i1, j, k1, l2, j5, i5, k4, i3, ((Animable) (obj1)), byte1);
+                worldController.addEntityB(x, y, z, drawHeight, rotation, sizeY, sizeX, hash, ((Animable) (animable)), config);
             }
-            if(class46.solid)
-                collisionMap.markSolidOccupant(i1, j, class46.sizeX, class46.sizeY, i, class46.walkable);
+            if(definition.solid)
+                collisionMap.markSolidOccupant(x, y, definition.sizeX, definition.sizeY, face, definition.walkable);
             return;
         }
-        if(k >= 12)
+        if(type >= 12)
         {
-            Object obj2;
-            if(class46.animationId == -1 && class46.childIds == null)
-                obj2 = class46.getModelAt(k, i, l1, i2, j2, k2, -1);
+            Animable animable;
+            if(definition.animationId == -1 && definition.childIds == null)
+                animable = definition.getModelAt(type, face, vertexHeightBottomLeft, vertexHeightBottomRight, vertexHeightTopRight, vertexHeightTopLeft, -1);
             else
-                obj2 = new GameObject(j1, i, k, i2, j2, l1, k2, class46.animationId, true);
-            worldController.addEntityB(i1, j, k1, l2, 0, 1, 1, i3, ((Animable) (obj2)), byte1);
-            if(class46.solid)
-                collisionMap.markSolidOccupant(i1, j, class46.sizeX, class46.sizeY, i, class46.walkable);
+                animable = new GameObject(objectId, face, type, vertexHeightBottomRight, vertexHeightTopRight, vertexHeightBottomLeft, vertexHeightTopLeft, definition.animationId, true);
+            worldController.addEntityB(x, y, z, drawHeight, 0, 1, 1, hash, ((Animable) (animable)), config);
+            if(definition.solid)
+                collisionMap.markSolidOccupant(x, y, definition.sizeX, definition.sizeY, face, definition.walkable);
             return;
         }
-        if(k == 0)
+        if(type == 0)
         {
-            Object obj3;
-            if(class46.animationId == -1 && class46.childIds == null)
-                obj3 = class46.getModelAt(0, i, l1, i2, j2, k2, -1);
+            Animable animable;
+            if(definition.animationId == -1 && definition.childIds == null)
+                animable = definition.getModelAt(0, face, vertexHeightBottomLeft, vertexHeightBottomRight, vertexHeightTopRight, vertexHeightTopLeft, -1);
             else
-                obj3 = new GameObject(j1, i, 0, i2, j2, l1, k2, class46.animationId, true);
-            worldController.addWallObject(i1, j, k1, l2, anIntArray152[i], 0, i3, ((Animable) (obj3)), null, byte1);
-            if(class46.solid)
-                collisionMap.markWall(j, i, i1, k, class46.walkable);
+                animable = new GameObject(objectId, face, 0, vertexHeightBottomRight, vertexHeightTopRight, vertexHeightBottomLeft, vertexHeightTopLeft, definition.animationId, true);
+            worldController.addWallObject(x, y, z, drawHeight, POWERS_OF_TWO[face], 0, hash, ((Animable) (animable)), null, config);
+            if(definition.solid)
+                collisionMap.markWall(y, face, x, type, definition.walkable);
             return;
         }
-        if(k == 1)
+        if(type == 1)
         {
-            Object obj4;
-            if(class46.animationId == -1 && class46.childIds == null)
-                obj4 = class46.getModelAt(1, i, l1, i2, j2, k2, -1);
+            Animable animable;
+            if(definition.animationId == -1 && definition.childIds == null)
+                animable = definition.getModelAt(1, face, vertexHeightBottomLeft, vertexHeightBottomRight, vertexHeightTopRight, vertexHeightTopLeft, -1);
             else
-                obj4 = new GameObject(j1, i, 1, i2, j2, l1, k2, class46.animationId, true);
-            worldController.addWallObject(i1, j, k1, l2, wallCornerOrientation[i], 0, i3, ((Animable) (obj4)), null, byte1);
-            if(class46.solid)
-                collisionMap.markWall(j, i, i1, k, class46.walkable);
+                animable = new GameObject(objectId, face, 1, vertexHeightBottomRight, vertexHeightTopRight, vertexHeightBottomLeft, vertexHeightTopLeft, definition.animationId, true);
+            worldController.addWallObject(x, y, z, drawHeight, WALL_CORNER_ORIENTATION[face], 0, hash, ((Animable) (animable)), null, config);
+            if(definition.solid)
+                collisionMap.markWall(y, face, x, type, definition.walkable);
             return;
         }
-        if(k == 2)
+        if(type == 2)
         {
-            int j3 = i + 1 & 3;
-            Object obj11;
-            Object obj12;
-            if(class46.animationId == -1 && class46.childIds == null)
+            int _face = face + 1 & 3;
+            Animable animable1;
+            Animable animable2;
+            if(definition.animationId == -1 && definition.childIds == null)
             {
-                obj11 = class46.getModelAt(2, 4 + i, l1, i2, j2, k2, -1);
-                obj12 = class46.getModelAt(2, j3, l1, i2, j2, k2, -1);
+                animable1 = definition.getModelAt(2, 4 + face, vertexHeightBottomLeft, vertexHeightBottomRight, vertexHeightTopRight, vertexHeightTopLeft, -1);
+                animable2 = definition.getModelAt(2, _face, vertexHeightBottomLeft, vertexHeightBottomRight, vertexHeightTopRight, vertexHeightTopLeft, -1);
             } else
             {
-                obj11 = new GameObject(j1, 4 + i, 2, i2, j2, l1, k2, class46.animationId, true);
-                obj12 = new GameObject(j1, j3, 2, i2, j2, l1, k2, class46.animationId, true);
+                animable1 = new GameObject(objectId, 4 + face, 2, vertexHeightBottomRight, vertexHeightTopRight, vertexHeightBottomLeft, vertexHeightTopLeft, definition.animationId, true);
+                animable2 = new GameObject(objectId, _face, 2, vertexHeightBottomRight, vertexHeightTopRight, vertexHeightBottomLeft, vertexHeightTopLeft, definition.animationId, true);
             }
-            worldController.addWallObject(i1, j, k1, l2, anIntArray152[i], anIntArray152[j3], i3, ((Animable) (obj11)), ((Animable) (obj12)), byte1);
-            if(class46.solid)
-                collisionMap.markWall(j, i, i1, k, class46.walkable);
+            worldController.addWallObject(x, y, z, drawHeight, POWERS_OF_TWO[face], POWERS_OF_TWO[_face], hash, ((Animable) (animable1)), ((Animable) (animable2)), config);
+            if(definition.solid)
+                collisionMap.markWall(y, face, x, type, definition.walkable);
             return;
         }
-        if(k == 3)
+        if(type == 3)
         {
-            Object obj5;
-            if(class46.animationId == -1 && class46.childIds == null)
-                obj5 = class46.getModelAt(3, i, l1, i2, j2, k2, -1);
+            Animable animable;
+            if(definition.animationId == -1 && definition.childIds == null)
+                animable = definition.getModelAt(3, face, vertexHeightBottomLeft, vertexHeightBottomRight, vertexHeightTopRight, vertexHeightTopLeft, -1);
             else
-                obj5 = new GameObject(j1, i, 3, i2, j2, l1, k2, class46.animationId, true);
-            worldController.addWallObject(i1, j, k1, l2, wallCornerOrientation[i], 0, i3, ((Animable) (obj5)), null, byte1);
-            if(class46.solid)
-                collisionMap.markWall(j, i, i1, k, class46.walkable);
+                animable = new GameObject(objectId, face, 3, vertexHeightBottomRight, vertexHeightTopRight, vertexHeightBottomLeft, vertexHeightTopLeft, definition.animationId, true);
+            worldController.addWallObject(x, y, z, drawHeight, WALL_CORNER_ORIENTATION[face], 0, hash, ((Animable) (animable)), null, config);
+            if(definition.solid)
+                collisionMap.markWall(y, face, x, type, definition.walkable);
             return;
         }
-        if(k == 9)
+        if(type == 9)
         {
-            Object obj6;
-            if(class46.animationId == -1 && class46.childIds == null)
-                obj6 = class46.getModelAt(k, i, l1, i2, j2, k2, -1);
+            Animable animable;
+            if(definition.animationId == -1 && definition.childIds == null)
+                animable = definition.getModelAt(type, face, vertexHeightBottomLeft, vertexHeightBottomRight, vertexHeightTopRight, vertexHeightTopLeft, -1);
             else
-                obj6 = new GameObject(j1, i, k, i2, j2, l1, k2, class46.animationId, true);
-            worldController.addEntityB(i1, j, k1, l2, 0, 1, 1, i3, ((Animable) (obj6)), byte1);
-            if(class46.solid)
-                collisionMap.markSolidOccupant(i1, j, class46.sizeX, class46.sizeY, i, class46.walkable);
+                animable = new GameObject(objectId, face, type, vertexHeightBottomRight, vertexHeightTopRight, vertexHeightBottomLeft, vertexHeightTopLeft, definition.animationId, true);
+            worldController.addEntityB(x, y, z, drawHeight, 0, 1, 1, hash, ((Animable) (animable)), config);
+            if(definition.solid)
+                collisionMap.markSolidOccupant(x, y, definition.sizeX, definition.sizeY, face, definition.walkable);
             return;
         }
-        if(class46.adjustToTerrain)
-            if(i == 1)
+        if(definition.adjustToTerrain)
+            if(face == 1)
             {
-                int k3 = k2;
-                k2 = j2;
-                j2 = i2;
-                i2 = l1;
-                l1 = k3;
+                int temp = vertexHeightTopLeft;
+                vertexHeightTopLeft = vertexHeightTopRight;
+                vertexHeightTopRight = vertexHeightBottomRight;
+                vertexHeightBottomRight = vertexHeightBottomLeft;
+                vertexHeightBottomLeft = temp;
             } else
-            if(i == 2)
+            if(face == 2)
             {
-                int l3 = k2;
-                k2 = i2;
-                i2 = l3;
-                l3 = j2;
-                j2 = l1;
-                l1 = l3;
+                int temp = vertexHeightTopLeft;
+                vertexHeightTopLeft = vertexHeightBottomRight;
+                vertexHeightBottomRight = temp;
+                temp = vertexHeightTopRight;
+                vertexHeightTopRight = vertexHeightBottomLeft;
+                vertexHeightBottomLeft = temp;
             } else
-            if(i == 3)
+            if(face == 3)
             {
-                int i4 = k2;
-                k2 = l1;
-                l1 = i2;
-                i2 = j2;
-                j2 = i4;
+                int temp = vertexHeightTopLeft;
+                vertexHeightTopLeft = vertexHeightBottomLeft;
+                vertexHeightBottomLeft = vertexHeightBottomRight;
+                vertexHeightBottomRight = vertexHeightTopRight;
+                vertexHeightTopRight = temp;
             }
-        if(k == 4)
+        if(type == 4)
         {
-            Object obj7;
-            if(class46.animationId == -1 && class46.childIds == null)
-                obj7 = class46.getModelAt(4, 0, l1, i2, j2, k2, -1);
+            Animable animable;
+            if(definition.animationId == -1 && definition.childIds == null)
+                animable = definition.getModelAt(4, 0, vertexHeightBottomLeft, vertexHeightBottomRight, vertexHeightTopRight, vertexHeightTopLeft, -1);
             else
-                obj7 = new GameObject(j1, 0, 4, i2, j2, l1, k2, class46.animationId, true);
-            worldController.addWallDecoration(i1, j, k1, l2, 0, 0, i * 512, i3, ((Animable) (obj7)), byte1, anIntArray152[i]);
+                animable = new GameObject(objectId, 0, 4, vertexHeightBottomRight, vertexHeightTopRight, vertexHeightBottomLeft, vertexHeightTopLeft, definition.animationId, true);
+            worldController.addWallDecoration(x, y, z, drawHeight, 0, 0, face * 512, hash, ((Animable) (animable)), config, POWERS_OF_TWO[face]);
             return;
         }
-        if(k == 5)
+        if(type == 5)
         {
-            int j4 = 16;
-            int l4 = worldController.getWallObjectUID(i1, j, k1);
-            if(l4 > 0)
-                j4 = GameObjectDefinition.getDefinition(l4 >> 14 & 0x7fff).unknownAttribute2;
-            Object obj13;
-            if(class46.animationId == -1 && class46.childIds == null)
-                obj13 = class46.getModelAt(4, 0, l1, i2, j2, k2, -1);
+            int offsetAmplifier = 16;
+            int objectHash = worldController.getWallObjectHash(x, y, z);
+            if(objectHash > 0)
+                offsetAmplifier = GameObjectDefinition.getDefinition(objectHash >> 14 & 0x7fff).offsetAmplifier;
+            Animable animable;
+            if(definition.animationId == -1 && definition.childIds == null)
+                animable = definition.getModelAt(4, 0, vertexHeightBottomLeft, vertexHeightBottomRight, vertexHeightTopRight, vertexHeightTopLeft, -1);
             else
-                obj13 = new GameObject(j1, 0, 4, i2, j2, l1, k2, class46.animationId, true);
-            worldController.addWallDecoration(i1, j, k1, l2, anIntArray137[i] * j4, anIntArray144[i] * j4, i * 512, i3, ((Animable) (obj13)), byte1, anIntArray152[i]);
+                animable = new GameObject(objectId, 0, 4, vertexHeightBottomRight, vertexHeightTopRight, vertexHeightBottomLeft, vertexHeightTopLeft, definition.animationId, true);
+            worldController.addWallDecoration(x, y, z, drawHeight, FACE_OFFSET_X[face] * offsetAmplifier, FACE_OFFSET_Y[face] * offsetAmplifier, face * 512, hash, ((Animable) (animable)), config, POWERS_OF_TWO[face]);
             return;
         }
-        if(k == 6)
+        if(type == 6)
         {
-            Object obj8;
-            if(class46.animationId == -1 && class46.childIds == null)
-                obj8 = class46.getModelAt(4, 0, l1, i2, j2, k2, -1);
+            Animable animable;
+            if(definition.animationId == -1 && definition.childIds == null)
+                animable = definition.getModelAt(4, 0, vertexHeightBottomLeft, vertexHeightBottomRight, vertexHeightTopRight, vertexHeightTopLeft, -1);
             else
-                obj8 = new GameObject(j1, 0, 4, i2, j2, l1, k2, class46.animationId, true);
-            worldController.addWallDecoration(i1, j, k1, l2, 0, 0, i, i3, ((Animable) (obj8)), byte1, 256);
+                animable = new GameObject(objectId, 0, 4, vertexHeightBottomRight, vertexHeightTopRight, vertexHeightBottomLeft, vertexHeightTopLeft, definition.animationId, true);
+            worldController.addWallDecoration(x, y, z, drawHeight, 0, 0, face, hash, ((Animable) (animable)), config, 256);
             return;
         }
-        if(k == 7)
+        if(type == 7)
         {
-            Object obj9;
-            if(class46.animationId == -1 && class46.childIds == null)
-                obj9 = class46.getModelAt(4, 0, l1, i2, j2, k2, -1);
+            Animable animable;
+            if(definition.animationId == -1 && definition.childIds == null)
+                animable = definition.getModelAt(4, 0, vertexHeightBottomLeft, vertexHeightBottomRight, vertexHeightTopRight, vertexHeightTopLeft, -1);
             else
-                obj9 = new GameObject(j1, 0, 4, i2, j2, l1, k2, class46.animationId, true);
-            worldController.addWallDecoration(i1, j, k1, l2, 0, 0, i, i3, ((Animable) (obj9)), byte1, 512);
+                animable = new GameObject(objectId, 0, 4, vertexHeightBottomRight, vertexHeightTopRight, vertexHeightBottomLeft, vertexHeightTopLeft, definition.animationId, true);
+            worldController.addWallDecoration(x, y, z, drawHeight, 0, 0, face, hash, ((Animable) (animable)), config, 512);
             return;
         }
-        if(k == 8)
+        if(type == 8)
         {
-            Object obj10;
-            if(class46.animationId == -1 && class46.childIds == null)
-                obj10 = class46.getModelAt(4, 0, l1, i2, j2, k2, -1);
+            Animable animable;
+            if(definition.animationId == -1 && definition.childIds == null)
+                animable = definition.getModelAt(4, 0, vertexHeightBottomLeft, vertexHeightBottomRight, vertexHeightTopRight, vertexHeightTopLeft, -1);
             else
-                obj10 = new GameObject(j1, 0, 4, i2, j2, l1, k2, class46.animationId, true);
-            worldController.addWallDecoration(i1, j, k1, l2, 0, 0, i, i3, ((Animable) (obj10)), byte1, 768);
+                animable = new GameObject(objectId, 0, 4, vertexHeightBottomRight, vertexHeightTopRight, vertexHeightBottomLeft, vertexHeightTopLeft, definition.animationId, true);
+            worldController.addWallDecoration(x, y, z, drawHeight, 0, 0, face, hash, ((Animable) (animable)), config, 768);
         }
     }
 
-  public static boolean objectBlockCached(int i, byte[] is, int i_250_
+  public static boolean objectBlockCached(int blockX, byte[] blockData, int blockY
   ) //xxx bad method, decompiled with JODE
   {
-    boolean bool = true;
-    Stream stream = new Stream(is);
-    int i_252_ = -1;
+    boolean cached = true;
+    Stream stream = new Stream(blockData);
+    int objectId = -1;
     for (;;)
       {
-	int i_253_ = stream.getSmartB ();
-	if (i_253_ == 0)
+	int deltaId = stream.getSmartB ();
+	if (deltaId == 0)
 	  break;
-	i_252_ += i_253_;
-	int i_254_ = 0;
-	boolean bool_255_ = false;
+	objectId += deltaId;
+	int pos = 0;
+	boolean foundInstance = false;
 	for (;;)
 	  {
-	    if (bool_255_)
+	    if (foundInstance)
 	      {
 		int i_256_ = stream.getSmartB ();
 		if (i_256_ == 0)
@@ -1304,29 +1304,29 @@ label0:
 	      }
 	    else
 	      {
-		int i_257_ = stream.getSmartB ();
-		if (i_257_ == 0)
+		int deltaPos = stream.getSmartB ();
+		if (deltaPos == 0)
 		  break;
-		i_254_ += i_257_ - 1;
-		int i_258_ = i_254_ & 0x3f;
-		int i_259_ = i_254_ >> 6 & 0x3f;
-		int i_260_ = stream.getUnsignedByte() >> 2;
-		int i_261_ = i_259_ + i;
-		int i_262_ = i_258_ + i_250_;
-		if (i_261_ > 0 && i_262_ > 0 && i_261_ < 103 && i_262_ < 103)
+		pos += deltaPos - 1;
+		int tileY = pos & 0x3f;
+		int tileX = pos >> 6 & 0x3f;
+		int objectType = stream.getUnsignedByte() >> 2;
+		int objectX = tileX + blockX;
+		int objectY = tileY + blockY;
+		if (objectX > 0 && objectY > 0 && objectX < 103 && objectY < 103)
 		  {
-		    GameObjectDefinition class46 = GameObjectDefinition.getDefinition (i_252_);
-		    if (i_260_ != 22 || !lowMem || class46.hasActions
-                    || class46.unknownAttribute3)
+		    GameObjectDefinition definition = GameObjectDefinition.getDefinition (objectId);
+		    if (objectType != 22 || !lowMem || definition.hasActions
+                    || definition.unknownAttribute3)
 		      {
-			bool &= class46.modelCached ();
-			bool_255_ = true;
+			cached &= definition.modelCached ();
+			foundInstance = true;
 		      }
 		  }
 	      }
 	  }
       }
-    return bool;
+    return cached;
   }
 
     public final void loadObjectBlock(int i, CollisionMap aclass11[], int j, WorldController worldController, byte abyte0[])
@@ -1378,31 +1378,31 @@ label0:
     private final int[] anIntArray127;
     private final int[] anIntArray128;
     private final int[][][] vertexHeights;
-    private final byte[][][] aByteArrayArrayArray130;
+    private final byte[][][] tileTypeLayer1;
     static int plane;
     private static int anInt133 = (int)(Math.random() * 33D) - 16;
     private final byte[][][] tileShadowIntensity;
     private final int[][][] tileCullingBitsets;
-    private final byte[][][] aByteArrayArrayArray136;
-    private static final int anIntArray137[] = {
+    private final byte[][][] tileShapeLayer1;
+    private static final int FACE_OFFSET_X[] = {
         1, 0, -1, 0
     };
     private static final int anInt138 = 323;
     private final int[][] anIntArrayArray139;
-    private static final int wallCornerOrientation[] = {
+    private static final int WALL_CORNER_ORIENTATION[] = {
         16, 32, 64, 128
     };
-    private final byte[][][] aByteArrayArrayArray142;
-    private static final int anIntArray144[] = {
+    private final byte[][][] tileTypeLayer0;
+    private static final int FACE_OFFSET_Y[] = {
         0, -1, 0, 1
     };
     static int setZ = 99;
     private final int anInt146;
     private final int anInt147;
-    private final byte[][][] aByteArrayArrayArray148;
+    private final byte[][][] tileOrientationLayer1;
     private final byte[][][] renderRuleFlags;
     static boolean lowMem = true;
-    private static final int anIntArray152[] = {
+    private static final int POWERS_OF_TWO[] = {
         1, 2, 4, 8
     };
 

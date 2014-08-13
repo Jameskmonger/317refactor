@@ -1,64 +1,68 @@
 package com.jagex.runescape;
-public final class Flo {
 
-    public static void unpackConfig(Archive archive)
+import java.util.Random;
+
+public final class FloorDefinition {
+
+    public static void load(Archive archive)
     {
         Stream stream = new Stream(archive.getFile("flo.dat"));
         int cacheSize = stream.getUnsignedLEShort();
         if(cache == null)
-            cache = new Flo[cacheSize];
+            cache = new FloorDefinition[cacheSize];
         for(int j = 0; j < cacheSize; j++)
         {
             if(cache[j] == null)
-                cache[j] = new Flo();
-            cache[j].readValues(stream);
+                cache[j] = new FloorDefinition();
+            cache[j].loadDefinition(stream);
         }
 
     }
 
-    private void readValues(Stream stream)
+    private void loadDefinition(Stream stream)
     {
         do
         {
-            int opcode = stream.getUnsignedByte();
+            int attribute = stream.getUnsignedByte();
             boolean dummy;
-            if(opcode == 0)
+            if(attribute == 0)
                 return;
             else
-            if(opcode == 1)
+            if(attribute == 1)
             {
-                colour2 = stream.read3Bytes();
-                rgbToHls(colour2);
+                rgbColour = stream.get24BitInt();
+                rgbToHls(rgbColour);
             } else
-            if(opcode == 2)
-                texture = stream.getUnsignedByte();
+            if(attribute == 2)
+                textureId = stream.getUnsignedByte();
             else
-            if(opcode == 3)
+            if(attribute == 3)
                 dummy = true;
             else
-            if(opcode == 5)
+            if(attribute == 5)
                 occlude = false;
             else
-            if(opcode == 6)
-                stream.getString();
+            if(attribute == 6)
+                name = stream.getString();
             else
-            if(opcode == 7)
+            if(attribute == 7)
             {
-                int h = hue;
-                int s = saturation;
-                int l = lightness;
-                int h2 = hue2;
-                int rgb = stream.read3Bytes();
+                int oldHue2 = hue2;
+                int oldSat = saturation;
+                int oldLight = lightness;
+                int oldHue = hue;
+                int rgb = stream.get24BitInt();
                 rgbToHls(rgb);
-                hue = h;
-                saturation = s;
-                lightness = l;
-                hue2 = h2;
-                pCDivider = h2;
+                hue2 = oldHue2;
+                saturation = oldSat;
+                lightness = oldLight;
+                hue = oldHue;
+                hueDivisor = oldHue;
             } else
             {
-                System.out.println("Error unrecognised config code: " + opcode);
+                System.out.println("Error unrecognised config code: " + attribute);
             }
+            
         } while(true);
     }
 
@@ -96,7 +100,7 @@ public final class Flo {
                 h = 4D + (red - green) / (maxC - minC);
         }
         h /= 6D;
-        hue = (int)(h * 256D);
+        hue2 = (int)(h * 256D);
         saturation = (int)(s * 256D);
         lightness = (int)(l * 256D);
         if(saturation < 0)
@@ -110,13 +114,13 @@ public final class Flo {
         if(lightness > 255)
             lightness = 255;
         if(l > 0.5D)
-            pCDivider = (int)((1.0D - l) * s * 512D);
+            hueDivisor = (int)((1.0D - l) * s * 512D);
         else
-            pCDivider = (int)(l * s * 512D);
-        if(pCDivider < 1)
-            pCDivider = 1;
-        hue2 = (int)(h * (double)pCDivider);
-        int randomHue = (hue + (int)(Math.random() * 16D)) - 8;
+            hueDivisor = (int)(l * s * 512D);
+        if(hueDivisor < 1)
+            hueDivisor = 1;
+        hue = (int)(h * (double)hueDivisor);
+        int randomHue = (hue2 + (int)(Math.random() * 16D)) - 8;
         if(randomHue < 0)
             randomHue = 0;
         else
@@ -150,20 +154,21 @@ public final class Flo {
         return (h / 4 << 10) + (s / 32 << 7) + l / 2;
     }
 
-    private Flo()
+    private FloorDefinition()
     {
-        texture = -1;
+        textureId = -1;
         occlude = true;
     }
 
-    public static Flo cache[];
-    public int colour2;
-    public int texture;
+    public static FloorDefinition cache[];
+    public int rgbColour;
+    public int textureId;
     public boolean occlude;
-    public int hue;
+    public int hue2;
     public int saturation;
     public int lightness;
-    public int hue2;
-    public int pCDivider;
+    public int hue;
+    public int hueDivisor;
     public int hsl;
+    public String name;
 }

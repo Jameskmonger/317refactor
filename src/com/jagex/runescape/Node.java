@@ -5,7 +5,7 @@ package com.jagex.runescape;
 
 public class Node {
 
-    public final void unlink()
+    public final void remove()
     {
         if(next == null)
         {

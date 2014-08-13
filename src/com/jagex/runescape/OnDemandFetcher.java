@@ -7,7 +7,7 @@ import java.io.*;
 import java.net.Socket;
 import java.util.zip.CRC32;
 import java.util.zip.GZIPInputStream;
-import sign.signlink;
+import com.jagex.runescape.sign.signlink;
 
 public final class OnDemandFetcher extends OnDemandFetcherParent
         implements Runnable
@@ -39,7 +39,7 @@ public final class OnDemandFetcher extends OnDemandFetcherParent
                 int l1 = ((ioBuffer[3] & 0xff) << 8) + (ioBuffer[4] & 0xff);
                 int i2 = ioBuffer[5] & 0xff;
                 current = null;
-                for(OnDemandData onDemandData = (OnDemandData) requested.reverseGetFirst(); onDemandData != null; onDemandData = (OnDemandData) requested.reverseGetNext())
+                for(OnDemandData onDemandData = (OnDemandData) requested.getBack(); onDemandData != null; onDemandData = (OnDemandData) requested.reverseGetNext())
                 {
                     if(onDemandData.dataType == l && onDemandData.id == j1)
                         current = onDemandData;
@@ -60,7 +60,7 @@ public final class OnDemandFetcher extends OnDemandFetcherParent
                                 aClass19_1358.insertHead(current);
                             }
                         else
-                            current.unlink();
+                            current.remove();
                         current = null;
                     } else
                     {
@@ -101,7 +101,7 @@ public final class OnDemandFetcher extends OnDemandFetcherParent
                             aClass19_1358.insertHead(current);
                         }
                     else
-                        current.unlink();
+                        current.remove();
                 }
                 expectedSize = 0;
             }
@@ -336,7 +336,7 @@ public final class OnDemandFetcher extends OnDemandFetcherParent
                 }
 
                 boolean flag = false;
-                for(OnDemandData onDemandData = (OnDemandData) requested.reverseGetFirst(); onDemandData != null; onDemandData = (OnDemandData) requested.reverseGetNext())
+                for(OnDemandData onDemandData = (OnDemandData) requested.getBack(); onDemandData != null; onDemandData = (OnDemandData) requested.reverseGetNext())
                     if(onDemandData.incomplete)
                     {
                         flag = true;
@@ -350,7 +350,7 @@ public final class OnDemandFetcher extends OnDemandFetcherParent
 
                 if(!flag)
                 {
-                    for(OnDemandData onDemandData_1 = (OnDemandData) requested.reverseGetFirst(); onDemandData_1 != null; onDemandData_1 = (OnDemandData) requested.reverseGetNext())
+                    for(OnDemandData onDemandData_1 = (OnDemandData) requested.getBack(); onDemandData_1 != null; onDemandData_1 = (OnDemandData) requested.reverseGetNext())
                     {
                         flag = true;
                         onDemandData_1.loopCycle++;
@@ -513,7 +513,7 @@ public final class OnDemandFetcher extends OnDemandFetcherParent
     {
         uncompletedCount = 0;
         completedCount = 0;
-        for(OnDemandData onDemandData = (OnDemandData) requested.reverseGetFirst(); onDemandData != null; onDemandData = (OnDemandData) requested.reverseGetNext())
+        for(OnDemandData onDemandData = (OnDemandData) requested.getBack(); onDemandData != null; onDemandData = (OnDemandData) requested.reverseGetNext())
             if(onDemandData.incomplete)
                 uncompletedCount++;
             else

@@ -1,9 +1,9 @@
 package com.jagex.runescape;
+
+import com.jagex.runescape.sign.signlink;
 // Decompiled by Jad v1.5.8f. Copyright 2001 Pavel Kouznetsov.
 // Jad home page: http://www.kpdus.com/jad.html
 // Decompiler options: packimports(3) 
-
-import sign.signlink;
 
 final class NodeCache {
 
@@ -36,7 +36,7 @@ final class NodeCache {
         try
         {
             if(node.next != null)
-                node.unlink();
+                node.remove();
             Node node_1 = cache[(int)(l & (long)(size - 1))];
                 node.next = node_1.next;
                 node.prev = node_1;

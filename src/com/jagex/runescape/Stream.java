@@ -4,7 +4,7 @@ package com.jagex.runescape;
 // Decompiler options: packimports(3) 
 
 import java.math.BigInteger;
-import sign.signlink;
+import com.jagex.runescape.sign.signlink;
 
 public final class Stream extends NodeSub {
 
@@ -144,7 +144,7 @@ public final class Stream extends NodeSub {
         return i;
     }
 
-    public int read3Bytes()
+    public int get24BitInt()
     {
         currentOffset += 3;
         return ((buffer[currentOffset - 3] & 0xff) << 16) + ((buffer[currentOffset - 2] & 0xff) << 8) + (buffer[currentOffset - 1] & 0xff);

@@ -3,7 +3,7 @@ package com.jagex.runescape;
 // Jad home page: http://www.kpdus.com/jad.html
 // Decompiler options: packimports(3) 
 
-import sign.signlink;
+import com.jagex.runescape.sign.signlink;
 
 public final class MRUNodes {
 
@@ -33,12 +33,12 @@ public final class MRUNodes {
             if(spaceLeft == 0)
             {
                 NodeSub nodeSub_1 = nodeSubList.popTail();
-                nodeSub_1.unlink();
+                nodeSub_1.remove();
                 nodeSub_1.unlinkSub();
                 if(nodeSub_1 == emptyNodeSub)
                 {
                     NodeSub nodeSub_2 = nodeSubList.popTail();
-                    nodeSub_2.unlink();
+                    nodeSub_2.remove();
                     nodeSub_2.unlinkSub();
                 }
             } else
@@ -63,7 +63,7 @@ public final class MRUNodes {
             NodeSub nodeSub = nodeSubList.popTail();
             if(nodeSub != null)
             {
-                nodeSub.unlink();
+                nodeSub.remove();
                 nodeSub.unlinkSub();
             } else
             {

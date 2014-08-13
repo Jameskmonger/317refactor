@@ -1,7 +1,7 @@
 package com.jagex.runescape;
 public final class VarBit {
 
-    public static void unpackConfig(Archive archive)
+    public static void load(Archive archive)
     {
         Stream stream = new Stream(archive.getFile("varbit.dat"));
         int cacheSize = stream.getUnsignedLEShort();
@@ -11,7 +11,7 @@ public final class VarBit {
         {
             if(cache[j] == null)
                 cache[j] = new VarBit();
-            cache[j].readValues(stream);
+            cache[j].loadDefinition(stream);
             if(cache[j].aBoolean651)
                 Varp.cache[cache[j].configId].aBoolean713 = true;
         }
@@ -20,7 +20,7 @@ public final class VarBit {
             System.out.println("varbit load mismatch");
     }
 
-    private void readValues(Stream stream)
+    private void loadDefinition(Stream stream)
     {
         do
         {

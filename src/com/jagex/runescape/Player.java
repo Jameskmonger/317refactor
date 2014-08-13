@@ -143,7 +143,7 @@ public final class Player extends Entity
         super.runAnimationId = stream.getUnsignedLEShort();
         if(super.runAnimationId == 65535)
             super.runAnimationId = -1;
-        name = TextClass.formatName(TextClass.nameForLong(stream.getLong()));
+        name = TextClass.formatName(TextClass.longToName(stream.getLong()));
         combatLevel = stream.getUnsignedByte();
         skill = stream.getUnsignedLEShort();
         visible = true;

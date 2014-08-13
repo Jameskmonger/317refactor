@@ -34,7 +34,7 @@ public final class GameObjectDefinition
         delayShading = false;
         unknownAttribute1 = false;
         animationId = -1;
-        unknownAttribute2 = 16;
+        offsetAmplifier = 16;
         ambient = 0;
         diffuse = 0;
         actions = null;
@@ -356,7 +356,7 @@ label0:
                         animationId = -1;
                 } else
                 if(attribute == 28)
-                    unknownAttribute2 = stream.getUnsignedByte();
+                    offsetAmplifier = stream.getUnsignedByte();
                 else
                 if(attribute == 29)
                     ambient = stream.get();
@@ -501,7 +501,7 @@ label0:
     private int scaleY;
     private int[] modelIds;
     public int varBitId;
-    public int unknownAttribute2;
+    public int offsetAmplifier;
     private int[] modelTypes;
     public byte description[];
     public boolean hasActions;

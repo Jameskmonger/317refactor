@@ -11,8 +11,7 @@ import java.net.*;
 import java.util.zip.CRC32;
 
 import com.jagex.runescape.audio.Effect;
-
-import sign.signlink;
+import com.jagex.runescape.sign.signlink;
 
 public final class client extends RSApplet {
 
@@ -699,7 +698,7 @@ public final class client extends RSApplet {
         {
             for(int y = 0; y < 104; y++)
             {
-                int hash = worldController.getGroundDecorationUID(x, y, plane);
+                int hash = worldController.getGroundDecorationHash(x, y, plane);
                 if(hash != 0)
                 {
                     hash = hash >> 14 & 0x7fff;
@@ -752,7 +751,7 @@ public final class client extends RSApplet {
         }
         int highestValue = -99999999;
         Object item = null;
-        for(Item currentItem = (Item)groundItemList.reverseGetFirst(); currentItem != null; currentItem = (Item)groundItemList.reverseGetNext())
+        for(Item currentItem = (Item)groundItemList.getBack(); currentItem != null; currentItem = (Item)groundItemList.reverseGetNext())
         {
             ItemDef itemDef = ItemDef.forID(currentItem.itemId);
             int value = itemDef.value;
@@ -768,7 +767,7 @@ public final class client extends RSApplet {
         groundItemList.insertTail(((Node) (item)));
         Object secondItem = null;
         Object thirdItem = null;
-        for(Item currentItem = (Item)groundItemList.reverseGetFirst(); currentItem != null; currentItem = (Item)groundItemList.reverseGetNext())
+        for(Item currentItem = (Item)groundItemList.getBack(); currentItem != null; currentItem = (Item)groundItemList.reverseGetNext())
         {
             if(currentItem.itemId != ((Item) (item)).itemId && secondItem == null)
                 secondItem = currentItem;
@@ -1183,7 +1182,7 @@ public final class client extends RSApplet {
 
     private void handleInterfaceSetting(int i)
     {
-        int j = Varp.cache[i].anInt709;
+        int j = Varp.cache[i].type;
         if(j == 0)
             return;
         int k = variousSettings[i];
@@ -1817,7 +1816,7 @@ public final class client extends RSApplet {
                 pushMessage("Your friendlist is full. Max of 100 for free users, and 200 for members", 0, "");
                 return;
             }
-            String s = TextClass.formatName(TextClass.nameForLong(l));
+            String s = TextClass.formatName(TextClass.longToName(l));
             for(int i = 0; i < friendsCount; i++)
                 if(friendsListAsLongs[i] == l)
                 {
@@ -2123,7 +2122,7 @@ public final class client extends RSApplet {
             if(reportAbuseInput.length() > 0)
             {
                 stream.putOpcode(218);
-                stream.putLong(TextClass.longForName(reportAbuseInput));
+                stream.putLong(TextClass.nameToLong(reportAbuseInput));
                 stream.put(contentType - 601);
                 stream.put(reportAbuseMute ? 1 : 0);
             }
@@ -2147,7 +2146,7 @@ public final class client extends RSApplet {
 
     private void drawMinimapScene(int y, int lineColour, int x, int interfactiveColour, int z)
     {    	
-        int uid = worldController.getWallObjectUID(x, y, z);
+        int uid = worldController.getWallObjectHash(x, y, z);
         if(uid != 0)
         {
             int config = worldController.getConfig(uid, x, y, z);
@@ -2243,7 +2242,7 @@ public final class client extends RSApplet {
                     }
             }
         }
-        uid = worldController.getInteractibleObjectUID(x, y, z);
+        uid = worldController.getInteractibleObjectHash(x, y, z);
         if(uid != 0)
         {
             int config = worldController.getConfig(uid, x, y, z);
@@ -2283,7 +2282,7 @@ public final class client extends RSApplet {
                 }
             }
         }
-        uid = worldController.getGroundDecorationUID(x, y, z);
+        uid = worldController.getGroundDecorationHash(x, y, z);
         if(uid != 0)
         {
             int objectId = uid >> 14 & 0x7fff;
@@ -2507,9 +2506,9 @@ public final class client extends RSApplet {
 
     private void renderProjectiles()
     {
-        for(Projectile projectile = (Projectile)projectileQueue.reverseGetFirst(); projectile != null; projectile = (Projectile)projectileQueue.reverseGetNext())
+        for(Projectile projectile = (Projectile)projectileQueue.getBack(); projectile != null; projectile = (Projectile)projectileQueue.reverseGetNext())
             if(projectile.plane != plane || tick > projectile.endCycle)
-                projectile.unlink();
+                projectile.remove();
             else
             if(tick >= projectile.delay)
             {
@@ -3094,7 +3093,7 @@ public final class client extends RSApplet {
 
     private void clearObjectSpawnRequests()
     {
-        GameObjectSpawnRequest spawnRequest = (GameObjectSpawnRequest)spawnObjectList.reverseGetFirst();
+        GameObjectSpawnRequest spawnRequest = (GameObjectSpawnRequest)spawnObjectList.getBack();
         for(; spawnRequest != null; spawnRequest = (GameObjectSpawnRequest)spawnObjectList.reverseGetNext())
             if(spawnRequest.delayUntilRespawn == -1)
             {
@@ -3102,7 +3101,7 @@ public final class client extends RSApplet {
                 configureSpawnRequest(spawnRequest);
             } else
             {
-                spawnRequest.unlink();
+                spawnRequest.remove();
             }
 
     }
@@ -3298,7 +3297,7 @@ public final class client extends RSApplet {
                 datainputstream.readFully(abyte1, 0, 6);
                 Stream stream = new Stream(abyte1);
                 stream.currentOffset = 3;
-                int i2 = stream.read3Bytes() + 6;
+                int i2 = stream.get24BitInt() + 6;
                 int j2 = 6;
                 abyte0 = new byte[i2];
                 System.arraycopy(abyte1, 0, abyte0, 0, 6);
@@ -3627,7 +3626,7 @@ public final class client extends RSApplet {
             int position = name.indexOf("@whi@");
             if(position != -1)
             {
-                long targetAsLong = TextClass.longForName(name.substring(position + 5).trim());
+                long targetAsLong = TextClass.nameToLong(name.substring(position + 5).trim());
                 if(menuAction == 337)
                     addFriend(targetAsLong);
                 if(menuAction == 42)
@@ -3675,7 +3674,7 @@ public final class client extends RSApplet {
             if(position != -1)
             {
                 name = name.substring(position + 5).trim();
-                String nameAsLong = TextClass.formatName(TextClass.nameForLong(TextClass.longForName(name)));
+                String nameAsLong = TextClass.formatName(TextClass.longToName(TextClass.nameToLong(name)));
                 boolean foundPlayer = false;
                 for(int p = 0; p < localPlayerCount; p++)
                 {
@@ -4140,7 +4139,7 @@ public final class client extends RSApplet {
             int position = name.indexOf("@whi@");
             if(position != -1)
             {
-                long nameAsLong = TextClass.longForName(name.substring(position + 5).trim());
+                long nameAsLong = TextClass.nameToLong(name.substring(position + 5).trim());
                 int target = -1;
                 for(int friend = 0; friend < friendsCount; friend++)
                 {
@@ -4640,7 +4639,7 @@ public final class client extends RSApplet {
         GameObjectDefinition.nullLoader();
         EntityDefinition.nullLoader();
         ItemDef.nullLoader();
-        Flo.cache = null;
+        FloorDefinition.cache = null;
         IdentityKit.cache = null;
         RSInterface.interfaceCache = null;
         DummyClass.cache = null;
@@ -4717,12 +4716,12 @@ public final class client extends RSApplet {
                     inputTaken = true;
                     if(friendsListAction == 1)
                     {
-                        long nameLong = TextClass.longForName(promptInput);
+                        long nameLong = TextClass.nameToLong(promptInput);
                         addFriend(nameLong);
                     }
                     if(friendsListAction == 2 && friendsCount > 0)
                     {
-                        long nameLong = TextClass.longForName(promptInput);
+                        long nameLong = TextClass.nameToLong(promptInput);
                         deleteFriend(nameLong);
                     }
                     if(friendsListAction == 3 && promptInput.length() > 0)
@@ -4735,7 +4734,7 @@ public final class client extends RSApplet {
                         stream.putSizeByte(stream.currentOffset - originalOffset);
                         promptInput = TextInput.processText(promptInput);
                         promptInput = Censor.doCensor(promptInput);
-                        pushMessage(promptInput, 6, TextClass.formatName(TextClass.nameForLong(privateMessageTarget)));
+                        pushMessage(promptInput, 6, TextClass.formatName(TextClass.longToName(privateMessageTarget)));
                         if(privateChatMode == 2)
                         {
                             privateChatMode = 1;
@@ -4748,12 +4747,12 @@ public final class client extends RSApplet {
                     }
                     if(friendsListAction == 4 && ignoreCount < 100)
                     {
-                        long nameLong = TextClass.longForName(promptInput);
+                        long nameLong = TextClass.nameToLong(promptInput);
                         addIgnore(nameLong);
                     }
                     if(friendsListAction == 5 && ignoreCount > 0)
                     {
-                        long nameLong = TextClass.longForName(promptInput);
+                        long nameLong = TextClass.nameToLong(promptInput);
                         deleteIgnore(nameLong);
                     }
                 }
@@ -4804,7 +4803,7 @@ public final class client extends RSApplet {
                     if(amountOrNameInput.length() > 0)
                     {
                         stream.putOpcode(60);
-                        stream.putLong(TextClass.longForName(amountOrNameInput));
+                        stream.putLong(TextClass.nameToLong(amountOrNameInput));
                     }
                     inputDialogState = 0;
                     inputTaken = true;
@@ -5179,7 +5178,7 @@ public final class client extends RSApplet {
                 return;
             } else
             {
-                class9.textDefault = TextClass.formatName(TextClass.nameForLong(ignoreListAsLongs[j]));
+                class9.textDefault = TextClass.formatName(TextClass.longToName(ignoreListAsLongs[j]));
                 class9.actionType = 1;
                 return;
             }
@@ -5709,7 +5708,7 @@ public final class client extends RSApplet {
                 drawLoginScreen(true);
             }
             socket = new RSSocket(this, openSocket(43594 + portOffset));
-            long nameLong = TextClass.longForName(playerUsername);
+            long nameLong = TextClass.nameToLong(playerUsername);
             int nameHash = (int)(nameLong >> 16 & 31L);
             stream.currentOffset = 0;
             stream.put(14);
@@ -6536,13 +6535,13 @@ public final class client extends RSApplet {
         int type = 0;
         int face = 0;
         if(spawnRequest.objectType == 0)
-            uid = worldController.getWallObjectUID(spawnRequest.x, spawnRequest.y, spawnRequest.z);
+            uid = worldController.getWallObjectHash(spawnRequest.x, spawnRequest.y, spawnRequest.z);
         if(spawnRequest.objectType == 1)
-            uid = worldController.getWallDecorationUID(spawnRequest.x, spawnRequest.y, spawnRequest.z);
+            uid = worldController.getWallDecorationHash(spawnRequest.x, spawnRequest.y, spawnRequest.z);
         if(spawnRequest.objectType == 2)
-            uid = worldController.getInteractibleObjectUID(spawnRequest.x, spawnRequest.y, spawnRequest.z);
+            uid = worldController.getInteractibleObjectHash(spawnRequest.x, spawnRequest.y, spawnRequest.z);
         if(spawnRequest.objectType == 3)
-            uid = worldController.getGroundDecorationUID(spawnRequest.x, spawnRequest.y, spawnRequest.z);
+            uid = worldController.getGroundDecorationHash(spawnRequest.x, spawnRequest.y, spawnRequest.z);
         if(uid != 0)
         {
             int config = worldController.getConfig(uid, spawnRequest.x, spawnRequest.y, spawnRequest.z);
@@ -6948,13 +6947,13 @@ public final class client extends RSApplet {
             drawLoadingText(86, "Unpacking config");
             AnimationSequence.unpackConfig(archiveConfig);
             GameObjectDefinition.load(archiveConfig);
-            Flo.unpackConfig(archiveConfig);
+            FloorDefinition.load(archiveConfig);
             ItemDef.unpackConfig(archiveConfig);
             EntityDefinition.load(archiveConfig);
             IdentityKit.load(archiveConfig);
             SpotAnimation.load(archiveConfig);
-            Varp.unpackConfig(archiveConfig);
-            VarBit.unpackConfig(archiveConfig);
+            Varp.load(archiveConfig);
+            VarBit.load(archiveConfig);
             ItemDef.isMembers = isMembers;
             if(!lowMemory)
             {
@@ -7781,16 +7780,16 @@ public final class client extends RSApplet {
 
     private void renderStationaryGraphics()
     {
-        StationaryGraphic stationaryGraphic = (StationaryGraphic)stationaryGraphicQueue.reverseGetFirst();
+        StationaryGraphic stationaryGraphic = (StationaryGraphic)stationaryGraphicQueue.getBack();
         for(; stationaryGraphic != null; stationaryGraphic = (StationaryGraphic)stationaryGraphicQueue.reverseGetNext())
             if(stationaryGraphic.z != plane || stationaryGraphic.transformationCompleted)
-                stationaryGraphic.unlink();
+                stationaryGraphic.remove();
             else
             if(tick >= stationaryGraphic.stationaryGraphicLoopCycle)
             {
                 stationaryGraphic.animationStep(animationTimePassed);
                 if(stationaryGraphic.transformationCompleted)
-                    stationaryGraphic.unlink();
+                    stationaryGraphic.remove();
                 else
                     worldController.addEntityA(stationaryGraphic.z, stationaryGraphic.x, stationaryGraphic.y, stationaryGraphic.drawHeight, 0, stationaryGraphic, -1, 60, false);
             }
@@ -8231,7 +8230,7 @@ public final class client extends RSApplet {
             int originalOffset = stream.currentOffset;
             if(player.name != null && player.visible)
             {
-                long nameAsLong = TextClass.longForName(player.name);
+                long nameAsLong = TextClass.nameToLong(player.name);
                 boolean ignored = false;
                 if(rights <= 1)
                 {
@@ -8549,7 +8548,7 @@ public final class client extends RSApplet {
                 pushMessage("Your ignore list is full. Max of 100 hit", 0, "");
                 return;
             }
-            String targetName = TextClass.formatName(TextClass.nameForLong(target));
+            String targetName = TextClass.formatName(TextClass.longToName(target));
             for(int p = 0; p < ignoreCount; p++)
                 if(ignoreListAsLongs[p] == target)
                 {
@@ -8596,30 +8595,30 @@ public final class client extends RSApplet {
     {
         if(loadingStage == 2)
         {
-            for(GameObjectSpawnRequest spawnRequest = (GameObjectSpawnRequest)spawnObjectList.reverseGetFirst(); spawnRequest != null; spawnRequest = (GameObjectSpawnRequest)spawnObjectList.reverseGetNext())
+            for(GameObjectSpawnRequest spawnRequest = (GameObjectSpawnRequest)spawnObjectList.getBack(); spawnRequest != null; spawnRequest = (GameObjectSpawnRequest)spawnObjectList.reverseGetNext())
             {
                 if(spawnRequest.delayUntilRespawn > 0)
                     spawnRequest.delayUntilRespawn--;
                 if(spawnRequest.delayUntilRespawn == 0)
                 {
-                    if(spawnRequest.id < 0 || ObjectManager.method178(spawnRequest.id, spawnRequest.type))
+                    if(spawnRequest.id < 0 || ObjectManager.modelTypeCached(spawnRequest.id, spawnRequest.type))
                     {
                         method142(spawnRequest.y, spawnRequest.z, spawnRequest.face, spawnRequest.type, spawnRequest.x, spawnRequest.objectType, spawnRequest.id);
-                        spawnRequest.unlink();
+                        spawnRequest.remove();
                     }
                 } else
                 {
                     if(spawnRequest.delayUntilSpawn > 0)
                         spawnRequest.delayUntilSpawn--;
-                    if(spawnRequest.delayUntilSpawn == 0 && spawnRequest.x >= 1 && spawnRequest.y >= 1 && spawnRequest.x <= 102 && spawnRequest.y <= 102 && (spawnRequest.id2 < 0 || ObjectManager.method178(spawnRequest.id2, spawnRequest.type2)))
+                    if(spawnRequest.delayUntilSpawn == 0 && spawnRequest.x >= 1 && spawnRequest.y >= 1 && spawnRequest.x <= 102 && spawnRequest.y <= 102 && (spawnRequest.id2 < 0 || ObjectManager.modelTypeCached(spawnRequest.id2, spawnRequest.type2)))
                     {
                         method142(spawnRequest.y, spawnRequest.z, spawnRequest.face2, spawnRequest.type2, spawnRequest.x, spawnRequest.objectType, spawnRequest.id2);
                         spawnRequest.delayUntilSpawn = -1;
                         if(spawnRequest.id2 == spawnRequest.id && spawnRequest.id == -1)
-                            spawnRequest.unlink();
+                            spawnRequest.remove();
                         else
                         if(spawnRequest.id2 == spawnRequest.id && spawnRequest.face2 == spawnRequest.face && spawnRequest.type2 == spawnRequest.type)
-                            spawnRequest.unlink();
+                            spawnRequest.remove();
                     }
                 }
             }
@@ -9153,7 +9152,7 @@ public final class client extends RSApplet {
                 int j1 = player.x / 32 - localPlayer.x / 32;
                 int l3 = player.y / 32 - localPlayer.y / 32;
                 boolean flag1 = false;
-                long l6 = TextClass.longForName(player.name);
+                long l6 = TextClass.nameToLong(player.name);
                 for(int k6 = 0; k6 < friendsCount; k6++)
                 {
                     if(l6 != friendsListAsLongs[k6] || friendsWorldIds[k6] == 0)
@@ -9314,7 +9313,7 @@ public final class client extends RSApplet {
                            int z, int x, int delayUntilSpawn)
     {
         GameObjectSpawnRequest request = null;
-        for(GameObjectSpawnRequest request2 = (GameObjectSpawnRequest)spawnObjectList.reverseGetFirst(); request2 != null; request2 = (GameObjectSpawnRequest)spawnObjectList.reverseGetNext())
+        for(GameObjectSpawnRequest request2 = (GameObjectSpawnRequest)spawnObjectList.getBack(); request2 != null; request2 = (GameObjectSpawnRequest)spawnObjectList.reverseGetNext())
         {
             if(request2.z != z || request2.x != x || request2.y != y || request2.objectType != type)
                 continue;
@@ -9685,7 +9684,7 @@ public final class client extends RSApplet {
                 NodeList groundItemArray = groundArray[plane][x][y];
                 if(groundItemArray != null)
                 {
-                    for(Item item = (Item)groundItemArray.reverseGetFirst(); item != null; item = (Item)groundItemArray.reverseGetNext())
+                    for(Item item = (Item)groundItemArray.getBack(); item != null; item = (Item)groundItemArray.reverseGetNext())
                     {
                         if(item.itemId != (targetItemId & 0x7fff) || item.itemCount != targetItemAmount)
                             continue;
@@ -9746,15 +9745,15 @@ public final class client extends RSApplet {
                 NodeList groundItems = groundArray[plane][x][y];
                 if(groundItems != null)
                 {
-                    for(Item item = (Item)groundItems.reverseGetFirst(); item != null; item = (Item)groundItems.reverseGetNext())
+                    for(Item item = (Item)groundItems.getBack(); item != null; item = (Item)groundItems.reverseGetNext())
                     {
                         if(item.itemId != (itemId & 0x7fff))
                             continue;
-                        item.unlink();
+                        item.remove();
                         break;
                     }
 
-                    if(groundItems.reverseGetFirst() == null)
+                    if(groundItems.getBack() == null)
                         groundArray[plane][x][y] = null;
                     spawnGroundItem(x, y);
                 }
@@ -10164,32 +10163,31 @@ public final class client extends RSApplet {
         }
     }
 
-    private void method142(int y, int z, int k, int l, int x, int objectType, int k1
-    )
+    private void method142(int y, int z, int face, int l, int x, int objectType, int objectId)
     {
         if(x >= 1 && y >= 1 && x <= 102 && y <= 102)
         {
             if(lowMemory && z != plane)
                 return;
-            int uid = 0;
+            int hash = 0;
             if(objectType == 0)
-                uid = worldController.getWallObjectUID(x, y, z);
+                hash = worldController.getWallObjectHash(x, y, z);
             if(objectType == 1)
-                uid = worldController.getWallDecorationUID(x, y, z);
+                hash = worldController.getWallDecorationHash(x, y, z);
             if(objectType == 2)
-                uid = worldController.getInteractibleObjectUID(x, y, z);
+                hash = worldController.getInteractibleObjectHash(x, y, z);
             if(objectType == 3)
-                uid = worldController.getGroundDecorationUID(x, y, z);
-            if(uid != 0)
+                hash = worldController.getGroundDecorationHash(x, y, z);
+            if(hash != 0)
             {
-                int config = worldController.getConfig(uid, x, y, z);
-                int objectId = uid >> 14 & 0x7fff;
+                int config = worldController.getConfig(hash, x, y, z);
+                int _objectId = hash >> 14 & 0x7fff;
                 int position = config & 0x1f;
                 int orientation = config >> 6;
                 if(objectType == 0)
                 {
                     worldController.removeWallObject(x, z, y);
-                    GameObjectDefinition object = GameObjectDefinition.getDefinition(objectId);
+                    GameObjectDefinition object = GameObjectDefinition.getDefinition(_objectId);
                     if(object.solid)
                         currentCollisionMap[z].unmarkWall(x, y, position, orientation, object.walkable);
                 }
@@ -10198,7 +10196,7 @@ public final class client extends RSApplet {
                 if(objectType == 2)
                 {
                     worldController.removeInteractiveObject(x, y, z);
-                    GameObjectDefinition object = GameObjectDefinition.getDefinition(objectId);
+                    GameObjectDefinition object = GameObjectDefinition.getDefinition(_objectId);
                     if(x + object.sizeX > 103 || y + object.sizeX > 103 || x + object.sizeY > 103 || y + object.sizeY > 103)
                         return;
                     if(object.solid)
@@ -10207,17 +10205,17 @@ public final class client extends RSApplet {
                 if(objectType == 3)
                 {
                     worldController.removeGroundDecoration(x, y, z);
-                    GameObjectDefinition object = GameObjectDefinition.getDefinition(objectId);
+                    GameObjectDefinition object = GameObjectDefinition.getDefinition(_objectId);
                     if(object.solid && object.hasActions)
                         currentCollisionMap[z].unmarkConcealed(x, y);
                 }
             }
-            if(k1 >= 0)
+            if(objectId >= 0)
             {
                 int height = z;
                 if(height < 3 && (tileFlags[1][x][y] & 2) == 2)
                     height++;
-                ObjectManager.method188(worldController, k, y, l, height, currentCollisionMap[z], intGroundArray, x, k1, z);
+                ObjectManager.method188(worldController, face, y, l, height, currentCollisionMap[z], intGroundArray, x, objectId, z);
             }
         }
     }
@@ -10390,7 +10388,7 @@ public final class client extends RSApplet {
 
                 }
 
-                for(GameObjectSpawnRequest spawnRequest = (GameObjectSpawnRequest)spawnObjectList.reverseGetFirst(); spawnRequest != null; spawnRequest = (GameObjectSpawnRequest)spawnObjectList.reverseGetNext())
+                for(GameObjectSpawnRequest spawnRequest = (GameObjectSpawnRequest)spawnObjectList.getBack(); spawnRequest != null; spawnRequest = (GameObjectSpawnRequest)spawnObjectList.reverseGetNext())
                     if(spawnRequest.x >= playerPositionX && spawnRequest.x < playerPositionX + 8 && spawnRequest.y >= playerPositionY && spawnRequest.y < playerPositionY + 8 && spawnRequest.z == plane)
                         spawnRequest.delayUntilRespawn = 0;
 
@@ -10540,8 +10538,6 @@ public final class client extends RSApplet {
                 {
                     playerRegionX = inStream.getUnsignedLEShortA();
                     playerRegionY = inStream.getUnsignedLEShort();
-                    
-                    System.out.println(playerRegionX + " " + playerRegionY);
                     loadGeneratedMap = false;
                 }
                 if(packetOpcode == 241)
@@ -10751,12 +10747,12 @@ public final class client extends RSApplet {
 
                 }
 
-                for(GameObjectSpawnRequest spawnRequest = (GameObjectSpawnRequest)spawnObjectList.reverseGetFirst(); spawnRequest != null; spawnRequest = (GameObjectSpawnRequest)spawnObjectList.reverseGetNext())
+                for(GameObjectSpawnRequest spawnRequest = (GameObjectSpawnRequest)spawnObjectList.getBack(); spawnRequest != null; spawnRequest = (GameObjectSpawnRequest)spawnObjectList.reverseGetNext())
                 {
                     spawnRequest.x -= _x;
                     spawnRequest.y -= _y;
                     if(spawnRequest.x < 0 || spawnRequest.y < 0 || spawnRequest.x >= 104 || spawnRequest.y >= 104)
-                        spawnRequest.unlink();
+                        spawnRequest.remove();
                 }
 
                 if(destX != 0)
@@ -10866,7 +10862,7 @@ public final class client extends RSApplet {
                 if(message.endsWith(":tradereq:"))
                 {
                     String name = message.substring(0, message.indexOf(":"));
-                    long nameAsLong = TextClass.longForName(name);
+                    long nameAsLong = TextClass.nameToLong(name);
                     boolean ignored = false;
                     for(int p = 0; p < ignoreCount; p++)
                     {
@@ -10882,7 +10878,7 @@ public final class client extends RSApplet {
                 if(message.endsWith(":duelreq:"))
                 {
                     String name = message.substring(0, message.indexOf(":"));
-                    long nameAsLong = TextClass.longForName(name);
+                    long nameAsLong = TextClass.nameToLong(name);
                     boolean ignored = false;
                     for(int p = 0; p < ignoreCount; p++)
                     {
@@ -10898,7 +10894,7 @@ public final class client extends RSApplet {
                 if(message.endsWith(":chalreq:"))
                 {
                     String name = message.substring(0, message.indexOf(":"));
-                    long nameAsLong = TextClass.longForName(name);
+                    long nameAsLong = TextClass.nameToLong(name);
                     boolean ignored = false;
                     for(int p = 0; p < ignoreCount; p++)
                     {
@@ -10938,7 +10934,7 @@ public final class client extends RSApplet {
             {
                 long nameAsLong = inStream.getLong();
                 int worldId = inStream.getUnsignedByte();
-                String name = TextClass.formatName(TextClass.nameForLong(nameAsLong));
+                String name = TextClass.formatName(TextClass.longToName(nameAsLong));
                 for(int friend = 0; friend < friendsCount; friend++)
                 {
                     if(nameAsLong != friendsListAsLongs[friend])
@@ -11122,12 +11118,12 @@ public final class client extends RSApplet {
                         if(playerRights != 3)
                             message = Censor.doCensor(message);
                         if(playerRights == 2 || playerRights == 3)
-                            pushMessage(message, 7, "@cr2@" + TextClass.formatName(TextClass.nameForLong(nameAsLong)));
+                            pushMessage(message, 7, "@cr2@" + TextClass.formatName(TextClass.longToName(nameAsLong)));
                         else
                         if(playerRights == 1)
-                            pushMessage(message, 7, "@cr1@" + TextClass.formatName(TextClass.nameForLong(nameAsLong)));
+                            pushMessage(message, 7, "@cr1@" + TextClass.formatName(TextClass.longToName(nameAsLong)));
                         else
-                            pushMessage(message, 3, TextClass.formatName(TextClass.nameForLong(nameAsLong)));
+                            pushMessage(message, 3, TextClass.formatName(TextClass.longToName(nameAsLong)));
                     }
                     catch(Exception exception1)
                     {

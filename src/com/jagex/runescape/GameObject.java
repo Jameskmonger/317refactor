@@ -59,13 +59,13 @@ final class GameObject extends Animable {
             return GameObjectDefinition.getDefinition(childrenIds[child]);
     }
 
-    public GameObject(int objectId, int orientation, int type, int vertexHeightBottomRight, int vertexHeightTopRight, int vertexHeightBottomLEft,
+    public GameObject(int objectId, int orientation, int type, int vertexHeightBottomRight, int vertexHeightTopRight, int vertexHeightBottomLeft,
                          int vertexHeightTopLeft, int animationId, boolean animating)
     {
         this.objectId = objectId;
         this.type = type;
         this.orientation = orientation;
-        this.vertexHeightBottomLeft = vertexHeightBottomLEft;
+        this.vertexHeightBottomLeft = vertexHeightBottomLeft;
         this.vertexHeightBottomRight = vertexHeightBottomRight;
         this.vertexHeightTopRight = vertexHeightTopRight;
         this.vertexHeightTopLeft = vertexHeightTopLeft;

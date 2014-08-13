@@ -248,7 +248,7 @@ public final class ItemDef
             Sprite sprite = (Sprite) mruNodes1.get(i);
             if(sprite != null && sprite.maxHeight != j && sprite.maxHeight != -1)
             {
-                sprite.unlink();
+                sprite.remove();
                 sprite = null;
             }
             if(sprite != null)

@@ -31,7 +31,9 @@ public final class IdentityKit {
                 int modelCount = stream.getUnsignedByte();
                 modelIds = new int[modelCount];
                 for(int m = 0; m < modelCount; m++)
+                {
                     modelIds[m] = stream.getUnsignedLEShort();
+                }
 
             } else
             if(attribute == 3)

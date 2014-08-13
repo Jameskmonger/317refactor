@@ -508,7 +508,7 @@ final class WorldController {
             return tile.groundDecoration;
     }
 
-    public int getWallObjectUID(int x, int y, int z)
+    public int getWallObjectHash(int x, int y, int z)
     {
         Ground tile = groundArray[z][x][y];
         if(tile == null || tile.wallObject == null)
@@ -517,7 +517,7 @@ final class WorldController {
             return tile.wallObject.uid;
     }
 
-    public int getWallDecorationUID(int x, int y, int z)
+    public int getWallDecorationHash(int x, int y, int z)
     {
         Ground tile = groundArray[z][x][y];
         if(tile == null || tile.wallDecoration == null)
@@ -526,7 +526,7 @@ final class WorldController {
             return tile.wallDecoration.uid;
     }
 
-    public int getInteractibleObjectUID(int x, int y, int z)
+    public int getInteractibleObjectHash(int x, int y, int z)
     {
         Ground tile = groundArray[z][x][y];
         if(tile == null)
@@ -541,7 +541,7 @@ final class WorldController {
         return 0;
     }
 
-    public int getGroundDecorationUID(int x, int y, int z)
+    public int getGroundDecorationHash(int x, int y, int z)
     {
         Ground tile = groundArray[z][x][y];
         if(tile == null || tile.groundDecoration == null)
