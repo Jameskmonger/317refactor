@@ -19,7 +19,7 @@ public final class RSInterface
         Stream stream = new Stream(streamLoader.getFile("data"));
         int parentId = -1;
         int interfaceCount = stream.getUnsignedLEShort();
-        interfaceCache = new RSInterface[interfaceCount];
+        cache = new RSInterface[interfaceCount];
         while(stream.currentOffset < stream.buffer.length)
         {
             int id = stream.getUnsignedLEShort();
@@ -28,7 +28,7 @@ public final class RSInterface
                 parentId = stream.getUnsignedLEShort();
                 id = stream.getUnsignedLEShort();
             }
-            RSInterface rsInterface = interfaceCache[id] = new RSInterface();
+            RSInterface rsInterface = cache[id] = new RSInterface();
             rsInterface.id = id;
             rsInterface.parentID = parentId;
             rsInterface.type = stream.getUnsignedByte();
@@ -282,7 +282,7 @@ public final class RSInterface
         return sprite;
     }
 
-    public static void method208(boolean flag, Model model)
+    public static void setModel(boolean flag, Model model)
     {
         int modelId = 0;//was parameter
         int modelType = 5;//was parameter
@@ -323,7 +323,7 @@ public final class RSInterface
     public Sprite spriteDefault;
     public int animationDuration;
     public Sprite sprites[];
-    public static RSInterface interfaceCache[];
+    public static RSInterface cache[];
     public int conditionValue[];
     public int contentType;
     public int spritesX[];

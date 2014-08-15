@@ -119,7 +119,7 @@ public final class signlink
                 try
                 {
                     System.out.println("urlstream");
-                    urlstream = new DataInputStream((new URL(mainapp.getCodeBase(), urlreq)).openStream());
+                    urlstream = new DataInputStream((new URL(applet.getCodeBase(), urlreq)).openStream());
                 }
                 catch(Exception _ex)
                 {
@@ -303,7 +303,7 @@ public final class signlink
     public static RandomAccessFile cache_dat = null;
     public static final RandomAccessFile[] cache_idx = new RandomAccessFile[5];
     public static boolean sunjava;
-    public static final Applet mainapp = null;
+    public static final Applet applet = null;
     private static boolean active;
     private static int threadliveid;
     private static InetAddress socketip;
@@ -321,7 +321,7 @@ public final class signlink
     private static boolean midiplay;
     private static int midipos;
     public static String midi = null;
-    public static int midivol;
+    public static int midiVolume;
     public static int midifade;
     private static boolean waveplay;
     private static int wavepos;

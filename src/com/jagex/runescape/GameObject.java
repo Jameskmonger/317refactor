@@ -49,10 +49,10 @@ final class GameObject extends Animable {
             int lsb = varBit.leastSignificantBit;
             int msb = varBit.mostSignificantBit;
             int bit = client.BITFIELD_MAX_VALUE[msb - lsb];
-            child = clientInstance.variousSettings[configId] >> lsb & bit;
+            child = clientInstance.interfaceSettings[configId] >> lsb & bit;
         } else
         if(configId != -1)
-            child = clientInstance.variousSettings[configId];
+            child = clientInstance.interfaceSettings[configId];
         if(child < 0 || child >= childrenIds.length || childrenIds[child] == -1)
             return null;
         else

@@ -63,10 +63,10 @@ public final class EntityDefinition
             int lsb = varBit.leastSignificantBit;
             int msb = varBit.mostSignificantBit;
             int bit = client.BITFIELD_MAX_VALUE[msb - lsb];
-            childId = clientInstance.variousSettings[configId] >> lsb & bit;
+            childId = clientInstance.interfaceSettings[configId] >> lsb & bit;
         } else
         if(settingId != -1)
-            childId = clientInstance.variousSettings[settingId];
+            childId = clientInstance.interfaceSettings[settingId];
         if(childId < 0 || childId >= childrenIDs.length || childrenIDs[childId] == -1)
             return null;
         else

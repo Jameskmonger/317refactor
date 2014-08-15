@@ -38,10 +38,10 @@ public final class ItemDef
     {
         stream = new Stream(streamLoader.getFile("obj.dat"));
         Stream stream = new Stream(streamLoader.getFile("obj.idx"));
-        totalItems = stream.getUnsignedLEShort();
-        streamIndices = new int[totalItems];
+        itemCount = stream.getUnsignedLEShort();
+        streamIndices = new int[itemCount];
         int i = 2;
-        for(int j = 0; j < totalItems; j++)
+        for(int j = 0; j < itemCount; j++)
         {
             streamIndices[j] = i;
             i += stream.getUnsignedLEShort();
@@ -629,7 +629,7 @@ public final class ItemDef
     private int anInt200;
     private int[] stackAmounts;
     public int team;
-    public static int totalItems;
+    public static int itemCount;
     private int anInt204;
     private byte aByte205;
 

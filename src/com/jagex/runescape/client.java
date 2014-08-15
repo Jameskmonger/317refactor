@@ -144,12 +144,12 @@ public final class client extends RSApplet {
             fontBold.drawTextHMidVTop(aString844, 239, 40, 0);
             fontBold.drawTextHMidVTop("Click to continue", 239, 60, 128);
         } else
-        if(backDialogID != -1)
-            drawInterface(0, 0, RSInterface.interfaceCache[backDialogID], 0);
+        if(chatboxInterfaceId != -1)
+            drawInterface(0, 0, RSInterface.cache[chatboxInterfaceId], 0);
         else
         if(dialogID != -1)
         {
-            drawInterface(0, 0, RSInterface.interfaceCache[dialogID], 0);
+            drawInterface(0, 0, RSInterface.cache[dialogID], 0);
         } else
         {
             TextDrawingArea textDrawingArea = fontPlain;
@@ -274,7 +274,7 @@ public final class client extends RSApplet {
 
     public void init()
     {
-        nodeID = Integer.parseInt(getParameter("nodeid"));
+        localWorldId = Integer.parseInt(getParameter("nodeid"));
         portOffset = Integer.parseInt(getParameter("portoff"));
         String s = getParameter("lowmem");
         if(s != null && s.equals("1"))
@@ -290,7 +290,7 @@ public final class client extends RSApplet {
     {
         if(i > 10)
             i = 10;
-        if(signlink.mainapp != null)
+        if(signlink.applet != null)
         {
             signlink.startthread(runnable, i);
         } else
@@ -302,7 +302,7 @@ public final class client extends RSApplet {
     public Socket openSocket(int i)
         throws IOException
     {
-        if(signlink.mainapp != null)
+        if(signlink.applet != null)
             return signlink.opensocket(i);
         else
             return new Socket(InetAddress.getByName(getCodeBase().getHost()), i);
@@ -340,9 +340,9 @@ public final class client extends RSApplet {
                 {
                     menuOpen = false;
                     if(menuScreenArea == 1)
-                        needDrawTabArea = true;
+                        redrawTab = true;
                     if(menuScreenArea == 2)
-                        inputTaken = true;
+                        redrawChatbox = true;
                 }
             }
             if(clickType == 1)
@@ -379,10 +379,10 @@ public final class client extends RSApplet {
                     doAction(hoveredRow);
                 menuOpen = false;
                 if(menuScreenArea == 1)
-                    needDrawTabArea = true;
+                    redrawTab = true;
                 if(menuScreenArea == 2)
                 {
-                    inputTaken = true;
+                    redrawChatbox = true;
                 }
             }
         } else
@@ -394,7 +394,7 @@ public final class client extends RSApplet {
                 {
                     int slot = menuActionData2[menuActionRow - 1];
                     int interfaceId = menuActionData3[menuActionRow - 1];
-                    RSInterface rsInterface = RSInterface.interfaceCache[interfaceId];
+                    RSInterface rsInterface = RSInterface.cache[interfaceId];
                     if(rsInterface.itemSwappable || rsInterface.itemDeletesDragged)
                     {
                         aBoolean1242 = false;
@@ -404,9 +404,9 @@ public final class client extends RSApplet {
                         activeInterfaceType = 2;
                         lastMouseX = super.clickX;
                         lastMouseY = super.clickY;
-                        if(RSInterface.interfaceCache[interfaceId].parentID == openInterfaceId)
+                        if(RSInterface.cache[interfaceId].parentID == openInterfaceId)
                             activeInterfaceType = 1;
-                        if(RSInterface.interfaceCache[interfaceId].parentID == backDialogID)
+                        if(RSInterface.cache[interfaceId].parentID == chatboxInterfaceId)
                             activeInterfaceType = 3;
                         return;
                     }
@@ -840,7 +840,7 @@ public final class client extends RSApplet {
         {
             int i2 = rsInterface.childX[child] + i;
             int j2 = (rsInterface.childY[child] + l) - j1;
-            RSInterface childInterface = RSInterface.interfaceCache[rsInterface.children[child]];
+            RSInterface childInterface = RSInterface.cache[rsInterface.children[child]];
             i2 += childInterface.x;
             j2 += childInterface.y;
             if((childInterface.hoveredPopup >= 0 || childInterface.colourDefaultHover != 0) && k >= i2 && i1 >= j2 && k < i2 + childInterface.width && i1 < j2 + childInterface.height)
@@ -1112,7 +1112,7 @@ public final class client extends RSApplet {
             {
                 publicChatMode = (publicChatMode + 1) % 4;
                 updateChatSettings = true;
-                inputTaken = true;
+                redrawChatbox = true;
                 stream.putOpcode(95);
                 stream.put(publicChatMode);
                 stream.put(privateChatMode);
@@ -1122,7 +1122,7 @@ public final class client extends RSApplet {
             {
                 privateChatMode = (privateChatMode + 1) % 3;
                 updateChatSettings = true;
-                inputTaken = true;
+                redrawChatbox = true;
                 stream.putOpcode(95);
                 stream.put(publicChatMode);
                 stream.put(privateChatMode);
@@ -1132,7 +1132,7 @@ public final class client extends RSApplet {
             {
                 tradeMode = (tradeMode + 1) % 3;
                 updateChatSettings = true;
-                inputTaken = true;
+                redrawChatbox = true;
                 stream.putOpcode(95);
                 stream.put(publicChatMode);
                 stream.put(privateChatMode);
@@ -1144,11 +1144,11 @@ public final class client extends RSApplet {
                     clearTopInterfaces();
                     reportAbuseInput = "";
                     reportAbuseMute = false;
-                    for(int i = 0; i < RSInterface.interfaceCache.length; i++)
+                    for(int i = 0; i < RSInterface.cache.length; i++)
                     {
-                        if(RSInterface.interfaceCache[i] == null || RSInterface.interfaceCache[i].contentType != 600)
+                        if(RSInterface.cache[i] == null || RSInterface.cache[i].contentType != 600)
                             continue;
-                        reportAbuseInterfaceID = openInterfaceId = RSInterface.interfaceCache[i].parentID;
+                        reportAbuseInterfaceID = openInterfaceId = RSInterface.cache[i].parentID;
                         break;
                     }
 
@@ -1185,7 +1185,7 @@ public final class client extends RSApplet {
         int j = Varp.cache[i].type;
         if(j == 0)
             return;
-        int k = variousSettings[i];
+        int k = interfaceSettings[i];
         if(j == 1)
         {
             if(k == 1)
@@ -1270,7 +1270,7 @@ public final class client extends RSApplet {
         if(j == 8)
         {
             splitPrivateChat = k;
-            inputTaken = true;
+            redrawChatbox = true;
         }
         if(j == 9)
             bankInsertMode = k;
@@ -1534,7 +1534,7 @@ public final class client extends RSApplet {
                 if(friendsListAsLongs[f] != friend)
                     continue;
                 friendsCount--;
-                needDrawTabArea = true;
+                redrawTab = true;
                 for(int _f = f; _f < friendsCount; _f++)
                 {
                     friendsList[_f] = friendsList[_f + 1];
@@ -1560,10 +1560,10 @@ public final class client extends RSApplet {
         Texture.lineOffsets = anIntArray1181;
         inventoryBackgroundImage.drawImage(0, 0);
         if(inventoryOverlayInterfaceID != -1)
-            drawInterface(0, 0, RSInterface.interfaceCache[inventoryOverlayInterfaceID], 0);
+            drawInterface(0, 0, RSInterface.cache[inventoryOverlayInterfaceID], 0);
         else
-        if(tabInterfaceIDs[tabID] != -1)
-            drawInterface(0, 0, RSInterface.interfaceCache[tabInterfaceIDs[tabID]], 0);
+        if(tabInterfaceIDs[currentTabId] != -1)
+            drawInterface(0, 0, RSInterface.cache[tabInterfaceIDs[currentTabId]], 0);
         if(menuOpen && menuScreenArea == 1)
             drawMenu();
         aRSImageProducer_1163.drawGraphics(205, super.gameGraphics, 553);
@@ -1839,7 +1839,7 @@ public final class client extends RSApplet {
                 friendsListAsLongs[friendsCount] = l;
                 friendsWorldIds[friendsCount] = 0;
                 friendsCount++;
-                needDrawTabArea = true;
+                redrawTab = true;
                 stream.putOpcode(188);
                 stream.putLong(l);
                 return;
@@ -2022,7 +2022,7 @@ public final class client extends RSApplet {
         {
             if(contentType == 201)
             {
-                inputTaken = true;
+                redrawChatbox = true;
                 inputDialogState = 0;
                 messagePromptRaised = true;
                 promptInput = "";
@@ -2031,7 +2031,7 @@ public final class client extends RSApplet {
             }
             if(contentType == 202)
             {
-                inputTaken = true;
+                redrawChatbox = true;
                 inputDialogState = 0;
                 messagePromptRaised = true;
                 promptInput = "";
@@ -2046,7 +2046,7 @@ public final class client extends RSApplet {
         }
         if(contentType == 501)
         {
-            inputTaken = true;
+            redrawChatbox = true;
             inputDialogState = 0;
             messagePromptRaised = true;
             promptInput = "";
@@ -2055,7 +2055,7 @@ public final class client extends RSApplet {
         }
         if(contentType == 502)
         {
-            inputTaken = true;
+            redrawChatbox = true;
             inputDialogState = 0;
             messagePromptRaised = true;
             promptInput = "";
@@ -2401,7 +2401,7 @@ public final class client extends RSApplet {
                 System.out.println("Usage: node-id, port-offset, [lowmem/highmem], [free/members], storeid");
                 return;
             }
-            nodeID = Integer.parseInt(args[0]);
+            localWorldId = Integer.parseInt(args[0]);
             portOffset = Integer.parseInt(args[1]);
             if(args[2].equals("lowmem"))
                 setLowMem();
@@ -2537,8 +2537,8 @@ public final class client extends RSApplet {
 
     public AppletContext getAppletContext()
     {
-        if(signlink.mainapp != null)
-            return signlink.mainapp.getAppletContext();
+        if(signlink.applet != null)
+            return signlink.applet.getAppletContext();
         else
             return super.getAppletContext();
     }
@@ -2618,9 +2618,9 @@ public final class client extends RSApplet {
                     Model.loadModelHeader(onDemandData.buffer, onDemandData.id);
                     if((onDemandFetcher.getModelId(onDemandData.id) & 0x62) != 0)
                     {
-                        needDrawTabArea = true;
-                        if(backDialogID != -1)
-                            inputTaken = true;
+                        redrawTab = true;
+                        if(chatboxInterfaceId != -1)
+                            redrawChatbox = true;
                     }
                 }
                 if(onDemandData.dataType == 1 && onDemandData.buffer != null)
@@ -2723,12 +2723,12 @@ public final class client extends RSApplet {
 
     private void loadInterface(int i)
     {
-        RSInterface rsInterface = RSInterface.interfaceCache[i];
+        RSInterface rsInterface = RSInterface.cache[i];
         for(int j = 0; j < rsInterface.children.length; j++)
         {
             if(rsInterface.children[j] == -1)
                 break;
-            RSInterface child = RSInterface.interfaceCache[rsInterface.children[j]];
+            RSInterface child = RSInterface.cache[rsInterface.children[j]];
             if(child.type == 1)
                 loadInterface(child.id);
             child.animationFrame = 0;
@@ -2912,9 +2912,9 @@ public final class client extends RSApplet {
             if(atInventoryLoopCycle >= 15)
             {
                 if(atInventoryInterfaceType == 2)
-                    needDrawTabArea = true;
+                    redrawTab = true;
                 if(atInventoryInterfaceType == 3)
-                    inputTaken = true;
+                    redrawChatbox = true;
                 atInventoryInterfaceType = 0;
             }
         }
@@ -2926,9 +2926,9 @@ public final class client extends RSApplet {
             if(super.mouseButton == 0)
             {
                 if(activeInterfaceType == 2)
-                    needDrawTabArea = true;
+                    redrawTab = true;
                 if(activeInterfaceType == 3)
-                    inputTaken = true;
+                    redrawChatbox = true;
                 activeInterfaceType = 0;
                 if(aBoolean1242 && anInt989 >= 5)
                 {
@@ -2936,7 +2936,7 @@ public final class client extends RSApplet {
                     processRightClick();
                     if(lastActiveInventoryInterface == moveItemInterfaceId && moveItemSlotEnd != moveItemSlotStart)
                     {
-                        RSInterface rsInterface = RSInterface.interfaceCache[moveItemInterfaceId];
+                        RSInterface rsInterface = RSInterface.cache[moveItemInterfaceId];
                         int moveItemInsetionMode = 0;
                         if(bankInsertMode == 1 && rsInterface.contentType == 206)
                             moveItemInsetionMode = 1;
@@ -3003,7 +3003,7 @@ public final class client extends RSApplet {
         if(super.clickType == 1 && aString844 != null)
         {
             aString844 = null;
-            inputTaken = true;
+            redrawChatbox = true;
             super.clickType = 0;
         }
         processMenuClick();
@@ -3199,7 +3199,7 @@ public final class client extends RSApplet {
             rsInterface.scrollPosition -= anInt1213 * 4;
             if(redrawTabArea)
             {
-                needDrawTabArea = true;
+                redrawTab = true;
             }
         } else
         if(k >= i && k < i + 16 && l >= (i1 + j) - 16 && l < i1 + j)
@@ -3207,7 +3207,7 @@ public final class client extends RSApplet {
             rsInterface.scrollPosition += anInt1213 * 4;
             if(redrawTabArea)
             {
-                needDrawTabArea = true;
+                redrawTab = true;
             }
         } else
         if(k >= i - anInt992 && k < i + 16 + anInt992 && l >= i1 + 16 && l < (i1 + j) - 16 && anInt1213 > 0)
@@ -3219,7 +3219,7 @@ public final class client extends RSApplet {
             int j2 = j - 32 - l1;
             rsInterface.scrollPosition = ((j1 - j) * i2) / j2;
             if(redrawTabArea)
-                needDrawTabArea = true;
+                redrawTab = true;
             aBoolean972 = true;
         }
     }
@@ -3438,7 +3438,7 @@ public final class client extends RSApplet {
         if(inputDialogState != 0)
         {
             inputDialogState = 0;
-            inputTaken = true;
+            redrawChatbox = true;
         }
         int actionInformation2 = menuActionData2[i];
         int actionInformation1 = menuActionData3[i];
@@ -3514,14 +3514,14 @@ public final class client extends RSApplet {
             atInventoryInterface = actionInformation1;
             atInventoryIndex = actionInformation2;
             atInventoryInterfaceType = 2;
-            if(RSInterface.interfaceCache[actionInformation1].parentID == openInterfaceId)
+            if(RSInterface.cache[actionInformation1].parentID == openInterfaceId)
                 atInventoryInterfaceType = 1;
-            if(RSInterface.interfaceCache[actionInformation1].parentID == backDialogID)
+            if(RSInterface.cache[actionInformation1].parentID == chatboxInterfaceId)
                 atInventoryInterfaceType = 3;
         }
         if(menuAction == 315)
         {
-            RSInterface rsInterface = RSInterface.interfaceCache[actionInformation1];
+            RSInterface rsInterface = RSInterface.cache[actionInformation1];
             boolean flag8 = true;
             if(rsInterface.contentType > 0)
                 flag8 = promptUserForInput(rsInterface);
@@ -3615,9 +3615,9 @@ public final class client extends RSApplet {
             atInventoryInterface = actionInformation1;
             atInventoryIndex = actionInformation2;
             atInventoryInterfaceType = 2;
-            if(RSInterface.interfaceCache[actionInformation1].parentID == openInterfaceId)
+            if(RSInterface.cache[actionInformation1].parentID == openInterfaceId)
                 atInventoryInterfaceType = 1;
-            if(RSInterface.interfaceCache[actionInformation1].parentID == backDialogID)
+            if(RSInterface.cache[actionInformation1].parentID == chatboxInterfaceId)
                 atInventoryInterfaceType = 3;
         }
         if(menuAction == 337 || menuAction == 42 || menuAction == 792 || menuAction == 322)
@@ -3647,9 +3647,9 @@ public final class client extends RSApplet {
             atInventoryInterface = actionInformation1;
             atInventoryIndex = actionInformation2;
             atInventoryInterfaceType = 2;
-            if(RSInterface.interfaceCache[actionInformation1].parentID == openInterfaceId)
+            if(RSInterface.cache[actionInformation1].parentID == openInterfaceId)
                 atInventoryInterfaceType = 1;
-            if(RSInterface.interfaceCache[actionInformation1].parentID == backDialogID)
+            if(RSInterface.cache[actionInformation1].parentID == chatboxInterfaceId)
                 atInventoryInterfaceType = 3;
         }
         if(menuAction == 539)
@@ -3662,9 +3662,9 @@ public final class client extends RSApplet {
             atInventoryInterface = actionInformation1;
             atInventoryIndex = actionInformation2;
             atInventoryInterfaceType = 2;
-            if(RSInterface.interfaceCache[actionInformation1].parentID == openInterfaceId)
+            if(RSInterface.cache[actionInformation1].parentID == openInterfaceId)
                 atInventoryInterfaceType = 1;
-            if(RSInterface.interfaceCache[actionInformation1].parentID == backDialogID)
+            if(RSInterface.cache[actionInformation1].parentID == chatboxInterfaceId)
                 atInventoryInterfaceType = 3;
         }
         if(menuAction == 484 || menuAction == 6)
@@ -3721,9 +3721,9 @@ public final class client extends RSApplet {
             atInventoryInterface = actionInformation1;
             atInventoryIndex = actionInformation2;
             atInventoryInterfaceType = 2;
-            if(RSInterface.interfaceCache[actionInformation1].parentID == openInterfaceId)
+            if(RSInterface.cache[actionInformation1].parentID == openInterfaceId)
                 atInventoryInterfaceType = 1;
-            if(RSInterface.interfaceCache[actionInformation1].parentID == backDialogID)
+            if(RSInterface.cache[actionInformation1].parentID == chatboxInterfaceId)
                 atInventoryInterfaceType = 3;
         }
         if(menuAction == 847)
@@ -3736,19 +3736,19 @@ public final class client extends RSApplet {
             atInventoryInterface = actionInformation1;
             atInventoryIndex = actionInformation2;
             atInventoryInterfaceType = 2;
-            if(RSInterface.interfaceCache[actionInformation1].parentID == openInterfaceId)
+            if(RSInterface.cache[actionInformation1].parentID == openInterfaceId)
                 atInventoryInterfaceType = 1;
-            if(RSInterface.interfaceCache[actionInformation1].parentID == backDialogID)
+            if(RSInterface.cache[actionInformation1].parentID == chatboxInterfaceId)
                 atInventoryInterfaceType = 3;
         }
         if(menuAction == 626)
         {
-            RSInterface rsInterface = RSInterface.interfaceCache[actionInformation1];
+            RSInterface rsInterface = RSInterface.cache[actionInformation1];
             spellSelected = 1;
             selectedSpellId = actionInformation1;
             spellUsableOn = rsInterface.spellUsableOn;
             itemSelected = 0;
-            needDrawTabArea = true;
+            redrawTab = true;
             String namePartOne = rsInterface.selectedActionName;
             if(namePartOne.indexOf(" ") != -1)
                 namePartOne = namePartOne.substring(0, namePartOne.indexOf(" "));
@@ -3758,9 +3758,9 @@ public final class client extends RSApplet {
             spellTooltip = namePartOne + " " + rsInterface.spellName + " " + namePartTwo;
             if(spellUsableOn == 16)
             {
-                needDrawTabArea = true;
-                tabID = 3;
-                tabAreaAltered = true;
+                redrawTab = true;
+                currentTabId = 3;
+                drawTabIcons = true;
             }
             return;
         }
@@ -3774,9 +3774,9 @@ public final class client extends RSApplet {
             atInventoryInterface = actionInformation1;
             atInventoryIndex = actionInformation2;
             atInventoryInterfaceType = 2;
-            if(RSInterface.interfaceCache[actionInformation1].parentID == openInterfaceId)
+            if(RSInterface.cache[actionInformation1].parentID == openInterfaceId)
                 atInventoryInterfaceType = 1;
-            if(RSInterface.interfaceCache[actionInformation1].parentID == backDialogID)
+            if(RSInterface.cache[actionInformation1].parentID == chatboxInterfaceId)
                 atInventoryInterfaceType = 3;
         }
         if(menuAction == 27)
@@ -3824,9 +3824,9 @@ public final class client extends RSApplet {
             atInventoryInterface = actionInformation1;
             atInventoryIndex = actionInformation2;
             atInventoryInterfaceType = 2;
-            if(RSInterface.interfaceCache[actionInformation1].parentID == openInterfaceId)
+            if(RSInterface.cache[actionInformation1].parentID == openInterfaceId)
                 atInventoryInterfaceType = 1;
-            if(RSInterface.interfaceCache[actionInformation1].parentID == backDialogID)
+            if(RSInterface.cache[actionInformation1].parentID == chatboxInterfaceId)
                 atInventoryInterfaceType = 3;
         }
         if(menuAction == 493)
@@ -3839,9 +3839,9 @@ public final class client extends RSApplet {
             atInventoryInterface = actionInformation1;
             atInventoryIndex = actionInformation2;
             atInventoryInterfaceType = 2;
-            if(RSInterface.interfaceCache[actionInformation1].parentID == openInterfaceId)
+            if(RSInterface.cache[actionInformation1].parentID == openInterfaceId)
                 atInventoryInterfaceType = 1;
-            if(RSInterface.interfaceCache[actionInformation1].parentID == backDialogID)
+            if(RSInterface.cache[actionInformation1].parentID == chatboxInterfaceId)
                 atInventoryInterfaceType = 3;
         }
         if(menuAction == 652)
@@ -3877,15 +3877,15 @@ public final class client extends RSApplet {
         {
             stream.putOpcode(185);
             stream.putShort(actionInformation1);
-            RSInterface rsInterface = RSInterface.interfaceCache[actionInformation1];
+            RSInterface rsInterface = RSInterface.cache[actionInformation1];
             if(rsInterface.opcodes != null && rsInterface.opcodes[0][0] == 5)
             {
                 int setting = rsInterface.opcodes[0][1];
-                if(variousSettings[setting] != rsInterface.conditionValue[0])
+                if(interfaceSettings[setting] != rsInterface.conditionValue[0])
                 {
-                    variousSettings[setting] = rsInterface.conditionValue[0];
+                    interfaceSettings[setting] = rsInterface.conditionValue[0];
                     handleInterfaceSetting(setting);
-                    needDrawTabArea = true;
+                    redrawTab = true;
                 }
             }
         }
@@ -4072,9 +4072,9 @@ public final class client extends RSApplet {
             atInventoryInterface = actionInformation1;
             atInventoryIndex = actionInformation2;
             atInventoryInterfaceType = 2;
-            if(RSInterface.interfaceCache[actionInformation1].parentID == openInterfaceId)
+            if(RSInterface.cache[actionInformation1].parentID == openInterfaceId)
                 atInventoryInterfaceType = 1;
-            if(RSInterface.interfaceCache[actionInformation1].parentID == backDialogID)
+            if(RSInterface.cache[actionInformation1].parentID == chatboxInterfaceId)
                 atInventoryInterfaceType = 3;
         }
         if(menuAction == 543)
@@ -4088,9 +4088,9 @@ public final class client extends RSApplet {
             atInventoryInterface = actionInformation1;
             atInventoryIndex = actionInformation2;
             atInventoryInterfaceType = 2;
-            if(RSInterface.interfaceCache[actionInformation1].parentID == openInterfaceId)
+            if(RSInterface.cache[actionInformation1].parentID == openInterfaceId)
                 atInventoryInterfaceType = 1;
-            if(RSInterface.interfaceCache[actionInformation1].parentID == backDialogID)
+            if(RSInterface.cache[actionInformation1].parentID == chatboxInterfaceId)
                 atInventoryInterfaceType = 3;
         }
         if(menuAction == 606)
@@ -4103,11 +4103,11 @@ public final class client extends RSApplet {
                     clearTopInterfaces();
                     reportAbuseInput = name.substring(position + 5).trim();
                     reportAbuseMute = false;
-                    for(int rsInterface = 0; rsInterface < RSInterface.interfaceCache.length; rsInterface++)
+                    for(int rsInterface = 0; rsInterface < RSInterface.cache.length; rsInterface++)
                     {
-                        if(RSInterface.interfaceCache[rsInterface] == null || RSInterface.interfaceCache[rsInterface].contentType != 600)
+                        if(RSInterface.cache[rsInterface] == null || RSInterface.cache[rsInterface].contentType != 600)
                             continue;
-                        reportAbuseInterfaceID = openInterfaceId = RSInterface.interfaceCache[rsInterface].parentID;
+                        reportAbuseInterfaceID = openInterfaceId = RSInterface.cache[rsInterface].parentID;
                         break;
                     }
 
@@ -4151,7 +4151,7 @@ public final class client extends RSApplet {
 
                 if(target != -1 && friendsWorldIds[target] > 0)
                 {
-                    inputTaken = true;
+                    redrawChatbox = true;
                     inputDialogState = 0;
                     messagePromptRaised = true;
                     promptInput = "";
@@ -4171,9 +4171,9 @@ public final class client extends RSApplet {
             atInventoryInterface = actionInformation1;
             atInventoryIndex = actionInformation2;
             atInventoryInterfaceType = 2;
-            if(RSInterface.interfaceCache[actionInformation1].parentID == openInterfaceId)
+            if(RSInterface.cache[actionInformation1].parentID == openInterfaceId)
                 atInventoryInterfaceType = 1;
-            if(RSInterface.interfaceCache[actionInformation1].parentID == backDialogID)
+            if(RSInterface.cache[actionInformation1].parentID == chatboxInterfaceId)
                 atInventoryInterfaceType = 3;
         }
         if(menuAction == 478)
@@ -4225,7 +4225,7 @@ public final class client extends RSApplet {
         if(menuAction == 1125)
         {
             ItemDef item = ItemDef.forID(actionTarget);
-            RSInterface rsInterface = RSInterface.interfaceCache[actionInformation1];
+            RSInterface rsInterface = RSInterface.cache[actionInformation1];
             String description;
             if(rsInterface != null && rsInterface.inventoryStackSize[actionInformation2] >= 0x186a0)
                 description = rsInterface.inventoryStackSize[actionInformation2] + " x " + item.name;
@@ -4240,13 +4240,13 @@ public final class client extends RSApplet {
         {
             stream.putOpcode(185);
             stream.putShort(actionInformation1);
-            RSInterface rsInterface = RSInterface.interfaceCache[actionInformation1];
+            RSInterface rsInterface = RSInterface.cache[actionInformation1];
             if(rsInterface.opcodes != null && rsInterface.opcodes[0][0] == 5)
             {
                 int setting = rsInterface.opcodes[0][1];
-                variousSettings[setting] = 1 - variousSettings[setting];
+                interfaceSettings[setting] = 1 - interfaceSettings[setting];
                 handleInterfaceSetting(setting);
-                needDrawTabArea = true;
+                redrawTab = true;
             }
         }
         if(menuAction == 447)
@@ -4257,7 +4257,7 @@ public final class client extends RSApplet {
             useItemId = actionTarget;
             selectedItemName = ItemDef.forID(actionTarget).name;
             spellSelected = 0;
-            needDrawTabArea = true;
+            redrawTab = true;
             return;
         }
         if(menuAction == 1226)
@@ -4297,7 +4297,7 @@ public final class client extends RSApplet {
         }
         itemSelected = 0;
             spellSelected = 0;
-            needDrawTabArea = true;
+            redrawTab = true;
 
     }
 
@@ -4618,7 +4618,7 @@ public final class client extends RSApplet {
         menuActionId = null;
         menuActionData1 = null;
         menuActionName = null;
-        variousSettings = null;
+        interfaceSettings = null;
         minimapHintX = null;
         minimapHintY = null;
         minimapHint = null;
@@ -4641,7 +4641,7 @@ public final class client extends RSApplet {
         ItemDef.nullLoader();
         FloorDefinition.cache = null;
         IdentityKit.cache = null;
-        RSInterface.interfaceCache = null;
+        RSInterface.cache = null;
         DummyClass.cache = null;
         AnimationSequence.animations = null;
         SpotAnimation.cache = null;
@@ -4673,8 +4673,8 @@ public final class client extends RSApplet {
 
     Component getGameComponent()
     {
-        if(signlink.mainapp != null)
-            return signlink.mainapp;
+        if(signlink.applet != null)
+            return signlink.applet;
         if(super.gameFrame != null)
             return super.gameFrame;
         else
@@ -4701,19 +4701,19 @@ public final class client extends RSApplet {
                 {
                 	// Player pressed an enterable character
                     promptInput += (char)c;
-                    inputTaken = true;
+                    redrawChatbox = true;
                 }
                 if(c == 8 && promptInput.length() > 0)
                 {
                 	// Player pressed backspace
                     promptInput = promptInput.substring(0, promptInput.length() - 1);
-                    inputTaken = true;
+                    redrawChatbox = true;
                 }
                 if(c == 13 || c == 10)
                 {
                 	// Player pressed enter
                     messagePromptRaised = false;
-                    inputTaken = true;
+                    redrawChatbox = true;
                     if(friendsListAction == 1)
                     {
                         long nameLong = TextClass.nameToLong(promptInput);
@@ -4762,12 +4762,12 @@ public final class client extends RSApplet {
                 if(c >= 48 && c <= 57 && amountOrNameInput.length() < 10)
                 {
                     amountOrNameInput += (char)c;
-                    inputTaken = true;
+                    redrawChatbox = true;
                 }
                 if(c == 8 && amountOrNameInput.length() > 0)
                 {
                     amountOrNameInput = amountOrNameInput.substring(0, amountOrNameInput.length() - 1);
-                    inputTaken = true;
+                    redrawChatbox = true;
                 }
                 if(c == 13 || c == 10)
                 {
@@ -4783,7 +4783,7 @@ public final class client extends RSApplet {
                         stream.putInt(bankAmount);
                     }
                     inputDialogState = 0;
-                    inputTaken = true;
+                    redrawChatbox = true;
                 }
             } else
             if(inputDialogState == 2)
@@ -4791,12 +4791,12 @@ public final class client extends RSApplet {
                 if(c >= 32 && c <= 122 && amountOrNameInput.length() < 12)
                 {
                     amountOrNameInput += (char)c;
-                    inputTaken = true;
+                    redrawChatbox = true;
                 }
                 if(c == 8 && amountOrNameInput.length() > 0)
                 {
                     amountOrNameInput = amountOrNameInput.substring(0, amountOrNameInput.length() - 1);
-                    inputTaken = true;
+                    redrawChatbox = true;
                 }
                 if(c == 13 || c == 10)
                 {
@@ -4806,20 +4806,20 @@ public final class client extends RSApplet {
                         stream.putLong(TextClass.nameToLong(amountOrNameInput));
                     }
                     inputDialogState = 0;
-                    inputTaken = true;
+                    redrawChatbox = true;
                 }
             } else
-            if(backDialogID == -1)
+            if(chatboxInterfaceId == -1)
             {
                 if(c >= 32 && c <= 122 && inputString.length() < 80)
                 {
                     inputString += (char)c;
-                    inputTaken = true;
+                    redrawChatbox = true;
                 }
                 if(c == 8 && inputString.length() > 0)
                 {
                     inputString = inputString.substring(0, inputString.length() - 1);
-                    inputTaken = true;
+                    redrawChatbox = true;
                 }
                 if((c == 13 || c == 10) && inputString.length() > 0)
                 {
@@ -4982,7 +4982,7 @@ public final class client extends RSApplet {
                         }
                     }
                     inputString = "";
-                    inputTaken = true;
+                    redrawChatbox = true;
                 }
             }
         } while(true);
@@ -5077,224 +5077,224 @@ public final class client extends RSApplet {
 
     }
 
-    private void drawFriendsListOrWelcomeScreen(RSInterface class9)
+    private void drawFriendsListOrWelcomeScreen(RSInterface rsInterface)
     {
-        int j = class9.contentType;
-        if(j >= 1 && j <= 100 || j >= 701 && j <= 800)
+        int type = rsInterface.contentType;
+        if(type >= 1 && type <= 100 || type >= 701 && type <= 800)
         {
-            if(j == 1 && friendListStatus == 0)
+            if(type == 1 && friendListStatus == 0)
             {
-                class9.textDefault = "Loading friend list";
-                class9.actionType = 0;
+                rsInterface.textDefault = "Loading friend list";
+                rsInterface.actionType = 0;
                 return;
             }
-            if(j == 1 && friendListStatus == 1)
+            if(type == 1 && friendListStatus == 1)
             {
-                class9.textDefault = "Connecting to friendserver";
-                class9.actionType = 0;
+                rsInterface.textDefault = "Connecting to friendserver";
+                rsInterface.actionType = 0;
                 return;
             }
-            if(j == 2 && friendListStatus != 2)
+            if(type == 2 && friendListStatus != 2)
             {
-                class9.textDefault = "Please wait...";
-                class9.actionType = 0;
+                rsInterface.textDefault = "Please wait...";
+                rsInterface.actionType = 0;
                 return;
             }
-            int k = friendsCount;
+            int f = friendsCount;
             if(friendListStatus != 2)
-                k = 0;
-            if(j > 700)
-                j -= 601;
+                f = 0;
+            if(type > 700)
+                type -= 601;
             else
-                j--;
-            if(j >= k)
+                type--;
+            if(type >= f)
             {
-                class9.textDefault = "";
-                class9.actionType = 0;
+                rsInterface.textDefault = "";
+                rsInterface.actionType = 0;
                 return;
             } else
             {
-                class9.textDefault = friendsList[j];
-                class9.actionType = 1;
+                rsInterface.textDefault = friendsList[type];
+                rsInterface.actionType = 1;
                 return;
             }
         }
-        if(j >= 101 && j <= 200 || j >= 801 && j <= 900)
+        if(type >= 101 && type <= 200 || type >= 801 && type <= 900)
         {
-            int l = friendsCount;
+            int f = friendsCount;
             if(friendListStatus != 2)
-                l = 0;
-            if(j > 800)
-                j -= 701;
+                f = 0;
+            if(type > 800)
+                type -= 701;
             else
-                j -= 101;
-            if(j >= l)
+                type -= 101;
+            if(type >= f)
             {
-                class9.textDefault = "";
-                class9.actionType = 0;
+                rsInterface.textDefault = "";
+                rsInterface.actionType = 0;
                 return;
             }
-            if(friendsWorldIds[j] == 0)
-                class9.textDefault = "@red@Offline";
+            if(friendsWorldIds[type] == 0)
+                rsInterface.textDefault = "@red@Offline";
             else
-            if(friendsWorldIds[j] == nodeID)
-                class9.textDefault = "@gre@World-" + (friendsWorldIds[j] - 9);
+            if(friendsWorldIds[type] == localWorldId)
+                rsInterface.textDefault = "@gre@World-" + (friendsWorldIds[type] - 9);
             else
-                class9.textDefault = "@yel@World-" + (friendsWorldIds[j] - 9);
-            class9.actionType = 1;
+                rsInterface.textDefault = "@yel@World-" + (friendsWorldIds[type] - 9);
+            rsInterface.actionType = 1;
             return;
         }
-        if(j == 203)
+        if(type == 203)
         {
-            int i1 = friendsCount;
+            int f = friendsCount;
             if(friendListStatus != 2)
-                i1 = 0;
-            class9.scrollMax = i1 * 15 + 20;
-            if(class9.scrollMax <= class9.height)
-                class9.scrollMax = class9.height + 1;
+                f = 0;
+            rsInterface.scrollMax = f * 15 + 20;
+            if(rsInterface.scrollMax <= rsInterface.height)
+                rsInterface.scrollMax = rsInterface.height + 1;
             return;
         }
-        if(j >= 401 && j <= 500)
+        if(type >= 401 && type <= 500)
         {
-            if((j -= 401) == 0 && friendListStatus == 0)
+            if((type -= 401) == 0 && friendListStatus == 0)
             {
-                class9.textDefault = "Loading ignore list";
-                class9.actionType = 0;
+                rsInterface.textDefault = "Loading ignore list";
+                rsInterface.actionType = 0;
                 return;
             }
-            if(j == 1 && friendListStatus == 0)
+            if(type == 1 && friendListStatus == 0)
             {
-                class9.textDefault = "Please wait...";
-                class9.actionType = 0;
+                rsInterface.textDefault = "Please wait...";
+                rsInterface.actionType = 0;
                 return;
             }
-            int j1 = ignoreCount;
+            int i = ignoreCount;
             if(friendListStatus == 0)
-                j1 = 0;
-            if(j >= j1)
+                i = 0;
+            if(type >= i)
             {
-                class9.textDefault = "";
-                class9.actionType = 0;
+                rsInterface.textDefault = "";
+                rsInterface.actionType = 0;
                 return;
             } else
             {
-                class9.textDefault = TextClass.formatName(TextClass.longToName(ignoreListAsLongs[j]));
-                class9.actionType = 1;
+                rsInterface.textDefault = TextClass.formatName(TextClass.longToName(ignoreListAsLongs[type]));
+                rsInterface.actionType = 1;
                 return;
             }
         }
-        if(j == 503)
+        if(type == 503)
         {
-            class9.scrollMax = ignoreCount * 15 + 20;
-            if(class9.scrollMax <= class9.height)
-                class9.scrollMax = class9.height + 1;
+            rsInterface.scrollMax = ignoreCount * 15 + 20;
+            if(rsInterface.scrollMax <= rsInterface.height)
+                rsInterface.scrollMax = rsInterface.height + 1;
             return;
         }
-        if(j == 327)
+        if(type == 327)
         {
-            class9.modelRotationX = 150;
-            class9.modelRotationY = (int)(Math.sin((double)tick / 40D) * 256D) & 0x7ff;
+            rsInterface.modelRotationX = 150;
+            rsInterface.modelRotationY = (int)(Math.sin((double)tick / 40D) * 256D) & 0x7ff;
             if(characterModelChanged)
             {
-                for(int k1 = 0; k1 < 7; k1++)
+                for(int k = 0; k < 7; k++)
                 {
-                    int l1 = characterEditIdentityKits[k1];
-                    if(l1 >= 0 && !IdentityKit.cache[l1].bodyModelCached())
+                    int kit = characterEditIdentityKits[k];
+                    if(kit >= 0 && !IdentityKit.cache[kit].bodyModelCached())
                         return;
                 }
 
                 characterModelChanged = false;
-                Model aclass30_sub2_sub4_sub6s[] = new Model[7];
-                int i2 = 0;
-                for(int j2 = 0; j2 < 7; j2++)
+                Model bodyModels[] = new Model[7];
+                int bodyModelCount = 0;
+                for(int k = 0; k < 7; k++)
                 {
-                    int k2 = characterEditIdentityKits[j2];
-                    if(k2 >= 0)
-                        aclass30_sub2_sub4_sub6s[i2++] = IdentityKit.cache[k2].getBodyModel();
+                    int kit = characterEditIdentityKits[k];
+                    if(kit >= 0)
+                        bodyModels[bodyModelCount++] = IdentityKit.cache[kit].getBodyModel();
                 }
 
-                Model model = new Model(i2, aclass30_sub2_sub4_sub6s);
-                for(int l2 = 0; l2 < 5; l2++)
-                    if(characterEditColours[l2] != 0)
+                Model model = new Model(bodyModelCount, bodyModels);
+                for(int colour = 0; colour < 5; colour++)
+                    if(characterEditColours[colour] != 0)
                     {
-                        model.recolour(playerBodyRecolours[l2][0], playerBodyRecolours[l2][characterEditColours[l2]]);
-                        if(l2 == 1)
-                            model.recolour(anIntArray1204[0], anIntArray1204[characterEditColours[l2]]);
+                        model.recolour(playerBodyRecolours[colour][0], playerBodyRecolours[colour][characterEditColours[colour]]);
+                        if(colour == 1)
+                            model.recolour(anIntArray1204[0], anIntArray1204[characterEditColours[colour]]);
                     }
 
                 model.createBones();
                 model.applyTransformation(AnimationSequence.animations[localPlayer.standAnimationId].frame2Ids[0]);
                 model.applyLighting(64, 850, -30, -50, -30, true);
-                class9.modelTypeDefault = 5;
-                class9.modelIdDefault = 0;
-                RSInterface.method208(aBoolean994, model);
+                rsInterface.modelTypeDefault = 5;
+                rsInterface.modelIdDefault = 0;
+                RSInterface.setModel(aBoolean994, model);
             }
             return;
         }
-        if(j == 324)
+        if(type == 324)
         {
-            if(aClass30_Sub2_Sub1_Sub1_931 == null)
+            if(characterEditButtonDefualt == null)
             {
-                aClass30_Sub2_Sub1_Sub1_931 = class9.spriteDefault;
-                aClass30_Sub2_Sub1_Sub1_932 = class9.spriteActive;
+                characterEditButtonDefualt = rsInterface.spriteDefault;
+                characterEditButtonActive = rsInterface.spriteActive;
             }
             if(characterEditChangeGender)
             {
-                class9.spriteDefault = aClass30_Sub2_Sub1_Sub1_932;
+                rsInterface.spriteDefault = characterEditButtonActive;
                 return;
             } else
             {
-                class9.spriteDefault = aClass30_Sub2_Sub1_Sub1_931;
+                rsInterface.spriteDefault = characterEditButtonDefualt;
                 return;
             }
         }
-        if(j == 325)
+        if(type == 325)
         {
-            if(aClass30_Sub2_Sub1_Sub1_931 == null)
+            if(characterEditButtonDefualt == null)
             {
-                aClass30_Sub2_Sub1_Sub1_931 = class9.spriteDefault;
-                aClass30_Sub2_Sub1_Sub1_932 = class9.spriteActive;
+                characterEditButtonDefualt = rsInterface.spriteDefault;
+                characterEditButtonActive = rsInterface.spriteActive;
             }
             if(characterEditChangeGender)
             {
-                class9.spriteDefault = aClass30_Sub2_Sub1_Sub1_931;
+                rsInterface.spriteDefault = characterEditButtonDefualt;
                 return;
             } else
             {
-                class9.spriteDefault = aClass30_Sub2_Sub1_Sub1_932;
+                rsInterface.spriteDefault = characterEditButtonActive;
                 return;
             }
         }
-        if(j == 600)
+        if(type == 600)
         {
-            class9.textDefault = reportAbuseInput;
+            rsInterface.textDefault = reportAbuseInput;
             if(tick % 20 < 10)
             {
-                class9.textDefault += "|";
+                rsInterface.textDefault += "|";
                 return;
             } else
             {
-                class9.textDefault += " ";
+                rsInterface.textDefault += " ";
                 return;
             }
         }
-        if(j == 613)
+        if(type == 613)
             if(playerRights >= 1)
             {
                 if(reportAbuseMute)
                 {
-                    class9.colourDefault = 0xff0000;
-                    class9.textDefault = "Moderator option: Mute player for 48 hours: <ON>";
+                    rsInterface.colourDefault = 0xff0000;
+                    rsInterface.textDefault = "Moderator option: Mute player for 48 hours: <ON>";
                 } else
                 {
-                    class9.colourDefault = 0xffffff;
-                    class9.textDefault = "Moderator option: Mute player for 48 hours: <OFF>";
+                    rsInterface.colourDefault = 0xffffff;
+                    rsInterface.textDefault = "Moderator option: Mute player for 48 hours: <OFF>";
                 }
             } else
             {
-                class9.textDefault = "";
+                rsInterface.textDefault = "";
             }
-        if(j == 650 || j == 655)
+        if(type == 650 || type == 655)
             if(lastAddress != 0)
             {
                 String s;
@@ -5305,82 +5305,82 @@ public final class client extends RSApplet {
                     s = "yesterday";
                 else
                     s = daysSinceLogin + " days ago";
-                class9.textDefault = "You last logged in " + s + " from: " + signlink.dns;
+                rsInterface.textDefault = "You last logged in " + s + " from: " + signlink.dns;
             } else
             {
-                class9.textDefault = "";
+                rsInterface.textDefault = "";
             }
-        if(j == 651)
+        if(type == 651)
         {
             if(unreadMessages == 0)
             {
-                class9.textDefault = "0 unread messages";
-                class9.colourDefault = 0xffff00;
+                rsInterface.textDefault = "0 unread messages";
+                rsInterface.colourDefault = 0xffff00;
             }
             if(unreadMessages == 1)
             {
-                class9.textDefault = "1 unread message";
-                class9.colourDefault = 65280;
+                rsInterface.textDefault = "1 unread message";
+                rsInterface.colourDefault = 65280;
             }
             if(unreadMessages > 1)
             {
-                class9.textDefault = unreadMessages + " unread messages";
-                class9.colourDefault = 65280;
+                rsInterface.textDefault = unreadMessages + " unread messages";
+                rsInterface.colourDefault = 65280;
             }
         }
-        if(j == 652)
+        if(type == 652)
             if(daysSinceRecoveryChange == 201)
             {
                 if(membership == 1)
-                    class9.textDefault = "@yel@This is a non-members world: @whi@Since you are a member we";
+                    rsInterface.textDefault = "@yel@This is a non-members world: @whi@Since you are a member we";
                 else
-                    class9.textDefault = "";
+                    rsInterface.textDefault = "";
             } else
             if(daysSinceRecoveryChange == 200)
             {
-                class9.textDefault = "You have not yet set any password recovery questions.";
+                rsInterface.textDefault = "You have not yet set any password recovery questions.";
             } else
             {
-                String s1;
+                String time;
                 if(daysSinceRecoveryChange == 0)
-                    s1 = "Earlier today";
+                    time = "Earlier today";
                 else
                 if(daysSinceRecoveryChange == 1)
-                    s1 = "Yesterday";
+                    time = "Yesterday";
                 else
-                    s1 = daysSinceRecoveryChange + " days ago";
-                class9.textDefault = s1 + " you changed your recovery questions";
+                    time = daysSinceRecoveryChange + " days ago";
+                rsInterface.textDefault = time + " you changed your recovery questions";
             }
-        if(j == 653)
+        if(type == 653)
             if(daysSinceRecoveryChange == 201)
             {
                 if(membership == 1)
-                    class9.textDefault = "@whi@recommend you use a members world instead. You may use";
+                    rsInterface.textDefault = "@whi@recommend you use a members world instead. You may use";
                 else
-                    class9.textDefault = "";
+                    rsInterface.textDefault = "";
             } else
             if(daysSinceRecoveryChange == 200)
-                class9.textDefault = "We strongly recommend you do so now to secure your account.";
+                rsInterface.textDefault = "We strongly recommend you do so now to secure your account.";
             else
-                class9.textDefault = "If you do not remember making this change then cancel it immediately";
-        if(j == 654)
+                rsInterface.textDefault = "If you do not remember making this change then cancel it immediately";
+        if(type == 654)
         {
             if(daysSinceRecoveryChange == 201)
                 if(membership == 1)
                 {
-                    class9.textDefault = "@whi@this world but member benefits are unavailable whilst here.";
+                    rsInterface.textDefault = "@whi@this world but member benefits are unavailable whilst here.";
                     return;
                 } else
                 {
-                    class9.textDefault = "";
+                    rsInterface.textDefault = "";
                     return;
                 }
             if(daysSinceRecoveryChange == 200)
             {
-                class9.textDefault = "Do this from the 'account management' area on our front webpage";
+                rsInterface.textDefault = "Do this from the 'account management' area on our front webpage";
                 return;
             }
-            class9.textDefault = "Do this from the 'account management' area on our front webpage";
+            rsInterface.textDefault = "Do this from the 'account management' area on our front webpage";
         }
     }
 
@@ -5450,25 +5450,25 @@ public final class client extends RSApplet {
 
     }
 
-    private void pushMessage(String s, int i, String s1)
+    private void pushMessage(String message, int type, String name)
     {
-        if(i == 0 && dialogID != -1)
+        if(type == 0 && dialogID != -1)
         {
-            aString844 = s;
+            aString844 = message;
             super.clickType = 0;
         }
-        if(backDialogID == -1)
-            inputTaken = true;
-        for(int j = 99; j > 0; j--)
+        if(chatboxInterfaceId == -1)
+            redrawChatbox = true;
+        for(int m = 99; m > 0; m--)
         {
-            chatTypes[j] = chatTypes[j - 1];
-            chatNames[j] = chatNames[j - 1];
-            chatMessages[j] = chatMessages[j - 1];
+            chatTypes[m] = chatTypes[m - 1];
+            chatNames[m] = chatNames[m - 1];
+            chatMessages[m] = chatMessages[m - 1];
         }
 
-        chatTypes[0] = i;
-        chatNames[0] = s1;
-        chatMessages[0] = s;
+        chatTypes[0] = type;
+        chatNames[0] = name;
+        chatMessages[0] = message;
     }
 
     private void processTabClick()
@@ -5477,87 +5477,87 @@ public final class client extends RSApplet {
         {
             if(super.clickX >= 539 && super.clickX <= 573 && super.clickY >= 169 && super.clickY < 205 && tabInterfaceIDs[0] != -1)
             {
-                needDrawTabArea = true;
-                tabID = 0;
-                tabAreaAltered = true;
+                redrawTab = true;
+                currentTabId = 0;
+                drawTabIcons = true;
             }
             if(super.clickX >= 569 && super.clickX <= 599 && super.clickY >= 168 && super.clickY < 205 && tabInterfaceIDs[1] != -1)
             {
-                needDrawTabArea = true;
-                tabID = 1;
-                tabAreaAltered = true;
+                redrawTab = true;
+                currentTabId = 1;
+                drawTabIcons = true;
             }
             if(super.clickX >= 597 && super.clickX <= 627 && super.clickY >= 168 && super.clickY < 205 && tabInterfaceIDs[2] != -1)
             {
-                needDrawTabArea = true;
-                tabID = 2;
-                tabAreaAltered = true;
+                redrawTab = true;
+                currentTabId = 2;
+                drawTabIcons = true;
             }
             if(super.clickX >= 625 && super.clickX <= 669 && super.clickY >= 168 && super.clickY < 203 && tabInterfaceIDs[3] != -1)
             {
-                needDrawTabArea = true;
-                tabID = 3;
-                tabAreaAltered = true;
+                redrawTab = true;
+                currentTabId = 3;
+                drawTabIcons = true;
             }
             if(super.clickX >= 666 && super.clickX <= 696 && super.clickY >= 168 && super.clickY < 205 && tabInterfaceIDs[4] != -1)
             {
-                needDrawTabArea = true;
-                tabID = 4;
-                tabAreaAltered = true;
+                redrawTab = true;
+                currentTabId = 4;
+                drawTabIcons = true;
             }
             if(super.clickX >= 694 && super.clickX <= 724 && super.clickY >= 168 && super.clickY < 205 && tabInterfaceIDs[5] != -1)
             {
-                needDrawTabArea = true;
-                tabID = 5;
-                tabAreaAltered = true;
+                redrawTab = true;
+                currentTabId = 5;
+                drawTabIcons = true;
             }
             if(super.clickX >= 722 && super.clickX <= 756 && super.clickY >= 169 && super.clickY < 205 && tabInterfaceIDs[6] != -1)
             {
-                needDrawTabArea = true;
-                tabID = 6;
-                tabAreaAltered = true;
+                redrawTab = true;
+                currentTabId = 6;
+                drawTabIcons = true;
             }
             if(super.clickX >= 540 && super.clickX <= 574 && super.clickY >= 466 && super.clickY < 502 && tabInterfaceIDs[7] != -1)
             {
-                needDrawTabArea = true;
-                tabID = 7;
-                tabAreaAltered = true;
+                redrawTab = true;
+                currentTabId = 7;
+                drawTabIcons = true;
             }
             if(super.clickX >= 572 && super.clickX <= 602 && super.clickY >= 466 && super.clickY < 503 && tabInterfaceIDs[8] != -1)
             {
-                needDrawTabArea = true;
-                tabID = 8;
-                tabAreaAltered = true;
+                redrawTab = true;
+                currentTabId = 8;
+                drawTabIcons = true;
             }
             if(super.clickX >= 599 && super.clickX <= 629 && super.clickY >= 466 && super.clickY < 503 && tabInterfaceIDs[9] != -1)
             {
-                needDrawTabArea = true;
-                tabID = 9;
-                tabAreaAltered = true;
+                redrawTab = true;
+                currentTabId = 9;
+                drawTabIcons = true;
             }
             if(super.clickX >= 627 && super.clickX <= 671 && super.clickY >= 467 && super.clickY < 502 && tabInterfaceIDs[10] != -1)
             {
-                needDrawTabArea = true;
-                tabID = 10;
-                tabAreaAltered = true;
+                redrawTab = true;
+                currentTabId = 10;
+                drawTabIcons = true;
             }
             if(super.clickX >= 669 && super.clickX <= 699 && super.clickY >= 466 && super.clickY < 503 && tabInterfaceIDs[11] != -1)
             {
-                needDrawTabArea = true;
-                tabID = 11;
-                tabAreaAltered = true;
+                redrawTab = true;
+                currentTabId = 11;
+                drawTabIcons = true;
             }
             if(super.clickX >= 696 && super.clickX <= 726 && super.clickY >= 466 && super.clickY < 503 && tabInterfaceIDs[12] != -1)
             {
-                needDrawTabArea = true;
-                tabID = 12;
-                tabAreaAltered = true;
+                redrawTab = true;
+                currentTabId = 12;
+                drawTabIcons = true;
             }
             if(super.clickX >= 724 && super.clickX <= 758 && super.clickY >= 466 && super.clickY < 502 && tabInterfaceIDs[13] != -1)
             {
-                needDrawTabArea = true;
-                tabID = 13;
-                tabAreaAltered = true;
+                redrawTab = true;
+                currentTabId = 13;
+                drawTabIcons = true;
             }
         }
     }
@@ -5592,8 +5592,8 @@ public final class client extends RSApplet {
 
     private String getDocumentBaseHost()
     {
-        if(signlink.mainapp != null)
-            return signlink.mainapp.getDocumentBase().getHost().toLowerCase();
+        if(signlink.applet != null)
+            return signlink.applet.getDocumentBase().getHost().toLowerCase();
         if(super.gameFrame != null)
             return "runescape.com";
         else
@@ -5633,7 +5633,7 @@ public final class client extends RSApplet {
         anInt886 = 0;
         if(super.mouseX > 4 && super.mouseY > 4 && super.mouseX < 516 && super.mouseY < 338)
             if(openInterfaceId != -1)
-                buildInterfaceMenu(4, RSInterface.interfaceCache[openInterfaceId], super.mouseX, 4, super.mouseY, 0);
+                buildInterfaceMenu(4, RSInterface.cache[openInterfaceId], super.mouseX, 4, super.mouseY, 0);
             else
                 build3dScreenMenu();
         if(anInt886 != anInt1026)
@@ -5641,59 +5641,59 @@ public final class client extends RSApplet {
         anInt886 = 0;
         if(super.mouseX > 553 && super.mouseY > 205 && super.mouseX < 743 && super.mouseY < 466)
             if(inventoryOverlayInterfaceID != -1)
-                buildInterfaceMenu(553, RSInterface.interfaceCache[inventoryOverlayInterfaceID], super.mouseX, 205, super.mouseY, 0);
+                buildInterfaceMenu(553, RSInterface.cache[inventoryOverlayInterfaceID], super.mouseX, 205, super.mouseY, 0);
             else
-            if(tabInterfaceIDs[tabID] != -1)
-                buildInterfaceMenu(553, RSInterface.interfaceCache[tabInterfaceIDs[tabID]], super.mouseX, 205, super.mouseY, 0);
+            if(tabInterfaceIDs[currentTabId] != -1)
+                buildInterfaceMenu(553, RSInterface.cache[tabInterfaceIDs[currentTabId]], super.mouseX, 205, super.mouseY, 0);
         if(anInt886 != anInt1048)
         {
-            needDrawTabArea = true;
+            redrawTab = true;
             anInt1048 = anInt886;
         }
         anInt886 = 0;
         if(super.mouseX > 17 && super.mouseY > 357 && super.mouseX < 496 && super.mouseY < 453)
-            if(backDialogID != -1)
-                buildInterfaceMenu(17, RSInterface.interfaceCache[backDialogID], super.mouseX, 357, super.mouseY, 0);
+            if(chatboxInterfaceId != -1)
+                buildInterfaceMenu(17, RSInterface.cache[chatboxInterfaceId], super.mouseX, 357, super.mouseY, 0);
             else
             if(super.mouseY < 434 && super.mouseX < 426)
                 buildChatAreaMenu(super.mouseY - 357);
-        if(backDialogID != -1 && anInt886 != anInt1039)
+        if(chatboxInterfaceId != -1 && anInt886 != anInt1039)
         {
-            inputTaken = true;
+            redrawChatbox = true;
             anInt1039 = anInt886;
         }
         boolean flag = false;
         while(!flag) 
         {
             flag = true;
-            for(int j = 0; j < menuActionRow - 1; j++)
-                if(menuActionId[j] < 1000 && menuActionId[j + 1] > 1000)
+            for(int a = 0; a < menuActionRow - 1; a++)
+                if(menuActionId[a] < 1000 && menuActionId[a + 1] > 1000)
                 {
-                    String s = menuActionName[j];
-                    menuActionName[j] = menuActionName[j + 1];
-                    menuActionName[j + 1] = s;
-                    int k = menuActionId[j];
-                    menuActionId[j] = menuActionId[j + 1];
-                    menuActionId[j + 1] = k;
-                    k = menuActionData2[j];
-                    menuActionData2[j] = menuActionData2[j + 1];
-                    menuActionData2[j + 1] = k;
-                    k = menuActionData3[j];
-                    menuActionData3[j] = menuActionData3[j + 1];
-                    menuActionData3[j + 1] = k;
-                    k = menuActionData1[j];
-                    menuActionData1[j] = menuActionData1[j + 1];
-                    menuActionData1[j + 1] = k;
+                    String s = menuActionName[a];
+                    menuActionName[a] = menuActionName[a + 1];
+                    menuActionName[a + 1] = s;
+                    int k = menuActionId[a];
+                    menuActionId[a] = menuActionId[a + 1];
+                    menuActionId[a + 1] = k;
+                    k = menuActionData2[a];
+                    menuActionData2[a] = menuActionData2[a + 1];
+                    menuActionData2[a + 1] = k;
+                    k = menuActionData3[a];
+                    menuActionData3[a] = menuActionData3[a + 1];
+                    menuActionData3[a + 1] = k;
+                    k = menuActionData1[a];
+                    menuActionData1[a] = menuActionData1[a + 1];
+                    menuActionData1[a + 1] = k;
                     flag = false;
                 }
 
         }
     }
 
-    private int method83(int i, int j, int k)
+    private int rotateFlameColour(int r, int g, int b)
     {
-        int l = 256 - k;
-        return ((i & 0xff00ff) * l + (j & 0xff00ff) * k & 0xff00ff00) + ((i & 0xff00) * l + (j & 0xff00) * k & 0xff0000) >> 8;
+        int alpha = 256 - b;
+        return ((r & 0xff00ff) * alpha + (g & 0xff00ff) * b & 0xff00ff00) + ((r & 0xff00) * alpha + (g & 0xff00) * b & 0xff0000) >> 8;
     }
 
     private void login(String playerUsername, String playerPassword, boolean recoveredConnection)
@@ -5840,12 +5840,12 @@ public final class client extends RSApplet {
                 friendListStatus = 0;
                 friendsCount = 0;
                 dialogID = -1;
-                backDialogID = -1;
+                chatboxInterfaceId = -1;
                 openInterfaceId = -1;
                 inventoryOverlayInterfaceID = -1;
                 walkableInterfaceId = -1;
                 continuedDialogue = false;
-                tabID = 3;
+                currentTabId = 3;
                 inputDialogState = 0;
                 menuOpen = false;
                 messagePromptRaised = false;
@@ -6856,17 +6856,21 @@ public final class client extends RSApplet {
             try
             {
                 for(int i = 0; i < 20; i++)
+                {
                     hitMarkImage[i] = new Sprite(archiveMedia, "hitmarks", i);
+                }
 
             }
             catch(Exception _ex) { }
             try
             {
                 for(int i = 0; i < 20; i++)
+                {
                     headIcons[i] = new Sprite(archiveMedia, "headicons", i);
+                }
 
             }
-            catch(Exception _ex) { }
+            catch(Exception _ex) {_ex.printStackTrace(); }
             mapFlag = new Sprite(archiveMedia, "mapmarker", 0);
             mapMarker = new Sprite(archiveMedia, "mapmarker", 1);
             for(int i = 0; i < 8; i++)
@@ -7203,8 +7207,8 @@ public final class client extends RSApplet {
 
     public URL getCodeBase()
     {
-        if(signlink.mainapp != null)
-            return signlink.mainapp.getCodeBase();
+        if(signlink.applet != null)
+            return signlink.applet.getCodeBase();
         try
         {
             if(super.gameFrame != null)
@@ -7554,9 +7558,9 @@ public final class client extends RSApplet {
             backVmidIP2.drawGraphics(205, super.gameGraphics, 516);
             backVmidIP3.drawGraphics(357, super.gameGraphics, 496);
             backVmidIP2_2.drawGraphics(338, super.gameGraphics, 0);
-            needDrawTabArea = true;
-            inputTaken = true;
-            tabAreaAltered = true;
+            redrawTab = true;
+            redrawChatbox = true;
+            drawTabIcons = true;
             updateChatSettings = true;
             if(loadingStage != 2)
             {
@@ -7567,23 +7571,23 @@ public final class client extends RSApplet {
         if(loadingStage == 2)
             renderGameView();
         if(menuOpen && menuScreenArea == 1)
-            needDrawTabArea = true;
+            redrawTab = true;
         if(inventoryOverlayInterfaceID != -1)
         {
             boolean flag1 = animateInterface(animationTimePassed, inventoryOverlayInterfaceID);
             if(flag1)
-                needDrawTabArea = true;
+                redrawTab = true;
         }
         if(atInventoryInterfaceType == 2)
-            needDrawTabArea = true;
+            redrawTab = true;
         if(activeInterfaceType == 2)
-            needDrawTabArea = true;
-        if(needDrawTabArea)
+            redrawTab = true;
+        if(redrawTab)
         {
             drawTabArea();
-            needDrawTabArea = false;
+            redrawTab = false;
         }
-        if(backDialogID == -1)
+        if(chatboxInterfaceId == -1)
         {
             aClass9_1059.scrollPosition = anInt1211 - anInt1089 - 77;
             if(super.mouseX > 448 && super.mouseX < 560 && super.mouseY > 332)
@@ -7596,27 +7600,27 @@ public final class client extends RSApplet {
             if(anInt1089 != i)
             {
                 anInt1089 = i;
-                inputTaken = true;
+                redrawChatbox = true;
             }
         }
-        if(backDialogID != -1)
+        if(chatboxInterfaceId != -1)
         {
-            boolean flag2 = animateInterface(animationTimePassed, backDialogID);
+            boolean flag2 = animateInterface(animationTimePassed, chatboxInterfaceId);
             if(flag2)
-                inputTaken = true;
+                redrawChatbox = true;
         }
         if(atInventoryInterfaceType == 3)
-            inputTaken = true;
+            redrawChatbox = true;
         if(activeInterfaceType == 3)
-            inputTaken = true;
+            redrawChatbox = true;
         if(aString844 != null)
-            inputTaken = true;
+            redrawChatbox = true;
         if(menuOpen && menuScreenArea == 2)
-            inputTaken = true;
-        if(inputTaken)
+            redrawChatbox = true;
+        if(redrawChatbox)
         {
             drawChatArea();
-            inputTaken = false;
+            redrawChatbox = false;
         }
         if(loadingStage == 2)
         {
@@ -7624,35 +7628,35 @@ public final class client extends RSApplet {
             aRSImageProducer_1164.drawGraphics(4, super.gameGraphics, 550);
         }
         if(flashingSidebar != -1)
-            tabAreaAltered = true;
-        if(tabAreaAltered)
+            drawTabIcons = true;
+        if(drawTabIcons)
         {
-            if(flashingSidebar != -1 && flashingSidebar == tabID)
+            if(flashingSidebar != -1 && flashingSidebar == currentTabId)
             {
                 flashingSidebar = -1;
                 stream.putOpcode(120);
-                stream.put(tabID);
+                stream.put(currentTabId);
             }
-            tabAreaAltered = false;
+            drawTabIcons = false;
             aRSImageProducer_1125.initDrawingArea();
             backHmid1Image.drawImage(0, 0);
             if(inventoryOverlayInterfaceID == -1)
             {
-                if(tabInterfaceIDs[tabID] != -1)
+                if(tabInterfaceIDs[currentTabId] != -1)
                 {
-                    if(tabID == 0)
+                    if(currentTabId == 0)
                         redStone1.drawImage(22, 10);
-                    if(tabID == 1)
+                    if(currentTabId == 1)
                         redStone2.drawImage(54, 8);
-                    if(tabID == 2)
+                    if(currentTabId == 2)
                         redStone2.drawImage(82, 8);
-                    if(tabID == 3)
+                    if(currentTabId == 3)
                         redStone3.drawImage(110, 8);
-                    if(tabID == 4)
+                    if(currentTabId == 4)
                         redStone2_2.drawImage(153, 8);
-                    if(tabID == 5)
+                    if(currentTabId == 5)
                         redStone2_2.drawImage(181, 8);
-                    if(tabID == 6)
+                    if(currentTabId == 6)
                         redStone1_2.drawImage(209, 9);
                 }
                 if(tabInterfaceIDs[0] != -1 && (flashingSidebar != 0 || tick % 20 < 10))
@@ -7675,21 +7679,21 @@ public final class client extends RSApplet {
             backBase2Image.drawImage(0, 0);
             if(inventoryOverlayInterfaceID == -1)
             {
-                if(tabInterfaceIDs[tabID] != -1)
+                if(tabInterfaceIDs[currentTabId] != -1)
                 {
-                    if(tabID == 7)
+                    if(currentTabId == 7)
                         redStone1_3.drawImage(42, 0);
-                    if(tabID == 8)
+                    if(currentTabId == 8)
                         redStone2_3.drawImage(74, 0);
-                    if(tabID == 9)
+                    if(currentTabId == 9)
                         redStone2_3.drawImage(102, 0);
-                    if(tabID == 10)
+                    if(currentTabId == 10)
                         redStone3_2.drawImage(130, 1);
-                    if(tabID == 11)
+                    if(currentTabId == 11)
                         redStone2_4.drawImage(173, 0);
-                    if(tabID == 12)
+                    if(currentTabId == 12)
                         redStone2_4.drawImage(201, 0);
-                    if(tabID == 13)
+                    if(currentTabId == 13)
                         redStone1_4.drawImage(229, 0);
                 }
                 if(tabInterfaceIDs[8] != -1 && (flashingSidebar != 8 || tick % 20 < 10))
@@ -7812,7 +7816,7 @@ public final class client extends RSApplet {
         {
             int _x = rsInterface.childX[childId] + x;
             int _y = (rsInterface.childY[childId] + y) - j;
-            RSInterface childInterface = RSInterface.interfaceCache[rsInterface.children[childId]];
+            RSInterface childInterface = RSInterface.cache[rsInterface.children[childId]];
             _x += childInterface.x;
             _y += childInterface.y;
             if(childInterface.contentType > 0)
@@ -7986,35 +7990,35 @@ public final class client extends RSApplet {
                                 int k7 = s.indexOf("%1");
                                 if(k7 == -1)
                                     break;
-                                s = s.substring(0, k7) + interfaceIntToString(extractInterfaceValues(childInterface, 0)) + s.substring(k7 + 2);
+                                s = s.substring(0, k7) + interfaceIntToString(extractDynamicInterfaceValue(childInterface, 0)) + s.substring(k7 + 2);
                             } while(true);
                             do
                             {
                                 int l7 = s.indexOf("%2");
                                 if(l7 == -1)
                                     break;
-                                s = s.substring(0, l7) + interfaceIntToString(extractInterfaceValues(childInterface, 1)) + s.substring(l7 + 2);
+                                s = s.substring(0, l7) + interfaceIntToString(extractDynamicInterfaceValue(childInterface, 1)) + s.substring(l7 + 2);
                             } while(true);
                             do
                             {
                                 int i8 = s.indexOf("%3");
                                 if(i8 == -1)
                                     break;
-                                s = s.substring(0, i8) + interfaceIntToString(extractInterfaceValues(childInterface, 2)) + s.substring(i8 + 2);
+                                s = s.substring(0, i8) + interfaceIntToString(extractDynamicInterfaceValue(childInterface, 2)) + s.substring(i8 + 2);
                             } while(true);
                             do
                             {
                                 int j8 = s.indexOf("%4");
                                 if(j8 == -1)
                                     break;
-                                s = s.substring(0, j8) + interfaceIntToString(extractInterfaceValues(childInterface, 3)) + s.substring(j8 + 2);
+                                s = s.substring(0, j8) + interfaceIntToString(extractDynamicInterfaceValue(childInterface, 3)) + s.substring(j8 + 2);
                             } while(true);
                             do
                             {
                                 int k8 = s.indexOf("%5");
                                 if(k8 == -1)
                                     break;
-                                s = s.substring(0, k8) + interfaceIntToString(extractInterfaceValues(childInterface, 4)) + s.substring(k8 + 2);
+                                s = s.substring(0, k8) + interfaceIntToString(extractDynamicInterfaceValue(childInterface, 4)) + s.substring(k8 + 2);
                             } while(true);
                         }
                         int l8 = s.indexOf("\\n");
@@ -8485,12 +8489,12 @@ public final class client extends RSApplet {
         if(walkableInterfaceId != -1)
         {
             animateInterface(animationTimePassed, walkableInterfaceId);
-            drawInterface(0, 0, RSInterface.interfaceCache[walkableInterfaceId], 0);
+            drawInterface(0, 0, RSInterface.cache[walkableInterfaceId], 0);
         }
         if(openInterfaceId != -1)
         {
             animateInterface(animationTimePassed, openInterfaceId);
-            drawInterface(0, 0, RSInterface.interfaceCache[openInterfaceId], 0);
+            drawInterface(0, 0, RSInterface.cache[openInterfaceId], 0);
         }
         checkTutorialIsland();
         if(!menuOpen)
@@ -8563,7 +8567,7 @@ public final class client extends RSApplet {
                 }
 
             ignoreListAsLongs[ignoreCount++] = target;
-            needDrawTabArea = true;
+            redrawTab = true;
             stream.putOpcode(133);
             stream.putLong(target);
             return;
@@ -8773,152 +8777,153 @@ public final class client extends RSApplet {
         flameRightBackground2 = null;
     }
 
-    private boolean animateInterface(int i, int j)
+    private boolean animateInterface(int timePassed, int interfaceId)
     {
-        boolean flag1 = false;
-        RSInterface class9 = RSInterface.interfaceCache[j];
-        for(int k = 0; k < class9.children.length; k++)
+        boolean animated = false;
+        RSInterface targetInterface = RSInterface.cache[interfaceId];
+        for(int c = 0; c < targetInterface.children.length; c++)
         {
-            if(class9.children[k] == -1)
+            if(targetInterface.children[c] == -1)
                 break;
-            RSInterface class9_1 = RSInterface.interfaceCache[class9.children[k]];
-            if(class9_1.type == 1)
-                flag1 |= animateInterface(i, class9_1.id);
-            if(class9_1.type == 6 && (class9_1.animationIdDefault != -1 || class9_1.animationIdActive != -1))
+            RSInterface childInterface = RSInterface.cache[targetInterface.children[c]];
+            if(childInterface.type == 1)
+                animated |= animateInterface(timePassed, childInterface.id);
+            if(childInterface.type == 6 && (childInterface.animationIdDefault != -1 || childInterface.animationIdActive != -1))
             {
-                boolean flag2 = interfaceIsSelected(class9_1);
-                int l;
-                if(flag2)
-                    l = class9_1.animationIdActive;
+                boolean selected = interfaceIsSelected(childInterface);
+                int animationId;
+                if(selected)
+                    animationId = childInterface.animationIdActive;
                 else
-                    l = class9_1.animationIdDefault;
-                if(l != -1)
+                    animationId = childInterface.animationIdDefault;
+                if(animationId != -1)
                 {
-                    AnimationSequence animation = AnimationSequence.animations[l];
-                    for(class9_1.animationDuration += i; class9_1.animationDuration > animation.getFrameLength(class9_1.animationFrame);)
+                    AnimationSequence animation = AnimationSequence.animations[animationId];
+                    for(childInterface.animationDuration += timePassed; childInterface.animationDuration > animation.getFrameLength(childInterface.animationFrame);)
                     {
-                        class9_1.animationDuration -= animation.getFrameLength(class9_1.animationFrame) + 1;
-                        class9_1.animationFrame++;
-                        if(class9_1.animationFrame >= animation.frameCount)
+                        childInterface.animationDuration -= animation.getFrameLength(childInterface.animationFrame) + 1;
+                        childInterface.animationFrame++;
+                        if(childInterface.animationFrame >= animation.frameCount)
                         {
-                            class9_1.animationFrame -= animation.frameStep;
-                            if(class9_1.animationFrame < 0 || class9_1.animationFrame >= animation.frameCount)
-                                class9_1.animationFrame = 0;
+                            childInterface.animationFrame -= animation.frameStep;
+                            if(childInterface.animationFrame < 0 || childInterface.animationFrame >= animation.frameCount)
+                                childInterface.animationFrame = 0;
                         }
-                        flag1 = true;
+                        animated = true;
                     }
 
                 }
             }
         }
 
-        return flag1;
+        return animated;
     }
 
-    private int getCameraPlane()
+    private int getWorldDrawPlane()
     {
-        int j = 3;
+        int worldDrawPlane = 3;
         if(cameraCurveY < 310)
         {
-            int k = cameraPositionX >> 7;
-            int l = cameraPositionY >> 7;
-            int i1 = localPlayer.x >> 7;
-            int j1 = localPlayer.y >> 7;
-            if((tileFlags[plane][k][l] & 4) != 0)
-                j = plane;
-            int k1;
-            if(i1 > k)
-                k1 = i1 - k;
+            int cameraX = cameraPositionX >> 7;
+            int cameraY = cameraPositionY >> 7;
+            int playerX = localPlayer.x >> 7;
+            int playerY = localPlayer.y >> 7;
+            if((tileFlags[plane][cameraX][cameraY] & 4) != 0)
+                worldDrawPlane = plane;
+            int x;
+            if(playerX > cameraX)
+                x = playerX - cameraX;
             else
-                k1 = k - i1;
-            int l1;
-            if(j1 > l)
-                l1 = j1 - l;
+                x = cameraX - playerX;
+            int y;
+            if(playerY > cameraY)
+                y = playerY - cameraY;
             else
-                l1 = l - j1;
-            if(k1 > l1)
+                y = cameraY - playerY;
+            if(x > y)
             {
-                int i2 = (l1 * 0x10000) / k1;
-                int k2 = 32768;
-                while(k != i1) 
+                int unknown1 = (y * 65536) / x;
+                int unknown2 = 32768;
+                while(cameraX != playerX) 
                 {
-                    if(k < i1)
-                        k++;
+                    if(cameraX < playerX)
+                        cameraX++;
                     else
-                    if(k > i1)
-                        k--;
-                    if((tileFlags[plane][k][l] & 4) != 0)
-                        j = plane;
-                    k2 += i2;
-                    if(k2 >= 0x10000)
+                    if(cameraX > playerX)
+                        cameraX--;
+                    if((tileFlags[plane][cameraX][cameraY] & 4) != 0)
+                        worldDrawPlane = plane;
+                    unknown2 += unknown1;
+                    if(unknown2 >= 65536)
                     {
-                        k2 -= 0x10000;
-                        if(l < j1)
-                            l++;
+                        unknown2 -= 65536;
+                        if(cameraY < playerY)
+                            cameraY++;
                         else
-                        if(l > j1)
-                            l--;
-                        if((tileFlags[plane][k][l] & 4) != 0)
-                            j = plane;
+                        if(cameraY > playerY)
+                            cameraY--;
+                        if((tileFlags[plane][cameraX][cameraY] & 4) != 0)
+                            worldDrawPlane = plane;
                     }
                 }
             } else
             {
-                int j2 = (k1 * 0x10000) / l1;
-                int l2 = 32768;
-                while(l != j1) 
+                int unknown1 = (x * 65536) / y;
+                int unknown2 = 32768;
+                while(cameraY != playerY) 
                 {
-                    if(l < j1)
-                        l++;
+                    if(cameraY < playerY)
+                        cameraY++;
                     else
-                    if(l > j1)
-                        l--;
-                    if((tileFlags[plane][k][l] & 4) != 0)
-                        j = plane;
-                    l2 += j2;
-                    if(l2 >= 0x10000)
+                    if(cameraY > playerY)
+                        cameraY--;
+                    if((tileFlags[plane][cameraX][cameraY] & 4) != 0)
+                        worldDrawPlane = plane;
+                    unknown2 += unknown1;
+                    if(unknown2 >= 65536)
                     {
-                        l2 -= 0x10000;
-                        if(k < i1)
-                            k++;
+                        unknown2 -= 65536;
+                        if(cameraX < playerX)
+                            cameraX++;
                         else
-                        if(k > i1)
-                            k--;
-                        if((tileFlags[plane][k][l] & 4) != 0)
-                            j = plane;
+                        if(cameraX > playerX)
+                            cameraX--;
+                        if((tileFlags[plane][cameraX][cameraY] & 4) != 0)
+                            worldDrawPlane = plane;
                     }
                 }
             }
         }
         if((tileFlags[plane][localPlayer.x >> 7][localPlayer.y >> 7] & 4) != 0)
-            j = plane;
-        return j;
+            worldDrawPlane = plane;
+        
+        return worldDrawPlane;
     }
 
     private int getCameraPlaneCutscene()
     {
-        int j = getFloorDrawHeight(plane, cameraPositionY, cameraPositionX);
-        if(j - cameraPositionZ < 800 && (tileFlags[plane][cameraPositionX >> 7][cameraPositionY >> 7] & 4) != 0)
+        int terrainDrawHeight = getFloorDrawHeight(plane, cameraPositionY, cameraPositionX);
+        if(terrainDrawHeight - cameraPositionZ < 800 && (tileFlags[plane][cameraPositionX >> 7][cameraPositionY >> 7] & 4) != 0)
             return plane;
         else
             return 3;
     }
 
-    private void deleteIgnore(long l)
+    private void deleteIgnore(long target)
     {
         try
         {
-            if(l == 0L)
+            if(target == 0L)
                 return;
-            for(int j = 0; j < ignoreCount; j++)
-                if(ignoreListAsLongs[j] == l)
+            for(int i = 0; i < ignoreCount; i++)
+                if(ignoreListAsLongs[i] == target)
                 {
                     ignoreCount--;
-                    needDrawTabArea = true;
-                    System.arraycopy(ignoreListAsLongs, j + 1, ignoreListAsLongs, j, ignoreCount - j);
+                    redrawTab = true;
+                    System.arraycopy(ignoreListAsLongs, i + 1, ignoreListAsLongs, i, ignoreCount - i);
 
                     stream.putOpcode(74);
-                    stream.putLong(l);
+                    stream.putLong(target);
                     return;
                 }
 
@@ -8926,138 +8931,138 @@ public final class client extends RSApplet {
         }
         catch(RuntimeException runtimeexception)
         {
-            signlink.reporterror("47229, " + 3 + ", " + l + ", " + runtimeexception.toString());
+            signlink.reporterror("47229, " + 3 + ", " + target + ", " + runtimeexception.toString());
         }
         throw new RuntimeException();
     }
 
     public String getParameter(String s)
     {
-        if(signlink.mainapp != null)
-            return signlink.mainapp.getParameter(s);
+        if(signlink.applet != null)
+            return signlink.applet.getParameter(s);
         else
             return super.getParameter(s);
     }
 
-    private void adjustVolume(boolean flag, int i)
+    private void adjustVolume(boolean flag, int volume)
     {
-        signlink.midivol = i;
+        signlink.midiVolume = volume;
         if(flag)
             signlink.midi = "voladjust";
     }
 
-    private int extractInterfaceValues(RSInterface class9, int j)
+    private int extractDynamicInterfaceValue(RSInterface rsInterface, int interfaceId)
     {
-        if(class9.opcodes == null || j >= class9.opcodes.length)
+        if(rsInterface.opcodes == null || interfaceId >= rsInterface.opcodes.length)
             return -2;
         try
         {
-            int ai[] = class9.opcodes[j];
-            int k = 0;
-            int l = 0;
-            int i1 = 0;
+            int opcodes[] = rsInterface.opcodes[interfaceId];
+            int result = 0;
+            int counter = 0;
+            int type = 0;
             do
             {
-                int j1 = ai[l++];
-                int k1 = 0;
-                byte byte0 = 0;
-                if(j1 == 0)
-                    return k;
-                if(j1 == 1)
-                    k1 = currentStats[ai[l++]];
-                if(j1 == 2)
-                    k1 = maxStats[ai[l++]];
-                if(j1 == 3)
-                    k1 = currentExp[ai[l++]];
-                if(j1 == 4)
+                int opcode = opcodes[counter++];
+                int value = 0;
+                byte tempType = 0;
+                if(opcode == 0)
+                    return result;
+                if(opcode == 1)
+                    value = skillLevel[opcodes[counter++]];
+                if(opcode == 2)
+                    value = skillMaxLevel[opcodes[counter++]];
+                if(opcode == 3)
+                    value = skillExperience[opcodes[counter++]];
+                if(opcode == 4)
                 {
-                    RSInterface class9_1 = RSInterface.interfaceCache[ai[l++]];
-                    int k2 = ai[l++];
-                    if(k2 >= 0 && k2 < ItemDef.totalItems && (!ItemDef.forID(k2).membersObject || isMembers))
+                    RSInterface itemInterface = RSInterface.cache[opcodes[counter++]];
+                    int itemId = opcodes[counter++];
+                    if(itemId >= 0 && itemId < ItemDef.itemCount && (!ItemDef.forID(itemId).membersObject || isMembers))
                     {
-                        for(int j3 = 0; j3 < class9_1.inventoryItemId.length; j3++)
-                            if(class9_1.inventoryItemId[j3] == k2 + 1)
-                                k1 += class9_1.inventoryStackSize[j3];
+                        for(int item = 0; item < itemInterface.inventoryItemId.length; item++)
+                            if(itemInterface.inventoryItemId[item] == itemId + 1)
+                                value += itemInterface.inventoryStackSize[item];
 
                     }
                 }
-                if(j1 == 5)
-                    k1 = variousSettings[ai[l++]];
-                if(j1 == 6)
-                    k1 = xpForLevel[maxStats[ai[l++]] - 1];
-                if(j1 == 7)
-                    k1 = (variousSettings[ai[l++]] * 100) / 46875;
-                if(j1 == 8)
-                    k1 = localPlayer.combatLevel;
-                if(j1 == 9)
+                if(opcode == 5)
+                    value = interfaceSettings[opcodes[counter++]];
+                if(opcode == 6)
+                    value = EXPERIENCE_FOR_LEVEL[skillMaxLevel[opcodes[counter++]] - 1];
+                if(opcode == 7)
+                    value = (interfaceSettings[opcodes[counter++]] * 100) / 46875;
+                if(opcode == 8)
+                    value = localPlayer.combatLevel;
+                if(opcode == 9)
                 {
-                    for(int l1 = 0; l1 < Skills.skillsCount; l1++)
-                        if(Skills.skillEnabled[l1])
-                            k1 += maxStats[l1];
+                    for(int skill = 0; skill < Skills.skillsCount; skill++)
+                        if(Skills.skillEnabled[skill])
+                            value += skillMaxLevel[skill];
 
                 }
-                if(j1 == 10)
+                if(opcode == 10)
                 {
-                    RSInterface class9_2 = RSInterface.interfaceCache[ai[l++]];
-                    int l2 = ai[l++] + 1;
-                    if(l2 >= 0 && l2 < ItemDef.totalItems && (!ItemDef.forID(l2).membersObject || isMembers))
+                    RSInterface itemInterface = RSInterface.cache[opcodes[counter++]];
+                    int itemId = opcodes[counter++] + 1;
+                    if(itemId >= 0 && itemId < ItemDef.itemCount && (!ItemDef.forID(itemId).membersObject || isMembers))
                     {
-                        for(int k3 = 0; k3 < class9_2.inventoryItemId.length; k3++)
+                        for(int item = 0; item < itemInterface.inventoryItemId.length; item++)
                         {
-                            if(class9_2.inventoryItemId[k3] != l2)
+                            if(itemInterface.inventoryItemId[item] != itemId)
                                 continue;
-                            k1 = 0x3b9ac9ff;
+                            value = 999999999;
                             break;
                         }
 
                     }
                 }
-                if(j1 == 11)
-                    k1 = runEnergy;
-                if(j1 == 12)
-                    k1 = weight;
-                if(j1 == 13)
+                if(opcode == 11)
+                    value = playerEnergy;
+                if(opcode == 12)
+                    value = playerWeight;
+                if(opcode == 13)
                 {
-                    int i2 = variousSettings[ai[l++]];
-                    int i3 = ai[l++];
-                    k1 = (i2 & 1 << i3) == 0 ? 0 : 1;
+                    int setting = interfaceSettings[opcodes[counter++]];
+                    int info = opcodes[counter++];
+                    value = (setting & 1 << info) == 0 ? 0 : 1;
                 }
-                if(j1 == 14)
+                if(opcode == 14)
                 {
-                    int j2 = ai[l++];
-                    VarBit varBit = VarBit.cache[j2];
-                    int l3 = varBit.configId;
-                    int i4 = varBit.leastSignificantBit;
-                    int j4 = varBit.mostSignificantBit;
-                    int k4 = BITFIELD_MAX_VALUE[j4 - i4];
-                    k1 = variousSettings[l3] >> i4 & k4;
+                    int varBitId = opcodes[counter++];
+                    VarBit varBit = VarBit.cache[varBitId];
+                    int configId = varBit.configId;
+                    int lsb = varBit.leastSignificantBit;
+                    int msb = varBit.mostSignificantBit;
+                    int bit = BITFIELD_MAX_VALUE[msb - lsb];
+                    value = interfaceSettings[configId] >> lsb & bit;
                 }
-                if(j1 == 15)
-                    byte0 = 1;
-                if(j1 == 16)
-                    byte0 = 2;
-                if(j1 == 17)
-                    byte0 = 3;
-                if(j1 == 18)
-                    k1 = (localPlayer.x >> 7) + baseX;
-                if(j1 == 19)
-                    k1 = (localPlayer.y >> 7) + baseY;
-                if(j1 == 20)
-                    k1 = ai[l++];
-                if(byte0 == 0)
+                if(opcode == 15)
+                    tempType = 1;
+                if(opcode == 16)
+                    tempType = 2;
+                if(opcode == 17)
+                    tempType = 3;
+                if(opcode == 18)
+                    value = (localPlayer.x >> 7) + baseX;
+                if(opcode == 19)
+                    value = (localPlayer.y >> 7) + baseY;
+                if(opcode == 20)
+                    value = opcodes[counter++];
+                if(tempType == 0)
                 {
-                    if(i1 == 0)
-                        k += k1;
-                    if(i1 == 1)
-                        k -= k1;
-                    if(i1 == 2 && k1 != 0)
-                        k /= k1;
-                    if(i1 == 3)
-                        k *= k1;
-                    i1 = 0;
+                    if(type == 0)
+                        result += value;
+                    if(type == 1)
+                        result -= value;
+                    if(type == 2 && value != 0)
+                        result /= value;
+                    if(type == 3)
+                        result *= value;
+                    type = 0;
                 } else
                 {
-                    i1 = byte0;
+                    type = tempType;
                 }
             } while(true);
         }
@@ -9089,88 +9094,87 @@ public final class client extends RSApplet {
         aRSImageProducer_1164.initDrawingArea();
         if(minimapState == 2)
         {
-            byte abyte0[] = minimapBackgroundImage.imagePixels;
-            int ai[] = DrawingArea.pixels;
-            int k2 = abyte0.length;
-            for(int i5 = 0; i5 < k2; i5++)
-                if(abyte0[i5] == 0)
-                    ai[i5] = 0;
+            byte backgroundPixels[] = minimapBackgroundImage.imagePixels;
+            int rasterPixels[] = DrawingArea.pixels;
+            int pixelCount = backgroundPixels.length;
+            for(int p = 0; p < pixelCount; p++)
+                if(backgroundPixels[p] == 0)
+                    rasterPixels[p] = 0;
 
-            minimapCompassImage.method352(33, cameraHorizontal, compassWidthMap, 256, compassHingeSize, 25, 0, 0, 33, 25);
+            minimapCompassImage.rotate(33, cameraHorizontal, compassWidthMap, 256, compassHingeSize, 25, 0, 0, 33, 25);
             gameScreenCanvas.initDrawingArea();
             return;
         }
-        int i = cameraHorizontal + minimapRotation & 0x7ff;
-        int j = 48 + localPlayer.x / 32;
-        int l2 = 464 - localPlayer.y / 32;
-        minimapImage.method352(151, i, minimapShape2, 256 + minimapZoom, minimapShape1, l2, 5, 25, 146, j);
-        minimapCompassImage.method352(33, cameraHorizontal, compassWidthMap, 256, compassHingeSize, 25, 0, 0, 33, 25);
-        for(int j5 = 0; j5 < minimapHintCount; j5++)
+        int angle = cameraHorizontal + minimapRotation & 0x7ff;
+        int centreX = 48 + localPlayer.x / 32;
+        int centreY = 464 - localPlayer.y / 32;
+        minimapImage.rotate(151, angle, minimapShape2, 256 + minimapZoom, minimapShape1, centreY, 5, 25, 146, centreX);
+        minimapCompassImage.rotate(33, cameraHorizontal, compassWidthMap, 256, compassHingeSize, 25, 0, 0, 33, 25);
+        for(int icon = 0; icon < minimapHintCount; icon++)
         {
-            int mapX = (minimapHintX[j5] * 4 + 2) - localPlayer.x / 32;
-            int mapY = (minimapHintY[j5] * 4 + 2) - localPlayer.y / 32;
-            markMinimap(minimapHint[j5], mapX, mapY);
+            int mapX = (minimapHintX[icon] * 4 + 2) - localPlayer.x / 32;
+            int mapY = (minimapHintY[icon] * 4 + 2) - localPlayer.y / 32;
+            markMinimap(minimapHint[icon], mapX, mapY);
         }
-
-        for(int k5 = 0; k5 < 104; k5++)
+        
+        for(int x = 0; x < 104; x++)
         {
-            for(int l5 = 0; l5 < 104; l5++)
+            for(int y = 0; y < 104; y++)
             {
-                NodeList class19 = groundArray[plane][k5][l5];
-                if(class19 != null)
+                NodeList itemStack = groundArray[plane][x][y];
+                if(itemStack != null)
                 {
-                    int l = (k5 * 4 + 2) - localPlayer.x / 32;
-                    int j3 = (l5 * 4 + 2) - localPlayer.y / 32;
-                    markMinimap(mapDotItem, l, j3);
+                    int mapX = (x * 4 + 2) - localPlayer.x / 32;
+                    int mapY = (y * 4 + 2) - localPlayer.y / 32;
+                    markMinimap(mapDotItem, mapX, mapY);
                 }
             }
-
         }
 
-        for(int i6 = 0; i6 < npcCount; i6++)
+        for(int n = 0; n < npcCount; n++)
         {
-            NPC npc = npcArray[npcIndices[i6]];
+            NPC npc = npcArray[npcIndices[n]];
             if(npc != null && npc.isVisible())
             {
-                EntityDefinition entityDef = npc.npcDefinition;
-                if(entityDef.childrenIDs != null)
-                    entityDef = entityDef.getChildDefinition();
-                if(entityDef != null && entityDef.visibleMinimap && entityDef.clickable)
+                EntityDefinition definition = npc.npcDefinition;
+                if(definition.childrenIDs != null)
+                    definition = definition.getChildDefinition();
+                if(definition != null && definition.visibleMinimap && definition.clickable)
                 {
-                    int i1 = npc.x / 32 - localPlayer.x / 32;
-                    int k3 = npc.y / 32 - localPlayer.y / 32;
-                    markMinimap(mapDotNPC, i1, k3);
+                    int mapX = npc.x / 32 - localPlayer.x / 32;
+                    int mapY = npc.y / 32 - localPlayer.y / 32;
+                    markMinimap(mapDotNPC, mapX, mapY);
                 }
             }
         }
 
-        for(int j6 = 0; j6 < localPlayerCount; j6++)
+        for(int p = 0; p < localPlayerCount; p++)
         {
-            Player player = players[localPlayers[j6]];
+            Player player = players[localPlayers[p]];
             if(player != null && player.isVisible())
             {
-                int j1 = player.x / 32 - localPlayer.x / 32;
-                int l3 = player.y / 32 - localPlayer.y / 32;
-                boolean flag1 = false;
-                long l6 = TextClass.nameToLong(player.name);
-                for(int k6 = 0; k6 < friendsCount; k6++)
+                int mapX = player.x / 32 - localPlayer.x / 32;
+                int mapY = player.y / 32 - localPlayer.y / 32;
+                boolean friend = false;
+                long nameHash = TextClass.nameToLong(player.name);
+                for(int f = 0; f < friendsCount; f++)
                 {
-                    if(l6 != friendsListAsLongs[k6] || friendsWorldIds[k6] == 0)
+                    if(nameHash != friendsListAsLongs[f] || friendsWorldIds[f] == 0)
                         continue;
-                    flag1 = true;
+                    friend = true;
                     break;
                 }
 
-                boolean flag2 = false;
+                boolean team = false;
                 if(localPlayer.team != 0 && player.team != 0 && localPlayer.team == player.team)
-                    flag2 = true;
-                if(flag1)
-                    markMinimap(mapDotFriend, j1, l3);
+                    team = true;
+                if(friend)
+                    markMinimap(mapDotFriend, mapX, mapY);
                 else
-                if(flag2)
-                    markMinimap(mapDotTeam, j1, l3);
+                if(team)
+                    markMinimap(mapDotTeam, mapX, mapY);
                 else
-                    markMinimap(mapDotPlayer, j1, l3);
+                    markMinimap(mapDotPlayer, mapX, mapY);
             }
         }
 
@@ -9178,36 +9182,36 @@ public final class client extends RSApplet {
         {
             if(hintIconType == 1 && hintIconNpcId >= 0 && hintIconNpcId < npcArray.length)
             {
-                NPC class30_sub2_sub4_sub1_sub1_1 = npcArray[hintIconNpcId];
-                if(class30_sub2_sub4_sub1_sub1_1 != null)
+                NPC npc = npcArray[hintIconNpcId];
+                if(npc != null)
                 {
-                    int k1 = class30_sub2_sub4_sub1_sub1_1.x / 32 - localPlayer.x / 32;
-                    int i4 = class30_sub2_sub4_sub1_sub1_1.y / 32 - localPlayer.y / 32;
-                    drawMinimapTarget(mapMarker, i4, k1);
+                    int mapX = npc.x / 32 - localPlayer.x / 32;
+                    int mapY = npc.y / 32 - localPlayer.y / 32;
+                    drawMinimapTarget(mapMarker, mapY, mapX);
                 }
             }
             if(hintIconType == 2)
             {
-                int l1 = ((hintIconX - baseX) * 4 + 2) - localPlayer.x / 32;
-                int j4 = ((hintIconY - baseY) * 4 + 2) - localPlayer.y / 32;
-                drawMinimapTarget(mapMarker, j4, l1);
+                int mapX = ((hintIconX - baseX) * 4 + 2) - localPlayer.x / 32;
+                int mapY = ((hintIconY - baseY) * 4 + 2) - localPlayer.y / 32;
+                drawMinimapTarget(mapMarker, mapY, mapX);
             }
             if(hintIconType == 10 && hintIconPlayerId >= 0 && hintIconPlayerId < players.length)
             {
-                Player class30_sub2_sub4_sub1_sub2_1 = players[hintIconPlayerId];
-                if(class30_sub2_sub4_sub1_sub2_1 != null)
+                Player player = players[hintIconPlayerId];
+                if(player != null)
                 {
-                    int i2 = class30_sub2_sub4_sub1_sub2_1.x / 32 - localPlayer.x / 32;
-                    int k4 = class30_sub2_sub4_sub1_sub2_1.y / 32 - localPlayer.y / 32;
-                    drawMinimapTarget(mapMarker, k4, i2);
+                    int mapX = player.x / 32 - localPlayer.x / 32;
+                    int mapY = player.y / 32 - localPlayer.y / 32;
+                    drawMinimapTarget(mapMarker, mapY, mapX);
                 }
             }
         }
         if(destX != 0)
         {
-            int j2 = (destX * 4 + 2) - localPlayer.x / 32;
-            int l4 = (destY * 4 + 2) - localPlayer.y / 32;
-            markMinimap(mapFlag, j2, l4);
+            int mapX = (destX * 4 + 2) - localPlayer.x / 32;
+            int mapY = (destY * 4 + 2) - localPlayer.y / 32;
+            markMinimap(mapFlag, mapX, mapY);
         }
         DrawingArea.drawFilledRectangle(97, 78, 3, 3, 0xffffff);
         gameScreenCanvas.initDrawingArea();
@@ -9345,7 +9349,7 @@ public final class client extends RSApplet {
             return false;
         for(int i = 0; i < class9.conditionType.length; i++)
         {
-            int j = extractInterfaceValues(class9, i);
+            int j = extractDynamicInterfaceValue(class9, i);
             int k = class9.conditionValue[i];
             if(class9.conditionType[i] == 2)
             {
@@ -9401,24 +9405,24 @@ public final class client extends RSApplet {
         {
             for(int i = 0; i < 256; i++)
                 if(anInt1040 > 768)
-                    anIntArray850[i] = method83(flameColour1[i], flameColour2[i], 1024 - anInt1040);
+                    anIntArray850[i] = rotateFlameColour(flameColour1[i], flameColour2[i], 1024 - anInt1040);
                 else
                 if(anInt1040 > 256)
                     anIntArray850[i] = flameColour2[i];
                 else
-                    anIntArray850[i] = method83(flameColour2[i], flameColour1[i], 256 - anInt1040);
+                    anIntArray850[i] = rotateFlameColour(flameColour2[i], flameColour1[i], 256 - anInt1040);
 
         } else
         if(anInt1041 > 0)
         {
             for(int j = 0; j < 256; j++)
                 if(anInt1041 > 768)
-                    anIntArray850[j] = method83(flameColour1[j], flameColour3[j], 1024 - anInt1041);
+                    anIntArray850[j] = rotateFlameColour(flameColour1[j], flameColour3[j], 1024 - anInt1041);
                 else
                 if(anInt1041 > 256)
                     anIntArray850[j] = flameColour3[j];
                 else
-                    anIntArray850[j] = method83(flameColour3[j], flameColour1[j], 256 - anInt1041);
+                    anIntArray850[j] = rotateFlameColour(flameColour3[j], flameColour1[j], 256 - anInt1041);
 
         } else
         {
@@ -10361,11 +10365,11 @@ public final class client extends RSApplet {
                         contentType = 655;
                     reportAbuseInput = "";
                     reportAbuseMute = false;
-                    for(int interfaceId = 0; interfaceId < RSInterface.interfaceCache.length; interfaceId++)
+                    for(int interfaceId = 0; interfaceId < RSInterface.cache.length; interfaceId++)
                     {
-                        if(RSInterface.interfaceCache[interfaceId] == null || RSInterface.interfaceCache[interfaceId].contentType != contentType)
+                        if(RSInterface.cache[interfaceId] == null || RSInterface.cache[interfaceId].contentType != contentType)
                             continue;
-                        openInterfaceId = RSInterface.interfaceCache[interfaceId].parentID;
+                        openInterfaceId = RSInterface.cache[interfaceId].parentID;
                         break;
                     }
 
@@ -10398,11 +10402,11 @@ public final class client extends RSApplet {
             if(packetOpcode == 185)
             {
                 int interfaceId = inStream.getUnsignedShortA();
-                RSInterface.interfaceCache[interfaceId].modelTypeDefault = 3;
+                RSInterface.cache[interfaceId].modelTypeDefault = 3;
                 if(localPlayer.npcAppearance == null)
-                    RSInterface.interfaceCache[interfaceId].modelIdDefault = (localPlayer.bodyPartColour[0] << 25) + (localPlayer.bodyPartColour[4] << 20) + (localPlayer.appearance[0] << 15) + (localPlayer.appearance[8] << 10) + (localPlayer.appearance[11] << 5) + localPlayer.appearance[1];
+                    RSInterface.cache[interfaceId].modelIdDefault = (localPlayer.bodyPartColour[0] << 25) + (localPlayer.bodyPartColour[4] << 20) + (localPlayer.appearance[0] << 15) + (localPlayer.appearance[8] << 10) + (localPlayer.appearance[11] << 5) + localPlayer.appearance[1];
                 else
-                    RSInterface.interfaceCache[interfaceId].modelIdDefault = (int)(0x12345678L + localPlayer.npcAppearance.id);
+                    RSInterface.cache[interfaceId].modelIdDefault = (int)(0x12345678L + localPlayer.npcAppearance.id);
                 packetOpcode = -1;
                 return true;
             }
@@ -10418,7 +10422,7 @@ public final class client extends RSApplet {
             if(packetOpcode == 72)
             {
                 int interfaceId = inStream.getUnsignedShort();
-                RSInterface rsInterface = RSInterface.interfaceCache[interfaceId];
+                RSInterface rsInterface = RSInterface.cache[interfaceId];
                 for(int slot = 0; slot < rsInterface.inventoryItemId.length; slot++)
                 {
                     rsInterface.inventoryItemId[slot] = -1;
@@ -10456,16 +10460,16 @@ public final class client extends RSApplet {
             }
             if(packetOpcode == 134)
             {
-                needDrawTabArea = true;
-                int skillId = inStream.getUnsignedByte();
-                int skillExperience = inStream.getInt2();
-                int skillLevel = inStream.getUnsignedByte();
-                currentExp[skillId] = skillExperience;
-                currentStats[skillId] = skillLevel;
-                maxStats[skillId] = 1;
+                redrawTab = true;
+                int _skillId = inStream.getUnsignedByte();
+                int _skillExp = inStream.getInt2();
+                int _skillLevel = inStream.getUnsignedByte();
+                skillExperience[_skillId] = _skillExp;
+                skillLevel[_skillId] = _skillLevel;
+                skillMaxLevel[_skillId] = 1;
                 for(int level = 0; level < 98; level++)
-                    if(skillExperience >= xpForLevel[level])
-                        maxStats[skillId] = level + 2;
+                    if(_skillExp >= EXPERIENCE_FOR_LEVEL[level])
+                        skillMaxLevel[_skillId] = level + 2;
 
                 packetOpcode = -1;
                 return true;
@@ -10477,8 +10481,8 @@ public final class client extends RSApplet {
                 if(sidebarId == 65535)
                     sidebarId = -1;
                 tabInterfaceIDs[interfaceId] = sidebarId;
-                needDrawTabArea = true;
-                tabAreaAltered = true;
+                redrawTab = true;
+                drawTabIcons = true;
                 packetOpcode = -1;
                 return true;
             }
@@ -10522,7 +10526,7 @@ public final class client extends RSApplet {
                 int x = inStream.getShort();
                 int y = inStream.getForceLEShort();
                 int interfaceId = inStream.getUnsignedShort();
-                RSInterface rsInterface = RSInterface.interfaceCache[interfaceId];
+                RSInterface rsInterface = RSInterface.cache[interfaceId];
                 rsInterface.x = x;
                 rsInterface.y = y;
                 packetOpcode = -1;
@@ -10783,8 +10787,8 @@ public final class client extends RSApplet {
             {
                 int modelId = inStream.getUnsignedShortA();
                 int interfaceId = inStream.getUnsignedShortA();
-                RSInterface.interfaceCache[interfaceId].modelTypeDefault = 2;
-                RSInterface.interfaceCache[interfaceId].modelIdDefault = modelId;
+                RSInterface.cache[interfaceId].modelTypeDefault = 2;
+                RSInterface.cache[interfaceId].modelIdDefault = modelId;
                 packetOpcode = -1;
                 return true;
             }
@@ -10942,7 +10946,7 @@ public final class client extends RSApplet {
                     if(friendsWorldIds[friend] != worldId)
                     {
                         friendsWorldIds[friend] = worldId;
-                        needDrawTabArea = true;
+                        redrawTab = true;
                         if(worldId > 0)
                             pushMessage(name + " has logged in.", 5, "");
                         if(worldId == 0)
@@ -10958,13 +10962,13 @@ public final class client extends RSApplet {
                     friendsList[friendsCount] = name;
                     friendsWorldIds[friendsCount] = worldId;
                     friendsCount++;
-                    needDrawTabArea = true;
+                    redrawTab = true;
                 }
                 for(boolean orderComplete = false; !orderComplete;)
                 {
                     orderComplete = true;
                     for(int friend = 0; friend < friendsCount - 1; friend++)
-                        if(friendsWorldIds[friend] != nodeID && friendsWorldIds[friend + 1] == nodeID || friendsWorldIds[friend] == 0 && friendsWorldIds[friend + 1] != 0)
+                        if(friendsWorldIds[friend] != localWorldId && friendsWorldIds[friend + 1] == localWorldId || friendsWorldIds[friend] == 0 && friendsWorldIds[friend + 1] != 0)
                         {
                             int tempWorld = friendsWorldIds[friend];
                             friendsWorldIds[friend] = friendsWorldIds[friend + 1];
@@ -10975,7 +10979,7 @@ public final class client extends RSApplet {
                             long tempLong = friendsListAsLongs[friend];
                             friendsListAsLongs[friend] = friendsListAsLongs[friend + 1];
                             friendsListAsLongs[friend + 1] = tempLong;
-                            needDrawTabArea = true;
+                            redrawTab = true;
                             orderComplete = false;
                         }
                 }
@@ -10985,9 +10989,9 @@ public final class client extends RSApplet {
             }
             if(packetOpcode == 110)
             {
-                if(tabID == 12)
-                    needDrawTabArea = true;
-                runEnergy = inStream.getUnsignedByte();
+                if(currentTabId == 12)
+                    redrawTab = true;
+                playerEnergy = inStream.getUnsignedByte();
                 packetOpcode = -1;
                 return true;
             }
@@ -11037,20 +11041,20 @@ public final class client extends RSApplet {
             {
                 int interfaceId = inStream.getUnsignedLEShortA();
                 int inventoryInterfaceId = inStream.getUnsignedLEShort();
-                if(backDialogID != -1)
+                if(chatboxInterfaceId != -1)
                 {
-                    backDialogID = -1;
-                    inputTaken = true;
+                    chatboxInterfaceId = -1;
+                    redrawChatbox = true;
                 }
                 if(inputDialogState != 0)
                 {
                     inputDialogState = 0;
-                    inputTaken = true;
+                    redrawChatbox = true;
                 }
                 openInterfaceId = interfaceId;
                 inventoryOverlayInterfaceID = inventoryInterfaceId;
-                needDrawTabArea = true;
-                tabAreaAltered = true;
+                redrawTab = true;
+                drawTabIcons = true;
                 continuedDialogue = false;
                 packetOpcode = -1;
                 return true;
@@ -11059,7 +11063,7 @@ public final class client extends RSApplet {
             {
                 int interfaceId = inStream.getUnsignedShort();
                 int scrollPosition = inStream.getUnsignedLEShortA();
-                RSInterface rsInterface = RSInterface.interfaceCache[interfaceId];
+                RSInterface rsInterface = RSInterface.cache[interfaceId];
                 if(rsInterface != null && rsInterface.type == 0)
                 {
                     if(scrollPosition < 0)
@@ -11073,12 +11077,12 @@ public final class client extends RSApplet {
             }
             if(packetOpcode == 68)
             {
-                for(int setting = 0; setting < variousSettings.length; setting++)
-                    if(variousSettings[setting] != defaultSettings[setting])
+                for(int setting = 0; setting < interfaceSettings.length; setting++)
+                    if(interfaceSettings[setting] != defaultSettings[setting])
                     {
-                        variousSettings[setting] = defaultSettings[setting];
+                        interfaceSettings[setting] = defaultSettings[setting];
                         handleInterfaceSetting(setting);
-                        needDrawTabArea = true;
+                        redrawTab = true;
                     }
 
                 packetOpcode = -1;
@@ -11142,13 +11146,13 @@ public final class client extends RSApplet {
             if(packetOpcode == 24)
             {
                 flashingSidebar = inStream.getUnsignedByteS();
-                if(flashingSidebar == tabID)
+                if(flashingSidebar == currentTabId)
                 {
                     if(flashingSidebar == 3)
-                        tabID = 1;
+                        currentTabId = 1;
                     else
-                        tabID = 3;
-                    needDrawTabArea = true;
+                        currentTabId = 3;
+                    redrawTab = true;
                 }
                 packetOpcode = -1;
                 return true;
@@ -11160,17 +11164,17 @@ public final class client extends RSApplet {
                 int itemId = inStream.getUnsignedLEShort();
                 if(itemId == 65535)
                 {
-                    RSInterface.interfaceCache[interfaceId].modelTypeDefault = 0;
+                    RSInterface.cache[interfaceId].modelTypeDefault = 0;
                     packetOpcode = -1;
                     return true;
                 } else
                 {
                     ItemDef itemDef = ItemDef.forID(itemId);
-                    RSInterface.interfaceCache[interfaceId].modelTypeDefault = 4;
-                    RSInterface.interfaceCache[interfaceId].modelIdDefault = itemId;
-                    RSInterface.interfaceCache[interfaceId].modelRotationX = itemDef.modelRotationX;
-                    RSInterface.interfaceCache[interfaceId].modelRotationY = itemDef.modelRotationY;
-                    RSInterface.interfaceCache[interfaceId].modelZoom = (itemDef.modelZoom * 100) / itemModelZoom;
+                    RSInterface.cache[interfaceId].modelTypeDefault = 4;
+                    RSInterface.cache[interfaceId].modelIdDefault = itemId;
+                    RSInterface.cache[interfaceId].modelRotationX = itemDef.modelRotationX;
+                    RSInterface.cache[interfaceId].modelRotationY = itemDef.modelRotationY;
+                    RSInterface.cache[interfaceId].modelZoom = (itemDef.modelZoom * 100) / itemModelZoom;
                     packetOpcode = -1;
                     return true;
                 }
@@ -11179,7 +11183,7 @@ public final class client extends RSApplet {
             {
                 boolean hiddenUntilHovered = inStream.getUnsignedByte() == 1;
                 int interfaceId = inStream.getUnsignedLEShort();
-                RSInterface.interfaceCache[interfaceId].hoverOnly = hiddenUntilHovered;
+                RSInterface.cache[interfaceId].hoverOnly = hiddenUntilHovered;
                 packetOpcode = -1;
                 return true;
             }
@@ -11187,19 +11191,19 @@ public final class client extends RSApplet {
             {
                 int interfaceId = inStream.getUnsignedShort();
                 loadInterface(interfaceId);
-                if(backDialogID != -1)
+                if(chatboxInterfaceId != -1)
                 {
-                    backDialogID = -1;
-                    inputTaken = true;
+                    chatboxInterfaceId = -1;
+                    redrawChatbox = true;
                 }
                 if(inputDialogState != 0)
                 {
                     inputDialogState = 0;
-                    inputTaken = true;
+                    redrawChatbox = true;
                 }
                 inventoryOverlayInterfaceID = interfaceId;
-                needDrawTabArea = true;
-                tabAreaAltered = true;
+                redrawTab = true;
+                drawTabIcons = true;
                 openInterfaceId = -1;
                 continuedDialogue = false;
                 packetOpcode = -1;
@@ -11209,9 +11213,9 @@ public final class client extends RSApplet {
             {
                 String text = inStream.getString();
                 int interfaceId = inStream.getUnsignedLEShortA();
-                RSInterface.interfaceCache[interfaceId].textDefault = text;
-                if(RSInterface.interfaceCache[interfaceId].parentID == tabInterfaceIDs[tabID])
-                    needDrawTabArea = true;
+                RSInterface.cache[interfaceId].textDefault = text;
+                if(RSInterface.cache[interfaceId].parentID == tabInterfaceIDs[currentTabId])
+                    redrawTab = true;
                 packetOpcode = -1;
                 return true;
             }
@@ -11221,15 +11225,15 @@ public final class client extends RSApplet {
                 privateChatMode = inStream.getUnsignedByte();
                 tradeMode = inStream.getUnsignedByte();
                 updateChatSettings = true;
-                inputTaken = true;
+                redrawChatbox = true;
                 packetOpcode = -1;
                 return true;
             }
             if(packetOpcode == 240)
             {
-                if(tabID == 12)
-                    needDrawTabArea = true;
-                weight = inStream.getShort();
+                if(currentTabId == 12)
+                    redrawTab = true;
+                playerWeight = inStream.getShort();
                 packetOpcode = -1;
                 return true;
             }
@@ -11237,8 +11241,8 @@ public final class client extends RSApplet {
             {
                 int interfaceId = inStream.getUnsignedShortA();
                 int interfaceModelId = inStream.getUnsignedLEShort();
-                RSInterface.interfaceCache[interfaceId].modelTypeDefault = 1;
-                RSInterface.interfaceCache[interfaceId].modelIdDefault = interfaceModelId;
+                RSInterface.cache[interfaceId].modelTypeDefault = 1;
+                RSInterface.cache[interfaceId].modelIdDefault = interfaceModelId;
                 packetOpcode = -1;
                 return true;
             }
@@ -11249,15 +11253,15 @@ public final class client extends RSApplet {
                 int r = rgb >> 10 & 0x1f;
                 int g = rgb >> 5 & 0x1f;
                 int b = rgb & 0x1f;
-                RSInterface.interfaceCache[interfaceId].colourDefault = (r << 19) + (g << 11) + (b << 3);
+                RSInterface.cache[interfaceId].colourDefault = (r << 19) + (g << 11) + (b << 3);
                 packetOpcode = -1;
                 return true;
             }
             if(packetOpcode == 53)
             {
-                needDrawTabArea = true;
+                redrawTab = true;
                 int interfaceId = inStream.getUnsignedLEShort();
-                RSInterface rsInterface = RSInterface.interfaceCache[interfaceId];
+                RSInterface rsInterface = RSInterface.cache[interfaceId];
                 int itemCount = inStream.getUnsignedLEShort();
                 for(int item = 0; item < itemCount; item++)
                 {
@@ -11283,16 +11287,16 @@ public final class client extends RSApplet {
                 int interfaceId = inStream.getUnsignedLEShort();
                 int modelRotationX = inStream.getUnsignedLEShort();
                 int modelRotationY = inStream.getUnsignedShortA();
-                RSInterface.interfaceCache[interfaceId].modelRotationX = modelRotationX;
-                RSInterface.interfaceCache[interfaceId].modelRotationY = modelRotationY;
-                RSInterface.interfaceCache[interfaceId].modelZoom = modelZoom;
+                RSInterface.cache[interfaceId].modelRotationX = modelRotationX;
+                RSInterface.cache[interfaceId].modelRotationY = modelRotationY;
+                RSInterface.cache[interfaceId].modelZoom = modelZoom;
                 packetOpcode = -1;
                 return true;
             }
             if(packetOpcode == 221)
             {
                 friendListStatus = inStream.getUnsignedByte();
-                needDrawTabArea = true;
+                redrawTab = true;
                 packetOpcode = -1;
                 return true;
             }
@@ -11341,7 +11345,7 @@ public final class client extends RSApplet {
                 messagePromptRaised = false;
                 inputDialogState = 1;
                 amountOrNameInput = "";
-                inputTaken = true;
+                redrawChatbox = true;
                 packetOpcode = -1;
                 return true;
             }
@@ -11350,7 +11354,7 @@ public final class client extends RSApplet {
                 messagePromptRaised = false;
                 inputDialogState = 2;
                 amountOrNameInput = "";
-                inputTaken = true;
+                redrawChatbox = true;
                 packetOpcode = -1;
                 return true;
             }
@@ -11361,18 +11365,18 @@ public final class client extends RSApplet {
                 if(inventoryOverlayInterfaceID != -1)
                 {
                     inventoryOverlayInterfaceID = -1;
-                    needDrawTabArea = true;
-                    tabAreaAltered = true;
+                    redrawTab = true;
+                    drawTabIcons = true;
                 }
-                if(backDialogID != -1)
+                if(chatboxInterfaceId != -1)
                 {
-                    backDialogID = -1;
-                    inputTaken = true;
+                    chatboxInterfaceId = -1;
+                    redrawChatbox = true;
                 }
                 if(inputDialogState != 0)
                 {
                     inputDialogState = 0;
-                    inputTaken = true;
+                    redrawChatbox = true;
                 }
                 openInterfaceId = interfaceId;
                 continuedDialogue = false;
@@ -11383,7 +11387,7 @@ public final class client extends RSApplet {
             {
                 int interfaceId = inStream.getForceLEShortA();
                 dialogID = interfaceId;
-                inputTaken = true;
+                redrawChatbox = true;
                 packetOpcode = -1;
                 return true;
             }
@@ -11392,13 +11396,13 @@ public final class client extends RSApplet {
                 int settingId = inStream.getUnsignedShort();
                 int settingValue = inStream.getInt2();
                 defaultSettings[settingId] = settingValue;
-                if(variousSettings[settingId] != settingValue)
+                if(interfaceSettings[settingId] != settingValue)
                 {
-                    variousSettings[settingId] = settingValue;
+                    interfaceSettings[settingId] = settingValue;
                     handleInterfaceSetting(settingId);
-                    needDrawTabArea = true;
+                    redrawTab = true;
                     if(dialogID != -1)
-                        inputTaken = true;
+                        redrawChatbox = true;
                 }
                 packetOpcode = -1;
                 return true;
@@ -11408,13 +11412,13 @@ public final class client extends RSApplet {
                 int settingId = inStream.getUnsignedShort();
                 byte settingValue = inStream.get();
                 defaultSettings[settingId] = settingValue;
-                if(variousSettings[settingId] != settingValue)
+                if(interfaceSettings[settingId] != settingValue)
                 {
-                    variousSettings[settingId] = settingValue;
+                    interfaceSettings[settingId] = settingValue;
                     handleInterfaceSetting(settingId);
-                    needDrawTabArea = true;
+                    redrawTab = true;
                     if(dialogID != -1)
-                        inputTaken = true;
+                        redrawChatbox = true;
                 }
                 packetOpcode = -1;
                 return true;
@@ -11429,7 +11433,7 @@ public final class client extends RSApplet {
             {
                 int interfaceId = inStream.getUnsignedLEShort();
                 int animationId = inStream.getShort();
-                RSInterface rsInterface = RSInterface.interfaceCache[interfaceId];
+                RSInterface rsInterface = RSInterface.cache[interfaceId];
                 rsInterface.animationIdDefault = animationId;
                 if(animationId == -1)
                 {
@@ -11444,18 +11448,18 @@ public final class client extends RSApplet {
                 if(inventoryOverlayInterfaceID != -1)
                 {
                     inventoryOverlayInterfaceID = -1;
-                    needDrawTabArea = true;
-                    tabAreaAltered = true;
+                    redrawTab = true;
+                    drawTabIcons = true;
                 }
-                if(backDialogID != -1)
+                if(chatboxInterfaceId != -1)
                 {
-                    backDialogID = -1;
-                    inputTaken = true;
+                    chatboxInterfaceId = -1;
+                    redrawChatbox = true;
                 }
                 if(inputDialogState != 0)
                 {
                     inputDialogState = 0;
-                    inputTaken = true;
+                    redrawChatbox = true;
                 }
                 openInterfaceId = -1;
                 continuedDialogue = false;
@@ -11464,9 +11468,9 @@ public final class client extends RSApplet {
             }
             if(packetOpcode == 34)
             {
-                needDrawTabArea = true;
+                redrawTab = true;
                 int interfaceId = inStream.getUnsignedLEShort();
-                RSInterface rsInterface = RSInterface.interfaceCache[interfaceId];
+                RSInterface rsInterface = RSInterface.cache[interfaceId];
                 while(inStream.currentOffset < packetSize)
                 {
                     int itemSlot = inStream.getSmartB();
@@ -11491,9 +11495,9 @@ public final class client extends RSApplet {
             }
             if(packetOpcode == 106)
             {
-                tabID = inStream.getUnsignedByteC();
-                needDrawTabArea = true;
-                tabAreaAltered = true;
+                currentTabId = inStream.getUnsignedByteC();
+                redrawTab = true;
+                drawTabIcons = true;
                 packetOpcode = -1;
                 return true;
             }
@@ -11504,11 +11508,11 @@ public final class client extends RSApplet {
                 if(inventoryOverlayInterfaceID != -1)
                 {
                     inventoryOverlayInterfaceID = -1;
-                    needDrawTabArea = true;
-                    tabAreaAltered = true;
+                    redrawTab = true;
+                    drawTabIcons = true;
                 }
-                backDialogID = interfaceId;
-                inputTaken = true;
+                chatboxInterfaceId = interfaceId;
+                redrawChatbox = true;
                 openInterfaceId = -1;
                 continuedDialogue = false;
                 packetOpcode = -1;
@@ -11554,7 +11558,7 @@ public final class client extends RSApplet {
         }
         int cameraPlane;
         if(!inCutscene)
-            cameraPlane = getCameraPlane();
+            cameraPlane = getWorldDrawPlane();
         else
             cameraPlane = getCameraPlaneCutscene();
         int x = cameraPositionX;
@@ -11612,14 +11616,14 @@ public final class client extends RSApplet {
         if(inventoryOverlayInterfaceID != -1)
         {
             inventoryOverlayInterfaceID = -1;
-            needDrawTabArea = true;
+            redrawTab = true;
             continuedDialogue = false;
-            tabAreaAltered = true;
+            drawTabIcons = true;
         }
-        if(backDialogID != -1)
+        if(chatboxInterfaceId != -1)
         {
-            backDialogID = -1;
-            inputTaken = true;
+            chatboxInterfaceId = -1;
+            redrawChatbox = true;
             continuedDialogue = false;
         }
         openInterfaceId = -1;
@@ -11638,7 +11642,7 @@ public final class client extends RSApplet {
         aStream_847 = Stream.create();
         aBoolean848 = true;
         openInterfaceId = -1;
-        currentExp = new int[Skills.skillsCount];
+        skillExperience = new int[Skills.skillsCount];
         aBoolean872 = false;
         cameraJitter = new int[5];
         currentTrackId = -1;
@@ -11658,7 +11662,7 @@ public final class client extends RSApplet {
         wayPoints = new int[104][104];
         scrollBarColourLeft = 0x766654;
         animatedPixels = new byte[16384];
-        currentStats = new int[Skills.skillsCount];
+        skillLevel = new int[Skills.skillsCount];
         ignoreListAsLongs = new long[100];
         loadingError = false;
         scrollBarColourRight = 0x332d25;
@@ -11677,7 +11681,7 @@ public final class client extends RSApplet {
         compassHingeSize = new int[33];
         anIntArray969 = new int[256];
         decompressors = new Decompressor[5];
-        variousSettings = new int[2000];
+        interfaceSettings = new int[2000];
         aBoolean972 = false;
         overheadMessageCount = 50;
         overheadTextDrawX = new int[overheadMessageCount];
@@ -11701,7 +11705,7 @@ public final class client extends RSApplet {
         characterModelChanged = false;
         mapFunctionImage = new Sprite[100];
         dialogID = -1;
-        maxStats = new int[Skills.skillsCount];
+        skillMaxLevel = new int[Skills.skillsCount];
         defaultSettings = new int[2000];
         characterEditChangeGender = true;
         minimapShape1 = new int[151];
@@ -11723,7 +11727,7 @@ public final class client extends RSApplet {
         menuActionId = new int[500];
         menuActionData1 = new int[500];
         headIcons = new Sprite[20];
-        tabAreaAltered = false;
+        drawTabIcons = false;
         chatboxInputNeededString = "";
         atPlayerActions = new String[5];
         atPlayerArray = new boolean[5];
@@ -11734,7 +11738,7 @@ public final class client extends RSApplet {
         continuedDialogue = false;
         crosses = new Sprite[8];
         musicEnabled = true;
-        needDrawTabArea = false;
+        redrawTab = false;
         loggedIn = false;
         reportAbuseMute = false;
         loadGeneratedMap = false;
@@ -11755,8 +11759,8 @@ public final class client extends RSApplet {
         anInt1211 = 78;
         promptInput = "";
         modIcons = new Background[2];
-        tabID = 3;
-        inputTaken = false;
+        currentTabId = 3;
+        redrawChatbox = false;
         songChanging = true;
         minimapShape2 = new int[151];
         currentCollisionMap = new CollisionMap[4];
@@ -11770,7 +11774,7 @@ public final class client extends RSApplet {
         messagePromptRaised = false;
         loginMessage1 = "";
         loginMessage2 = "";
-        backDialogID = -1;
+        chatboxInterfaceId = -1;
         nextCameraRandomisationH = 2;
         walkingQueueX = new int[4000];
         walkingQueueY = new int[4000];
@@ -11814,7 +11818,7 @@ public final class client extends RSApplet {
     private int cameraCurveY;
     private int cameraCurveZ;
     private int playerRights;
-    private final int[] currentExp;
+    private final int[] skillExperience;
     private Background redStone1_3;
     private Background redStone2_3;
     private Background redStone3_2;
@@ -11826,7 +11830,7 @@ public final class client extends RSApplet {
     private final int[] cameraJitter;
     private int currentTrackId;
     private final boolean[] customCamera;
-    private int weight;
+    private int playerWeight;
     private MouseDetection mouseDetection;
     private volatile boolean drawFlames;
     private String reportAbuseInput;
@@ -11864,15 +11868,15 @@ public final class client extends RSApplet {
     private int crossIndex;
     private int crossType;
     private int plane;
-    private final int[] currentStats;
+    private final int[] skillLevel;
     private static int anticheat13;
     private final long[] ignoreListAsLongs;
     private boolean loadingError;
     private final int scrollBarColourRight;
     private final int[] cameraFrequency;
     private int[][] anIntArrayArray929;
-    private Sprite aClass30_Sub2_Sub1_Sub1_931;
-    private Sprite aClass30_Sub2_Sub1_Sub1_932;
+    private Sprite characterEditButtonDefualt;
+    private Sprite characterEditButtonActive;
     private int hintIconPlayerId;
     private int hintIconX;
     private int hintIconY;
@@ -11895,7 +11899,7 @@ public final class client extends RSApplet {
     private boolean windowFocused;
     private long[] friendsListAsLongs;
     private int currentSong;
-    private static int nodeID = 10;
+    private static int localWorldId = 10;
     static int portOffset;
     private static boolean isMembers = true;
     private static boolean lowMemory;
@@ -11910,7 +11914,7 @@ public final class client extends RSApplet {
     private final int[] compassHingeSize;
     private final int[] anIntArray969;
     final Decompressor[] decompressors;
-    public int variousSettings[];
+    public int interfaceSettings[];
     private boolean aBoolean972;
     private final int overheadMessageCount;
     private final int[] overheadTextDrawX;
@@ -11968,7 +11972,7 @@ public final class client extends RSApplet {
     private int cameraMovedWriteDelay;
     private boolean cameraMovedWrite;
     private int walkableInterfaceId;
-    private static final int[] xpForLevel;
+    private static final int[] EXPERIENCE_FOR_LEVEL;
     private int minimapState;
     private int sameClickPositionCounter;
     private int loadingStage;
@@ -11990,7 +11994,7 @@ public final class client extends RSApplet {
     private int anInt1040;
     private int anInt1041;
     private int dialogID;
-    private final int[] maxStats;
+    private final int[] skillMaxLevel;
     private final int[] defaultSettings;
     private int membershipStatus;
     private boolean characterEditChangeGender;
@@ -12045,7 +12049,7 @@ public final class client extends RSApplet {
     private int anInt1100;
     private int anInt1101;
     private int anInt1102;
-    private boolean tabAreaAltered;
+    private boolean drawTabIcons;
     private int systemUpdateTime;
     private RSImageProducer topLeft1BackgroundTile;
     private RSImageProducer bottomLeft1BackgroundTile;
@@ -12087,12 +12091,12 @@ public final class client extends RSApplet {
     private Background redStone3;
     private Background redStone1_2;
     private Background redStone2_2;
-    private int runEnergy;
+    private int playerEnergy;
     private boolean continuedDialogue;
     private Sprite[] crosses;
     private boolean musicEnabled;
     private Background[] flameRuneImage;
-    private boolean needDrawTabArea;
+    private boolean redrawTab;
     private int unreadMessages;
     private static int anticheat5;
     private static boolean displayFpsAndMemory;
@@ -12162,9 +12166,9 @@ public final class client extends RSApplet {
     private int loginScreenCursorPos;
     private final Background[] modIcons;
     private long lastClickTime;
-    private int tabID;
+    private int currentTabId;
     private int hintIconNpcId;
-    private boolean inputTaken;
+    private boolean redrawChatbox;
     private int inputDialogState;
     private static int anticheat8;
     private int nextSong;
@@ -12212,7 +12216,7 @@ public final class client extends RSApplet {
     private TextDrawingArea fontPlain;
     private TextDrawingArea fontBold;
     private int anInt1275;
-    private int backDialogID;
+    private int chatboxInterfaceId;
     private int cameraRandomisationH;
     private int nextCameraRandomisationH;
     private int[] walkingQueueX;
@@ -12229,14 +12233,14 @@ public final class client extends RSApplet {
 
     static 
     {
-        xpForLevel = new int[99];
+        EXPERIENCE_FOR_LEVEL = new int[99];
         int i = 0;
         for(int j = 0; j < 99; j++)
         {
             int l = j + 1;
             int i1 = (int)((double)l + 300D * Math.pow(2D, (double)l / 7D));
             i += i1;
-            xpForLevel[j] = i / 4;
+            EXPERIENCE_FOR_LEVEL[j] = i / 4;
         }
 
         BITFIELD_MAX_VALUE = new int[32];

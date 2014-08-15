@@ -159,10 +159,10 @@ public final class GameObjectDefinition
             int lsb = varBit.leastSignificantBit;
             int msb = varBit.mostSignificantBit;
             int bit = client.BITFIELD_MAX_VALUE[msb - lsb];
-            child = clientInstance.variousSettings[configId] >> lsb & bit;
+            child = clientInstance.interfaceSettings[configId] >> lsb & bit;
         } else
         if(configIds != -1)
-            child = clientInstance.variousSettings[configIds];
+            child = clientInstance.interfaceSettings[configIds];
         if(child < 0 || child >= childIds.length || childIds[child] == -1)
             return null;
         else

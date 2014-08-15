@@ -13,7 +13,7 @@ public final class Sprite extends DrawingArea {
         pixels = new int[i * j];
         width = maxWidth = i;
         height = maxHeight = j;
-        anInt1442 = anInt1443 = 0;
+        offsetX = offsetY = 0;
     }
 
     public Sprite(byte abyte0[], Component component)
@@ -29,8 +29,8 @@ public final class Sprite extends DrawingArea {
             height = image.getHeight(component);
             maxWidth = width;
             maxHeight = height;
-            anInt1442 = 0;
-            anInt1443 = 0;
+            offsetX = 0;
+            offsetY = 0;
             pixels = new int[width * height];
             PixelGrabber pixelgrabber = new PixelGrabber(image, 0, 0, width, height, pixels, 0, width);
             pixelgrabber.grabPixels();
@@ -41,49 +41,49 @@ public final class Sprite extends DrawingArea {
         }
     }
 
-    public Sprite(Archive streamLoader, String s, int i)
+    public Sprite(Archive streamLoader, String target, int archiveId)
     {
-        Stream stream = new Stream(streamLoader.getFile(s + ".dat"));
-        Stream stream_1 = new Stream(streamLoader.getFile("index.dat"));
-        stream_1.currentOffset = stream.getUnsignedLEShort();
-        maxWidth = stream_1.getUnsignedLEShort();
-        maxHeight = stream_1.getUnsignedLEShort();
-        int j = stream_1.getUnsignedByte();
-        int ai[] = new int[j];
-        for(int k = 0; k < j - 1; k++)
+        Stream dataStream = new Stream(streamLoader.getFile(target + ".dat"));
+        Stream indexStream = new Stream(streamLoader.getFile("index.dat"));
+        indexStream.currentOffset = dataStream.getUnsignedLEShort();
+        maxWidth = indexStream.getUnsignedLEShort();
+        maxHeight = indexStream.getUnsignedLEShort();
+        int length = indexStream.getUnsignedByte();
+        int pixels[] = new int[length];
+        for(int p = 0; p < length - 1; p++)
         {
-            ai[k + 1] = stream_1.get24BitInt();
-            if(ai[k + 1] == 0)
-                ai[k + 1] = 1;
+            pixels[p + 1] = indexStream.get24BitInt();
+            if(pixels[p + 1] == 0)
+                pixels[p + 1] = 1;
         }
 
-        for(int l = 0; l < i; l++)
+        for(int i = 0; i < archiveId; i++)
         {
-            stream_1.currentOffset += 2;
-            stream.currentOffset += stream_1.getUnsignedLEShort() * stream_1.getUnsignedLEShort();
-            stream_1.currentOffset++;
+            indexStream.currentOffset += 2;
+            dataStream.currentOffset += indexStream.getUnsignedLEShort() * indexStream.getUnsignedLEShort();
+            indexStream.currentOffset++;
         }
 
-        anInt1442 = stream_1.getUnsignedByte();
-        anInt1443 = stream_1.getUnsignedByte();
-        width = stream_1.getUnsignedLEShort();
-        height = stream_1.getUnsignedLEShort();
-        int i1 = stream_1.getUnsignedByte();
-        int j1 = width * height;
-        pixels = new int[j1];
-        if(i1 == 0)
+        offsetX = indexStream.getUnsignedByte();
+        offsetY = indexStream.getUnsignedByte();
+        width = indexStream.getUnsignedLEShort();
+        height = indexStream.getUnsignedLEShort();
+        int type = indexStream.getUnsignedByte();
+        int pixelCount = width * height;
+        this.pixels = new int[pixelCount];
+        if(type == 0)
         {
-            for(int k1 = 0; k1 < j1; k1++)
-                pixels[k1] = ai[stream.getUnsignedByte()];
+            for(int p = 0; p < pixelCount; p++)
+                this.pixels[p] = pixels[dataStream.getUnsignedByte()];
 
             return;
         }
-        if(i1 == 1)
+        if(type == 1)
         {
-            for(int l1 = 0; l1 < width; l1++)
+            for(int x = 0; x < width; x++)
             {
-                for(int i2 = 0; i2 < height; i2++)
-                    pixels[l1 + i2 * width] = ai[stream.getUnsignedByte()];
+                for(int y = 0; y < height; y++)
+                    this.pixels[x + y * width] = pixels[dataStream.getUnsignedByte()];
 
             }
 
@@ -134,20 +134,20 @@ public final class Sprite extends DrawingArea {
         int ai[] = new int[maxWidth * maxHeight];
         for(int j = 0; j < height; j++)
         {
-            System.arraycopy(pixels, j * width, ai, j + anInt1443 * maxWidth + anInt1442, width);
+            System.arraycopy(pixels, j * width, ai, j + offsetY * maxWidth + offsetX, width);
         }
 
         pixels = ai;
         width = maxWidth;
         height = maxHeight;
-        anInt1442 = 0;
-        anInt1443 = 0;
+        offsetX = 0;
+        offsetY = 0;
     }
 
     public void drawInverse(int i, int j)
     {
-        i += anInt1442;
-        j += anInt1443;
+        i += offsetX;
+        j += offsetY;
         int l = i + j * DrawingArea.width;
         int i1 = 0;
         int j1 = height;
@@ -215,8 +215,8 @@ public final class Sprite extends DrawingArea {
     public void drawAlpha(int i, int j)
     {
         int k = 128;//was parameter
-        i += anInt1442;
-        j += anInt1443;
+        i += offsetX;
+        j += offsetY;
         int i1 = i + j * DrawingArea.width;
         int j1 = 0;
         int k1 = height;
@@ -258,8 +258,8 @@ public final class Sprite extends DrawingArea {
 
     public void drawSprite(int i, int k)
     {
-        i += anInt1442;
-        k += anInt1443;
+        i += offsetX;
+        k += offsetY;
         int l = i + k * DrawingArea.width;
         int i1 = 0;
         int j1 = height;
@@ -371,7 +371,7 @@ public final class Sprite extends DrawingArea {
         }
     }
 
-    public void method352(int i, int j, int ai[], int k, int ai1[], int i1,
+    public void rotate(int i, int j, int ai[], int k, int ai1[], int i1,
                           int j1, int k1, int l1, int i2)
     {
         try
@@ -459,8 +459,8 @@ public final class Sprite extends DrawingArea {
 
     public void method354(Background background, int i, int j)
     {
-        j += anInt1442;
-        i += anInt1443;
+        j += offsetX;
+        i += offsetY;
         int k = j + i * DrawingArea.width;
         int l = 0;
         int i1 = height;
@@ -549,8 +549,8 @@ public final class Sprite extends DrawingArea {
     public int pixels[];
     public int width;
     public int height;
-    private int anInt1442;
-    private int anInt1443;
+    private int offsetX;
+    private int offsetY;
     public int maxWidth;
     public int maxHeight;
 }
