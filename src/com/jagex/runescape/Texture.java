@@ -731,7 +731,7 @@ final class Texture extends DrawingArea {
     {
         int j;//was parameter
         int k;//was parameter
-        if(aBoolean1464)
+        if(textured)
         {
             int l1;
             if(restrictEdges)
@@ -2174,7 +2174,7 @@ final class Texture extends DrawingArea {
     public static boolean lowMem = true;
     static boolean restrictEdges;
     private static boolean opaque;
-    public static boolean aBoolean1464 = true;
+    public static boolean textured = true;
     public static int alpha;
     public static int centreX;
     public static int centreY;

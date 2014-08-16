@@ -63,9 +63,6 @@ public final class FloorDefinition {
                 System.out.println("Error unrecognised config code: " + attribute);
             }
             
-            //if(textureId == 1)
-            	//textureId = 40;
-            
         } while(true);
     }
 

@@ -282,7 +282,7 @@ public final class client extends RSApplet {
         else
             setHighMem();
         String s1 = getParameter("free");
-        isMembers = !(s1 != null && s1.equals("1"));
+        membersWorld = !(s1 != null && s1.equals("1"));
         initClientFrame(765, 503);
     }
 
@@ -650,8 +650,8 @@ public final class client extends RSApplet {
         GameObjectDefinition.modelCache.unlinkAll();
         GameObjectDefinition.animatedModelCache.unlinkAll();
         EntityDefinition.modelCache.unlinkAll();
-        ItemDef.mruNodes2.unlinkAll();
-        ItemDef.mruNodes1.unlinkAll();
+        ItemDefinition.modelCache.unlinkAll();
+        ItemDefinition.spriteCache.unlinkAll();
         Player.mruNodes.unlinkAll();
         SpotAnimation.modelCache.unlinkAll();
     }
@@ -753,7 +753,7 @@ public final class client extends RSApplet {
         Object item = null;
         for(Item currentItem = (Item)groundItemList.getBack(); currentItem != null; currentItem = (Item)groundItemList.reverseGetNext())
         {
-            ItemDef itemDef = ItemDef.forID(currentItem.itemId);
+            ItemDefinition itemDef = ItemDefinition.getDefinition(currentItem.itemId);
             int value = itemDef.value;
             if(itemDef.stackable)
                 value *= currentItem.itemCount + 1;
@@ -930,7 +930,7 @@ public final class client extends RSApplet {
                                 lastActiveInventoryInterface = childInterface.id;
                                 if(childInterface.inventoryItemId[slot] > 0)
                                 {
-                                    ItemDef itemDef = ItemDef.forID(childInterface.inventoryItemId[slot] - 1);
+                                    ItemDefinition itemDef = ItemDefinition.getDefinition(childInterface.inventoryItemId[slot] - 1);
                                     if(itemSelected == 1 && childInterface.inventory)
                                     {
                                         if(childInterface.id != lastItemSelectedInterface || slot != lastItemSelectedSlot)
@@ -1196,7 +1196,7 @@ public final class client extends RSApplet {
                 Texture.calculatePalette(0.69999999999999996D);
             if(k == 4)
                 Texture.calculatePalette(0.59999999999999998D);
-            ItemDef.mruNodes1.unlinkAll();
+            ItemDefinition.spriteCache.unlinkAll();
             welcomeScreenRaised = true;
         }
         if(j == 3)
@@ -2415,11 +2415,11 @@ public final class client extends RSApplet {
                 return;
             }
             if(args[3].equals("free"))
-                isMembers = false;
+                membersWorld = false;
             else
             if(args[3].equals("members"))
             {
-                isMembers = true;
+                membersWorld = true;
             } else
             {
                 System.out.println("Usage: node-id, port-offset, [lowmem/highmem], [free/members], storeid");
@@ -4224,7 +4224,7 @@ public final class client extends RSApplet {
         }
         if(menuAction == 1125)
         {
-            ItemDef item = ItemDef.forID(actionTarget);
+            ItemDefinition item = ItemDefinition.getDefinition(actionTarget);
             RSInterface rsInterface = RSInterface.cache[actionInformation1];
             String description;
             if(rsInterface != null && rsInterface.inventoryStackSize[actionInformation2] >= 0x186a0)
@@ -4255,7 +4255,7 @@ public final class client extends RSApplet {
             lastItemSelectedSlot = actionInformation2;
             lastItemSelectedInterface = actionInformation1;
             useItemId = actionTarget;
-            selectedItemName = ItemDef.forID(actionTarget).name;
+            selectedItemName = ItemDefinition.getDefinition(actionTarget).name;
             spellSelected = 0;
             redrawTab = true;
             return;
@@ -4287,7 +4287,7 @@ public final class client extends RSApplet {
         }
         if(menuAction == 1448)
         {
-            ItemDef item = ItemDef.forID(actionTarget);
+            ItemDefinition item = ItemDefinition.getDefinition(actionTarget);
             String description;
             if(item.description != null)
                 description = new String(item.description);
@@ -4457,7 +4457,7 @@ public final class client extends RSApplet {
                 {
                     for(Item item = (Item)class19.getFirst(); item != null; item = (Item)class19.getNext())
                     {
-                        ItemDef itemDef = ItemDef.forID(item.itemId);
+                        ItemDefinition itemDef = ItemDefinition.getDefinition(item.itemId);
                         if(itemSelected == 1)
                         {
                             menuActionName[menuActionRow] = "Use " + selectedItemName + " with @lre@" + itemDef.name;
@@ -4638,7 +4638,7 @@ public final class client extends RSApplet {
         nullLoader();
         GameObjectDefinition.nullLoader();
         EntityDefinition.nullLoader();
-        ItemDef.nullLoader();
+        ItemDefinition.nullLoader();
         FloorDefinition.cache = null;
         IdentityKit.cache = null;
         RSInterface.cache = null;
@@ -6817,7 +6817,7 @@ public final class client extends RSApplet {
                     onDemandFetcher.setPriority(priority, 0, id);
             }
 
-            onDemandFetcher.preloadRegions(isMembers);
+            onDemandFetcher.preloadRegions(membersWorld);
             if(!lowMemory)
             {
                 int count = onDemandFetcher.fileCount(2);
@@ -6953,13 +6953,13 @@ public final class client extends RSApplet {
             AnimationSequence.unpackConfig(archiveConfig);
             GameObjectDefinition.load(archiveConfig);
             FloorDefinition.load(archiveConfig);
-            ItemDef.load(archiveConfig);
+            ItemDefinition.load(archiveConfig);
             EntityDefinition.load(archiveConfig);
             IdentityKit.load(archiveConfig);
             SpotAnimation.load(archiveConfig);
             Varp.load(archiveConfig);
             VarBit.load(archiveConfig);
-            ItemDef.isMembers = isMembers;
+            ItemDefinition.membersWorld = membersWorld;
             if(!lowMemory)
             {
                 drawLoadingText(90, "Unpacking sounds");
@@ -7857,7 +7857,7 @@ public final class client extends RSApplet {
                                     int outlineColour = 0;
                                     if(itemSelected == 1 && lastItemSelectedSlot == item && lastItemSelectedInterface == childInterface.id)
                                         outlineColour = 0xffffff;
-                                    Sprite sprite = ItemDef.getSprite(itemId, childInterface.inventoryStackSize[item], outlineColour);
+                                    Sprite sprite = ItemDefinition.getSprite(itemId, childInterface.inventoryStackSize[item], outlineColour);
                                     if(sprite != null)
                                     {
                                         if(activeInterfaceType != 0 && moveItemSlotStart == item && moveItemInterfaceId == childInterface.id)
@@ -8088,7 +8088,7 @@ public final class client extends RSApplet {
                         {
                             if(childInterface.inventoryItemId[slot] > 0)
                             {
-                                ItemDef item = ItemDef.forID(childInterface.inventoryItemId[slot] - 1);
+                                ItemDefinition item = ItemDefinition.getDefinition(childInterface.inventoryItemId[slot] - 1);
                                 String name = item.name;
                                 if(item.stackable || childInterface.inventoryStackSize[slot] != 1)
                                     name = name + " x" + intToKOrMilLongName(childInterface.inventoryStackSize[slot]);
@@ -8979,7 +8979,7 @@ public final class client extends RSApplet {
                 {
                     RSInterface itemInterface = RSInterface.cache[opcodes[counter++]];
                     int itemId = opcodes[counter++];
-                    if(itemId >= 0 && itemId < ItemDef.itemCount && (!ItemDef.forID(itemId).membersObject || isMembers))
+                    if(itemId >= 0 && itemId < ItemDefinition.itemCount && (!ItemDefinition.getDefinition(itemId).membersObject || membersWorld))
                     {
                         for(int item = 0; item < itemInterface.inventoryItemId.length; item++)
                             if(itemInterface.inventoryItemId[item] == itemId + 1)
@@ -9006,7 +9006,7 @@ public final class client extends RSApplet {
                 {
                     RSInterface itemInterface = RSInterface.cache[opcodes[counter++]];
                     int itemId = opcodes[counter++] + 1;
-                    if(itemId >= 0 && itemId < ItemDef.itemCount && (!ItemDef.forID(itemId).membersObject || isMembers))
+                    if(itemId >= 0 && itemId < ItemDefinition.itemCount && (!ItemDefinition.getDefinition(itemId).membersObject || membersWorld))
                     {
                         for(int item = 0; item < itemInterface.inventoryItemId.length; item++)
                         {
@@ -11170,7 +11170,7 @@ public final class client extends RSApplet {
                     return true;
                 } else
                 {
-                    ItemDef itemDef = ItemDef.forID(itemId);
+                    ItemDefinition itemDef = ItemDefinition.getDefinition(itemId);
                     RSInterface.cache[interfaceId].modelTypeDefault = 4;
                     RSInterface.cache[interfaceId].modelIdDefault = itemId;
                     RSInterface.cache[interfaceId].modelRotationX = itemDef.modelRotationX;
@@ -11902,7 +11902,7 @@ public final class client extends RSApplet {
     private int currentSong;
     private static int localWorldId = 10;
     static int portOffset;
-    private static boolean isMembers = true;
+    private static boolean membersWorld = true;
     private static boolean lowMemory;
     private volatile boolean drawingFlames;
     private int spriteDrawX;

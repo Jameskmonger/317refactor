@@ -106,9 +106,9 @@ public final class Player extends Entity
                 npcAppearance = EntityDefinition.getDefinition(stream.getUnsignedLEShort());
                 break;
             }
-            if(appearance[slot] >= 512 && appearance[slot] - 512 < ItemDef.itemCount)
+            if(appearance[slot] >= 512 && appearance[slot] - 512 < ItemDefinition.itemCount)
             {
-                int team = ItemDef.forID(appearance[slot] - 512).team;
+                int team = ItemDefinition.getDefinition(appearance[slot] - 512).teamId;
                 if(team != 0)
                     this.team = team;
             }
@@ -219,7 +219,7 @@ public final class Player extends Entity
                     k2 = j1;
                 if(k2 >= 256 && k2 < 512 && !IdentityKit.cache[k2 - 256].bodyModelCached())
                     flag = true;
-                if(k2 >= 512 && !ItemDef.forID(k2 - 512).method195(gender))
+                if(k2 >= 512 && !ItemDefinition.getDefinition(k2 - 512).equipModelCached(gender))
                     flag = true;
             }
 
@@ -250,7 +250,7 @@ public final class Player extends Entity
                 }
                 if(i3 >= 512)
                 {
-                    Model model_4 = ItemDef.forID(i3 - 512).method196(gender);
+                    Model model_4 = ItemDefinition.getDefinition(i3 - 512).getEquippedModel(gender);
                     if(model_4 != null)
                         aclass30_sub2_sub4_sub6s[j2++] = model_4;
                 }
@@ -303,7 +303,7 @@ public final class Player extends Entity
             int j = appearance[i];
             if(j >= 256 && j < 512 && !IdentityKit.cache[j - 256].headModelCached())
                 flag = true;
-            if(j >= 512 && !ItemDef.forID(j - 512).method192(gender))
+            if(j >= 512 && !ItemDefinition.getDefinition(j - 512).isDialogueModelCached(gender))
                 flag = true;
         }
 
@@ -322,7 +322,7 @@ public final class Player extends Entity
             }
             if(i1 >= 512)
             {
-                Model model_2 = ItemDef.forID(i1 - 512).method194(gender);
+                Model model_2 = ItemDefinition.getDefinition(i1 - 512).getDialogueModel(gender);
                 if(model_2 != null)
                     aclass30_sub2_sub4_sub6s[k++] = model_2;
             }

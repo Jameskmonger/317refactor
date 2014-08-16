@@ -256,7 +256,7 @@ public final class RSInterface
         if(modelType == 3)
             model = client.localPlayer.getHeadModel();
         if(modelType == 4)
-            model = ItemDef.forID(modelId).getInventoryModel(50);
+            model = ItemDefinition.getDefinition(modelId).getInventoryModel(50);
         if(modelType == 5)
             model = null;
         if(model != null)
