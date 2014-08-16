@@ -17,16 +17,16 @@ public final class Player extends Entity
         model.singleTile = true;
         if(preventRotation)
             return model;
-        if(super.graphicId != -1 && super.currentAnimation != -1)
+        if(super.graphicId != -1 && super.currentAnimationId != -1)
         {
             SpotAnimation spotAnim = SpotAnimation.cache[super.graphicId];
             Model model_2 = spotAnim.getModel();
             if(model_2 != null)
             {
-                Model model_3 = new Model(true, Animation.isNullFrame(super.currentAnimation), false, model_2);
+                Model model_3 = new Model(true, Animation.isNullFrame(super.currentAnimationId), false, model_2);
                 model_3.translate(0, -super.graphicHeight, 0);
                 model_3.createBones();
-                model_3.applyTransformation(spotAnim.sequences.frame2Ids[super.currentAnimation]);
+                model_3.applyTransformation(spotAnim.sequences.frame2Ids[super.currentAnimationId]);
                 model_3.triangleSkin = null;
                 model_3.vertexSkin = null;
                 if(spotAnim.scaleXY != 128 || spotAnim.scaleZ != 128)
@@ -175,10 +175,10 @@ public final class Player extends Entity
         {
             int frameId = -1;
             if(super.animation >= 0 && super.animationDelay == 0)
-                frameId = AnimationSequence.animations[super.animation].frame2Ids[super.currentFrame];
+                frameId = AnimationSequence.animations[super.animation].frame2Ids[super.currentAnimationFrame];
             else
-            if(super.anInt1517 >= 0)
-                frameId = AnimationSequence.animations[super.anInt1517].frame2Ids[super.anInt1518];
+            if(super.queuedAnimationId >= 0)
+                frameId = AnimationSequence.animations[super.queuedAnimationId].frame2Ids[super.queuedAnimationFrame];
             Model model = npcAppearance.getChildModel(-1, frameId, null);
             return model;
         }
@@ -190,9 +190,9 @@ public final class Player extends Entity
         if(super.animation >= 0 && super.animationDelay == 0)
         {
             AnimationSequence animation = AnimationSequence.animations[super.animation];
-            k = animation.frame2Ids[super.currentFrame];
-            if(super.anInt1517 >= 0 && super.anInt1517 != super.standAnimationId)
-                i1 = AnimationSequence.animations[super.anInt1517].frame2Ids[super.anInt1518];
+            k = animation.frame2Ids[super.currentAnimationFrame];
+            if(super.queuedAnimationId >= 0 && super.queuedAnimationId != super.standAnimationId)
+                i1 = AnimationSequence.animations[super.queuedAnimationId].frame2Ids[super.queuedAnimationFrame];
             if(animation.playerReplacementShield >= 0)
             {
                 j1 = animation.playerReplacementShield;
@@ -204,8 +204,8 @@ public final class Player extends Entity
                 l += k1 - appearance[3] << 48;
             }
         } else
-        if(super.anInt1517 >= 0)
-            k = AnimationSequence.animations[super.anInt1517].frame2Ids[super.anInt1518];
+        if(super.queuedAnimationId >= 0)
+            k = AnimationSequence.animations[super.queuedAnimationId].frame2Ids[super.queuedAnimationFrame];
         Model model_1 = (Model) mruNodes.get(l);
         if(model_1 == null)
         {

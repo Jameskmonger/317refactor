@@ -10,15 +10,15 @@ public final class NPC extends Entity
     {
         if(super.animation >= 0 && super.animationDelay == 0)
         {
-            int k = AnimationSequence.animations[super.animation].frame2Ids[super.currentFrame];
+            int k = AnimationSequence.animations[super.animation].frame2Ids[super.currentAnimationFrame];
             int i1 = -1;
-            if(super.anInt1517 >= 0 && super.anInt1517 != super.standAnimationId)
-                i1 = AnimationSequence.animations[super.anInt1517].frame2Ids[super.anInt1518];
+            if(super.queuedAnimationId >= 0 && super.queuedAnimationId != super.standAnimationId)
+                i1 = AnimationSequence.animations[super.queuedAnimationId].frame2Ids[super.queuedAnimationFrame];
             return npcDefinition.getChildModel(i1, k, AnimationSequence.animations[super.animation].flowControl);
         }
         int l = -1;
-        if(super.anInt1517 >= 0)
-            l = AnimationSequence.animations[super.anInt1517].frame2Ids[super.anInt1518];
+        if(super.queuedAnimationId >= 0)
+            l = AnimationSequence.animations[super.queuedAnimationId].frame2Ids[super.queuedAnimationFrame];
         return npcDefinition.getChildModel(-1, l, null);
     }
 
@@ -30,13 +30,13 @@ public final class NPC extends Entity
         if(model == null)
             return null;
         super.height = model.modelHeight;
-        if(super.graphicId != -1 && super.currentAnimation != -1)
+        if(super.graphicId != -1 && super.currentAnimationId != -1)
         {
             SpotAnimation spotAnim = SpotAnimation.cache[super.graphicId];
             Model model_1 = spotAnim.getModel();
             if(model_1 != null)
             {
-                int j = spotAnim.sequences.frame2Ids[super.currentAnimation];
+                int j = spotAnim.sequences.frame2Ids[super.currentAnimationId];
                 Model model_2 = new Model(true, Animation.isNullFrame(j), false, model_1);
                 model_2.translate(0, -super.graphicHeight, 0);
                 model_2.createBones();

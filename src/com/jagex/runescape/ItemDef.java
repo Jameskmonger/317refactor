@@ -34,7 +34,7 @@ public final class ItemDef
         return flag;
     }
 
-    public static void unpackConfig(Archive streamLoader)
+    public static void load(Archive streamLoader)
     {
         stream = new Stream(streamLoader.getFile("obj.dat"));
         Stream stream = new Stream(streamLoader.getFile("obj.idx"));
