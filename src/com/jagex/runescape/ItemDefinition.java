@@ -354,7 +354,7 @@ public final class ItemDefinition
             int _maxHeight = noteSprite.maxHeight;
             noteSprite.maxWidth = 32;
             noteSprite.maxHeight = 32;
-            noteSprite.drawSprite(0, 0);
+            noteSprite.drawImage(0, 0);
             noteSprite.maxWidth = _maxWidth;
             noteSprite.maxHeight = _maxHeight;
         }

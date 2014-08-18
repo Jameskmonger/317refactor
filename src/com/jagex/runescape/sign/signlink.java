@@ -196,10 +196,10 @@ public final class signlink
         }
     }
 
-    public static synchronized Socket opensocket(int i)
+    public static synchronized Socket openSocket(int port)
         throws IOException
     {
-        for(socketreq = i; socketreq != 0;)
+        for(socketreq = port; socketreq != 0;)
             try
             {
                 Thread.sleep(50L);
@@ -234,9 +234,9 @@ public final class signlink
         dnsreq = s;
     }
 
-    public static synchronized void startthread(Runnable runnable, int i)
+    public static synchronized void startThread(Runnable runnable, int priority)
     {
-        threadreqpri = i;
+        threadreqpri = priority;
         threadreq = runnable;
     }
 
@@ -322,7 +322,7 @@ public final class signlink
     private static int midipos;
     public static String midi = null;
     public static int midiVolume;
-    public static int midifade;
+    public static int midiFade;
     private static boolean waveplay;
     private static int wavepos;
     public static int wavevol;

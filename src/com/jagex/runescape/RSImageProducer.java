@@ -78,8 +78,8 @@ final class RSImageProducer
     }
 
     public final int[] pixels;
-    private final int width;
-    private final int height;
+    public final int width;
+    public final int height;
     private final ColorModel colourModel;
     private ImageConsumer imageConsumer;
     private final Image image;

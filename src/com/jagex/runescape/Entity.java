@@ -179,8 +179,8 @@ public class Entity extends Animable {
     int endX;
     int startY;
     int endY;
-    int speedToStart;
-    int speedToEnd;
+    int tickStart;
+    int tickEnd;
     int direction;
     public int x;
     public int y;

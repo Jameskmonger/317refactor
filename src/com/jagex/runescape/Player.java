@@ -40,9 +40,9 @@ public final class Player extends Entity
         }
         if(playerModel != null)
         {
-            if(client.tick >= modifiedAppearanceEndTime)
+            if(Client.tick >= modifiedAppearanceEndTime)
                 playerModel = null;
-            if(client.tick >= modifiedAppearanceStartTime && client.tick < modifiedAppearanceEndTime)
+            if(Client.tick >= modifiedAppearanceStartTime && Client.tick < modifiedAppearanceEndTime)
             {
                 Model model_1 = playerModel;
                 model_1.translate(anInt1711 - super.x, drawHeight - drawHeight2, anInt1713 - super.y);
@@ -117,7 +117,7 @@ public final class Player extends Entity
         for(int bodyPart = 0; bodyPart < 5; bodyPart++)
         {
             int colour = stream.getUnsignedByte();
-            if(colour < 0 || colour >= client.playerBodyRecolours[bodyPart].length)
+            if(colour < 0 || colour >= Client.playerBodyRecolours[bodyPart].length)
                 colour = 0;
             bodyPartColour[bodyPart] = colour;
         }
@@ -260,9 +260,9 @@ public final class Player extends Entity
             for(int part = 0; part < 5; part++)
                 if(bodyPartColour[part] != 0)
                 {
-                    model_1.recolour(client.playerBodyRecolours[part][0], client.playerBodyRecolours[part][bodyPartColour[part]]);
+                    model_1.recolour(Client.playerBodyRecolours[part][0], Client.playerBodyRecolours[part][bodyPartColour[part]]);
                     if(part == 1)
-                        model_1.recolour(client.anIntArray1204[0], client.anIntArray1204[bodyPartColour[part]]);
+                        model_1.recolour(Client.anIntArray1204[0], Client.anIntArray1204[bodyPartColour[part]]);
                 }
 
             model_1.createBones();
@@ -332,9 +332,9 @@ public final class Player extends Entity
         for(int j1 = 0; j1 < 5; j1++)
             if(bodyPartColour[j1] != 0)
             {
-                model.recolour(client.playerBodyRecolours[j1][0], client.playerBodyRecolours[j1][bodyPartColour[j1]]);
+                model.recolour(Client.playerBodyRecolours[j1][0], Client.playerBodyRecolours[j1][bodyPartColour[j1]]);
                 if(j1 == 1)
-                    model.recolour(client.anIntArray1204[0], client.anIntArray1204[bodyPartColour[j1]]);
+                    model.recolour(Client.anIntArray1204[0], Client.anIntArray1204[bodyPartColour[j1]]);
             }
 
         return model;

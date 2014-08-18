@@ -5,12 +5,12 @@ package com.jagex.runescape;
 
 public class DrawingArea extends NodeSub {
 
-    public static void initDrawingArea(int i, int j, int ai[])
+    public static void initDrawingArea(int height, int width, int pixels[])
     {
-        pixels = ai;
-        width = j;
-        height = i;
-        setDrawingArea(i, 0, j, 0);
+        DrawingArea.pixels = pixels;
+        DrawingArea.width = width;
+        DrawingArea.height = height;
+        setDrawingArea(height, 0, width, 0);
     }
 
     public static void defaultDrawingAreaSize()
@@ -23,20 +23,20 @@ public class DrawingArea extends NodeSub {
             viewportCentreX = bottomX / 2;
     }
 
-    public static void setDrawingArea(int i, int j, int k, int l)
+    public static void setDrawingArea(int h, int j, int w, int l)
     {
         if(j < 0)
             j = 0;
         if(l < 0)
             l = 0;
-        if(k > width)
-            k = width;
-        if(i > height)
-            i = height;
+        if(w > width)
+            w = width;
+        if(h > height)
+            h = height;
         topX = j;
         topY = l;
-        bottomX = k;
-        bottomY = i;
+        bottomX = w;
+        bottomY = h;
         centerX = bottomX - 1;
         viewportCentreX = bottomX / 2;
         viewportCentreY = bottomY / 2;
@@ -50,7 +50,7 @@ public class DrawingArea extends NodeSub {
 
     }
 
-    public static void method335(int i, int j, int k, int l, int i1, int k1)
+    public static void drawFilledRectangleAlpha(int i, int j, int k, int l, int i1, int k1)
     {
         if(k1 < topX)
         {
@@ -115,7 +115,7 @@ public class DrawingArea extends NodeSub {
 
     }
 
-    public static void fillPixels(int i, int j, int k, int l, int i1)
+    public static void drawUnfilledRectangle(int i, int j, int k, int l, int i1)
     {
         drawHorizontalLine(i1, i, j, l);
         drawHorizontalLine((i1 + k) - 1, i, j, l);
@@ -123,7 +123,7 @@ public class DrawingArea extends NodeSub {
         drawVerticalLine((i + j) - 1, i1, k, l);
     }
 
-    public static void method338(int i, int j, int k, int l, int i1, int j1)
+    public static void drawUnfilledRectangleAlpha(int i, int j, int k, int l, int i1, int j1)
     {
         method340(l, i1, i, k, j1);
         method340(l, i1, (i + j) - 1, k, j1);

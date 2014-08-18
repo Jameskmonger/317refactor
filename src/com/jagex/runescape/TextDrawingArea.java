@@ -76,17 +76,17 @@ public final class TextDrawingArea extends DrawingArea {
 
     public void drawTextHRightVTop(String text, int x, int y, int colour)
     {
-        drawTextHLeftVTop(text, x - getStringWidth(text), y, colour);
+        drawString(text, x - getStringWidth(text), y, colour);
     }
 
     public void drawTextHMidVTop(String text, int x, int y, int colour)
     {
-        drawTextHLeftVTop(text, x - getStringWidth(text) / 2, y, colour);
+        drawString(text, x - getStringWidth(text) / 2, y, colour);
     }
 
-    public void drawShadowTextHMidVTop(int i, int x, String text, int l, boolean flag)
+    public void drawShadowedStringCentre(int i, int x, String text, int l, boolean flag)
     {
-        drawShadowTextHLeftVTop(text, x - getFormattedStringWidth(text) / 2, l, i, flag);
+        drawShadowedString(text, x - getFormattedStringWidth(text) / 2, l, i, flag);
     }
 
     public int getFormattedStringWidth(String string)
@@ -113,7 +113,7 @@ public final class TextDrawingArea extends DrawingArea {
         return width;
     }
 
-    public void drawTextHLeftVTop(String text, int x, int y, int colour)
+    public void drawString(String text, int x, int y, int colour)
     {
         if(text == null)
             return;
@@ -178,7 +178,7 @@ public final class TextDrawingArea extends DrawingArea {
 
     }
 
-    public void drawShadowTextHLeftVTop(String text, int x, int y, int colour, boolean flag1)
+    public void drawShadowedString(String text, int x, int y, int colour, boolean flag1)
     {
         strikethrough = false;
         int originalX = x;

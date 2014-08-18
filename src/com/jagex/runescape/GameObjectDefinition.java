@@ -158,7 +158,7 @@ public final class GameObjectDefinition
             int configId = varBit.configId;
             int lsb = varBit.leastSignificantBit;
             int msb = varBit.mostSignificantBit;
-            int bit = client.BITFIELD_MAX_VALUE[msb - lsb];
+            int bit = Client.BITFIELD_MAX_VALUE[msb - lsb];
             child = clientInstance.interfaceSettings[configId] >> lsb & bit;
         } else
         if(configIds != -1)
@@ -492,7 +492,7 @@ label0:
     public int sizeY;
     public boolean adjustToTerrain;
     public boolean unknownAttribute1;
-    public static client clientInstance;
+    public static Client clientInstance;
     private boolean unwalkableSolid;
     public boolean solid;
     public int face;
