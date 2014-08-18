@@ -28,7 +28,7 @@ final class MouseDetection
         }
     }
 
-    public MouseDetection(Client client1)
+    public MouseDetection(client client1)
     {
         syncObject = new Object();
         coordsY = new int[500];
@@ -37,7 +37,7 @@ final class MouseDetection
         clientInstance = client1;
     }
 
-    private Client clientInstance;
+    private client clientInstance;
     public final Object syncObject;
     public final int[] coordsY;
     public boolean running;

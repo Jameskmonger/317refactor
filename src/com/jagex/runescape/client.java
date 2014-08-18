@@ -11,7 +11,7 @@ import java.net.*;
 import com.jagex.runescape.audio.Effect;
 import com.jagex.runescape.sign.signlink;
 
-public final class Client extends RSApplet {
+public final class client extends RSApplet {
 
     private static String formatAmount(int amount)
     {
@@ -2435,7 +2435,7 @@ public final class Client extends RSApplet {
             }
             signlink.storeid = Integer.parseInt(args[4]);
             signlink.startpriv(InetAddress.getLocalHost());
-            Client client1 = new Client();
+            client client1 = new client();
             client1.createClientFrame(765, 503);
         }
         catch(Exception exception)
@@ -11650,7 +11650,7 @@ public final class Client extends RSApplet {
         openInterfaceId = -1;
     }
 
-    private Client()
+    private client()
     {
         distanceValues = new int[104][104];
         friendsWorldIds = new int[200];

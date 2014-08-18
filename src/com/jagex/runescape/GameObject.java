@@ -6,7 +6,7 @@ final class GameObject extends Animable {
         int animationId = -1;
         if(animation != null)
         {
-            int step = Client.tick - nextFrameTime;
+            int step = client.tick - nextFrameTime;
             if(step > 100 && animation.frameStep > 0)
                 step = 100;
             while(step > animation.getFrameLength(frame))
@@ -21,7 +21,7 @@ final class GameObject extends Animable {
                 animation = null;
                 break;
             }
-            nextFrameTime = Client.tick - step;
+            nextFrameTime = client.tick - step;
             if(animation != null)
                 animationId = animation.frame2Ids[frame];
         }
@@ -48,7 +48,7 @@ final class GameObject extends Animable {
             int configId = varBit.configId;
             int lsb = varBit.leastSignificantBit;
             int msb = varBit.mostSignificantBit;
-            int bit = Client.BITFIELD_MAX_VALUE[msb - lsb];
+            int bit = client.BITFIELD_MAX_VALUE[msb - lsb];
             child = clientInstance.interfaceSettings[configId] >> lsb & bit;
         } else
         if(configId != -1)
@@ -73,7 +73,7 @@ final class GameObject extends Animable {
         {
             animation = AnimationSequence.animations[animationId];
             frame = 0;
-            nextFrameTime = Client.tick;
+            nextFrameTime = client.tick;
             if(animating && animation.frameStep != -1)
             {
                 frame = (int)(Math.random() * (double) animation.frameCount);
@@ -96,7 +96,7 @@ final class GameObject extends Animable {
     private final int vertexHeightTopLeft;
     private AnimationSequence animation;
     private int nextFrameTime;
-    public static Client clientInstance;
+    public static client clientInstance;
     private final int objectId;
     private final int type;
     private final int orientation;
