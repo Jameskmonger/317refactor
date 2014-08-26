@@ -395,8 +395,8 @@ public final class client extends RSApplet {
                     RSInterface rsInterface = RSInterface.cache[interfaceId];
                     if(rsInterface.itemSwappable || rsInterface.itemDeletesDragged)
                     {
-                        aBoolean1242 = false;
-                        anInt989 = 0;
+                        lastItemDragged = false;
+                        lastItemDragTime = 0;
                         moveItemInterfaceId = interfaceId;
                         moveItemSlotStart = slot;
                         activeInterfaceType = 2;
@@ -450,7 +450,7 @@ public final class client extends RSApplet {
 
             }
 
-            ObjectManager objectManager = new ObjectManager(tileFlags, intGroundArray);
+            Region objectManager = new Region(tileFlags, intGroundArray);
             int dataLength = terrainData.length;
             stream.putOpcode(0);
             if(!loadGeneratedMap)
@@ -470,7 +470,7 @@ public final class client extends RSApplet {
                     int offsetY = (mapCoordinates[pointer] & 0xff) * 64 - baseY;
                     byte data[] = terrainData[pointer];
                     if(data == null && regionY < 800)
-                        objectManager.clearRegion(offsetY, 64, 64, offsetX);
+                        objectManager.initiateVertexHeights(offsetY, 64, 64, offsetX);
                 }
 
                 anticheat2++;
@@ -530,7 +530,7 @@ public final class client extends RSApplet {
                     {
                         int displayMap = constructMapTiles[0][x][y];
                         if(displayMap == -1)
-                            objectManager.clearRegion(y * 8, 8, 8, x * 8);
+                            objectManager.initiateVertexHeights(y * 8, 8, 8, x * 8);
                     }
 
                 }
@@ -567,16 +567,16 @@ public final class client extends RSApplet {
 
             }
             stream.putOpcode(0);
-            objectManager.addTiles(currentCollisionMap, worldController);
+            objectManager.createRegion(currentCollisionMap, worldController);
             gameScreenImageProducer.initDrawingArea();
             stream.putOpcode(0);
-            int z = ObjectManager.setZ;
+            int z = Region.lowestPlane;
             if(z > plane)
                 z = plane;
             if(z < plane - 1)
                 z = plane - 1;
             if(lowMemory)
-                worldController.setHeightLevel(ObjectManager.setZ);
+                worldController.setHeightLevel(Region.lowestPlane);
             else
                 worldController.setHeightLevel(0);
             for(int x = 0; x < 104; x++)
@@ -2394,7 +2394,7 @@ public final class client extends RSApplet {
         WorldController.lowMemory = false;
         Texture.lowMem = false;
         lowMemory = false;
-        ObjectManager.lowMem = false;
+        Region.lowMem = false;
         GameObjectDefinition.lowMem = false;
     }
 
@@ -2445,7 +2445,7 @@ public final class client extends RSApplet {
 
     private void loadingStages()
     {
-        if(lowMemory && loadingStage == 2 && ObjectManager.plane != plane)
+        if(lowMemory && loadingStage == 2 && Region.plane != plane)
         {
             gameScreenImageProducer.initDrawingArea();
             fontPlain.drawTextHMidVTop("Loading - please wait.", 257, 151, 0);
@@ -2493,7 +2493,7 @@ public final class client extends RSApplet {
                     blockX = 10;
                     blockY = 10;
                 }
-                flag &= ObjectManager.objectBlockCached(blockX, objects, blockY);
+                flag &= Region.objectBlockCached(blockX, objects, blockY);
             }
         }
 
@@ -2505,7 +2505,7 @@ public final class client extends RSApplet {
         } else
         {
             loadingStage = 2;
-            ObjectManager.plane = plane;
+            Region.plane = plane;
             loadRegion();
             stream.putOpcode(121);
             return 0;
@@ -2656,7 +2656,7 @@ public final class client extends RSApplet {
 
                 }
             } while(onDemandData.dataType != 93 || !onDemandFetcher.method564(onDemandData.id));
-            ObjectManager.method173(new Stream(onDemandData.buffer), onDemandFetcher);
+            Region.passivelyRequestGameObjectModels(new Stream(onDemandData.buffer), onDemandFetcher);
         } while(true);
     }
 
@@ -2928,9 +2928,9 @@ public final class client extends RSApplet {
         }
         if(activeInterfaceType != 0)
         {
-            anInt989++;
+            lastItemDragTime++;
             if(super.mouseX > lastMouseX + 5 || super.mouseX < lastMouseX - 5 || super.mouseY > lastMouseY + 5 || super.mouseY < lastMouseY - 5)
-                aBoolean1242 = true;
+                lastItemDragged = true;
             if(super.mouseButton == 0)
             {
                 if(activeInterfaceType == 2)
@@ -2938,7 +2938,7 @@ public final class client extends RSApplet {
                 if(activeInterfaceType == 3)
                     redrawChatbox = true;
                 activeInterfaceType = 0;
-                if(aBoolean1242 && anInt989 >= 5)
+                if(lastItemDragged && lastItemDragTime >= 5)
                 {
                     lastActiveInventoryInterface = -1;
                     processRightClick();
@@ -7875,7 +7875,7 @@ public final class client extends RSApplet {
                                                 differenceX = 0;
                                             if(differenceY < 5 && differenceY > -5)
                                                 differenceY = 0;
-                                            if(anInt989 < 5)
+                                            if(lastItemDragTime < 5)
                                             {
                                                 differenceX = 0;
                                                 differenceY = 0;
@@ -8612,7 +8612,7 @@ public final class client extends RSApplet {
                     spawnRequest.delayUntilRespawn--;
                 if(spawnRequest.delayUntilRespawn == 0)
                 {
-                    if(spawnRequest.id < 0 || ObjectManager.modelTypeCached(spawnRequest.id, spawnRequest.type))
+                    if(spawnRequest.id < 0 || Region.modelTypeCached(spawnRequest.id, spawnRequest.type))
                     {
                         method142(spawnRequest.y, spawnRequest.z, spawnRequest.face, spawnRequest.type, spawnRequest.x, spawnRequest.objectType, spawnRequest.id);
                         spawnRequest.remove();
@@ -8621,7 +8621,7 @@ public final class client extends RSApplet {
                 {
                     if(spawnRequest.delayUntilSpawn > 0)
                         spawnRequest.delayUntilSpawn--;
-                    if(spawnRequest.delayUntilSpawn == 0 && spawnRequest.x >= 1 && spawnRequest.y >= 1 && spawnRequest.x <= 102 && spawnRequest.y <= 102 && (spawnRequest.id2 < 0 || ObjectManager.modelTypeCached(spawnRequest.id2, spawnRequest.type2)))
+                    if(spawnRequest.delayUntilSpawn == 0 && spawnRequest.x >= 1 && spawnRequest.y >= 1 && spawnRequest.x <= 102 && spawnRequest.y <= 102 && (spawnRequest.id2 < 0 || Region.modelTypeCached(spawnRequest.id2, spawnRequest.type2)))
                     {
                         method142(spawnRequest.y, spawnRequest.z, spawnRequest.face2, spawnRequest.type2, spawnRequest.x, spawnRequest.objectType, spawnRequest.id2);
                         spawnRequest.delayUntilSpawn = -1;
@@ -9987,7 +9987,7 @@ public final class client extends RSApplet {
         WorldController.lowMemory = true;
         Texture.lowMem = true;
         lowMemory = true;
-        ObjectManager.lowMem = true;
+        Region.lowMem = true;
         GameObjectDefinition.lowMem = true;
     }
 
@@ -10240,7 +10240,7 @@ public final class client extends RSApplet {
                 int height = z;
                 if(height < 3 && (tileFlags[1][x][y] & 2) == 2)
                     height++;
-                ObjectManager.method188(worldController, face, y, l, height, currentCollisionMap[z], intGroundArray, x, objectId, z);
+                Region.forceRenderObject(worldController, face, y, l, height, currentCollisionMap[z], intGroundArray, x, objectId, z);
             }
         }
     }
@@ -11788,7 +11788,7 @@ public final class client extends RSApplet {
         updateChatSettings = false;
         privateMessages = new int[100];
         trackLoop = new int[50];
-        aBoolean1242 = false;
+        lastItemDragged = false;
         trackDelay = new int[50];
         rsAlreadyLoaded = false;
         welcomeScreenRaised = false;
@@ -11951,7 +11951,7 @@ public final class client extends RSApplet {
     private static int anticheat15;
     private Sprite[] hitMarkImage;
     private int cameraRandomisationCounter;
-    private int anInt989;
+    private int lastItemDragTime;
     private final int[] characterEditColours;
     private static boolean clientRunning;
     private final boolean aBoolean994;
@@ -12206,7 +12206,7 @@ public final class client extends RSApplet {
     public final int anInt1239 = 100;
     private final int[] privateMessages;
     private final int[] trackLoop;
-    private boolean aBoolean1242;
+    private boolean lastItemDragged;
     private int atInventoryLoopCycle;
     private int atInventoryInterface;
     private int atInventoryIndex;

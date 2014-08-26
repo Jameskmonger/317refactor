@@ -32,7 +32,7 @@ public final class GameObjectDefinition
         hasActions = false;
         adjustToTerrain = false;
         delayShading = false;
-        unknownAttribute1 = false;
+        wall = false;
         animationId = -1;
         offsetAmplifier = 16;
         ambient = 0;
@@ -49,7 +49,7 @@ public final class GameObjectDefinition
         translateX = 0;
         translateY = 0;
         translateZ = 0;
-        unknownAttribute3 = false;
+        unknownAttribute = false;
         unwalkableSolid = false;
         _solid = -1;
         varBitId = -1;
@@ -347,7 +347,7 @@ label0:
                     delayShading = true;
                 else
                 if(attribute == 23)
-                    unknownAttribute1 = true;
+                    wall = true;
                 else
                 if(attribute == 24)
                 {
@@ -418,7 +418,7 @@ label0:
                     translateZ = stream.getShort();
                 else
                 if(attribute == 73)
-                    unknownAttribute3 = true;
+                    unknownAttribute = true;
                 else
                 if(attribute == 74)
                 {
@@ -467,7 +467,7 @@ label0:
         id = -1;
     }
 
-    public boolean unknownAttribute3;
+    public boolean unknownAttribute;
     private byte ambient;
     private int translateX;
     public String name;
@@ -491,7 +491,7 @@ label0:
     private int _solid;
     public int sizeY;
     public boolean adjustToTerrain;
-    public boolean unknownAttribute1;
+    public boolean wall;
     public static client clientInstance;
     private boolean unwalkableSolid;
     public boolean solid;

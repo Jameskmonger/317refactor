@@ -1,4 +1,5 @@
 package com.jagex.runescape;
+
 public final class Model extends Animable {
 
     public static void nullLoader()
@@ -164,7 +165,7 @@ public final class Model extends Animable {
         if(modelHeader.trianglePriorityOffset >= 0)
             trianglePriorities = new int[triangleCount];
         else
-            anInt1641 = -modelHeader.trianglePriorityOffset - 1;
+            trianglePriority = -modelHeader.trianglePriorityOffset - 1;
         if(modelHeader.triangleAlphaOffset >= 0)
             triangleAlpha = new int[triangleCount];
         if(modelHeader.triangleSkinOffset >= 0)
@@ -288,14 +289,14 @@ public final class Model extends Animable {
     public Model(int modelCount, Model models[])
     {
         singleTile = false;
-        boolean flag = false;
-        boolean flag1 = false;
-        boolean flag2 = false;
-        boolean flag3 = false;
+        boolean setDrawType = false;
+        boolean setPriority = false;
+        boolean setAlpha = false;
+        boolean setSkins = false;
         vertexCount = 0;
         triangleCount = 0;
         texturedTriangleCount = 0;
-        anInt1641 = -1;
+        trianglePriority = -1;
         for(int m = 0; m < modelCount; m++)
         {
             Model model = models[m];
@@ -304,19 +305,19 @@ public final class Model extends Animable {
                 vertexCount += model.vertexCount;
                 triangleCount += model.triangleCount;
                 texturedTriangleCount += model.texturedTriangleCount;
-                flag |= model.triangleDrawType != null;
+                setDrawType |= model.triangleDrawType != null;
                 if(model.trianglePriorities != null)
                 {
-                    flag1 = true;
+                    setPriority = true;
                 } else
                 {
-                    if(anInt1641 == -1)
-                        anInt1641 = model.anInt1641;
-                    if(anInt1641 != model.anInt1641)
-                        flag1 = true;
+                    if(trianglePriority == -1)
+                        trianglePriority = model.trianglePriority;
+                    if(trianglePriority != model.trianglePriority)
+                        setPriority = true;
                 }
-                flag2 |= model.triangleAlpha != null;
-                flag3 |= model.triangleSkins != null;
+                setAlpha |= model.triangleAlpha != null;
+                setSkins |= model.triangleSkins != null;
             }
         }
 
@@ -330,13 +331,13 @@ public final class Model extends Animable {
         texturedTrianglePointsX = new int[texturedTriangleCount];
         texturedTrianglePointsY = new int[texturedTriangleCount];
         texturedTrianglePointsZ = new int[texturedTriangleCount];
-        if(flag)
+        if(setDrawType)
             triangleDrawType = new int[triangleCount];
-        if(flag1)
+        if(setPriority)
             trianglePriorities = new int[triangleCount];
-        if(flag2)
+        if(setAlpha)
             triangleAlpha = new int[triangleCount];
-        if(flag3)
+        if(setSkins)
             triangleSkins = new int[triangleCount];
         triangleColours = new int[triangleCount];
         vertexCount = 0;
@@ -350,7 +351,7 @@ public final class Model extends Animable {
             {
                 for(int triangle = 0; triangle < model.triangleCount; triangle++)
                 {
-                    if(flag)
+                    if(setDrawType)
                         if(model.triangleDrawType == null)
                         {
                             triangleDrawType[triangleCount] = 0;
@@ -361,17 +362,17 @@ public final class Model extends Animable {
                                 drawType += count << 2;
                             triangleDrawType[triangleCount] = drawType;
                         }
-                    if(flag1)
+                    if(setPriority)
                         if(model.trianglePriorities == null)
-                            trianglePriorities[triangleCount] = model.anInt1641;
+                            trianglePriorities[triangleCount] = model.trianglePriority;
                         else
                             trianglePriorities[triangleCount] = model.trianglePriorities[triangle];
-                    if(flag2)
+                    if(setAlpha)
                         if(model.triangleAlpha == null)
                             triangleAlpha[triangleCount] = 0;
                         else
                             triangleAlpha[triangleCount] = model.triangleAlpha[triangle];
-                    if(flag3 && model.triangleSkins != null)
+                    if(setSkins && model.triangleSkins != null)
                         triangleSkins[triangleCount] = model.triangleSkins[triangle];
                     triangleColours[triangleCount] = model.triangleColours[triangle];
                     triangleX[triangleCount] = getFirstIdenticalVertexId(model, model.triangleX[triangle]);
@@ -405,7 +406,7 @@ public final class Model extends Animable {
         vertexCount = 0;
         triangleCount = 0;
         texturedTriangleCount = 0;
-        anInt1641 = -1;
+        trianglePriority = -1;
         for(int m = 0; m < modelCount; m++)
         {
             Model model = models[m];
@@ -420,9 +421,9 @@ public final class Model extends Animable {
                     flag2 = true;
                 } else
                 {
-                    if(anInt1641 == -1)
-                        anInt1641 = model.anInt1641;
-                    if(anInt1641 != model.anInt1641)
+                    if(trianglePriority == -1)
+                        trianglePriority = model.trianglePriority;
+                    if(trianglePriority != model.trianglePriority)
                         flag2 = true;
                 }
                 flag3 |= model.triangleAlpha != null;
@@ -489,7 +490,7 @@ public final class Model extends Animable {
                         }
                     if(flag2)
                         if(model.trianglePriorities == null)
-                            trianglePriorities[triangleCount] = model.anInt1641;
+                            trianglePriorities[triangleCount] = model.trianglePriority;
                         else
                             trianglePriorities[triangleCount] = model.trianglePriorities[triangle];
                     if(flag3)
@@ -574,7 +575,7 @@ public final class Model extends Animable {
         triangleY = model.triangleY;
         triangleZ = model.triangleZ;
         trianglePriorities = model.trianglePriorities;
-        anInt1641 = model.anInt1641;
+        trianglePriority = model.trianglePriority;
         texturedTrianglePointsX = model.texturedTrianglePointsX;
         texturedTrianglePointsY = model.texturedTrianglePointsY;
         texturedTrianglePointsZ = model.texturedTrianglePointsZ;
@@ -642,7 +643,7 @@ public final class Model extends Animable {
         triangleColours = model.triangleColours;
         triangleAlpha = model.triangleAlpha;
         trianglePriorities = model.trianglePriorities;
-        anInt1641 = model.anInt1641;
+        trianglePriority = model.trianglePriority;
         triangleX = model.triangleX;
         triangleY = model.triangleY;
         triangleZ = model.triangleZ;
@@ -703,7 +704,7 @@ public final class Model extends Animable {
         triangleDrawType = model.triangleDrawType;
         triangleColours = model.triangleColours;
         trianglePriorities = model.trianglePriorities;
-        anInt1641 = model.anInt1641;
+        trianglePriority = model.trianglePriority;
         triangleSkin = model.triangleSkin;
         vertexSkin = model.vertexSkin;
         triangleX = model.triangleX;
@@ -1947,7 +1948,7 @@ public final class Model extends Animable {
     private int[] trianglePriorities;
     private int[] triangleAlpha;
     public int triangleColours[];
-    private int anInt1641;
+    private int trianglePriority;
     private int texturedTriangleCount;
     private int[] texturedTrianglePointsX;
     private int[] texturedTrianglePointsY;

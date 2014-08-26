@@ -126,36 +126,36 @@ final class WorldController {
         }
     }
 
-    public void method279(int z, int x, int y, int l, int i1, int j1, int k1, 
-            int l1, int i2, int j2, int k2, int l2, int i3, int j3, 
+    public void renderTile(int plane, int x, int y, int clippingPath, int clippingPathRotation, int textureId, int vertexHeightSW, 
+            int vertexHeightSE, int vertexHeightNE, int vertexHeightNW, int k2, int l2, int i3, int j3, 
             int k3, int l3, int i4, int j4, int k4, int l4)
-    {
-        if(l == 0)
+    {    	
+        if(clippingPath == 0)
         {
             PlainTile tile = new PlainTile(k2, l2, j3, i3, k4, -1, false);
-            for(int _z = z; _z >= 0; _z--)
+            for(int _z = plane; _z >= 0; _z--)
                 if(groundArray[_z][x][y] == null)
                     groundArray[_z][x][y] = new Ground(_z, x, y);
 
-            groundArray[z][x][y].plainTile = tile;
+            groundArray[plane][x][y].plainTile = tile;
             return;
         }
-        if(l == 1)
+        if(clippingPath == 1)
         {
-            PlainTile tile = new PlainTile(k3, l3, j4, i4, l4, j1, k1 == l1 && k1 == i2 && k1 == j2);
-            for(int _z = z; _z >= 0; _z--)
+            PlainTile tile = new PlainTile(k3, l3, j4, i4, l4, textureId, vertexHeightSW == vertexHeightSE && vertexHeightSW == vertexHeightNE && vertexHeightSW == vertexHeightNW);
+            for(int _z = plane; _z >= 0; _z--)
                 if(groundArray[_z][x][y] == null)
                     groundArray[_z][x][y] = new Ground(_z, x, y);
 
-            groundArray[z][x][y].plainTile = tile;
+            groundArray[plane][x][y].plainTile = tile;
             return;
         }
-        ShapedTile tile = new ShapedTile(x, k1, l1, j2, i2, y, i1, j1, l, k2, k3, l2, l3, j3, j4, i3, i4, l4, k4);
-        for(int _z = z; _z >= 0; _z--)
+        ShapedTile tile = new ShapedTile(x, vertexHeightSW, vertexHeightSE, vertexHeightNW, vertexHeightNE, y, clippingPathRotation, textureId, clippingPath, k2, k3, l2, l3, j3, j4, i3, i4, l4, k4);
+        for(int _z = plane; _z >= 0; _z--)
             if(groundArray[_z][x][y] == null)
                 groundArray[_z][x][y] = new Ground(_z, x, y);
 
-        groundArray[z][x][y].shapedTile = tile;
+        groundArray[plane][x][y].shapedTile = tile;
     }
 
     public void addGroundDecoration(int x, int y, int z, int drawHeight, int uid, Animable renderable,
