@@ -62,7 +62,7 @@ public final class EntityDefinition
             int configId = varBit.configId;
             int lsb = varBit.leastSignificantBit;
             int msb = varBit.mostSignificantBit;
-            int bit = client.BITFIELD_MAX_VALUE[msb - lsb];
+            int bit = Client.BITFIELD_MAX_VALUE[msb - lsb];
             childId = clientInstance.interfaceSettings[configId] >> lsb & bit;
         } else
         if(settingId != -1)
@@ -322,7 +322,7 @@ public final class EntityDefinition
     public long id;
     public int degreesToTurn;
     private static EntityDefinition[] cache;
-    public static client clientInstance;
+    public static Client clientInstance;
     public int turnRightAnimationId;
     public boolean clickable;
     private int brightness;
