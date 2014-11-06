@@ -42,7 +42,7 @@ public final class Stream extends NodeSub {
 
     public void putOpcode(int i)
     {
-        buffer[currentOffset++] = (byte)(i + encryption.getNextKey());
+        buffer[currentOffset++] = (byte)(i + encryption.value());
     }
 
     public void put(int i)
@@ -369,7 +369,7 @@ public final class Stream extends NodeSub {
         0xfffff, 0x1fffff, 0x3fffff, 0x7fffff, 0xffffff, 0x1ffffff, 0x3ffffff, 0x7ffffff, 0xfffffff, 0x1fffffff, 
         0x3fffffff, 0x7fffffff, -1
     };
-    public ISAACRandomGen encryption;
+    public ISAACRandomGenerator encryption;
     private static int anInt1412;
     private static final NodeList nodeList = new NodeList();
 

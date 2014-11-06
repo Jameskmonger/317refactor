@@ -5759,11 +5759,11 @@ public final class Client extends RSApplet {
                     aStream_847.putInt(expectedCRCs[crc]);
 
                 aStream_847.putBytes(stream.buffer, stream.currentOffset, 0);
-                stream.encryption = new ISAACRandomGen(seed);
+                stream.encryption = new ISAACRandomGenerator(seed);
                 for(int index = 0; index < 4; index++)
                     seed[index] += 50;
 
-                encryption = new ISAACRandomGen(seed);
+                encryption = new ISAACRandomGenerator(seed);
                 socket.write(aStream_847.currentOffset, aStream_847.buffer);
                 responseCode = socket.read();
             }
@@ -10330,7 +10330,7 @@ public final class Client extends RSApplet {
                 socket.read(inStream.buffer, 1);
                 packetOpcode = inStream.buffer[0] & 0xff;
                 if(encryption != null)
-                    packetOpcode = packetOpcode - encryption.getNextKey() & 0xff;
+                    packetOpcode = packetOpcode - encryption.value() & 0xff;
                 packetSize = SizeConstants.packetSizes[packetOpcode];
                 i--;
             }
@@ -11960,7 +11960,7 @@ public final class Client extends RSApplet {
     private int cameraOffsetZ;
     private int anInt998;
     private int anInt999;
-    private ISAACRandomGen encryption;
+    private ISAACRandomGenerator encryption;
     private Sprite minimapEdgeImage;
     private final int scrollBackgroundColour;
     static final int[][] playerBodyRecolours = {
