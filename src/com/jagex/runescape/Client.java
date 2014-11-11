@@ -481,13 +481,13 @@ public final class Client extends RSApplet {
                     stream.put(96);
                 }
                 stream.putOpcode(0);
-                for(int pointer = 0; pointer < dataLength; pointer++)
+                for(int region = 0; region < dataLength; region++)
                 {
-                    byte data[] = objectData[pointer];
+                    byte data[] = objectData[region];
                     if(data != null)
                     {
-                        int offsetX = (mapCoordinates[pointer] >> 8) * 64 - baseX;
-                        int offsetY = (mapCoordinates[pointer] & 0xff) * 64 - baseY;
+                        int offsetX = (mapCoordinates[region] >> 8) * 64 - baseX;
+                        int offsetY = (mapCoordinates[region] & 0xff) * 64 - baseY;
                         objectManager.loadObjectBlock(offsetX, currentCollisionMap, offsetY, worldController, data);
                     }
                 }
@@ -2394,7 +2394,7 @@ public final class Client extends RSApplet {
         WorldController.lowMemory = false;
         Texture.lowMem = false;
         lowMemory = false;
-        Region.lowMem = false;
+        Region.lowMemory = false;
         GameObjectDefinition.lowMem = false;
     }
 
@@ -2474,30 +2474,30 @@ public final class Client extends RSApplet {
     {
         for(int t = 0; t < terrainData.length; t++)
         {
-            if(terrainData[t] == null && anIntArray1235[t] != -1)
+            if(terrainData[t] == null && terrainDataIds[t] != -1)
                 return -1;
-            if(objectData[t] == null && anIntArray1236[t] != -1)
+            if(objectData[t] == null && objectDataIds[t] != -1)
                 return -2;
         }
 
-        boolean flag = true;
-        for(int j = 0; j < terrainData.length; j++)
+        boolean regionsCached = true;
+        for(int region = 0; region < terrainData.length; region++)
         {
-            byte objects[] = objectData[j];
+            byte objects[] = objectData[region];
             if(objects != null)
             {
-                int blockX = (mapCoordinates[j] >> 8) * 64 - baseX;
-                int blockY = (mapCoordinates[j] & 0xff) * 64 - baseY;
+                int blockX = (mapCoordinates[region] >> 8) * 64 - baseX;
+                int blockY = (mapCoordinates[region] & 0xff) * 64 - baseY;
                 if(loadGeneratedMap)
                 {
                     blockX = 10;
                     blockY = 10;
                 }
-                flag &= Region.objectBlockCached(blockX, objects, blockY);
+                regionsCached &= Region.regionCached(blockX, blockY, objects);
             }
         }
 
-        if(!flag)
+        if(!regionsCached)
             return -3;
         if(loadingMap)
         {
@@ -2637,20 +2637,21 @@ public final class Client extends RSApplet {
                     saveMidi(songChanging, onDemandData.buffer);
                 if(onDemandData.dataType == 3 && loadingStage == 1)
                 {
-                    for(int i = 0; i < terrainData.length; i++)
+                    for(int r = 0; r < terrainData.length; r++)
                     {
-                        if(anIntArray1235[i] == onDemandData.id)
+                        if(terrainDataIds[r] == onDemandData.id)
                         {
-                            terrainData[i] = onDemandData.buffer;
+                            terrainData[r] = onDemandData.buffer;
                             if(onDemandData.buffer == null)
-                                anIntArray1235[i] = -1;
+                                terrainDataIds[r] = -1;
                             break;
                         }
-                        if(anIntArray1236[i] != onDemandData.id)
+                        
+                        if(objectDataIds[r] != onDemandData.id)
                             continue;
-                        objectData[i] = onDemandData.buffer;
+                        objectData[r] = onDemandData.buffer;
                         if(onDemandData.buffer == null)
-                            anIntArray1236[i] = -1;
+                            objectDataIds[r] = -1;
                         break;
                     }
 
@@ -4554,8 +4555,8 @@ public final class Client extends RSApplet {
         mapCoordinates = null;
         terrainData = null;
         objectData = null;
-        anIntArray1235 = null;
-        anIntArray1236 = null;
+        terrainDataIds = null;
+        objectDataIds = null;
         intGroundArray = null;
         tileFlags = null;
         worldController = null;
@@ -9987,7 +9988,7 @@ public final class Client extends RSApplet {
         WorldController.lowMemory = true;
         Texture.lowMem = true;
         lowMemory = true;
-        Region.lowMem = true;
+        Region.lowMemory = true;
         GameObjectDefinition.lowMem = true;
     }
 
@@ -10621,8 +10622,8 @@ public final class Client extends RSApplet {
                     terrainData = new byte[k16][];
                     objectData = new byte[k16][];
                     mapCoordinates = new int[k16];
-                    anIntArray1235 = new int[k16];
-                    anIntArray1236 = new int[k16];
+                    terrainDataIds = new int[k16];
+                    objectDataIds = new int[k16];
                     k16 = 0;
                     for(int l23 = (regionX - 6) / 8; l23 <= (regionX + 6) / 8; l23++)
                     {
@@ -10631,15 +10632,15 @@ public final class Client extends RSApplet {
                             mapCoordinates[k16] = (l23 << 8) + j26;
                             if(tutorialIsland && (j26 == 49 || j26 == 149 || j26 == 147 || l23 == 50 || l23 == 49 && j26 == 47))
                             {
-                                anIntArray1235[k16] = -1;
-                                anIntArray1236[k16] = -1;
+                                terrainDataIds[k16] = -1;
+                                objectDataIds[k16] = -1;
                                 k16++;
                             } else
                             {
-                                int k28 = anIntArray1235[k16] = onDemandFetcher.getMapIndex(0, j26, l23);
+                                int k28 = terrainDataIds[k16] = onDemandFetcher.getMapIndex(0, j26, l23);
                                 if(k28 != -1)
                                     onDemandFetcher.request(3, k28);
-                                int j30 = anIntArray1236[k16] = onDemandFetcher.getMapIndex(1, j26, l23);
+                                int j30 = objectDataIds[k16] = onDemandFetcher.getMapIndex(1, j26, l23);
                                 if(j30 != -1)
                                     onDemandFetcher.request(3, j30);
                                 k16++;
@@ -10685,17 +10686,17 @@ public final class Client extends RSApplet {
                     terrainData = new byte[l16][];
                     objectData = new byte[l16][];
                     mapCoordinates = new int[l16];
-                    anIntArray1235 = new int[l16];
-                    anIntArray1236 = new int[l16];
+                    terrainDataIds = new int[l16];
+                    objectDataIds = new int[l16];
                     for(int l26 = 0; l26 < l16; l26++)
                     {
                         int i29 = mapCoordinates[l26] = ai[l26];
                         int l30 = i29 >> 8 & 0xff;
                         int l31 = i29 & 0xff;
-                        int j32 = anIntArray1235[l26] = onDemandFetcher.getMapIndex(0, l31, l30);
+                        int j32 = terrainDataIds[l26] = onDemandFetcher.getMapIndex(0, l31, l30);
                         if(j32 != -1)
                             onDemandFetcher.request(3, j32);
-                        int i33 = anIntArray1236[l26] = onDemandFetcher.getMapIndex(1, l31, l30);
+                        int i33 = objectDataIds[l26] = onDemandFetcher.getMapIndex(1, l31, l30);
                         if(i33 != -1)
                             onDemandFetcher.request(3, i33);
                     }
@@ -12199,8 +12200,8 @@ public final class Client extends RSApplet {
     public static int BITFIELD_MAX_VALUE[];
     private boolean updateChatSettings;
     private int[] mapCoordinates;
-    private int[] anIntArray1235;
-    private int[] anIntArray1236;
+    private int[] terrainDataIds;
+    private int[] objectDataIds;
     private int lastClickX;
     private int lastClickY;
     public final int anInt1239 = 100;
