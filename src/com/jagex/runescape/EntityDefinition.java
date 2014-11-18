@@ -1,4 +1,20 @@
 package com.jagex.runescape;
+
+/*
+ * This file is part of the RuneScape client
+ * revision 317, which was publicly released
+ * on the 10th of April 2006.
+ * 
+ * This file has been refactored in order to
+ * restore readability to the codebase for
+ * educational purposes, primarility to those
+ * with an interest in game development.
+ * 
+ * It may be a criminal offence to run this
+ * file. This file is the intellectual property
+ * of Jagex Ltd.
+ */
+
 public final class EntityDefinition
 {
 
@@ -286,7 +302,6 @@ public final class EntityDefinition
         turnAboutAnimationId = -1;
         settingId = -1;
         combatLevel = -1;
-        anInt64 = 1834; // Unused
         walkAnimationId = -1;
         boundaryDimension = 1;
         headIcon = -1;
@@ -308,7 +323,6 @@ public final class EntityDefinition
     private int settingId;
     private static Stream stream;
     public int combatLevel;
-    private final int anInt64;
     public String name;
     public String actions[];
     public int walkAnimationId;

@@ -1,4 +1,20 @@
 package com.jagex.runescape;
+
+/*
+ * This file is part of the RuneScape client
+ * revision 317, which was publicly released
+ * on the 10th of April 2006.
+ * 
+ * This file has been refactored in order to
+ * restore readability to the codebase for
+ * educational purposes, primarility to those
+ * with an interest in game development.
+ * 
+ * It may be a criminal offence to run this
+ * file. This file is the intellectual property
+ * of Jagex Ltd.
+ */
+
 final class Censor {
 
     public static void load(Archive streamLoader)
@@ -116,7 +132,6 @@ final class Censor {
 
     public static String doCensor(String s)
     {
-        long l = System.currentTimeMillis();
         char ac[] = s.toCharArray();
         formatLegalCharacters(ac);
         String s1 = (new String(ac)).trim();
@@ -138,8 +153,7 @@ final class Censor {
         }
         method498(s1.toCharArray(), ac);
         method499(ac);
-        long l1 = System.currentTimeMillis();
-        return (new String(ac)).trim(); //xxx chat filter, return s to avoid
+        return (new String(ac)).trim();
     }
 
     private static void method498(char ac[], char ac1[])
@@ -366,7 +380,6 @@ final class Censor {
                     flag1 = true;
                 if(i == 3 && k1 > 0 && l1 > 2)
                     flag1 = true;
-                boolean _tmp = i == 3 && k1 > 2 && l1 > 0;
                 if(flag1)
                 {
                     int i2 = k;
@@ -502,7 +515,6 @@ final class Censor {
     {
         if(ac1.length > ac.length)
             return;
-        boolean flag = true;
         int j;
         for(int k = 0; k <= ac.length - ac1.length; k += j)
         {

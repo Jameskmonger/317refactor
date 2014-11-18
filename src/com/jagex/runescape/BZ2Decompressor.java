@@ -1,4 +1,20 @@
 package com.jagex.runescape;
+
+/*
+ * This file is part of the RuneScape client
+ * revision 317, which was publicly released
+ * on the 10th of April 2006.
+ * 
+ * This file has been refactored in order to
+ * restore readability to the codebase for
+ * educational purposes, primarility to those
+ * with an interest in game development.
+ * 
+ * It may be a criminal offence to run this
+ * file. This file is the intellectual property
+ * of Jagex Ltd.
+ */
+
 final class BZ2Decompressor
 {
 
@@ -279,7 +295,6 @@ label0:
             }
 
             int l4 = block.nInUse + 1;
-            int l5 = 0x186a0 * block.blockSize_100k;
             int i5 = -1;
             int j5 = 0;
             for(int i2 = 0; i2 <= 255; i2++)

@@ -1,5 +1,20 @@
 package com.jagex.runescape;
 
+/*
+ * This file is part of the RuneScape client
+ * revision 317, which was publicly released
+ * on the 10th of April 2006.
+ * 
+ * This file has been refactored in order to
+ * restore readability to the codebase for
+ * educational purposes, primarility to those
+ * with an interest in game development.
+ * 
+ * It may be a criminal offence to run this
+ * file. This file is the intellectual property
+ * of Jagex Ltd.
+ */
+
 public final class SpotAnimation {
 
     public static void load(Archive streamLoader)
@@ -77,7 +92,6 @@ public final class SpotAnimation {
 
     private SpotAnimation()
     {
-        anInt400 = 9;
         animationId = -1;
         originalModelColours = new int[6];
         modifiedModelColours = new int[6];
@@ -85,7 +99,6 @@ public final class SpotAnimation {
         scaleZ = 128;
     }
 
-    private final int anInt400;
     public static SpotAnimation cache[];
     private int id;
     private int modelId;

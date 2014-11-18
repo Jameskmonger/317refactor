@@ -1,7 +1,19 @@
 package com.jagex.runescape;
-// Decompiled by Jad v1.5.8f. Copyright 2001 Pavel Kouznetsov.
-// Jad home page: http://www.kpdus.com/jad.html
-// Decompiler options: packimports(3) 
+
+/*
+ * This file is part of the RuneScape client
+ * revision 317, which was publicly released
+ * on the 10th of April 2006.
+ * 
+ * This file has been refactored in order to
+ * restore readability to the codebase for
+ * educational purposes, primarility to those
+ * with an interest in game development.
+ * 
+ * It may be a criminal offence to run this
+ * file. This file is the intellectual property
+ * of Jagex Ltd.
+ */
 
 final class Texture extends DrawingArea {
 

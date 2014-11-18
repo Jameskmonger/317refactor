@@ -1,6 +1,19 @@
 package com.jagex.runescape;
 
-import java.util.Random;
+/*
+ * This file is part of the RuneScape client
+ * revision 317, which was publicly released
+ * on the 10th of April 2006.
+ * 
+ * This file has been refactored in order to
+ * restore readability to the codebase for
+ * educational purposes, primarility to those
+ * with an interest in game development.
+ * 
+ * It may be a criminal offence to run this
+ * file. This file is the intellectual property
+ * of Jagex Ltd.
+ */
 
 public final class FloorDefinition {
 
@@ -24,7 +37,6 @@ public final class FloorDefinition {
         do
         {
             int attribute = stream.getUnsignedByte();
-            boolean dummy;
             if(attribute == 0)
                 return;
             else
@@ -36,8 +48,7 @@ public final class FloorDefinition {
             if(attribute == 2)
                 textureId = stream.getUnsignedByte();
             else
-            if(attribute == 3)
-                dummy = true;
+            if(attribute == 3) { } // dummy attribute
             else
             if(attribute == 5)
                 occlude = false;

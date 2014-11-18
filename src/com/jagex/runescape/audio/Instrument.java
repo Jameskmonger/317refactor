@@ -1,5 +1,25 @@
 package com.jagex.runescape.audio;
 
+/*
+ * This file is part of the RuneScape client
+ * revision 317, which was publicly released
+ * on the 10th of April 2006.
+ * 
+ * This file has been refactored in order to
+ * restore readability to the codebase for
+ * educational purposes, primarility to those
+ * with an interest in game development.
+ * 
+ * It may be a criminal offence to run this
+ * file. This file is the intellectual property
+ * of Jagex Ltd.
+ */
+
+/*
+ * Some of this file was refactored by 'veer'
+ * of http://www.moparscape.org.
+ */
+
 import com.jagex.runescape.Stream;
 
 final class Instrument
@@ -105,7 +125,6 @@ final class Instrument
             gatingReleaseEnvelope.resetValues();
             gatingAttackEnvelope.resetValues();
             int counter = 0;
-            boolean flag = false;
             boolean muted = true;
             for(int position = 0; position < steps; position++)
             {
@@ -193,9 +212,7 @@ final class Instrument
                         y -= (int)((long)output[n - 1 - position] * (long)SoundFilter.coefficient[1][position] >> 16);
 
                     output[n] = y;
-                    int l3 = filterEnvelope.step(steps + 1);
                 }
-
             }
         }
         for(int position = 0; position < steps; position++)
@@ -312,5 +329,4 @@ final class Instrument
     private static final int[] volumeStep = new int[5];
     private static final int[] pitchStep = new int[5];
     private static final int[] pitchBaseStep = new int[5];
-
 }

@@ -1,5 +1,20 @@
 package com.jagex.runescape;
 
+/*
+ * This file is part of the RuneScape client
+ * revision 317, which was publicly released
+ * on the 10th of April 2006.
+ * 
+ * This file has been refactored in order to
+ * restore readability to the codebase for
+ * educational purposes, primarility to those
+ * with an interest in game development.
+ * 
+ * It may be a criminal offence to run this
+ * file. This file is the intellectual property
+ * of Jagex Ltd.
+ */
+
 public final class  Varp {
 
     public static void load(Archive archive)
@@ -28,7 +43,6 @@ public final class  Varp {
             int opcode = stream.getUnsignedByte();
             if(opcode == 0)
                 return;
-            int dummy;
             if(opcode == 1)
                  stream.getUnsignedByte();
             else
@@ -38,14 +52,12 @@ public final class  Varp {
             if(opcode == 3)
                 anIntArray703[anInt702++] = i;
             else
-            if(opcode == 4)
-                dummy = 2;
+            if(opcode == 4) { } // dummy
             else
             if(opcode == 5)
                 type = stream.getUnsignedLEShort();
             else
-            if(opcode == 6)
-                dummy = 2;
+            if(opcode == 6) { } // dummy
             else
             if(opcode == 7)
                 stream.getInt();
@@ -62,8 +74,7 @@ public final class  Varp {
             if(opcode == 12)
                 stream.getInt();
             else
-            if(opcode == 13)
-                dummy = 2;
+            if(opcode == 13) { } // dummy
             else
                 System.out.println("Error unrecognised config code: " + opcode);
         } while(true);

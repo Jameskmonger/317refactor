@@ -1,5 +1,20 @@
 package com.jagex.runescape;
 
+/*
+ * This file is part of the RuneScape client
+ * revision 317, which was publicly released
+ * on the 10th of April 2006.
+ * 
+ * This file has been refactored in order to
+ * restore readability to the codebase for
+ * educational purposes, primarility to those
+ * with an interest in game development.
+ * 
+ * It may be a criminal offence to run this
+ * file. This file is the intellectual property
+ * of Jagex Ltd.
+ */
+
 final class Region {
 
 	public Region(byte renderRuleFlags[][][], int vertexHeights[][][]) {
@@ -1525,7 +1540,6 @@ final class Region {
 	private final int[][][] tileCullingBitsets;
 	private final byte[][][] overlayClippingPaths;
 	private static final int FACE_OFFSET_X[] = { 1, 0, -1, 0 };
-	private static final int anInt138 = 323;
 	private final int[][] tileLightIntensity;
 	private static final int WALL_CORNER_ORIENTATION[] = { 16, 32, 64, 128 };
 	private final byte[][][] underlayFloorIds;

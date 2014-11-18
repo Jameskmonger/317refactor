@@ -1,7 +1,19 @@
 package com.jagex.runescape;
-// Decompiled by Jad v1.5.8f. Copyright 2001 Pavel Kouznetsov.
-// Jad home page: http://www.kpdus.com/jad.html
-// Decompiler options: packimports(3) 
+
+/*
+ * This file is part of the RuneScape client
+ * revision 317, which was publicly released
+ * on the 10th of April 2006.
+ * 
+ * This file has been refactored in order to
+ * restore readability to the codebase for
+ * educational purposes, primarility to those
+ * with an interest in game development.
+ * 
+ * It may be a criminal offence to run this
+ * file. This file is the intellectual property
+ * of Jagex Ltd.
+ */
 
 final class WorldController {
 
@@ -10,7 +22,6 @@ final class WorldController {
         int length = 104;//was parameter
         int width = 104;//was parameter
         int height = 4;//was parameter
-        aBoolean434 = true;
         interactiveObjectCache = new InteractiveObject[5000];
         anIntArray486 = new int[10000];
         anIntArray487 = new int[10000];
@@ -2144,7 +2155,6 @@ label0:
         return false;
     }
 
-    private boolean aBoolean434;
     public static boolean lowMemory = true;
     private final int mapSizeZ;
     private final int mapSizeX;
