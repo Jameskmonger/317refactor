@@ -3,7 +3,7 @@ package com.jagex.runescape.audio;
 /*
  * This file is part of the RuneScape client
  * revision 317, which was publicly released
- * on the 10th of April 2006.
+ * on the 13th of June 2005.
  * 
  * This file has been refactored in order to
  * restore readability to the codebase for
@@ -15,9 +15,12 @@ package com.jagex.runescape.audio;
  * of Jagex Ltd.
  */
 
+/* 
+ * This file was renamed as part of the 317refactor project.
+ */
+
 /*
- * Some of this file was refactored by 'veer'
- * of http://www.moparscape.org.
+ * Some of this file was refactored by 'veer' of http://www.moparscape.org.
  */
 
 import com.jagex.runescape.Stream;
