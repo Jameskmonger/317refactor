@@ -1506,18 +1506,18 @@ final class WorldController {
 		zD = temp;
 		if (yC < 50)
 			return;
-		int screenXA = Texture.centreX + (xA << 9) / yA;
-		int screenYA = Texture.centreY + (zA << 9) / yA;
-		int screenXB = Texture.centreX + (xB << 9) / yB;
-		int screenYB = Texture.centreY + (zB << 9) / yB;
-		int screenXD = Texture.centreX + (xD << 9) / yD;
-		int screenYD = Texture.centreY + (zC << 9) / yD;
-		int screenXC = Texture.centreX + (xC << 9) / yC;
-		int screenYC = Texture.centreY + (zD << 9) / yC;
-		Texture.alpha = 0;
+		int screenXA = Rasterizer.centreX + (xA << 9) / yA;
+		int screenYA = Rasterizer.centreY + (zA << 9) / yA;
+		int screenXB = Rasterizer.centreX + (xB << 9) / yB;
+		int screenYB = Rasterizer.centreY + (zB << 9) / yB;
+		int screenXD = Rasterizer.centreX + (xD << 9) / yD;
+		int screenYD = Rasterizer.centreY + (zC << 9) / yD;
+		int screenXC = Rasterizer.centreX + (xC << 9) / yC;
+		int screenYC = Rasterizer.centreY + (zD << 9) / yC;
+		Rasterizer.alpha = 0;
 		if ((screenXD - screenXC) * (screenYB - screenYC)
 				- (screenYD - screenYC) * (screenXB - screenXC) > 0) {
-			Texture.restrictEdges = screenXD < 0 || screenXC < 0
+			Rasterizer.restrictEdges = screenXD < 0 || screenXC < 0
 					|| screenXB < 0 || screenXD > DrawingArea.centerX
 					|| screenXC > DrawingArea.centerX
 					|| screenXB > DrawingArea.centerX;
@@ -1529,23 +1529,23 @@ final class WorldController {
 			}
 			if (plainTile.texture == -1) {
 				if (plainTile.colourD != 0xbc614e)
-					Texture.drawShadedTriangle(screenYD, screenYC, screenYB,
+					Rasterizer.drawShadedTriangle(screenYD, screenYC, screenYB,
 							screenXD, screenXC, screenXB, plainTile.colourD,
 							plainTile.colourC, plainTile.colourB);
 			} else if (!lowMemory) {
 				if (plainTile.flat)
-					Texture.drawTexturedTriangle(screenYD, screenYC, screenYB,
+					Rasterizer.drawTexturedTriangle(screenYD, screenYC, screenYB,
 							screenXD, screenXC, screenXB, plainTile.colourD,
 							plainTile.colourC, plainTile.colourB, xA, xB, xC,
 							zA, zB, zD, yA, yB, yC, plainTile.texture);
 				else
-					Texture.drawTexturedTriangle(screenYD, screenYC, screenYB,
+					Rasterizer.drawTexturedTriangle(screenYD, screenYC, screenYB,
 							screenXD, screenXC, screenXB, plainTile.colourD,
 							plainTile.colourC, plainTile.colourB, xD, xC, xB,
 							zC, zD, zB, yD, yC, yB, plainTile.texture);
 			} else {
 				int rgb = textureRGB[plainTile.texture];
-				Texture.drawShadedTriangle(screenYD, screenYC, screenYB,
+				Rasterizer.drawShadedTriangle(screenYD, screenYC, screenYB,
 						screenXD, screenXC, screenXB,
 						mixColours(rgb, plainTile.colourD),
 						mixColours(rgb, plainTile.colourC),
@@ -1554,7 +1554,7 @@ final class WorldController {
 		}
 		if ((screenXA - screenXB) * (screenYC - screenYB)
 				- (screenYA - screenYB) * (screenXC - screenXB) > 0) {
-			Texture.restrictEdges = screenXA < 0 || screenXB < 0
+			Rasterizer.restrictEdges = screenXA < 0 || screenXB < 0
 					|| screenXC < 0 || screenXA > DrawingArea.centerX
 					|| screenXB > DrawingArea.centerX
 					|| screenXC > DrawingArea.centerX;
@@ -1566,20 +1566,20 @@ final class WorldController {
 			}
 			if (plainTile.texture == -1) {
 				if (plainTile.colourA != 0xbc614e) {
-					Texture.drawShadedTriangle(screenYA, screenYB, screenYC,
+					Rasterizer.drawShadedTriangle(screenYA, screenYB, screenYC,
 							screenXA, screenXB, screenXC, plainTile.colourA,
 							plainTile.colourB, plainTile.colourC);
 				}
 			} else {
 				if (!lowMemory) {
-					Texture.drawTexturedTriangle(screenYA, screenYB, screenYC,
+					Rasterizer.drawTexturedTriangle(screenYA, screenYB, screenYC,
 							screenXA, screenXB, screenXC, plainTile.colourA,
 							plainTile.colourB, plainTile.colourC, xA, xB, xC,
 							zA, zB, zD, yA, yB, yC, plainTile.texture);
 					return;
 				}
 				int rgb = textureRGB[plainTile.texture];
-				Texture.drawShadedTriangle(screenYA, screenYB, screenYC,
+				Rasterizer.drawShadedTriangle(screenYA, screenYB, screenYC,
 						screenXA, screenXB, screenXC,
 						mixColours(rgb, plainTile.colourA),
 						mixColours(rgb, plainTile.colourB),
@@ -1607,13 +1607,13 @@ final class WorldController {
 				ShapedTile.viewspaceY[triangle] = viewspaceY;
 				ShapedTile.viewspaceZ[triangle] = viewspaceZ;
 			}
-			ShapedTile.screenX[triangle] = Texture.centreX + (viewspaceX << 9)
+			ShapedTile.screenX[triangle] = Rasterizer.centreX + (viewspaceX << 9)
 					/ viewspaceZ;
-			ShapedTile.screenY[triangle] = Texture.centreY + (viewspaceY << 9)
+			ShapedTile.screenY[triangle] = Rasterizer.centreY + (viewspaceY << 9)
 					/ viewspaceZ;
 		}
 
-		Texture.alpha = 0;
+		Rasterizer.alpha = 0;
 		triangleCount = shapedTile.triangleA.length;
 		for (int triangle = 0; triangle < triangleCount; triangle++) {
 			int a = shapedTile.triangleA[triangle];
@@ -1627,7 +1627,7 @@ final class WorldController {
 			int screenYC = ShapedTile.screenY[c];
 			if ((screenXA - screenXB) * (screenYC - screenYB)
 					- (screenYA - screenYB) * (screenXC - screenXB) > 0) {
-				Texture.restrictEdges = screenXA < 0 || screenXB < 0
+				Rasterizer.restrictEdges = screenXA < 0 || screenXB < 0
 						|| screenXC < 0 || screenXA > DrawingArea.centerX
 						|| screenXB > DrawingArea.centerX
 						|| screenXC > DrawingArea.centerX;
@@ -1641,14 +1641,14 @@ final class WorldController {
 				if (shapedTile.triangleTexture == null
 						|| shapedTile.triangleTexture[triangle] == -1) {
 					if (shapedTile.triangleHSLA[triangle] != 0xbc614e)
-						Texture.drawShadedTriangle(screenYA, screenYB,
+						Rasterizer.drawShadedTriangle(screenYA, screenYB,
 								screenYC, screenXA, screenXB, screenXC,
 								shapedTile.triangleHSLA[triangle],
 								shapedTile.triangleHSLB[triangle],
 								shapedTile.triangleHSLC[triangle]);
 				} else if (!lowMemory) {
 					if (shapedTile.flat)
-						Texture.drawTexturedTriangle(screenYA, screenYB,
+						Rasterizer.drawTexturedTriangle(screenYA, screenYB,
 								screenYC, screenXA, screenXB, screenXC,
 								shapedTile.triangleHSLA[triangle],
 								shapedTile.triangleHSLB[triangle],
@@ -1664,7 +1664,7 @@ final class WorldController {
 								ShapedTile.viewspaceZ[3],
 								shapedTile.triangleTexture[triangle]);
 					else
-						Texture.drawTexturedTriangle(screenYA, screenYB,
+						Rasterizer.drawTexturedTriangle(screenYA, screenYB,
 								screenYC, screenXA, screenXB, screenXC,
 								shapedTile.triangleHSLA[triangle],
 								shapedTile.triangleHSLB[triangle],
@@ -1681,7 +1681,7 @@ final class WorldController {
 								shapedTile.triangleTexture[triangle]);
 				} else {
 					int rgb = textureRGB[shapedTile.triangleTexture[triangle]];
-					Texture.drawShadedTriangle(screenYA, screenYB, screenYC,
+					Rasterizer.drawShadedTriangle(screenYA, screenYB, screenYC,
 							screenXA, screenXB, screenXC,
 							mixColours(rgb, shapedTile.triangleHSLA[triangle]),
 							mixColours(rgb, shapedTile.triangleHSLB[triangle]),

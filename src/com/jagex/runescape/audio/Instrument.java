@@ -23,7 +23,7 @@ package com.jagex.runescape.audio;
  * Some of this file was refactored by 'veer' of http://www.moparscape.org.
  */
 
-import com.jagex.runescape.Stream;
+import com.jagex.runescape.Buffer;
 
 final class Instrument {
 
@@ -87,7 +87,7 @@ final class Instrument {
 		delayFeedback = 100;
 		duration = 500;
 	}
-	public void decode(Stream stream) {
+	public void decode(Buffer stream) {
 		pitchEnvelope = new Envelope();
 		pitchEnvelope.decode(stream);
 		volumeEnvelope = new Envelope();

@@ -23,11 +23,11 @@ package com.jagex.runescape.audio;
  * Some of this file was refactored by 'veer' of http://www.moparscape.org.
  */
 
-import com.jagex.runescape.Stream;
+import com.jagex.runescape.Buffer;
 
 public final class Effect {
 
-	public static Stream data(int i, int id) {
+	public static Buffer data(int i, int id) {
 		if (effects[id] != null) {
 			Effect effect = effects[id];
 			return effect.encode(i);
@@ -36,9 +36,9 @@ public final class Effect {
 		}
 	}
 
-	public static void load(Stream stream) {
+	public static void load(Buffer stream) {
 		_output = new byte[0x6baa8];
-		output = new Stream(_output);
+		output = new Buffer(_output);
 		Instrument.initialise();
 		do {
 			int effect = stream.getUnsignedLEShort();
@@ -56,7 +56,7 @@ public final class Effect {
 
 	private static byte[] _output;
 
-	private static Stream output;
+	private static Buffer output;
 
 	private final Instrument[] instruments;
 
@@ -65,7 +65,7 @@ public final class Effect {
 	private Effect() {
 		instruments = new Instrument[10];
 	}
-	private void decode(Stream stream) {
+	private void decode(Buffer stream) {
 		for (int instrument = 0; instrument < 10; instrument++) {
 			int active = stream.getUnsignedByte();
 			if (active != 0) {
@@ -77,7 +77,7 @@ public final class Effect {
 		loopStart = stream.getUnsignedLEShort();
 		loopEnd = stream.getUnsignedLEShort();
 	}
-	private Stream encode(int loops) {
+	private Buffer encode(int loops) {
 		int size = mix(loops);
 		output.currentOffset = 0;
 		output.putInt(0x52494646);

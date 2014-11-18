@@ -22,21 +22,21 @@ package com.jagex.runescape;
 import java.math.BigInteger;
 import com.jagex.runescape.sign.signlink;
 
-public final class Stream extends NodeSub {
+public final class Buffer extends NodeSub {
 
-	public static Stream create() {
+	public static Buffer create() {
 		synchronized (nodeList) {
-			Stream stream = null;
+			Buffer stream = null;
 			if (anInt1412 > 0) {
 				anInt1412--;
-				stream = (Stream) nodeList.popHead();
+				stream = (Buffer) nodeList.popHead();
 			}
 			if (stream != null) {
 				stream.currentOffset = 0;
 				return stream;
 			}
 		}
-		Stream stream_1 = new Stream();
+		Buffer stream_1 = new Buffer();
 		stream_1.currentOffset = 0;
 		stream_1.buffer = new byte[5000];
 		return stream_1;
@@ -60,10 +60,10 @@ public final class Stream extends NodeSub {
 
 	private static final NodeList nodeList = new NodeList();
 
-	private Stream() {
+	private Buffer() {
 	}
 
-	public Stream(byte abyte0[]) {
+	public Buffer(byte abyte0[]) {
 		buffer = abyte0;
 		currentOffset = 0;
 	}

@@ -119,7 +119,7 @@ public final class Client extends RSApplet {
 
 	private static void setHighMem() {
 		WorldController.lowMemory = false;
-		Texture.lowMemory = false;
+		Rasterizer.lowMemory = false;
 		lowMemory = false;
 		Region.lowMemory = false;
 		GameObjectDefinition.lowMemory = false;
@@ -127,7 +127,7 @@ public final class Client extends RSApplet {
 
 	private static void setLowMemory() {
 		WorldController.lowMemory = true;
-		Texture.lowMemory = true;
+		Rasterizer.lowMemory = true;
 		lowMemory = true;
 		Region.lowMemory = true;
 		GameObjectDefinition.lowMemory = true;
@@ -143,7 +143,7 @@ public final class Client extends RSApplet {
 	private volatile boolean currentlyDrawingFlames;
 	private Socket jaggrabSocket;
 	private int loginScreenState;
-	private Stream textStream;
+	private Buffer textStream;
 	private NPC[] npcs;
 	private int npcCount;
 	private int[] npcIds;
@@ -154,7 +154,7 @@ public final class Client extends RSApplet {
 	private int thirdMostRecentOpcode;
 	private String clickToContinueString;
 	private int privateChatMode;
-	private Stream loginStream;
+	private Buffer loginStream;
 	private boolean effectsEnabled;
 	private int[] currentFlameColours;
 	private int[] flameColour1;
@@ -195,7 +195,7 @@ public final class Client extends RSApplet {
 	private int[] localPlayers;
 	private int playersObservedCount;
 	private int[] playersObserved;
-	private Stream[] playerAppearanceData;
+	private Buffer[] playerAppearanceData;
 	private int cameraRandomisationA;
 	private int nextCameraRandomisationA;
 	private int friendsCount;
@@ -261,7 +261,7 @@ public final class Client extends RSApplet {
 	private Background titleButtonImage;
 	private final int[] compassHingeSize;
 	private final int[] anIntArray969;
-	final Decompressor[] decompressors;
+	final FileCache[] caches;
 	public int interfaceSettings[];
 	private boolean aBoolean972;
 	private final int overheadMessageCount;
@@ -368,7 +368,7 @@ public final class Client extends RSApplet {
 	private int loadingBarPercentage;
 	private boolean loadingMap;
 	private String[] friendsList;
-	private Stream inStream;
+	private Buffer inStream;
 	private int moveItemInterfaceId;
 	private int moveItemSlotStart;
 	private int activeInterfaceType;
@@ -466,7 +466,7 @@ public final class Client extends RSApplet {
 	private int inventoryOverlayInterfaceID;
 	private int[] anIntArray1190;
 	private int[] anIntArray1191;
-	private Stream stream;
+	private Buffer stream;
 	private int lastAddress;
 	private int splitPrivateChat;
 	private Background inventoryBackgroundImage;
@@ -576,11 +576,11 @@ public final class Client extends RSApplet {
 		friendsWorldIds = new int[200];
 		groundArray = new NodeList[4][104][104];
 		currentlyDrawingFlames = false;
-		textStream = new Stream(new byte[5000]);
+		textStream = new Buffer(new byte[5000]);
 		npcs = new NPC[16384];
 		npcIds = new int[16384];
 		actorsToUpdateIds = new int[1000];
-		loginStream = Stream.create();
+		loginStream = Buffer.create();
 		effectsEnabled = true;
 		openInterfaceId = -1;
 		skillExperience = new int[Skills.skillsCount];
@@ -598,7 +598,7 @@ public final class Client extends RSApplet {
 		players = new Player[maxPlayers];
 		localPlayers = new int[maxPlayers];
 		playersObserved = new int[maxPlayers];
-		playerAppearanceData = new Stream[maxPlayers];
+		playerAppearanceData = new Buffer[maxPlayers];
 		nextCameraRandomisationA = 1;
 		wayPoints = new int[104][104];
 		scrollBarColourLeft = 0x766654;
@@ -621,7 +621,7 @@ public final class Client extends RSApplet {
 		spriteDrawY = -1;
 		compassHingeSize = new int[33];
 		anIntArray969 = new int[256];
-		decompressors = new Decompressor[5];
+		caches = new FileCache[5];
 		interfaceSettings = new int[2000];
 		aBoolean972 = false;
 		overheadMessageCount = 50;
@@ -660,7 +660,7 @@ public final class Client extends RSApplet {
 		minimapHintY = new int[1000];
 		loadingMap = false;
 		friendsList = new String[200];
-		inStream = Stream.create();
+		inStream = Buffer.create();
 		expectedCRCs = new int[9];
 		menuActionData2 = new int[500];
 		menuActionData3 = new int[500];
@@ -691,7 +691,7 @@ public final class Client extends RSApplet {
 		spawnObjectList = new NodeList();
 		cameraVertical = 128;
 		inventoryOverlayInterfaceID = -1;
-		stream = Stream.create();
+		stream = Buffer.create();
 		menuActionName = new String[500];
 		cameraAmplitude = new int[5];
 		trackIds = new int[50];
@@ -849,8 +849,8 @@ public final class Client extends RSApplet {
 	}
 	private void animateTexture(int textureId) {
 		if (!lowMemory) {
-			if (Texture.textureLastUsed[17] >= textureId) {
-				Background background = Texture.textureImages[17];
+			if (Rasterizer.textureLastUsed[17] >= textureId) {
+				Background background = Rasterizer.textureImages[17];
 				int area = background.imageWidth * background.imageHeight - 1;
 				int difference = background.imageWidth * animationTimePassed
 						* 2;
@@ -862,10 +862,10 @@ public final class Client extends RSApplet {
 
 				background.imagePixels = shiftedPixels;
 				animatedPixels = originalPixels;
-				Texture.resetTexture(17);
+				Rasterizer.resetTexture(17);
 			}
-			if (Texture.textureLastUsed[24] >= textureId) {
-				Background background = Texture.textureImages[24];
+			if (Rasterizer.textureLastUsed[24] >= textureId) {
+				Background background = Rasterizer.textureImages[24];
 				int area = background.imageWidth * background.imageHeight - 1;
 				int difference = background.imageWidth * animationTimePassed
 						* 2;
@@ -877,10 +877,10 @@ public final class Client extends RSApplet {
 
 				background.imagePixels = shiftedPixels;
 				animatedPixels = originalPixels;
-				Texture.resetTexture(24);
+				Rasterizer.resetTexture(24);
 			}
-			if (Texture.textureLastUsed[34] >= textureId) {
-				Background background = Texture.textureImages[34];
+			if (Rasterizer.textureLastUsed[34] >= textureId) {
+				Background background = Rasterizer.textureImages[34];
 				int area = background.imageWidth * background.imageHeight - 1;
 				int difference = background.imageWidth * animationTimePassed
 						* 2;
@@ -892,7 +892,7 @@ public final class Client extends RSApplet {
 
 				background.imagePixels = shiftedPixels;
 				animatedPixels = originalPixels;
-				Texture.resetTexture(34);
+				Rasterizer.resetTexture(34);
 			}
 		}
 	}
@@ -1880,8 +1880,8 @@ public final class Client extends RSApplet {
 		y = z * sineHorizontal + y * cosineHorizontal >> 16;
 		z = temp;
 		if (y >= 50) {
-			spriteDrawX = Texture.centreX + (x << 9) / y;
-			spriteDrawY = Texture.centreY + (z << 9) / y;
+			spriteDrawX = Rasterizer.centreX + (x << 9) / y;
+			spriteDrawY = Rasterizer.centreY + (z << 9) / y;
 		} else {
 			spriteDrawX = -1;
 			spriteDrawY = -1;
@@ -2039,7 +2039,7 @@ public final class Client extends RSApplet {
 		Varp.cache = null;
 		super.fullGameScreen = null;
 		Player.mruNodes = null;
-		Texture.nullLoader();
+		Rasterizer.nullLoader();
 		WorldController.nullLoader();
 		Model.nullLoader();
 		Animation.nullLoader();
@@ -3505,7 +3505,7 @@ public final class Client extends RSApplet {
 	}
 	private void drawChatArea() {
 		chatboxImageProducer.initDrawingArea();
-		Texture.lineOffsets = chatboxLineOffset;
+		Rasterizer.lineOffsets = chatboxLineOffset;
 		chatBackgroundImage.drawImage(0, 0);
 		if (messagePromptRaised) {
 			fontBold.drawTextHMidVTop(chatboxInputNeededString, 239, 40, 0);
@@ -3649,7 +3649,7 @@ public final class Client extends RSApplet {
 			drawMenu();
 		chatboxImageProducer.drawGraphics(357, super.gameGraphics, 17);
 		gameScreenImageProducer.initDrawingArea();
-		Texture.lineOffsets = anIntArray1182;
+		Rasterizer.lineOffsets = anIntArray1182;
 	}
 	private void drawFlames() {
 		drawingFlames = true;
@@ -4459,13 +4459,13 @@ public final class Client extends RSApplet {
 					if (sprite != null)
 						sprite.drawImage(_x, _y);
 				} else if (childInterface.type == 6) {
-					int centreX = Texture.centreX;
-					int centreY = Texture.centreY;
-					Texture.centreX = _x + childInterface.width / 2;
-					Texture.centreY = _y + childInterface.height / 2;
-					int sine = Texture.SINE[childInterface.modelRotationX]
+					int centreX = Rasterizer.centreX;
+					int centreY = Rasterizer.centreY;
+					Rasterizer.centreX = _x + childInterface.width / 2;
+					Rasterizer.centreY = _y + childInterface.height / 2;
+					int sine = Rasterizer.SINE[childInterface.modelRotationX]
 							* childInterface.modelZoom >> 16;
-					int cosine = Texture.COSINE[childInterface.modelRotationX]
+					int cosine = Rasterizer.COSINE[childInterface.modelRotationX]
 							* childInterface.modelZoom >> 16;
 					boolean selected = interfaceIsSelected(childInterface);
 					int anim;
@@ -4488,8 +4488,8 @@ public final class Client extends RSApplet {
 					if (model != null)
 						model.renderSingle(childInterface.modelRotationY, 0,
 								childInterface.modelRotationX, 0, sine, cosine);
-					Texture.centreX = centreX;
-					Texture.centreY = centreY;
+					Rasterizer.centreX = centreX;
+					Rasterizer.centreY = centreY;
 				} else if (childInterface.type == 7) {
 					TextDrawingArea font = childInterface.textDrawingAreas;
 					int slot = 0;
@@ -4673,7 +4673,7 @@ public final class Client extends RSApplet {
 		}
 	}
 	private void drawLogo() {
-		byte titleData[] = archiveTitle.getFile("title.dat");
+		byte titleData[] = archiveTitle.decompressFile("title.dat");
 		Sprite sprite = new Sprite(titleData, this);
 		flameLeftBackground.initDrawingArea();
 		sprite.drawInverse(0, 0);
@@ -5100,7 +5100,7 @@ public final class Client extends RSApplet {
 	}
 	private void drawTabArea() {
 		aRSImageProducer_1163.initDrawingArea();
-		Texture.lineOffsets = anIntArray1181;
+		Rasterizer.lineOffsets = anIntArray1181;
 		inventoryBackgroundImage.drawImage(0, 0);
 		if (inventoryOverlayInterfaceID != -1)
 			drawInterface(0, 0, RSInterface.cache[inventoryOverlayInterfaceID],
@@ -5112,7 +5112,7 @@ public final class Client extends RSApplet {
 			drawMenu();
 		aRSImageProducer_1163.drawGraphics(205, super.gameGraphics, 553);
 		gameScreenImageProducer.initDrawingArea();
-		Texture.lineOffsets = anIntArray1182;
+		Rasterizer.lineOffsets = anIntArray1182;
 	}
 	private void drawTooltip() {
 		if (menuActionRow < 2 && itemSelected == 0 && spellSelected == 0)
@@ -6420,13 +6420,13 @@ public final class Client extends RSApplet {
 		if (attribute == 1) {
 			// Brightness
 			if (setting == 1)
-				Texture.calculatePalette(0.90000000000000002D);
+				Rasterizer.calculatePalette(0.90000000000000002D);
 			if (setting == 2)
-				Texture.calculatePalette(0.80000000000000004D);
+				Rasterizer.calculatePalette(0.80000000000000004D);
 			if (setting == 3)
-				Texture.calculatePalette(0.69999999999999996D);
+				Rasterizer.calculatePalette(0.69999999999999996D);
 			if (setting == 4)
-				Texture.calculatePalette(0.59999999999999998D);
+				Rasterizer.calculatePalette(0.59999999999999998D);
 			ItemDefinition.spriteCache.unlinkAll();
 			welcomeScreenRaised = true;
 		}
@@ -6504,7 +6504,7 @@ public final class Client extends RSApplet {
 						if (!replayWave())
 							moveToNextSong = true;
 					} else {
-						Stream stream = Effect.data(trackLoop[track],
+						Buffer stream = Effect.data(trackLoop[track],
 								trackIds[track]);
 						if (System.currentTimeMillis()
 								+ stream.currentOffset / 22 > songStartTime
@@ -6662,7 +6662,7 @@ public final class Client extends RSApplet {
 					&& System.currentTimeMillis() - loadRegionTime > 360000L) {
 				signlink.reporterror(enteredUsername + " glcfb "
 						+ serverSessionKey + "," + successful + "," + lowMemory
-						+ "," + decompressors[0] + ","
+						+ "," + caches[0] + ","
 						+ onDemandFetcher.immediateRequestCount() + "," + plane
 						+ "," + regionX + "," + regionY);
 				loadRegionTime = System.currentTimeMillis();
@@ -6690,7 +6690,7 @@ public final class Client extends RSApplet {
 			lastRegionId = -1;
 			stationaryGraphicQueue.removeAll();
 			projectileQueue.removeAll();
-			Texture.clearTextureCache();
+			Rasterizer.clearTextureCache();
 			resetModelCaches();
 			worldController.initToNull();
 			System.gc();
@@ -6860,7 +6860,7 @@ public final class Client extends RSApplet {
 
 		}
 		System.gc();
-		Texture.resetTextures();
+		Rasterizer.resetTextures();
 		onDemandFetcher.clearPassiveRequests();
 		int x1 = (regionX - 6) / 8 - 1;
 		int x2 = (regionX + 6) / 8 + 1;
@@ -7928,7 +7928,7 @@ public final class Client extends RSApplet {
 			return new Socket(InetAddress.getByName(getCodeBase().getHost()),
 					port);
 	}
-	private void parseGroupPacket(Stream stream, int opcode) {
+	private void parseGroupPacket(Buffer stream, int opcode) {
 		if (opcode == 84) {
 			int positionOffset = stream.getUnsignedByte();
 			int x = playerPositionX + (positionOffset >> 4 & 7);
@@ -8754,8 +8754,8 @@ public final class Client extends RSApplet {
 				i -= 73;
 				j -= 75;
 				int k = cameraHorizontal + minimapRotation & 0x7ff;
-				int sine = Texture.SINE[k];
-				int cosine = Texture.COSINE[k];
+				int sine = Rasterizer.SINE[k];
+				int cosine = Rasterizer.COSINE[k];
 				sine = sine * (minimapZoom + 256) >> 8;
 				cosine = cosine * (minimapZoom + 256) >> 8;
 				int k1 = j * sine + i * cosine >> 11;
@@ -8842,7 +8842,7 @@ public final class Client extends RSApplet {
 				}
 			} while (onDemandData.dataType != 93
 					|| !onDemandFetcher.method564(onDemandData.id));
-			Region.passivelyRequestGameObjectModels(new Stream(
+			Region.passivelyRequestGameObjectModels(new Buffer(
 					onDemandData.buffer), onDemandFetcher);
 		} while (true);
 	}
@@ -9366,7 +9366,7 @@ public final class Client extends RSApplet {
 				}
 			}
 
-		int textureId = Texture.textureGetCount;
+		int textureId = Rasterizer.textureGetCount;
 		Model.aBoolean1684 = true;
 		Model.resourceCount = 0;
 		Model.cursorX = super.mouseX - 4;
@@ -9618,8 +9618,8 @@ public final class Client extends RSApplet {
 		byte abyte0[] = null;
 		int l = 5;
 		try {
-			if (decompressors[0] != null)
-				abyte0 = decompressors[0].decompress(i);
+			if (caches[0] != null)
+				abyte0 = caches[0].decompress(i);
 		} catch (Exception _ex) {
 		}
 		if (abyte0 != null) {
@@ -9641,7 +9641,7 @@ public final class Client extends RSApplet {
 				DataInputStream datainputstream = openJagGrabInputStream(s1 + j);
 				byte abyte1[] = new byte[6];
 				datainputstream.readFully(abyte1, 0, 6);
-				Stream stream = new Stream(abyte1);
+				Buffer stream = new Buffer(abyte1);
 				stream.currentOffset = 3;
 				int i2 = stream.get24BitInt() + 6;
 				int j2 = 6;
@@ -9665,10 +9665,10 @@ public final class Client extends RSApplet {
 				}
 				datainputstream.close();
 				try {
-					if (decompressors[0] != null)
-						decompressors[0].method234(abyte0.length, abyte0, i);
+					if (caches[0] != null)
+						caches[0].put(abyte0.length, abyte0, i);
 				} catch (Exception _ex) {
-					decompressors[0] = null;
+					caches[0] = null;
 				}
 				/*
 				 * if(abyte0 != null) { aCRC32_930.reset();
@@ -10244,7 +10244,7 @@ public final class Client extends RSApplet {
 		}
 		if (signlink.cache_dat != null) {
 			for (int i = 0; i < 5; i++)
-				decompressors[i] = new Decompressor(signlink.cache_dat,
+				caches[i] = new FileCache(signlink.cache_dat,
 						signlink.cache_idx[i], i + 1);
 
 		}
@@ -10347,7 +10347,7 @@ public final class Client extends RSApplet {
 				} catch (Exception _ex) {
 				}
 			}
-			if (decompressors[0] != null) {
+			if (caches[0] != null) {
 				drawLoadingText(75, "Requesting maps");
 				onDemandFetcher.request(3, onDemandFetcher.getMapId(0, 47, 48));
 				onDemandFetcher.request(3, onDemandFetcher.getMapId(1, 47, 48));
@@ -10538,9 +10538,9 @@ public final class Client extends RSApplet {
 			}
 
 			drawLoadingText(83, "Unpacking textures");
-			Texture.unpackTextures(archiveTextures);
-			Texture.calculatePalette(0.80000000000000004D);
-			Texture.resetTextures();
+			Rasterizer.unpackTextures(archiveTextures);
+			Rasterizer.calculatePalette(0.80000000000000004D);
+			Rasterizer.resetTextures();
 			drawLoadingText(86, "Unpacking config");
 			AnimationSequence.unpackConfig(archiveConfig);
 			GameObjectDefinition.load(archiveConfig);
@@ -10554,8 +10554,8 @@ public final class Client extends RSApplet {
 			ItemDefinition.membersWorld = membersWorld;
 			if (!lowMemory) {
 				drawLoadingText(90, "Unpacking sounds");
-				byte soundData[] = archiveSounds.getFile("sounds.dat");
-				Stream stream = new Stream(soundData);
+				byte soundData[] = archiveSounds.decompressFile("sounds.dat");
+				Buffer stream = new Buffer(soundData);
 				Effect.load(stream);
 			}
 			drawLoadingText(95, "Unpacking interfaces");
@@ -10604,17 +10604,17 @@ public final class Client extends RSApplet {
 				minimapShape2[_y - 5] = lastXOfLine - firstXOfLine;
 			}
 
-			Texture.setBounds(479, 96);
-			chatboxLineOffset = Texture.lineOffsets;
-			Texture.setBounds(190, 261);
-			anIntArray1181 = Texture.lineOffsets;
-			Texture.setBounds(512, 334);
-			anIntArray1182 = Texture.lineOffsets;
+			Rasterizer.setBounds(479, 96);
+			chatboxLineOffset = Rasterizer.lineOffsets;
+			Rasterizer.setBounds(190, 261);
+			anIntArray1181 = Rasterizer.lineOffsets;
+			Rasterizer.setBounds(512, 334);
+			anIntArray1182 = Rasterizer.lineOffsets;
 			int ai[] = new int[9];
 			for (int i8 = 0; i8 < 9; i8++) {
 				int k8 = 128 + i8 * 32 + 15;
 				int l8 = 600 + k8 * 3;
-				int i9 = Texture.SINE[k8];
+				int i9 = Rasterizer.SINE[k8];
 				ai[i8] = l8 * i9 >> 16;
 			}
 
@@ -10975,7 +10975,7 @@ public final class Client extends RSApplet {
 			entity.turnDirection = 512;
 		entity.currentRotation = entity.turnDirection;
 	}
-	private void updateLocalPlayerMovement(Stream stream) {
+	private void updateLocalPlayerMovement(Buffer stream) {
 		stream.initBitAccess();
 		int currentlyUpdating = stream.readBits(1);
 		if (currentlyUpdating == 0)
@@ -11014,7 +11014,7 @@ public final class Client extends RSApplet {
 			localPlayer.setPos(y, x, clearWaypointQueue == 1);
 		}
 	}
-	private void updateNPCBlock(Stream stream) {
+	private void updateNPCBlock(Buffer stream) {
 		for (int n = 0; n < playersObservedCount; n++) {
 			int npcId = playersObserved[n];
 			NPC npc = npcs[npcId];
@@ -11107,7 +11107,7 @@ public final class Client extends RSApplet {
 				updateEntity(npc);
 		}
 	}
-	private void updateNPCList(int amount, Stream stream) {
+	private void updateNPCList(int amount, Buffer stream) {
 		while (stream.bitPosition + 21 < amount * 8) {
 			int npcId = stream.readBits(14);
 			if (npcId == 16383)
@@ -11141,7 +11141,7 @@ public final class Client extends RSApplet {
 		}
 		stream.finishBitAccess();
 	}
-	private void updateNPCMovement(Stream stream) {
+	private void updateNPCMovement(Buffer stream) {
 		stream.initBitAccess();
 		int npcsToUpdate = stream.readBits(8);
 		if (npcsToUpdate < npcCount) {
@@ -11190,7 +11190,7 @@ public final class Client extends RSApplet {
 			}
 		}
 	}
-	private void updateNPCs(Stream stream, int amount) {
+	private void updateNPCs(Buffer stream, int amount) {
 		actorsToUpdateCount = 0;
 		playersObservedCount = 0;
 		updateNPCMovement(stream);
@@ -11217,14 +11217,13 @@ public final class Client extends RSApplet {
 						+ npcCount);
 				throw new RuntimeException("eek");
 			}
-
 	}
-	private void updateOtherPlayerMovement(Stream stream) {
+	
+	private void updateOtherPlayerMovement(Buffer stream) {
 		int playersToUpdate = stream.readBits(8);
 		if (playersToUpdate < localPlayerCount) {
 			for (int p = playersToUpdate; p < localPlayerCount; p++)
 				actorsToUpdateIds[actorsToUpdateCount++] = localPlayers[p];
-
 		}
 		if (playersToUpdate > localPlayerCount) {
 			signlink.reporterror(enteredUsername + " Too many players");
@@ -11267,7 +11266,7 @@ public final class Client extends RSApplet {
 			}
 		}
 	}
-	private void updatePlayer(Stream stream, int updateType, Player player,
+	private void updatePlayer(Buffer stream, int updateType, Player player,
 			int playerId) {
 		if ((updateType & 0x400) != 0) {
 			player.startX = stream.getUnsignedByteS();
@@ -11382,7 +11381,7 @@ public final class Client extends RSApplet {
 		if ((updateType & 0x10) != 0) {
 			int appearanceBufferSize = stream.getUnsignedByteC();
 			byte _appearanceBuffer[] = new byte[appearanceBufferSize];
-			Stream appearanceBuffer = new Stream(_appearanceBuffer);
+			Buffer appearanceBuffer = new Buffer(_appearanceBuffer);
 			stream.readBytes(appearanceBufferSize, 0, _appearanceBuffer);
 			playerAppearanceData[playerId] = appearanceBuffer;
 			player.updatePlayerAppearance(appearanceBuffer);
@@ -11421,7 +11420,7 @@ public final class Client extends RSApplet {
 		}
 
 	}
-	private void updatePlayerList(Stream stream, int count) {
+	private void updatePlayerList(Buffer stream, int count) {
 		while (stream.bitPosition + 10 < count * 8) {
 			int pId = stream.readBits(11);
 			if (pId == 2047)
@@ -11450,7 +11449,7 @@ public final class Client extends RSApplet {
 		}
 		stream.finishBitAccess();
 	}
-	private void updatePlayers(int packetSize, Stream stream) {
+	private void updatePlayers(int packetSize, Buffer stream) {
 		actorsToUpdateCount = 0;
 		playersObservedCount = 0;
 		updateLocalPlayerMovement(stream);
@@ -11476,7 +11475,7 @@ public final class Client extends RSApplet {
 				throw new RuntimeException("eek");
 			}
 	}
-	private void updatePlayersBlock(Stream stream) {
+	private void updatePlayersBlock(Buffer stream) {
 		for (int p = 0; p < playersObservedCount; p++) {
 			int pId = playersObserved[p];
 			Player player = players[pId];

@@ -19,69 +19,75 @@ package com.jagex.runescape;
  * This file was renamed as part of the 317refactor project.
  */
 
+/**
+ * 
+ * Represents a single archive within a cache.
+ * 
+ */
 final class Archive {
 
-	private final byte[] archiveDataBuffer;
+	private final byte[] outputData;
 
-	private final int dataSize;
+	private final int fileCount;
 
-	private final int[] nameHashes;
-	private final int[] uncompressedSizes;
+	private final int[] hashes;
+	private final int[] decompressedSizes;
 	private final int[] compressedSizes;
-	private final int[] startOffsets;
-	private final boolean compressed;
-	public Archive(byte dataBuffer[]) {
-		Stream stream = new Stream(dataBuffer);
-		int uncompressed = stream.get24BitInt();
-		int compressed = stream.get24BitInt();
-		if (compressed != uncompressed) {
-			byte data[] = new byte[uncompressed];
-			BZ2Decompressor.decompress(data, uncompressed, dataBuffer,
-					compressed, 6);
-			archiveDataBuffer = data;
-			stream = new Stream(archiveDataBuffer);
-			this.compressed = true;
+	private final int[] initialOffsets;
+	private final boolean decompressed;
+	
+	public Archive(byte data[]) {
+		Buffer buffer = new Buffer(data);
+		int compressedLength = buffer.get24BitInt();
+		int decompressedLength = buffer.get24BitInt();
+		
+		if (decompressedLength != compressedLength) {
+			byte output[] = new byte[compressedLength];
+			BZ2Decompressor.decompress(output, compressedLength, data,
+					decompressedLength, 6);
+			outputData = output;
+			buffer = new Buffer(outputData);
+			this.decompressed = true;
 		} else {
-			archiveDataBuffer = dataBuffer;
-			this.compressed = false;
+			outputData = data;
+			this.decompressed = false;
 		}
-		dataSize = stream.getUnsignedLEShort();
-		nameHashes = new int[dataSize];
-		uncompressedSizes = new int[dataSize];
-		compressedSizes = new int[dataSize];
-		startOffsets = new int[dataSize];
-		int offset = stream.currentOffset + dataSize * 10;
-		for (int index = 0; index < dataSize; index++) {
-			nameHashes[index] = stream.getInt();
-			uncompressedSizes[index] = stream.get24BitInt();
-			compressedSizes[index] = stream.get24BitInt();
-			startOffsets[index] = offset;
+		
+		fileCount = buffer.getUnsignedLEShort();
+		hashes = new int[fileCount];
+		decompressedSizes = new int[fileCount];
+		compressedSizes = new int[fileCount];
+		initialOffsets = new int[fileCount];
+		int offset = buffer.currentOffset + fileCount * 10;
+		
+		for (int index = 0; index < fileCount; index++) {
+			hashes[index] = buffer.getInt();
+			decompressedSizes[index] = buffer.get24BitInt();
+			compressedSizes[index] = buffer.get24BitInt();
+			initialOffsets[index] = offset;
 			offset += compressedSizes[index];
 		}
 	}
-	public byte[] getFile(String name) {
-		byte dataBuffer[] = null; // was a parameter
+	
+	public byte[] decompressFile(String name) {
 		int hash = 0;
 		name = name.toUpperCase();
 		for (int c = 0; c < name.length(); c++)
 			hash = (hash * 61 + name.charAt(c)) - 32;
 
-		for (int i = 0; i < dataSize; i++)
-			if (nameHashes[i] == hash) {
-				if (dataBuffer == null)
-					dataBuffer = new byte[uncompressedSizes[i]];
-				if (!compressed) {
-					BZ2Decompressor.decompress(dataBuffer,
-							uncompressedSizes[i], archiveDataBuffer,
-							compressedSizes[i], startOffsets[i]);
+		for (int file = 0; file < fileCount; file++)
+			if (hashes[file] == hash) {
+				byte[] output = new byte[decompressedSizes[file]];
+				if (!decompressed) {
+					BZ2Decompressor.decompress(output,
+							decompressedSizes[file], outputData,
+							compressedSizes[file], initialOffsets[file]);
 				} else {
-					System.arraycopy(archiveDataBuffer, startOffsets[i],
-							dataBuffer, 0, uncompressedSizes[i]);
-
+					System.arraycopy(outputData, initialOffsets[file],
+							output, 0, decompressedSizes[file]);
 				}
-				return dataBuffer;
+				return output;
 			}
-
 		return null;
 	}
 }

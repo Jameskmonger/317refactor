@@ -48,7 +48,7 @@ public final class RSInterface {
 	public static void unpack(Archive streamLoader, TextDrawingArea fonts[],
 			Archive mediaArchive) {
 		spriteCache = new MRUNodes(50000);
-		Stream stream = new Stream(streamLoader.getFile("data"));
+		Buffer stream = new Buffer(streamLoader.decompressFile("data"));
 		int parentId = -1;
 		int interfaceCount = stream.getUnsignedLEShort();
 		cache = new RSInterface[interfaceCount];

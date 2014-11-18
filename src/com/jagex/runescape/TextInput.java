@@ -30,7 +30,7 @@ final class TextInput {
 		return text;
 	}
 
-	public static String readFromStream(int length, Stream stream) {
+	public static String readFromStream(int length, Buffer stream) {
 		int pointer = 0;
 		int l = -1;
 		for (int c = 0; c < length; c++) {
@@ -70,7 +70,7 @@ final class TextInput {
 		return new String(characterList, 0, pointer);
 	}
 
-	public static void writeToStream(String text, Stream stream) {
+	public static void writeToStream(String text, Buffer stream) {
 		if (text.length() > 80)
 			text = text.substring(0, 80);
 		text = text.toLowerCase();
@@ -105,7 +105,7 @@ final class TextInput {
 	}
 
 	private static final char[] characterList = new char[100];
-	private static final Stream stream = new Stream(new byte[100]);
+	private static final Buffer stream = new Buffer(new byte[100]);
 	private static final char[] validChars = { ' ', 'e', 't', 'a', 'o', 'i',
 			'h', 'n', 's', 'r', 'd', 'l', 'u', 'm', 'w', 'c', 'y', 'f', 'g',
 			'p', 'b', 'v', 'k', 'x', 'j', 'q', 'z', '0', '1', '2', '3', '4',

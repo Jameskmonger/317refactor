@@ -22,7 +22,7 @@ package com.jagex.runescape;
 public final class IdentityKit {
 
 	public static void load(Archive streamLoader) {
-		Stream stream = new Stream(streamLoader.getFile("idk.dat"));
+		Buffer stream = new Buffer(streamLoader.decompressFile("idk.dat"));
 		count = stream.getUnsignedLEShort();
 		if (cache == null)
 			cache = new IdentityKit[count];
@@ -109,7 +109,7 @@ public final class IdentityKit {
 
 		return cached;
 	}
-	private void loadDefinition(Stream stream) {
+	private void loadDefinition(Buffer stream) {
 		do {
 			int attribute = stream.getUnsignedByte();
 			if (attribute == 0)

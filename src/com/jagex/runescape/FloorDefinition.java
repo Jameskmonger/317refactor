@@ -22,7 +22,7 @@ package com.jagex.runescape;
 public final class FloorDefinition {
 
 	public static void load(Archive archive) {
-		Stream stream = new Stream(archive.getFile("flo.dat"));
+		Buffer stream = new Buffer(archive.decompressFile("flo.dat"));
 		int cacheSize = stream.getUnsignedLEShort();
 		if (cache == null)
 			cache = new FloorDefinition[cacheSize];
@@ -53,7 +53,7 @@ public final class FloorDefinition {
 		textureId = -1;
 		occlude = true;
 	}
-	private void loadDefinition(Stream stream) {
+	private void loadDefinition(Buffer stream) {
 		do {
 			int attribute = stream.getUnsignedByte();
 			if (attribute == 0)

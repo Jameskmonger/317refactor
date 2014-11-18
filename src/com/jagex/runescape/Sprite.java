@@ -39,8 +39,8 @@ public final class Sprite extends DrawingArea {
 	public int maxHeight;
 
 	public Sprite(Archive streamLoader, String target, int archiveId) {
-		Stream dataStream = new Stream(streamLoader.getFile(target + ".dat"));
-		Stream indexStream = new Stream(streamLoader.getFile("index.dat"));
+		Buffer dataStream = new Buffer(streamLoader.decompressFile(target + ".dat"));
+		Buffer indexStream = new Buffer(streamLoader.decompressFile("index.dat"));
 		indexStream.currentOffset = dataStream.getUnsignedLEShort();
 		maxWidth = indexStream.getUnsignedLEShort();
 		maxHeight = indexStream.getUnsignedLEShort();

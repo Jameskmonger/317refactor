@@ -79,9 +79,9 @@ public final class ItemDefinition {
 				return null;
 		}
 		Sprite itemSprite = new Sprite(32, 32);
-		int textureCentreX = Texture.centreX;
-		int textureCentreY = Texture.centreY;
-		int lineOffsets[] = Texture.lineOffsets;
+		int textureCentreX = Rasterizer.centreX;
+		int textureCentreY = Rasterizer.centreY;
+		int lineOffsets[] = Rasterizer.lineOffsets;
 		int pixels[] = DrawingArea.pixels;
 		int width = DrawingArea.width;
 		int height = DrawingArea.height;
@@ -89,17 +89,17 @@ public final class ItemDefinition {
 		int bottomX = DrawingArea.bottomX;
 		int topY = DrawingArea.topY;
 		int bottomY = DrawingArea.bottomY;
-		Texture.textured = false;
+		Rasterizer.textured = false;
 		DrawingArea.initDrawingArea(32, 32, itemSprite.pixels);
 		DrawingArea.drawFilledRectangle(0, 0, 32, 32, 0);
-		Texture.setDefaultBounds();
+		Rasterizer.setDefaultBounds();
 		int zoom = definition.modelZoom;
 		if (type == -1)
 			zoom = (int) (zoom * 1.5D);
 		if (type > 0)
 			zoom = (int) (zoom * 1.04D);
-		int l3 = Texture.SINE[definition.modelRotationX] * zoom >> 16;
-		int i4 = Texture.COSINE[definition.modelRotationX] * zoom >> 16;
+		int l3 = Rasterizer.SINE[definition.modelRotationX] * zoom >> 16;
+		int i4 = Rasterizer.COSINE[definition.modelRotationX] * zoom >> 16;
 		model.renderSingle(definition.modelRotationY,
 				definition.modelRotationZ, definition.modelRotationX,
 				definition.modelOffset1, l3 + model.modelHeight / 2
@@ -163,10 +163,10 @@ public final class ItemDefinition {
 			spriteCache.put(itemSprite, itemId);
 		DrawingArea.initDrawingArea(height, width, pixels);
 		DrawingArea.setDrawingArea(bottomY, topX, bottomX, topY);
-		Texture.centreX = textureCentreX;
-		Texture.centreY = textureCentreY;
-		Texture.lineOffsets = lineOffsets;
-		Texture.textured = true;
+		Rasterizer.centreX = textureCentreX;
+		Rasterizer.centreY = textureCentreY;
+		Rasterizer.lineOffsets = lineOffsets;
+		Rasterizer.textured = true;
 		if (definition.stackable)
 			itemSprite.maxWidth = 33;
 		else
@@ -176,8 +176,8 @@ public final class ItemDefinition {
 	}
 
 	public static void load(Archive streamLoader) {
-		stream = new Stream(streamLoader.getFile("obj.dat"));
-		Stream stream = new Stream(streamLoader.getFile("obj.idx"));
+		stream = new Buffer(streamLoader.decompressFile("obj.dat"));
+		Buffer stream = new Buffer(streamLoader.decompressFile("obj.idx"));
 		itemCount = stream.getUnsignedLEShort();
 		streamOffsets = new int[itemCount];
 		int offset = 2;
@@ -237,7 +237,7 @@ public final class ItemDefinition {
 	private static int cacheIndex;
 	public int modelZoom;
 	public static boolean membersWorld = true;
-	private static Stream stream;
+	private static Buffer stream;
 	private int shadowModifier;
 	private int maleEquipModelIdEmblem;
 	private int maleEquipModelIdSecondary;
@@ -406,7 +406,7 @@ public final class ItemDefinition {
 			cached = false;
 		return cached;
 	}
-	private void readValues(Stream stream) {
+	private void readValues(Buffer stream) {
 		do {
 			int attribute = stream.getUnsignedByte();
 			if (attribute == 0)

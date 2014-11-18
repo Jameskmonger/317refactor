@@ -116,8 +116,8 @@ public final class OnDemandFetcher extends OnDemandFetcherParent implements
 		while (onDemandData != null) {
 			waiting = true;
 			byte abyte0[] = null;
-			if (clientInstance.decompressors[0] != null)
-				abyte0 = clientInstance.decompressors[onDemandData.dataType + 1]
+			if (clientInstance.caches[0] != null)
+				abyte0 = clientInstance.caches[onDemandData.dataType + 1]
 						.decompress(onDemandData.id);
 			if (!crcMatches(versions[onDemandData.dataType][onDemandData.id],
 					crcs[onDemandData.dataType][onDemandData.id], abyte0))
@@ -338,7 +338,7 @@ public final class OnDemandFetcher extends OnDemandFetcherParent implements
 		return anIntArray1348[i] == 1;
 	}
 	public void passiveRequest(int id, int type) {
-		if (clientInstance.decompressors[0] == null)
+		if (clientInstance.caches[0] == null)
 			return;
 		if (versions[type][id] == 0)
 			return;
@@ -422,9 +422,9 @@ public final class OnDemandFetcher extends OnDemandFetcherParent implements
 					;
 				if (expectedSize + completedSize >= abyte0.length
 						&& current != null) {
-					if (clientInstance.decompressors[0] != null)
-						clientInstance.decompressors[current.dataType + 1]
-								.method234(abyte0.length, abyte0, current.id);
+					if (clientInstance.caches[0] != null)
+						clientInstance.caches[current.dataType + 1]
+								.put(abyte0.length, abyte0, current.id);
 					if (!current.incomplete && current.dataType == 3) {
 						current.incomplete = true;
 						current.dataType = 93;
@@ -482,7 +482,7 @@ public final class OnDemandFetcher extends OnDemandFetcherParent implements
 				onDemandCycle++;
 				int i = 20;
 				if (highestPriority == 0
-						&& clientInstance.decompressors[0] != null)
+						&& clientInstance.caches[0] != null)
 					i = 50;
 				try {
 					Thread.sleep(i);
@@ -547,7 +547,7 @@ public final class OnDemandFetcher extends OnDemandFetcherParent implements
 				if (clientInstance.loggedIn
 						&& socket != null
 						&& outputStream != null
-						&& (highestPriority > 0 || clientInstance.decompressors[0] == null)) {
+						&& (highestPriority > 0 || clientInstance.caches[0] == null)) {
 					writeLoopCycle++;
 					if (writeLoopCycle > 500) {
 						writeLoopCycle = 0;
@@ -568,11 +568,11 @@ public final class OnDemandFetcher extends OnDemandFetcherParent implements
 		}
 	}
 	public void setPriority(byte byte0, int i, int j) {
-		if (clientInstance.decompressors[0] == null)
+		if (clientInstance.caches[0] == null)
 			return;
 		if (versions[i][j] == 0)
 			return;
-		byte abyte0[] = clientInstance.decompressors[i + 1].decompress(j);
+		byte abyte0[] = clientInstance.caches[i + 1].decompress(j);
 		if (crcMatches(versions[i][j], crcs[i][j], abyte0))
 			return;
 		filePriorities[i][j] = byte0;
@@ -584,9 +584,9 @@ public final class OnDemandFetcher extends OnDemandFetcherParent implements
 		String as[] = { "model_version", "anim_version", "midi_version",
 				"map_version" };
 		for (int i = 0; i < 4; i++) {
-			byte abyte0[] = streamLoader.getFile(as[i]);
+			byte abyte0[] = streamLoader.decompressFile(as[i]);
 			int j = abyte0.length / 2;
-			Stream stream = new Stream(abyte0);
+			Buffer stream = new Buffer(abyte0);
 			versions[i] = new int[j];
 			filePriorities[i] = new byte[j];
 			for (int l = 0; l < j; l++)
@@ -596,16 +596,16 @@ public final class OnDemandFetcher extends OnDemandFetcherParent implements
 
 		String as1[] = { "model_crc", "anim_crc", "midi_crc", "map_crc" };
 		for (int k = 0; k < 4; k++) {
-			byte abyte1[] = streamLoader.getFile(as1[k]);
+			byte abyte1[] = streamLoader.decompressFile(as1[k]);
 			int i1 = abyte1.length / 4;
-			Stream stream_1 = new Stream(abyte1);
+			Buffer stream_1 = new Buffer(abyte1);
 			crcs[k] = new int[i1];
 			for (int l1 = 0; l1 < i1; l1++)
 				crcs[k][l1] = stream_1.getInt();
 
 		}
 
-		byte abyte2[] = streamLoader.getFile("model_index");
+		byte abyte2[] = streamLoader.decompressFile("model_index");
 		int j1 = versions[0].length;
 		modelIndices = new byte[j1];
 		for (int k1 = 0; k1 < j1; k1++)
@@ -614,8 +614,8 @@ public final class OnDemandFetcher extends OnDemandFetcherParent implements
 			else
 				modelIndices[k1] = 0;
 
-		abyte2 = streamLoader.getFile("map_index");
-		Stream stream2 = new Stream(abyte2);
+		abyte2 = streamLoader.decompressFile("map_index");
+		Buffer stream2 = new Buffer(abyte2);
 		j1 = abyte2.length / 7;
 		mapIndices1 = new int[j1];
 		mapIndices2 = new int[j1];
@@ -628,15 +628,15 @@ public final class OnDemandFetcher extends OnDemandFetcherParent implements
 			mapIndices4[i2] = stream2.getUnsignedByte();
 		}
 
-		abyte2 = streamLoader.getFile("anim_index");
-		stream2 = new Stream(abyte2);
+		abyte2 = streamLoader.decompressFile("anim_index");
+		stream2 = new Buffer(abyte2);
 		j1 = abyte2.length / 2;
 		anIntArray1360 = new int[j1];
 		for (int j2 = 0; j2 < j1; j2++)
 			anIntArray1360[j2] = stream2.getUnsignedLEShort();
 
-		abyte2 = streamLoader.getFile("midi_index");
-		stream2 = new Stream(abyte2);
+		abyte2 = streamLoader.decompressFile("midi_index");
+		stream2 = new Buffer(abyte2);
 		j1 = abyte2.length;
 		anIntArray1348 = new int[j1];
 		for (int k2 = 0; k2 < j1; k2++)

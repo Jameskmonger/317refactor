@@ -50,8 +50,8 @@ public final class TextDrawingArea extends DrawingArea {
 		characterEffectiveWidth = new int[256];
 		random = new Random();
 		strikethrough = false;
-		Stream data = new Stream(streamLoader.getFile(s + ".dat"));
-		Stream index = new Stream(streamLoader.getFile("index.dat"));
+		Buffer data = new Buffer(streamLoader.decompressFile(s + ".dat"));
+		Buffer index = new Buffer(streamLoader.decompressFile("index.dat"));
 		index.currentOffset = data.getUnsignedLEShort() + 4;
 		int k = index.getUnsignedByte();
 		if (k > 0)

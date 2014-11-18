@@ -300,7 +300,7 @@ final class Region {
 	}
 
 	private static int interpolate(int a, int b, int delta, int deltaScale) {
-		int f = 0x10000 - Texture.COSINE[(delta * 1024) / deltaScale] >> 1;
+		int f = 0x10000 - Rasterizer.COSINE[(delta * 1024) / deltaScale] >> 1;
 		return (a * (0x10000 - f) >> 16) + (b * f >> 16);
 	}
 
@@ -342,7 +342,7 @@ final class Region {
 		return definition.modelTypeCached(type);
 	}
 
-	public static void passivelyRequestGameObjectModels(Stream stream,
+	public static void passivelyRequestGameObjectModels(Buffer stream,
 			OnDemandFetcher onDemandFetcher) {
 		start: {
 			int objectId = -1;
@@ -377,7 +377,7 @@ final class Region {
 	public static boolean regionCached(int regionX, int regionY,
 			byte[] objectData) {
 		boolean cached = true;
-		Stream objectDataStream = new Stream(objectData);
+		Buffer objectDataStream = new Buffer(objectData);
 		int objectId = -1;
 		do {
 			int objectIdIncrement = objectDataStream.getSmartB();
@@ -651,7 +651,7 @@ final class Region {
 								}
 								int underlayMinimapColour = 0;
 								if (hslBitsetOriginal != -1)
-									underlayMinimapColour = Texture.HSL_TO_RGB[mixLightness(
+									underlayMinimapColour = Rasterizer.HSL_TO_RGB[mixLightness(
 											hslBitsetRandomised, 96)];
 								if (overlayFloorId == 0) {
 									worldController.renderTile(
@@ -682,7 +682,7 @@ final class Region {
 									int hslBitset;
 									int overlayMinimapColour;
 									if (textureId >= 0) {
-										overlayMinimapColour = Texture
+										overlayMinimapColour = Rasterizer
 												.getAverageTextureColour(textureId);
 										hslBitset = -1;
 									} else if (definition.rgbColour == 0xff00ff) {
@@ -694,7 +694,7 @@ final class Region {
 												definition.hue2,
 												definition.saturation,
 												definition.lightness);
-										overlayMinimapColour = Texture.HSL_TO_RGB[mixLightnessSigned(
+										overlayMinimapColour = Rasterizer.HSL_TO_RGB[mixLightnessSigned(
 												definition.hsl, 96)];
 									}
 									worldController.renderTile(
@@ -945,7 +945,7 @@ final class Region {
 	public final void loadObjectBlock(int blockX, CollisionMap collisionMap[],
 			int blockY, WorldController worldController, byte blockData[]) {
 		start: {
-			Stream stream = new Stream(blockData);
+			Buffer stream = new Buffer(blockData);
 			int objectId = -1;
 			do {
 				int objectIdOffset = stream.getSmartB();
@@ -984,7 +984,7 @@ final class Region {
 			WorldController worldController, int i, int j, int k,
 			int objectPlane, byte blockData[], int i1, int rotation, int k1) {
 		start: {
-			Stream stream = new Stream(blockData);
+			Buffer stream = new Buffer(blockData);
 			int objectId = -1;
 			do {
 				int objectIdOffset = stream.getSmartB();
@@ -1047,7 +1047,7 @@ final class Region {
 
 		}
 
-		Stream stream = new Stream(blockData);
+		Buffer stream = new Buffer(blockData);
 		for (int plane = 0; plane < 4; plane++) {
 			for (int tileX = 0; tileX < 64; tileX++) {
 				for (int tileY = 0; tileY < 64; tileY++)
@@ -1070,7 +1070,7 @@ final class Region {
 							+ regionY] &= 0xfeffffff;
 
 		}
-		Stream terrainDataStream = new Stream(terrainData);
+		Buffer terrainDataStream = new Buffer(terrainData);
 		for (int plane = 0; plane < 4; plane++) {
 			for (int regionX = 0; regionX < 64; regionX++) {
 				for (int regionY = 0; regionY < 64; regionY++)
@@ -1095,7 +1095,7 @@ final class Region {
 			}
 		}
 	}
-	private void loadTerrainTile(int tileY, int offsetY, Stream stream,
+	private void loadTerrainTile(int tileY, int offsetY, Buffer stream,
 			int tileX, int tileZ, int i1, int offsetX) {
 		if (tileX >= 0 && tileX < 104 && tileY >= 0 && tileY < 104) {
 			renderRuleFlags[tileZ][tileX][tileY] = 0;

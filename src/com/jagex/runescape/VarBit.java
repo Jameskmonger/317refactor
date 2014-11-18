@@ -22,7 +22,7 @@ package com.jagex.runescape;
 public final class VarBit {
 
 	public static void load(Archive archive) {
-		Stream stream = new Stream(archive.getFile("varbit.dat"));
+		Buffer stream = new Buffer(archive.decompressFile("varbit.dat"));
 		int cacheSize = stream.getUnsignedLEShort();
 		if (cache == null)
 			cache = new VarBit[cacheSize];
@@ -48,7 +48,7 @@ public final class VarBit {
 	private VarBit() {
 		aBoolean651 = false;
 	}
-	private void loadDefinition(Stream stream) {
+	private void loadDefinition(Buffer stream) {
 		do {
 			int j = stream.getUnsignedByte();
 			if (j == 0)

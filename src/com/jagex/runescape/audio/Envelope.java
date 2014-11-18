@@ -23,7 +23,7 @@ package com.jagex.runescape.audio;
  * Some of this file was refactored by 'veer' of http://www.moparscape.org.
  */
 
-import com.jagex.runescape.Stream;
+import com.jagex.runescape.Buffer;
 
 final class Envelope {
 
@@ -46,13 +46,13 @@ final class Envelope {
 	public static int anInt546;
 	public Envelope() {
 	}
-	public void decode(Stream stream) {
+	public void decode(Buffer stream) {
 		form = stream.getUnsignedByte();
 		start = stream.getInt();
 		end = stream.getInt();
 		decodeShape(stream);
 	}
-	public void decodeShape(Stream stream) {
+	public void decodeShape(Buffer stream) {
 		phaseCount = stream.getUnsignedByte();
 		phaseDuration = new int[phaseCount];
 		phasePeak = new int[phaseCount];

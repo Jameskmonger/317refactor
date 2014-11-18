@@ -22,7 +22,7 @@ package com.jagex.runescape;
 public final class AnimationSequence {
 
 	public static void unpackConfig(Archive streamLoader) {
-		Stream stream = new Stream(streamLoader.getFile("seq.dat"));
+		Buffer stream = new Buffer(streamLoader.decompressFile("seq.dat"));
 		int length = stream.getUnsignedLEShort();
 		if (animations == null)
 			animations = new AnimationSequence[length];
@@ -73,7 +73,7 @@ public final class AnimationSequence {
 			frameLength = 1;
 		return frameLength;
 	}
-	private void readValues(Stream stream) {
+	private void readValues(Buffer stream) {
 		do {
 			int attribute = stream.getUnsignedByte();
 			if (attribute == 0)

@@ -23,7 +23,7 @@ package com.jagex.runescape.audio;
  * Some of this file was refactored by 'veer' of http://www.moparscape.org.
  */
 
-import com.jagex.runescape.Stream;
+import com.jagex.runescape.Buffer;
 
 /*
  * an impl of an adaptive iir filter that calculates
@@ -108,7 +108,7 @@ final class SoundFilter {
 
 		return pairCount[direction] * 2;
 	}
-	public void decode(Stream stream, Envelope envelope) {
+	public void decode(Buffer stream, Envelope envelope) {
 		int count = stream.getUnsignedByte();
 		pairCount[0] = count >> 4;
 		pairCount[1] = count & 0xf;

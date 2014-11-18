@@ -36,8 +36,8 @@ public final class GameObjectDefinition {
 	}
 
 	public static void load(Archive archive) {
-		stream = new Stream(archive.getFile("loc.dat"));
-		Stream stream = new Stream(archive.getFile("loc.idx"));
+		stream = new Buffer(archive.decompressFile("loc.dat"));
+		Buffer stream = new Buffer(archive.decompressFile("loc.idx"));
 		int objectCount = stream.getUnsignedLEShort();
 		streamOffsets = new int[objectCount];
 		int offset = 2;
@@ -84,7 +84,7 @@ public final class GameObjectDefinition {
 	public int configIds;
 	private boolean rotated;
 	public static boolean lowMemory;
-	private static Stream stream;
+	private static Buffer stream;
 	public int id;
 	private static int[] streamOffsets;
 	public boolean walkable;
@@ -250,7 +250,7 @@ public final class GameObjectDefinition {
 		}
 		return model;
 	}
-	private void loadDefinition(Stream stream) {
+	private void loadDefinition(Buffer stream) {
 		int _actions = -1;
 		label0: do {
 			int attribute;

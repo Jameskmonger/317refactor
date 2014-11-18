@@ -58,7 +58,7 @@ public final class Model extends Animable {
 			modelHeader.texturedTriangleCount = 0;
 			return;
 		}
-		Stream stream = new Stream(modelData);
+		Buffer stream = new Buffer(modelData);
 		stream.currentOffset = modelData.length - 18;
 		ModelHeader modelHeader = modelHeaders[modelId] = new ModelHeader();
 		modelHeader.modelData = modelData;
@@ -264,10 +264,10 @@ public final class Model extends Animable {
 	private static int[] HSLtoRGB;
 	private static int[] modelIntArray4;
 	static {
-		SINE = Texture.SINE;
-		COSINE = Texture.COSINE;
-		HSLtoRGB = Texture.HSL_TO_RGB;
-		modelIntArray4 = Texture.anIntArray1469;
+		SINE = Rasterizer.SINE;
+		COSINE = Rasterizer.COSINE;
+		HSLtoRGB = Rasterizer.HSL_TO_RGB;
+		modelIntArray4 = Rasterizer.anIntArray1469;
 	}
 	private Model() {
 		singleTile = false;
@@ -425,15 +425,15 @@ public final class Model extends Animable {
 		if (modelHeader.triangleSkinOffset >= 0)
 			triangleSkins = new int[triangleCount];
 		triangleColours = new int[triangleCount];
-		Stream vertexDirectionOffsetStream = new Stream(modelHeader.modelData);
+		Buffer vertexDirectionOffsetStream = new Buffer(modelHeader.modelData);
 		vertexDirectionOffsetStream.currentOffset = modelHeader.vertexDirectionOffset;
-		Stream xDataOffsetStream = new Stream(modelHeader.modelData);
+		Buffer xDataOffsetStream = new Buffer(modelHeader.modelData);
 		xDataOffsetStream.currentOffset = modelHeader.dataOffsetX;
-		Stream yDataOffsetStream = new Stream(modelHeader.modelData);
+		Buffer yDataOffsetStream = new Buffer(modelHeader.modelData);
 		yDataOffsetStream.currentOffset = modelHeader.dataOffsetY;
-		Stream zDataOffsetStream = new Stream(modelHeader.modelData);
+		Buffer zDataOffsetStream = new Buffer(modelHeader.modelData);
 		zDataOffsetStream.currentOffset = modelHeader.dataOffsetZ;
-		Stream vertexSkinOffsetStream = new Stream(modelHeader.modelData);
+		Buffer vertexSkinOffsetStream = new Buffer(modelHeader.modelData);
 		vertexSkinOffsetStream.currentOffset = modelHeader.vertexSkinOffset;
 		int baseOffsetX = 0;
 		int baseOffsetY = 0;
@@ -1237,8 +1237,8 @@ public final class Model extends Animable {
 		}
 	}
 	private void method485(int triangle) {
-		int centreX = Texture.centreX;
-		int centreY = Texture.centreY;
+		int centreX = Rasterizer.centreX;
+		int centreY = Rasterizer.centreY;
 		int counter = 0;
 		int x = triangleX[triangle];
 		int y = triangleY[triangle];
@@ -1346,28 +1346,28 @@ public final class Model extends Animable {
 		int yB = yPosition[1];
 		int yC = yPosition[2];
 		if ((xA - xB) * (yC - yB) - (yA - yB) * (xC - xB) > 0) {
-			Texture.restrictEdges = false;
+			Rasterizer.restrictEdges = false;
 			if (counter == 3) {
 				if (xA < 0 || xB < 0 || xC < 0 || xA > DrawingArea.centerX
 						|| xB > DrawingArea.centerX || xC > DrawingArea.centerX)
-					Texture.restrictEdges = true;
+					Rasterizer.restrictEdges = true;
 				int drawType;
 				if (triangleDrawType == null)
 					drawType = 0;
 				else
 					drawType = triangleDrawType[triangle] & 3;
 				if (drawType == 0)
-					Texture.drawShadedTriangle(yA, yB, yC, xA, xB, xC,
+					Rasterizer.drawShadedTriangle(yA, yB, yC, xA, xB, xC,
 							zPosition[0], zPosition[1], zPosition[2]);
 				else if (drawType == 1)
-					Texture.drawFlatTriangle(yA, yB, yC, xA, xB, xC,
+					Rasterizer.drawFlatTriangle(yA, yB, yC, xA, xB, xC,
 							HSLtoRGB[triangleHSLA[triangle]]);
 				else if (drawType == 2) {
 					int tri = triangleDrawType[triangle] >> 2;
 					int x2 = texturedTrianglePointsX[tri];
 					int y2 = texturedTrianglePointsY[tri];
 					int z2 = texturedTrianglePointsZ[tri];
-					Texture.drawTexturedTriangle(yA, yB, yC, xA, xB, xC,
+					Rasterizer.drawTexturedTriangle(yA, yB, yC, xA, xB, xC,
 							zPosition[0], zPosition[1], zPosition[2],
 							vertexMovedX[x2], vertexMovedX[y2],
 							vertexMovedX[z2], vertexMovedY[x2],
@@ -1379,7 +1379,7 @@ public final class Model extends Animable {
 					int x2 = texturedTrianglePointsX[tri];
 					int y2 = texturedTrianglePointsY[tri];
 					int z2 = texturedTrianglePointsZ[tri];
-					Texture.drawTexturedTriangle(yA, yB, yC, xA, xB, xC,
+					Rasterizer.drawTexturedTriangle(yA, yB, yC, xA, xB, xC,
 							triangleHSLA[triangle], triangleHSLA[triangle],
 							triangleHSLA[triangle], vertexMovedX[x2],
 							vertexMovedX[y2], vertexMovedX[z2],
@@ -1394,24 +1394,24 @@ public final class Model extends Animable {
 						|| xB > DrawingArea.centerX || xC > DrawingArea.centerX
 						|| xPosition[3] < 0
 						|| xPosition[3] > DrawingArea.centerX)
-					Texture.restrictEdges = true;
+					Rasterizer.restrictEdges = true;
 				int drawType;
 				if (triangleDrawType == null)
 					drawType = 0;
 				else
 					drawType = triangleDrawType[triangle] & 3;
 				if (drawType == 0) {
-					Texture.drawShadedTriangle(yA, yB, yC, xA, xB, xC,
+					Rasterizer.drawShadedTriangle(yA, yB, yC, xA, xB, xC,
 							zPosition[0], zPosition[1], zPosition[2]);
-					Texture.drawShadedTriangle(yA, yC, yPosition[3], xA, xC,
+					Rasterizer.drawShadedTriangle(yA, yC, yPosition[3], xA, xC,
 							xPosition[3], zPosition[0], zPosition[2],
 							zPosition[3]);
 					return;
 				}
 				if (drawType == 1) {
 					int colour = HSLtoRGB[triangleHSLA[triangle]];
-					Texture.drawFlatTriangle(yA, yB, yC, xA, xB, xC, colour);
-					Texture.drawFlatTriangle(yA, yC, yPosition[3], xA, xC,
+					Rasterizer.drawFlatTriangle(yA, yB, yC, xA, xB, xC, colour);
+					Rasterizer.drawFlatTriangle(yA, yC, yPosition[3], xA, xC,
 							xPosition[3], colour);
 					return;
 				}
@@ -1420,14 +1420,14 @@ public final class Model extends Animable {
 					int x2 = texturedTrianglePointsX[tri];
 					int y2 = texturedTrianglePointsY[tri];
 					int z2 = texturedTrianglePointsZ[tri];
-					Texture.drawTexturedTriangle(yA, yB, yC, xA, xB, xC,
+					Rasterizer.drawTexturedTriangle(yA, yB, yC, xA, xB, xC,
 							zPosition[0], zPosition[1], zPosition[2],
 							vertexMovedX[x2], vertexMovedX[y2],
 							vertexMovedX[z2], vertexMovedY[x2],
 							vertexMovedY[y2], vertexMovedY[z2],
 							vertexMovedZ[x2], vertexMovedZ[y2],
 							vertexMovedZ[z2], triangleColours[triangle]);
-					Texture.drawTexturedTriangle(yA, yC, yPosition[3], xA, xC,
+					Rasterizer.drawTexturedTriangle(yA, yC, yPosition[3], xA, xC,
 							xPosition[3], zPosition[0], zPosition[2],
 							zPosition[3], vertexMovedX[x2], vertexMovedX[y2],
 							vertexMovedX[z2], vertexMovedY[x2],
@@ -1441,7 +1441,7 @@ public final class Model extends Animable {
 					int x2 = texturedTrianglePointsX[tri];
 					int y2 = texturedTrianglePointsY[tri];
 					int z2 = texturedTrianglePointsZ[tri];
-					Texture.drawTexturedTriangle(yA, yB, yC, xA, xB, xC,
+					Rasterizer.drawTexturedTriangle(yA, yB, yC, xA, xB, xC,
 							triangleHSLA[triangle], triangleHSLA[triangle],
 							triangleHSLA[triangle], vertexMovedX[x2],
 							vertexMovedX[y2], vertexMovedX[z2],
@@ -1449,7 +1449,7 @@ public final class Model extends Animable {
 							vertexMovedY[z2], vertexMovedZ[x2],
 							vertexMovedZ[y2], vertexMovedZ[z2],
 							triangleColours[triangle]);
-					Texture.drawTexturedTriangle(yA, yC, yPosition[3], xA, xC,
+					Rasterizer.drawTexturedTriangle(yA, yC, yPosition[3], xA, xC,
 							xPosition[3], triangleHSLA[triangle],
 							triangleHSLA[triangle], triangleHSLA[triangle],
 							vertexMovedX[x2], vertexMovedX[y2],
@@ -1554,25 +1554,25 @@ public final class Model extends Animable {
 		int x = triangleX[i];
 		int y = triangleY[i];
 		int z = triangleZ[i];
-		Texture.restrictEdges = restrictEdges[i];
+		Rasterizer.restrictEdges = restrictEdges[i];
 		if (triangleAlpha == null)
-			Texture.alpha = 0;
+			Rasterizer.alpha = 0;
 		else
-			Texture.alpha = triangleAlpha[i];
+			Rasterizer.alpha = triangleAlpha[i];
 		int drawType;
 		if (triangleDrawType == null)
 			drawType = 0;
 		else
 			drawType = triangleDrawType[i] & 3;
 		if (drawType == 0) {
-			Texture.drawShadedTriangle(vertexScreenY[x], vertexScreenY[y],
+			Rasterizer.drawShadedTriangle(vertexScreenY[x], vertexScreenY[y],
 					vertexScreenY[z], vertexScreenX[x], vertexScreenX[y],
 					vertexScreenX[z], triangleHSLA[i], triangleHSLB[i],
 					triangleHSLC[i]);
 			return;
 		}
 		if (drawType == 1) {
-			Texture.drawFlatTriangle(vertexScreenY[x], vertexScreenY[y],
+			Rasterizer.drawFlatTriangle(vertexScreenY[x], vertexScreenY[y],
 					vertexScreenY[z], vertexScreenX[x], vertexScreenX[y],
 					vertexScreenX[z], HSLtoRGB[triangleHSLA[i]]);
 			return;
@@ -1582,7 +1582,7 @@ public final class Model extends Animable {
 			int x2 = texturedTrianglePointsX[triangle];
 			int y2 = texturedTrianglePointsY[triangle];
 			int z2 = texturedTrianglePointsZ[triangle];
-			Texture.drawTexturedTriangle(vertexScreenY[x], vertexScreenY[y],
+			Rasterizer.drawTexturedTriangle(vertexScreenY[x], vertexScreenY[y],
 					vertexScreenY[z], vertexScreenX[x], vertexScreenX[y],
 					vertexScreenX[z], triangleHSLA[i], triangleHSLB[i],
 					triangleHSLC[i], vertexMovedX[x2], vertexMovedX[y2],
@@ -1596,7 +1596,7 @@ public final class Model extends Animable {
 			int x2 = texturedTrianglePointsX[triangle];
 			int y2 = texturedTrianglePointsY[triangle];
 			int z2 = texturedTrianglePointsZ[triangle];
-			Texture.drawTexturedTriangle(vertexScreenY[x], vertexScreenY[y],
+			Rasterizer.drawTexturedTriangle(vertexScreenY[x], vertexScreenY[y],
 					vertexScreenY[z], vertexScreenX[x], vertexScreenX[y],
 					vertexScreenX[z], triangleHSLA[i], triangleHSLA[i],
 					triangleHSLA[i], vertexMovedX[x2], vertexMovedX[y2],
@@ -1659,16 +1659,16 @@ public final class Model extends Animable {
 				k4 /= i3;
 				i5 /= k5;
 			}
-			int i6 = cursorX - Texture.centreX;
-			int k6 = cursorY - Texture.centreY;
+			int i6 = cursorX - Rasterizer.centreX;
+			int k6 = cursorY - Rasterizer.centreY;
 			if (i6 > k3 && i6 < l3 && k6 > i5 && k6 < k4)
 				if (singleTile)
 					resourceId[resourceCount++] = i2;
 				else
 					flag1 = true;
 		}
-		int centreX = Texture.centreX;
-		int centreY = Texture.centreY;
+		int centreX = Rasterizer.centreX;
+		int centreY = Rasterizer.centreY;
 		int sine = 0;
 		int cosine = 0;
 		if (i != 0) {
@@ -1717,8 +1717,8 @@ public final class Model extends Animable {
 	public void renderSingle(int rotationY, int rotationZ, int rotationXW,
 			int translationX, int translationY, int translationZ) {
 		int rotationX = 0; // was a parameter
-		int centerX = Texture.centreX;
-		int centerY = Texture.centreY;
+		int centerX = Rasterizer.centreX;
+		int centerY = Rasterizer.centreY;
 		int sineX = SINE[rotationX];
 		int cosineX = COSINE[rotationX];
 		int sineY = SINE[rotationY];

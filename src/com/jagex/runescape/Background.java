@@ -38,8 +38,8 @@ public final class Background extends DrawingArea {
 	private int anInt1457;
 
 	public Background(Archive streamLoader, String s, int i) {
-		Stream stream = new Stream(streamLoader.getFile(s + ".dat"));
-		Stream stream_1 = new Stream(streamLoader.getFile("index.dat"));
+		Buffer stream = new Buffer(streamLoader.decompressFile(s + ".dat"));
+		Buffer stream_1 = new Buffer(streamLoader.decompressFile("index.dat"));
 		stream_1.currentOffset = stream.getUnsignedLEShort();
 		libWidth = stream_1.getUnsignedLEShort();
 		anInt1457 = stream_1.getUnsignedLEShort();

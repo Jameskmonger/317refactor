@@ -291,7 +291,7 @@ public final class Player extends Entity {
 	public boolean isVisible() {
 		return visible;
 	}
-	public void updatePlayerAppearance(Stream stream) {
+	public void updatePlayerAppearance(Buffer stream) {
 		stream.currentOffset = 0;
 		gender = stream.getUnsignedByte();
 		headIcon = stream.getUnsignedByte();

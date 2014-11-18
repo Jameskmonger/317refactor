@@ -24,7 +24,7 @@ public final class Skins {
 	public final int[] opcodes;
 
 	public final int[][] skinList;
-	public Skins(Stream buffer) {
+	public Skins(Buffer buffer) {
 		int count = buffer.getUnsignedByte();
 		opcodes = new int[count];
 		skinList = new int[count][];

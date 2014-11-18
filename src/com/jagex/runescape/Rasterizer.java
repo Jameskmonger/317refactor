@@ -19,7 +19,7 @@ package com.jagex.runescape;
  * This file was renamed as part of the 317refactor project.
  */
 
-final class Texture extends DrawingArea {
+final class Rasterizer extends DrawingArea {
 
 	private static int adjustBrightness(int rgb, double intensity) {
 		double r = (rgb >> 16) / 256D;

@@ -22,7 +22,7 @@ package com.jagex.runescape;
 public final class Varp {
 
 	public static void load(Archive archive) {
-		Stream stream = new Stream(archive.getFile("varp.dat"));
+		Buffer stream = new Buffer(archive.decompressFile("varp.dat"));
 		anInt702 = 0;
 		int cacheSize = stream.getUnsignedLEShort();
 		if (cache == null)
@@ -48,7 +48,7 @@ public final class Varp {
 	private Varp() {
 		aBoolean713 = false;
 	}
-	private void readValues(Stream stream, int i) {
+	private void readValues(Buffer stream, int i) {
 		do {
 			int opcode = stream.getUnsignedByte();
 			if (opcode == 0)

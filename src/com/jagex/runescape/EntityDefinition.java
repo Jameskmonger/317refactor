@@ -35,8 +35,8 @@ public final class EntityDefinition {
 	}
 
 	public static void load(Archive streamLoader) {
-		EntityDefinition.stream = new Stream(streamLoader.getFile("npc.dat"));
-		Stream stream = new Stream(streamLoader.getFile("npc.idx"));
+		EntityDefinition.stream = new Buffer(streamLoader.decompressFile("npc.dat"));
+		Buffer stream = new Buffer(streamLoader.decompressFile("npc.idx"));
 		int size = stream.getUnsignedLEShort();
 		EntityDefinition.streamOffsets = new int[size];
 		int offset = 2;
@@ -68,7 +68,7 @@ public final class EntityDefinition {
 
 	private int settingId;
 
-	private static Stream stream;
+	private static Buffer stream;
 	public int combatLevel;
 	public String name;
 	public String actions[];
@@ -219,7 +219,7 @@ public final class EntityDefinition {
 		}
 		return headModel;
 	}
-	private void loadDefinition(Stream stream) {
+	private void loadDefinition(Buffer stream) {
 		do {
 			int attributeType = stream.getUnsignedByte();
 			if (attributeType == 0)

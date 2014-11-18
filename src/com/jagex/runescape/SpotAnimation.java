@@ -22,7 +22,7 @@ package com.jagex.runescape;
 public final class SpotAnimation {
 
 	public static void load(Archive streamLoader) {
-		Stream stream = new Stream(streamLoader.getFile("spotanim.dat"));
+		Buffer stream = new Buffer(streamLoader.decompressFile("spotanim.dat"));
 		int count = stream.getUnsignedLEShort();
 		if (cache == null)
 			cache = new SpotAnimation[count];
@@ -73,7 +73,7 @@ public final class SpotAnimation {
 		modelCache.put(model, id);
 		return model;
 	}
-	private void loadDefinition(Stream stream) {
+	private void loadDefinition(Buffer stream) {
 		do {
 			int attribute = stream.getUnsignedByte();
 			if (attribute == 0)

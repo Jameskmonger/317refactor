@@ -82,23 +82,23 @@ final class Censor {
 	}
 
 	public static void load(Archive streamLoader) {
-		Stream fragmentsEnc = new Stream(
-				streamLoader.getFile("fragmentsenc.txt"));
-		Stream badEnc = new Stream(streamLoader.getFile("badenc.txt"));
-		Stream domainEnc = new Stream(streamLoader.getFile("domainenc.txt"));
-		Stream topLevelDomainList = new Stream(
-				streamLoader.getFile("tldlist.txt"));
+		Buffer fragmentsEnc = new Buffer(
+				streamLoader.decompressFile("fragmentsenc.txt"));
+		Buffer badEnc = new Buffer(streamLoader.decompressFile("badenc.txt"));
+		Buffer domainEnc = new Buffer(streamLoader.decompressFile("domainenc.txt"));
+		Buffer topLevelDomainList = new Buffer(
+				streamLoader.decompressFile("tldlist.txt"));
 		loadDictionaries(fragmentsEnc, badEnc, domainEnc, topLevelDomainList);
 	}
 
-	private static void loadBadEnc(Stream stream) {
+	private static void loadBadEnc(Buffer stream) {
 		int length = stream.getInt();
 		badWords = new char[length][];
 		badBytes = new byte[length][][];
 		loadBadWords(stream, badWords, badBytes);
 	}
 
-	private static void loadBadWords(Stream stream, char badWords[][],
+	private static void loadBadWords(Buffer stream, char badWords[][],
 			byte badBytes[][][]) {
 		for (int w = 0; w < badWords.length; w++) {
 			char badWord[] = new char[stream.getUnsignedByte()];
@@ -118,21 +118,21 @@ final class Censor {
 
 	}
 
-	private static void loadDictionaries(Stream fragment, Stream bad,
-			Stream domain, Stream topLevelDomain) {
+	private static void loadDictionaries(Buffer fragment, Buffer bad,
+			Buffer domain, Buffer topLevelDomain) {
 		loadBadEnc(bad);
 		loadDomainEnc(domain);
 		loadFragmentsEnc(fragment);
 		loadTopLevelDomainList(topLevelDomain);
 	}
 
-	private static void loadDomainEnc(Stream stream) {
+	private static void loadDomainEnc(Buffer stream) {
 		int length = stream.getInt();
 		domains = new char[length][];
 		loadDomains(domains, stream);
 	}
 
-	private static void loadDomains(char domains[][], Stream stream) {
+	private static void loadDomains(char domains[][], Buffer stream) {
 		for (int d = 0; d < domains.length; d++) {
 			char domain[] = new char[stream.getUnsignedByte()];
 			for (int c = 0; c < domain.length; c++)
@@ -143,13 +143,13 @@ final class Censor {
 
 	}
 
-	private static void loadFragmentsEnc(Stream stream) {
+	private static void loadFragmentsEnc(Buffer stream) {
 		fragments = new int[stream.getInt()];
 		for (int i = 0; i < fragments.length; i++)
 			fragments[i] = stream.getUnsignedLEShort();
 	}
 
-	private static void loadTopLevelDomainList(Stream stream) {
+	private static void loadTopLevelDomainList(Buffer stream) {
 		int length = stream.getInt();
 		topLevelDomains = new char[length][];
 		topLevelDomainType = new int[length];
