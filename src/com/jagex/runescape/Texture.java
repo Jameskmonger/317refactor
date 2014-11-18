@@ -55,7 +55,7 @@ final class Texture extends DrawingArea {
         if(texelArrayPool == null)
         {
             texelPoolPointer = 20;
-            if(lowMem)
+            if(lowMemory)
                 texelArrayPool = new int[texelPoolPointer][16384];
             else
                 texelArrayPool = new int[texelPoolPointer][0x10000];
@@ -72,7 +72,7 @@ final class Texture extends DrawingArea {
             try
             {
                 textureImages[i] = new Background(archive, String.valueOf(i), 0);
-                if(lowMem && textureImages[i].libWidth == 128)
+                if(lowMemory && textureImages[i].libWidth == 128)
                     textureImages[i].method356();
                 else
                     textureImages[i].method357();
@@ -140,7 +140,7 @@ final class Texture extends DrawingArea {
         texelCache[textureId] = texels;
         Background background = textureImages[textureId];
         int texturePalette[] = texturePalettes[textureId];
-        if(lowMem)
+        if(lowMemory)
         {
             transparent[textureId] = false;
             for(int texelPointer = 0; texelPointer < 4096; texelPointer++)
@@ -1834,7 +1834,7 @@ final class Texture extends DrawingArea {
             j1 <<= 9;
         }
         k += l;
-        if(lowMem)
+        if(lowMemory)
         {
             int i4 = 0;
             int k4 = 0;
@@ -2171,7 +2171,7 @@ final class Texture extends DrawingArea {
     }
 
     public static final int anInt1459 = -477;
-    public static boolean lowMem = true;
+    public static boolean lowMemory = true;
     static boolean restrictEdges;
     private static boolean opaque;
     public static boolean textured = true;

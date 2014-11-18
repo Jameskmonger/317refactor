@@ -282,12 +282,10 @@ public final class RSInterface
         return sprite;
     }
 
-    public static void setModel(boolean flag, Model model)
+    public static void setModel(Model model)
     {
         int modelId = 0;//was parameter
         int modelType = 5;//was parameter
-        if(flag)
-            return;
         modelCache.unlinkAll();
         if(model != null && modelType != 4)
             modelCache.put(model, (modelType << 16) + modelId);

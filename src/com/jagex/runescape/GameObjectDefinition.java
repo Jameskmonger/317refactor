@@ -285,7 +285,7 @@ label0:
                 {
                     int modelCount = stream.getUnsignedByte();
                     if(modelCount > 0)
-                        if(modelIds == null || lowMem)
+                        if(modelIds == null || lowMemory)
                         {
                             modelTypes = new int[modelCount];
                             modelIds = new int[modelCount];
@@ -310,7 +310,7 @@ label0:
                 {
                     int modelCount = stream.getUnsignedByte();
                     if(modelCount > 0)
-                        if(modelIds == null || lowMem)
+                        if(modelIds == null || lowMemory)
                         {
                             modelTypes = null;
                             modelIds = new int[modelCount];
@@ -481,7 +481,7 @@ label0:
     private int scaleX;
     public int configIds;
     private boolean rotated;
-    public static boolean lowMem;
+    public static boolean lowMemory;
     private static Stream stream;
     public int id;
     private static int[] streamOffsets;

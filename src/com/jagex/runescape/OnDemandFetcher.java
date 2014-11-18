@@ -469,12 +469,12 @@ public final class OnDemandFetcher extends OnDemandFetcherParent
         return onDemandData;
     }
 
-    public int getMapIndex(int i, int mapY, int mapX)
+    public int getMapId(int type, int mapX, int mapY)
     {
         int coordinates = (mapX << 8) + mapY;
         for(int pointer = 0; pointer < mapIndices1.length; pointer++)
             if(mapIndices1[pointer] == coordinates)
-                if(i == 0)
+                if(type == 0)
                     return mapIndices2[pointer];
                 else
                     return mapIndices3[pointer];

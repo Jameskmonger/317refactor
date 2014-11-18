@@ -272,35 +272,36 @@ public class RSApplet extends Applet
         idleTime = 0;
         int keyCode = keyevent.getKeyCode();
         int keyChar = keyevent.getKeyChar();
+        
         if(keyChar < 30)
             keyChar = 0;
-        if(keyCode == 37)
+        if(keyCode == 37) // Left
             keyChar = 1;
-        if(keyCode == 39)
+        if(keyCode == 39) // Right
             keyChar = 2;
-        if(keyCode == 38)
+        if(keyCode == 38) // Up
             keyChar = 3;
-        if(keyCode == 40)
+        if(keyCode == 40) // Down
             keyChar = 4;
-        if(keyCode == 17)
+        if(keyCode == 17) // CTRL
             keyChar = 5;
-        if(keyCode == 8)
+        if(keyCode == 8) // Backspace
             keyChar = 8;
-        if(keyCode == 127)
+        if(keyCode == 127) // Delete
             keyChar = 8;
-        if(keyCode == 9)
+        if(keyCode == 9) // Meant to be tab but doesn't work
             keyChar = 9;
-        if(keyCode == 10)
+        if(keyCode == 10) // Enter / return
             keyChar = 10;
-        if(keyCode >= 112 && keyCode <= 123)
+        if(keyCode >= 112 && keyCode <= 123)  // F keys
             keyChar = (1008 + keyCode) - 112;
-        if(keyCode == 36)
+        if(keyCode == 36) // Home
             keyChar = 1000;
-        if(keyCode == 35)
+        if(keyCode == 35) // End
             keyChar = 1001;
-        if(keyCode == 33)
+        if(keyCode == 33) // Page up
             keyChar = 1002;
-        if(keyCode == 34)
+        if(keyCode == 34) // Page down
             keyChar = 1003;
         if(keyChar > 0 && keyChar < 128)
             keyStatus[keyChar] = 1;
