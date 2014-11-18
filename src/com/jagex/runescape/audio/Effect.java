@@ -24,155 +24,146 @@ import com.jagex.runescape.Stream;
 
 public final class Effect {
 
-    private Effect()
-    {
-        instruments = new Instrument[10];
-    }
+	public static Stream data(int i, int id) {
+		if (effects[id] != null) {
+			Effect effect = effects[id];
+			return effect.encode(i);
+		} else {
+			return null;
+		}
+	}
 
-    public static void load(Stream stream)
-    {
-        _output = new byte[0x6baa8];
-        output = new Stream(_output);
-        Instrument.initialise();
-        do
-        {
-            int effect = stream.getUnsignedLEShort();
-            if(effect == 65535)
-                return;
-            effects[effect] = new Effect();
-            effects[effect].decode(stream);
-            effectDelays[effect] = effects[effect].getDelay();
-        } while(true);
-    }
+	public static void load(Stream stream) {
+		_output = new byte[0x6baa8];
+		output = new Stream(_output);
+		Instrument.initialise();
+		do {
+			int effect = stream.getUnsignedLEShort();
+			if (effect == 65535)
+				return;
+			effects[effect] = new Effect();
+			effects[effect].decode(stream);
+			effectDelays[effect] = effects[effect].getDelay();
+		} while (true);
+	}
 
-    public static Stream data(int i, int id)
-    {
-        if(effects[id] != null)
-        {
-            Effect effect = effects[id];
-            return effect.encode(i);
-        } else
-        {
-            return null;
-        }
-    }
+	private static final Effect[] effects = new Effect[5000];
 
-    private void decode(Stream stream)
-    {
-        for(int instrument = 0; instrument < 10; instrument++)
-        {
-            int active = stream.getUnsignedByte();
-            if(active != 0)
-            {
-                stream.currentOffset--;
-                instruments[instrument] = new Instrument();
-                instruments[instrument].decode(stream);
-            }
-        }
-        loopStart = stream.getUnsignedLEShort();
-        loopEnd = stream.getUnsignedLEShort();
-    }
+	public static final int[] effectDelays = new int[5000];
 
-    private int getDelay()
-    {
-        int delay = 0x98967f;
-        for(int instrument = 0; instrument < 10; instrument++)
-            if(instruments[instrument] != null && instruments[instrument].begin / 20 < delay)
-                delay = instruments[instrument].begin / 20;
+	private static byte[] _output;
 
-        if(loopStart < loopEnd && loopStart / 20 < delay)
-            delay = loopStart / 20;
-        if(delay == 0x98967f || delay == 0)
-            return 0;
-        for(int instrument = 0; instrument < 10; instrument++)
-            if(instruments[instrument] != null)
-                instruments[instrument].begin -= delay * 20;
+	private static Stream output;
 
-        if(loopStart < loopEnd)
-        {
-            loopStart -= delay * 20;
-            loopEnd -= delay * 20;
-        }
-        return delay;
-    }
+	private final Instrument[] instruments;
 
-    private Stream encode(int loops)
-    {
-        int size = mix(loops);
-        output.currentOffset = 0;
-        output.putInt(0x52494646);
-        output.putLEInt(36 + size);
-        output.putInt(0x57415645);
-        output.putInt(0x666d7420);
-        output.putLEInt(16);
-        output.putLEShort(1);
-        output.putLEShort(1);
-        output.putLEInt(22050);
-        output.putLEInt(22050);
-        output.putLEShort(1);
-        output.putLEShort(8);
-        output.putInt(0x64617461);
-        output.putLEInt(size);
-        output.currentOffset += size;
-        return output;
-    }
+	private int loopStart;
+	private int loopEnd;
+	private Effect() {
+		instruments = new Instrument[10];
+	}
+	private void decode(Stream stream) {
+		for (int instrument = 0; instrument < 10; instrument++) {
+			int active = stream.getUnsignedByte();
+			if (active != 0) {
+				stream.currentOffset--;
+				instruments[instrument] = new Instrument();
+				instruments[instrument].decode(stream);
+			}
+		}
+		loopStart = stream.getUnsignedLEShort();
+		loopEnd = stream.getUnsignedLEShort();
+	}
+	private Stream encode(int loops) {
+		int size = mix(loops);
+		output.currentOffset = 0;
+		output.putInt(0x52494646);
+		output.putLEInt(36 + size);
+		output.putInt(0x57415645);
+		output.putInt(0x666d7420);
+		output.putLEInt(16);
+		output.putLEShort(1);
+		output.putLEShort(1);
+		output.putLEInt(22050);
+		output.putLEInt(22050);
+		output.putLEShort(1);
+		output.putLEShort(8);
+		output.putInt(0x64617461);
+		output.putLEInt(size);
+		output.currentOffset += size;
+		return output;
+	}
+	private int getDelay() {
+		int delay = 0x98967f;
+		for (int instrument = 0; instrument < 10; instrument++)
+			if (instruments[instrument] != null
+					&& instruments[instrument].begin / 20 < delay)
+				delay = instruments[instrument].begin / 20;
 
-    private int mix(int loopCount)
-    {
-        int _duration = 0;
-        for(int instrument = 0; instrument < 10; instrument++)
-            if(instruments[instrument] != null && instruments[instrument].duration + instruments[instrument].begin > _duration)
-                _duration = instruments[instrument].duration + instruments[instrument].begin;
+		if (loopStart < loopEnd && loopStart / 20 < delay)
+			delay = loopStart / 20;
+		if (delay == 0x98967f || delay == 0)
+			return 0;
+		for (int instrument = 0; instrument < 10; instrument++)
+			if (instruments[instrument] != null)
+				instruments[instrument].begin -= delay * 20;
 
-        if(_duration == 0)
-            return 0;
-        int stepCount = (22050 * _duration) / 1000;
-        int loopStart = (22050 * this.loopStart) / 1000;
-        int loopEnd = (22050 * this.loopEnd) / 1000;
-        if(loopStart < 0 || loopStart > stepCount || loopEnd < 0 || loopEnd > stepCount || loopStart >= loopEnd)
-            loopCount = 0;
-        int length = stepCount + (loopEnd - loopStart) * (loopCount - 1);
-        for(int offset = 44; offset < length + 44; offset++)
-            _output[offset] = -128;
+		if (loopStart < loopEnd) {
+			loopStart -= delay * 20;
+			loopEnd -= delay * 20;
+		}
+		return delay;
+	}
+	private int mix(int loopCount) {
+		int _duration = 0;
+		for (int instrument = 0; instrument < 10; instrument++)
+			if (instruments[instrument] != null
+					&& instruments[instrument].duration
+							+ instruments[instrument].begin > _duration)
+				_duration = instruments[instrument].duration
+						+ instruments[instrument].begin;
 
-        for(int instrument = 0; instrument < 10; instrument++)
-            if(instruments[instrument] != null)
-            {
-                int duration = (instruments[instrument].duration * 22050) / 1000;
-                int offset = (instruments[instrument].begin * 22050) / 1000;
-                int samples[] = instruments[instrument].synthesise(duration, instruments[instrument].duration);
-                for(int sample = 0; sample < duration; sample++)
-                    _output[sample + offset + 44] += (byte)(samples[sample] >> 8);
+		if (_duration == 0)
+			return 0;
+		int stepCount = (22050 * _duration) / 1000;
+		int loopStart = (22050 * this.loopStart) / 1000;
+		int loopEnd = (22050 * this.loopEnd) / 1000;
+		if (loopStart < 0 || loopStart > stepCount || loopEnd < 0
+				|| loopEnd > stepCount || loopStart >= loopEnd)
+			loopCount = 0;
+		int length = stepCount + (loopEnd - loopStart) * (loopCount - 1);
+		for (int offset = 44; offset < length + 44; offset++)
+			_output[offset] = -128;
 
-            }
+		for (int instrument = 0; instrument < 10; instrument++)
+			if (instruments[instrument] != null) {
+				int duration = (instruments[instrument].duration * 22050) / 1000;
+				int offset = (instruments[instrument].begin * 22050) / 1000;
+				int samples[] = instruments[instrument].synthesise(duration,
+						instruments[instrument].duration);
+				for (int sample = 0; sample < duration; sample++)
+					_output[sample + offset + 44] += (byte) (samples[sample] >> 8);
 
-        if(loopCount > 1)
-        {
-            loopStart += 44;
-            loopEnd += 44;
-            stepCount += 44;
-            int offset = (length += 44) - stepCount;
-            for(int step = stepCount - 1; step >= loopEnd; step--)
-                _output[step + offset] = _output[step];
+			}
 
-            for(int loop = 1; loop < loopCount; loop++)
-            {
-                int _offset = (loopEnd - loopStart) * loop;
-                System.arraycopy(_output, loopStart, _output, loopStart + _offset, loopEnd - loopStart);
+		if (loopCount > 1) {
+			loopStart += 44;
+			loopEnd += 44;
+			stepCount += 44;
+			int offset = (length += 44) - stepCount;
+			for (int step = stepCount - 1; step >= loopEnd; step--)
+				_output[step + offset] = _output[step];
 
-            }
+			for (int loop = 1; loop < loopCount; loop++) {
+				int _offset = (loopEnd - loopStart) * loop;
+				System.arraycopy(_output, loopStart, _output, loopStart
+						+ _offset, loopEnd - loopStart);
 
-            length -= 44;
-        }
-        return length;
-    }
+			}
 
-    private static final Effect[] effects = new Effect[5000];
-    public static final int[] effectDelays = new int[5000];
-    private static byte[] _output;
-    private static Stream output;
-    private final Instrument[] instruments;
-    private int loopStart;
-    private int loopEnd;
+			length -= 44;
+		}
+		return length;
+	}
 
 }

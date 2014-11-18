@@ -17,14 +17,13 @@ package com.jagex.runescape;
 
 public final class OnDemandData extends NodeSub {
 
-    public OnDemandData()
-    {
-        incomplete = true;
-    }
+	int dataType;
 
-    int dataType;
-    byte buffer[];
-    int id;
-    boolean incomplete;
-    int loopCycle;
+	byte buffer[];
+	int id;
+	boolean incomplete;
+	int loopCycle;
+	public OnDemandData() {
+		incomplete = true;
+	}
 }

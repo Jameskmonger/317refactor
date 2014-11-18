@@ -17,12 +17,10 @@ package com.jagex.runescape;
 
 public class OnDemandFetcherParent {
 
-    public void request(int i)
-    {
-    }
+	OnDemandFetcherParent() {
+	}
 
-    OnDemandFetcherParent()
-    {
-    }
+	public void request(int i) {
+	}
 
 }

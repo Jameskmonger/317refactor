@@ -15,17 +15,15 @@ package com.jagex.runescape;
  * of Jagex Ltd.
  */
 
-public final class GroundDecoration
-{
+public final class GroundDecoration {
 
-    public GroundDecoration()
-    {
-    }
+	int z;
 
-    int z;
-    int x;
-    int y;
-    public Animable renderable;
-    public int uid;
-    byte objConf;
+	int x;
+	int y;
+	public Animable renderable;
+	public int uid;
+	byte objConf;
+	public GroundDecoration() {
+	}
 }

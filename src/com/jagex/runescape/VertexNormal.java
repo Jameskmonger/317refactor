@@ -15,15 +15,13 @@ package com.jagex.runescape;
  * of Jagex Ltd.
  */
 
-final class VertexNormal
-{
+final class VertexNormal {
 
-    public VertexNormal()
-    {
-    }
+	int x;
 
-    int x;
-    int y;
-    int z;
-    int magnitude;
+	int y;
+	int z;
+	int magnitude;
+	public VertexNormal() {
+	}
 }

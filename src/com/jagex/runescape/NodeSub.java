@@ -17,24 +17,20 @@ package com.jagex.runescape;
 
 public class NodeSub extends Node {
 
-    public final void unlinkSub()
-    {
-        if(nextNodeSub == null)
-        {
-        } else
-        {
-            nextNodeSub.prevNodeSub = prevNodeSub;
-            prevNodeSub.nextNodeSub = nextNodeSub;
-            prevNodeSub = null;
-            nextNodeSub = null;
-        }
-    }
+	public NodeSub prevNodeSub;
 
-    public NodeSub()
-    {
-    }
+	NodeSub nextNodeSub;
 
-    public NodeSub prevNodeSub;
-    NodeSub nextNodeSub;
-    public static int anInt1305;
+	public static int anInt1305;
+	public NodeSub() {
+	}
+	public final void unlinkSub() {
+		if (nextNodeSub == null) {
+		} else {
+			nextNodeSub.prevNodeSub = prevNodeSub;
+			prevNodeSub.nextNodeSub = nextNodeSub;
+			prevNodeSub = null;
+			nextNodeSub = null;
+		}
+	}
 }

@@ -17,16 +17,15 @@ package com.jagex.runescape;
 
 final class GroundItemTile {
 
-    GroundItemTile()
-    {
-    }
+	int z;
 
-    int z;
-    int x;
-    int y;
-    Animable firstGroundItem;
-    Animable secondGroundItem;
-    Animable thirdGroundItem;
-    int uid;
-    int anInt52;
+	int x;
+	int y;
+	Animable firstGroundItem;
+	Animable secondGroundItem;
+	Animable thirdGroundItem;
+	int uid;
+	int anInt52;
+	GroundItemTile() {
+	}
 }

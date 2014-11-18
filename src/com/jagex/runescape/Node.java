@@ -17,24 +17,20 @@ package com.jagex.runescape;
 
 public class Node {
 
-    public final void remove()
-    {
-        if(next == null)
-        {
-        } else
-        {
-            next.prev = prev;
-            prev.next = next;
-            prev = null;
-            next = null;
-        }
-    }
+	public long id;
 
-    public Node()
-    {
-    }
+	public Node prev;
 
-    public long id;
-    public Node prev;
-    public Node next;
+	public Node next;
+	public Node() {
+	}
+	public final void remove() {
+		if (next == null) {
+		} else {
+			next.prev = prev;
+			prev.next = next;
+			prev = null;
+			next = null;
+		}
+	}
 }

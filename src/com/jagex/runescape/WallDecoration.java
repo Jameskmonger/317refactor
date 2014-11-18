@@ -15,19 +15,17 @@ package com.jagex.runescape;
  * of Jagex Ltd.
  */
 
-public final class WallDecoration
-{
+public final class WallDecoration {
 
-    public WallDecoration()
-    {
-    }
+	int z;
 
-    int z;
-    int x;
-    int y;
-    int configBits;
-    int face;
-    public Animable renderable;
-    public int uid;
-    byte objConf;
+	int x;
+	int y;
+	int configBits;
+	int face;
+	public Animable renderable;
+	public int uid;
+	byte objConf;
+	public WallDecoration() {
+	}
 }
