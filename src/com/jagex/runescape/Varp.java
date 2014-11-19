@@ -34,7 +34,7 @@ public final class Varp {
 				cache[j] = new Varp();
 			cache[j].readValues(stream, j);
 		}
-		if (stream.currentOffset != stream.buffer.length)
+		if (stream.position != stream.buffer.length)
 			System.out.println("varptype load mismatch");
 	}
 

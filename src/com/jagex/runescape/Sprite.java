@@ -41,7 +41,7 @@ public final class Sprite extends DrawingArea {
 	public Sprite(Archive streamLoader, String target, int archiveId) {
 		Buffer dataStream = new Buffer(streamLoader.decompressFile(target + ".dat"));
 		Buffer indexStream = new Buffer(streamLoader.decompressFile("index.dat"));
-		indexStream.currentOffset = dataStream.getUnsignedLEShort();
+		indexStream.position = dataStream.getUnsignedLEShort();
 		maxWidth = indexStream.getUnsignedLEShort();
 		maxHeight = indexStream.getUnsignedLEShort();
 		int length = indexStream.getUnsignedByte();
@@ -53,10 +53,10 @@ public final class Sprite extends DrawingArea {
 		}
 
 		for (int i = 0; i < archiveId; i++) {
-			indexStream.currentOffset += 2;
-			dataStream.currentOffset += indexStream.getUnsignedLEShort()
+			indexStream.position += 2;
+			dataStream.position += indexStream.getUnsignedLEShort()
 					* indexStream.getUnsignedLEShort();
-			indexStream.currentOffset++;
+			indexStream.position++;
 		}
 
 		offsetX = indexStream.getUnsignedByte();

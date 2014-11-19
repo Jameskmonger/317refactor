@@ -32,19 +32,19 @@ public final class Buffer extends NodeSub {
 				stream = (Buffer) nodeList.popHead();
 			}
 			if (stream != null) {
-				stream.currentOffset = 0;
+				stream.position = 0;
 				return stream;
 			}
 		}
 		Buffer stream_1 = new Buffer();
-		stream_1.currentOffset = 0;
+		stream_1.position = 0;
 		stream_1.buffer = new byte[5000];
 		return stream_1;
 	}
 
 	public byte buffer[];
 
-	public int currentOffset;
+	public int position;
 
 	public int bitPosition;
 
@@ -65,91 +65,91 @@ public final class Buffer extends NodeSub {
 
 	public Buffer(byte abyte0[]) {
 		buffer = abyte0;
-		currentOffset = 0;
+		position = 0;
 	}
 
 	public void finishBitAccess() {
-		currentOffset = (bitPosition + 7) / 8;
+		position = (bitPosition + 7) / 8;
 	}
 
 	public void generateKeys() {
-		int i = currentOffset;
-		currentOffset = 0;
+		int i = position;
+		position = 0;
 		byte abyte0[] = new byte[i];
 		readBytes(i, 0, abyte0);
 		BigInteger biginteger2 = new BigInteger(abyte0);
 		BigInteger biginteger3 = biginteger2/* .modPow(biginteger, biginteger1) */;
 		byte abyte1[] = biginteger3.toByteArray();
-		currentOffset = 0;
+		position = 0;
 		put(abyte1.length);
 		putBytes(abyte1, abyte1.length, 0);
 	}
 
 	public byte get() {
-		return buffer[currentOffset++];
+		return buffer[position++];
 	}
 
 	public int get24BitInt() {
-		currentOffset += 3;
-		return ((buffer[currentOffset - 3] & 0xff) << 16)
-				+ ((buffer[currentOffset - 2] & 0xff) << 8)
-				+ (buffer[currentOffset - 1] & 0xff);
+		position += 3;
+		return ((buffer[position - 3] & 0xff) << 16)
+				+ ((buffer[position - 2] & 0xff) << 8)
+				+ (buffer[position - 1] & 0xff);
 	}
 
 	public byte getByteC() {
-		return (byte) (-buffer[currentOffset++]);
+		return (byte) (-buffer[position++]);
 	}
 
 	public void getBytes(int i, int j, byte abyte0[]) {
 		for (int k = (j + i) - 1; k >= j; k--)
-			abyte0[k] = buffer[currentOffset++];
+			abyte0[k] = buffer[position++];
 
 	}
 
 	public byte getByteS() {
-		return (byte) (128 - buffer[currentOffset++]);
+		return (byte) (128 - buffer[position++]);
 	}
 
 	public int getForceLEShort() {
-		currentOffset += 2;
-		int j = ((buffer[currentOffset - 1] & 0xff) << 8)
-				+ (buffer[currentOffset - 2] & 0xff);
+		position += 2;
+		int j = ((buffer[position - 1] & 0xff) << 8)
+				+ (buffer[position - 2] & 0xff);
 		if (j > 32767)
 			j -= 0x10000;
 		return j;
 	}
 
 	public int getForceLEShortA() {
-		currentOffset += 2;
-		int j = ((buffer[currentOffset - 1] & 0xff) << 8)
-				+ (buffer[currentOffset - 2] - 128 & 0xff);
+		position += 2;
+		int j = ((buffer[position - 1] & 0xff) << 8)
+				+ (buffer[position - 2] - 128 & 0xff);
 		if (j > 32767)
 			j -= 0x10000;
 		return j;
 	}
 
 	public int getInt() {
-		currentOffset += 4;
-		return ((buffer[currentOffset - 4] & 0xff) << 24)
-				+ ((buffer[currentOffset - 3] & 0xff) << 16)
-				+ ((buffer[currentOffset - 2] & 0xff) << 8)
-				+ (buffer[currentOffset - 1] & 0xff);
+		position += 4;
+		return ((buffer[position - 4] & 0xff) << 24)
+				+ ((buffer[position - 3] & 0xff) << 16)
+				+ ((buffer[position - 2] & 0xff) << 8)
+				+ (buffer[position - 1] & 0xff);
 	}
 
 	public int getInt1() {
-		currentOffset += 4;
-		return ((buffer[currentOffset - 3] & 0xff) << 24)
-				+ ((buffer[currentOffset - 4] & 0xff) << 16)
-				+ ((buffer[currentOffset - 1] & 0xff) << 8)
-				+ (buffer[currentOffset - 2] & 0xff);
+		position += 4;
+		return ((buffer[position - 3] & 0xff) << 24)
+				+ ((buffer[position - 4] & 0xff) << 16)
+				+ ((buffer[position - 1] & 0xff) << 8)
+				+ (buffer[position - 2] & 0xff);
 	}
 
 	public int getInt2() {
-		currentOffset += 4;
-		return ((buffer[currentOffset - 2] & 0xff) << 24)
-				+ ((buffer[currentOffset - 1] & 0xff) << 16)
-				+ ((buffer[currentOffset - 4] & 0xff) << 8)
-				+ (buffer[currentOffset - 3] & 0xff);
+		position += 4;
+		return ((buffer[position - 2] & 0xff) << 24)
+				+ ((buffer[position - 1] & 0xff) << 16)
+				+ ((buffer[position - 4] & 0xff) << 8)
+				+ (buffer[position - 3] & 0xff);
 	}
 
 	public long getLong() {
@@ -159,16 +159,16 @@ public final class Buffer extends NodeSub {
 	}
 
 	public int getShort() {
-		currentOffset += 2;
-		int i = ((buffer[currentOffset - 2] & 0xff) << 8)
-				+ (buffer[currentOffset - 1] & 0xff);
+		position += 2;
+		int i = ((buffer[position - 2] & 0xff) << 8)
+				+ (buffer[position - 1] & 0xff);
 		if (i > 32767)
 			i -= 0x10000;
 		return i;
 	}
 
 	public int getSmartA() {
-		int i = buffer[currentOffset] & 0xff;
+		int i = buffer[position] & 0xff;
 		if (i < 128)
 			return getUnsignedByte() - 64;
 		else
@@ -176,7 +176,7 @@ public final class Buffer extends NodeSub {
 	}
 
 	public int getSmartB() {
-		int i = buffer[currentOffset] & 0xff;
+		int i = buffer[position] & 0xff;
 		if (i < 128)
 			return getUnsignedByte();
 		else
@@ -184,120 +184,120 @@ public final class Buffer extends NodeSub {
 	}
 
 	public String getString() {
-		int i = currentOffset;
-		while (buffer[currentOffset++] != 10)
+		int i = position;
+		while (buffer[position++] != 10)
 			;
-		return new String(buffer, i, currentOffset - i - 1);
+		return new String(buffer, i, position - i - 1);
 	}
 
 	public int getUnsignedByte() {
-		return buffer[currentOffset++] & 0xff;
+		return buffer[position++] & 0xff;
 	}
 
 	public int getUnsignedByteA() {
-		return buffer[currentOffset++] - 128 & 0xff;
+		return buffer[position++] - 128 & 0xff;
 	}
 
 	public int getUnsignedByteC() {
-		return -buffer[currentOffset++] & 0xff;
+		return -buffer[position++] & 0xff;
 	}
 
 	public int getUnsignedByteS() {
-		return 128 - buffer[currentOffset++] & 0xff;
+		return 128 - buffer[position++] & 0xff;
 	}
 
 	public int getUnsignedLEShort() {
-		currentOffset += 2;
-		return ((buffer[currentOffset - 2] & 0xff) << 8)
-				+ (buffer[currentOffset - 1] & 0xff);
+		position += 2;
+		return ((buffer[position - 2] & 0xff) << 8)
+				+ (buffer[position - 1] & 0xff);
 	}
 
 	public int getUnsignedLEShortA() {
-		currentOffset += 2;
-		return ((buffer[currentOffset - 2] & 0xff) << 8)
-				+ (buffer[currentOffset - 1] - 128 & 0xff);
+		position += 2;
+		return ((buffer[position - 2] & 0xff) << 8)
+				+ (buffer[position - 1] - 128 & 0xff);
 	}
 
 	public int getUnsignedShort() {
-		currentOffset += 2;
-		return ((buffer[currentOffset - 1] & 0xff) << 8)
-				+ (buffer[currentOffset - 2] & 0xff);
+		position += 2;
+		return ((buffer[position - 1] & 0xff) << 8)
+				+ (buffer[position - 2] & 0xff);
 	}
 
 	public int getUnsignedShortA() {
-		currentOffset += 2;
-		return ((buffer[currentOffset - 1] & 0xff) << 8)
-				+ (buffer[currentOffset - 2] - 128 & 0xff);
+		position += 2;
+		return ((buffer[position - 1] & 0xff) << 8)
+				+ (buffer[position - 2] - 128 & 0xff);
 	}
 
 	public void initBitAccess() {
-		bitPosition = currentOffset * 8;
+		bitPosition = position * 8;
 	}
 
 	public void put(int i) {
-		buffer[currentOffset++] = (byte) i;
+		buffer[position++] = (byte) i;
 	}
 
 	public void put24BitInt(int i) {
-		buffer[currentOffset++] = (byte) (i >> 16);
-		buffer[currentOffset++] = (byte) (i >> 8);
-		buffer[currentOffset++] = (byte) i;
+		buffer[position++] = (byte) (i >> 16);
+		buffer[position++] = (byte) (i >> 8);
+		buffer[position++] = (byte) i;
 	}
 
 	public void putByteC(int i) {
-		buffer[currentOffset++] = (byte) (-i);
+		buffer[position++] = (byte) (-i);
 	}
 
 	public void putBytes(byte abyte0[], int i, int j) {
 		for (int k = j; k < j + i; k++)
-			buffer[currentOffset++] = abyte0[k];
+			buffer[position++] = abyte0[k];
 
 	}
 
 	public void putByteS(int j) {
-		buffer[currentOffset++] = (byte) (128 - j);
+		buffer[position++] = (byte) (128 - j);
 	}
 
 	public void putBytesA(int i, byte abyte0[], int j) {
 		for (int k = (i + j) - 1; k >= i; k--)
-			buffer[currentOffset++] = (byte) (abyte0[k] + 128);
+			buffer[position++] = (byte) (abyte0[k] + 128);
 
 	}
 
 	public void putInt(int i) {
-		buffer[currentOffset++] = (byte) (i >> 24);
-		buffer[currentOffset++] = (byte) (i >> 16);
-		buffer[currentOffset++] = (byte) (i >> 8);
-		buffer[currentOffset++] = (byte) i;
+		buffer[position++] = (byte) (i >> 24);
+		buffer[position++] = (byte) (i >> 16);
+		buffer[position++] = (byte) (i >> 8);
+		buffer[position++] = (byte) i;
 	}
 
 	public void putLEInt(int j) {
-		buffer[currentOffset++] = (byte) j;
-		buffer[currentOffset++] = (byte) (j >> 8);
-		buffer[currentOffset++] = (byte) (j >> 16);
-		buffer[currentOffset++] = (byte) (j >> 24);
+		buffer[position++] = (byte) j;
+		buffer[position++] = (byte) (j >> 8);
+		buffer[position++] = (byte) (j >> 16);
+		buffer[position++] = (byte) (j >> 24);
 	}
 
 	public void putLEShort(int i) {
-		buffer[currentOffset++] = (byte) i;
-		buffer[currentOffset++] = (byte) (i >> 8);
+		buffer[position++] = (byte) i;
+		buffer[position++] = (byte) (i >> 8);
 	}
 
 	public void putLEShortA(int j) {
-		buffer[currentOffset++] = (byte) (j + 128);
-		buffer[currentOffset++] = (byte) (j >> 8);
+		buffer[position++] = (byte) (j + 128);
+		buffer[position++] = (byte) (j >> 8);
 	}
 
 	public void putLong(long l) {
 		try {
-			buffer[currentOffset++] = (byte) (int) (l >> 56);
-			buffer[currentOffset++] = (byte) (int) (l >> 48);
-			buffer[currentOffset++] = (byte) (int) (l >> 40);
-			buffer[currentOffset++] = (byte) (int) (l >> 32);
-			buffer[currentOffset++] = (byte) (int) (l >> 24);
-			buffer[currentOffset++] = (byte) (int) (l >> 16);
-			buffer[currentOffset++] = (byte) (int) (l >> 8);
-			buffer[currentOffset++] = (byte) (int) l;
+			buffer[position++] = (byte) (int) (l >> 56);
+			buffer[position++] = (byte) (int) (l >> 48);
+			buffer[position++] = (byte) (int) (l >> 40);
+			buffer[position++] = (byte) (int) (l >> 32);
+			buffer[position++] = (byte) (int) (l >> 24);
+			buffer[position++] = (byte) (int) (l >> 16);
+			buffer[position++] = (byte) (int) (l >> 8);
+			buffer[position++] = (byte) (int) l;
 		} catch (RuntimeException runtimeexception) {
 			signlink.reporterror("14395, " + 5 + ", " + l + ", "
 					+ runtimeexception.toString());
@@ -306,25 +306,25 @@ public final class Buffer extends NodeSub {
 	}
 
 	public void putOpcode(int i) {
-		buffer[currentOffset++] = (byte) (i + encryption.value());
+		buffer[position++] = (byte) (i + encryption.value());
 	}
 
 	public void putShort(int i) {
-		buffer[currentOffset++] = (byte) (i >> 8);
-		buffer[currentOffset++] = (byte) i;
+		buffer[position++] = (byte) (i >> 8);
+		buffer[position++] = (byte) i;
 	}
 	public void putShortA(int j) {
-		buffer[currentOffset++] = (byte) (j >> 8);
-		buffer[currentOffset++] = (byte) (j + 128);
+		buffer[position++] = (byte) (j >> 8);
+		buffer[position++] = (byte) (j + 128);
 	}
 	public void putSizeByte(int i) {
-		buffer[currentOffset - i - 1] = (byte) i;
+		buffer[position - i - 1] = (byte) i;
 	}
 	public void putString(String s) {
 		// s.getBytes(0, s.length(), buffer, currentOffset); //deprecated
-		System.arraycopy(s.getBytes(), 0, buffer, currentOffset, s.length());
-		currentOffset += s.length();
-		buffer[currentOffset++] = 10;
+		System.arraycopy(s.getBytes(), 0, buffer, position, s.length());
+		position += s.length();
+		buffer[position++] = 10;
 	}
 	public int readBits(int i) {
 		int k = bitPosition >> 3;
@@ -342,16 +342,16 @@ public final class Buffer extends NodeSub {
 		return i1;
 	}
 	public byte[] readBytes() {
-		int i = currentOffset;
-		while (buffer[currentOffset++] != 10)
+		int i = position;
+		while (buffer[position++] != 10)
 			;
-		byte abyte0[] = new byte[currentOffset - i - 1];
-		System.arraycopy(buffer, i, abyte0, i - i, currentOffset - 1 - i);
+		byte abyte0[] = new byte[position - i - 1];
+		System.arraycopy(buffer, i, abyte0, i - i, position - 1 - i);
 		return abyte0;
 	}
 	public void readBytes(int i, int j, byte abyte0[]) {
 		for (int l = j; l < j + i; l++)
-			abyte0[l] = buffer[currentOffset++];
+			abyte0[l] = buffer[position++];
 	}
 
 	// removed useless static initializer

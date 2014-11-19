@@ -69,7 +69,7 @@ public final class Effect {
 		for (int instrument = 0; instrument < 10; instrument++) {
 			int active = stream.getUnsignedByte();
 			if (active != 0) {
-				stream.currentOffset--;
+				stream.position--;
 				instruments[instrument] = new Instrument();
 				instruments[instrument].decode(stream);
 			}
@@ -79,7 +79,7 @@ public final class Effect {
 	}
 	private Buffer encode(int loops) {
 		int size = mix(loops);
-		output.currentOffset = 0;
+		output.position = 0;
 		output.putInt(0x52494646);
 		output.putLEInt(36 + size);
 		output.putInt(0x57415645);
@@ -93,7 +93,7 @@ public final class Effect {
 		output.putLEShort(8);
 		output.putInt(0x64617461);
 		output.putLEInt(size);
-		output.currentOffset += size;
+		output.position += size;
 		return output;
 	}
 	private int getDelay() {

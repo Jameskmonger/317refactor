@@ -28,7 +28,7 @@ public final class GameObjectDefinition {
 
 		cacheIndex = (cacheIndex + 1) % 20;
 		GameObjectDefinition definition = cache[cacheIndex];
-		stream.currentOffset = streamOffsets[objectId];
+		stream.position = streamOffsets[objectId];
 		definition.id = objectId;
 		definition.setDefaults();
 		definition.loadDefinition(stream);
@@ -270,7 +270,7 @@ public final class GameObjectDefinition {
 							}
 
 						} else {
-							stream.currentOffset += modelCount * 3;
+							stream.position += modelCount * 3;
 						}
 				} else if (attribute == 2)
 					name = stream.getString();
@@ -286,7 +286,7 @@ public final class GameObjectDefinition {
 								modelIds[m] = stream.getUnsignedLEShort();
 
 						} else {
-							stream.currentOffset += modelCount * 2;
+							stream.position += modelCount * 2;
 						}
 				} else if (attribute == 14)
 					sizeX = stream.getUnsignedByte();

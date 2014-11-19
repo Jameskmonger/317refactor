@@ -42,26 +42,26 @@ public final class Animation {
 
 	public static void method529(byte abyte0[]) {
 		Buffer stream = new Buffer(abyte0);
-		stream.currentOffset = abyte0.length - 8;
+		stream.position = abyte0.length - 8;
 		int i = stream.getUnsignedLEShort();
 		int j = stream.getUnsignedLEShort();
 		int k = stream.getUnsignedLEShort();
 		int l = stream.getUnsignedLEShort();
 		int i1 = 0;
 		Buffer stream_1 = new Buffer(abyte0);
-		stream_1.currentOffset = i1;
+		stream_1.position = i1;
 		i1 += i + 2;
 		Buffer stream_2 = new Buffer(abyte0);
-		stream_2.currentOffset = i1;
+		stream_2.position = i1;
 		i1 += j;
 		Buffer stream_3 = new Buffer(abyte0);
-		stream_3.currentOffset = i1;
+		stream_3.position = i1;
 		i1 += k;
 		Buffer stream_4 = new Buffer(abyte0);
-		stream_4.currentOffset = i1;
+		stream_4.position = i1;
 		i1 += l;
 		Buffer stream_5 = new Buffer(abyte0);
-		stream_5.currentOffset = i1;
+		stream_5.position = i1;
 		Skins class18 = new Skins(stream_5);
 		int k1 = stream_1.getUnsignedLEShort();
 		int ai[] = new int[500];

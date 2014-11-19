@@ -292,7 +292,7 @@ public final class Player extends Entity {
 		return visible;
 	}
 	public void updatePlayerAppearance(Buffer stream) {
-		stream.currentOffset = 0;
+		stream.position = 0;
 		gender = stream.getUnsignedByte();
 		headIcon = stream.getUnsignedByte();
 		npcAppearance = null;

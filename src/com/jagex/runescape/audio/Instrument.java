@@ -94,7 +94,7 @@ final class Instrument {
 		volumeEnvelope.decode(stream);
 		int option = stream.getUnsignedByte();
 		if (option != 0) {
-			stream.currentOffset--;
+			stream.position--;
 			pitchModulationEnvelope = new Envelope();
 			pitchModulationEnvelope.decode(stream);
 			pitchModulationAmplitudeEnvelope = new Envelope();
@@ -102,7 +102,7 @@ final class Instrument {
 		}
 		option = stream.getUnsignedByte();
 		if (option != 0) {
-			stream.currentOffset--;
+			stream.position--;
 			volumeModulationEnvelope = new Envelope();
 			volumeModulationEnvelope.decode(stream);
 			volumeModulationAmplitude = new Envelope();
@@ -110,7 +110,7 @@ final class Instrument {
 		}
 		option = stream.getUnsignedByte();
 		if (option != 0) {
-			stream.currentOffset--;
+			stream.position--;
 			gatingReleaseEnvelope = new Envelope();
 			gatingReleaseEnvelope.decode(stream);
 			gatingAttackEnvelope = new Envelope();

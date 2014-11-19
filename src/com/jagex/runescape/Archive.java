@@ -58,7 +58,7 @@ final class Archive {
 		decompressedSizes = new int[fileCount];
 		compressedSizes = new int[fileCount];
 		initialOffsets = new int[fileCount];
-		int offset = buffer.currentOffset + fileCount * 10;
+		int offset = buffer.position + fileCount * 10;
 		
 		for (int index = 0; index < fileCount; index++) {
 			hashes[index] = buffer.getInt();

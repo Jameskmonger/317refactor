@@ -59,7 +59,7 @@ public final class Model extends Animable {
 			return;
 		}
 		Buffer stream = new Buffer(modelData);
-		stream.currentOffset = modelData.length - 18;
+		stream.position = modelData.length - 18;
 		ModelHeader modelHeader = modelHeaders[modelId] = new ModelHeader();
 		modelHeader.modelData = modelData;
 		modelHeader.vertexCount = stream.getUnsignedLEShort();
@@ -426,15 +426,15 @@ public final class Model extends Animable {
 			triangleSkins = new int[triangleCount];
 		triangleColours = new int[triangleCount];
 		Buffer vertexDirectionOffsetStream = new Buffer(modelHeader.modelData);
-		vertexDirectionOffsetStream.currentOffset = modelHeader.vertexDirectionOffset;
+		vertexDirectionOffsetStream.position = modelHeader.vertexDirectionOffset;
 		Buffer xDataOffsetStream = new Buffer(modelHeader.modelData);
-		xDataOffsetStream.currentOffset = modelHeader.dataOffsetX;
+		xDataOffsetStream.position = modelHeader.dataOffsetX;
 		Buffer yDataOffsetStream = new Buffer(modelHeader.modelData);
-		yDataOffsetStream.currentOffset = modelHeader.dataOffsetY;
+		yDataOffsetStream.position = modelHeader.dataOffsetY;
 		Buffer zDataOffsetStream = new Buffer(modelHeader.modelData);
-		zDataOffsetStream.currentOffset = modelHeader.dataOffsetZ;
+		zDataOffsetStream.position = modelHeader.dataOffsetZ;
 		Buffer vertexSkinOffsetStream = new Buffer(modelHeader.modelData);
-		vertexSkinOffsetStream.currentOffset = modelHeader.vertexSkinOffset;
+		vertexSkinOffsetStream.position = modelHeader.vertexSkinOffset;
 		int baseOffsetX = 0;
 		int baseOffsetY = 0;
 		int baseOffsetZ = 0;
@@ -459,11 +459,11 @@ public final class Model extends Animable {
 				vertexSkins[vertex] = vertexSkinOffsetStream.getUnsignedByte();
 		}
 
-		vertexDirectionOffsetStream.currentOffset = modelHeader.colourDataOffset;
-		xDataOffsetStream.currentOffset = modelHeader.texturePointerOffset;
-		yDataOffsetStream.currentOffset = modelHeader.trianglePriorityOffset;
-		zDataOffsetStream.currentOffset = modelHeader.triangleAlphaOffset;
-		vertexSkinOffsetStream.currentOffset = modelHeader.triangleSkinOffset;
+		vertexDirectionOffsetStream.position = modelHeader.colourDataOffset;
+		xDataOffsetStream.position = modelHeader.texturePointerOffset;
+		yDataOffsetStream.position = modelHeader.trianglePriorityOffset;
+		zDataOffsetStream.position = modelHeader.triangleAlphaOffset;
+		vertexSkinOffsetStream.position = modelHeader.triangleSkinOffset;
 		for (int triangle = 0; triangle < triangleCount; triangle++) {
 			triangleColours[triangle] = vertexDirectionOffsetStream
 					.getUnsignedLEShort();
@@ -480,8 +480,8 @@ public final class Model extends Animable {
 						.getUnsignedByte();
 		}
 
-		vertexDirectionOffsetStream.currentOffset = modelHeader.triangleDataOffset;
-		xDataOffsetStream.currentOffset = modelHeader.triangleTypeOffset;
+		vertexDirectionOffsetStream.position = modelHeader.triangleDataOffset;
+		xDataOffsetStream.position = modelHeader.triangleTypeOffset;
 		int trianglePointOffsetX = 0;
 		int trianglePointOffsetY = 0;
 		int trianglePointOffsetZ = 0;
@@ -533,7 +533,7 @@ public final class Model extends Animable {
 			}
 		}
 
-		vertexDirectionOffsetStream.currentOffset = modelHeader.texturedTriangleOffset;
+		vertexDirectionOffsetStream.position = modelHeader.texturedTriangleOffset;
 		for (int triangle = 0; triangle < texturedTriangleCount; triangle++) {
 			texturedTrianglePointsX[triangle] = vertexDirectionOffsetStream
 					.getUnsignedLEShort();

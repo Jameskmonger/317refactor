@@ -34,7 +34,7 @@ public final class VarBit {
 				Varp.cache[cache[j].configId].aBoolean713 = true;
 		}
 
-		if (stream.currentOffset != stream.buffer.length)
+		if (stream.position != stream.buffer.length)
 			System.out.println("varbit load mismatch");
 	}
 

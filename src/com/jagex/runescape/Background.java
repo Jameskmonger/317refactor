@@ -40,7 +40,7 @@ public final class Background extends DrawingArea {
 	public Background(Archive streamLoader, String s, int i) {
 		Buffer stream = new Buffer(streamLoader.decompressFile(s + ".dat"));
 		Buffer stream_1 = new Buffer(streamLoader.decompressFile("index.dat"));
-		stream_1.currentOffset = stream.getUnsignedLEShort();
+		stream_1.position = stream.getUnsignedLEShort();
 		libWidth = stream_1.getUnsignedLEShort();
 		anInt1457 = stream_1.getUnsignedLEShort();
 		int j = stream_1.getUnsignedByte();
@@ -49,10 +49,10 @@ public final class Background extends DrawingArea {
 			palette[k + 1] = stream_1.get24BitInt();
 
 		for (int l = 0; l < i; l++) {
-			stream_1.currentOffset += 2;
-			stream.currentOffset += stream_1.getUnsignedLEShort()
+			stream_1.position += 2;
+			stream.position += stream_1.getUnsignedLEShort()
 					* stream_1.getUnsignedLEShort();
-			stream_1.currentOffset++;
+			stream_1.position++;
 		}
 
 		drawOffsetX = stream_1.getUnsignedByte();

@@ -28,7 +28,7 @@ public final class ItemDefinition {
 
 		cacheIndex = (cacheIndex + 1) % 10;
 		ItemDefinition definition = cache[cacheIndex];
-		stream.currentOffset = streamOffsets[id];
+		stream.position = streamOffsets[id];
 		definition.id = id;
 		definition.setDefaults();
 		definition.readValues(stream);

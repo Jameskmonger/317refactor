@@ -536,9 +536,9 @@ public final class Client extends RSApplet {
 	private String loginMessage2;
 	private int playerPositionX;
 	private int playerPositionY;
-	private TextDrawingArea fontSmall;
-	private TextDrawingArea fontPlain;
-	private TextDrawingArea fontBold;
+	private GameFont fontSmall;
+	private GameFont fontPlain;
+	private GameFont fontBold;
 	private int anInt1275;
 	private int chatboxInterfaceId;
 	private int cameraRandomisationH;
@@ -1764,7 +1764,7 @@ public final class Client extends RSApplet {
 					int height = 329 - line * 13;
 					if (super.mouseX > 4 && super.mouseY - 4 > height - 10
 							&& super.mouseY - 4 <= height + 3) {
-						int width = fontPlain.getFormattedStringWidth("From:  "
+						int width = fontPlain.getTextDisplayedWidth("From:  "
 								+ chatName + chatMessages[c]) + 25;
 						if (width > 450)
 							width = 450;
@@ -3481,14 +3481,14 @@ public final class Client extends RSApplet {
 			int colour = 0xffff00;
 			if (super.fps < 15)
 				colour = 0xff0000;
-			fontPlain.drawTextHRightVTop("Fps:" + super.fps, x, y, colour);
+			fontPlain.drawTextLeft("Fps:" + super.fps, x, y, colour);
 			y += 15;
 			Runtime runtime = Runtime.getRuntime();
 			int memory = (int) ((runtime.totalMemory() - runtime.freeMemory()) / 1024L);
 			colour = 0xffff00;
 			if (memory > 0x2000000 && lowMemory)
 				colour = 0xff0000;
-			fontPlain.drawTextHRightVTop("Mem:" + memory + "k", x, y, 0xffff00);
+			fontPlain.drawTextLeft("Mem:" + memory + "k", x, y, 0xffff00);
 			y += 15;
 		}
 		if (systemUpdateTime != 0) {
@@ -3496,10 +3496,10 @@ public final class Client extends RSApplet {
 			int minutes = seconds / 60;
 			seconds %= 60;
 			if (seconds < 10)
-				fontPlain.drawString("System update in: " + minutes + ":0"
+				fontPlain.drawText("System update in: " + minutes + ":0"
 						+ seconds, 4, 329, 0xffff00);
 			else
-				fontPlain.drawString("System update in: " + minutes + ":"
+				fontPlain.drawText("System update in: " + minutes + ":"
 						+ seconds, 4, 329, 0xffff00);
 		}
 	}
@@ -3508,23 +3508,23 @@ public final class Client extends RSApplet {
 		Rasterizer.lineOffsets = chatboxLineOffset;
 		chatBackgroundImage.drawImage(0, 0);
 		if (messagePromptRaised) {
-			fontBold.drawTextHMidVTop(chatboxInputNeededString, 239, 40, 0);
-			fontBold.drawTextHMidVTop(promptInput + "*", 239, 60, 128);
+			fontBold.drawCentredText(chatboxInputNeededString, 239, 40, 0);
+			fontBold.drawCentredText(promptInput + "*", 239, 60, 128);
 		} else if (inputDialogState == 1) {
-			fontBold.drawTextHMidVTop("Enter amount:", 239, 40, 0);
-			fontBold.drawTextHMidVTop(amountOrNameInput + "*", 239, 60, 128);
+			fontBold.drawCentredText("Enter amount:", 239, 40, 0);
+			fontBold.drawCentredText(amountOrNameInput + "*", 239, 60, 128);
 		} else if (inputDialogState == 2) {
-			fontBold.drawTextHMidVTop("Enter name:", 239, 40, 0);
-			fontBold.drawTextHMidVTop(amountOrNameInput + "*", 239, 60, 128);
+			fontBold.drawCentredText("Enter name:", 239, 40, 0);
+			fontBold.drawCentredText(amountOrNameInput + "*", 239, 60, 128);
 		} else if (clickToContinueString != null) {
-			fontBold.drawTextHMidVTop(clickToContinueString, 239, 40, 0);
-			fontBold.drawTextHMidVTop("Click to continue", 239, 60, 128);
+			fontBold.drawCentredText(clickToContinueString, 239, 40, 0);
+			fontBold.drawCentredText("Click to continue", 239, 60, 128);
 		} else if (chatboxInterfaceId != -1)
 			drawInterface(0, 0, RSInterface.cache[chatboxInterfaceId], 0);
 		else if (dialogID != -1) {
 			drawInterface(0, 0, RSInterface.cache[dialogID], 0);
 		} else {
-			TextDrawingArea textDrawingArea = fontPlain;
+			GameFont textDrawingArea = fontPlain;
 			int rowCount = 0;
 			DrawingArea.setDrawingArea(77, 0, 463, 0);
 			for (int m = 0; m < 100; m++)
@@ -3544,7 +3544,7 @@ public final class Client extends RSApplet {
 					if (type == 0) {
 						if (y > 0 && y < 110)
 							textDrawingArea
-									.drawString(chatMessages[m], 4, y, 0);
+									.drawText(chatMessages[m], 4, y, 0);
 						rowCount++;
 					}
 					if ((type == 1 || type == 2)
@@ -3560,9 +3560,9 @@ public final class Client extends RSApplet {
 								modIcons[1].drawImage(x, y - 12);
 								x += 14;
 							}
-							textDrawingArea.drawString(name + ":", x, y, 0);
-							x += textDrawingArea.getFormattedStringWidth(name) + 8;
-							textDrawingArea.drawString(chatMessages[m], x, y,
+							textDrawingArea.drawText(name + ":", x, y, 0);
+							x += textDrawingArea.getTextDisplayedWidth(name) + 8;
+							textDrawingArea.drawText(chatMessages[m], x, y,
 									255);
 						}
 						rowCount++;
@@ -3573,9 +3573,9 @@ public final class Client extends RSApplet {
 									&& isFriendOrSelf(name))) {
 						if (y > 0 && y < 110) {
 							int x = 4;
-							textDrawingArea.drawString("From", x, y, 0);
+							textDrawingArea.drawText("From", x, y, 0);
 							x += textDrawingArea
-									.getFormattedStringWidth("From ");
+									.getTextDisplayedWidth("From ");
 							if (playerRights == 1) {
 								modIcons[0].drawImage(x, y - 12);
 								x += 14;
@@ -3584,9 +3584,9 @@ public final class Client extends RSApplet {
 								modIcons[1].drawImage(x, y - 12);
 								x += 14;
 							}
-							textDrawingArea.drawString(name + ":", x, y, 0);
-							x += textDrawingArea.getFormattedStringWidth(name) + 8;
-							textDrawingArea.drawString(chatMessages[m], x, y,
+							textDrawingArea.drawText(name + ":", x, y, 0);
+							x += textDrawingArea.getTextDisplayedWidth(name) + 8;
+							textDrawingArea.drawText(chatMessages[m], x, y,
 									0x800000);
 						}
 						rowCount++;
@@ -3595,25 +3595,25 @@ public final class Client extends RSApplet {
 							&& (tradeMode == 0 || tradeMode == 1
 									&& isFriendOrSelf(name))) {
 						if (y > 0 && y < 110)
-							textDrawingArea.drawString(name + " "
+							textDrawingArea.drawText(name + " "
 									+ chatMessages[m], 4, y, 0x800080);
 						rowCount++;
 					}
 					if (type == 5 && splitPrivateChat == 0
 							&& privateChatMode < 2) {
 						if (y > 0 && y < 110)
-							textDrawingArea.drawString(chatMessages[m], 4, y,
+							textDrawingArea.drawText(chatMessages[m], 4, y,
 									0x800000);
 						rowCount++;
 					}
 					if (type == 6 && splitPrivateChat == 0
 							&& privateChatMode < 2) {
 						if (y > 0 && y < 110) {
-							textDrawingArea.drawString("To " + name + ":", 4,
+							textDrawingArea.drawText("To " + name + ":", 4,
 									y, 0);
-							textDrawingArea.drawString(chatMessages[m],
+							textDrawingArea.drawText(chatMessages[m],
 									12 + textDrawingArea
-											.getFormattedStringWidth("To "
+											.getTextDisplayedWidth("To "
 													+ name), y, 0x800000);
 						}
 						rowCount++;
@@ -3622,7 +3622,7 @@ public final class Client extends RSApplet {
 							&& (tradeMode == 0 || tradeMode == 1
 									&& isFriendOrSelf(name))) {
 						if (y > 0 && y < 110)
-							textDrawingArea.drawString(name + " "
+							textDrawingArea.drawText(name + " "
 									+ chatMessages[m], 4, y, 0x7e3200);
 						rowCount++;
 					}
@@ -3639,9 +3639,9 @@ public final class Client extends RSApplet {
 				name = localPlayer.name;
 			else
 				name = TextClass.formatName(enteredUsername);
-			textDrawingArea.drawString(name + ":", 4, 90, 0);
-			textDrawingArea.drawString(inputString + "*",
-					6 + textDrawingArea.getFormattedStringWidth(name + ": "),
+			textDrawingArea.drawText(name + ":", 4, 90, 0);
+			textDrawingArea.drawText(inputString + "*",
+					6 + textDrawingArea.getTextDisplayedWidth(name + ": "),
 					90, 255);
 			DrawingArea.drawHorizontalLine(77, 0, 479, 0);
 		}
@@ -4115,40 +4115,40 @@ public final class Client extends RSApplet {
 			updateChatSettings = false;
 			chatSettingImageProducer.initDrawingArea();
 			backBase1Image.drawImage(0, 0);
-			fontPlain.drawShadowedStringCentre(0xffffff, 55, "Public chat", 28,
+			fontPlain.drawCentredTextWithPotentialShadow("Public chat", 55, 28, 0xffffff,
 					true);
 			if (publicChatMode == 0)
-				fontPlain.drawShadowedStringCentre(65280, 55, "On", 41, true);
+				fontPlain.drawCentredTextWithPotentialShadow("On", 55, 41, 65280, true);
 			if (publicChatMode == 1)
-				fontPlain.drawShadowedStringCentre(0xffff00, 55, "Friends", 41,
+				fontPlain.drawCentredTextWithPotentialShadow("Friends", 55, 41, 0xffff00,
 						true);
 			if (publicChatMode == 2)
-				fontPlain.drawShadowedStringCentre(0xff0000, 55, "Off", 41,
+				fontPlain.drawCentredTextWithPotentialShadow("Off", 55, 41, 0xff0000,
 						true);
 			if (publicChatMode == 3)
-				fontPlain.drawShadowedStringCentre(65535, 55, "Hide", 41, true);
-			fontPlain.drawShadowedStringCentre(0xffffff, 184, "Private chat",
-					28, true);
+				fontPlain.drawCentredTextWithPotentialShadow("Hide", 55, 41, 65535, true);
+			fontPlain.drawCentredTextWithPotentialShadow("Private chat", 184, 28,
+					0xffffff, true);
 			if (privateChatMode == 0)
-				fontPlain.drawShadowedStringCentre(65280, 184, "On", 41, true);
+				fontPlain.drawCentredTextWithPotentialShadow("On", 184, 41, 65280, true);
 			if (privateChatMode == 1)
-				fontPlain.drawShadowedStringCentre(0xffff00, 184, "Friends",
-						41, true);
+				fontPlain.drawCentredTextWithPotentialShadow("Friends", 184, 41,
+						0xffff00, true);
 			if (privateChatMode == 2)
-				fontPlain.drawShadowedStringCentre(0xff0000, 184, "Off", 41,
+				fontPlain.drawCentredTextWithPotentialShadow("Off", 184, 41, 0xff0000,
 						true);
-			fontPlain.drawShadowedStringCentre(0xffffff, 324, "Trade/compete",
-					28, true);
+			fontPlain.drawCentredTextWithPotentialShadow("Trade/compete", 324, 28,
+					0xffffff, true);
 			if (tradeMode == 0)
-				fontPlain.drawShadowedStringCentre(65280, 324, "On", 41, true);
+				fontPlain.drawCentredTextWithPotentialShadow("On", 324, 41, 65280, true);
 			if (tradeMode == 1)
-				fontPlain.drawShadowedStringCentre(0xffff00, 324, "Friends",
-						41, true);
+				fontPlain.drawCentredTextWithPotentialShadow("Friends", 324, 41,
+						0xffff00, true);
 			if (tradeMode == 2)
-				fontPlain.drawShadowedStringCentre(0xff0000, 324, "Off", 41,
+				fontPlain.drawCentredTextWithPotentialShadow("Off", 324, 41, 0xff0000,
 						true);
-			fontPlain.drawShadowedStringCentre(0xffffff, 458, "Report abuse",
-					33, true);
+			fontPlain.drawCentredTextWithPotentialShadow("Report abuse", 458, 33,
+					0xffffff, true);
 			chatSettingImageProducer.drawGraphics(453, super.gameGraphics, 0);
 			gameScreenImageProducer.initDrawingArea();
 		}
@@ -4291,7 +4291,7 @@ public final class Client extends RSApplet {
 												|| childInterface.inventoryStackSize[item] != 1) {
 											int stackSize = childInterface.inventoryStackSize[item];
 											fontSmall
-													.drawString(
+													.drawText(
 															getAmountString(stackSize),
 															tileX
 																	+ 1
@@ -4300,7 +4300,7 @@ public final class Client extends RSApplet {
 																	+ 10
 																	+ differenceY,
 															0);
-											fontSmall.drawString(
+											fontSmall.drawText(
 													getAmountString(stackSize),
 													tileX + differenceX, tileY
 															+ 9 + differenceY,
@@ -4354,7 +4354,7 @@ public final class Client extends RSApplet {
 								256 - (childInterface.alpha & 0xff), colour,
 								childInterface.width, _x);
 				} else if (childInterface.type == 4) {
-					TextDrawingArea textDrawingArea = childInterface.textDrawingAreas;
+					GameFont textDrawingArea = childInterface.textDrawingAreas;
 					String text = childInterface.textDefault;
 					boolean hover = false;
 					if (anInt1039 == childInterface.id
@@ -4383,8 +4383,8 @@ public final class Client extends RSApplet {
 						if (colour == 49152)
 							colour = 0xffffff;
 					}
-					for (int __y = _y + textDrawingArea.charHeight; text
-							.length() > 0; __y += textDrawingArea.charHeight) {
+					for (int __y = _y + textDrawingArea.fontHeight; text
+							.length() > 0; __y += textDrawingArea.fontHeight) {
 						if (text.indexOf("%") != -1) {
 							do {
 								int placeholder = text.indexOf("%1");
@@ -4442,11 +4442,11 @@ public final class Client extends RSApplet {
 							text = "";
 						}
 						if (childInterface.textCentred)
-							textDrawingArea.drawShadowedStringCentre(colour, _x
-									+ childInterface.width / 2, text2, __y,
+							textDrawingArea.drawCentredTextWithPotentialShadow(text2, _x
+											+ childInterface.width / 2, __y, colour,
 									childInterface.textShadowed);
 						else
-							textDrawingArea.drawShadowedString(text2, _x, __y,
+							textDrawingArea.drawTextWithPotentialShadow(text2, _x, __y,
 									colour, childInterface.textShadowed);
 					}
 
@@ -4491,7 +4491,7 @@ public final class Client extends RSApplet {
 					Rasterizer.centreX = centreX;
 					Rasterizer.centreY = centreY;
 				} else if (childInterface.type == 7) {
-					TextDrawingArea font = childInterface.textDrawingAreas;
+					GameFont font = childInterface.textDrawingAreas;
 					int slot = 0;
 					for (int row = 0; row < childInterface.height; row++) {
 						for (int column = 0; column < childInterface.width; column++) {
@@ -4511,13 +4511,13 @@ public final class Client extends RSApplet {
 										+ row
 										* (12 + childInterface.inventorySpritePaddingRow);
 								if (childInterface.textCentred)
-									font.drawShadowedStringCentre(
-											childInterface.colourDefault, __x
-													+ childInterface.width / 2,
-											name, __y,
+									font.drawCentredTextWithPotentialShadow(
+											name, __x
+															+ childInterface.width / 2,
+											__y, childInterface.colourDefault,
 											childInterface.textShadowed);
 								else
-									font.drawShadowedString(name, __x, __y,
+									font.drawTextWithPotentialShadow(name, __x, __y,
 											childInterface.colourDefault,
 											childInterface.textShadowed);
 							}
@@ -4544,7 +4544,7 @@ public final class Client extends RSApplet {
 		int horizontalOffset = 360;
 		int verticalOffset1 = 200;
 		int verticalOffset2 = 20;
-		fontBold.drawTextHMidVTop("RuneScape is loading - please wait...",
+		fontBold.drawCentredText("RuneScape is loading - please wait...",
 				horizontalOffset / 2, verticalOffset1 / 2 - 26
 						- verticalOffset2, 0xffffff);
 		int loadingBarHeight = verticalOffset1 / 2 - 18 - verticalOffset2;
@@ -4558,7 +4558,7 @@ public final class Client extends RSApplet {
 		DrawingArea.drawFilledRectangle((horizontalOffset / 2 - 150)
 				+ percentage * 3, loadingBarHeight + 2, 300 - percentage * 3,
 				30, 0);
-		fontBold.drawTextHMidVTop(text, horizontalOffset / 2,
+		fontBold.drawCentredText(text, horizontalOffset / 2,
 				(verticalOffset1 / 2 + 5) - verticalOffset2, 0xffffff);
 		loginBoxLeftBackgroundTile.drawGraphics(171, super.gameGraphics, 202);
 		if (welcomeScreenRaised) {
@@ -4585,41 +4585,41 @@ public final class Client extends RSApplet {
 		int y = 200;
 		if (loginScreenState == 0) {
 			int _y = y / 2 + 80;
-			fontSmall.drawShadowedStringCentre(0x75a9a9, x / 2,
-					onDemandFetcher.statusString, _y, true);
+			fontSmall.drawCentredTextWithPotentialShadow(onDemandFetcher.statusString, x / 2,
+					_y, 0x75a9a9, true);
 			_y = y / 2 - 20;
-			fontBold.drawShadowedStringCentre(0xffff00, x / 2,
-					"Welcome to RuneScape", _y, true);
+			fontBold.drawCentredTextWithPotentialShadow("Welcome to RuneScape", x / 2,
+					_y, 0xffff00, true);
 			_y += 30;
 			int _x = x / 2 - 80;
 			int __y = y / 2 + 20;
 			titleButtonImage.drawImage(_x - 73, __y - 20);
-			fontBold.drawShadowedStringCentre(0xffffff, _x, "New User",
-					__y + 5, true);
+			fontBold.drawCentredTextWithPotentialShadow("New User", _x, __y + 5,
+					0xffffff, true);
 			_x = x / 2 + 80;
 			titleButtonImage.drawImage(_x - 73, __y - 20);
-			fontBold.drawShadowedStringCentre(0xffffff, _x, "Existing User",
-					__y + 5, true);
+			fontBold.drawCentredTextWithPotentialShadow("Existing User", _x, __y + 5,
+					0xffffff, true);
 		}
 		if (loginScreenState == 2) {
 			int _y = y / 2 - 40;
 			if (loginMessage1.length() > 0) {
-				fontBold.drawShadowedStringCentre(0xffff00, x / 2,
-						loginMessage1, _y - 15, true);
-				fontBold.drawShadowedStringCentre(0xffff00, x / 2,
-						loginMessage2, _y, true);
+				fontBold.drawCentredTextWithPotentialShadow(loginMessage1, x / 2,
+						_y - 15, 0xffff00, true);
+				fontBold.drawCentredTextWithPotentialShadow(loginMessage2, x / 2,
+						_y, 0xffff00, true);
 				_y += 30;
 			} else {
-				fontBold.drawShadowedStringCentre(0xffff00, x / 2,
-						loginMessage2, _y - 7, true);
+				fontBold.drawCentredTextWithPotentialShadow(loginMessage2, x / 2,
+						_y - 7, 0xffff00, true);
 				_y += 30;
 			}
-			fontBold.drawShadowedString("Username: "
+			fontBold.drawTextWithPotentialShadow("Username: "
 					+ enteredUsername
 					+ ((loginScreenFocus == 0) & (tick % 40 < 20) ? "@yel@|"
 							: ""), x / 2 - 90, _y, 0xffffff, true);
 			_y += 15;
-			fontBold.drawShadowedString(
+			fontBold.drawTextWithPotentialShadow(
 					"Password: "
 							+ TextClass.asterisksForString(enteredPassword)
 							+ ((loginScreenFocus == 1) & (tick % 40 < 20) ? "@yel@|"
@@ -4629,34 +4629,34 @@ public final class Client extends RSApplet {
 				int _x = x / 2 - 80;
 				int __y = y / 2 + 50;
 				titleButtonImage.drawImage(_x - 73, __y - 20);
-				fontBold.drawShadowedStringCentre(0xffffff, _x, "Login",
-						__y + 5, true);
+				fontBold.drawCentredTextWithPotentialShadow("Login", _x, __y + 5,
+						0xffffff, true);
 				_x = x / 2 + 80;
 				titleButtonImage.drawImage(_x - 73, __y - 20);
-				fontBold.drawShadowedStringCentre(0xffffff, _x, "Cancel",
-						__y + 5, true);
+				fontBold.drawCentredTextWithPotentialShadow("Cancel", _x, __y + 5,
+						0xffffff, true);
 			}
 		}
 		if (loginScreenState == 3) {
-			fontBold.drawShadowedStringCentre(0xffff00, x / 2,
-					"Create a free account", y / 2 - 60, true);
+			fontBold.drawCentredTextWithPotentialShadow("Create a free account", x / 2,
+					y / 2 - 60, 0xffff00, true);
 			int _y = y / 2 - 35;
-			fontBold.drawShadowedStringCentre(0xffffff, x / 2,
-					"To create a new account you need to", _y, true);
+			fontBold.drawCentredTextWithPotentialShadow("To create a new account you need to", x / 2,
+					_y, 0xffffff, true);
 			_y += 15;
-			fontBold.drawShadowedStringCentre(0xffffff, x / 2,
-					"go back to the main RuneScape webpage", _y, true);
+			fontBold.drawCentredTextWithPotentialShadow("go back to the main RuneScape webpage", x / 2,
+					_y, 0xffffff, true);
 			_y += 15;
-			fontBold.drawShadowedStringCentre(0xffffff, x / 2,
-					"and choose the red 'create account'", _y, true);
+			fontBold.drawCentredTextWithPotentialShadow("and choose the red 'create account'", x / 2,
+					_y, 0xffffff, true);
 			_y += 15;
-			fontBold.drawShadowedStringCentre(0xffffff, x / 2,
-					"button at the top right of that page.", _y, true);
+			fontBold.drawCentredTextWithPotentialShadow("button at the top right of that page.", x / 2,
+					_y, 0xffffff, true);
 			_y += 15;
 			int _x = x / 2;
 			int __y = y / 2 + 50;
 			titleButtonImage.drawImage(_x - 73, __y - 20);
-			fontBold.drawShadowedStringCentre(0xffffff, _x, "Cancel", __y + 5,
+			fontBold.drawCentredTextWithPotentialShadow("Cancel", _x, __y + 5, 0xffffff,
 					true);
 		}
 		loginBoxLeftBackgroundTile.drawGraphics(171, super.gameGraphics, 202);
@@ -4741,7 +4741,7 @@ public final class Client extends RSApplet {
 				16, 0);
 		DrawingArea.drawUnfilledRectangle(offsetX + 1, width - 2, height - 19,
 				0, offsetY + 18);
-		fontBold.drawString("Choose Option", offsetX + 3, offsetY + 14, colour);
+		fontBold.drawText("Choose Option", offsetX + 3, offsetY + 14, colour);
 		int x = super.mouseX;
 		int y = super.mouseY;
 		if (menuScreenArea == 0) {
@@ -4762,7 +4762,7 @@ public final class Client extends RSApplet {
 			if (x > offsetX && x < offsetX + width && y > actionY - 13
 					&& y < actionY + 3)
 				actionColour = 0xffff00;
-			fontBold.drawShadowedString(menuActionName[action], offsetX + 3,
+			fontBold.drawTextWithPotentialShadow(menuActionName[action], offsetX + 3,
 					actionY, actionColour, true);
 		}
 
@@ -5039,7 +5039,7 @@ public final class Client extends RSApplet {
 	private void drawSplitPrivateChat() {
 		if (splitPrivateChat == 0)
 			return;
-		TextDrawingArea textDrawingArea = fontPlain;
+		GameFont textDrawingArea = fontPlain;
 		int updating = 0;
 		if (systemUpdateTime != 0)
 			updating = 1;
@@ -5061,9 +5061,9 @@ public final class Client extends RSApplet {
 								&& isFriendOrSelf(chatName))) {
 					int y = 329 - updating * 13;
 					int x = 4;
-					textDrawingArea.drawString("From", x, y, 0);
-					textDrawingArea.drawString("From", x, y - 1, 65535);
-					x += textDrawingArea.getFormattedStringWidth("From ");
+					textDrawingArea.drawText("From", x, y, 0);
+					textDrawingArea.drawText("From", x, y - 1, 65535);
+					x += textDrawingArea.getTextDisplayedWidth("From ");
 					if (playerRights == 1) {
 						modIcons[0].drawImage(x, y - 12);
 						x += 14;
@@ -5072,26 +5072,26 @@ public final class Client extends RSApplet {
 						modIcons[1].drawImage(x, y - 12);
 						x += 14;
 					}
-					textDrawingArea.drawString(chatName + ": "
+					textDrawingArea.drawText(chatName + ": "
 							+ chatMessages[m], x, y, 0);
-					textDrawingArea.drawString(chatName + ": "
+					textDrawingArea.drawText(chatName + ": "
 							+ chatMessages[m], x, y - 1, 65535);
 					if (++updating >= 5)
 						return;
 				}
 				if (chatType == 5 && privateChatMode < 2) {
 					int y = 329 - updating * 13;
-					textDrawingArea.drawString(chatMessages[m], 4, y, 0);
+					textDrawingArea.drawText(chatMessages[m], 4, y, 0);
 					textDrawingArea
-							.drawString(chatMessages[m], 4, y - 1, 65535);
+							.drawText(chatMessages[m], 4, y - 1, 65535);
 					if (++updating >= 5)
 						return;
 				}
 				if (chatType == 6 && privateChatMode < 2) {
 					int y = 329 - updating * 13;
-					textDrawingArea.drawString("To " + chatName + ": "
+					textDrawingArea.drawText("To " + chatName + ": "
 							+ chatMessages[m], 4, y, 0);
-					textDrawingArea.drawString("To " + chatName + ": "
+					textDrawingArea.drawText("To " + chatName + ": "
 							+ chatMessages[m], 4, y - 1, 65535);
 					if (++updating >= 5)
 						return;
@@ -5126,7 +5126,7 @@ public final class Client extends RSApplet {
 			s = menuActionName[menuActionRow - 1];
 		if (menuActionRow > 2)
 			s = s + "@whi@ / " + (menuActionRow - 2) + " more options";
-		fontBold.drawShadowedTextRight(s, 4, 15, 0xffffff, tick / 1000);
+		fontBold.drawAlphaTextWithShadow(s, 4, 15, 0xffffff, tick / 1000);
 	}
 	private void dropClient() {
 		if (idleLogout > 0) {
@@ -5134,11 +5134,11 @@ public final class Client extends RSApplet {
 			return;
 		}
 		gameScreenImageProducer.initDrawingArea();
-		fontPlain.drawTextHMidVTop("Connection lost", 257, 144, 0);
-		fontPlain.drawTextHMidVTop("Connection lost", 256, 143, 0xffffff);
-		fontPlain.drawTextHMidVTop("Please wait - attempting to reestablish",
+		fontPlain.drawCentredText("Connection lost", 257, 144, 0);
+		fontPlain.drawCentredText("Connection lost", 256, 143, 0xffffff);
+		fontPlain.drawCentredText("Please wait - attempting to reestablish",
 				257, 159, 0);
-		fontPlain.drawTextHMidVTop("Please wait - attempting to reestablish",
+		fontPlain.drawCentredText("Please wait - attempting to reestablish",
 				256, 158, 0xffffff);
 		gameScreenImageProducer.drawGraphics(4, super.gameGraphics, 4);
 		minimapState = 0;
@@ -5316,7 +5316,7 @@ public final class Client extends RSApplet {
 			if (packetSize == -2)
 				if (availableBytes > 1) {
 					socket.read(inStream.buffer, 2);
-					inStream.currentOffset = 0;
+					inStream.position = 0;
 					packetSize = inStream.getUnsignedLEShort();
 					availableBytes -= 2;
 				} else {
@@ -5324,7 +5324,7 @@ public final class Client extends RSApplet {
 				}
 			if (availableBytes < packetSize)
 				return false;
-			inStream.currentOffset = 0;
+			inStream.position = 0;
 			socket.read(inStream.buffer, packetSize);
 			anInt1009 = 0;
 			thirdMostRecentOpcode = secondMostRecentOpcode;
@@ -5558,9 +5558,9 @@ public final class Client extends RSApplet {
 				loadingStage = 1;
 				loadRegionTime = System.currentTimeMillis();
 				gameScreenImageProducer.initDrawingArea();
-				fontPlain.drawTextHMidVTop("Loading - please wait.", 257, 151,
+				fontPlain.drawCentredText("Loading - please wait.", 257, 151,
 						0);
-				fontPlain.drawTextHMidVTop("Loading - please wait.", 256, 150,
+				fontPlain.drawCentredText("Loading - please wait.", 256, 150,
 						0xffffff);
 				gameScreenImageProducer.drawGraphics(4, super.gameGraphics, 4);
 				if (packetOpcode == 73) {
@@ -5746,7 +5746,7 @@ public final class Client extends RSApplet {
 			if (packetOpcode == 60) {
 				playerPositionY = inStream.getUnsignedByte();
 				playerPositionX = inStream.getUnsignedByteC();
-				while (inStream.currentOffset < packetSize) {
+				while (inStream.position < packetSize) {
 					int opcode = inStream.getUnsignedByte();
 					parseGroupPacket(inStream, opcode);
 				}
@@ -6346,7 +6346,7 @@ public final class Client extends RSApplet {
 				redrawTab = true;
 				int interfaceId = inStream.getUnsignedLEShort();
 				RSInterface rsInterface = RSInterface.cache[interfaceId];
-				while (inStream.currentOffset < packetSize) {
+				while (inStream.position < packetSize) {
 					int itemSlot = inStream.getSmartB();
 					int itemId = inStream.getUnsignedLEShort();
 					int itemAmount = inStream.getUnsignedByte();
@@ -6507,11 +6507,11 @@ public final class Client extends RSApplet {
 						Buffer stream = Effect.data(trackLoop[track],
 								trackIds[track]);
 						if (System.currentTimeMillis()
-								+ stream.currentOffset / 22 > songStartTime
+								+ stream.position / 22 > songStartTime
 								+ songStartOffset / 22) {
-							songStartOffset = stream.currentOffset;
+							songStartOffset = stream.position;
 							songStartTime = System.currentTimeMillis();
-							if (saveWave(stream.buffer, stream.currentOffset)) {
+							if (saveWave(stream.buffer, stream.position)) {
 								currentTrackId = trackIds[track];
 								currentTrackLoop = trackLoop[track];
 							} else {
@@ -6649,8 +6649,8 @@ public final class Client extends RSApplet {
 	private void loadingStages() {
 		if (lowMemory && loadingStage == 2 && Region.plane != plane) {
 			gameScreenImageProducer.initDrawingArea();
-			fontPlain.drawTextHMidVTop("Loading - please wait.", 257, 151, 0);
-			fontPlain.drawTextHMidVTop("Loading - please wait.", 256, 150,
+			fontPlain.drawCentredText("Loading - please wait.", 257, 151, 0);
+			fontPlain.drawCentredText("Loading - please wait.", 256, 150,
 					0xffffff);
 			gameScreenImageProducer.drawGraphics(4, super.gameGraphics, 4);
 			loadingStage = 1;
@@ -6977,7 +6977,7 @@ public final class Client extends RSApplet {
 			socket = new RSSocket(this, openSocket(43594 + portOffset));
 			long nameLong = TextClass.nameToLong(playerUsername);
 			int nameHash = (int) (nameLong >> 16 & 31L);
-			stream.currentOffset = 0;
+			stream.position = 0;
 			stream.put(14);
 			stream.put(nameHash);
 			socket.write(2, stream.buffer);
@@ -6988,14 +6988,14 @@ public final class Client extends RSApplet {
 			int initialResponseCode = responseCode;
 			if (responseCode == 0) {
 				socket.read(inStream.buffer, 8);
-				inStream.currentOffset = 0;
+				inStream.position = 0;
 				serverSessionKey = inStream.getLong();
 				int seed[] = new int[4];
 				seed[0] = (int) (Math.random() * 99999999D);
 				seed[1] = (int) (Math.random() * 99999999D);
 				seed[2] = (int) (serverSessionKey >> 32);
 				seed[3] = (int) serverSessionKey;
-				stream.currentOffset = 0;
+				stream.position = 0;
 				stream.put(10);
 				stream.putInt(seed[0]);
 				stream.putInt(seed[1]);
@@ -7005,25 +7005,25 @@ public final class Client extends RSApplet {
 				stream.putString(playerUsername);
 				stream.putString(playerPassword);
 				stream.generateKeys();
-				loginStream.currentOffset = 0;
+				loginStream.position = 0;
 				if (recoveredConnection)
 					loginStream.put(18);
 				else
 					loginStream.put(16);
-				loginStream.put(stream.currentOffset + 40);
+				loginStream.put(stream.position + 40);
 				loginStream.put(255);
 				loginStream.putShort(317);
 				loginStream.put(lowMemory ? 1 : 0);
 				for (int crc = 0; crc < 9; crc++)
 					loginStream.putInt(expectedCRCs[crc]);
 
-				loginStream.putBytes(stream.buffer, stream.currentOffset, 0);
+				loginStream.putBytes(stream.buffer, stream.position, 0);
 				stream.encryption = new ISAACRandomGenerator(seed);
 				for (int index = 0; index < 4; index++)
 					seed[index] += 50;
 
 				encryption = new ISAACRandomGenerator(seed);
-				socket.write(loginStream.currentOffset, loginStream.buffer);
+				socket.write(loginStream.position, loginStream.buffer);
 				responseCode = socket.read();
 			}
 			if (responseCode == 1) {
@@ -7043,8 +7043,8 @@ public final class Client extends RSApplet {
 				super.awtFocus = true;
 				windowFocused = true;
 				loggedIn = true;
-				stream.currentOffset = 0;
-				inStream.currentOffset = 0;
+				stream.position = 0;
+				inStream.position = 0;
 				packetOpcode = -1;
 				mostRecentOpcode = -1;
 				secondMostRecentOpcode = -1;
@@ -7187,8 +7187,8 @@ public final class Client extends RSApplet {
 			}
 			if (responseCode == 15) {
 				loggedIn = true;
-				stream.currentOffset = 0;
-				inStream.currentOffset = 0;
+				stream.position = 0;
+				inStream.position = 0;
 				packetOpcode = -1;
 				mostRecentOpcode = -1;
 				secondMostRecentOpcode = -1;
@@ -7301,10 +7301,10 @@ public final class Client extends RSApplet {
 				if (super.clickType != 0 || mouseDetection.coordsIndex >= 40) {
 					stream.putOpcode(45);
 					stream.put(0);
-					int originalOffset = stream.currentOffset;
+					int originalOffset = stream.position;
 					int coordinateCount = 0;
 					for (int c = 0; c < mouseDetection.coordsIndex; c++) {
-						if (originalOffset - stream.currentOffset >= 240)
+						if (originalOffset - stream.position >= 240)
 							break;
 						coordinateCount++;
 						int y = mouseDetection.coordsY[c];
@@ -7354,7 +7354,7 @@ public final class Client extends RSApplet {
 						}
 					}
 
-					stream.putSizeByte(stream.currentOffset - originalOffset);
+					stream.putSizeByte(stream.position - originalOffset);
 					if (coordinateCount >= mouseDetection.coordsIndex) {
 						mouseDetection.coordsIndex = 0;
 					} else {
@@ -7588,9 +7588,9 @@ public final class Client extends RSApplet {
 		if (idleCounter > 50)
 			stream.putOpcode(0);
 		try {
-			if (socket != null && stream.currentOffset > 0) {
-				socket.write(stream.currentOffset, stream.buffer);
-				stream.currentOffset = 0;
+			if (socket != null && stream.position > 0) {
+				socket.write(stream.position, stream.buffer);
+				stream.position = 0;
 				idleCounter = 0;
 			}
 		} catch (IOException _ex) {
@@ -7640,10 +7640,10 @@ public final class Client extends RSApplet {
 					if (friendsListAction == 3 && promptInput.length() > 0) {
 						stream.putOpcode(126);
 						stream.put(0);
-						int originalOffset = stream.currentOffset;
+						int originalOffset = stream.position;
 						stream.putLong(privateMessageTarget);
 						TextInput.writeToStream(promptInput, stream);
-						stream.putSizeByte(stream.currentOffset
+						stream.putSizeByte(stream.position
 								- originalOffset);
 						promptInput = TextInput.processText(promptInput);
 						promptInput = Censor.doCensor(promptInput);
@@ -7809,14 +7809,14 @@ public final class Client extends RSApplet {
 						}
 						stream.putOpcode(4);
 						stream.put(0);
-						int originalOffset = stream.currentOffset;
+						int originalOffset = stream.position;
 						stream.putByteS(effect);
 						stream.putByteS(colour);
-						textStream.currentOffset = 0;
+						textStream.position = 0;
 						TextInput.writeToStream(inputString, textStream);
 						stream.putBytesA(0, textStream.buffer,
-								textStream.currentOffset);
-						stream.putSizeByte(stream.currentOffset
+								textStream.position);
+						stream.putSizeByte(stream.position
 								- originalOffset);
 						inputString = TextInput.processText(inputString);
 						inputString = Censor.doCensor(inputString);
@@ -8428,7 +8428,7 @@ public final class Client extends RSApplet {
 				anInt940 = 0;
 				stream.putOpcode(165);
 				stream.put(0);
-				int j = stream.currentOffset;
+				int j = stream.position;
 				stream.put(139);
 				stream.put(150);
 				stream.putShort(32131);
@@ -8441,7 +8441,7 @@ public final class Client extends RSApplet {
 					stream.putShort(47234);
 				if ((int) (Math.random() * 2D) == 0)
 					stream.put(21);
-				stream.putSizeByte(stream.currentOffset - j);
+				stream.putSizeByte(stream.position - j);
 			}
 		}
 	}
@@ -8676,10 +8676,10 @@ public final class Client extends RSApplet {
 		}
 	}
 	private void processMenuHovering() {
-		int width = fontBold.getFormattedStringWidth("Choose Option");
+		int width = fontBold.getTextDisplayedWidth("Choose Option");
 		for (int row = 0; row < menuActionRow; row++) {
 			int rowWidth = fontBold
-					.getFormattedStringWidth(menuActionName[row]);
+					.getTextDisplayedWidth(menuActionName[row]);
 			if (rowWidth > width)
 				width = rowWidth;
 		}
@@ -8784,7 +8784,7 @@ public final class Client extends RSApplet {
 				mouseClickCounter = 0;
 				stream.putOpcode(246);
 				stream.put(0);
-				int l = stream.currentOffset;
+				int l = stream.position;
 				if ((int) (Math.random() * 2D) == 0)
 					stream.put(101);
 				stream.put(197);
@@ -8798,7 +8798,7 @@ public final class Client extends RSApplet {
 				if ((int) (Math.random() * 2D) == 0)
 					stream.put(220);
 				stream.put(180);
-				stream.putSizeByte(stream.currentOffset - l);
+				stream.putSizeByte(stream.position - l);
 			}
 		}
 	}
@@ -9642,7 +9642,7 @@ public final class Client extends RSApplet {
 				byte abyte1[] = new byte[6];
 				datainputstream.readFully(abyte1, 0, 6);
 				Buffer stream = new Buffer(abyte1);
-				stream.currentOffset = 3;
+				stream.position = 3;
 				int i2 = stream.get24BitInt() + 6;
 				int j2 = 6;
 				abyte0 = new byte[i2];
@@ -10252,11 +10252,11 @@ public final class Client extends RSApplet {
 			connectServer();
 			archiveTitle = requestArchive(1, "title screen", "title",
 					expectedCRCs[1], 25);
-			fontSmall = new TextDrawingArea(false, "p11_full", archiveTitle);
-			fontPlain = new TextDrawingArea(false, "p12_full", archiveTitle);
-			fontBold = new TextDrawingArea(false, "b12_full", archiveTitle);
-			TextDrawingArea fontFancy = new TextDrawingArea(true, "q8_full",
-					archiveTitle);
+			fontSmall = new GameFont("p11_full", archiveTitle, false);
+			fontPlain = new GameFont("p12_full", archiveTitle, false);
+			fontBold = new GameFont("b12_full", archiveTitle, false);
+			GameFont fontFancy = new GameFont("q8_full", archiveTitle,
+					true);
 			drawLogo();
 			loadTitleScreen();
 			Archive archiveConfig = requestArchive(2, "config", "config",
@@ -10559,7 +10559,7 @@ public final class Client extends RSApplet {
 				Effect.load(stream);
 			}
 			drawLoadingText(95, "Unpacking interfaces");
-			TextDrawingArea fonts[] = { fontSmall, fontPlain, fontBold,
+			GameFont fonts[] = { fontSmall, fontPlain, fontBold,
 					fontFancy };
 			RSInterface.unpack(archiveInterface, fonts, archiveMedia);
 			drawLoadingText(100, "Preparing game engine");
@@ -10709,8 +10709,8 @@ public final class Client extends RSApplet {
 					if (spriteDrawX > -1
 							&& overheadMessage < overheadMessageCount) {
 						overheadTextWidth[overheadMessage] = fontBold
-								.getStringWidth((target).overheadTextMessage) / 2;
-						overheadTextHeight[overheadMessage] = fontBold.charHeight;
+								.getTextWidth((target).overheadTextMessage) / 2;
+						overheadTextHeight[overheadMessage] = fontBold.fontHeight;
 						overheadTextDrawX[overheadMessage] = spriteDrawX;
 						overheadTextDrawY[overheadMessage] = spriteDrawY;
 						overheadTextColour[overheadMessage] = (target).chatColour;
@@ -10768,11 +10768,11 @@ public final class Client extends RSApplet {
 									.drawImage(spriteDrawX - 12,
 											spriteDrawY - 12);
 							fontSmall
-									.drawTextHMidVTop(
+									.drawCentredText(
 											String.valueOf((target).hitArray[hit]),
 											spriteDrawX, spriteDrawY + 4, 0);
 							fontSmall
-									.drawTextHMidVTop(
+									.drawCentredText(
 											String.valueOf((target).hitArray[hit]),
 											spriteDrawX - 1, spriteDrawY + 3,
 											0xffffff);
@@ -10845,39 +10845,39 @@ public final class Client extends RSApplet {
 							colour = 0xffffff - 0x50000 * (cycle - 100);
 					}
 					if (overheadTextEffect[m] == 0) {
-						fontBold.drawTextHMidVTop(message, spriteDrawX,
+						fontBold.drawCentredText(message, spriteDrawX,
 								spriteDrawY + 1, 0);
-						fontBold.drawTextHMidVTop(message, spriteDrawX,
+						fontBold.drawCentredText(message, spriteDrawX,
 								spriteDrawY, colour);
 					}
 					if (overheadTextEffect[m] == 1) {
-						fontBold.drawTextHRMidVTopWaving(message, spriteDrawX,
+						fontBold.drawVerticalSineWaveText(message, spriteDrawX,
 								spriteDrawY + 1, 0, renderCount);
-						fontBold.drawTextHRMidVTopWaving(message, spriteDrawX,
+						fontBold.drawVerticalSineWaveText(message, spriteDrawX,
 								spriteDrawY, colour, renderCount);
 					}
 					if (overheadTextEffect[m] == 2) {
-						fontBold.drawTextHRMidVTopWaving2(message, spriteDrawX,
+						fontBold.drawVerticalHorizontalSineWaveText(message, spriteDrawX,
 								spriteDrawY + 1, 0, renderCount);
-						fontBold.drawTextHRMidVTopWaving2(message, spriteDrawX,
+						fontBold.drawVerticalHorizontalSineWaveText(message, spriteDrawX,
 								spriteDrawY, colour, renderCount);
 					}
 					if (overheadTextEffect[m] == 3) {
-						fontBold.drawTextHRMidVTopWaving(message, spriteDrawX,
+						fontBold.drawShakingText(message, spriteDrawX,
 								spriteDrawY + 1, 0, 150 - overheadTextCycle[m],
 								renderCount);
-						fontBold.drawTextHRMidVTopWaving(message, spriteDrawX,
+						fontBold.drawShakingText(message, spriteDrawX,
 								spriteDrawY, colour,
 								150 - overheadTextCycle[m], renderCount);
 					}
 					if (overheadTextEffect[m] == 4) {
-						int width = fontBold.getStringWidth(message);
+						int width = fontBold.getTextWidth(message);
 						int offsetX = ((150 - overheadTextCycle[m]) * (width + 100)) / 150;
 						DrawingArea.setDrawingArea(334, spriteDrawX - 50,
 								spriteDrawX + 50, 0);
-						fontBold.drawString(message, (spriteDrawX + 50)
+						fontBold.drawText(message, (spriteDrawX + 50)
 								- offsetX, spriteDrawY + 1, 0);
-						fontBold.drawString(message, (spriteDrawX + 50)
+						fontBold.drawText(message, (spriteDrawX + 50)
 								- offsetX, spriteDrawY, colour);
 						DrawingArea.defaultDrawingAreaSize();
 					}
@@ -10889,17 +10889,17 @@ public final class Client extends RSApplet {
 						else if (cycle > 125)
 							offsetY = cycle - 125;
 						DrawingArea.setDrawingArea(spriteDrawY + 5, 0, 512,
-								spriteDrawY - fontBold.charHeight - 1);
-						fontBold.drawTextHMidVTop(message, spriteDrawX,
+								spriteDrawY - fontBold.fontHeight - 1);
+						fontBold.drawCentredText(message, spriteDrawX,
 								spriteDrawY + 1 + offsetY, 0);
-						fontBold.drawTextHMidVTop(message, spriteDrawX,
+						fontBold.drawCentredText(message, spriteDrawX,
 								spriteDrawY + offsetY, colour);
 						DrawingArea.defaultDrawingAreaSize();
 					}
 				} else {
-					fontBold.drawTextHMidVTop(message, spriteDrawX,
+					fontBold.drawCentredText(message, spriteDrawX,
 							spriteDrawY + 1, 0);
-					fontBold.drawTextHMidVTop(message, spriteDrawX,
+					fontBold.drawCentredText(message, spriteDrawX,
 							spriteDrawY, 0xffff00);
 				}
 			}
@@ -11204,10 +11204,10 @@ public final class Client extends RSApplet {
 			}
 		}
 
-		if (stream.currentOffset != amount) {
+		if (stream.position != amount) {
 			signlink.reporterror(enteredUsername
 					+ " size mismatch in getnpcpos - pos:"
-					+ stream.currentOffset + " psize:" + amount);
+					+ stream.position + " psize:" + amount);
 			throw new RuntimeException("eek");
 		}
 		for (int n = 0; n < npcCount; n++)
@@ -11332,7 +11332,7 @@ public final class Client extends RSApplet {
 			int colourAndEffect = stream.getUnsignedShort();
 			int rights = stream.getUnsignedByte();
 			int messageLength = stream.getUnsignedByteC();
-			int originalOffset = stream.currentOffset;
+			int originalOffset = stream.position;
 			if (player.name != null && player.visible) {
 				long nameAsLong = TextClass.nameToLong(player.name);
 				boolean ignored = false;
@@ -11347,9 +11347,9 @@ public final class Client extends RSApplet {
 				}
 				if (!ignored && inTutorial == 0)
 					try {
-						textStream.currentOffset = 0;
+						textStream.position = 0;
 						stream.getBytes(messageLength, 0, textStream.buffer);
-						textStream.currentOffset = 0;
+						textStream.position = 0;
 						String text = TextInput.readFromStream(messageLength,
 								textStream);
 						text = Censor.doCensor(text);
@@ -11371,7 +11371,7 @@ public final class Client extends RSApplet {
 						signlink.reporterror("cde2");
 					}
 			}
-			stream.currentOffset = originalOffset + messageLength;
+			stream.position = originalOffset + messageLength;
 		}
 		if ((updateType & 1) != 0) {
 			player.interactingEntity = stream.getUnsignedShort();
@@ -11462,9 +11462,9 @@ public final class Client extends RSApplet {
 				players[playerId] = null;
 		}
 
-		if (stream.currentOffset != packetSize) {
+		if (stream.position != packetSize) {
 			signlink.reporterror("Error packet size mismatch in getplayer pos:"
-					+ stream.currentOffset + " psize:" + packetSize);
+					+ stream.position + " psize:" + packetSize);
 			throw new RuntimeException("eek");
 		}
 		for (int p = 0; p < localPlayerCount; p++)

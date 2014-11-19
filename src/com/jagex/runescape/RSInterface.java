@@ -45,14 +45,14 @@ public final class RSInterface {
 			modelCache.put(model, (modelType << 16) + modelId);
 	}
 
-	public static void unpack(Archive streamLoader, TextDrawingArea fonts[],
+	public static void unpack(Archive streamLoader, GameFont fonts[],
 			Archive mediaArchive) {
 		spriteCache = new MRUNodes(50000);
 		Buffer stream = new Buffer(streamLoader.decompressFile("data"));
 		int parentId = -1;
 		int interfaceCount = stream.getUnsignedLEShort();
 		cache = new RSInterface[interfaceCount];
-		while (stream.currentOffset < stream.buffer.length) {
+		while (stream.position < stream.buffer.length) {
 			int id = stream.getUnsignedLEShort();
 			if (id == 65535) {
 				parentId = stream.getUnsignedLEShort();
@@ -306,7 +306,7 @@ public final class RSInterface {
 	public int children[];
 	public int childX[];
 	public boolean usableItemInterface;
-	public TextDrawingArea textDrawingAreas;
+	public GameFont textDrawingAreas;
 	public int inventorySpritePaddingRow;
 	public int conditionType[];
 	public int animationFrame;

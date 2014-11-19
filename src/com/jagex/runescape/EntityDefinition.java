@@ -28,7 +28,7 @@ public final class EntityDefinition {
 
 		EntityDefinition.bufferIndex = (EntityDefinition.bufferIndex + 1) % 20;
 		EntityDefinition definition = EntityDefinition.cache[EntityDefinition.bufferIndex] = new EntityDefinition();
-		EntityDefinition.stream.currentOffset = EntityDefinition.streamOffsets[id];
+		EntityDefinition.stream.position = EntityDefinition.streamOffsets[id];
 		definition.id = id;
 		definition.loadDefinition(EntityDefinition.stream);
 		return definition;

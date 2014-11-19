@@ -22,10 +22,10 @@ package com.jagex.runescape;
 final class TextInput {
 
 	public static String processText(String s) {
-		stream.currentOffset = 0;
+		stream.position = 0;
 		writeToStream(s, stream);
-		int offset = stream.currentOffset;
-		stream.currentOffset = 0;
+		int offset = stream.position;
+		stream.position = 0;
 		String text = readFromStream(offset, stream);
 		return text;
 	}
