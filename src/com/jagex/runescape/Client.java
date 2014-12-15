@@ -5302,7 +5302,7 @@ public final class Client extends RSApplet {
 				packetOpcode = inStream.buffer[0] & 0xff;
 				if (encryption != null)
 					packetOpcode = packetOpcode - encryption.value() & 0xff;
-				packetSize = SizeConstants.packetSizes[packetOpcode];
+				packetSize = SizeConstants.PACKET_SIZES[packetOpcode];
 				availableBytes--;
 			}
 			if (packetSize == -1)
