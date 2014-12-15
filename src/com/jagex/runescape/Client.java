@@ -165,8 +165,8 @@ public final class Client extends RSApplet {
 	private int cameraPositionX;
 	private int cameraPositionZ;
 	private int cameraPositionY;
-	private int cameraCurveHorizontal;
-	private int cameraCurveVertical;
+	private int cameraVerticalRotation;
+	private int cameraHorizontalRotation;
 	private int playerRights;
 	private final int[] skillExperience;
 	private Background redStone1_3;
@@ -1869,10 +1869,10 @@ public final class Client extends RSApplet {
 		x -= cameraPositionX;
 		z -= cameraPositionZ;
 		y -= cameraPositionY;
-		int sineHorizontal = Model.SINE[cameraCurveHorizontal];
-		int cosineHorizontal = Model.COSINE[cameraCurveHorizontal];
-		int sineVertical = Model.SINE[cameraCurveVertical];
-		int cosineVertical = Model.COSINE[cameraCurveVertical];
+		int sineHorizontal = Model.SINE[cameraVerticalRotation];
+		int cosineHorizontal = Model.COSINE[cameraVerticalRotation];
+		int sineVertical = Model.SINE[cameraHorizontalRotation];
+		int cosineVertical = Model.COSINE[cameraHorizontalRotation];
 		int temp = y * sineVertical + x * cosineVertical >> 16;
 		y = y * cosineVertical - x * sineVertical >> 16;
 		x = temp;
@@ -5224,7 +5224,7 @@ public final class Client extends RSApplet {
 	}
 	private int getWorldDrawPlane() {
 		int worldDrawPlane = 3;
-		if (cameraCurveHorizontal < 310) {
+		if (cameraVerticalRotation < 310) {
 			int cameraX = cameraPositionX >> 7;
 			int cameraY = cameraPositionY >> 7;
 			int playerX = localPlayer.x >> 7;
@@ -6211,14 +6211,14 @@ public final class Client extends RSApplet {
 					int distanceY = y - cameraPositionY;
 					int distanceScalar = (int) Math.sqrt(distanceX * distanceX
 							+ distanceY * distanceY);
-					cameraCurveHorizontal = (int) (Math.atan2(distanceZ,
+					cameraVerticalRotation = (int) (Math.atan2(distanceZ,
 							distanceScalar) * 325.94900000000001D) & 0x7ff;
-					cameraCurveVertical = (int) (Math.atan2(distanceX,
+					cameraHorizontalRotation = (int) (Math.atan2(distanceX,
 							distanceY) * -325.94900000000001D) & 0x7ff;
-					if (cameraCurveHorizontal < 128)
-						cameraCurveHorizontal = 128;
-					if (cameraCurveHorizontal > 383)
-						cameraCurveHorizontal = 383;
+					if (cameraVerticalRotation < 128)
+						cameraVerticalRotation = 128;
+					if (cameraVerticalRotation > 383)
+						cameraVerticalRotation = 383;
 				}
 				packetOpcode = -1;
 				return true;
@@ -9339,8 +9339,8 @@ public final class Client extends RSApplet {
 		int x = cameraPositionX;
 		int y = cameraPositionZ;
 		int z = cameraPositionY;
-		int curveY = cameraCurveHorizontal;
-		int curveZ = cameraCurveVertical;
+		int curveY = cameraVerticalRotation;
+		int curveZ = cameraHorizontalRotation;
 		for (int i = 0; i < 5; i++)
 			if (customCameraActive[i]) {
 				int randomisation = (int) ((Math.random()
@@ -9355,14 +9355,14 @@ public final class Client extends RSApplet {
 				if (i == 2)
 					cameraPositionY += randomisation;
 				if (i == 3)
-					cameraCurveVertical = cameraCurveVertical + randomisation
+					cameraHorizontalRotation = cameraHorizontalRotation + randomisation
 							& 0x7ff;
 				if (i == 4) {
-					cameraCurveHorizontal += randomisation;
-					if (cameraCurveHorizontal < 128)
-						cameraCurveHorizontal = 128;
-					if (cameraCurveHorizontal > 383)
-						cameraCurveHorizontal = 383;
+					cameraVerticalRotation += randomisation;
+					if (cameraVerticalRotation < 128)
+						cameraVerticalRotation = 128;
+					if (cameraVerticalRotation > 383)
+						cameraVerticalRotation = 383;
 				}
 			}
 
@@ -9373,8 +9373,8 @@ public final class Client extends RSApplet {
 		Model.cursorY = super.mouseY - 4;
 		DrawingArea.clear();
 		worldController.render(cameraPositionX, cameraPositionY,
-				cameraCurveVertical, cameraPositionZ, cameraPlane,
-				cameraCurveHorizontal);
+				cameraHorizontalRotation, cameraPositionZ, cameraPlane,
+				cameraVerticalRotation);
 		worldController.clearInteractiveObjectCache();
 		updateEntities();
 		drawHeadIcon();
@@ -9384,8 +9384,8 @@ public final class Client extends RSApplet {
 		cameraPositionX = x;
 		cameraPositionZ = y;
 		cameraPositionY = z;
-		cameraCurveHorizontal = curveY;
-		cameraCurveVertical = curveZ;
+		cameraVerticalRotation = curveY;
+		cameraHorizontalRotation = curveZ;
 	}
 	private void renderMinimap(int z) {
 		int pixels[] = minimapImage.pixels;
@@ -9877,8 +9877,8 @@ public final class Client extends RSApplet {
 		cameraPositionX = x - offsetX;
 		cameraPositionZ = z - offsetZ;
 		cameraPositionY = y - offsetY;
-		cameraCurveHorizontal = vertical;
-		cameraCurveVertical = horizontal;
+		cameraVerticalRotation = vertical;
+		cameraHorizontalRotation = horizontal;
 	}
 	private void setCutsceneCamera() {
 		int x = anInt1098 * 128 + 64;
@@ -9934,41 +9934,41 @@ public final class Client extends RSApplet {
 			curveHorizontal = 128;
 		if (curveHorizontal > 383)
 			curveHorizontal = 383;
-		if (cameraCurveHorizontal < curveHorizontal) {
-			cameraCurveHorizontal += anInt998
-					+ ((curveHorizontal - cameraCurveHorizontal) * anInt999)
+		if (cameraVerticalRotation < curveHorizontal) {
+			cameraVerticalRotation += anInt998
+					+ ((curveHorizontal - cameraVerticalRotation) * anInt999)
 					/ 1000;
-			if (cameraCurveHorizontal > curveHorizontal)
-				cameraCurveHorizontal = curveHorizontal;
+			if (cameraVerticalRotation > curveHorizontal)
+				cameraVerticalRotation = curveHorizontal;
 		}
-		if (cameraCurveHorizontal > curveHorizontal) {
-			cameraCurveHorizontal -= anInt998
-					+ ((cameraCurveHorizontal - curveHorizontal) * anInt999)
+		if (cameraVerticalRotation > curveHorizontal) {
+			cameraVerticalRotation -= anInt998
+					+ ((cameraVerticalRotation - curveHorizontal) * anInt999)
 					/ 1000;
-			if (cameraCurveHorizontal < curveHorizontal)
-				cameraCurveHorizontal = curveHorizontal;
+			if (cameraVerticalRotation < curveHorizontal)
+				cameraVerticalRotation = curveHorizontal;
 		}
-		int _vertical1 = curveVertical - cameraCurveVertical;
+		int _vertical1 = curveVertical - cameraHorizontalRotation;
 		if (_vertical1 > 1024)
 			_vertical1 -= 2048;
 		if (_vertical1 < -1024)
 			_vertical1 += 2048;
 		if (_vertical1 > 0) {
-			cameraCurveVertical += anInt998 + (_vertical1 * anInt999) / 1000;
-			cameraCurveVertical &= 0x7ff;
+			cameraHorizontalRotation += anInt998 + (_vertical1 * anInt999) / 1000;
+			cameraHorizontalRotation &= 0x7ff;
 		}
 		if (_vertical1 < 0) {
-			cameraCurveVertical -= anInt998 + (-_vertical1 * anInt999) / 1000;
-			cameraCurveVertical &= 0x7ff;
+			cameraHorizontalRotation -= anInt998 + (-_vertical1 * anInt999) / 1000;
+			cameraHorizontalRotation &= 0x7ff;
 		}
-		int _vertical2 = curveVertical - cameraCurveVertical;
+		int _vertical2 = curveVertical - cameraHorizontalRotation;
 		if (_vertical2 > 1024)
 			_vertical2 -= 2048;
 		if (_vertical2 < -1024)
 			_vertical2 += 2048;
 		if (_vertical2 < 0 && _vertical1 > 0 || _vertical2 > 0
 				&& _vertical1 < 0)
-			cameraCurveVertical = curveVertical;
+			cameraHorizontalRotation = curveVertical;
 	}
 	private void setStandardCameraPosition() {
 		try {
