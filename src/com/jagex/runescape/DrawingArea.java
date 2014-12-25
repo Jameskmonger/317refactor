@@ -59,37 +59,50 @@ public class DrawingArea extends NodeSub {
 
 			pointer += increment;
 		}
-
 	}
 
-	public static void drawFilledRectangleAlpha(int i, int j, int k, int l,
-			int i1, int k1) {
-		if (k1 < topX) {
-			k -= topX - k1;
-			k1 = topX;
+	public static void drawFilledCircle(int x, int y, int radius, int colour) {
+		for(int _y = -radius; _y <= radius; _y++)
+		    for(int _x = -radius; _x <= radius; _x++)
+		        if(_x * _x + _y * _y <= radius * radius)
+		        	drawHorizontalLine(_x + x, _y + y, 1, colour);
+	}
+	
+	public static void drawFilledCircleAlpha(int x, int y, int radius, int colour, int alpha) {
+		for(int _y = -radius; _y <= radius; _y++)
+		    for(int _x = -radius; _x <= radius; _x++)
+		        if(_x * _x + _y * _y <= radius * radius)
+		        	drawHorizontalLineAlpha(_x + x, _y + y, 1, colour, alpha);
+	}
+
+	public static void drawFilledRectangleAlpha(int colour, int y, int width, int height,
+			int alpha, int x) {
+		if (x < topX) {
+			width -= topX - x;
+			x = topX;
 		}
-		if (j < topY) {
-			l -= topY - j;
-			j = topY;
+		if (y < topY) {
+			height -= topY - y;
+			y = topY;
 		}
-		if (k1 + k > bottomX)
-			k = bottomX - k1;
-		if (j + l > bottomY)
-			l = bottomY - j;
-		int l1 = 256 - i1;
-		int i2 = (i >> 16 & 0xff) * i1;
-		int j2 = (i >> 8 & 0xff) * i1;
-		int k2 = (i & 0xff) * i1;
-		int k3 = width - k;
-		int l3 = k1 + j * width;
-		for (int i4 = 0; i4 < l; i4++) {
-			for (int j4 = -k; j4 < 0; j4++) {
+		if (x + width > bottomX)
+			width = bottomX - x;
+		if (y + height > bottomY)
+			height = bottomY - y;
+		int l1 = 256 - alpha;
+		int i2 = (colour >> 16 & 0xff) * alpha;
+		int j2 = (colour >> 8 & 0xff) * alpha;
+		int k2 = (colour & 0xff) * alpha;
+		int k3 = DrawingArea.width - width;
+		int l3 = x + y * DrawingArea.width;
+		for (int i4 = 0; i4 < height; i4++) {
+			for (int j4 = -width; j4 < 0; j4++) {
 				int l2 = (pixels[l3] >> 16 & 0xff) * l1;
 				int i3 = (pixels[l3] >> 8 & 0xff) * l1;
 				int j3 = (pixels[l3] & 0xff) * l1;
-				int k4 = ((i2 + l2 >> 8) << 16) + ((j2 + i3 >> 8) << 8)
+				int packedRGB = ((i2 + l2 >> 8) << 16) + ((j2 + i3 >> 8) << 8)
 						+ (k2 + j3 >> 8);
-				pixels[l3++] = k4;
+				pixels[l3++] = packedRGB;
 			}
 
 			l3 += k3;
@@ -108,7 +121,30 @@ public class DrawingArea extends NodeSub {
 		int pointer = y + x * DrawingArea.width;
 		for (int column = 0; column < width; column++)
 			pixels[pointer + column] = colour;
-
+	}
+	
+	public static void drawHorizontalLineAlpha(int x, int y, int width, int colour, int alpha) {
+		if (x < topY || x >= bottomY)
+			return;
+		if (y < topX) {
+			width -= topX - y;
+			y = topX;
+		}
+		if (y + width > bottomX)
+			width = bottomX - y;
+		int opacity = 256 - alpha;
+		int r = (colour >> 16 & 0xff) * alpha;
+		int g = (colour >> 8 & 0xff) * alpha;
+		int b = (colour & 0xff) * alpha;
+		int pointer = y + x * DrawingArea.width;
+		for (int column = 0; column < width; column++) {
+			int rAlpha = (pixels[pointer + column] >> 16 & 0xff) * opacity;
+			int gAlpha = (pixels[pointer + column] >> 8 & 0xff) * opacity;
+			int bAlpha = (pixels[pointer + column] & 0xff) * opacity;
+			int packedRGB = ((r + rAlpha >> 8) << 16) + ((g + gAlpha >> 8) << 8)
+					+ (b + bAlpha >> 8);
+			pixels[pointer + column] = packedRGB;
+		}
 	}
 
 	public static void drawUnfilledRectangle(int i, int j, int k, int l, int i1) {
