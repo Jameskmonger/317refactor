@@ -19,7 +19,7 @@ package com.jagex.runescape;
  * This file was renamed as part of the 317refactor project.
  */
 
-final class GameObjectSpawnRequest extends Node {
+final class GameObjectSpawnRequest extends Link {
 
 	public int id2;
 

@@ -19,47 +19,46 @@ package com.jagex.runescape;
  * This file was renamed as part of the 317refactor project.
  */
 
-final class NodeSubList {
+final class Deque {
 
-	private final NodeSub head;
+	private final QueueLink head;
+	private QueueLink current;
 
-	private NodeSub current;
-
-	public NodeSubList() {
-		head = new NodeSub();
+	public Deque() {
+		head = new QueueLink();
 		head.prevNodeSub = head;
 		head.nextNodeSub = head;
 	}
 
 	public int getNodeCount() {
-		int i = 0;
-		for (NodeSub nodeSub = head.prevNodeSub; nodeSub != head; nodeSub = nodeSub.prevNodeSub)
-			i++;
+		int count = 0;
+		for (QueueLink l = head.prevNodeSub; l != head; l = l.prevNodeSub)
+			count++;
 
-		return i;
+		return count;
 	}
 
-	public void insertHead(NodeSub nodeSub) {
-		if (nodeSub.nextNodeSub != null)
-			nodeSub.unlinkSub();
-		nodeSub.nextNodeSub = head.nextNodeSub;
-		nodeSub.prevNodeSub = head;
-		nodeSub.nextNodeSub.prevNodeSub = nodeSub;
-		nodeSub.prevNodeSub.nextNodeSub = nodeSub;
+	public void push(QueueLink l) {
+		if (l.nextNodeSub != null)
+			l.unlist();
+		l.nextNodeSub = head.nextNodeSub;
+		l.prevNodeSub = head;
+		l.nextNodeSub.prevNodeSub = l;
+		l.prevNodeSub.nextNodeSub = l;
 	}
 
-	public NodeSub popTail() {
-		NodeSub nodeSub = head.prevNodeSub;
-		if (nodeSub == head) {
+	public QueueLink pull() {
+		QueueLink l = head.prevNodeSub;
+		if (l == head) {
 			return null;
 		} else {
-			nodeSub.unlinkSub();
-			return nodeSub;
+			l.unlist();
+			return l;
 		}
 	}
 
-	public NodeSub reverseGetFirst() {
-		NodeSub nodeSub = head.prevNodeSub;
+	public QueueLink reverseGetFirst() {
+		QueueLink nodeSub = head.prevNodeSub;
 		if (nodeSub == head) {
 			current = null;
 			return null;
@@ -68,8 +67,8 @@ final class NodeSubList {
 			return nodeSub;
 		}
 	}
-	public NodeSub reverseGetNext() {
-		NodeSub nodeSub = current;
+	public QueueLink reverseGetNext() {
+		QueueLink nodeSub = current;
 		if (nodeSub == head) {
 			current = null;
 			return null;

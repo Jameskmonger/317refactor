@@ -78,7 +78,7 @@ public final class OnDemandFetcher extends OnDemandFetcherParent implements
 
 	private final byte[] gzipInputBuffer;
 	private int[] anIntArray1360;
-	private final NodeSubList nodeSubList;
+	private final Deque nodeSubList;
 	private InputStream inputStream;
 	private Socket socket;
 	private final int[][] versions;
@@ -102,7 +102,7 @@ public final class OnDemandFetcher extends OnDemandFetcherParent implements
 		waiting = false;
 		aClass19_1358 = new NodeList();
 		gzipInputBuffer = new byte[65000];
-		nodeSubList = new NodeSubList();
+		nodeSubList = new Deque();
 		versions = new int[4][];
 		crcs = new int[4][];
 		aClass19_1368 = new NodeList();
@@ -221,7 +221,7 @@ public final class OnDemandFetcher extends OnDemandFetcherParent implements
 		if (onDemandData == null)
 			return null;
 		synchronized (nodeSubList) {
-			onDemandData.unlinkSub();
+			onDemandData.unlist();
 		}
 		if (onDemandData.buffer == null)
 			return onDemandData;
@@ -249,7 +249,7 @@ public final class OnDemandFetcher extends OnDemandFetcherParent implements
 	private void handleFailed() {
 		uncompletedCount = 0;
 		completedCount = 0;
-		for (OnDemandData onDemandData = (OnDemandData) requested.getBack(); onDemandData != null; onDemandData = (OnDemandData) requested
+		for (OnDemandData onDemandData = (OnDemandData) requested.peekLast(); onDemandData != null; onDemandData = (OnDemandData) requested
 				.reverseGetNext())
 			if (onDemandData.incomplete)
 				uncompletedCount++;
@@ -377,7 +377,7 @@ public final class OnDemandFetcher extends OnDemandFetcherParent implements
 				int i2 = ioBuffer[5] & 0xff;
 				current = null;
 				for (OnDemandData onDemandData = (OnDemandData) requested
-						.getBack(); onDemandData != null; onDemandData = (OnDemandData) requested
+						.peekLast(); onDemandData != null; onDemandData = (OnDemandData) requested
 						.reverseGetNext()) {
 					if (onDemandData.dataType == l && onDemandData.id == j1)
 						current = onDemandData;
@@ -395,7 +395,7 @@ public final class OnDemandFetcher extends OnDemandFetcherParent implements
 								aClass19_1358.insertHead(current);
 							}
 						else
-							current.remove();
+							current.unlink();
 						current = null;
 					} else {
 						if (current.buffer == null && i2 == 0)
@@ -434,7 +434,7 @@ public final class OnDemandFetcher extends OnDemandFetcherParent implements
 							aClass19_1358.insertHead(current);
 						}
 					else
-						current.remove();
+						current.unlink();
 				}
 				expectedSize = 0;
 			}
@@ -472,7 +472,7 @@ public final class OnDemandFetcher extends OnDemandFetcherParent implements
 			synchronized (aClass19_1370) {
 				aClass19_1370.insertHead(onDemandData_1);
 			}
-			nodeSubList.insertHead(onDemandData_1);
+			nodeSubList.push(onDemandData_1);
 		}
 	}
 	@Override
@@ -504,7 +504,7 @@ public final class OnDemandFetcher extends OnDemandFetcherParent implements
 
 				boolean flag = false;
 				for (OnDemandData onDemandData = (OnDemandData) requested
-						.getBack(); onDemandData != null; onDemandData = (OnDemandData) requested
+						.peekLast(); onDemandData != null; onDemandData = (OnDemandData) requested
 						.reverseGetNext())
 					if (onDemandData.incomplete) {
 						flag = true;
@@ -517,7 +517,7 @@ public final class OnDemandFetcher extends OnDemandFetcherParent implements
 
 				if (!flag) {
 					for (OnDemandData onDemandData_1 = (OnDemandData) requested
-							.getBack(); onDemandData_1 != null; onDemandData_1 = (OnDemandData) requested
+							.peekLast(); onDemandData_1 != null; onDemandData_1 = (OnDemandData) requested
 							.reverseGetNext()) {
 						flag = true;
 						onDemandData_1.loopCycle++;

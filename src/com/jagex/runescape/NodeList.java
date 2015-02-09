@@ -21,29 +21,29 @@ package com.jagex.runescape;
 
 final class NodeList {
 
-	private final Node head;
+	private final Link head;
 
-	private Node current;
+	private Link current;
 
 	public NodeList() {
-		head = new Node();
-		head.prev = head;
+		head = new Link();
+		head.previous = head;
 		head.next = head;
 	}
 
-	public Node getBack() {
-		Node node = head.prev;
+	public Link peekLast() {
+		Link node = head.previous;
 		if (node == head) {
 			current = null;
 			return null;
 		} else {
-			current = node.prev;
+			current = node.previous;
 			return node;
 		}
 	}
 
-	public Node getFirst() {
-		Node node = head.next;
+	public Link getFirst() {
+		Link node = head.next;
 		if (node == head) {
 			current = null;
 			return null;
@@ -53,8 +53,8 @@ final class NodeList {
 		}
 	}
 
-	public Node getNext() {
-		Node node = current;
+	public Link getNext() {
+		Link node = current;
 		if (node == head) {
 			current = null;
 			return null;
@@ -63,51 +63,51 @@ final class NodeList {
 		return node;
 	}
 
-	public void insertHead(Node node) {
+	public void insertHead(Link node) {
 		if (node.next != null)
-			node.remove();
+			node.unlink();
 		node.next = head.next;
-		node.prev = head;
-		node.next.prev = node;
-		node.prev.next = node;
+		node.previous = head;
+		node.next.previous = node;
+		node.previous.next = node;
 	}
 
-	public void insertTail(Node node) {
+	public void insertTail(Link node) {
 		if (node.next != null)
-			node.remove();
+			node.unlink();
 		node.next = head;
-		node.prev = head.prev;
-		node.next.prev = node;
-		node.prev.next = node;
+		node.previous = head.previous;
+		node.next.previous = node;
+		node.previous.next = node;
 	}
 
-	public Node popHead() {
-		Node node = head.prev;
+	public Link popHead() {
+		Link node = head.previous;
 		if (node == head) {
 			return null;
 		} else {
-			node.remove();
+			node.unlink();
 			return node;
 		}
 	}
 
 	public void removeAll() {
-		if (head.prev == head)
+		if (head.previous == head)
 			return;
 		do {
-			Node node = head.prev;
+			Link node = head.previous;
 			if (node == head)
 				return;
-			node.remove();
+			node.unlink();
 		} while (true);
 	}
-	public Node reverseGetNext() {
-		Node node = current;
+	public Link reverseGetNext() {
+		Link node = current;
 		if (node == head) {
 			current = null;
 			return null;
 		} else {
-			current = node.prev;
+			current = node.previous;
 			return node;
 		}
 	}

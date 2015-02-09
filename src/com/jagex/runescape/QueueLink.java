@@ -19,22 +19,22 @@ package com.jagex.runescape;
  * This file was renamed as part of the 317refactor project.
  */
 
-public class Node {
+public class QueueLink extends Link {
 
-	public long id;
+	public QueueLink prevNodeSub;
 
-	public Node prev;
+	QueueLink nextNodeSub;
 
-	public Node next;
-	public Node() {
+	public static int anInt1305;
+	public QueueLink() {
 	}
-	public final void remove() {
-		if (next == null) {
+	public final void unlist() {
+		if (nextNodeSub == null) {
 		} else {
-			next.prev = prev;
-			prev.next = next;
-			prev = null;
-			next = null;
+			nextNodeSub.prevNodeSub = prevNodeSub;
+			prevNodeSub.nextNodeSub = nextNodeSub;
+			prevNodeSub = null;
+			nextNodeSub = null;
 		}
 	}
 }

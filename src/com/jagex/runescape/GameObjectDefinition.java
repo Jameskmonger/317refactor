@@ -108,12 +108,12 @@ public final class GameObjectDefinition {
 	public byte description[];
 	public boolean hasActions;
 	public boolean castsShadow;
-	public static MRUNodes animatedModelCache = new MRUNodes(30);
+	public static LinkedList animatedModelCache = new LinkedList(30);
 	public int animationId;
 	private static GameObjectDefinition[] cache;
 	private int translateZ;
 	private int[] modifiedModelColors;
-	public static MRUNodes modelCache = new MRUNodes(500);
+	public static LinkedList modelCache = new LinkedList(500);
 	public String actions[];
 	private GameObjectDefinition() {
 		id = -1;

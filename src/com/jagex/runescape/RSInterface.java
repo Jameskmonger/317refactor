@@ -47,7 +47,7 @@ public final class RSInterface {
 
 	public static void unpack(Archive streamLoader, GameFont fonts[],
 			Archive mediaArchive) {
-		spriteCache = new MRUNodes(50000);
+		spriteCache = new LinkedList(50000);
 		Buffer stream = new Buffer(streamLoader.decompressFile("data"));
 		int parentId = -1;
 		int interfaceCount = stream.getUnsignedLEShort();
@@ -301,7 +301,7 @@ public final class RSInterface {
 	public boolean itemDeletesDragged;
 	public int parentID;
 	public int spellUsableOn;
-	private static MRUNodes spriteCache;
+	private static LinkedList spriteCache;
 	public int colourActiveHover;
 	public int children[];
 	public int childX[];
@@ -326,7 +326,7 @@ public final class RSInterface {
 	public int scrollMax;
 	public int type;
 	public int x;
-	private static final MRUNodes modelCache = new MRUNodes(30);
+	private static final LinkedList modelCache = new LinkedList(30);
 	public int y;
 	public boolean hoverOnly;
 	public int height;

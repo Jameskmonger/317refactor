@@ -21,16 +21,16 @@ package com.jagex.runescape;
 
 public final class SpotAnimation {
 
-	public static void load(Archive streamLoader) {
-		Buffer stream = new Buffer(streamLoader.decompressFile("spotanim.dat"));
-		int count = stream.getUnsignedLEShort();
+	public static void load(Archive archive) {
+		Buffer buffer = new Buffer(archive.decompressFile("spotanim.dat"));
+		int count = buffer.getUnsignedLEShort();
 		if (cache == null)
 			cache = new SpotAnimation[count];
 		for (int anim = 0; anim < count; anim++) {
 			if (cache[anim] == null)
 				cache[anim] = new SpotAnimation();
 			cache[anim].id = anim;
-			cache[anim].loadDefinition(stream);
+			cache[anim].read(buffer);
 		}
 
 	}
@@ -50,7 +50,8 @@ public final class SpotAnimation {
 	public int rotation;
 	public int modelLightFalloff;
 	public int modelLightAmbient;
-	public static MRUNodes modelCache = new MRUNodes(30);
+	public static LinkedList modelCache = new LinkedList(30);
+	
 	private SpotAnimation() {
 		animationId = -1;
 		originalModelColours = new int[6];
@@ -58,6 +59,7 @@ public final class SpotAnimation {
 		scaleXY = 128;
 		scaleZ = 128;
 	}
+	
 	public Model getModel() {
 		Model model = (Model) modelCache.get(id);
 		if (model != null)
@@ -73,7 +75,8 @@ public final class SpotAnimation {
 		modelCache.put(model, id);
 		return model;
 	}
-	private void loadDefinition(Buffer stream) {
+	
+	private void read(Buffer stream) {
 		do {
 			int attribute = stream.getUnsignedByte();
 			if (attribute == 0)

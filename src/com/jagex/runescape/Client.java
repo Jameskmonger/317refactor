@@ -188,8 +188,8 @@ public final class Client extends RSApplet {
 	private boolean menuOpen;
 	private int anInt886;
 	private String inputString;
-	private final int maxPlayers;
-	private final int localPlayerId;
+	private final int MAX_ENTITY_COUNT;
+	private final int LOCAL_PLAYER_ID;
 	private Player[] players;
 	private int localPlayerCount;
 	private int[] localPlayers;
@@ -201,7 +201,7 @@ public final class Client extends RSApplet {
 	private int friendsCount;
 	private int friendListStatus;
 	private int[][] wayPoints;
-	private final int scrollBarColourLeft;
+	private final int SCROLLBAR_GRIP_HIGHLIGHT;
 	private RSImageProducer backLeftIP1;
 	private RSImageProducer backLeftIP2;
 	private RSImageProducer backRightIP1;
@@ -221,7 +221,7 @@ public final class Client extends RSApplet {
 	private final int[] skillLevel;
 	private final long[] ignoreListAsLongs;
 	private boolean loadingError;
-	private final int scrollBarColourRight;
+	private final int SCROLLBAR_GRIP_LOWLIGHT;
 	private final int[] cameraFrequency;
 	private int[][] tileRenderCount;
 	private Sprite characterEditButtonDefualt;
@@ -255,7 +255,7 @@ public final class Client extends RSApplet {
 	private volatile boolean drawingFlames;
 	private int spriteDrawX;
 	private int spriteDrawY;
-	private final int[] overheadTextColours = { 0xffff00, 0xff0000, 65280,
+	private final int[] SPOKEN_TEXT_COLOURS = { 0xffff00, 0xff0000, 65280,
 			65535, 0xff00ff, 0xffffff };
 	private Background titleBoxImage;
 	private Background titleButtonImage;
@@ -287,8 +287,8 @@ public final class Client extends RSApplet {
 	private int anInt999;
 	private ISAACRandomGenerator encryption;
 	private Sprite minimapEdgeImage;
-	private final int scrollBackgroundColour;
-	static final int[][] playerBodyRecolours = {
+	private final int SCROLLBAR_TRACK_COLOUR;
+	static final int[][] APPEARANCE_COLOURS = {
 			{ 6798, 107, 10283, 16, 4797, 7744, 5799, 4634, 33697, 22433, 2983,
 					54193 },
 			{ 8741, 12, 64030, 43162, 7735, 8404, 1701, 38430, 24094, 10153,
@@ -310,7 +310,7 @@ public final class Client extends RSApplet {
 	private int cameraMovedWriteDelay;
 	private boolean cameraMovedWrite;
 	private int walkableInterfaceId;
-	private static final int[] EXPERIENCE_FOR_LEVEL;
+	private static final int[] EXPERIENCE_TABLE;
 	private int minimapState;
 	private int sameClickPositionCounter;
 	private int loadingStage;
@@ -339,7 +339,7 @@ public final class Client extends RSApplet {
 	private int anInt1048;
 	private String loadingBarText;
 	private static int loadedRegions;
-	private final int[] minimapShape1;
+	private final int[] minimapLeft;
 	private Archive archiveTitle;
 	private int flashingSidebar;
 	private int multiCombatZone;
@@ -349,7 +349,7 @@ public final class Client extends RSApplet {
 	private Background[] mapSceneImage;
 	private static int drawCycle;
 	private int trackCount;
-	private final int scrollBarColourMain;
+	private final int SCROLLBAR_GRIP_FOREGROUND;
 	private int friendsListAction;
 	private final int[] characterEditIdentityKits;
 	private int moveItemSlotEnd;
@@ -438,7 +438,7 @@ public final class Client extends RSApplet {
 	private boolean cutsceneActive;
 	static int tick;
 	private static final String validUserPassChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!\"\243$%^&*()-_=+[{]};:'@#~,<.>/?\\| ";
-	private RSImageProducer aRSImageProducer_1163;
+	private RSImageProducer tabImageProducer;
 	private RSImageProducer minimapImageProducer;
 	private RSImageProducer gameScreenImageProducer;
 	private RSImageProducer chatboxImageProducer;
@@ -455,9 +455,9 @@ public final class Client extends RSApplet {
 			2, 2, 2, 2, 2, 2, 2, 2, 2, 3 };
 	private int reportAbuseInterfaceID;
 	private NodeList spawnObjectList;
-	private int[] chatboxLineOffset;
-	private int[] anIntArray1181;
-	private int[] anIntArray1182;
+	private int[] chatboxLineOffsets;
+	private int[] sidebarOffsets;
+	private int[] viewportOffsets;
 	private byte[][] terrainData;
 	private int cameraVertical;
 	private int cameraHorizontal;
@@ -476,7 +476,7 @@ public final class Client extends RSApplet {
 	private Sprite flameLeftBackground2;
 	private Sprite flameRightBackground2;
 	private final int[] cameraAmplitude;
-	static final int[] anIntArray1204 = { 9104, 10275, 7595, 3610, 7975, 8526,
+	static final int[] BEARD_COLOURS = { 9104, 10275, 7595, 3610, 7975, 8526,
 			918, 38802, 24466, 10145, 58654, 5027, 1457, 16565, 34991, 25486 };
 	private static boolean flagged;
 	private final int[] trackIds;
@@ -497,7 +497,7 @@ public final class Client extends RSApplet {
 	private int inputDialogState;
 	private int nextSong;
 	private boolean songChanging;
-	private final int[] minimapShape2;
+	private final int[] minimapLineWidth;
 	private CollisionMap[] currentCollisionMap;
 	public static int BITFIELD_MAX_VALUE[];
 	private boolean updateChatSettings;
@@ -553,21 +553,22 @@ public final class Client extends RSApplet {
 	private int publicChatMode;
 	private static int currentWalkingQueueSize;
 	private int currentTrackLoop;
+	
 	static {
-		EXPERIENCE_FOR_LEVEL = new int[99];
-		int i = 0;
-		for (int j = 0; j < 99; j++) {
-			int l = j + 1;
-			int i1 = (int) (l + 300D * Math.pow(2D, l / 7D));
-			i += i1;
-			EXPERIENCE_FOR_LEVEL[j] = i / 4;
+		EXPERIENCE_TABLE = new int[99];
+		int totalExp = 0;
+		for (int n = 0; n < 99; n++) {
+			int level = n + 1;
+			int exp = (int) (level + 300D * Math.pow(2D, level / 7D));
+			totalExp += exp;
+			EXPERIENCE_TABLE[n] = totalExp / 4;
 		}
 
 		BITFIELD_MAX_VALUE = new int[32];
-		i = 2;
+		totalExp = 2;
 		for (int k = 0; k < 32; k++) {
-			BITFIELD_MAX_VALUE[k] = i - 1;
-			i += i;
+			BITFIELD_MAX_VALUE[k] = totalExp - 1;
+			totalExp += totalExp;
 		}
 
 	}
@@ -593,20 +594,20 @@ public final class Client extends RSApplet {
 		playerListId = -1;
 		menuOpen = false;
 		inputString = "";
-		maxPlayers = 2048;
-		localPlayerId = 2047;
-		players = new Player[maxPlayers];
-		localPlayers = new int[maxPlayers];
-		playersObserved = new int[maxPlayers];
-		playerAppearanceData = new Buffer[maxPlayers];
+		MAX_ENTITY_COUNT = 2048;
+		LOCAL_PLAYER_ID = 2047;
+		players = new Player[MAX_ENTITY_COUNT];
+		localPlayers = new int[MAX_ENTITY_COUNT];
+		playersObserved = new int[MAX_ENTITY_COUNT];
+		playerAppearanceData = new Buffer[MAX_ENTITY_COUNT];
 		nextCameraRandomisationA = 1;
 		wayPoints = new int[104][104];
-		scrollBarColourLeft = 0x766654;
+		SCROLLBAR_GRIP_HIGHLIGHT = 0x766654;
 		animatedPixels = new byte[16384];
 		skillLevel = new int[Skills.skillsCount];
 		ignoreListAsLongs = new long[100];
 		loadingError = false;
-		scrollBarColourRight = 0x332d25;
+		SCROLLBAR_GRIP_LOWLIGHT = 0x332d25;
 		cameraFrequency = new int[5];
 		tileRenderCount = new int[104][104];
 		chatTypes = new int[100];
@@ -636,7 +637,7 @@ public final class Client extends RSApplet {
 		lastRegionId = -1;
 		hitMarkImage = new Sprite[20];
 		characterEditColours = new int[5];
-		scrollBackgroundColour = 0x23201b;
+		SCROLLBAR_TRACK_COLOUR = 0x23201b;
 		amountOrNameInput = "";
 		projectileQueue = new NodeList();
 		cameraMovedWrite = false;
@@ -648,13 +649,13 @@ public final class Client extends RSApplet {
 		skillMaxLevel = new int[Skills.skillsCount];
 		defaultSettings = new int[2000];
 		characterEditChangeGender = true;
-		minimapShape1 = new int[151];
+		minimapLeft = new int[151];
 		flashingSidebar = -1;
 		stationaryGraphicQueue = new NodeList();
 		compassWidthMap = new int[33];
 		chatboxInterface = new RSInterface();
 		mapSceneImage = new Background[100];
-		scrollBarColourMain = 0x4d4233;
+		SCROLLBAR_GRIP_FOREGROUND = 0x4d4233;
 		characterEditIdentityKits = new int[7];
 		minimapHintX = new int[1000];
 		minimapHintY = new int[1000];
@@ -702,7 +703,7 @@ public final class Client extends RSApplet {
 		currentTabId = 3;
 		redrawChatbox = false;
 		songChanging = true;
-		minimapShape2 = new int[151];
+		minimapLineWidth = new int[151];
 		currentCollisionMap = new CollisionMap[4];
 		updateChatSettings = false;
 		privateMessages = new int[100];
@@ -972,7 +973,7 @@ public final class Client extends RSApplet {
 		if (entity.interactingEntity >= 32768) {
 			int targetPlayerId = entity.interactingEntity - 32768;
 			if (targetPlayerId == playerListId)
-				targetPlayerId = localPlayerId;
+				targetPlayerId = LOCAL_PLAYER_ID;
 			Player player = players[targetPlayerId];
 			if (player != null) {
 				int distanceX = entity.x - player.x;
@@ -1947,7 +1948,7 @@ public final class Client extends RSApplet {
 		walkingQueueX = null;
 		walkingQueueY = null;
 		animatedPixels = null;
-		aRSImageProducer_1163 = null;
+		tabImageProducer = null;
 		minimapImageProducer = null;
 		gameScreenImageProducer = null;
 		chatboxImageProducer = null;
@@ -2047,14 +2048,14 @@ public final class Client extends RSApplet {
 	}
 	private void clearObjectSpawnRequests() {
 		GameObjectSpawnRequest spawnRequest = (GameObjectSpawnRequest) spawnObjectList
-				.getBack();
+				.peekLast();
 		for (; spawnRequest != null; spawnRequest = (GameObjectSpawnRequest) spawnObjectList
 				.reverseGetNext())
 			if (spawnRequest.delayUntilRespawn == -1) {
 				spawnRequest.delayUntilSpawn = 0;
 				configureSpawnRequest(spawnRequest);
 			} else {
-				spawnRequest.remove();
+				spawnRequest.unlink();
 			}
 
 	}
@@ -2168,7 +2169,7 @@ public final class Client extends RSApplet {
 			int delayUntilSpawn) {
 		GameObjectSpawnRequest request = null;
 		for (GameObjectSpawnRequest request2 = (GameObjectSpawnRequest) spawnObjectList
-				.getBack(); request2 != null; request2 = (GameObjectSpawnRequest) spawnObjectList
+				.peekLast(); request2 != null; request2 = (GameObjectSpawnRequest) spawnObjectList
 				.reverseGetNext()) {
 			if (request2.z != z || request2.x != x || request2.y != y
 					|| request2.objectType != type)
@@ -2197,7 +2198,7 @@ public final class Client extends RSApplet {
 		for (int p = -1; p < localPlayerCount; p++) {
 			int pId;
 			if (p == -1)
-				pId = localPlayerId;
+				pId = LOCAL_PLAYER_ID;
 			else
 				pId = localPlayers[p];
 			Player player = players[pId];
@@ -3505,7 +3506,7 @@ public final class Client extends RSApplet {
 	}
 	private void drawChatArea() {
 		chatboxImageProducer.initDrawingArea();
-		Rasterizer.lineOffsets = chatboxLineOffset;
+		Rasterizer.lineOffsets = chatboxLineOffsets;
 		chatBackgroundImage.drawImage(0, 0);
 		if (messagePromptRaised) {
 			fontBold.drawCentredText(chatboxInputNeededString, 239, 40, 0);
@@ -3649,7 +3650,7 @@ public final class Client extends RSApplet {
 			drawMenu();
 		chatboxImageProducer.drawGraphics(357, super.gameGraphics, 17);
 		gameScreenImageProducer.initDrawingArea();
-		Rasterizer.lineOffsets = anIntArray1182;
+		Rasterizer.lineOffsets = viewportOffsets;
 	}
 	private void drawFlames() {
 		drawingFlames = true;
@@ -3804,12 +3805,12 @@ public final class Client extends RSApplet {
 				for (int colour = 0; colour < 5; colour++)
 					if (characterEditColours[colour] != 0) {
 						model.recolour(
-								playerBodyRecolours[colour][0],
-								playerBodyRecolours[colour][characterEditColours[colour]]);
+								APPEARANCE_COLOURS[colour][0],
+								APPEARANCE_COLOURS[colour][characterEditColours[colour]]);
 						if (colour == 1)
 							model.recolour(
-									anIntArray1204[0],
-									anIntArray1204[characterEditColours[colour]]);
+									BEARD_COLOURS[0],
+									BEARD_COLOURS[characterEditColours[colour]]);
 					}
 
 				model.createBones();
@@ -4534,7 +4535,7 @@ public final class Client extends RSApplet {
 	void drawLoadingText(int percentage, String text) {
 		loadingBarPercentage = percentage;
 		loadingBarText = text;
-		resetImageProducers();
+		setupLoginScreen();
 		if (archiveTitle == null) {
 			super.drawLoadingText(percentage, text);
 			return;
@@ -4578,7 +4579,7 @@ public final class Client extends RSApplet {
 		}
 	}
 	private void drawLoginScreen(boolean originalLoginScreen) {
-		resetImageProducers();
+		setupLoginScreen();
 		loginBoxLeftBackgroundTile.initDrawingArea();
 		titleBoxImage.drawImage(0, 0);
 		int x = 360;
@@ -4785,8 +4786,8 @@ public final class Client extends RSApplet {
 		int angle = cameraHorizontal + minimapRotation & 0x7ff;
 		int centreX = 48 + localPlayer.x / 32;
 		int centreY = 464 - localPlayer.y / 32;
-		minimapImage.rotate(151, angle, minimapShape2, 256 + minimapZoom,
-				minimapShape1, centreY, 5, 25, 146, centreX);
+		minimapImage.rotate(151, angle, minimapLineWidth, 256 + minimapZoom,
+				minimapLeft, centreY, 5, 25, 146, centreX);
 		minimapCompassImage.rotate(33, cameraHorizontal, compassWidthMap, 256,
 				compassHingeSize, 25, 0, 0, 33, 25);
 		for (int icon = 0; icon < minimapHintCount; icon++) {
@@ -5099,8 +5100,8 @@ public final class Client extends RSApplet {
 			}
 	}
 	private void drawTabArea() {
-		aRSImageProducer_1163.initDrawingArea();
-		Rasterizer.lineOffsets = anIntArray1181;
+		tabImageProducer.initDrawingArea();
+		Rasterizer.lineOffsets = sidebarOffsets;
 		inventoryBackgroundImage.drawImage(0, 0);
 		if (inventoryOverlayInterfaceID != -1)
 			drawInterface(0, 0, RSInterface.cache[inventoryOverlayInterfaceID],
@@ -5110,9 +5111,9 @@ public final class Client extends RSApplet {
 					RSInterface.cache[tabInterfaceIDs[currentTabId]], 0);
 		if (menuOpen && menuScreenArea == 1)
 			drawMenu();
-		aRSImageProducer_1163.drawGraphics(205, super.gameGraphics, 553);
+		tabImageProducer.drawGraphics(205, super.gameGraphics, 553);
 		gameScreenImageProducer.initDrawingArea();
-		Rasterizer.lineOffsets = anIntArray1182;
+		Rasterizer.lineOffsets = viewportOffsets;
 	}
 	private void drawTooltip() {
 		if (menuActionRow < 2 && itemSelected == 0 && spellSelected == 0)
@@ -5375,7 +5376,7 @@ public final class Client extends RSApplet {
 				}
 
 				for (GameObjectSpawnRequest spawnRequest = (GameObjectSpawnRequest) spawnObjectList
-						.getBack(); spawnRequest != null; spawnRequest = (GameObjectSpawnRequest) spawnObjectList
+						.peekLast(); spawnRequest != null; spawnRequest = (GameObjectSpawnRequest) spawnObjectList
 						.reverseGetNext())
 					if (spawnRequest.x >= playerPositionX
 							&& spawnRequest.x < playerPositionX + 8
@@ -5454,7 +5455,7 @@ public final class Client extends RSApplet {
 				skillLevel[_skillId] = _skillLevel;
 				skillMaxLevel[_skillId] = 1;
 				for (int level = 0; level < 98; level++)
-					if (_skillExp >= EXPERIENCE_FOR_LEVEL[level])
+					if (_skillExp >= EXPERIENCE_TABLE[level])
 						skillMaxLevel[_skillId] = level + 2;
 
 				packetOpcode = -1;
@@ -5659,7 +5660,7 @@ public final class Client extends RSApplet {
 						npc.y -= _y * 128;
 					}
 				}
-				for (int p = 0; p < maxPlayers; p++) {
+				for (int p = 0; p < MAX_ENTITY_COUNT; p++) {
 					Player player = players[p];
 					if (player != null) {
 						for (int waypoint = 0; waypoint < 10; waypoint++) {
@@ -5700,13 +5701,13 @@ public final class Client extends RSApplet {
 					}
 				}
 				for (GameObjectSpawnRequest spawnRequest = (GameObjectSpawnRequest) spawnObjectList
-						.getBack(); spawnRequest != null; spawnRequest = (GameObjectSpawnRequest) spawnObjectList
+						.peekLast(); spawnRequest != null; spawnRequest = (GameObjectSpawnRequest) spawnObjectList
 						.reverseGetNext()) {
 					spawnRequest.x -= _x;
 					spawnRequest.y -= _y;
 					if (spawnRequest.x < 0 || spawnRequest.y < 0
 							|| spawnRequest.x >= 104 || spawnRequest.y >= 104)
-						spawnRequest.remove();
+						spawnRequest.unlink();
 				}
 
 				if (destinationX != 0) {
@@ -7076,7 +7077,7 @@ public final class Client extends RSApplet {
 				destinationY = 0;
 				localPlayerCount = 0;
 				npcCount = 0;
-				for (int p = 0; p < maxPlayers; p++) {
+				for (int p = 0; p < MAX_ENTITY_COUNT; p++) {
 					players[p] = null;
 					playerAppearanceData[p] = null;
 				}
@@ -7084,7 +7085,7 @@ public final class Client extends RSApplet {
 				for (int n = 0; n < 16384; n++)
 					npcs[n] = null;
 
-				localPlayer = players[localPlayerId] = new Player();
+				localPlayer = players[LOCAL_PLAYER_ID] = new Player();
 				projectileQueue.removeAll();
 				stationaryGraphicQueue.removeAll();
 				for (int l2 = 0; l2 < 4; l2++) {
@@ -7122,7 +7123,7 @@ public final class Client extends RSApplet {
 					playerActionUnpinned[a] = false;
 				}
 				currentWalkingQueueSize = 0;
-				resetImageProducers2();
+				setupGameplayScreen();
 				return;
 			}
 			if (responseCode == 3) {
@@ -7285,17 +7286,20 @@ public final class Client extends RSApplet {
 		nextSong = -1;
 		prevSong = 0;
 	}
-	private void mainGameProcessor() {
+	private void updateGame() {
 		if (systemUpdateTime > 1)
 			systemUpdateTime--;
+		
 		if (idleLogout > 0)
 			idleLogout--;
+		
 		for (int j = 0; j < 5; j++)
 			if (!handleIncomingData())
 				break;
 
 		if (!loggedIn)
 			return;
+		
 		synchronized (mouseDetection.syncObject) {
 			if (flagged) {
 				if (super.clickType != 0 || mouseDetection.coordsIndex >= 40) {
@@ -7939,7 +7943,7 @@ public final class Client extends RSApplet {
 			if (x >= 0 && y >= 0 && x < 104 && y < 104) {
 				NodeList groundItemArray = groundArray[plane][x][y];
 				if (groundItemArray != null) {
-					for (Item item = (Item) groundItemArray.getBack(); item != null; item = (Item) groundItemArray
+					for (Item item = (Item) groundItemArray.peekLast(); item != null; item = (Item) groundItemArray
 							.reverseGetNext()) {
 						if (item.itemId != (targetItemId & 0x7fff)
 								|| item.itemCount != targetItemAmount)
@@ -7999,15 +8003,15 @@ public final class Client extends RSApplet {
 			if (x >= 0 && y >= 0 && x < 104 && y < 104) {
 				NodeList groundItems = groundArray[plane][x][y];
 				if (groundItems != null) {
-					for (Item item = (Item) groundItems.getBack(); item != null; item = (Item) groundItems
+					for (Item item = (Item) groundItems.peekLast(); item != null; item = (Item) groundItems
 							.reverseGetNext()) {
 						if (item.itemId != (itemId & 0x7fff))
 							continue;
-						item.remove();
+						item.unlink();
 						break;
 					}
 
-					if (groundItems.getBack() == null)
+					if (groundItems.peekLast() == null)
 						groundArray[plane][x][y] = null;
 					spawnGroundItem(x, y);
 				}
@@ -8285,7 +8289,7 @@ public final class Client extends RSApplet {
 				if (opcode == 5)
 					value = interfaceSettings[opcodes[counter++]];
 				if (opcode == 6)
-					value = EXPERIENCE_FOR_LEVEL[skillMaxLevel[opcodes[counter++]] - 1];
+					value = EXPERIENCE_TABLE[skillMaxLevel[opcodes[counter++]] - 1];
 				if (opcode == 7)
 					value = (interfaceSettings[opcodes[counter++]] * 100) / 46875;
 				if (opcode == 8)
@@ -8464,12 +8468,12 @@ public final class Client extends RSApplet {
 			return;
 		tick++;
 		if (!loggedIn)
-			processLoginScreenInput();
+			updateLogin();
 		else
-			mainGameProcessor();
+			updateGame();
 		processOnDemandQueue();
 	}
-	private void processLoginScreenInput() {
+	private void updateLogin() {
 		if (loginScreenState == 0) {
 			int x = super.width / 2 - 80;
 			int y = super.height / 2 + 20;
@@ -9180,9 +9184,9 @@ public final class Client extends RSApplet {
 			int direction = contentType & 1;
 			int currentId = characterEditColours[type];
 			if (direction == 0 && --currentId < 0)
-				currentId = playerBodyRecolours[type].length - 1;
+				currentId = APPEARANCE_COLOURS[type].length - 1;
 			if (direction == 1
-					&& ++currentId >= playerBodyRecolours[type].length)
+					&& ++currentId >= APPEARANCE_COLOURS[type].length)
 				currentId = 0;
 			characterEditColours[type] = currentId;
 			characterModelChanged = true;
@@ -9285,30 +9289,30 @@ public final class Client extends RSApplet {
 		scrollBarUp.drawImage(x, y);
 		scrollBarDown.drawImage(x, (y + height) - 16);
 		DrawingArea.drawFilledRectangle(x, y + 16, 16, height - 32,
-				scrollBackgroundColour);
+				SCROLLBAR_TRACK_COLOUR);
 		int length = ((height - 32) * height) / scrollMaximum;
 		if (length < 8)
 			length = 8;
 		int scrollCurrent = ((height - 32 - length) * scrollPosition)
 				/ (scrollMaximum - height);
 		DrawingArea.drawFilledRectangle(x, y + 16 + scrollCurrent, 16, length,
-				scrollBarColourMain);
+				SCROLLBAR_GRIP_FOREGROUND);
 		DrawingArea.drawVerticalLine(x, y + 16 + scrollCurrent, length,
-				scrollBarColourLeft);
+				SCROLLBAR_GRIP_HIGHLIGHT);
 		DrawingArea.drawVerticalLine(x + 1, y + 16 + scrollCurrent, length,
-				scrollBarColourLeft);
+				SCROLLBAR_GRIP_HIGHLIGHT);
 		DrawingArea.drawHorizontalLine(y + 16 + scrollCurrent, x, 16,
-				scrollBarColourLeft);
+				SCROLLBAR_GRIP_HIGHLIGHT);
 		DrawingArea.drawHorizontalLine(y + 17 + scrollCurrent, x, 16,
-				scrollBarColourLeft);
+				SCROLLBAR_GRIP_HIGHLIGHT);
 		DrawingArea.drawVerticalLine(x + 15, y + 16 + scrollCurrent, length,
-				scrollBarColourRight);
+				SCROLLBAR_GRIP_LOWLIGHT);
 		DrawingArea.drawVerticalLine(x + 14, y + 17 + scrollCurrent,
-				length - 1, scrollBarColourRight);
+				length - 1, SCROLLBAR_GRIP_LOWLIGHT);
 		DrawingArea.drawHorizontalLine(y + 15 + scrollCurrent + length, x, 16,
-				scrollBarColourRight);
+				SCROLLBAR_GRIP_LOWLIGHT);
 		DrawingArea.drawHorizontalLine(y + 14 + scrollCurrent + length, x + 1,
-				15, scrollBarColourRight);
+				15, SCROLLBAR_GRIP_LOWLIGHT);
 	}
 	private void renderGameView() {
 		renderCount++;
@@ -9515,7 +9519,7 @@ public final class Client extends RSApplet {
 			int hash;
 			if (localPlayerOnly) {
 				player = localPlayer;
-				hash = localPlayerId << 14;
+				hash = LOCAL_PLAYER_ID << 14;
 			} else {
 				player = players[localPlayers[p]];
 				hash = localPlayers[p] << 14;
@@ -9554,10 +9558,10 @@ public final class Client extends RSApplet {
 
 	}
 	private void renderProjectiles() {
-		for (Projectile projectile = (Projectile) projectileQueue.getBack(); projectile != null; projectile = (Projectile) projectileQueue
+		for (Projectile projectile = (Projectile) projectileQueue.peekLast(); projectile != null; projectile = (Projectile) projectileQueue
 				.reverseGetNext())
 			if (projectile.plane != plane || tick > projectile.endCycle)
-				projectile.remove();
+				projectile.unlink();
 			else if (tick >= projectile.delay) {
 				if (projectile.targetId > 0) {
 					NPC npc = npcs[projectile.targetId - 1];
@@ -9593,16 +9597,16 @@ public final class Client extends RSApplet {
 	}
 	private void renderStationaryGraphics() {
 		StationaryGraphic stationaryGraphic = (StationaryGraphic) stationaryGraphicQueue
-				.getBack();
+				.peekLast();
 		for (; stationaryGraphic != null; stationaryGraphic = (StationaryGraphic) stationaryGraphicQueue
 				.reverseGetNext())
 			if (stationaryGraphic.z != plane
 					|| stationaryGraphic.transformationCompleted)
-				stationaryGraphic.remove();
+				stationaryGraphic.unlink();
 			else if (tick >= stationaryGraphic.stationaryGraphicLoopCycle) {
 				stationaryGraphic.animationStep(animationTimePassed);
 				if (stationaryGraphic.transformationCompleted)
-					stationaryGraphic.remove();
+					stationaryGraphic.unlink();
 				else
 					worldController.addEntityA(stationaryGraphic.z,
 							stationaryGraphic.x, stationaryGraphic.y,
@@ -9721,13 +9725,13 @@ public final class Client extends RSApplet {
 		Archive streamLoader_1 = new Archive(abyte0);
 		return streamLoader_1;
 	}
-	private void resetImageProducers() {
+	private void setupLoginScreen() {
 		if (topLeft1BackgroundTile != null)
 			return;
 		super.fullGameScreen = null;
 		chatboxImageProducer = null;
 		minimapImageProducer = null;
-		aRSImageProducer_1163 = null;
+		tabImageProducer = null;
 		gameScreenImageProducer = null;
 		chatSettingImageProducer = null;
 		bottomSideIconImageProducer = null;
@@ -9762,7 +9766,7 @@ public final class Client extends RSApplet {
 		}
 		welcomeScreenRaised = true;
 	}
-	private void resetImageProducers2() {
+	private void setupGameplayScreen() {
 		if (chatboxImageProducer != null)
 			return;
 		nullLoader();
@@ -9780,7 +9784,7 @@ public final class Client extends RSApplet {
 		minimapImageProducer = new RSImageProducer(172, 156, getGameComponent());
 		DrawingArea.clear();
 		minimapBackgroundImage.drawImage(0, 0);
-		aRSImageProducer_1163 = new RSImageProducer(190, 261,
+		tabImageProducer = new RSImageProducer(190, 261,
 				getGameComponent());
 		gameScreenImageProducer = new RSImageProducer(512, 334,
 				getGameComponent());
@@ -10118,7 +10122,7 @@ public final class Client extends RSApplet {
 	private void spawnGameObjects() {
 		if (loadingStage == 2) {
 			for (GameObjectSpawnRequest spawnRequest = (GameObjectSpawnRequest) spawnObjectList
-					.getBack(); spawnRequest != null; spawnRequest = (GameObjectSpawnRequest) spawnObjectList
+					.peekLast(); spawnRequest != null; spawnRequest = (GameObjectSpawnRequest) spawnObjectList
 					.reverseGetNext()) {
 				if (spawnRequest.delayUntilRespawn > 0)
 					spawnRequest.delayUntilRespawn--;
@@ -10130,7 +10134,7 @@ public final class Client extends RSApplet {
 								spawnRequest.face, spawnRequest.type,
 								spawnRequest.x, spawnRequest.objectType,
 								spawnRequest.id);
-						spawnRequest.remove();
+						spawnRequest.unlink();
 					}
 				} else {
 					if (spawnRequest.delayUntilSpawn > 0)
@@ -10149,11 +10153,11 @@ public final class Client extends RSApplet {
 						spawnRequest.delayUntilSpawn = -1;
 						if (spawnRequest.id2 == spawnRequest.id
 								&& spawnRequest.id == -1)
-							spawnRequest.remove();
+							spawnRequest.unlink();
 						else if (spawnRequest.id2 == spawnRequest.id
 								&& spawnRequest.face2 == spawnRequest.face
 								&& spawnRequest.type2 == spawnRequest.type)
-							spawnRequest.remove();
+							spawnRequest.unlink();
 					}
 				}
 			}
@@ -10167,7 +10171,7 @@ public final class Client extends RSApplet {
 		}
 		int highestValue = -99999999;
 		Object item = null;
-		for (Item currentItem = (Item) groundItemList.getBack(); currentItem != null; currentItem = (Item) groundItemList
+		for (Item currentItem = (Item) groundItemList.peekLast(); currentItem != null; currentItem = (Item) groundItemList
 				.reverseGetNext()) {
 			ItemDefinition itemDef = ItemDefinition
 					.getDefinition(currentItem.itemId);
@@ -10180,10 +10184,10 @@ public final class Client extends RSApplet {
 			}
 		}
 
-		groundItemList.insertTail(((Node) (item)));
+		groundItemList.insertTail(((Link) (item)));
 		Object secondItem = null;
 		Object thirdItem = null;
-		for (Item currentItem = (Item) groundItemList.getBack(); currentItem != null; currentItem = (Item) groundItemList
+		for (Item currentItem = (Item) groundItemList.peekLast(); currentItem != null; currentItem = (Item) groundItemList
 				.reverseGetNext()) {
 			if (currentItem.itemId != ((Item) (item)).itemId
 					&& secondItem == null)
@@ -10584,32 +10588,33 @@ public final class Client extends RSApplet {
 			}
 
 			for (int _y = 5; _y < 156; _y++) {
-				int firstXOfLine = 999;
-				int lastXOfLine = 0;
+				int min = 999;
+				int max = 0;
 				for (int _x = 25; _x < 172; _x++) {
 					if (minimapBackgroundImage.imagePixels[_x + _y
 							* minimapBackgroundImage.imageWidth] == 0
 							&& (_x > 34 || _y > 34)) {
-						if (firstXOfLine == 999)
-							firstXOfLine = _x;
+						if (min == 999)
+							min = _x;
 						continue;
 					}
-					if (firstXOfLine == 999)
+					if (min == 999)
 						continue;
-					lastXOfLine = _x;
+					max = _x;
 					break;
 				}
 
-				minimapShape1[_y - 5] = firstXOfLine - 25;
-				minimapShape2[_y - 5] = lastXOfLine - firstXOfLine;
+				minimapLeft[_y - 5] = min - 25;
+				minimapLineWidth[_y - 5] = max - min;
 			}
 
 			Rasterizer.setBounds(479, 96);
-			chatboxLineOffset = Rasterizer.lineOffsets;
+			chatboxLineOffsets = Rasterizer.lineOffsets;
 			Rasterizer.setBounds(190, 261);
-			anIntArray1181 = Rasterizer.lineOffsets;
+			sidebarOffsets = Rasterizer.lineOffsets;
 			Rasterizer.setBounds(512, 334);
-			anIntArray1182 = Rasterizer.lineOffsets;
+			viewportOffsets = Rasterizer.lineOffsets;
+			
 			int ai[] = new int[9];
 			for (int i8 = 0; i8 < 9; i8++) {
 				int k8 = 128 + i8 * 32 + 15;
@@ -10809,7 +10814,7 @@ public final class Client extends RSApplet {
 				if (chatEffectsDisabled == 0) {
 					int colour = 0xffff00;
 					if (overheadTextColour[m] < 6)
-						colour = overheadTextColours[overheadTextColour[m]];
+						colour = SPOKEN_TEXT_COLOURS[overheadTextColour[m]];
 					if (overheadTextColour[m] == 6)
 						colour = renderCount % 20 >= 10 ? 0xffff00 : 0xff0000;
 					if (overheadTextColour[m] == 7)
@@ -10982,7 +10987,7 @@ public final class Client extends RSApplet {
 			return;
 		int movementUpdateType = stream.readBits(2);
 		if (movementUpdateType == 0) {
-			playersObserved[playersObservedCount++] = localPlayerId;
+			playersObserved[playersObservedCount++] = LOCAL_PLAYER_ID;
 			return;
 		}
 		if (movementUpdateType == 1) {
@@ -10990,7 +10995,7 @@ public final class Client extends RSApplet {
 			localPlayer.move(false, direction);
 			int furtherUpdateRequired = stream.readBits(1);
 			if (furtherUpdateRequired == 1)
-				playersObserved[playersObservedCount++] = localPlayerId;
+				playersObserved[playersObservedCount++] = LOCAL_PLAYER_ID;
 			return;
 		}
 		if (movementUpdateType == 2) {
@@ -11000,7 +11005,7 @@ public final class Client extends RSApplet {
 			localPlayer.move(true, currentDirection);
 			int updateRequired = stream.readBits(1);
 			if (updateRequired == 1)
-				playersObserved[playersObservedCount++] = localPlayerId;
+				playersObserved[playersObservedCount++] = LOCAL_PLAYER_ID;
 			return;
 		}
 		if (movementUpdateType == 3) {
@@ -11008,7 +11013,7 @@ public final class Client extends RSApplet {
 			int clearWaypointQueue = stream.readBits(1);
 			int updateRequired = stream.readBits(1);
 			if (updateRequired == 1)
-				playersObserved[playersObservedCount++] = localPlayerId;
+				playersObserved[playersObservedCount++] = LOCAL_PLAYER_ID;
 			int x = stream.readBits(7);
 			int y = stream.readBits(7);
 			localPlayer.setPos(y, x, clearWaypointQueue == 1);
@@ -11411,7 +11416,7 @@ public final class Client extends RSApplet {
 		for (int p = -1; p < localPlayerCount; p++) {
 			int id;
 			if (p == -1)
-				id = localPlayerId;
+				id = LOCAL_PLAYER_ID;
 			else
 				id = localPlayers[p];
 			Player player = players[id];

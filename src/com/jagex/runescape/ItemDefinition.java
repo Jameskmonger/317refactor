@@ -50,7 +50,7 @@ public final class ItemDefinition {
 			Sprite sprite = (Sprite) spriteCache.get(itemId);
 			if (sprite != null && sprite.maxHeight != itemAmount
 					&& sprite.maxHeight != -1) {
-				sprite.remove();
+				sprite.unlink();
 				sprite = null;
 			}
 			if (sprite != null)
@@ -208,9 +208,9 @@ public final class ItemDefinition {
 
 	public int id;
 
-	static MRUNodes spriteCache = new MRUNodes(100);
+	static LinkedList spriteCache = new LinkedList(100);
 
-	public static MRUNodes modelCache = new MRUNodes(50);
+	public static LinkedList modelCache = new LinkedList(50);
 
 	private int[] originalModelColors;
 

@@ -22,7 +22,7 @@ package com.jagex.runescape;
 import java.math.BigInteger;
 import com.jagex.runescape.sign.signlink;
 
-public final class Buffer extends NodeSub {
+public final class Buffer extends QueueLink {
 
 	public static Buffer create() {
 		synchronized (nodeList) {

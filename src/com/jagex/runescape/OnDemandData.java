@@ -19,7 +19,7 @@ package com.jagex.runescape;
  * This file was renamed as part of the 317refactor project.
  */
 
-public final class OnDemandData extends NodeSub {
+public final class OnDemandData extends QueueLink {
 
 	int dataType;
 

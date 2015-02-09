@@ -95,7 +95,7 @@ public final class EntityDefinition {
 	private int contrast;
 	public boolean visible;
 	private int[] modelIds;
-	public static MRUNodes modelCache = new MRUNodes(30);
+	public static LinkedList modelCache = new LinkedList(30);
 	private EntityDefinition() {
 		turnLeftAnimationId = -1;
 		varBitId = -1;

@@ -19,22 +19,19 @@ package com.jagex.runescape;
  * This file was renamed as part of the 317refactor project.
  */
 
-public class NodeSub extends Node {
+public class Link {
 
-	public NodeSub prevNodeSub;
-
-	NodeSub nextNodeSub;
-
-	public static int anInt1305;
-	public NodeSub() {
-	}
-	public final void unlinkSub() {
-		if (nextNodeSub == null) {
-		} else {
-			nextNodeSub.prevNodeSub = prevNodeSub;
-			prevNodeSub.nextNodeSub = nextNodeSub;
-			prevNodeSub = null;
-			nextNodeSub = null;
+	public long id;
+	public Link previous;
+	public Link next;
+	
+	public final void unlink() {
+		if (next == null) { }
+		else {
+			next.previous = previous;
+			previous.next = next;
+			previous = null;
+			next = null;
 		}
 	}
 }

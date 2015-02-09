@@ -36,7 +36,7 @@ public final class Player extends Entity {
 	private int gender;
 
 	public String name;
-	static MRUNodes mruNodes = new MRUNodes(260);
+	static LinkedList mruNodes = new LinkedList(260);
 	public int combatLevel;
 	public int headIcon;
 	public int modifiedAppearanceStartTime;
@@ -143,11 +143,11 @@ public final class Player extends Entity {
 			for (int part = 0; part < 5; part++)
 				if (bodyPartColour[part] != 0) {
 					model_1.recolour(
-							Client.playerBodyRecolours[part][0],
-							Client.playerBodyRecolours[part][bodyPartColour[part]]);
+							Client.APPEARANCE_COLOURS[part][0],
+							Client.APPEARANCE_COLOURS[part][bodyPartColour[part]]);
 					if (part == 1)
-						model_1.recolour(Client.anIntArray1204[0],
-								Client.anIntArray1204[bodyPartColour[part]]);
+						model_1.recolour(Client.BEARD_COLOURS[0],
+								Client.BEARD_COLOURS[bodyPartColour[part]]);
 				}
 
 			model_1.createBones();
@@ -210,11 +210,11 @@ public final class Player extends Entity {
 		Model model = new Model(k, aclass30_sub2_sub4_sub6s);
 		for (int j1 = 0; j1 < 5; j1++)
 			if (bodyPartColour[j1] != 0) {
-				model.recolour(Client.playerBodyRecolours[j1][0],
-						Client.playerBodyRecolours[j1][bodyPartColour[j1]]);
+				model.recolour(Client.APPEARANCE_COLOURS[j1][0],
+						Client.APPEARANCE_COLOURS[j1][bodyPartColour[j1]]);
 				if (j1 == 1)
-					model.recolour(Client.anIntArray1204[0],
-							Client.anIntArray1204[bodyPartColour[j1]]);
+					model.recolour(Client.BEARD_COLOURS[0],
+							Client.BEARD_COLOURS[bodyPartColour[j1]]);
 			}
 
 		return model;
@@ -321,7 +321,7 @@ public final class Player extends Entity {
 		for (int bodyPart = 0; bodyPart < 5; bodyPart++) {
 			int colour = stream.getUnsignedByte();
 			if (colour < 0
-					|| colour >= Client.playerBodyRecolours[bodyPart].length)
+					|| colour >= Client.APPEARANCE_COLOURS[bodyPart].length)
 				colour = 0;
 			bodyPartColour[bodyPart] = colour;
 		}

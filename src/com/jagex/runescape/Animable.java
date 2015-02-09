@@ -19,7 +19,7 @@ package com.jagex.runescape;
  * This file was renamed as part of the 317refactor project.
  */
 
-public class Animable extends NodeSub {
+public class Animable extends QueueLink {
 	VertexNormal vertexNormals[];
 	public int modelHeight;
 

@@ -19,7 +19,7 @@ package com.jagex.runescape;
  * This file was renamed as part of the 317refactor project.
  */
 
-public final class Ground extends Node {
+public final class Ground extends Link {
 
 	int z;
 
