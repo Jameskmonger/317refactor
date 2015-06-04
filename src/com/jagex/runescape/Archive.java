@@ -38,8 +38,8 @@ final class Archive {
 	
 	public Archive(byte data[]) {
 		Buffer buffer = new Buffer(data);
-		int compressedLength = buffer.get24BitInt();
-		int decompressedLength = buffer.get24BitInt();
+		int compressedLength = buffer.get3Bytes();
+		int decompressedLength = buffer.get3Bytes();
 		
 		if (decompressedLength != compressedLength) {
 			byte output[] = new byte[compressedLength];
@@ -62,8 +62,8 @@ final class Archive {
 		
 		for (int index = 0; index < fileCount; index++) {
 			hashes[index] = buffer.getInt();
-			decompressedSizes[index] = buffer.get24BitInt();
-			compressedSizes[index] = buffer.get24BitInt();
+			decompressedSizes[index] = buffer.get3Bytes();
+			compressedSizes[index] = buffer.get3Bytes();
 			initialOffsets[index] = offset;
 			offset += compressedSizes[index];
 		}
