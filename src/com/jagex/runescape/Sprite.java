@@ -47,7 +47,7 @@ public final class Sprite extends DrawingArea {
 		int length = indexStream.getUnsignedByte();
 		int pixels[] = new int[length];
 		for (int p = 0; p < length - 1; p++) {
-			pixels[p + 1] = indexStream.get24BitInt();
+			pixels[p + 1] = indexStream.get3Bytes();
 			if (pixels[p + 1] == 0)
 				pixels[p + 1] = 1;
 		}

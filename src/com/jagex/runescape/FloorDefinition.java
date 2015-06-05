@@ -59,7 +59,7 @@ public final class FloorDefinition {
 			if (attribute == 0)
 				return;
 			else if (attribute == 1) {
-				rgbColour = stream.get24BitInt();
+				rgbColour = stream.get3Bytes();
 				rgbToHls(rgbColour);
 			} else if (attribute == 2)
 				textureId = stream.getUnsignedByte();
@@ -74,7 +74,7 @@ public final class FloorDefinition {
 				int oldSat = saturation;
 				int oldLight = lightness;
 				int oldHue = hue;
-				int rgb = stream.get24BitInt();
+				int rgb = stream.get3Bytes();
 				rgbToHls(rgb);
 				hue2 = oldHue2;
 				saturation = oldSat;

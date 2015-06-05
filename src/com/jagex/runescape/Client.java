@@ -5341,7 +5341,7 @@ public final class Client extends RSApplet {
 				daysSinceRecoveryChange = inStream.getUnsignedByteC();
 				unreadMessages = inStream.getUnsignedLEShortA();
 				membership = inStream.getUnsignedByte();
-				lastAddress = inStream.getInt1();
+				lastAddress = inStream.getMEBInt();
 				daysSinceLogin = inStream.getUnsignedLEShort();
 				if (lastAddress != 0 && openInterfaceId == -1) {
 					signlink.dnslookup(TextClass.decodeDNS(lastAddress));
@@ -5449,7 +5449,7 @@ public final class Client extends RSApplet {
 			if (packetOpcode == 134) {
 				redrawTab = true;
 				int _skillId = inStream.getUnsignedByte();
-				int _skillExp = inStream.getInt2();
+				int _skillExp = inStream.getMESInt();
 				int _skillLevel = inStream.getUnsignedByte();
 				skillExperience[_skillId] = _skillExp;
 				skillLevel[_skillId] = _skillLevel;
@@ -5505,7 +5505,7 @@ public final class Client extends RSApplet {
 			}
 			if (packetOpcode == 70) {
 				int x = inStream.getShort();
-				int y = inStream.getForceLEShort();
+				int y = inStream.getSignedLEShort();
 				int interfaceId = inStream.getUnsignedShort();
 				RSInterface rsInterface = RSInterface.cache[interfaceId];
 				rsInterface.x = x;
@@ -5719,7 +5719,7 @@ public final class Client extends RSApplet {
 				return true;
 			}
 			if (packetOpcode == 208) {
-				int interfaceId = inStream.getForceLEShort();
+				int interfaceId = inStream.getSignedLEShort();
 				if (interfaceId >= 0)
 					loadInterface(interfaceId);
 				walkableInterfaceId = interfaceId;
@@ -6167,7 +6167,7 @@ public final class Client extends RSApplet {
 				for (int item = 0; item < itemCount; item++) {
 					int stackSize = inStream.getUnsignedByte();
 					if (stackSize == 255)
-						stackSize = inStream.getInt1();
+						stackSize = inStream.getMEBInt();
 					rsInterface.inventoryItemId[item] = inStream
 							.getUnsignedShortA();
 					rsInterface.inventoryStackSize[item] = stackSize;
@@ -6273,7 +6273,7 @@ public final class Client extends RSApplet {
 				return true;
 			}
 			if (packetOpcode == 218) {
-				int interfaceId = inStream.getForceLEShortA();
+				int interfaceId = inStream.getSignedLEShortA();
 				dialogID = interfaceId;
 				redrawChatbox = true;
 				packetOpcode = -1;
@@ -6281,7 +6281,7 @@ public final class Client extends RSApplet {
 			}
 			if (packetOpcode == 87) {
 				int settingId = inStream.getUnsignedShort();
-				int settingValue = inStream.getInt2();
+				int settingValue = inStream.getMESInt();
 				defaultSettings[settingId] = settingValue;
 				if (interfaceSettings[settingId] != settingValue) {
 					interfaceSettings[settingId] = settingValue;
@@ -7019,7 +7019,7 @@ public final class Client extends RSApplet {
 					loginStream.putInt(expectedCRCs[crc]);
 
 				loginStream.putBytes(stream.buffer, stream.position, 0);
-				stream.encryption = new ISAACRandomGenerator(seed);
+				stream.encryptor = new ISAACRandomGenerator(seed);
 				for (int index = 0; index < 4; index++)
 					seed[index] += 50;
 
@@ -9647,7 +9647,7 @@ public final class Client extends RSApplet {
 				datainputstream.readFully(abyte1, 0, 6);
 				Buffer stream = new Buffer(abyte1);
 				stream.position = 3;
-				int i2 = stream.get24BitInt() + 6;
+				int i2 = stream.get3Bytes() + 6;
 				int j2 = 6;
 				abyte0 = new byte[i2];
 				System.arraycopy(abyte1, 0, abyte0, 0, 6);
