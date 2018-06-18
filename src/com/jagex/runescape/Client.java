@@ -342,7 +342,7 @@ public final class Client extends RSApplet {
 	private final int[] minimapLeft;
 	private Archive archiveTitle;
 	private int flashingSidebar;
-	private int multiCombatZone;
+	private boolean multiCombatZone;
 	private NodeList stationaryGraphicQueue;
 	private final int[] compassWidthMap;
 	private final RSInterface chatboxInterface;
@@ -3472,7 +3472,7 @@ public final class Client extends RSApplet {
 			drawTooltip();
 		} else if (menuScreenArea == 0)
 			drawMenu();
-		if (multiCombatZone == 1)
+		if (multiCombatZone)
 			headIcons[1].drawImage(472, 296);
 		if (displayFpsAndMemory) {
 			int x = 507;
@@ -6306,7 +6306,7 @@ public final class Client extends RSApplet {
 				return true;
 			}
 			if (packetOpcode == 61) {
-				multiCombatZone = inStream.getUnsignedByte();
+				multiCombatZone = inStream.getUnsignedByte() == 1;
 				packetOpcode = -1;
 				return true;
 			}
@@ -7109,7 +7109,7 @@ public final class Client extends RSApplet {
 				menuOpen = false;
 				messagePromptRaised = false;
 				clickToContinueString = null;
-				multiCombatZone = 0;
+				multiCombatZone = false;
 				flashingSidebar = -1;
 				characterEditChangeGender = true;
 				changeGender();
