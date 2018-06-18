@@ -413,7 +413,7 @@ public final class Client extends RSApplet {
 	private int cameraRandomisationV;
 	private int nextCameraRandomisationV;
 	private int menuActionRow;
-	private int spellSelected;
+	private boolean spellSelected;
 	private int selectedSpellId;
 	private int spellUsableOn;
 	private String spellTooltip;
@@ -1015,7 +1015,7 @@ public final class Client extends RSApplet {
 		}
 	}
 	private void build3dScreenMenu() {
-		if (itemSelected == false && spellSelected == 0) {
+		if (itemSelected == false && spellSelected == false) {
 			menuActionName[menuActionRow] = "Walk here";
 			menuActionId[menuActionRow] = 516;
 			menuActionData2[menuActionRow] = super.mouseX;
@@ -1047,7 +1047,7 @@ public final class Client extends RSApplet {
 					menuActionData2[menuActionRow] = x;
 					menuActionData3[menuActionRow] = y;
 					menuActionRow++;
-				} else if (spellSelected == 1) {
+				} else if (spellSelected) {
 					if ((spellUsableOn & 4) == 4) {
 						menuActionName[menuActionRow] = spellTooltip + " @cya@"
 								+ object.name;
@@ -1151,7 +1151,7 @@ public final class Client extends RSApplet {
 							menuActionData2[menuActionRow] = x;
 							menuActionData3[menuActionRow] = y;
 							menuActionRow++;
-						} else if (spellSelected == 1) {
+						} else if (spellSelected) {
 							if ((spellUsableOn & 1) == 1) {
 								menuActionName[menuActionRow] = spellTooltip
 										+ " @lre@" + definition.name;
@@ -1373,7 +1373,7 @@ public final class Client extends RSApplet {
 						menuActionRow++;
 					}
 				}
-				if (childInterface.actionType == 2 && spellSelected == 0
+				if (childInterface.actionType == 2 && spellSelected == false
 						&& k >= i2 && i1 >= j2 && k < i2 + childInterface.width
 						&& i1 < j2 + childInterface.height) {
 					String actionName = childInterface.selectedActionName;
@@ -1461,8 +1461,7 @@ public final class Client extends RSApplet {
 											menuActionData3[menuActionRow] = childInterface.id;
 											menuActionRow++;
 										}
-									} else if (spellSelected == 1
-											&& childInterface.inventory) {
+									} else if (spellSelected && childInterface.inventory) {
 										if ((spellUsableOn & 0x10) == 16) {
 											menuActionName[menuActionRow] = spellTooltip
 													+ " @lre@" + itemDef.name;
@@ -1600,7 +1599,7 @@ public final class Client extends RSApplet {
 			menuActionRow++;
 			return;
 		}
-		if (spellSelected == 1) {
+		if (spellSelected) {
 			if ((spellUsableOn & 2) == 2) {
 				menuActionName[menuActionRow] = spellTooltip + " @yel@"
 						+ displayName;
@@ -1692,7 +1691,7 @@ public final class Client extends RSApplet {
 			menuActionData2[menuActionRow] = data2;
 			menuActionData3[menuActionRow] = data3;
 			menuActionRow++;
-		} else if (spellSelected == 1) {
+		} else if (spellSelected) {
 			if ((spellUsableOn & 8) == 8) {
 				menuActionName[menuActionRow] = spellTooltip + " @whi@"
 						+ displayName;
@@ -2614,7 +2613,7 @@ public final class Client extends RSApplet {
 		}
 		if (menuAction == 626) {
 			RSInterface rsInterface = RSInterface.cache[actionInformation1];
-			spellSelected = 1;
+			spellSelected = true;
 			selectedSpellId = actionInformation1;
 			spellUsableOn = rsInterface.spellUsableOn;
 			itemSelected = false;
@@ -3086,7 +3085,7 @@ public final class Client extends RSApplet {
 			lastItemSelectedInterface = actionInformation1;
 			useItemId = actionTarget;
 			selectedItemName = ItemDefinition.getDefinition(actionTarget).name;
-			spellSelected = 0;
+			spellSelected = false;
 			redrawTab = true;
 			return;
 		}
@@ -3128,10 +3127,10 @@ public final class Client extends RSApplet {
 			pushMessage(description, 0, "");
 		}
 		itemSelected = false;
-		spellSelected = 0;
+		spellSelected = false;
 		redrawTab = true;
-
 	}
+
 	private void doFlamesDrawing() {
 		char c = '\u0100';
 		if (anInt1040 > 0) {
@@ -5115,12 +5114,12 @@ public final class Client extends RSApplet {
 		Rasterizer.lineOffsets = viewportOffsets;
 	}
 	private void drawTooltip() {
-		if (menuActionRow < 2 && itemSelected == false && spellSelected == 0)
+		if (menuActionRow < 2 && itemSelected == false && spellSelected == false)
 			return;
 		String s;
 		if (itemSelected && menuActionRow < 2)
 			s = "Use " + selectedItemName + " with...";
-		else if (spellSelected == 1 && menuActionRow < 2)
+		else if (spellSelected && menuActionRow < 2)
 			s = spellTooltip + "...";
 		else
 			s = menuActionName[menuActionRow - 1];
@@ -7061,7 +7060,7 @@ public final class Client extends RSApplet {
 					chatMessages[m] = null;
 
 				itemSelected = false;
-				spellSelected = 0;
+				spellSelected = false;
 				loadingStage = 0;
 				trackCount = 0;
 				cameraRandomisationH = (int) (Math.random() * 100D) - 50;
@@ -8573,11 +8572,12 @@ public final class Client extends RSApplet {
 			}
 		}
 	}
+	
 	private void processMenuClick() {
 		if (activeInterfaceType != 0)
 			return;
 		int clickType = super.clickType;
-		if (spellSelected == 1 && super.clickX >= 516 && super.clickY >= 160
+		if (spellSelected && super.clickX >= 516 && super.clickY >= 160
 				&& super.clickX <= 765 && super.clickY <= 205)
 			clickType = 0;
 		if (menuOpen) {
