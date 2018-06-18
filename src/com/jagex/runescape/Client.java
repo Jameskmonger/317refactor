@@ -4223,7 +4223,7 @@ public final class Client extends RSApplet {
 										|| activeInterfaceType != 0
 										&& moveItemSlotStart == item) {
 									int outlineColour = 0;
-									if (itemSelected == true
+									if (itemSelected
 											&& lastItemSelectedSlot == item
 											&& lastItemSelectedInterface == childInterface.id)
 										outlineColour = 0xffffff;
@@ -8572,7 +8572,7 @@ public final class Client extends RSApplet {
 			}
 		}
 	}
-	
+
 	private void processMenuClick() {
 		if (activeInterfaceType != 0)
 			return;
