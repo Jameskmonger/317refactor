@@ -545,7 +545,7 @@ public final class Client extends RSApplet {
 	private int nextCameraRandomisationH;
 	private int[] walkingQueueX;
 	private int[] walkingQueueY;
-	private int itemSelected;
+	private boolean itemSelected;
 	private int lastItemSelectedSlot;
 	private int lastItemSelectedInterface;
 	private int useItemId;
@@ -1015,7 +1015,7 @@ public final class Client extends RSApplet {
 		}
 	}
 	private void build3dScreenMenu() {
-		if (itemSelected == 0 && spellSelected == 0) {
+		if (itemSelected == false && spellSelected == 0) {
 			menuActionName[menuActionRow] = "Walk here";
 			menuActionId[menuActionRow] = 516;
 			menuActionData2[menuActionRow] = super.mouseX;
@@ -1039,7 +1039,7 @@ public final class Client extends RSApplet {
 					object = object.getChildDefinition();
 				if (object == null)
 					continue;
-				if (itemSelected == 1) {
+				if (itemSelected) {
 					menuActionName[menuActionRow] = "Use " + selectedItemName
 							+ " with @cya@" + object.name;
 					menuActionId[menuActionRow] = 62;
@@ -1142,7 +1142,7 @@ public final class Client extends RSApplet {
 							.getNext()) {
 						ItemDefinition definition = ItemDefinition
 								.getDefinition(item.itemId);
-						if (itemSelected == 1) {
+						if (itemSelected) {
 							menuActionName[menuActionRow] = "Use "
 									+ selectedItemName + " with @lre@"
 									+ definition.name;
@@ -1448,8 +1448,7 @@ public final class Client extends RSApplet {
 								if (childInterface.inventoryItemId[slot] > 0) {
 									ItemDefinition itemDef = ItemDefinition
 											.getDefinition(childInterface.inventoryItemId[slot] - 1);
-									if (itemSelected == 1
-											&& childInterface.inventory) {
+									if (itemSelected && childInterface.inventory) {
 										if (childInterface.id != lastItemSelectedInterface
 												|| slot != lastItemSelectedSlot) {
 											menuActionName[menuActionRow] = "Use "
@@ -1591,7 +1590,7 @@ public final class Client extends RSApplet {
 					+ getCombatLevelDifferenceColour(localPlayer.combatLevel,
 							definition.combatLevel) + " (level-"
 					+ definition.combatLevel + ")";
-		if (itemSelected == 1) {
+		if (itemSelected) {
 			menuActionName[menuActionRow] = "Use " + selectedItemName
 					+ " with @yel@" + displayName;
 			menuActionId[menuActionRow] = 582;
@@ -1685,7 +1684,7 @@ public final class Client extends RSApplet {
 					+ player.combatLevel + ")";
 		else
 			displayName = player.name + " (skill-" + player.skill + ")";
-		if (itemSelected == 1) {
+		if (itemSelected) {
 			menuActionName[menuActionRow] = "Use " + selectedItemName
 					+ " with @whi@" + displayName;
 			menuActionId[menuActionRow] = 491;
@@ -2618,7 +2617,7 @@ public final class Client extends RSApplet {
 			spellSelected = 1;
 			selectedSpellId = actionInformation1;
 			spellUsableOn = rsInterface.spellUsableOn;
-			itemSelected = 0;
+			itemSelected = false;
 			redrawTab = true;
 			String namePartOne = rsInterface.selectedActionName;
 			if (namePartOne.indexOf(" ") != -1)
@@ -3082,7 +3081,7 @@ public final class Client extends RSApplet {
 			}
 		}
 		if (menuAction == 447) {
-			itemSelected = 1;
+			itemSelected = true;
 			lastItemSelectedSlot = actionInformation2;
 			lastItemSelectedInterface = actionInformation1;
 			useItemId = actionTarget;
@@ -3128,7 +3127,7 @@ public final class Client extends RSApplet {
 				description = "It's a " + item.name + ".";
 			pushMessage(description, 0, "");
 		}
-		itemSelected = 0;
+		itemSelected = false;
 		spellSelected = 0;
 		redrawTab = true;
 
@@ -4225,7 +4224,7 @@ public final class Client extends RSApplet {
 										|| activeInterfaceType != 0
 										&& moveItemSlotStart == item) {
 									int outlineColour = 0;
-									if (itemSelected == 1
+									if (itemSelected == true
 											&& lastItemSelectedSlot == item
 											&& lastItemSelectedInterface == childInterface.id)
 										outlineColour = 0xffffff;
@@ -5116,10 +5115,10 @@ public final class Client extends RSApplet {
 		Rasterizer.lineOffsets = viewportOffsets;
 	}
 	private void drawTooltip() {
-		if (menuActionRow < 2 && itemSelected == 0 && spellSelected == 0)
+		if (menuActionRow < 2 && itemSelected == false && spellSelected == 0)
 			return;
 		String s;
-		if (itemSelected == 1 && menuActionRow < 2)
+		if (itemSelected && menuActionRow < 2)
 			s = "Use " + selectedItemName + " with...";
 		else if (spellSelected == 1 && menuActionRow < 2)
 			s = spellTooltip + "...";
@@ -7061,7 +7060,7 @@ public final class Client extends RSApplet {
 				for (int m = 0; m < 100; m++)
 					chatMessages[m] = null;
 
-				itemSelected = 0;
+				itemSelected = false;
 				spellSelected = 0;
 				loadingStage = 0;
 				trackCount = 0;
