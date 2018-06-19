@@ -820,12 +820,10 @@ public final class Client extends RSApplet {
 				animated |= animateInterface(timePassed, childInterface.id);
 			if (childInterface.type == 6
 					&& (childInterface.animationIdDefault != -1 || childInterface.animationIdActive != -1)) {
-				boolean selected = interfaceIsSelected(childInterface);
-				int animationId;
-				if (selected)
-					animationId = childInterface.animationIdActive;
-				else
-					animationId = childInterface.animationIdDefault;
+				int animationId = interfaceIsActive(childInterface)
+					? childInterface.animationIdActive
+					: childInterface.animationIdDefault;
+
 				if (animationId != -1) {
 					AnimationSequence animation = AnimationSequence.animations[animationId];
 					for (childInterface.animationDuration += timePassed; childInterface.animationDuration > animation
@@ -4325,7 +4323,7 @@ public final class Client extends RSApplet {
 							|| anInt1026 == childInterface.id)
 						hover = true;
 					int colour;
-					if (interfaceIsSelected(childInterface)) {
+					if (interfaceIsActive(childInterface)) {
 						colour = childInterface.colourActive;
 						if (hover && childInterface.colourActiveHover != 0)
 							colour = childInterface.colourActiveHover;
@@ -4361,7 +4359,7 @@ public final class Client extends RSApplet {
 							|| anInt1026 == childInterface.id)
 						hover = true;
 					int colour;
-					if (interfaceIsSelected(childInterface)) {
+					if (interfaceIsActive(childInterface)) {
 						colour = childInterface.colourActive;
 						if (hover && childInterface.colourActiveHover != 0)
 							colour = childInterface.colourActiveHover;
@@ -4450,11 +4448,10 @@ public final class Client extends RSApplet {
 					}
 
 				} else if (childInterface.type == 5) {
-					Sprite sprite;
-					if (interfaceIsSelected(childInterface))
-						sprite = childInterface.spriteActive;
-					else
-						sprite = childInterface.spriteDefault;
+					Sprite sprite = interfaceIsActive(childInterface)
+						? childInterface.spriteActive
+						: childInterface.spriteDefault;
+					
 					if (sprite != null)
 						sprite.drawImage(_x, _y);
 				} else if (childInterface.type == 6) {
@@ -4466,23 +4463,21 @@ public final class Client extends RSApplet {
 							* childInterface.modelZoom >> 16;
 					int cosine = Rasterizer.COSINE[childInterface.modelRotationX]
 							* childInterface.modelZoom >> 16;
-					boolean selected = interfaceIsSelected(childInterface);
-					int anim;
-					if (selected)
-						anim = childInterface.animationIdActive;
-					else
-						anim = childInterface.animationIdDefault;
+					boolean active = interfaceIsActive(childInterface);
+					int anim = active
+						? childInterface.animationIdActive
+						: childInterface.animationIdDefault;
+
 					Model model;
 					if (anim == -1) {
-						model = childInterface.getAnimatedModel(-1, -1,
-								selected);
+						model = childInterface.getAnimatedModel(-1, -1, active);
 					} else {
 						AnimationSequence animation = AnimationSequence.animations[anim];
 						model = childInterface
 								.getAnimatedModel(
 										animation.frame1Ids[childInterface.animationFrame],
 										animation.frame2Ids[childInterface.animationFrame],
-										selected);
+										active);
 					}
 					if (model != null)
 						model.renderSingle(childInterface.modelRotationY, 0,
@@ -6600,7 +6595,7 @@ public final class Client extends RSApplet {
 		else
 			return "*";
 	}
-	private boolean interfaceIsSelected(RSInterface rsInterface) {
+	private boolean interfaceIsActive(RSInterface rsInterface) {
 		if (rsInterface.conditionType == null)
 			return false;
 		for (int c = 0; c < rsInterface.conditionType.length; c++) {
