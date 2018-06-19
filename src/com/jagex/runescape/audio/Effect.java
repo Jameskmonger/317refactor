@@ -62,9 +62,11 @@ public final class Effect {
 
 	private int loopStart;
 	private int loopEnd;
+
 	private Effect() {
 		instruments = new Instrument[10];
 	}
+
 	private void decode(Buffer stream) {
 		for (int instrument = 0; instrument < 10; instrument++) {
 			int active = stream.getUnsignedByte();
@@ -77,6 +79,7 @@ public final class Effect {
 		loopStart = stream.getUnsignedLEShort();
 		loopEnd = stream.getUnsignedLEShort();
 	}
+
 	private Buffer encode(int loops) {
 		int size = mix(loops);
 		output.position = 0;
@@ -96,11 +99,11 @@ public final class Effect {
 		output.position += size;
 		return output;
 	}
+
 	private int getDelay() {
 		int delay = 0x98967f;
 		for (int instrument = 0; instrument < 10; instrument++)
-			if (instruments[instrument] != null
-					&& instruments[instrument].begin / 20 < delay)
+			if (instruments[instrument] != null && instruments[instrument].begin / 20 < delay)
 				delay = instruments[instrument].begin / 20;
 
 		if (loopStart < loopEnd && loopStart / 20 < delay)
@@ -117,22 +120,20 @@ public final class Effect {
 		}
 		return delay;
 	}
+
 	private int mix(int loopCount) {
 		int _duration = 0;
 		for (int instrument = 0; instrument < 10; instrument++)
 			if (instruments[instrument] != null
-					&& instruments[instrument].duration
-							+ instruments[instrument].begin > _duration)
-				_duration = instruments[instrument].duration
-						+ instruments[instrument].begin;
+					&& instruments[instrument].duration + instruments[instrument].begin > _duration)
+				_duration = instruments[instrument].duration + instruments[instrument].begin;
 
 		if (_duration == 0)
 			return 0;
 		int stepCount = (22050 * _duration) / 1000;
 		int loopStart = (22050 * this.loopStart) / 1000;
 		int loopEnd = (22050 * this.loopEnd) / 1000;
-		if (loopStart < 0 || loopStart > stepCount || loopEnd < 0
-				|| loopEnd > stepCount || loopStart >= loopEnd)
+		if (loopStart < 0 || loopStart > stepCount || loopEnd < 0 || loopEnd > stepCount || loopStart >= loopEnd)
 			loopCount = 0;
 		int length = stepCount + (loopEnd - loopStart) * (loopCount - 1);
 		for (int offset = 44; offset < length + 44; offset++)
@@ -142,8 +143,7 @@ public final class Effect {
 			if (instruments[instrument] != null) {
 				int duration = (instruments[instrument].duration * 22050) / 1000;
 				int offset = (instruments[instrument].begin * 22050) / 1000;
-				int samples[] = instruments[instrument].synthesise(duration,
-						instruments[instrument].duration);
+				int samples[] = instruments[instrument].synthesise(duration, instruments[instrument].duration);
 				for (int sample = 0; sample < duration; sample++)
 					_output[sample + offset + 44] += (byte) (samples[sample] >> 8);
 
@@ -159,8 +159,7 @@ public final class Effect {
 
 			for (int loop = 1; loop < loopCount; loop++) {
 				int _offset = (loopEnd - loopStart) * loop;
-				System.arraycopy(_output, loopStart, _output, loopStart
-						+ _offset, loopEnd - loopStart);
+				System.arraycopy(_output, loopStart, _output, loopStart + _offset, loopEnd - loopStart);
 
 			}
 

@@ -45,9 +45,11 @@ public final class Varp {
 	private static int[] anIntArray703;
 	public int type;
 	public boolean aBoolean713;
+
 	private Varp() {
 		aBoolean713 = false;
 	}
+
 	private void readValues(Buffer stream, int i) {
 		do {
 			int opcode = stream.getUnsignedByte();

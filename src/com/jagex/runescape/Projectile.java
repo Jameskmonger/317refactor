@@ -49,9 +49,9 @@ final class Projectile extends Animable {
 	public int rotationY;
 	private int rotationX;
 	public final int plane;
-	public Projectile(int startSlope, int endZ, int delay, int endCycle,
-			int startDistance, int plane, int startZ, int startY, int startX,
-			int targetId, int l2) {
+
+	public Projectile(int startSlope, int endZ, int delay, int endCycle, int startDistance, int plane, int startZ,
+			int startY, int startX, int targetId, int l2) {
 		moving = false;
 		this.animation = SpotAnimation.cache[l2];
 		this.plane = plane;
@@ -66,6 +66,7 @@ final class Projectile extends Animable {
 		this.endZ = endZ;
 		this.moving = false;
 	}
+
 	@Override
 	public Model getRotatedModel() {
 		Model model = animation.getModel();
@@ -74,8 +75,7 @@ final class Projectile extends Animable {
 		int frameId = -1;
 		if (animation.sequences != null)
 			frameId = animation.sequences.frame2Ids[animationFrame];
-		Model rotatedModel = new Model(true, Animation.isNullFrame(frameId),
-				false, model);
+		Model rotatedModel = new Model(true, Animation.isNullFrame(frameId), false, model);
 		if (frameId != -1) {
 			rotatedModel.createBones();
 			rotatedModel.applyTransformation(frameId);
@@ -83,25 +83,23 @@ final class Projectile extends Animable {
 			rotatedModel.vertexSkin = null;
 		}
 		if (animation.scaleXY != 128 || animation.scaleZ != 128)
-			rotatedModel.scaleT(animation.scaleXY, animation.scaleXY,
-					animation.scaleZ);
+			rotatedModel.scaleT(animation.scaleXY, animation.scaleXY, animation.scaleZ);
 		rotatedModel.rotateX(rotationX);
-		rotatedModel.applyLighting(64 + animation.modelLightFalloff,
-				850 + animation.modelLightAmbient, -30, -50, -30, true);
+		rotatedModel.applyLighting(64 + animation.modelLightFalloff, 850 + animation.modelLightAmbient, -30, -50, -30,
+				true);
 		return rotatedModel;
 	}
+
 	public void move(int time) {
 		moving = true;
 		currentX += speedVectorX * time;
 		currentY += speedVectorY * time;
-		currentZ += speedVectorZ * time + 0.5D * offsetZ
-				* time * time;
+		currentZ += speedVectorZ * time + 0.5D * offsetZ * time * time;
 		speedVectorZ += offsetZ * time;
 		rotationY = (int) (Math.atan2(speedVectorX, speedVectorY) * 325.94900000000001D) + 1024 & 0x7ff;
 		rotationX = (int) (Math.atan2(speedVectorZ, speedScalar) * 325.94900000000001D) & 0x7ff;
 		if (animation.sequences != null)
-			for (duration += time; duration > animation.sequences
-					.getFrameLength(animationFrame);) {
+			for (duration += time; duration > animation.sequences.getFrameLength(animationFrame);) {
 				duration -= animation.sequences.getFrameLength(animationFrame) + 1;
 				animationFrame++;
 				if (animationFrame >= animation.sequences.frameCount)
@@ -109,29 +107,22 @@ final class Projectile extends Animable {
 			}
 
 	}
-	public void trackTarget(int currentCycle, int targetY, int targetZ,
-			int targetX) {
+
+	public void trackTarget(int currentCycle, int targetY, int targetZ, int targetX) {
 		if (!moving) {
 			double distanceX = targetX - startX;
 			double distanceY = targetY - startY;
-			double distanceScalar = Math.sqrt(distanceX * distanceX + distanceY
-					* distanceY);
-			currentX = startX + (distanceX * startDistance)
-					/ distanceScalar;
-			currentY = startY + (distanceY * startDistance)
-					/ distanceScalar;
+			double distanceScalar = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
+			currentX = startX + (distanceX * startDistance) / distanceScalar;
+			currentY = startY + (distanceY * startDistance) / distanceScalar;
 			currentZ = startZ;
 		}
 		double cyclesRemaining = (endCycle + 1) - currentCycle;
 		speedVectorX = (targetX - currentX) / cyclesRemaining;
 		speedVectorY = (targetY - currentY) / cyclesRemaining;
-		speedScalar = Math.sqrt(speedVectorX * speedVectorX + speedVectorY
-				* speedVectorY);
+		speedScalar = Math.sqrt(speedVectorX * speedVectorX + speedVectorY * speedVectorY);
 		if (!moving)
-			speedVectorZ = -speedScalar
-					* Math.tan(startSlope * 0.02454369D);
-		offsetZ = (2D * (targetZ - currentZ - speedVectorZ
-				* cyclesRemaining))
-				/ (cyclesRemaining * cyclesRemaining);
+			speedVectorZ = -speedScalar * Math.tan(startSlope * 0.02454369D);
+		offsetZ = (2D * (targetZ - currentZ - speedVectorZ * cyclesRemaining)) / (cyclesRemaining * cyclesRemaining);
 	}
 }

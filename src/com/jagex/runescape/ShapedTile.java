@@ -45,33 +45,21 @@ final class ShapedTile {
 	static final int[] anIntArray693 = { 1, 0 };
 	static final int[] anIntArray694 = { 2, 1 };
 	static final int[] anIntArray695 = { 3, 3 };
-	private static final int[][] shapedTilePointData = { { 1, 3, 5, 7 },
-			{ 1, 3, 5, 7 }, { 1, 3, 5, 7 }, { 1, 3, 5, 7, 6 },
-			{ 1, 3, 5, 7, 6 }, { 1, 3, 5, 7, 6 }, { 1, 3, 5, 7, 6 },
-			{ 1, 3, 5, 7, 2, 6 }, { 1, 3, 5, 7, 2, 8 }, { 1, 3, 5, 7, 2, 8 },
-			{ 1, 3, 5, 7, 11, 12 }, { 1, 3, 5, 7, 11, 12 },
+	private static final int[][] shapedTilePointData = { { 1, 3, 5, 7 }, { 1, 3, 5, 7 }, { 1, 3, 5, 7 },
+			{ 1, 3, 5, 7, 6 }, { 1, 3, 5, 7, 6 }, { 1, 3, 5, 7, 6 }, { 1, 3, 5, 7, 6 }, { 1, 3, 5, 7, 2, 6 },
+			{ 1, 3, 5, 7, 2, 8 }, { 1, 3, 5, 7, 2, 8 }, { 1, 3, 5, 7, 11, 12 }, { 1, 3, 5, 7, 11, 12 },
 			{ 1, 3, 5, 7, 13, 14 } };
-	private static final int[][] shapedTileElementData = {
-			{ 0, 1, 2, 3, 0, 0, 1, 3 },
-			{ 1, 1, 2, 3, 1, 0, 1, 3 },
-			{ 0, 1, 2, 3, 1, 0, 1, 3 },
-			{ 0, 0, 1, 2, 0, 0, 2, 4, 1, 0, 4, 3 },
-			{ 0, 0, 1, 4, 0, 0, 4, 3, 1, 1, 2, 4 },
-			{ 0, 0, 4, 3, 1, 0, 1, 2, 1, 0, 2, 4 },
-			{ 0, 1, 2, 4, 1, 0, 1, 4, 1, 0, 4, 3 },
-			{ 0, 4, 1, 2, 0, 4, 2, 5, 1, 0, 4, 5, 1, 0, 5, 3 },
-			{ 0, 4, 1, 2, 0, 4, 2, 3, 0, 4, 3, 5, 1, 0, 4, 5 },
+	private static final int[][] shapedTileElementData = { { 0, 1, 2, 3, 0, 0, 1, 3 }, { 1, 1, 2, 3, 1, 0, 1, 3 },
+			{ 0, 1, 2, 3, 1, 0, 1, 3 }, { 0, 0, 1, 2, 0, 0, 2, 4, 1, 0, 4, 3 }, { 0, 0, 1, 4, 0, 0, 4, 3, 1, 1, 2, 4 },
+			{ 0, 0, 4, 3, 1, 0, 1, 2, 1, 0, 2, 4 }, { 0, 1, 2, 4, 1, 0, 1, 4, 1, 0, 4, 3 },
+			{ 0, 4, 1, 2, 0, 4, 2, 5, 1, 0, 4, 5, 1, 0, 5, 3 }, { 0, 4, 1, 2, 0, 4, 2, 3, 0, 4, 3, 5, 1, 0, 4, 5 },
 			{ 0, 0, 4, 5, 1, 4, 1, 2, 1, 4, 2, 3, 1, 4, 3, 5 },
-			{ 0, 0, 1, 5, 0, 1, 4, 5, 0, 1, 2, 4, 1, 0, 5, 3, 1, 5, 4, 3, 1, 4,
-					2, 3 },
-			{ 1, 0, 1, 5, 1, 1, 4, 5, 1, 1, 2, 4, 0, 0, 5, 3, 0, 5, 4, 3, 0, 4,
-					2, 3 },
-			{ 1, 0, 5, 4, 1, 0, 1, 5, 0, 0, 4, 3, 0, 4, 5, 3, 0, 5, 2, 3, 0, 1,
-					2, 5 } };
-	ShapedTile(int tileX, int yA, int yB, int yC, int yD, int tileZ,
-			int rotation, int texture, int shape, int cA, int cAA, int cB,
-			int cBA, int cC, int cCA, int cD, int cDA, int overlayRGB,
-			int underlayRGB) {
+			{ 0, 0, 1, 5, 0, 1, 4, 5, 0, 1, 2, 4, 1, 0, 5, 3, 1, 5, 4, 3, 1, 4, 2, 3 },
+			{ 1, 0, 1, 5, 1, 1, 4, 5, 1, 1, 2, 4, 0, 0, 5, 3, 0, 5, 4, 3, 0, 4, 2, 3 },
+			{ 1, 0, 5, 4, 1, 0, 1, 5, 0, 0, 4, 3, 0, 4, 5, 3, 0, 5, 2, 3, 0, 1, 2, 5 } };
+
+	ShapedTile(int tileX, int yA, int yB, int yC, int yD, int tileZ, int rotation, int texture, int shape, int cA,
+			int cAA, int cB, int cBA, int cC, int cCA, int cD, int cDA, int overlayRGB, int underlayRGB) {
 		flat = !(yA != yB || yA != yD || yA != yC);
 		this.shape = shape;
 		this.rotation = rotation;

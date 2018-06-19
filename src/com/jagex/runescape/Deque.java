@@ -67,6 +67,7 @@ final class Deque {
 			return nodeSub;
 		}
 	}
+
 	public QueueLink reverseGetNext() {
 		QueueLink nodeSub = current;
 		if (nodeSub == head) {

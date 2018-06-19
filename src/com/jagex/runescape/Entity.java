@@ -86,6 +86,7 @@ public class Entity extends Animable {
 	int turnAboutAnimationId;
 	int turnRightAnimationId;
 	int turnLeftAnimationId;
+
 	Entity() {
 		waypointX = new int[10];
 		waypointY = new int[10];
@@ -111,9 +112,11 @@ public class Entity extends Animable {
 		turnRightAnimationId = -1;
 		turnLeftAnimationId = -1;
 	}
+
 	public boolean isVisible() {
 		return false;
 	}
+
 	public final void move(boolean flag, int direction) {
 		int x = waypointX[0];
 		int y = waypointY[0];
@@ -141,8 +144,7 @@ public class Entity extends Animable {
 			x++;
 			y--;
 		}
-		if (animation != -1
-				&& AnimationSequence.animations[animation].precedenceWalking == 1)
+		if (animation != -1 && AnimationSequence.animations[animation].precedenceWalking == 1)
 			animation = -1;
 		if (waypointCount < 9)
 			waypointCount++;
@@ -155,19 +157,19 @@ public class Entity extends Animable {
 		waypointY[0] = y;
 		waypointRan[0] = flag;
 	}
+
 	public final void resetPath() {
 		waypointCount = 0;
 		stepsRemaining = 0;
 	}
+
 	public final void setPos(int x, int y, boolean teleported) {
-		if (animation != -1
-				&& AnimationSequence.animations[animation].precedenceWalking == 1)
+		if (animation != -1 && AnimationSequence.animations[animation].precedenceWalking == 1)
 			animation = -1;
 		if (!teleported) {
 			int distanceX = x - waypointX[0];
 			int distanceY = y - waypointY[0];
-			if (distanceX >= -8 && distanceX <= 8 && distanceY >= -8
-					&& distanceY <= 8) {
+			if (distanceX >= -8 && distanceX <= 8 && distanceY >= -8 && distanceY <= 8) {
 				if (waypointCount < 9)
 					waypointCount++;
 				for (int waypoint = waypointCount; waypoint > 0; waypoint--) {
@@ -190,6 +192,7 @@ public class Entity extends Animable {
 		this.x = waypointX[0] * 128 + boundaryDimension * 64;
 		this.y = waypointY[0] * 128 + boundaryDimension * 64;
 	}
+
 	public final void updateHitData(int type, int damage, int currentTime) {
 		for (int hit = 0; hit < 4; hit++)
 			if (hitsLoopCycle[hit] <= currentTime) {

@@ -46,8 +46,7 @@ final class CollisionMap {
 		clippingData[x][y] |= 0x200000;
 	}
 
-	public void markSolidOccupant(int x, int y, int width, int height,
-			int orientation, boolean impenetrable) {
+	public void markSolidOccupant(int x, int y, int width, int height, int orientation, boolean impenetrable) {
 		int occupied = 256;
 		if (impenetrable)
 			occupied += 0x20000;
@@ -68,8 +67,7 @@ final class CollisionMap {
 
 	}
 
-	public void markWall(int y, int orientation, int x, int position,
-			boolean impenetrable) {
+	public void markWall(int y, int orientation, int x, int position, boolean impenetrable) {
 		x -= insetX;
 		y -= insetY;
 
@@ -193,31 +191,25 @@ final class CollisionMap {
 		}
 	}
 
-	public boolean reachedFacingObject(int startX, int startY, int endX,
-			int endY, int endDistanceX, int endDistanceY, int surroundings) {
+	public boolean reachedFacingObject(int startX, int startY, int endX, int endY, int endDistanceX, int endDistanceY,
+			int surroundings) {
 		int endX2 = (endX + endDistanceX) - 1;
 		int endY2 = (endY + endDistanceY) - 1;
-		if (startX >= endX && startX <= endX2 && startY >= endY
-				&& startY <= endY2)
+		if (startX >= endX && startX <= endX2 && startY >= endY && startY <= endY2)
 			return true;
 		if (startX == endX - 1 && startY >= endY && startY <= endY2
-				&& (clippingData[startX - insetX][startY - insetY] & 8) == 0
-				&& (surroundings & 8) == 0)
+				&& (clippingData[startX - insetX][startY - insetY] & 8) == 0 && (surroundings & 8) == 0)
 			return true;
 		if (startX == endX2 + 1 && startY >= endY && startY <= endY2
-				&& (clippingData[startX - insetX][startY - insetY] & 0x80) == 0
-				&& (surroundings & 2) == 0)
+				&& (clippingData[startX - insetX][startY - insetY] & 0x80) == 0 && (surroundings & 2) == 0)
 			return true;
 		return startY == endY - 1 && startX >= endX && startX <= endX2
-				&& (clippingData[startX - insetX][startY - insetY] & 2) == 0
-				&& (surroundings & 4) == 0 || startY == endY2 + 1
-				&& startX >= endX && startX <= endX2
-				&& (clippingData[startX - insetX][startY - insetY] & 0x20) == 0
-				&& (surroundings & 1) == 0;
+				&& (clippingData[startX - insetX][startY - insetY] & 2) == 0 && (surroundings & 4) == 0
+				|| startY == endY2 + 1 && startX >= endX && startX <= endX2
+						&& (clippingData[startX - insetX][startY - insetY] & 0x20) == 0 && (surroundings & 1) == 0;
 	}
 
-	public boolean reachedWall(int startX, int startY, int endX, int endY,
-			int endPosition, int endOrientation) {
+	public boolean reachedWall(int startX, int startY, int endX, int endY, int endPosition, int endOrientation) {
 		if (startX == endX && startY == endY)
 			return true;
 		startX -= insetX;
@@ -228,38 +220,30 @@ final class CollisionMap {
 			if (endOrientation == 0) {
 				if (startX == endX - 1 && startY == endY)
 					return true;
-				if (startX == endX && startY == endY + 1
-						&& (clippingData[startX][startY] & 0x1280120) == 0)
+				if (startX == endX && startY == endY + 1 && (clippingData[startX][startY] & 0x1280120) == 0)
 					return true;
-				if (startX == endX && startY == endY - 1
-						&& (clippingData[startX][startY] & 0x1280102) == 0)
+				if (startX == endX && startY == endY - 1 && (clippingData[startX][startY] & 0x1280102) == 0)
 					return true;
 			} else if (endOrientation == 1) {
 				if (startX == endX && startY == endY + 1)
 					return true;
-				if (startX == endX - 1 && startY == endY
-						&& (clippingData[startX][startY] & 0x1280108) == 0)
+				if (startX == endX - 1 && startY == endY && (clippingData[startX][startY] & 0x1280108) == 0)
 					return true;
-				if (startX == endX + 1 && startY == endY
-						&& (clippingData[startX][startY] & 0x1280180) == 0)
+				if (startX == endX + 1 && startY == endY && (clippingData[startX][startY] & 0x1280180) == 0)
 					return true;
 			} else if (endOrientation == 2) {
 				if (startX == endX + 1 && startY == endY)
 					return true;
-				if (startX == endX && startY == endY + 1
-						&& (clippingData[startX][startY] & 0x1280120) == 0)
+				if (startX == endX && startY == endY + 1 && (clippingData[startX][startY] & 0x1280120) == 0)
 					return true;
-				if (startX == endX && startY == endY - 1
-						&& (clippingData[startX][startY] & 0x1280102) == 0)
+				if (startX == endX && startY == endY - 1 && (clippingData[startX][startY] & 0x1280102) == 0)
 					return true;
 			} else if (endOrientation == 3) {
 				if (startX == endX && startY == endY - 1)
 					return true;
-				if (startX == endX - 1 && startY == endY
-						&& (clippingData[startX][startY] & 0x1280108) == 0)
+				if (startX == endX - 1 && startY == endY && (clippingData[startX][startY] & 0x1280108) == 0)
 					return true;
-				if (startX == endX + 1 && startY == endY
-						&& (clippingData[startX][startY] & 0x1280180) == 0)
+				if (startX == endX + 1 && startY == endY && (clippingData[startX][startY] & 0x1280180) == 0)
 					return true;
 			}
 		if (endPosition == 2)
@@ -268,29 +252,23 @@ final class CollisionMap {
 					return true;
 				if (startX == endX && startY == endY + 1)
 					return true;
-				if (startX == endX + 1 && startY == endY
-						&& (clippingData[startX][startY] & 0x1280180) == 0)
+				if (startX == endX + 1 && startY == endY && (clippingData[startX][startY] & 0x1280180) == 0)
 					return true;
-				if (startX == endX && startY == endY - 1
-						&& (clippingData[startX][startY] & 0x1280102) == 0)
+				if (startX == endX && startY == endY - 1 && (clippingData[startX][startY] & 0x1280102) == 0)
 					return true;
 			} else if (endOrientation == 1) {
-				if (startX == endX - 1 && startY == endY
-						&& (clippingData[startX][startY] & 0x1280108) == 0)
+				if (startX == endX - 1 && startY == endY && (clippingData[startX][startY] & 0x1280108) == 0)
 					return true;
 				if (startX == endX && startY == endY + 1)
 					return true;
 				if (startX == endX + 1 && startY == endY)
 					return true;
-				if (startX == endX && startY == endY - 1
-						&& (clippingData[startX][startY] & 0x1280102) == 0)
+				if (startX == endX && startY == endY - 1 && (clippingData[startX][startY] & 0x1280102) == 0)
 					return true;
 			} else if (endOrientation == 2) {
-				if (startX == endX - 1 && startY == endY
-						&& (clippingData[startX][startY] & 0x1280108) == 0)
+				if (startX == endX - 1 && startY == endY && (clippingData[startX][startY] & 0x1280108) == 0)
 					return true;
-				if (startX == endX && startY == endY + 1
-						&& (clippingData[startX][startY] & 0x1280120) == 0)
+				if (startX == endX && startY == endY + 1 && (clippingData[startX][startY] & 0x1280120) == 0)
 					return true;
 				if (startX == endX + 1 && startY == endY)
 					return true;
@@ -299,34 +277,28 @@ final class CollisionMap {
 			} else if (endOrientation == 3) {
 				if (startX == endX - 1 && startY == endY)
 					return true;
-				if (startX == endX && startY == endY + 1
-						&& (clippingData[startX][startY] & 0x1280120) == 0)
+				if (startX == endX && startY == endY + 1 && (clippingData[startX][startY] & 0x1280120) == 0)
 					return true;
-				if (startX == endX + 1 && startY == endY
-						&& (clippingData[startX][startY] & 0x1280180) == 0)
+				if (startX == endX + 1 && startY == endY && (clippingData[startX][startY] & 0x1280180) == 0)
 					return true;
 				if (startX == endX && startY == endY - 1)
 					return true;
 			}
 		if (endPosition == 9) {
-			if (startX == endX && startY == endY + 1
-					&& (clippingData[startX][startY] & 0x20) == 0)
+			if (startX == endX && startY == endY + 1 && (clippingData[startX][startY] & 0x20) == 0)
 				return true;
-			if (startX == endX && startY == endY - 1
-					&& (clippingData[startX][startY] & 2) == 0)
+			if (startX == endX && startY == endY - 1 && (clippingData[startX][startY] & 2) == 0)
 				return true;
-			if (startX == endX - 1 && startY == endY
-					&& (clippingData[startX][startY] & 8) == 0)
+			if (startX == endX - 1 && startY == endY && (clippingData[startX][startY] & 8) == 0)
 				return true;
-			if (startX == endX + 1 && startY == endY
-					&& (clippingData[startX][startY] & 0x80) == 0)
+			if (startX == endX + 1 && startY == endY && (clippingData[startX][startY] & 0x80) == 0)
 				return true;
 		}
 		return false;
 	}
 
-	public boolean reachedWallDecoration(int startX, int startY, int endX,
-			int endY, int endPosition, int endOrientation) {
+	public boolean reachedWallDecoration(int startX, int startY, int endX, int endY, int endPosition,
+			int endOrientation) {
 		if (startX == endX && startY == endY)
 			return true;
 		startX -= insetX;
@@ -337,47 +309,35 @@ final class CollisionMap {
 			if (endPosition == 7)
 				endOrientation = endOrientation + 2 & 3;
 			if (endOrientation == 0) {
-				if (startX == endX + 1 && startY == endY
-						&& (clippingData[startX][startY] & 0x80) == 0)
+				if (startX == endX + 1 && startY == endY && (clippingData[startX][startY] & 0x80) == 0)
 					return true;
-				if (startX == endX && startY == endY - 1
-						&& (clippingData[startX][startY] & 2) == 0)
+				if (startX == endX && startY == endY - 1 && (clippingData[startX][startY] & 2) == 0)
 					return true;
 			} else if (endOrientation == 1) {
-				if (startX == endX - 1 && startY == endY
-						&& (clippingData[startX][startY] & 8) == 0)
+				if (startX == endX - 1 && startY == endY && (clippingData[startX][startY] & 8) == 0)
 					return true;
-				if (startX == endX && startY == endY - 1
-						&& (clippingData[startX][startY] & 2) == 0)
+				if (startX == endX && startY == endY - 1 && (clippingData[startX][startY] & 2) == 0)
 					return true;
 			} else if (endOrientation == 2) {
-				if (startX == endX - 1 && startY == endY
-						&& (clippingData[startX][startY] & 8) == 0)
+				if (startX == endX - 1 && startY == endY && (clippingData[startX][startY] & 8) == 0)
 					return true;
-				if (startX == endX && startY == endY + 1
-						&& (clippingData[startX][startY] & 0x20) == 0)
+				if (startX == endX && startY == endY + 1 && (clippingData[startX][startY] & 0x20) == 0)
 					return true;
 			} else if (endOrientation == 3) {
-				if (startX == endX + 1 && startY == endY
-						&& (clippingData[startX][startY] & 0x80) == 0)
+				if (startX == endX + 1 && startY == endY && (clippingData[startX][startY] & 0x80) == 0)
 					return true;
-				if (startX == endX && startY == endY + 1
-						&& (clippingData[startX][startY] & 0x20) == 0)
+				if (startX == endX && startY == endY + 1 && (clippingData[startX][startY] & 0x20) == 0)
 					return true;
 			}
 		}
 		if (endPosition == 8) {
-			if (startX == endX && startY == endY + 1
-					&& (clippingData[startX][startY] & 0x20) == 0)
+			if (startX == endX && startY == endY + 1 && (clippingData[startX][startY] & 0x20) == 0)
 				return true;
-			if (startX == endX && startY == endY - 1
-					&& (clippingData[startX][startY] & 2) == 0)
+			if (startX == endX && startY == endY - 1 && (clippingData[startX][startY] & 2) == 0)
 				return true;
-			if (startX == endX - 1 && startY == endY
-					&& (clippingData[startX][startY] & 8) == 0)
+			if (startX == endX - 1 && startY == endY && (clippingData[startX][startY] & 8) == 0)
 				return true;
-			if (startX == endX + 1 && startY == endY
-					&& (clippingData[startX][startY] & 0x80) == 0)
+			if (startX == endX + 1 && startY == endY && (clippingData[startX][startY] & 0x80) == 0)
 				return true;
 		}
 		return false;
@@ -398,13 +358,14 @@ final class CollisionMap {
 	private void set(int x, int y, int flag) {
 		clippingData[x][y] |= flag;
 	}
+
 	public void unmarkConcealed(int x, int y) {
 		x -= insetX;
 		y -= insetY;
 		clippingData[x][y] &= 0xdfffff;
 	}
-	public void unmarkSolidOccupant(int x, int y, int width, int height,
-			int orientation, boolean impenetrable) {
+
+	public void unmarkSolidOccupant(int x, int y, int width, int height, int orientation, boolean impenetrable) {
 		int occupied = 256;
 		if (impenetrable)
 			occupied += 0x20000;
@@ -424,8 +385,8 @@ final class CollisionMap {
 			}
 
 	}
-	public void unmarkWall(int x, int y, int position, int orientation,
-			boolean impenetrable) {
+
+	public void unmarkWall(int x, int y, int position, int orientation, boolean impenetrable) {
 		x -= insetX;
 		y -= insetY;
 		if (position == 0) {
@@ -547,6 +508,7 @@ final class CollisionMap {
 			}
 		}
 	}
+
 	private void unset(int x, int y, int flag) {
 		clippingData[x][y] &= 0xffffff - flag;
 	}

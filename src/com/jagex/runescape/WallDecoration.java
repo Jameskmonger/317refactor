@@ -30,6 +30,7 @@ public final class WallDecoration {
 	public Animable renderable;
 	public int uid;
 	byte objConf;
+
 	public WallDecoration() {
 	}
 }

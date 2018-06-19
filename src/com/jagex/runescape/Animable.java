@@ -30,8 +30,8 @@ public class Animable extends QueueLink {
 	Model getRotatedModel() {
 		return null;
 	}
-	public void renderAtPoint(int i, int j, int k, int l, int i1, int j1,
-			int k1, int l1, int i2) {
+
+	public void renderAtPoint(int i, int j, int k, int l, int i1, int j1, int k1, int l1, int i2) {
 		Model model = getRotatedModel();
 		if (model != null) {
 			modelHeight = model.modelHeight;

@@ -51,8 +51,7 @@ final class Censor {
 				characters[character] = characters[c];
 			else
 				characters[character] = ' ';
-			if (character == 0 || characters[character] != ' '
-					|| characters[character - 1] != ' ')
+			if (character == 0 || characters[character] != ' ' || characters[character - 1] != ' ')
 				character++;
 		}
 		for (int c = character; c < characters.length; c++)
@@ -65,8 +64,7 @@ final class Censor {
 	}
 
 	private static boolean isLegalCharacter(char c) {
-		return c >= ' ' && c <= '\177' || c == ' ' || c == '\n' || c == '\t'
-				|| c == '\243' || c == '\u20AC';
+		return c >= ' ' && c <= '\177' || c == ' ' || c == '\n' || c == '\t' || c == '\243' || c == '\u20AC';
 	}
 
 	private static boolean isLetter(char c) {
@@ -82,12 +80,10 @@ final class Censor {
 	}
 
 	public static void load(Archive streamLoader) {
-		Buffer fragmentsEnc = new Buffer(
-				streamLoader.decompressFile("fragmentsenc.txt"));
+		Buffer fragmentsEnc = new Buffer(streamLoader.decompressFile("fragmentsenc.txt"));
 		Buffer badEnc = new Buffer(streamLoader.decompressFile("badenc.txt"));
 		Buffer domainEnc = new Buffer(streamLoader.decompressFile("domainenc.txt"));
-		Buffer topLevelDomainList = new Buffer(
-				streamLoader.decompressFile("tldlist.txt"));
+		Buffer topLevelDomainList = new Buffer(streamLoader.decompressFile("tldlist.txt"));
 		loadDictionaries(fragmentsEnc, badEnc, domainEnc, topLevelDomainList);
 	}
 
@@ -98,8 +94,7 @@ final class Censor {
 		loadBadWords(stream, badWords, badBytes);
 	}
 
-	private static void loadBadWords(Buffer stream, char badWords[][],
-			byte badBytes[][][]) {
+	private static void loadBadWords(Buffer stream, char badWords[][], byte badBytes[][][]) {
 		for (int w = 0; w < badWords.length; w++) {
 			char badWord[] = new char[stream.getUnsignedByte()];
 			for (int c = 0; c < badWord.length; c++)
@@ -118,8 +113,7 @@ final class Censor {
 
 	}
 
-	private static void loadDictionaries(Buffer fragment, Buffer bad,
-			Buffer domain, Buffer topLevelDomain) {
+	private static void loadDictionaries(Buffer fragment, Buffer bad, Buffer domain, Buffer topLevelDomain) {
 		loadBadEnc(bad);
 		loadDomainEnc(domain);
 		loadFragmentsEnc(fragment);
@@ -309,8 +303,7 @@ final class Censor {
 
 	}
 
-	private static void method506(char ac[], char ac1[], int i, char ac2[],
-			char ac3[]) {
+	private static void method506(char ac[], char ac1[], int i, char ac2[], char ac3[]) {
 		if (ac1.length > ac3.length)
 			return;
 		int j;
@@ -530,14 +523,11 @@ final class Censor {
 						if (flag5)
 							k2 = k;
 						for (; !flag7 && k2 < l; k2++)
-							if (k2 >= 0
-									&& (!method517(ac[k2]) || ac[k2] == '\'')) {
+							if (k2 >= 0 && (!method517(ac[k2]) || ac[k2] == '\'')) {
 								char ac2[] = new char[3];
 								int j3;
 								for (j3 = 0; j3 < 3; j3++) {
-									if (k2 + j3 >= ac.length
-											|| method517(ac[k2 + j3])
-											&& ac[k2 + j3] != '\'')
+									if (k2 + j3 >= ac.length || method517(ac[k2 + j3]) && ac[k2 + j3] != '\'')
 										break;
 									ac2[j3] = ac[k2 + j3];
 								}
@@ -545,9 +535,7 @@ final class Censor {
 								boolean flag8 = true;
 								if (j3 == 0)
 									flag8 = false;
-								if (j3 < 3
-										&& k2 - 1 >= 0
-										&& (!method517(ac[k2 - 1]) || ac[k2 - 1] == '\''))
+								if (j3 < 3 && k2 - 1 >= 0 && (!method517(ac[k2 - 1]) || ac[k2 - 1] == '\''))
 									flag8 = false;
 								if (flag8 && !method523(ac2))
 									flag7 = true;
@@ -595,8 +583,7 @@ final class Censor {
 			int k = (i + j) / 2;
 			if (abyte0[k][0] == byte0 && abyte0[k][1] == byte2)
 				return true;
-			if (byte0 < abyte0[k][0] || byte0 == abyte0[k][0]
-					&& byte2 < abyte0[k][1])
+			if (byte0 < abyte0[k][0] || byte0 == abyte0[k][0] && byte2 < abyte0[k][1])
 				j = k;
 			else
 				i = k;
@@ -632,14 +619,12 @@ final class Censor {
 			if (c2 == 'b') {
 				if (c1 == '6' || c1 == '8')
 					return 1;
-				return (c1 != '1' || c != '3') && (c1 != 'i' || c != '3') ? 0
-						: 2;
+				return (c1 != '1' || c != '3') && (c1 != 'i' || c != '3') ? 0 : 2;
 			}
 			if (c2 == 'c')
 				return c1 != '(' && c1 != '<' && c1 != '{' && c1 != '[' ? 0 : 1;
 			if (c2 == 'd')
-				return (c1 != '[' || c != ')') && (c1 != 'i' || c != ')') ? 0
-						: 2;
+				return (c1 != '[' || c != ')') && (c1 != 'i' || c != ')') ? 0 : 2;
 			if (c2 == 'e')
 				return c1 != '3' && c1 != '\u20AC' ? 0 : 1;
 			if (c2 == 'f') {
@@ -652,9 +637,8 @@ final class Censor {
 			if (c2 == 'h')
 				return c1 != '#' ? 0 : 1;
 			if (c2 == 'i')
-				return c1 != 'y' && c1 != 'l' && c1 != 'j' && c1 != '1'
-						&& c1 != '!' && c1 != ':' && c1 != ';' && c1 != '|' ? 0
-						: 1;
+				return c1 != 'y' && c1 != 'l' && c1 != 'j' && c1 != '1' && c1 != '!' && c1 != ':' && c1 != ';'
+						&& c1 != '|' ? 0 : 1;
 			if (c2 == 'j')
 				return 0;
 			if (c2 == 'k')
@@ -670,9 +654,8 @@ final class Censor {
 			if (c2 == 'o') {
 				if (c1 == '0' || c1 == '*')
 					return 1;
-				return (c1 != '(' || c != ')') && (c1 != '[' || c != ']')
-						&& (c1 != '{' || c != '}') && (c1 != '<' || c != '>') ? 0
-						: 2;
+				return (c1 != '(' || c != ')') && (c1 != '[' || c != ']') && (c1 != '{' || c != '}')
+						&& (c1 != '<' || c != '>') ? 0 : 2;
 			}
 			if (c2 == 'p')
 				return 0;
@@ -687,18 +670,15 @@ final class Censor {
 			if (c2 == 'u') {
 				if (c1 == 'v')
 					return 1;
-				return (c1 != '\\' || c != '/') && (c1 != '\\' || c != '|')
-						&& (c1 != '|' || c != '/') ? 0 : 2;
+				return (c1 != '\\' || c != '/') && (c1 != '\\' || c != '|') && (c1 != '|' || c != '/') ? 0 : 2;
 			}
 			if (c2 == 'v')
-				return (c1 != '\\' || c != '/') && (c1 != '\\' || c != '|')
-						&& (c1 != '|' || c != '/') ? 0 : 2;
+				return (c1 != '\\' || c != '/') && (c1 != '\\' || c != '|') && (c1 != '|' || c != '/') ? 0 : 2;
 			if (c2 == 'w')
 				return c1 != 'v' || c != 'v' ? 0 : 2;
 			if (c2 == 'x')
-				return (c1 != ')' || c != '(') && (c1 != '}' || c != '{')
-						&& (c1 != ']' || c != '[') && (c1 != '>' || c != '<') ? 0
-						: 2;
+				return (c1 != ')' || c != '(') && (c1 != '}' || c != '{') && (c1 != ']' || c != '[')
+						&& (c1 != '>' || c != '<') ? 0 : 2;
 			if (c2 == 'y')
 				return 0;
 			if (c2 == 'z')
@@ -708,8 +688,7 @@ final class Censor {
 			if (c2 == '0') {
 				if (c1 == 'o' || c1 == 'O')
 					return 1;
-				return (c1 != '(' || c != ')') && (c1 != '{' || c != '}')
-						&& (c1 != '[' || c != ']') ? 0 : 2;
+				return (c1 != '(' || c != ')') && (c1 != '{' || c != '}') && (c1 != '[' || c != ']') ? 0 : 2;
 			}
 			if (c2 == '1')
 				return c1 != 'l' ? 0 : 1;
@@ -790,8 +769,7 @@ final class Censor {
 	}
 
 	private static boolean method518(char c) {
-		return c < 'a' || c > 'z' || c == 'v' || c == 'x' || c == 'j'
-				|| c == 'q' || c == 'z';
+		return c < 'a' || c > 'z' || c == 'v' || c == 'x' || c == 'j' || c == 'q' || c == 'z';
 	}
 
 	private static boolean method523(char ac[]) {
@@ -844,7 +822,7 @@ final class Censor {
 	private static char[][] domains;
 	private static char[][] topLevelDomains;
 	private static int[] topLevelDomainType;
-	private static final String[] exceptions = { "cook", "cook's", "cooks",
-			"seeks", "sheet", "woop", "woops", "faq", "noob", "noobs" };
+	private static final String[] exceptions = { "cook", "cook's", "cooks", "seeks", "sheet", "woop", "woops", "faq",
+			"noob", "noobs" };
 
 }

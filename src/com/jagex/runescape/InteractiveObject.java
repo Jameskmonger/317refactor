@@ -36,6 +36,7 @@ public final class InteractiveObject {
 	int anInt528;
 	public int uid;
 	byte objConf;
+
 	public InteractiveObject() {
 	}
 }

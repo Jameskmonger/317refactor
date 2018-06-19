@@ -101,10 +101,8 @@ final class Rasterizer extends DrawingArea {
 				int palette[] = textureImages[textureId].palette;
 				texturePalettes[textureId] = new int[palette.length];
 				for (int colour = 0; colour < palette.length; colour++) {
-					texturePalettes[textureId][colour] = adjustBrightness(
-							palette[colour], brightness);
-					if ((texturePalettes[textureId][colour] & 0xf8f8ff) == 0
-							&& colour != 0)
+					texturePalettes[textureId][colour] = adjustBrightness(palette[colour], brightness);
+					if ((texturePalettes[textureId][colour] & 0xf8f8ff) == 0 && colour != 0)
 						texturePalettes[textureId][colour] = 1;
 				}
 
@@ -122,8 +120,7 @@ final class Rasterizer extends DrawingArea {
 
 	}
 
-	public static void drawFlatTriangle(int i, int j, int k, int l, int i1,
-			int j1, int k1) {
+	public static void drawFlatTriangle(int i, int j, int k, int l, int i1, int j1, int k1) {
 		int l1 = 0;
 		if (j != i)
 			l1 = (i1 - l << 16) / (j - i);
@@ -420,8 +417,7 @@ final class Rasterizer extends DrawingArea {
 		}
 	}
 
-	public static void drawShadedTriangle(int yA, int yB, int yC, int xA,
-			int xB, int xC, int zA, int zB, int zC) {
+	public static void drawShadedTriangle(int yA, int yB, int yC, int xA, int xB, int xC, int zA, int zB, int zC) {
 		int j2 = 0;
 		int k2 = 0;
 		if (yB != yA) {
@@ -468,8 +464,7 @@ final class Rasterizer extends DrawingArea {
 					yC -= yB;
 					yB -= yA;
 					for (yA = lineOffsets[yA]; --yB >= 0; yA += DrawingArea.width) {
-						method375(DrawingArea.pixels, yA, xC >> 16, xA >> 16,
-								zC >> 7, zA >> 7);
+						method375(DrawingArea.pixels, yA, xC >> 16, xA >> 16, zC >> 7, zA >> 7);
 						xC += j3;
 						xA += j2;
 						zC += k3;
@@ -477,8 +472,7 @@ final class Rasterizer extends DrawingArea {
 					}
 
 					while (--yC >= 0) {
-						method375(DrawingArea.pixels, yA, xC >> 16, xB >> 16,
-								zC >> 7, zB >> 7);
+						method375(DrawingArea.pixels, yA, xC >> 16, xB >> 16, zC >> 7, zB >> 7);
 						xC += j3;
 						xB += l2;
 						zC += k3;
@@ -490,8 +484,7 @@ final class Rasterizer extends DrawingArea {
 				yC -= yB;
 				yB -= yA;
 				for (yA = lineOffsets[yA]; --yB >= 0; yA += DrawingArea.width) {
-					method375(DrawingArea.pixels, yA, xA >> 16, xC >> 16,
-							zA >> 7, zC >> 7);
+					method375(DrawingArea.pixels, yA, xA >> 16, xC >> 16, zA >> 7, zC >> 7);
 					xC += j3;
 					xA += j2;
 					zC += k3;
@@ -499,8 +492,7 @@ final class Rasterizer extends DrawingArea {
 				}
 
 				while (--yC >= 0) {
-					method375(DrawingArea.pixels, yA, xB >> 16, xC >> 16,
-							zB >> 7, zC >> 7);
+					method375(DrawingArea.pixels, yA, xB >> 16, xC >> 16, zB >> 7, zC >> 7);
 					xC += j3;
 					xB += l2;
 					zC += k3;
@@ -529,8 +521,7 @@ final class Rasterizer extends DrawingArea {
 				yB -= yC;
 				yC -= yA;
 				for (yA = lineOffsets[yA]; --yC >= 0; yA += DrawingArea.width) {
-					method375(DrawingArea.pixels, yA, xB >> 16, xA >> 16,
-							zB >> 7, zA >> 7);
+					method375(DrawingArea.pixels, yA, xB >> 16, xA >> 16, zB >> 7, zA >> 7);
 					xB += j3;
 					xA += j2;
 					zB += k3;
@@ -538,8 +529,7 @@ final class Rasterizer extends DrawingArea {
 				}
 
 				while (--yB >= 0) {
-					method375(DrawingArea.pixels, yA, xC >> 16, xA >> 16,
-							zC >> 7, zA >> 7);
+					method375(DrawingArea.pixels, yA, xC >> 16, xA >> 16, zC >> 7, zA >> 7);
 					xC += l2;
 					xA += j2;
 					zC += i3;
@@ -551,8 +541,7 @@ final class Rasterizer extends DrawingArea {
 			yB -= yC;
 			yC -= yA;
 			for (yA = lineOffsets[yA]; --yC >= 0; yA += DrawingArea.width) {
-				method375(DrawingArea.pixels, yA, xA >> 16, xB >> 16, zA >> 7,
-						zB >> 7);
+				method375(DrawingArea.pixels, yA, xA >> 16, xB >> 16, zA >> 7, zB >> 7);
 				xB += j3;
 				xA += j2;
 				zB += k3;
@@ -560,8 +549,7 @@ final class Rasterizer extends DrawingArea {
 			}
 
 			while (--yB >= 0) {
-				method375(DrawingArea.pixels, yA, xA >> 16, xC >> 16, zA >> 7,
-						zC >> 7);
+				method375(DrawingArea.pixels, yA, xA >> 16, xC >> 16, zA >> 7, zC >> 7);
 				xC += l2;
 				xA += j2;
 				zC += i3;
@@ -598,8 +586,7 @@ final class Rasterizer extends DrawingArea {
 					yA -= yC;
 					yC -= yB;
 					for (yB = lineOffsets[yB]; --yC >= 0; yB += DrawingArea.width) {
-						method375(DrawingArea.pixels, yB, xA >> 16, xB >> 16,
-								zA >> 7, zB >> 7);
+						method375(DrawingArea.pixels, yB, xA >> 16, xB >> 16, zA >> 7, zB >> 7);
 						xA += j2;
 						xB += l2;
 						zA += k2;
@@ -607,8 +594,7 @@ final class Rasterizer extends DrawingArea {
 					}
 
 					while (--yA >= 0) {
-						method375(DrawingArea.pixels, yB, xA >> 16, xC >> 16,
-								zA >> 7, zC >> 7);
+						method375(DrawingArea.pixels, yB, xA >> 16, xC >> 16, zA >> 7, zC >> 7);
 						xA += j2;
 						xC += j3;
 						zA += k2;
@@ -620,8 +606,7 @@ final class Rasterizer extends DrawingArea {
 				yA -= yC;
 				yC -= yB;
 				for (yB = lineOffsets[yB]; --yC >= 0; yB += DrawingArea.width) {
-					method375(DrawingArea.pixels, yB, xB >> 16, xA >> 16,
-							zB >> 7, zA >> 7);
+					method375(DrawingArea.pixels, yB, xB >> 16, xA >> 16, zB >> 7, zA >> 7);
 					xA += j2;
 					xB += l2;
 					zA += k2;
@@ -629,8 +614,7 @@ final class Rasterizer extends DrawingArea {
 				}
 
 				while (--yA >= 0) {
-					method375(DrawingArea.pixels, yB, xC >> 16, xA >> 16,
-							zC >> 7, zA >> 7);
+					method375(DrawingArea.pixels, yB, xC >> 16, xA >> 16, zC >> 7, zA >> 7);
 					xA += j2;
 					xC += j3;
 					zA += k2;
@@ -659,8 +643,7 @@ final class Rasterizer extends DrawingArea {
 				yC -= yA;
 				yA -= yB;
 				for (yB = lineOffsets[yB]; --yA >= 0; yB += DrawingArea.width) {
-					method375(DrawingArea.pixels, yB, xC >> 16, xB >> 16,
-							zC >> 7, zB >> 7);
+					method375(DrawingArea.pixels, yB, xC >> 16, xB >> 16, zC >> 7, zB >> 7);
 					xC += j2;
 					xB += l2;
 					zC += k2;
@@ -668,8 +651,7 @@ final class Rasterizer extends DrawingArea {
 				}
 
 				while (--yC >= 0) {
-					method375(DrawingArea.pixels, yB, xA >> 16, xB >> 16,
-							zA >> 7, zB >> 7);
+					method375(DrawingArea.pixels, yB, xA >> 16, xB >> 16, zA >> 7, zB >> 7);
 					xA += j3;
 					xB += l2;
 					zA += k3;
@@ -681,8 +663,7 @@ final class Rasterizer extends DrawingArea {
 			yC -= yA;
 			yA -= yB;
 			for (yB = lineOffsets[yB]; --yA >= 0; yB += DrawingArea.width) {
-				method375(DrawingArea.pixels, yB, xB >> 16, xC >> 16, zB >> 7,
-						zC >> 7);
+				method375(DrawingArea.pixels, yB, xB >> 16, xC >> 16, zB >> 7, zC >> 7);
 				xC += j2;
 				xB += l2;
 				zC += k2;
@@ -690,8 +671,7 @@ final class Rasterizer extends DrawingArea {
 			}
 
 			while (--yC >= 0) {
-				method375(DrawingArea.pixels, yB, xB >> 16, xA >> 16, zB >> 7,
-						zA >> 7);
+				method375(DrawingArea.pixels, yB, xB >> 16, xA >> 16, zB >> 7, zA >> 7);
 				xA += j3;
 				xB += l2;
 				zA += k3;
@@ -727,8 +707,7 @@ final class Rasterizer extends DrawingArea {
 				yB -= yA;
 				yA -= yC;
 				for (yC = lineOffsets[yC]; --yA >= 0; yC += DrawingArea.width) {
-					method375(DrawingArea.pixels, yC, xB >> 16, xC >> 16,
-							zB >> 7, zC >> 7);
+					method375(DrawingArea.pixels, yC, xB >> 16, xC >> 16, zB >> 7, zC >> 7);
 					xB += l2;
 					xC += j3;
 					zB += i3;
@@ -736,8 +715,7 @@ final class Rasterizer extends DrawingArea {
 				}
 
 				while (--yB >= 0) {
-					method375(DrawingArea.pixels, yC, xB >> 16, xA >> 16,
-							zB >> 7, zA >> 7);
+					method375(DrawingArea.pixels, yC, xB >> 16, xA >> 16, zB >> 7, zA >> 7);
 					xB += l2;
 					xA += j2;
 					zB += i3;
@@ -749,8 +727,7 @@ final class Rasterizer extends DrawingArea {
 			yB -= yA;
 			yA -= yC;
 			for (yC = lineOffsets[yC]; --yA >= 0; yC += DrawingArea.width) {
-				method375(DrawingArea.pixels, yC, xC >> 16, xB >> 16, zC >> 7,
-						zB >> 7);
+				method375(DrawingArea.pixels, yC, xC >> 16, xB >> 16, zC >> 7, zB >> 7);
 				xB += l2;
 				xC += j3;
 				zB += i3;
@@ -758,8 +735,7 @@ final class Rasterizer extends DrawingArea {
 			}
 
 			while (--yB >= 0) {
-				method375(DrawingArea.pixels, yC, xA >> 16, xB >> 16, zA >> 7,
-						zB >> 7);
+				method375(DrawingArea.pixels, yC, xA >> 16, xB >> 16, zA >> 7, zB >> 7);
 				xB += l2;
 				xA += j2;
 				zB += i3;
@@ -788,8 +764,7 @@ final class Rasterizer extends DrawingArea {
 			yA -= yB;
 			yB -= yC;
 			for (yC = lineOffsets[yC]; --yB >= 0; yC += DrawingArea.width) {
-				method375(DrawingArea.pixels, yC, xA >> 16, xC >> 16, zA >> 7,
-						zC >> 7);
+				method375(DrawingArea.pixels, yC, xA >> 16, xC >> 16, zA >> 7, zC >> 7);
 				xA += l2;
 				xC += j3;
 				zA += i3;
@@ -797,8 +772,7 @@ final class Rasterizer extends DrawingArea {
 			}
 
 			while (--yA >= 0) {
-				method375(DrawingArea.pixels, yC, xB >> 16, xC >> 16, zB >> 7,
-						zC >> 7);
+				method375(DrawingArea.pixels, yC, xB >> 16, xC >> 16, zB >> 7, zC >> 7);
 				xB += j2;
 				xC += j3;
 				zB += k2;
@@ -810,8 +784,7 @@ final class Rasterizer extends DrawingArea {
 		yA -= yB;
 		yB -= yC;
 		for (yC = lineOffsets[yC]; --yB >= 0; yC += DrawingArea.width) {
-			method375(DrawingArea.pixels, yC, xC >> 16, xA >> 16, zC >> 7,
-					zA >> 7);
+			method375(DrawingArea.pixels, yC, xC >> 16, xA >> 16, zC >> 7, zA >> 7);
 			xA += l2;
 			xC += j3;
 			zA += i3;
@@ -819,8 +792,7 @@ final class Rasterizer extends DrawingArea {
 		}
 
 		while (--yA >= 0) {
-			method375(DrawingArea.pixels, yC, xC >> 16, xB >> 16, zC >> 7,
-					zB >> 7);
+			method375(DrawingArea.pixels, yC, xC >> 16, xB >> 16, zC >> 7, zB >> 7);
 			xB += j2;
 			xC += j3;
 			zB += k2;
@@ -829,9 +801,8 @@ final class Rasterizer extends DrawingArea {
 		}
 	}
 
-	public static void drawTexturedTriangle(int yA, int yB, int yC, int xA,
-			int xB, int xC, int zA, int zB, int zC, int j2, int k2, int l2,
-			int i3, int j3, int k3, int l3, int i4, int j4, int textureId) {
+	public static void drawTexturedTriangle(int yA, int yB, int yC, int xA, int xB, int xC, int zA, int zB, int zC,
+			int j2, int k2, int l2, int i3, int j3, int k3, int l3, int i4, int j4, int textureId) {
 		int texture[] = getTexturePixels(textureId);
 		opaque = !transparent[textureId];
 		k2 = j2 - k2;
@@ -900,9 +871,8 @@ final class Rasterizer extends DrawingArea {
 					yB -= yA;
 					yA = lineOffsets[yA];
 					while (--yB >= 0) {
-						method379(DrawingArea.pixels, texture, yA, xC >> 16,
-								xA >> 16, zC >> 8, zA >> 8, l4, k5, j6, i5, l5,
-								k6);
+						method379(DrawingArea.pixels, texture, yA, xC >> 16, xA >> 16, zC >> 8, zA >> 8, l4, k5, j6, i5,
+								l5, k6);
 						xC += i8;
 						xA += i7;
 						zC += j8;
@@ -913,9 +883,8 @@ final class Rasterizer extends DrawingArea {
 						j6 += l6;
 					}
 					while (--yC >= 0) {
-						method379(DrawingArea.pixels, texture, yA, xC >> 16,
-								xB >> 16, zC >> 8, zB >> 8, l4, k5, j6, i5, l5,
-								k6);
+						method379(DrawingArea.pixels, texture, yA, xC >> 16, xB >> 16, zC >> 8, zB >> 8, l4, k5, j6, i5,
+								l5, k6);
 						xC += i8;
 						xB += k7;
 						zC += j8;
@@ -931,8 +900,8 @@ final class Rasterizer extends DrawingArea {
 				yB -= yA;
 				yA = lineOffsets[yA];
 				while (--yB >= 0) {
-					method379(DrawingArea.pixels, texture, yA, xA >> 16,
-							xC >> 16, zA >> 8, zC >> 8, l4, k5, j6, i5, l5, k6);
+					method379(DrawingArea.pixels, texture, yA, xA >> 16, xC >> 16, zA >> 8, zC >> 8, l4, k5, j6, i5, l5,
+							k6);
 					xC += i8;
 					xA += i7;
 					zC += j8;
@@ -943,8 +912,8 @@ final class Rasterizer extends DrawingArea {
 					j6 += l6;
 				}
 				while (--yC >= 0) {
-					method379(DrawingArea.pixels, texture, yA, xB >> 16,
-							xC >> 16, zB >> 8, zC >> 8, l4, k5, j6, i5, l5, k6);
+					method379(DrawingArea.pixels, texture, yA, xB >> 16, xC >> 16, zB >> 8, zC >> 8, l4, k5, j6, i5, l5,
+							k6);
 					xC += i8;
 					xB += k7;
 					zC += j8;
@@ -981,8 +950,8 @@ final class Rasterizer extends DrawingArea {
 				yC -= yA;
 				yA = lineOffsets[yA];
 				while (--yC >= 0) {
-					method379(DrawingArea.pixels, texture, yA, xB >> 16,
-							xA >> 16, zB >> 8, zA >> 8, l4, k5, j6, i5, l5, k6);
+					method379(DrawingArea.pixels, texture, yA, xB >> 16, xA >> 16, zB >> 8, zA >> 8, l4, k5, j6, i5, l5,
+							k6);
 					xB += i8;
 					xA += i7;
 					zB += j8;
@@ -993,8 +962,8 @@ final class Rasterizer extends DrawingArea {
 					j6 += l6;
 				}
 				while (--yB >= 0) {
-					method379(DrawingArea.pixels, texture, yA, xC >> 16,
-							xA >> 16, zC >> 8, zA >> 8, l4, k5, j6, i5, l5, k6);
+					method379(DrawingArea.pixels, texture, yA, xC >> 16, xA >> 16, zC >> 8, zA >> 8, l4, k5, j6, i5, l5,
+							k6);
 					xC += k7;
 					xA += i7;
 					zC += l7;
@@ -1010,8 +979,8 @@ final class Rasterizer extends DrawingArea {
 			yC -= yA;
 			yA = lineOffsets[yA];
 			while (--yC >= 0) {
-				method379(DrawingArea.pixels, texture, yA, xA >> 16, xB >> 16,
-						zA >> 8, zB >> 8, l4, k5, j6, i5, l5, k6);
+				method379(DrawingArea.pixels, texture, yA, xA >> 16, xB >> 16, zA >> 8, zB >> 8, l4, k5, j6, i5, l5,
+						k6);
 				xB += i8;
 				xA += i7;
 				zB += j8;
@@ -1022,8 +991,8 @@ final class Rasterizer extends DrawingArea {
 				j6 += l6;
 			}
 			while (--yB >= 0) {
-				method379(DrawingArea.pixels, texture, yA, xA >> 16, xC >> 16,
-						zA >> 8, zC >> 8, l4, k5, j6, i5, l5, k6);
+				method379(DrawingArea.pixels, texture, yA, xA >> 16, xC >> 16, zA >> 8, zC >> 8, l4, k5, j6, i5, l5,
+						k6);
 				xC += k7;
 				xA += i7;
 				zC += l7;
@@ -1068,9 +1037,8 @@ final class Rasterizer extends DrawingArea {
 					yC -= yB;
 					yB = lineOffsets[yB];
 					while (--yC >= 0) {
-						method379(DrawingArea.pixels, texture, yB, xA >> 16,
-								xB >> 16, zA >> 8, zB >> 8, l4, k5, j6, i5, l5,
-								k6);
+						method379(DrawingArea.pixels, texture, yB, xA >> 16, xB >> 16, zA >> 8, zB >> 8, l4, k5, j6, i5,
+								l5, k6);
 						xA += i7;
 						xB += k7;
 						zA += j7;
@@ -1081,9 +1049,8 @@ final class Rasterizer extends DrawingArea {
 						j6 += l6;
 					}
 					while (--yA >= 0) {
-						method379(DrawingArea.pixels, texture, yB, xA >> 16,
-								xC >> 16, zA >> 8, zC >> 8, l4, k5, j6, i5, l5,
-								k6);
+						method379(DrawingArea.pixels, texture, yB, xA >> 16, xC >> 16, zA >> 8, zC >> 8, l4, k5, j6, i5,
+								l5, k6);
 						xA += i7;
 						xC += i8;
 						zA += j7;
@@ -1099,8 +1066,8 @@ final class Rasterizer extends DrawingArea {
 				yC -= yB;
 				yB = lineOffsets[yB];
 				while (--yC >= 0) {
-					method379(DrawingArea.pixels, texture, yB, xB >> 16,
-							xA >> 16, zB >> 8, zA >> 8, l4, k5, j6, i5, l5, k6);
+					method379(DrawingArea.pixels, texture, yB, xB >> 16, xA >> 16, zB >> 8, zA >> 8, l4, k5, j6, i5, l5,
+							k6);
 					xA += i7;
 					xB += k7;
 					zA += j7;
@@ -1111,8 +1078,8 @@ final class Rasterizer extends DrawingArea {
 					j6 += l6;
 				}
 				while (--yA >= 0) {
-					method379(DrawingArea.pixels, texture, yB, xC >> 16,
-							xA >> 16, zC >> 8, zA >> 8, l4, k5, j6, i5, l5, k6);
+					method379(DrawingArea.pixels, texture, yB, xC >> 16, xA >> 16, zC >> 8, zA >> 8, l4, k5, j6, i5, l5,
+							k6);
 					xA += i7;
 					xC += i8;
 					zA += j7;
@@ -1149,8 +1116,8 @@ final class Rasterizer extends DrawingArea {
 				yA -= yB;
 				yB = lineOffsets[yB];
 				while (--yA >= 0) {
-					method379(DrawingArea.pixels, texture, yB, xC >> 16,
-							xB >> 16, zC >> 8, zB >> 8, l4, k5, j6, i5, l5, k6);
+					method379(DrawingArea.pixels, texture, yB, xC >> 16, xB >> 16, zC >> 8, zB >> 8, l4, k5, j6, i5, l5,
+							k6);
 					xC += i7;
 					xB += k7;
 					zC += j7;
@@ -1161,8 +1128,8 @@ final class Rasterizer extends DrawingArea {
 					j6 += l6;
 				}
 				while (--yC >= 0) {
-					method379(DrawingArea.pixels, texture, yB, xA >> 16,
-							xB >> 16, zA >> 8, zB >> 8, l4, k5, j6, i5, l5, k6);
+					method379(DrawingArea.pixels, texture, yB, xA >> 16, xB >> 16, zA >> 8, zB >> 8, l4, k5, j6, i5, l5,
+							k6);
 					xA += i8;
 					xB += k7;
 					zA += j8;
@@ -1178,8 +1145,8 @@ final class Rasterizer extends DrawingArea {
 			yA -= yB;
 			yB = lineOffsets[yB];
 			while (--yA >= 0) {
-				method379(DrawingArea.pixels, texture, yB, xB >> 16, xC >> 16,
-						zB >> 8, zC >> 8, l4, k5, j6, i5, l5, k6);
+				method379(DrawingArea.pixels, texture, yB, xB >> 16, xC >> 16, zB >> 8, zC >> 8, l4, k5, j6, i5, l5,
+						k6);
 				xC += i7;
 				xB += k7;
 				zC += j7;
@@ -1190,8 +1157,8 @@ final class Rasterizer extends DrawingArea {
 				j6 += l6;
 			}
 			while (--yC >= 0) {
-				method379(DrawingArea.pixels, texture, yB, xB >> 16, xA >> 16,
-						zB >> 8, zA >> 8, l4, k5, j6, i5, l5, k6);
+				method379(DrawingArea.pixels, texture, yB, xB >> 16, xA >> 16, zB >> 8, zA >> 8, l4, k5, j6, i5, l5,
+						k6);
 				xA += i8;
 				xB += k7;
 				zA += j8;
@@ -1235,8 +1202,8 @@ final class Rasterizer extends DrawingArea {
 				yA -= yC;
 				yC = lineOffsets[yC];
 				while (--yA >= 0) {
-					method379(DrawingArea.pixels, texture, yC, xB >> 16,
-							xC >> 16, zB >> 8, zC >> 8, l4, k5, j6, i5, l5, k6);
+					method379(DrawingArea.pixels, texture, yC, xB >> 16, xC >> 16, zB >> 8, zC >> 8, l4, k5, j6, i5, l5,
+							k6);
 					xB += k7;
 					xC += i8;
 					zB += l7;
@@ -1247,8 +1214,8 @@ final class Rasterizer extends DrawingArea {
 					j6 += l6;
 				}
 				while (--yB >= 0) {
-					method379(DrawingArea.pixels, texture, yC, xB >> 16,
-							xA >> 16, zB >> 8, zA >> 8, l4, k5, j6, i5, l5, k6);
+					method379(DrawingArea.pixels, texture, yC, xB >> 16, xA >> 16, zB >> 8, zA >> 8, l4, k5, j6, i5, l5,
+							k6);
 					xB += k7;
 					xA += i7;
 					zB += l7;
@@ -1264,8 +1231,8 @@ final class Rasterizer extends DrawingArea {
 			yA -= yC;
 			yC = lineOffsets[yC];
 			while (--yA >= 0) {
-				method379(DrawingArea.pixels, texture, yC, xC >> 16, xB >> 16,
-						zC >> 8, zB >> 8, l4, k5, j6, i5, l5, k6);
+				method379(DrawingArea.pixels, texture, yC, xC >> 16, xB >> 16, zC >> 8, zB >> 8, l4, k5, j6, i5, l5,
+						k6);
 				xB += k7;
 				xC += i8;
 				zB += l7;
@@ -1276,8 +1243,8 @@ final class Rasterizer extends DrawingArea {
 				j6 += l6;
 			}
 			while (--yB >= 0) {
-				method379(DrawingArea.pixels, texture, yC, xA >> 16, xB >> 16,
-						zA >> 8, zB >> 8, l4, k5, j6, i5, l5, k6);
+				method379(DrawingArea.pixels, texture, yC, xA >> 16, xB >> 16, zA >> 8, zB >> 8, l4, k5, j6, i5, l5,
+						k6);
 				xB += k7;
 				xA += i7;
 				zB += l7;
@@ -1314,8 +1281,8 @@ final class Rasterizer extends DrawingArea {
 			yB -= yC;
 			yC = lineOffsets[yC];
 			while (--yB >= 0) {
-				method379(DrawingArea.pixels, texture, yC, xA >> 16, xC >> 16,
-						zA >> 8, zC >> 8, l4, k5, j6, i5, l5, k6);
+				method379(DrawingArea.pixels, texture, yC, xA >> 16, xC >> 16, zA >> 8, zC >> 8, l4, k5, j6, i5, l5,
+						k6);
 				xA += k7;
 				xC += i8;
 				zA += l7;
@@ -1326,8 +1293,8 @@ final class Rasterizer extends DrawingArea {
 				j6 += l6;
 			}
 			while (--yA >= 0) {
-				method379(DrawingArea.pixels, texture, yC, xB >> 16, xC >> 16,
-						zB >> 8, zC >> 8, l4, k5, j6, i5, l5, k6);
+				method379(DrawingArea.pixels, texture, yC, xB >> 16, xC >> 16, zB >> 8, zC >> 8, l4, k5, j6, i5, l5,
+						k6);
 				xB += i7;
 				xC += i8;
 				zB += j7;
@@ -1343,8 +1310,7 @@ final class Rasterizer extends DrawingArea {
 		yB -= yC;
 		yC = lineOffsets[yC];
 		while (--yB >= 0) {
-			method379(DrawingArea.pixels, texture, yC, xC >> 16, xA >> 16,
-					zC >> 8, zA >> 8, l4, k5, j6, i5, l5, k6);
+			method379(DrawingArea.pixels, texture, yC, xC >> 16, xA >> 16, zC >> 8, zA >> 8, l4, k5, j6, i5, l5, k6);
 			xA += k7;
 			xC += i8;
 			zA += l7;
@@ -1355,8 +1321,7 @@ final class Rasterizer extends DrawingArea {
 			j6 += l6;
 		}
 		while (--yA >= 0) {
-			method379(DrawingArea.pixels, texture, yC, xC >> 16, xB >> 16,
-					zC >> 8, zB >> 8, l4, k5, j6, i5, l5, k6);
+			method379(DrawingArea.pixels, texture, yC, xC >> 16, xB >> 16, zC >> 8, zB >> 8, l4, k5, j6, i5, l5, k6);
 			xB += i7;
 			xC += i8;
 			zB += j7;
@@ -1381,8 +1346,7 @@ final class Rasterizer extends DrawingArea {
 			blue += texturePalettes[textureId][k1] & 0xff;
 		}
 
-		int rgb = (red / colourCount << 16) + (green / colourCount << 8) + blue
-				/ colourCount;
+		int rgb = (red / colourCount << 16) + (green / colourCount << 8) + blue / colourCount;
 		rgb = adjustBrightness(rgb, 1.3999999999999999D);
 		if (rgb == 0)
 			rgb = 1;
@@ -1402,8 +1366,7 @@ final class Rasterizer extends DrawingArea {
 			int lastUsed = 0;
 			int target = -1;
 			for (int t = 0; t < loadedTextureCount; t++)
-				if (texelCache[t] != null
-						&& (textureLastUsed[t] < lastUsed || target == -1)) {
+				if (texelCache[t] != null && (textureLastUsed[t] < lastUsed || target == -1)) {
 					lastUsed = textureLastUsed[t];
 					target = t;
 				}
@@ -1422,16 +1385,14 @@ final class Rasterizer extends DrawingArea {
 					transparent[textureId] = true;
 				texels[4096 + texelPointer] = texel - (texel >>> 3) & 0xf8f8ff;
 				texels[8192 + texelPointer] = texel - (texel >>> 2) & 0xf8f8ff;
-				texels[12288 + texelPointer] = texel - (texel >>> 2)
-						- (texel >>> 3) & 0xf8f8ff;
+				texels[12288 + texelPointer] = texel - (texel >>> 2) - (texel >>> 3) & 0xf8f8ff;
 			}
 
 		} else {
 			if (background.imageWidth == 64) {
 				for (int y = 0; y < 128; y++) {
 					for (int x = 0; x < 128; x++)
-						texels[x + (y << 7)] = texturePalette[background.imagePixels[(x >> 1)
-								+ ((y >> 1) << 6)]];
+						texels[x + (y << 7)] = texturePalette[background.imagePixels[(x >> 1) + ((y >> 1) << 6)]];
 
 				}
 
@@ -1448,8 +1409,7 @@ final class Rasterizer extends DrawingArea {
 					transparent[textureId] = true;
 				texels[16384 + texelPointer] = texel - (texel >>> 3) & 0xf8f8ff;
 				texels[32768 + texelPointer] = texel - (texel >>> 2) & 0xf8f8ff;
-				texels[49152 + texelPointer] = texel - (texel >>> 2)
-						- (texel >>> 3) & 0xf8f8ff;
+				texels[49152 + texelPointer] = texel - (texel >>> 2) - (texel >>> 3) & 0xf8f8ff;
 			}
 
 		}
@@ -1510,25 +1470,18 @@ final class Rasterizer extends DrawingArea {
 				while (--k >= 0) {
 					j = HSL_TO_RGB[j1 >> 8];
 					j1 += l1;
-					j = ((j & 0xff00ff) * l2 >> 8 & 0xff00ff)
-							+ ((j & 0xff00) * l2 >> 8 & 0xff00);
-					ai[i++] = j + ((ai[i] & 0xff00ff) * j2 >> 8 & 0xff00ff)
-							+ ((ai[i] & 0xff00) * j2 >> 8 & 0xff00);
-					ai[i++] = j + ((ai[i] & 0xff00ff) * j2 >> 8 & 0xff00ff)
-							+ ((ai[i] & 0xff00) * j2 >> 8 & 0xff00);
-					ai[i++] = j + ((ai[i] & 0xff00ff) * j2 >> 8 & 0xff00ff)
-							+ ((ai[i] & 0xff00) * j2 >> 8 & 0xff00);
-					ai[i++] = j + ((ai[i] & 0xff00ff) * j2 >> 8 & 0xff00ff)
-							+ ((ai[i] & 0xff00) * j2 >> 8 & 0xff00);
+					j = ((j & 0xff00ff) * l2 >> 8 & 0xff00ff) + ((j & 0xff00) * l2 >> 8 & 0xff00);
+					ai[i++] = j + ((ai[i] & 0xff00ff) * j2 >> 8 & 0xff00ff) + ((ai[i] & 0xff00) * j2 >> 8 & 0xff00);
+					ai[i++] = j + ((ai[i] & 0xff00ff) * j2 >> 8 & 0xff00ff) + ((ai[i] & 0xff00) * j2 >> 8 & 0xff00);
+					ai[i++] = j + ((ai[i] & 0xff00ff) * j2 >> 8 & 0xff00ff) + ((ai[i] & 0xff00) * j2 >> 8 & 0xff00);
+					ai[i++] = j + ((ai[i] & 0xff00ff) * j2 >> 8 & 0xff00ff) + ((ai[i] & 0xff00) * j2 >> 8 & 0xff00);
 				}
 				k = i1 - l & 3;
 				if (k > 0) {
 					j = HSL_TO_RGB[j1 >> 8];
-					j = ((j & 0xff00ff) * l2 >> 8 & 0xff00ff)
-							+ ((j & 0xff00) * l2 >> 8 & 0xff00);
+					j = ((j & 0xff00ff) * l2 >> 8 & 0xff00ff) + ((j & 0xff00) * l2 >> 8 & 0xff00);
 					do
-						ai[i++] = j + ((ai[i] & 0xff00ff) * j2 >> 8 & 0xff00ff)
-								+ ((ai[i] & 0xff00) * j2 >> 8 & 0xff00);
+						ai[i++] = j + ((ai[i] & 0xff00ff) * j2 >> 8 & 0xff00ff) + ((ai[i] & 0xff00) * j2 >> 8 & 0xff00);
 					while (--k > 0);
 				}
 			}
@@ -1561,10 +1514,8 @@ final class Rasterizer extends DrawingArea {
 		do {
 			j = HSL_TO_RGB[j1 >> 8];
 			j1 += i2;
-			j = ((j & 0xff00ff) * i3 >> 8 & 0xff00ff)
-					+ ((j & 0xff00) * i3 >> 8 & 0xff00);
-			ai[i++] = j + ((ai[i] & 0xff00ff) * k2 >> 8 & 0xff00ff)
-					+ ((ai[i] & 0xff00) * k2 >> 8 & 0xff00);
+			j = ((j & 0xff00ff) * i3 >> 8 & 0xff00ff) + ((j & 0xff00) * i3 >> 8 & 0xff00);
+			ai[i++] = j + ((ai[i] & 0xff00ff) * k2 >> 8 & 0xff00ff) + ((ai[i] & 0xff00) * k2 >> 8 & 0xff00);
 		} while (--k > 0);
 	}
 
@@ -1594,26 +1545,20 @@ final class Rasterizer extends DrawingArea {
 		}
 		int j1 = alpha;
 		int k1 = 256 - alpha;
-		j = ((j & 0xff00ff) * k1 >> 8 & 0xff00ff)
-				+ ((j & 0xff00) * k1 >> 8 & 0xff00);
+		j = ((j & 0xff00ff) * k1 >> 8 & 0xff00ff) + ((j & 0xff00) * k1 >> 8 & 0xff00);
 		while (--k >= 0) {
-			ai[i++] = j + ((ai[i] & 0xff00ff) * j1 >> 8 & 0xff00ff)
-					+ ((ai[i] & 0xff00) * j1 >> 8 & 0xff00);
-			ai[i++] = j + ((ai[i] & 0xff00ff) * j1 >> 8 & 0xff00ff)
-					+ ((ai[i] & 0xff00) * j1 >> 8 & 0xff00);
-			ai[i++] = j + ((ai[i] & 0xff00ff) * j1 >> 8 & 0xff00ff)
-					+ ((ai[i] & 0xff00) * j1 >> 8 & 0xff00);
-			ai[i++] = j + ((ai[i] & 0xff00ff) * j1 >> 8 & 0xff00ff)
-					+ ((ai[i] & 0xff00) * j1 >> 8 & 0xff00);
+			ai[i++] = j + ((ai[i] & 0xff00ff) * j1 >> 8 & 0xff00ff) + ((ai[i] & 0xff00) * j1 >> 8 & 0xff00);
+			ai[i++] = j + ((ai[i] & 0xff00ff) * j1 >> 8 & 0xff00ff) + ((ai[i] & 0xff00) * j1 >> 8 & 0xff00);
+			ai[i++] = j + ((ai[i] & 0xff00ff) * j1 >> 8 & 0xff00ff) + ((ai[i] & 0xff00) * j1 >> 8 & 0xff00);
+			ai[i++] = j + ((ai[i] & 0xff00ff) * j1 >> 8 & 0xff00ff) + ((ai[i] & 0xff00) * j1 >> 8 & 0xff00);
 		}
 		for (k = i1 - l & 3; --k >= 0;)
-			ai[i++] = j + ((ai[i] & 0xff00ff) * j1 >> 8 & 0xff00ff)
-					+ ((ai[i] & 0xff00) * j1 >> 8 & 0xff00);
+			ai[i++] = j + ((ai[i] & 0xff00ff) * j1 >> 8 & 0xff00ff) + ((ai[i] & 0xff00) * j1 >> 8 & 0xff00);
 
 	}
 
-	private static void method379(int ai[], int ai1[], int k, int l, int i1,
-			int j1, int k1, int l1, int i2, int j2, int k2, int l2, int i3) {
+	private static void method379(int ai[], int ai1[], int k, int l, int i1, int j1, int k1, int l1, int i2, int j2,
+			int k2, int l2, int i3) {
 		int i = 0;// was parameter
 		int j = 0;// was parameter
 		if (l >= i1)
@@ -2059,10 +2004,8 @@ final class Rasterizer extends DrawingArea {
 			anIntArray1469[j] = 0x10000 / j;
 
 		for (int k = 0; k < 2048; k++) {
-			SINE[k] = (int) (65536D * Math
-					.sin(k * 0.0030679614999999999D));
-			COSINE[k] = (int) (65536D * Math
-					.cos(k * 0.0030679614999999999D));
+			SINE[k] = (int) (65536D * Math.sin(k * 0.0030679614999999999D));
+			COSINE[k] = (int) (65536D * Math.cos(k * 0.0030679614999999999D));
 		}
 
 	}

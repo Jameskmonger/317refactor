@@ -106,11 +106,9 @@ final class TextInput {
 
 	private static final char[] characterList = new char[100];
 	private static final Buffer stream = new Buffer(new byte[100]);
-	private static final char[] validChars = { ' ', 'e', 't', 'a', 'o', 'i',
-			'h', 'n', 's', 'r', 'd', 'l', 'u', 'm', 'w', 'c', 'y', 'f', 'g',
-			'p', 'b', 'v', 'k', 'x', 'j', 'q', 'z', '0', '1', '2', '3', '4',
-			'5', '6', '7', '8', '9', ' ', '!', '?', '.', ',', ':', ';', '(',
-			')', '-', '&', '*', '\\', '\'', '@', '#', '+', '=', '\243', '$',
-			'%', '"', '[', ']' };
+	private static final char[] validChars = { ' ', 'e', 't', 'a', 'o', 'i', 'h', 'n', 's', 'r', 'd', 'l', 'u', 'm',
+			'w', 'c', 'y', 'f', 'g', 'p', 'b', 'v', 'k', 'x', 'j', 'q', 'z', '0', '1', '2', '3', '4', '5', '6', '7',
+			'8', '9', ' ', '!', '?', '.', ',', ':', ';', '(', ')', '-', '&', '*', '\\', '\'', '@', '#', '+', '=',
+			'\243', '$', '%', '"', '[', ']' };
 
 }

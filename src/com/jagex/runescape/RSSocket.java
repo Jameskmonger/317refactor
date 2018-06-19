@@ -42,6 +42,7 @@ final class RSSocket implements Runnable {
 
 	private boolean isWriter;
 	private boolean hasIOError;
+
 	public RSSocket(RSApplet RSApplet_, Socket socket1) throws IOException {
 		closed = false;
 		isWriter = false;
@@ -53,12 +54,14 @@ final class RSSocket implements Runnable {
 		inputStream = socket.getInputStream();
 		outputStream = socket.getOutputStream();
 	}
+
 	public int available() throws IOException {
 		if (closed)
 			return 0;
 		else
 			return inputStream.available();
 	}
+
 	public void close() {
 		closed = true;
 		try {
@@ -77,6 +80,7 @@ final class RSSocket implements Runnable {
 		}
 		buffer = null;
 	}
+
 	public void printDebug() {
 		System.out.println("dummy:" + closed);
 		System.out.println("tcycl:" + writeIndex);
@@ -88,12 +92,14 @@ final class RSSocket implements Runnable {
 		} catch (IOException _ex) {
 		}
 	}
+
 	public int read() throws IOException {
 		if (closed)
 			return 0;
 		else
 			return inputStream.read();
 	}
+
 	public void read(byte abyte0[], int j) throws IOException {
 		int i = 0;// was parameter
 		if (closed)
@@ -107,6 +113,7 @@ final class RSSocket implements Runnable {
 		}
 
 	}
+
 	@Override
 	public void run() {
 		while (isWriter) {
@@ -142,6 +149,7 @@ final class RSSocket implements Runnable {
 			}
 		}
 	}
+
 	public void write(int i, byte abyte0[]) throws IOException {
 		if (closed)
 			return;

@@ -32,8 +32,7 @@ public final class ISAACRandomGenerator {
 	/**
 	 * Create a new ISAAC generator with a given seed.
 	 * 
-	 * @param seed
-	 *            The seed.
+	 * @param seed The seed.
 	 */
 	public ISAACRandomGenerator(int seed[]) {
 		memory = new int[SIZE];

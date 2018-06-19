@@ -27,6 +27,7 @@ public final class OnDemandData extends QueueLink {
 	int id;
 	boolean incomplete;
 	int loopCycle;
+
 	public OnDemandData() {
 		incomplete = true;
 	}

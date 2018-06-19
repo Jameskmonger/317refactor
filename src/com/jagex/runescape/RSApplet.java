@@ -24,8 +24,8 @@ import java.awt.*;
 import java.awt.event.*;
 
 @SuppressWarnings("serial")
-public class RSApplet extends Applet implements Runnable, MouseListener,
-		MouseMotionListener, KeyListener, FocusListener, WindowListener {
+public class RSApplet extends Applet
+		implements Runnable, MouseListener, MouseMotionListener, KeyListener, FocusListener, WindowListener {
 
 	private int gameState;
 
@@ -104,8 +104,7 @@ public class RSApplet extends Applet implements Runnable, MouseListener,
 		this.height = height;
 		gameFrame = new RSFrame(this, this.width, this.height);
 		gameGraphics = getGameComponent().getGraphics();
-		fullGameScreen = new RSImageProducer(this.width, height,
-				getGameComponent());
+		fullGameScreen = new RSImageProducer(this.width, height, getGameComponent());
 		startRunnable(this, 1);
 	}
 
@@ -133,8 +132,7 @@ public class RSApplet extends Applet implements Runnable, MouseListener,
 			}
 		}
 		Font helveticaBold = new Font("Helvetica", 1, 13);
-		FontMetrics fontmetrics = getGameComponent().getFontMetrics(
-				helveticaBold);
+		FontMetrics fontmetrics = getGameComponent().getFontMetrics(helveticaBold);
 		Font helvetica = new Font("Helvetica", 0, 13);
 		getGameComponent().getFontMetrics(helvetica);
 		if (clearScreen) {
@@ -146,15 +144,12 @@ public class RSApplet extends Applet implements Runnable, MouseListener,
 		int centerHeight = height / 2 - 18;
 		gameGraphics.setColor(color);
 		gameGraphics.drawRect(width / 2 - 152, centerHeight, 304, 34);
-		gameGraphics.fillRect(width / 2 - 150, centerHeight + 2,
-				percentage * 3, 30);
+		gameGraphics.fillRect(width / 2 - 150, centerHeight + 2, percentage * 3, 30);
 		gameGraphics.setColor(Color.black);
-		gameGraphics.fillRect((width / 2 - 150) + percentage * 3,
-				centerHeight + 2, 300 - percentage * 3, 30);
+		gameGraphics.fillRect((width / 2 - 150) + percentage * 3, centerHeight + 2, 300 - percentage * 3, 30);
 		gameGraphics.setFont(helveticaBold);
 		gameGraphics.setColor(Color.white);
-		gameGraphics.drawString(s, (width - fontmetrics.stringWidth(s)) / 2,
-				centerHeight + 22);
+		gameGraphics.drawString(s, (width - fontmetrics.stringWidth(s)) / 2, centerHeight + 22);
 	}
 
 	private void exit() {
@@ -198,8 +193,7 @@ public class RSApplet extends Applet implements Runnable, MouseListener,
 		this.width = width;
 		this.height = height;
 		gameGraphics = getGameComponent().getGraphics();
-		fullGameScreen = new RSImageProducer(this.width, this.height,
-				getGameComponent());
+		fullGameScreen = new RSImageProducer(this.width, this.height, getGameComponent());
 		startRunnable(this, 1);
 	}
 
@@ -246,6 +240,7 @@ public class RSApplet extends Applet implements Runnable, MouseListener,
 			writeIndex = writeIndex + 1 & 0x7f;
 		}
 	}
+
 	@Override
 	public final void keyReleased(KeyEvent keyevent) {
 		idleTime = 0;
@@ -274,12 +269,15 @@ public class RSApplet extends Applet implements Runnable, MouseListener,
 		if (keyChar > 0 && keyChar < '\200')
 			keyStatus[keyChar] = 0;
 	}
+
 	@Override
 	public final void keyTyped(KeyEvent keyevent) {
 	}
+
 	@Override
 	public final void mouseClicked(MouseEvent mouseevent) {
 	}
+
 	@Override
 	public final void mouseDragged(MouseEvent mouseevent) {
 		int x = mouseevent.getX();
@@ -292,15 +290,18 @@ public class RSApplet extends Applet implements Runnable, MouseListener,
 		mouseX = x;
 		mouseY = y;
 	}
+
 	@Override
 	public final void mouseEntered(MouseEvent mouseevent) {
 	}
+
 	@Override
 	public final void mouseExited(MouseEvent mouseevent) {
 		idleTime = 0;
 		mouseX = -1;
 		mouseY = -1;
 	}
+
 	@Override
 	public final void mouseMoved(MouseEvent mouseevent) {
 		int x = mouseevent.getX();
@@ -313,6 +314,7 @@ public class RSApplet extends Applet implements Runnable, MouseListener,
 		mouseX = x;
 		mouseY = y;
 	}
+
 	@Override
 	public final void mousePressed(MouseEvent mouseEvent) {
 		int x = mouseEvent.getX();
@@ -333,11 +335,13 @@ public class RSApplet extends Applet implements Runnable, MouseListener,
 			mouseButton = 1;
 		}
 	}
+
 	@Override
 	public final void mouseReleased(MouseEvent mouseevent) {
 		idleTime = 0;
 		mouseButton = 0;
 	}
+
 	@Override
 	public final void paint(Graphics g) {
 		if (gameGraphics == null)
@@ -345,10 +349,13 @@ public class RSApplet extends Applet implements Runnable, MouseListener,
 		clearScreen = true;
 		redraw();
 	}
+
 	void processDrawing() {
 	}
+
 	void processGameLoop() {
 	}
+
 	final int readCharacter() {
 		int character = -1;
 		if (writeIndex != readIndex) {
@@ -357,8 +364,10 @@ public class RSApplet extends Applet implements Runnable, MouseListener,
 		}
 		return character;
 	}
+
 	void redraw() {
 	}
+
 	@Override
 	public void run() {
 		getGameComponent().addMouseListener(this);
@@ -439,10 +448,8 @@ public class RSApplet extends Applet implements Runnable, MouseListener,
 					System.out.println("otim" + otim + ":" + otims[otim]);
 				}
 
-				System.out.println("fps:" + fps + " ratio:" + ratio + " count:"
-						+ count);
-				System.out.println("del:" + delay + " deltime:" + delayTime
-						+ " mindel:" + minDelay);
+				System.out.println("fps:" + fps + " ratio:" + ratio + " count:" + count);
+				System.out.println("del:" + delay + " deltime:" + delayTime + " mindel:" + minDelay);
 				System.out.println("intex:" + intex + " opos:" + opos);
 				debugRequested = false;
 				intex = 0;
@@ -451,26 +458,32 @@ public class RSApplet extends Applet implements Runnable, MouseListener,
 		if (gameState == -1)
 			exit();
 	}
+
 	final void setFrameRate(int frameRate) {
 		delayTime = 1000 / frameRate;
 	}
+
 	@Override
 	public final void start() {
 		if (gameState >= 0)
 			gameState = 0;
 	}
+
 	public void startRunnable(Runnable runnable, int priority) {
 		Thread thread = new Thread(runnable);
 		thread.start();
 		thread.setPriority(priority);
 	}
+
 	void startUp() {
 	}
+
 	@Override
 	public final void stop() {
 		if (gameState >= 0)
 			gameState = 4000 / delayTime;
 	}
+
 	@Override
 	public final void update(Graphics g) {
 		if (gameGraphics == null)
@@ -478,25 +491,32 @@ public class RSApplet extends Applet implements Runnable, MouseListener,
 		clearScreen = true;
 		redraw();
 	}
+
 	@Override
 	public final void windowActivated(WindowEvent windowevent) {
 	}
+
 	@Override
 	public final void windowClosed(WindowEvent windowevent) {
 	}
+
 	@Override
 	public final void windowClosing(WindowEvent windowevent) {
 		destroy();
 	}
+
 	@Override
 	public final void windowDeactivated(WindowEvent windowevent) {
 	}
+
 	@Override
 	public final void windowDeiconified(WindowEvent windowevent) {
 	}
+
 	@Override
 	public final void windowIconified(WindowEvent windowevent) {
 	}
+
 	@Override
 	public final void windowOpened(WindowEvent windowevent) {
 	}

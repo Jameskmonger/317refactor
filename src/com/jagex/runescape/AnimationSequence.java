@@ -51,6 +51,7 @@ public final class AnimationSequence {
 	public int precedenceAnimating;
 	public int precedenceWalking;
 	public int replayMode;
+
 	private AnimationSequence() {
 		frameStep = -1;
 		dynamic = false;
@@ -62,6 +63,7 @@ public final class AnimationSequence {
 		precedenceWalking = -1;
 		replayMode = 2;
 	}
+
 	public int getFrameLength(int frame) {
 		int frameLength = frameLengths[frame];
 		if (frameLength == 0) {
@@ -73,6 +75,7 @@ public final class AnimationSequence {
 			frameLength = 1;
 		return frameLength;
 	}
+
 	private void readValues(Buffer stream) {
 		do {
 			int attribute = stream.getUnsignedByte();
@@ -112,14 +115,14 @@ public final class AnimationSequence {
 				maximumLoops = stream.getUnsignedByte();
 			else if (attribute == 9)
 				/*
-				 * when animating, 0 -> block walking, 1 -> yield to walking, 2
-				 * -> interleave with walking
+				 * when animating, 0 -> block walking, 1 -> yield to walking, 2 -> interleave
+				 * with walking
 				 */
 				precedenceAnimating = stream.getUnsignedByte();
 			else if (attribute == 10)
 				/*
-				 * when walking, 0 -> block walking, 1 -> yield to walking, 2 ->
-				 * never used... interleave with walking?
+				 * when walking, 0 -> block walking, 1 -> yield to walking, 2 -> never used...
+				 * interleave with walking?
 				 */
 				precedenceWalking = stream.getUnsignedByte();
 			else if (attribute == 11)
@@ -127,8 +130,7 @@ public final class AnimationSequence {
 			else if (attribute == 12)
 				stream.getInt();
 			else
-				System.out.println("Error unrecognised seq config code: "
-						+ attribute);
+				System.out.println("Error unrecognised seq config code: " + attribute);
 		} while (true);
 		if (frameCount == 0) {
 			frameCount = 1;

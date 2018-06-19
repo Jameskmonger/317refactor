@@ -30,6 +30,7 @@ final class GroundItemTile {
 	Animable thirdGroundItem;
 	int uid;
 	int anInt52;
+
 	GroundItemTile() {
 	}
 }

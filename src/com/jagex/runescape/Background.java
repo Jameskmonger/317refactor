@@ -50,8 +50,7 @@ public final class Background extends DrawingArea {
 
 		for (int l = 0; l < i; l++) {
 			stream_1.position += 2;
-			stream.position += stream_1.getUnsignedLEShort()
-					* stream_1.getUnsignedLEShort();
+			stream.position += stream_1.getUnsignedLEShort() * stream_1.getUnsignedLEShort();
 			stream_1.position++;
 		}
 
@@ -77,6 +76,7 @@ public final class Background extends DrawingArea {
 
 		}
 	}
+
 	public void drawImage(int i, int k) {
 		i += drawOffsetX;
 		k += drawOffsetY;
@@ -111,10 +111,10 @@ public final class Background extends DrawingArea {
 			l1 += l2;
 		}
 		if (!(k1 <= 0 || j1 <= 0)) {
-			method362(j1, DrawingArea.pixels, imagePixels, l1, l, k1, i1,
-					palette, i2);
+			method362(j1, DrawingArea.pixels, imagePixels, l1, l, k1, i1, palette, i2);
 		}
 	}
+
 	public void method356() {
 		libWidth /= 2;
 		anInt1457 /= 2;
@@ -122,8 +122,7 @@ public final class Background extends DrawingArea {
 		int i = 0;
 		for (int j = 0; j < imageHeight; j++) {
 			for (int k = 0; k < imageWidth; k++)
-				abyte0[(k + drawOffsetX >> 1) + (j + drawOffsetY >> 1)
-						* libWidth] = imagePixels[i++];
+				abyte0[(k + drawOffsetX >> 1) + (j + drawOffsetY >> 1) * libWidth] = imagePixels[i++];
 
 		}
 
@@ -133,6 +132,7 @@ public final class Background extends DrawingArea {
 		drawOffsetX = 0;
 		drawOffsetY = 0;
 	}
+
 	public void method357() {
 		if (imageWidth == libWidth && imageHeight == anInt1457)
 			return;
@@ -150,6 +150,7 @@ public final class Background extends DrawingArea {
 		drawOffsetX = 0;
 		drawOffsetY = 0;
 	}
+
 	public void method358() {
 		byte abyte0[] = new byte[imageWidth * imageHeight];
 		int j = 0;
@@ -162,6 +163,7 @@ public final class Background extends DrawingArea {
 		imagePixels = abyte0;
 		drawOffsetX = libWidth - imageWidth - drawOffsetX;
 	}
+
 	public void method359() {
 		byte abyte0[] = new byte[imageWidth * imageHeight];
 		int i = 0;
@@ -174,8 +176,8 @@ public final class Background extends DrawingArea {
 		imagePixels = abyte0;
 		drawOffsetY = anInt1457 - imageHeight - drawOffsetY;
 	}
-	private void method362(int i, int ai[], byte abyte0[], int j, int k, int l,
-			int i1, int ai1[], int j1) {
+
+	private void method362(int i, int ai[], byte abyte0[], int j, int k, int l, int i1, int ai1[], int j1) {
 		int k1 = -(l >> 2);
 		l = -(l & 3);
 		for (int l1 = -i; l1 < 0; l1++) {
@@ -215,6 +217,7 @@ public final class Background extends DrawingArea {
 		}
 
 	}
+
 	public void mixPalette(int red, int green, int blue) {
 		for (int i = 0; i < palette.length; i++) {
 			int r = palette[i] >> 16 & 0xff;
