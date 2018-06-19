@@ -25,7 +25,7 @@ import java.util.zip.CRC32;
 import java.util.zip.GZIPInputStream;
 import com.jagex.runescape.sign.signlink;
 
-public final class OnDemandFetcher extends OnDemandFetcherParent implements Runnable {
+public final class OnDemandFetcher implements Runnable {
 
 	private int totalFiles;
 
@@ -457,7 +457,6 @@ public final class OnDemandFetcher extends OnDemandFetcherParent implements Runn
 		}
 	}
 
-	@Override
 	public void request(int i) {
 		request(0, i);
 	}

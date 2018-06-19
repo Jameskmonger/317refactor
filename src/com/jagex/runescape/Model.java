@@ -33,7 +33,7 @@ public final class Model extends Animable {
 		}
 	}
 
-	public static void init(int modelCount, OnDemandFetcherParent requester) {
+	public static void init(int modelCount, OnDemandFetcher requester) {
 		modelHeaders = new ModelHeader[modelCount];
 		Model.requester = requester;
 	}
@@ -232,7 +232,7 @@ public final class Model extends Animable {
 	public boolean singleTile;
 	VertexNormal vertexNormalOffset[];
 	private static ModelHeader[] modelHeaders;
-	private static OnDemandFetcherParent requester;
+	private static OnDemandFetcher requester;
 	private static boolean[] restrictEdges = new boolean[4096];
 	private static boolean[] aBooleanArray1664 = new boolean[4096];
 	private static int[] vertexScreenX = new int[4096];
