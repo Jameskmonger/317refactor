@@ -51,7 +51,7 @@ public final class SpotAnimation {
 	public int modelLightFalloff;
 	public int modelLightAmbient;
 	public static LinkedList modelCache = new LinkedList(30);
-	
+
 	private SpotAnimation() {
 		animationId = -1;
 		originalModelColours = new int[6];
@@ -59,7 +59,7 @@ public final class SpotAnimation {
 		scaleXY = 128;
 		scaleZ = 128;
 	}
-	
+
 	public Model getModel() {
 		Model model = (Model) modelCache.get(id);
 		if (model != null)
@@ -69,13 +69,12 @@ public final class SpotAnimation {
 			return null;
 		for (int colour = 0; colour < 6; colour++)
 			if (originalModelColours[0] != 0)
-				model.recolour(originalModelColours[colour],
-						modifiedModelColours[colour]);
+				model.recolour(originalModelColours[colour], modifiedModelColours[colour]);
 
 		modelCache.put(model, id);
 		return model;
 	}
-	
+
 	private void read(Buffer stream) {
 		do {
 			int attribute = stream.getUnsignedByte();
@@ -98,14 +97,11 @@ public final class SpotAnimation {
 			else if (attribute == 8)
 				modelLightAmbient = stream.getUnsignedByte();
 			else if (attribute >= 40 && attribute < 50)
-				originalModelColours[attribute - 40] = stream
-						.getUnsignedLEShort();
+				originalModelColours[attribute - 40] = stream.getUnsignedLEShort();
 			else if (attribute >= 50 && attribute < 60)
-				modifiedModelColours[attribute - 50] = stream
-						.getUnsignedLEShort();
+				modifiedModelColours[attribute - 50] = stream.getUnsignedLEShort();
 			else
-				System.out.println("Error unrecognised spotanim config code: "
-						+ attribute);
+				System.out.println("Error unrecognised spotanim config code: " + attribute);
 		} while (true);
 	}
 }

@@ -36,8 +36,7 @@ final class FileCache {
 
 	private final int storeId;
 
-	public FileCache(RandomAccessFile data,
-			RandomAccessFile index, int storeId) {
+	public FileCache(RandomAccessFile data, RandomAccessFile index, int storeId) {
 		this.storeId = storeId;
 		this.dataFile = data;
 		this.indexFile = index;
@@ -53,17 +52,15 @@ final class FileCache {
 					return null;
 			}
 
-			int size = ((buffer[0] & 0xff) << 16) + ((buffer[1] & 0xff) << 8)
-					+ (buffer[2] & 0xff);
-			int sector = ((buffer[3] & 0xff) << 16) + ((buffer[4] & 0xff) << 8)
-					+ (buffer[5] & 0xff);
-			
+			int size = ((buffer[0] & 0xff) << 16) + ((buffer[1] & 0xff) << 8) + (buffer[2] & 0xff);
+			int sector = ((buffer[3] & 0xff) << 16) + ((buffer[4] & 0xff) << 8) + (buffer[5] & 0xff);
+
 			if (size < 0 || size > 0x7a120)
 				return null;
-			
+
 			if (sector <= 0 || sector > dataFile.length() / 520L)
 				return null;
-			
+
 			byte decompressed[] = new byte[size];
 			int read = 0;
 			for (int part = 0; read < size; part++) {
@@ -83,16 +80,15 @@ final class FileCache {
 
 				int decompressedIndex = ((buffer[0] & 0xff) << 8) + (buffer[1] & 0xff);
 				int decompressedPart = ((buffer[2] & 0xff) << 8) + (buffer[3] & 0xff);
-				int decompressedSector = ((buffer[4] & 0xff) << 16) + ((buffer[5] & 0xff) << 8)
-						+ (buffer[6] & 0xff);
+				int decompressedSector = ((buffer[4] & 0xff) << 16) + ((buffer[5] & 0xff) << 8) + (buffer[6] & 0xff);
 				int decompressedStoreId = buffer[7] & 0xff;
-				
+
 				if (decompressedIndex != index || decompressedPart != part || decompressedStoreId != storeId)
 					return null;
-				
+
 				if (decompressedSector < 0 || decompressedSector > dataFile.length() / 520L)
 					return null;
-				
+
 				for (int i = 0; i < unread; i++)
 					decompressed[read++] = buffer[i + 8];
 
@@ -104,16 +100,15 @@ final class FileCache {
 			return null;
 		}
 	}
-	
+
 	public synchronized boolean put(int size, byte data[], int index) {
 		boolean exists = put(true, index, size, data);
 		if (!exists)
 			exists = put(false, index, size, data);
 		return exists;
 	}
-	
-	private synchronized boolean put(boolean exists, int index, int size,
-			byte data[]) {
+
+	private synchronized boolean put(boolean exists, int index, int size, byte data[]) {
 		try {
 			int sector;
 			if (exists) {
@@ -125,8 +120,7 @@ final class FileCache {
 						return false;
 				}
 
-				sector = ((buffer[3] & 0xff) << 16) + ((buffer[4] & 0xff) << 8)
-						+ (buffer[5] & 0xff);
+				sector = ((buffer[3] & 0xff) << 16) + ((buffer[4] & 0xff) << 8) + (buffer[5] & 0xff);
 				if (sector <= 0 || sector > dataFile.length() / 520L)
 					return false;
 			} else {
@@ -158,8 +152,7 @@ final class FileCache {
 					if (read == 8) {
 						int decompressedIndex = ((buffer[0] & 0xff) << 8) + (buffer[1] & 0xff);
 						int decompressedPart = ((buffer[2] & 0xff) << 8) + (buffer[3] & 0xff);
-						decompressedSector = ((buffer[4] & 0xff) << 16)
-								+ ((buffer[5] & 0xff) << 8)
+						decompressedSector = ((buffer[4] & 0xff) << 16) + ((buffer[5] & 0xff) << 8)
 								+ (buffer[6] & 0xff);
 						int decompressedStoreId = buffer[7] & 0xff;
 						if (decompressedIndex != index || decompressedPart != part || decompressedStoreId != storeId)
@@ -168,7 +161,7 @@ final class FileCache {
 							return false;
 					}
 				}
-				
+
 				if (decompressedSector == 0) {
 					exists = false;
 					decompressedSector = (int) ((dataFile.length() + 519L) / 520L);
@@ -177,10 +170,10 @@ final class FileCache {
 					if (decompressedSector == sector)
 						decompressedSector++;
 				}
-				
+
 				if (size - written <= 512)
 					decompressedSector = 0;
-				
+
 				buffer[0] = (byte) (index >> 8);
 				buffer[1] = (byte) index;
 				buffer[2] = (byte) (part >> 8);
@@ -191,7 +184,7 @@ final class FileCache {
 				buffer[7] = (byte) storeId;
 				seek(dataFile, sector * 520);
 				dataFile.write(buffer, 0, 8);
-				
+
 				int unwritten = size - written;
 				if (unwritten > 512)
 					unwritten = 512;
@@ -204,16 +197,15 @@ final class FileCache {
 			return false;
 		}
 	}
-	
-	private synchronized void seek(RandomAccessFile file, int position)
-			throws IOException {
+
+	private synchronized void seek(RandomAccessFile file, int position) throws IOException {
 		if (position < 0 || position > 0x3c00000) {
-			System.out.println("Badseek - pos:" + position + " len:"
-					+ file.length());
+			System.out.println("Badseek - pos:" + position + " len:" + file.length());
 			position = 0x3c00000;
 			try {
 				Thread.sleep(1000L);
-			} catch (Exception _ex) { }
+			} catch (Exception _ex) {
+			}
 		}
 		file.seek(position);
 	}

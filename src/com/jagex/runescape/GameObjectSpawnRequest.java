@@ -34,6 +34,7 @@ final class GameObjectSpawnRequest extends Link {
 	public int face;
 	public int type;
 	public int delayUntilSpawn;
+
 	GameObjectSpawnRequest() {
 		delayUntilRespawn = -1;
 	}

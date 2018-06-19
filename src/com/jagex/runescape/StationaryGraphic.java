@@ -33,8 +33,9 @@ final class StationaryGraphic extends Animable {
 	private final SpotAnimation animation;
 	private int elapsedFrames;
 	private int duration;
-	public StationaryGraphic(int x, int y, int z, int drawHeight,
-			int animationIndex, int loopCycle, int loopCycleOffset) {
+
+	public StationaryGraphic(int x, int y, int z, int drawHeight, int animationIndex, int loopCycle,
+			int loopCycleOffset) {
 		transformationCompleted = false;
 		animation = SpotAnimation.cache[animationIndex];
 		this.z = z;
@@ -44,9 +45,9 @@ final class StationaryGraphic extends Animable {
 		this.stationaryGraphicLoopCycle = loopCycle + loopCycleOffset;
 		transformationCompleted = false;
 	}
+
 	public void animationStep(int i) {
-		for (duration += i; duration > animation.sequences
-				.getFrameLength(elapsedFrames);) {
+		for (duration += i; duration > animation.sequences.getFrameLength(elapsedFrames);) {
 			duration -= animation.sequences.getFrameLength(elapsedFrames) + 1;
 			elapsedFrames++;
 			if (elapsedFrames >= animation.sequences.frameCount
@@ -57,14 +58,14 @@ final class StationaryGraphic extends Animable {
 		}
 
 	}
+
 	@Override
 	public Model getRotatedModel() {
 		Model model = animation.getModel();
 		if (model == null)
 			return null;
 		int frame = animation.sequences.frame2Ids[elapsedFrames];
-		Model animatedModel = new Model(true, Animation.isNullFrame(frame),
-				false, model);
+		Model animatedModel = new Model(true, Animation.isNullFrame(frame), false, model);
 		if (!transformationCompleted) {
 			animatedModel.createBones();
 			animatedModel.applyTransformation(frame);
@@ -72,8 +73,7 @@ final class StationaryGraphic extends Animable {
 			animatedModel.vertexSkin = null;
 		}
 		if (animation.scaleXY != 128 || animation.scaleZ != 128)
-			animatedModel.scaleT(animation.scaleXY, animation.scaleXY,
-					animation.scaleZ);
+			animatedModel.scaleT(animation.scaleXY, animation.scaleXY, animation.scaleZ);
 		if (animation.rotation != 0) {
 			if (animation.rotation == 90)
 				animatedModel.rotate90Degrees();
@@ -87,8 +87,8 @@ final class StationaryGraphic extends Animable {
 				animatedModel.rotate90Degrees();
 			}
 		}
-		animatedModel.applyLighting(64 + animation.modelLightFalloff,
-				850 + animation.modelLightAmbient, -30, -50, -30, true);
+		animatedModel.applyLighting(64 + animation.modelLightFalloff, 850 + animation.modelLightAmbient, -30, -50, -30,
+				true);
 		return animatedModel;
 	}
 }

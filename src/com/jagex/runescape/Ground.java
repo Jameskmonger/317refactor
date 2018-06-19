@@ -45,6 +45,7 @@ public final class Ground extends Link {
 	int anInt1327;
 	int anInt1328;
 	public Ground tileBelow;
+
 	public Ground(int i, int j, int k) {
 		interactiveObjects = new InteractiveObject[5];
 		interactiveObjectsSize = new int[5];

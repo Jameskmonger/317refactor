@@ -35,9 +35,8 @@ public final class signlink implements Runnable {
 	}
 
 	public static String findcachedirORIG() {
-		String as[] = { "c:/windows/", "c:/winnt/", "d:/windows/", "d:/winnt/",
-				"e:/windows/", "e:/winnt/", "f:/windows/", "f:/winnt/", "c:/",
-				"~/", "/tmp/", "", "c:/rscache", "/rscache" };
+		String as[] = { "c:/windows/", "c:/winnt/", "d:/windows/", "d:/winnt/", "e:/windows/", "e:/winnt/",
+				"f:/windows/", "f:/winnt/", "c:/", "~/", "/tmp/", "", "c:/rscache", "/rscache" };
 		if (storeid < 32 || storeid > 34)
 			storeid = 32;
 		String s = ".file_store_" + storeid;
@@ -63,16 +62,14 @@ public final class signlink implements Runnable {
 		try {
 			File file = new File(s + "uid.dat");
 			if (!file.exists() || file.length() < 4L) {
-				DataOutputStream dataoutputstream = new DataOutputStream(
-						new FileOutputStream(s + "uid.dat"));
+				DataOutputStream dataoutputstream = new DataOutputStream(new FileOutputStream(s + "uid.dat"));
 				dataoutputstream.writeInt((int) (Math.random() * 99999999D));
 				dataoutputstream.close();
 			}
 		} catch (Exception _ex) {
 		}
 		try {
-			DataInputStream datainputstream = new DataInputStream(
-					new FileInputStream(s + "uid.dat"));
+			DataInputStream datainputstream = new DataInputStream(new FileInputStream(s + "uid.dat"));
 			int i = datainputstream.readInt();
 			datainputstream.close();
 			return i + 1;
@@ -107,8 +104,7 @@ public final class signlink implements Runnable {
 			return socket;
 	}
 
-	public static synchronized DataInputStream openurl(String s)
-			throws IOException {
+	public static synchronized DataInputStream openurl(String s) throws IOException {
 		for (urlreq = s; urlreq != null;)
 			try {
 				Thread.sleep(50L);
@@ -214,8 +210,10 @@ public final class signlink implements Runnable {
 	public static int wavevol;
 	public static boolean reporterror = true;
 	public static String errorname = "";
+
 	private signlink() {
 	}
+
 	@Override
 	public void run() {
 		active = true;
@@ -227,8 +225,7 @@ public final class signlink implements Runnable {
 				file.delete();
 			cache_dat = new RandomAccessFile(s + "main_file_cache.dat", "rw");
 			for (int j = 0; j < 5; j++)
-				cache_idx[j] = new RandomAccessFile(s + "main_file_cache.idx"
-						+ j, "rw");
+				cache_idx[j] = new RandomAccessFile(s + "main_file_cache.idx" + j, "rw");
 
 		} catch (Exception exception) {
 			exception.printStackTrace();
@@ -257,8 +254,7 @@ public final class signlink implements Runnable {
 			} else if (savereq != null) {
 				if (savebuf != null)
 					try {
-						FileOutputStream fileoutputstream = new FileOutputStream(
-								s + savereq);
+						FileOutputStream fileoutputstream = new FileOutputStream(s + savereq);
 						fileoutputstream.write(savebuf, 0, savelen);
 						fileoutputstream.close();
 					} catch (Exception _ex) {
@@ -276,8 +272,7 @@ public final class signlink implements Runnable {
 			} else if (urlreq != null) {
 				try {
 					System.out.println("urlstream");
-					urlstream = new DataInputStream((new URL(
-							applet.getCodeBase(), urlreq)).openStream());
+					urlstream = new DataInputStream((new URL(applet.getCodeBase(), urlreq)).openStream());
 				} catch (Exception _ex) {
 					urlstream = null;
 				}

@@ -54,8 +54,7 @@ public final class Sprite extends DrawingArea {
 
 		for (int i = 0; i < archiveId; i++) {
 			indexStream.position += 2;
-			dataStream.position += indexStream.getUnsignedLEShort()
-					* indexStream.getUnsignedLEShort();
+			dataStream.position += indexStream.getUnsignedLEShort() * indexStream.getUnsignedLEShort();
 			indexStream.position++;
 		}
 
@@ -75,8 +74,7 @@ public final class Sprite extends DrawingArea {
 		if (type == 1) {
 			for (int x = 0; x < width; x++) {
 				for (int y = 0; y < height; y++)
-					this.pixels[x + y * width] = pixels[dataStream
-							.getUnsignedByte()];
+					this.pixels[x + y * width] = pixels[dataStream.getUnsignedByte()];
 
 			}
 
@@ -98,8 +96,7 @@ public final class Sprite extends DrawingArea {
 			offsetX = 0;
 			offsetY = 0;
 			pixels = new int[width * height];
-			PixelGrabber pixelgrabber = new PixelGrabber(image, 0, 0, width,
-					height, pixels, 0, width);
+			PixelGrabber pixelgrabber = new PixelGrabber(image, 0, 0, width, height, pixels, 0, width);
 			pixelgrabber.grabPixels();
 		} catch (Exception _ex) {
 			System.out.println("Error converting jpg");
@@ -141,8 +138,7 @@ public final class Sprite extends DrawingArea {
 
 	}
 
-	private void blockCopy(int destinationPointer, int copyLength, int k,
-			int sourceBlockLength, int sourcePointer,
+	private void blockCopy(int destinationPointer, int copyLength, int k, int sourceBlockLength, int sourcePointer,
 			int destinationBlockLength, int source[], int destination[]) {
 		int blockCount = -(copyLength >> 2);
 		copyLength = -(copyLength & 3);
@@ -162,9 +158,8 @@ public final class Sprite extends DrawingArea {
 		}
 	}
 
-	private void blockCopyAlpha(int sourcePointer, int blockCount,
-			int destination[], int source[], int sourceBlockLength, int i1,
-			int destinationBlockLength, int alpha, int destinationPointer) {
+	private void blockCopyAlpha(int sourcePointer, int blockCount, int destination[], int source[],
+			int sourceBlockLength, int i1, int destinationBlockLength, int alpha, int destinationPointer) {
 		int sourceValue;// was parameter
 		int destinationAlpha = 256 - alpha;
 		for (int k2 = -i1; k2 < 0; k2++) {
@@ -172,13 +167,10 @@ public final class Sprite extends DrawingArea {
 				sourceValue = source[sourcePointer++];
 				if (sourceValue != 0) {
 					int destinationValue = destination[destinationPointer];
-					destination[destinationPointer++] = ((sourceValue & 0xff00ff)
-							* alpha
-							+ (destinationValue & 0xff00ff)
-							* destinationAlpha & 0xff00ff00)
-							+ ((sourceValue & 0xff00) * alpha
-									+ (destinationValue & 0xff00)
-									* destinationAlpha & 0xff0000) >> 8;
+					destination[destinationPointer++] = ((sourceValue & 0xff00ff) * alpha
+							+ (destinationValue & 0xff00ff) * destinationAlpha & 0xff00ff00)
+							+ ((sourceValue & 0xff00) * alpha + (destinationValue & 0xff00) * destinationAlpha
+									& 0xff0000) >> 8;
 				} else {
 					destinationPointer++;
 				}
@@ -189,9 +181,8 @@ public final class Sprite extends DrawingArea {
 		}
 	}
 
-	private void blockCopyTransparent(int destination[], int source[],
-			int sourcePointer, int destinationPointer, int copyLength, int i1,
-			int destinationBlockLength, int sourceBlockLength) {
+	private void blockCopyTransparent(int destination[], int source[], int sourcePointer, int destinationPointer,
+			int copyLength, int i1, int destinationBlockLength, int sourceBlockLength) {
 		int value;// was parameter
 		int blockCount = -(copyLength >> 2);
 		copyLength = -(copyLength & 3);
@@ -267,8 +258,7 @@ public final class Sprite extends DrawingArea {
 			lineDestinationOffset += clipWidth;
 		}
 		if (!(columnCount <= 0 || rowCount <= 0)) {
-			blockCopyTransparent(DrawingArea.pixels, pixels, sourceOffset,
-					destinationOffset, columnCount, rowCount,
+			blockCopyTransparent(DrawingArea.pixels, pixels, sourceOffset, destinationOffset, columnCount, rowCount,
 					lineDestinationOffset, lineSourceOffset);
 		}
 	}
@@ -308,8 +298,7 @@ public final class Sprite extends DrawingArea {
 			i2 += i3;
 		}
 		if (!(l1 <= 0 || k1 <= 0)) {
-			blockCopyAlpha(j1, l1, DrawingArea.pixels, pixels, j2, k1, i2, k,
-					i1);
+			blockCopyAlpha(j1, l1, DrawingArea.pixels, pixels, j2, k1, i2, k, i1);
 		}
 	}
 
@@ -351,9 +340,11 @@ public final class Sprite extends DrawingArea {
 			blockCopy(l, k1, j1, i2, i1, l1, pixels, DrawingArea.pixels);
 		}
 	}
+
 	public void initDrawingArea() {
 		DrawingArea.initDrawingArea(height, width, pixels);
 	}
+
 	public void method354(Background background, int x, int y) {
 		y += offsetX;
 		x += offsetY;
@@ -388,12 +379,11 @@ public final class Sprite extends DrawingArea {
 			k1 += k2;
 		}
 		if (!(j1 <= 0 || i1 <= 0)) {
-			method355(pixels, j1, background.imagePixels, i1,
-					DrawingArea.pixels, 0, k1, k, l1, l);
+			method355(pixels, j1, background.imagePixels, i1, DrawingArea.pixels, 0, k1, k, l1, l);
 		}
 	}
-	private void method355(int ai[], int i, byte abyte0[], int j, int ai1[],
-			int k, int l, int i1, int j1, int k1) {
+
+	private void method355(int ai[], int i, byte abyte0[], int j, int ai1[], int k, int l, int i1, int j1, int k1) {
 		int l1 = -(i >> 2);
 		i = -(i & 3);
 		for (int j2 = -j; j2 < 0; j2++) {
@@ -433,6 +423,7 @@ public final class Sprite extends DrawingArea {
 		}
 
 	}
+
 	public void rotate(int x, int y, double rotation) {
 		// all of the following were parameters
 		int centreY = 15;
@@ -473,21 +464,18 @@ public final class Sprite extends DrawingArea {
 		} catch (Exception _ex) {
 		}
 	}
-	public void rotate(int height, int rotation, int widthMap[], int hingeSize,
-			int ai1[], int centreY, int y, int x, int width, int centreX) {
+
+	public void rotate(int height, int rotation, int widthMap[], int hingeSize, int ai1[], int centreY, int y, int x,
+			int width, int centreX) {
 		try {
 			int negativeCentreX = -width / 2;
 			int negativeCentreY = -height / 2;
-			int offsetY = (int) (Math
-					.sin(rotation / 326.11000000000001D) * 65536D);
-			int offsetX = (int) (Math
-					.cos(rotation / 326.11000000000001D) * 65536D);
+			int offsetY = (int) (Math.sin(rotation / 326.11000000000001D) * 65536D);
+			int offsetX = (int) (Math.cos(rotation / 326.11000000000001D) * 65536D);
 			offsetY = offsetY * hingeSize >> 8;
 			offsetX = offsetX * hingeSize >> 8;
-			int j3 = (centreX << 16)
-					+ (negativeCentreY * offsetY + negativeCentreX * offsetX);
-			int k3 = (centreY << 16)
-					+ (negativeCentreY * offsetX - negativeCentreX * offsetY);
+			int j3 = (centreX << 16) + (negativeCentreY * offsetY + negativeCentreX * offsetX);
+			int k3 = (centreY << 16) + (negativeCentreY * offsetX - negativeCentreX * offsetY);
 			int l3 = x + y * DrawingArea.width;
 			for (y = 0; y < height; y++) {
 				int i4 = ai1[y];
@@ -495,8 +483,7 @@ public final class Sprite extends DrawingArea {
 				int k4 = j3 + offsetX * i4;
 				int l4 = k3 - offsetY * i4;
 				for (x = -widthMap[y]; x < 0; x++) {
-					DrawingArea.pixels[j4++] = pixels[(k4 >> 16) + (l4 >> 16)
-							* this.width];
+					DrawingArea.pixels[j4++] = pixels[(k4 >> 16) + (l4 >> 16) * this.width];
 					k4 += offsetX;
 					l4 -= offsetY;
 				}
@@ -509,11 +496,11 @@ public final class Sprite extends DrawingArea {
 		} catch (Exception _ex) {
 		}
 	}
+
 	public void trim() {
 		int targetPixels[] = new int[maxWidth * maxHeight];
 		for (int _y = 0; _y < height; _y++) {
-			System.arraycopy(pixels, _y * width, targetPixels, _y + offsetY
-					* maxWidth + offsetX, width);
+			System.arraycopy(pixels, _y * width, targetPixels, _y + offsetY * maxWidth + offsetX, width);
 		}
 
 		pixels = targetPixels;

@@ -29,6 +29,7 @@ final class MouseDetection implements Runnable {
 	public boolean running;
 	public final int[] coordsX;
 	public int coordsIndex;
+
 	public MouseDetection(Client client1) {
 		syncObject = new Object();
 		coordsY = new int[500];
@@ -36,6 +37,7 @@ final class MouseDetection implements Runnable {
 		coordsX = new int[500];
 		clientInstance = client1;
 	}
+
 	@Override
 	public void run() {
 		while (running) {

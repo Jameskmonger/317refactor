@@ -45,9 +45,11 @@ public final class VarBit {
 	public int leastSignificantBit;
 	public int mostSignificantBit;
 	private boolean aBoolean651;
+
 	private VarBit() {
 		aBoolean651 = false;
 	}
+
 	private void loadDefinition(Buffer stream) {
 		do {
 			int j = stream.getUnsignedByte();

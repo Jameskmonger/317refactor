@@ -28,7 +28,7 @@ public final class LinkedList {
 	private int available;
 	private final Array array;
 	private final Deque deque;
-	
+
 	public LinkedList(int length) {
 		queueLink = new QueueLink();
 		deque = new Deque();
@@ -36,7 +36,7 @@ public final class LinkedList {
 		available = length;
 		array = new Array();
 	}
-	
+
 	public QueueLink get(long id) {
 		QueueLink l = (QueueLink) array.get(id);
 		if (l != null) {
@@ -44,7 +44,7 @@ public final class LinkedList {
 		}
 		return l;
 	}
-	
+
 	public void put(QueueLink l, long id) {
 		try {
 			if (available == 0) {
@@ -63,12 +63,11 @@ public final class LinkedList {
 			deque.push(l);
 			return;
 		} catch (RuntimeException e) {
-			signlink.reporterror("47547, " + l + ", " + id + ", "
-					+ (byte) 2 + ", " + e.toString());
+			signlink.reporterror("47547, " + l + ", " + id + ", " + (byte) 2 + ", " + e.toString());
 		}
 		throw new RuntimeException();
 	}
-	
+
 	public void unlinkAll() {
 		do {
 			QueueLink l = deque.pull();

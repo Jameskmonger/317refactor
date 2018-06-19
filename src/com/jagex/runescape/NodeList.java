@@ -101,6 +101,7 @@ final class NodeList {
 			node.unlink();
 		} while (true);
 	}
+
 	public Link reverseGetNext() {
 		Link node = current;
 		if (node == head) {

@@ -30,8 +30,7 @@ public final class NPC extends Entity {
 		if (super.animation >= 0 && super.animationDelay == 0) {
 			int frameId2 = AnimationSequence.animations[super.animation].frame2Ids[super.currentAnimationFrame];
 			int frameId1 = -1;
-			if (super.queuedAnimationId >= 0
-					&& super.queuedAnimationId != super.standAnimationId)
+			if (super.queuedAnimationId >= 0 && super.queuedAnimationId != super.standAnimationId)
 				frameId1 = AnimationSequence.animations[super.queuedAnimationId].frame2Ids[super.queuedAnimationFrame];
 			return npcDefinition.getChildModel(frameId1, frameId2,
 					AnimationSequence.animations[super.animation].flowControl);
@@ -55,20 +54,16 @@ public final class NPC extends Entity {
 			Model animationModel = spotAnimation.getModel();
 			if (animationModel != null) {
 				int frameId = spotAnimation.sequences.frame2Ids[super.currentAnimationId];
-				Model animatedModel = new Model(true,
-						Animation.isNullFrame(frameId), false, animationModel);
+				Model animatedModel = new Model(true, Animation.isNullFrame(frameId), false, animationModel);
 				animatedModel.translate(0, -super.graphicHeight, 0);
 				animatedModel.createBones();
 				animatedModel.applyTransformation(frameId);
 				animatedModel.triangleSkin = null;
 				animatedModel.vertexSkin = null;
 				if (spotAnimation.scaleXY != 128 || spotAnimation.scaleZ != 128)
-					animatedModel.scaleT(spotAnimation.scaleXY,
-							spotAnimation.scaleXY, spotAnimation.scaleZ);
-				animatedModel.applyLighting(
-						64 + spotAnimation.modelLightFalloff,
-						850 + spotAnimation.modelLightAmbient, -30, -50, -30,
-						true);
+					animatedModel.scaleT(spotAnimation.scaleXY, spotAnimation.scaleXY, spotAnimation.scaleZ);
+				animatedModel.applyLighting(64 + spotAnimation.modelLightFalloff, 850 + spotAnimation.modelLightAmbient,
+						-30, -50, -30, true);
 				Model models[] = { rotatedModel, animatedModel };
 				rotatedModel = new Model(models);
 			}

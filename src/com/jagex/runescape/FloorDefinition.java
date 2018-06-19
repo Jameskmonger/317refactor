@@ -49,10 +49,12 @@ public final class FloorDefinition {
 	public int hueDivisor;
 	public int hsl;
 	public String name;
+
 	private FloorDefinition() {
 		textureId = -1;
 		occlude = true;
 	}
+
 	private void loadDefinition(Buffer stream) {
 		do {
 			int attribute = stream.getUnsignedByte();
@@ -82,12 +84,12 @@ public final class FloorDefinition {
 				hue = oldHue;
 				hueDivisor = oldHue;
 			} else {
-				System.out.println("Error unrecognised config code: "
-						+ attribute);
+				System.out.println("Error unrecognised config code: " + attribute);
 			}
 
 		} while (true);
 	}
+
 	private int packHSL(int h, int s, int l) {
 		if (l > 179)
 			s /= 2;
@@ -99,6 +101,7 @@ public final class FloorDefinition {
 			s /= 2;
 		return (h / 4 << 10) + (s / 32 << 7) + l / 2;
 	}
+
 	private void rgbToHls(int rgb) {
 		double red = (rgb >> 16 & 0xff) / 256D;
 		double green = (rgb >> 8 & 0xff) / 256D;

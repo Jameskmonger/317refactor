@@ -31,8 +31,8 @@ final class TextClass {
 	}
 
 	public static String decodeDNS(int address) {
-		return (address >> 24 & 0xff) + "." + (address >> 16 & 0xff) + "."
-				+ (address >> 8 & 0xff) + "." + (address & 0xff);
+		return (address >> 24 & 0xff) + "." + (address >> 16 & 0xff) + "." + (address >> 8 & 0xff) + "."
+				+ (address & 0xff);
 	}
 
 	public static String formatName(String name) {
@@ -41,8 +41,7 @@ final class TextClass {
 			for (int c = 0; c < characters.length; c++)
 				if (characters[c] == '_') {
 					characters[c] = ' ';
-					if (c + 1 < characters.length && characters[c + 1] >= 'a'
-							&& characters[c + 1] <= 'z')
+					if (c + 1 < characters.length && characters[c + 1] >= 'a' && characters[c + 1] <= 'z')
 						characters[c + 1] = (char) ((characters[c + 1] + 65) - 97);
 				}
 
@@ -69,8 +68,7 @@ final class TextClass {
 			}
 			return new String(name, 12 - i, i);
 		} catch (RuntimeException runtimeexception) {
-			signlink.reporterror("81570, " + longName + ", " + (byte) -99
-					+ ", " + runtimeexception.toString());
+			signlink.reporterror("81570, " + longName + ", " + (byte) -99 + ", " + runtimeexception.toString());
 		}
 		throw new RuntimeException();
 	}
@@ -97,17 +95,14 @@ final class TextClass {
 		spriteName = spriteName.toUpperCase();
 		long longSpriteName = 0L;
 		for (int c = 0; c < spriteName.length(); c++) {
-			longSpriteName = (longSpriteName * 61L + spriteName
-					.charAt(c)) - 32L;
-			longSpriteName = longSpriteName + (longSpriteName >> 56)
-					& 0xffffffffffffffL;
+			longSpriteName = (longSpriteName * 61L + spriteName.charAt(c)) - 32L;
+			longSpriteName = longSpriteName + (longSpriteName >> 56) & 0xffffffffffffffL;
 		}
 		return longSpriteName;
 	}
 
-	private static final char[] VALID_CHARACTERS = { '_', 'a', 'b', 'c', 'd',
-			'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q',
-			'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '0', '1', '2', '3',
-			'4', '5', '6', '7', '8', '9' };
+	private static final char[] VALID_CHARACTERS = { '_', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l',
+			'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '0', '1', '2', '3', '4', '5', '6',
+			'7', '8', '9' };
 
 }

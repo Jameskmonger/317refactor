@@ -26,6 +26,7 @@ final class VertexNormal {
 	int y;
 	int z;
 	int magnitude;
+
 	public VertexNormal() {
 	}
 }

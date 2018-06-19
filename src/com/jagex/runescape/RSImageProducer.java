@@ -67,8 +67,7 @@ final class RSImageProducer implements ImageProducer, ImageObserver {
 
 	private synchronized void drawPixels() {
 		if (imageConsumer != null) {
-			imageConsumer.setPixels(0, 0, width, height, colourModel, pixels,
-					0, width);
+			imageConsumer.setPixels(0, 0, width, height, colourModel, pixels, 0, width);
 			imageConsumer.imageComplete(2);
 		}
 	}
@@ -77,22 +76,27 @@ final class RSImageProducer implements ImageProducer, ImageObserver {
 	public boolean imageUpdate(Image image, int i, int j, int k, int l, int i1) {
 		return true;
 	}
+
 	public void initDrawingArea() {
 		DrawingArea.initDrawingArea(height, width, pixels);
 	}
+
 	@Override
 	public synchronized boolean isConsumer(ImageConsumer imageconsumer) {
 		return imageConsumer == imageconsumer;
 	}
+
 	@Override
 	public synchronized void removeConsumer(ImageConsumer imageconsumer) {
 		if (imageConsumer == imageconsumer)
 			imageConsumer = null;
 	}
+
 	@Override
 	public void requestTopDownLeftRightResend(ImageConsumer imageconsumer) {
 		System.out.println("TDLR");
 	}
+
 	@Override
 	public void startProduction(ImageConsumer imageconsumer) {
 		addConsumer(imageconsumer);

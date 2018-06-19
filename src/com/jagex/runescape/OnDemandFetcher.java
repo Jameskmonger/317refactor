@@ -25,8 +25,7 @@ import java.util.zip.CRC32;
 import java.util.zip.GZIPInputStream;
 import com.jagex.runescape.sign.signlink;
 
-public final class OnDemandFetcher extends OnDemandFetcherParent implements
-		Runnable {
+public final class OnDemandFetcher extends OnDemandFetcherParent implements Runnable {
 
 	private int totalFiles;
 
@@ -91,6 +90,7 @@ public final class OnDemandFetcher extends OnDemandFetcherParent implements
 	private int[] mapIndices1;
 	private byte[] modelIndices;
 	private int loopCycle;
+
 	public OnDemandFetcher() {
 		requested = new NodeList();
 		statusString = "";
@@ -108,6 +108,7 @@ public final class OnDemandFetcher extends OnDemandFetcherParent implements
 		aClass19_1368 = new NodeList();
 		aClass19_1370 = new NodeList();
 	}
+
 	private void checkReceived() {
 		OnDemandData onDemandData;
 		synchronized (aClass19_1370) {
@@ -117,8 +118,7 @@ public final class OnDemandFetcher extends OnDemandFetcherParent implements
 			waiting = true;
 			byte abyte0[] = null;
 			if (clientInstance.caches[0] != null)
-				abyte0 = clientInstance.caches[onDemandData.dataType + 1]
-						.decompress(onDemandData.id);
+				abyte0 = clientInstance.caches[onDemandData.dataType + 1].decompress(onDemandData.id);
 			if (!crcMatches(versions[onDemandData.dataType][onDemandData.id],
 					crcs[onDemandData.dataType][onDemandData.id], abyte0))
 				abyte0 = null;
@@ -135,11 +135,13 @@ public final class OnDemandFetcher extends OnDemandFetcherParent implements
 			}
 		}
 	}
+
 	public void clearPassiveRequests() {
 		synchronized (passiveRequests) {
 			passiveRequests.removeAll();
 		}
 	}
+
 	private void closeRequest(OnDemandData onDemandData) {
 		try {
 			if (socket == null) {
@@ -181,6 +183,7 @@ public final class OnDemandFetcher extends OnDemandFetcherParent implements
 		expectedSize = 0;
 		failedRequests++;
 	}
+
 	private boolean crcMatches(int i, int j, byte abyte0[]) {
 		if (abyte0 == null || abyte0.length < 2)
 			return false;
@@ -191,15 +194,19 @@ public final class OnDemandFetcher extends OnDemandFetcherParent implements
 		int i1 = (int) crc32.getValue();
 		return l == i && i1 == j;
 	}
+
 	public void disable() {
 		running = false;
 	}
+
 	public int fileCount(int j) {
 		return versions[j].length;
 	}
+
 	public int getAnimCount() {
 		return anIntArray1360.length;
 	}
+
 	public int getMapId(int type, int mapX, int mapY) {
 		int coordinates = (mapX << 8) + mapY;
 		for (int pointer = 0; pointer < mapIndices1.length; pointer++)
@@ -210,9 +217,11 @@ public final class OnDemandFetcher extends OnDemandFetcherParent implements
 					return mapIndices3[pointer];
 		return -1;
 	}
+
 	public int getModelId(int i) {
 		return modelIndices[i] & 0xff;
 	}
+
 	public OnDemandData getNextNode() {
 		OnDemandData onDemandData;
 		synchronized (aClass19_1358) {
@@ -227,13 +236,11 @@ public final class OnDemandFetcher extends OnDemandFetcherParent implements
 			return onDemandData;
 		int i = 0;
 		try {
-			GZIPInputStream gzipinputstream = new GZIPInputStream(
-					new ByteArrayInputStream(onDemandData.buffer));
+			GZIPInputStream gzipinputstream = new GZIPInputStream(new ByteArrayInputStream(onDemandData.buffer));
 			do {
 				if (i == gzipInputBuffer.length)
 					throw new RuntimeException("buffer overflow!");
-				int k = gzipinputstream.read(gzipInputBuffer, i,
-						gzipInputBuffer.length - i);
+				int k = gzipinputstream.read(gzipInputBuffer, i, gzipInputBuffer.length - i);
 				if (k == -1)
 					break;
 				i += k;
@@ -246,19 +253,19 @@ public final class OnDemandFetcher extends OnDemandFetcherParent implements
 
 		return onDemandData;
 	}
+
 	private void handleFailed() {
 		uncompletedCount = 0;
 		completedCount = 0;
-		for (OnDemandData onDemandData = (OnDemandData) requested.peekLast(); onDemandData != null; onDemandData = (OnDemandData) requested
-				.reverseGetNext())
+		for (OnDemandData onDemandData = (OnDemandData) requested
+				.peekLast(); onDemandData != null; onDemandData = (OnDemandData) requested.reverseGetNext())
 			if (onDemandData.incomplete)
 				uncompletedCount++;
 			else
 				completedCount++;
 
 		while (uncompletedCount < 10) {
-			OnDemandData onDemandData_1 = (OnDemandData) aClass19_1368
-					.popHead();
+			OnDemandData onDemandData_1 = (OnDemandData) aClass19_1368.popHead();
 			if (onDemandData_1 == null)
 				break;
 			if (filePriorities[onDemandData_1.dataType][onDemandData_1.id] != 0)
@@ -270,17 +277,20 @@ public final class OnDemandFetcher extends OnDemandFetcherParent implements
 			waiting = true;
 		}
 	}
+
 	public int immediateRequestCount() {
 		synchronized (nodeSubList) {
 			return nodeSubList.getNodeCount();
 		}
 	}
+
 	public boolean method564(int i) {
 		for (int k = 0; k < mapIndices1.length; k++)
 			if (mapIndices3[k] == i)
 				return true;
 		return false;
 	}
+
 	private void method568() {
 		while (uncompletedCount == 0 && completedCount < 10) {
 			if (highestPriority == 0)
@@ -297,8 +307,7 @@ public final class OnDemandFetcher extends OnDemandFetcherParent implements
 					waiting = true;
 					if (filesLoaded < totalFiles)
 						filesLoaded++;
-					statusString = "Loading extra files - "
-							+ (filesLoaded * 100) / totalFiles + "%";
+					statusString = "Loading extra files - " + (filesLoaded * 100) / totalFiles + "%";
 					completedCount++;
 					if (completedCount == 10)
 						return;
@@ -322,8 +331,7 @@ public final class OnDemandFetcher extends OnDemandFetcherParent implements
 						waiting = true;
 						if (filesLoaded < totalFiles)
 							filesLoaded++;
-						statusString = "Loading extra files - "
-								+ (filesLoaded * 100) / totalFiles + "%";
+						statusString = "Loading extra files - " + (filesLoaded * 100) / totalFiles + "%";
 						completedCount++;
 						if (completedCount == 10)
 							return;
@@ -334,9 +342,11 @@ public final class OnDemandFetcher extends OnDemandFetcherParent implements
 			highestPriority--;
 		}
 	}
+
 	public boolean midiIdEqualsOne(int i) {
 		return anIntArray1348[i] == 1;
 	}
+
 	public void passiveRequest(int id, int type) {
 		if (clientInstance.caches[0] == null)
 			return;
@@ -354,6 +364,7 @@ public final class OnDemandFetcher extends OnDemandFetcherParent implements
 			passiveRequests.insertHead(onDemandData);
 		}
 	}
+
 	public void preloadRegions(boolean flag) {
 		int j = mapIndices1.length;
 		for (int k = 0; k < j; k++)
@@ -363,13 +374,13 @@ public final class OnDemandFetcher extends OnDemandFetcherParent implements
 			}
 
 	}
+
 	private void readData() {
 		try {
 			int j = inputStream.available();
 			if (expectedSize == 0 && j >= 6) {
 				waiting = true;
-				for (int k = 0; k < 6; k += inputStream
-						.read(ioBuffer, k, 6 - k))
+				for (int k = 0; k < 6; k += inputStream.read(ioBuffer, k, 6 - k))
 					;
 				int l = ioBuffer[0] & 0xff;
 				int j1 = ((ioBuffer[1] & 0xff) << 8) + (ioBuffer[2] & 0xff);
@@ -377,8 +388,7 @@ public final class OnDemandFetcher extends OnDemandFetcherParent implements
 				int i2 = ioBuffer[5] & 0xff;
 				current = null;
 				for (OnDemandData onDemandData = (OnDemandData) requested
-						.peekLast(); onDemandData != null; onDemandData = (OnDemandData) requested
-						.reverseGetNext()) {
+						.peekLast(); onDemandData != null; onDemandData = (OnDemandData) requested.reverseGetNext()) {
 					if (onDemandData.dataType == l && onDemandData.id == j1)
 						current = onDemandData;
 					if (current != null)
@@ -417,14 +427,11 @@ public final class OnDemandFetcher extends OnDemandFetcherParent implements
 					abyte0 = current.buffer;
 					i1 = completedSize;
 				}
-				for (int k1 = 0; k1 < expectedSize; k1 += inputStream.read(
-						abyte0, k1 + i1, expectedSize - k1))
+				for (int k1 = 0; k1 < expectedSize; k1 += inputStream.read(abyte0, k1 + i1, expectedSize - k1))
 					;
-				if (expectedSize + completedSize >= abyte0.length
-						&& current != null) {
+				if (expectedSize + completedSize >= abyte0.length && current != null) {
 					if (clientInstance.caches[0] != null)
-						clientInstance.caches[current.dataType + 1]
-								.put(abyte0.length, abyte0, current.id);
+						clientInstance.caches[current.dataType + 1].put(abyte0.length, abyte0, current.id);
 					if (!current.incomplete && current.dataType == 3) {
 						current.incomplete = true;
 						current.dataType = 93;
@@ -449,10 +456,12 @@ public final class OnDemandFetcher extends OnDemandFetcherParent implements
 			expectedSize = 0;
 		}
 	}
+
 	@Override
 	public void request(int i) {
 		request(0, i);
 	}
+
 	public void request(int i, int j) {
 		if (i < 0 || i > versions.length || j < 0 || j > versions[i].length)
 			return;
@@ -461,7 +470,7 @@ public final class OnDemandFetcher extends OnDemandFetcherParent implements
 		synchronized (nodeSubList) {
 			for (OnDemandData onDemandData = (OnDemandData) nodeSubList
 					.reverseGetFirst(); onDemandData != null; onDemandData = (OnDemandData) nodeSubList
-					.reverseGetNext())
+							.reverseGetNext())
 				if (onDemandData.dataType == i && onDemandData.id == j)
 					return;
 
@@ -475,14 +484,14 @@ public final class OnDemandFetcher extends OnDemandFetcherParent implements
 			nodeSubList.push(onDemandData_1);
 		}
 	}
+
 	@Override
 	public void run() {
 		try {
 			while (running) {
 				onDemandCycle++;
 				int i = 20;
-				if (highestPriority == 0
-						&& clientInstance.caches[0] != null)
+				if (highestPriority == 0 && clientInstance.caches[0] != null)
 					i = 50;
 				try {
 					Thread.sleep(i);
@@ -504,8 +513,7 @@ public final class OnDemandFetcher extends OnDemandFetcherParent implements
 
 				boolean flag = false;
 				for (OnDemandData onDemandData = (OnDemandData) requested
-						.peekLast(); onDemandData != null; onDemandData = (OnDemandData) requested
-						.reverseGetNext())
+						.peekLast(); onDemandData != null; onDemandData = (OnDemandData) requested.reverseGetNext())
 					if (onDemandData.incomplete) {
 						flag = true;
 						onDemandData.loopCycle++;
@@ -518,7 +526,7 @@ public final class OnDemandFetcher extends OnDemandFetcherParent implements
 				if (!flag) {
 					for (OnDemandData onDemandData_1 = (OnDemandData) requested
 							.peekLast(); onDemandData_1 != null; onDemandData_1 = (OnDemandData) requested
-							.reverseGetNext()) {
+									.reverseGetNext()) {
 						flag = true;
 						onDemandData_1.loopCycle++;
 						if (onDemandData_1.loopCycle > 50) {
@@ -544,9 +552,7 @@ public final class OnDemandFetcher extends OnDemandFetcherParent implements
 					loopCycle = 0;
 					statusString = "";
 				}
-				if (clientInstance.loggedIn
-						&& socket != null
-						&& outputStream != null
+				if (clientInstance.loggedIn && socket != null && outputStream != null
 						&& (highestPriority > 0 || clientInstance.caches[0] == null)) {
 					writeLoopCycle++;
 					if (writeLoopCycle > 500) {
@@ -567,6 +573,7 @@ public final class OnDemandFetcher extends OnDemandFetcherParent implements
 			signlink.reporterror("od_ex " + exception.getMessage());
 		}
 	}
+
 	public void setPriority(byte byte0, int i, int j) {
 		if (clientInstance.caches[0] == null)
 			return;
@@ -580,9 +587,9 @@ public final class OnDemandFetcher extends OnDemandFetcherParent implements
 			highestPriority = byte0;
 		totalFiles++;
 	}
+
 	public void start(Archive streamLoader, Client client1) {
-		String as[] = { "model_version", "anim_version", "midi_version",
-				"map_version" };
+		String as[] = { "model_version", "anim_version", "midi_version", "map_version" };
 		for (int i = 0; i < 4; i++) {
 			byte abyte0[] = streamLoader.decompressFile(as[i]);
 			int j = abyte0.length / 2;

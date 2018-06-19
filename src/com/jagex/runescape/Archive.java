@@ -35,16 +35,15 @@ final class Archive {
 	private final int[] compressedSizes;
 	private final int[] initialOffsets;
 	private final boolean decompressed;
-	
+
 	public Archive(byte data[]) {
 		Buffer buffer = new Buffer(data);
 		int compressedLength = buffer.get3Bytes();
 		int decompressedLength = buffer.get3Bytes();
-		
+
 		if (decompressedLength != compressedLength) {
 			byte output[] = new byte[compressedLength];
-			BZ2Decompressor.decompress(output, compressedLength, data,
-					decompressedLength, 6);
+			BZ2Decompressor.decompress(output, compressedLength, data, decompressedLength, 6);
 			outputData = output;
 			buffer = new Buffer(outputData);
 			this.decompressed = true;
@@ -52,14 +51,14 @@ final class Archive {
 			outputData = data;
 			this.decompressed = false;
 		}
-		
+
 		fileCount = buffer.getUnsignedLEShort();
 		hashes = new int[fileCount];
 		decompressedSizes = new int[fileCount];
 		compressedSizes = new int[fileCount];
 		initialOffsets = new int[fileCount];
 		int offset = buffer.position + fileCount * 10;
-		
+
 		for (int index = 0; index < fileCount; index++) {
 			hashes[index] = buffer.getInt();
 			decompressedSizes[index] = buffer.get3Bytes();
@@ -68,7 +67,7 @@ final class Archive {
 			offset += compressedSizes[index];
 		}
 	}
-	
+
 	public byte[] decompressFile(String name) {
 		int hash = 0;
 		name = name.toUpperCase();
@@ -79,12 +78,10 @@ final class Archive {
 			if (hashes[file] == hash) {
 				byte[] output = new byte[decompressedSizes[file]];
 				if (!decompressed) {
-					BZ2Decompressor.decompress(output,
-							decompressedSizes[file], outputData,
-							compressedSizes[file], initialOffsets[file]);
+					BZ2Decompressor.decompress(output, decompressedSizes[file], outputData, compressedSizes[file],
+							initialOffsets[file]);
 				} else {
-					System.arraycopy(outputData, initialOffsets[file],
-							output, 0, decompressedSizes[file]);
+					System.arraycopy(outputData, initialOffsets[file], output, 0, decompressedSizes[file]);
 				}
 				return output;
 			}

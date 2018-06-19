@@ -40,6 +40,7 @@ final class CullingCluster {
 	int worldDistanceFromCameraEndY;
 	int worldDistanceFromCameraStartZ;
 	int worldDistanceFromCameraEndZ;
+
 	CullingCluster() {
 	}
 }

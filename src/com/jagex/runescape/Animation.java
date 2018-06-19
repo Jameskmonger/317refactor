@@ -142,5 +142,7 @@ public final class Animation {
 	public int transformationY[];
 	public int transformationZ[];
 	private static boolean[] aBooleanArray643;
-	private Animation() { }
+
+	private Animation() {
+	}
 }

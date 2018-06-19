@@ -115,9 +115,11 @@ public final class GameObjectDefinition {
 	private int[] modifiedModelColors;
 	public static LinkedList modelCache = new LinkedList(500);
 	public String actions[];
+
 	private GameObjectDefinition() {
 		id = -1;
 	}
+
 	private Model getAnimatedModel(int type, int animationId, int face) {
 		Model subModel = null;
 		long hash;
@@ -162,8 +164,7 @@ public final class GameObjectDefinition {
 
 			if (modelType == -1)
 				return null;
-			hash = (id << 6) + (modelType << 3) + face
-					+ ((long) (animationId + 1) << 32);
+			hash = (id << 6) + (modelType << 3) + face + ((long) (animationId + 1) << 32);
 			Model model = (Model) animatedModelCache.get(hash);
 			if (model != null)
 				return model;
@@ -185,9 +186,8 @@ public final class GameObjectDefinition {
 		scale = scaleX != 128 || scaleY != 128 || scaleZ != 128;
 		boolean translate;
 		translate = translateX != 0 || translateY != 0 || translateZ != 0;
-		Model animatedModel = new Model(modifiedModelColors == null,
-				Animation.isNullFrame(animationId), face == 0
-						&& animationId == -1 && !scale && !translate, subModel);
+		Model animatedModel = new Model(modifiedModelColors == null, Animation.isNullFrame(animationId),
+				face == 0 && animationId == -1 && !scale && !translate, subModel);
 		if (animationId != -1) {
 			animatedModel.createBones();
 			animatedModel.applyTransformation(animationId);
@@ -198,21 +198,20 @@ public final class GameObjectDefinition {
 			animatedModel.rotate90Degrees();
 		if (modifiedModelColors != null) {
 			for (int c = 0; c < modifiedModelColors.length; c++)
-				animatedModel.recolour(modifiedModelColors[c],
-						originalModelColors[c]);
+				animatedModel.recolour(modifiedModelColors[c], originalModelColors[c]);
 
 		}
 		if (scale)
 			animatedModel.scaleT(scaleX, scaleZ, scaleY);
 		if (translate)
 			animatedModel.translate(translateX, translateY, translateZ);
-		animatedModel.applyLighting(64 + ambient, 768 + diffuse * 5, -50, -10,
-				-50, !delayShading);
+		animatedModel.applyLighting(64 + ambient, 768 + diffuse * 5, -50, -10, -50, !delayShading);
 		if (_solid == 1)
 			animatedModel.anInt1654 = animatedModel.modelHeight;
 		animatedModelCache.put(animatedModel, hash);
 		return animatedModel;
 	}
+
 	public GameObjectDefinition getChildDefinition() {
 		int child = -1;
 		if (varBitId != -1) {
@@ -229,6 +228,7 @@ public final class GameObjectDefinition {
 		else
 			return getDefinition(childIds[child]);
 	}
+
 	public Model getModelAt(int i, int j, int k, int l, int i1, int j1, int k1) {
 		Model model = getAnimatedModel(i, k1, j);
 		if (model == null)
@@ -250,6 +250,7 @@ public final class GameObjectDefinition {
 		}
 		return model;
 	}
+
 	private void loadDefinition(Buffer stream) {
 		int _actions = -1;
 		label0: do {
@@ -380,8 +381,7 @@ public final class GameObjectDefinition {
 
 		} while (true);
 		if (_actions == -1) {
-			hasActions = modelIds != null
-					&& (modelTypes == null || modelTypes[0] == 10);
+			hasActions = modelIds != null && (modelTypes == null || modelTypes[0] == 10);
 			if (actions != null)
 				hasActions = true;
 		}
@@ -392,6 +392,7 @@ public final class GameObjectDefinition {
 		if (_solid == -1)
 			_solid = solid ? 1 : 0;
 	}
+
 	public boolean modelCached() {
 		if (modelIds == null)
 			return true;
@@ -400,6 +401,7 @@ public final class GameObjectDefinition {
 			cached &= Model.isCached(modelIds[m] & 0xffff);
 		return cached;
 	}
+
 	public boolean modelTypeCached(int modelType) {
 		if (modelTypes == null) {
 			if (modelIds == null)
@@ -418,12 +420,14 @@ public final class GameObjectDefinition {
 
 		return true;
 	}
+
 	public void passivelyRequestModels(OnDemandFetcher requester) {
 		if (modelIds == null)
 			return;
 		for (int modelId = 0; modelId < modelIds.length; modelId++)
 			requester.passiveRequest(modelIds[modelId] & 0xffff, 0);
 	}
+
 	private void setDefaults() {
 		modelIds = null;
 		modelTypes = null;

@@ -28,6 +28,7 @@ public final class GroundDecoration {
 	public Animable renderable;
 	public int uid;
 	byte objConf;
+
 	public GroundDecoration() {
 	}
 }

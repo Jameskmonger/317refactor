@@ -39,6 +39,7 @@ final class ModelHeader {
 	public int triangleAlphaOffset;
 	public int triangleSkinOffset;
 	public int texturedTriangleOffset;
+
 	public ModelHeader() {
 	}
 }

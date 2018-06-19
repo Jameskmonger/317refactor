@@ -44,7 +44,7 @@ final class Array {
 				return l1;
 		return null;
 	}
-	
+
 	public void put(Link l, long id) {
 		try {
 			if (l.next != null)
@@ -57,8 +57,7 @@ final class Array {
 			l.id = id;
 			return;
 		} catch (RuntimeException e) {
-			signlink.reporterror("91499, " + l + ", " + id + ", " + (byte) 7
-					+ ", " + e.toString());
+			signlink.reporterror("91499, " + l + ", " + id + ", " + (byte) 7 + ", " + e.toString());
 		}
 		throw new RuntimeException();
 	}

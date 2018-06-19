@@ -51,11 +51,9 @@ public final class Buffer extends QueueLink {
 
     public int bitPosition;
 
-    private static final int[] BIT_MASKS = {0, 1, 3, 7, 15, 31, 63, 127,
-            255, 511, 1023, 2047, 4095, 8191, 16383, 32767, 65535, 0x1ffff,
-            0x3ffff, 0x7ffff, 0xfffff, 0x1fffff, 0x3fffff, 0x7fffff, 0xffffff,
-            0x1ffffff, 0x3ffffff, 0x7ffffff, 0xfffffff, 0x1fffffff, 0x3fffffff,
-            0x7fffffff, -1};
+    private static final int[] BIT_MASKS = { 0, 1, 3, 7, 15, 31, 63, 127, 255, 511, 1023, 2047, 4095, 8191, 16383,
+            32767, 65535, 0x1ffff, 0x3ffff, 0x7ffff, 0xfffff, 0x1fffff, 0x3fffff, 0x7fffff, 0xffffff, 0x1ffffff,
+            0x3ffffff, 0x7ffffff, 0xfffffff, 0x1fffffff, 0x3fffffff, 0x7fffffff, -1 };
 
     public ISAACRandomGenerator encryptor;
 
@@ -94,8 +92,7 @@ public final class Buffer extends QueueLink {
 
     public int get3Bytes() {
         position += 3;
-        return ((buffer[position - 3] & 0xff) << 16)
-                + ((buffer[position - 2] & 0xff) << 8)
+        return ((buffer[position - 3] & 0xff) << 16) + ((buffer[position - 2] & 0xff) << 8)
                 + (buffer[position - 1] & 0xff);
     }
 
@@ -114,8 +111,7 @@ public final class Buffer extends QueueLink {
 
     public int getSignedLEShort() {
         position += 2;
-        int j = ((buffer[position - 1] & 0xff) << 8)
-                + (buffer[position - 2] & 0xff);
+        int j = ((buffer[position - 1] & 0xff) << 8) + (buffer[position - 2] & 0xff);
         if (j > 32767)
             j -= 0x10000;
         return j;
@@ -123,8 +119,7 @@ public final class Buffer extends QueueLink {
 
     public int getSignedLEShortA() {
         position += 2;
-        int j = ((buffer[position - 1] & 0xff) << 8)
-                + (buffer[position - 2] - 128 & 0xff);
+        int j = ((buffer[position - 1] & 0xff) << 8) + (buffer[position - 2] - 128 & 0xff);
         if (j > 32767)
             j -= 0x10000;
         return j;
@@ -132,26 +127,20 @@ public final class Buffer extends QueueLink {
 
     public int getInt() {
         position += 4;
-        return ((buffer[position - 4] & 0xff) << 24)
-                + ((buffer[position - 3] & 0xff) << 16)
-                + ((buffer[position - 2] & 0xff) << 8)
-                + (buffer[position - 1] & 0xff);
+        return ((buffer[position - 4] & 0xff) << 24) + ((buffer[position - 3] & 0xff) << 16)
+                + ((buffer[position - 2] & 0xff) << 8) + (buffer[position - 1] & 0xff);
     }
 
     public int getMEBInt() { // Middle endian big int: C3 D4 A1 B2 (A1 smallest D4 biggest byte)
         position += 4;
-        return ((buffer[position - 3] & 0xff) << 24)
-                + ((buffer[position - 4] & 0xff) << 16)
-                + ((buffer[position - 1] & 0xff) << 8)
-                + (buffer[position - 2] & 0xff);
+        return ((buffer[position - 3] & 0xff) << 24) + ((buffer[position - 4] & 0xff) << 16)
+                + ((buffer[position - 1] & 0xff) << 8) + (buffer[position - 2] & 0xff);
     }
 
     public int getMESInt() { // Middle endian small int: B2 A1 D4 C3 (A1 smallest D4 biggest byte)
         position += 4;
-        return ((buffer[position - 2] & 0xff) << 24)
-                + ((buffer[position - 1] & 0xff) << 16)
-                + ((buffer[position - 4] & 0xff) << 8)
-                + (buffer[position - 3] & 0xff);
+        return ((buffer[position - 2] & 0xff) << 24) + ((buffer[position - 1] & 0xff) << 16)
+                + ((buffer[position - 4] & 0xff) << 8) + (buffer[position - 3] & 0xff);
     }
 
     public long getLong() {
@@ -162,8 +151,7 @@ public final class Buffer extends QueueLink {
 
     public int getShort() {
         position += 2;
-        int i = ((buffer[position - 2] & 0xff) << 8)
-                + (buffer[position - 1] & 0xff);
+        int i = ((buffer[position - 2] & 0xff) << 8) + (buffer[position - 1] & 0xff);
         if (i > 32767)
             i -= 0x10000;
         return i;
@@ -210,26 +198,22 @@ public final class Buffer extends QueueLink {
 
     public int getUnsignedLEShort() {
         position += 2;
-        return ((buffer[position - 2] & 0xff) << 8)
-                + (buffer[position - 1] & 0xff);
+        return ((buffer[position - 2] & 0xff) << 8) + (buffer[position - 1] & 0xff);
     }
 
     public int getUnsignedLEShortA() {
         position += 2;
-        return ((buffer[position - 2] & 0xff) << 8)
-                + (buffer[position - 1] - 128 & 0xff);
+        return ((buffer[position - 2] & 0xff) << 8) + (buffer[position - 1] - 128 & 0xff);
     }
 
     public int getUnsignedShort() {
         position += 2;
-        return ((buffer[position - 1] & 0xff) << 8)
-                + (buffer[position - 2] & 0xff);
+        return ((buffer[position - 1] & 0xff) << 8) + (buffer[position - 2] & 0xff);
     }
 
     public int getUnsignedShortA() {
         position += 2;
-        return ((buffer[position - 1] & 0xff) << 8)
-                + (buffer[position - 2] - 128 & 0xff);
+        return ((buffer[position - 1] & 0xff) << 8) + (buffer[position - 2] - 128 & 0xff);
     }
 
     public void initBitAccess() {
@@ -301,8 +285,7 @@ public final class Buffer extends QueueLink {
             buffer[position++] = (byte) (int) (l >> 8);
             buffer[position++] = (byte) (int) l;
         } catch (RuntimeException ex) {
-            signlink.reporterror("14395, " + 5 + ", " + l + ", "
-                    + ex.toString());
+            signlink.reporterror("14395, " + 5 + ", " + l + ", " + ex.toString());
             throw new RuntimeException();
         }
     }

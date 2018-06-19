@@ -60,6 +60,7 @@ final class BZ2Context {
 	final int[][] anIntArrayArray599;
 	final int[] anIntArray600;
 	int anInt601;
+
 	BZ2Context() {
 		anIntArray583 = new int[256];
 		anIntArray585 = new int[257];

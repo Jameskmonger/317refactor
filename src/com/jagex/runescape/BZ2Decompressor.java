@@ -21,8 +21,7 @@ package com.jagex.runescape;
 
 final class BZ2Decompressor {
 
-	public static int decompress(byte abyte0[], int i, byte abyte1[], int j,
-			int k) {
+	public static int decompress(byte abyte0[], int i, byte abyte1[], int j, int k) {
 		synchronized (aClass32_305) {
 			aClass32_305.aByteArray563 = abyte1;
 			aClass32_305.anInt564 = k;
@@ -152,9 +151,7 @@ final class BZ2Decompressor {
 						byte8 = block.aByteArrayArray596[l3][l1];
 				}
 
-				method232(block.anIntArrayArray597[l3],
-						block.anIntArrayArray598[l3],
-						block.anIntArrayArray599[l3],
+				method232(block.anIntArrayArray597[l3], block.anIntArrayArray598[l3], block.anIntArrayArray599[l3],
 						block.aByteArrayArray596[l3], byte8, i, alphaSize);
 				block.anIntArray600[l3] = byte8;
 			}
@@ -189,8 +186,7 @@ final class BZ2Decompressor {
 			int i7 = tMinLen;
 			int l7;
 			byte byte9;
-			for (l7 = readBits(i7, block); l7 > tLimit[i7]; l7 = l7 << 1
-					| byte9) {
+			for (l7 = readBits(i7, block); l7 > tLimit[i7]; l7 = l7 << 1 | byte9) {
 				i7++;
 				byte9 = readBit(block);
 			}
@@ -218,8 +214,7 @@ final class BZ2Decompressor {
 						int j7 = tMinLen;
 						int i8;
 						byte byte10;
-						for (i8 = readBits(j7, block); i8 > tLimit[j7]; i8 = i8 << 1
-								| byte10) {
+						for (i8 = readBits(j7, block); i8 > tLimit[j7]; i8 = i8 << 1 | byte10) {
 							j7++;
 							byte10 = readBit(block);
 						}
@@ -263,7 +258,8 @@ final class BZ2Decompressor {
 						block.anIntArray593[l10]++;
 						for (; l10 > 0; l10--) {
 							block.anIntArray593[l10]--;
-							block.aByteArray592[block.anIntArray593[l10]] = block.aByteArray592[(block.anIntArray593[l10 - 1] + 16) - 1];
+							block.aByteArray592[block.anIntArray593[l10]] = block.aByteArray592[(block.anIntArray593[l10
+									- 1] + 16) - 1];
 						}
 
 						block.anIntArray593[0]--;
@@ -272,8 +268,7 @@ final class BZ2Decompressor {
 							int i10 = 4095;
 							for (int k9 = 15; k9 >= 0; k9--) {
 								for (int l9 = 15; l9 >= 0; l9--) {
-									block.aByteArray592[i10] = block.aByteArray592[block.anIntArray593[k9]
-											+ l9];
+									block.aByteArray592[i10] = block.aByteArray592[block.anIntArray593[k9] + l9];
 									i10--;
 								}
 
@@ -298,8 +293,7 @@ final class BZ2Decompressor {
 					int k7 = tMinLen;
 					int j8;
 					byte byte11;
-					for (j8 = readBits(k7, block); j8 > tLimit[k7]; j8 = j8 << 1
-							| byte11) {
+					for (j8 = readBits(k7, block); j8 > tLimit[k7]; j8 = j8 << 1 | byte11) {
 						k7++;
 						byte11 = readBit(block);
 					}
@@ -330,8 +324,7 @@ final class BZ2Decompressor {
 			block.anInt584++;
 			block.anInt601 = i6;
 			method226(block);
-			reading = block.anInt584 == block.anInt601 + 1
-					&& block.anInt574 == 0;
+			reading = block.anInt584 == block.anInt601 + 1 && block.anInt574 == 0;
 		}
 	}
 
@@ -456,8 +449,7 @@ final class BZ2Decompressor {
 		context.anInt570 = j1;
 	}
 
-	private static void method232(int ai[], int ai1[], int ai2[],
-			byte abyte0[], int i, int j, int k) {
+	private static void method232(int ai[], int ai1[], int ai2[], byte abyte0[], int i, int j, int k) {
 		int l = 0;
 		for (int i1 = i; i1 <= j; i1++) {
 			for (int l2 = 0; l2 < k; l2++)
@@ -505,8 +497,7 @@ final class BZ2Decompressor {
 				j = k;
 				break;
 			}
-			class32.anInt576 = class32.anInt576 << 8
-					| class32.aByteArray563[class32.anInt564] & 0xff;
+			class32.anInt576 = class32.anInt576 << 8 | class32.aByteArray563[class32.anInt564] & 0xff;
 			class32.anInt577 += 8;
 			class32.anInt564++;
 			class32.anInt565--;

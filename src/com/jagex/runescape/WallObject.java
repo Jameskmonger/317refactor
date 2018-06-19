@@ -31,6 +31,7 @@ public final class WallObject {
 	public Animable renderable2;
 	public int uid;
 	byte objConf;
+
 	public WallObject() {
 	}
 }
