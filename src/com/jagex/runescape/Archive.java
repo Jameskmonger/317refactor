@@ -19,6 +19,8 @@ package com.jagex.runescape;
  * This file was renamed as part of the 317refactor project.
  */
 
+import com.jagex.runescape.bzip2.*;
+
 /**
  * 
  * Represents a single archive within a cache.
@@ -43,7 +45,7 @@ final class Archive {
 
 		if (decompressedLength != compressedLength) {
 			byte output[] = new byte[compressedLength];
-			BZ2Decompressor.decompress(output, compressedLength, data, decompressedLength, 6);
+			Bzip2Decompressor.decompress(output, compressedLength, data, decompressedLength, 6);
 			outputData = output;
 			buffer = new Buffer(outputData);
 			this.decompressed = true;
@@ -78,7 +80,7 @@ final class Archive {
 			if (hashes[file] == hash) {
 				byte[] output = new byte[decompressedSizes[file]];
 				if (!decompressed) {
-					BZ2Decompressor.decompress(output, decompressedSizes[file], outputData, compressedSizes[file],
+					Bzip2Decompressor.decompress(output, decompressedSizes[file], outputData, compressedSizes[file],
 							initialOffsets[file]);
 				} else {
 					System.arraycopy(outputData, initialOffsets[file], output, 0, decompressedSizes[file]);
