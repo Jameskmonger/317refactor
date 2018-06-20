@@ -1,4 +1,4 @@
-package com.jagex.runescape;
+package com.jagex.runescape.bzip2;
 
 /*
  * This file is part of the RuneScape client
@@ -19,7 +19,7 @@ package com.jagex.runescape;
  * This file was renamed as part of the 317refactor project.
  */
 
-final class BZ2Decompressor {
+public final class BZ2Decompressor {
 
 	public static int decompress(byte abyte0[], int i, byte abyte1[], int j, int k) {
 		synchronized (aClass32_305) {

@@ -1,4 +1,4 @@
-package com.jagex.runescape;
+package com.jagex.runescape.bzip2;
 
 /*
  * This file is part of the RuneScape client

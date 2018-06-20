@@ -19,6 +19,8 @@ package com.jagex.runescape;
  * This file was renamed as part of the 317refactor project.
  */
 
+import com.jagex.runescape.bzip2.*;
+
 /**
  * 
  * Represents a single archive within a cache.
