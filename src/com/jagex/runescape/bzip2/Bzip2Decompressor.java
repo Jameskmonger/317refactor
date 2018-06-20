@@ -23,7 +23,7 @@ public final class Bzip2Decompressor {
 
 	public static int decompress(byte abyte0[], int i, byte abyte1[], int j, int k) {
 		synchronized (aClass32_305) {
-			aClass32_305.aByteArray563 = abyte1;
+			aClass32_305.buffer = abyte1;
 			aClass32_305.anInt564 = k;
 			aClass32_305.aByteArray568 = abyte0;
 			aClass32_305.anInt569 = 0;
@@ -484,32 +484,29 @@ public final class Bzip2Decompressor {
 
 	}
 
-	private static byte readBit(Bzip2FileEntry class32) {
-		return (byte) readBits(1, class32);
+	private static byte readBit(Bzip2FileEntry entry) {
+		return (byte) readBits(1, entry);
 	}
 
-	private static int readBits(int i, Bzip2FileEntry class32) {
-		int j;
-		do {
-			if (class32.anInt577 >= i) {
-				int k = class32.anInt576 >> class32.anInt577 - i & (1 << i) - 1;
-				class32.anInt577 -= i;
-				j = k;
-				break;
+	private static int readBits(int count, Bzip2FileEntry entry) {
+		while (true) {
+			if (entry.anInt577 >= count) {
+				int k = entry.anInt576 >> entry.anInt577 - count & (1 << count) - 1;
+				entry.anInt577 -= count;
+				return k;
 			}
-			class32.anInt576 = class32.anInt576 << 8 | class32.aByteArray563[class32.anInt564] & 0xff;
-			class32.anInt577 += 8;
-			class32.anInt564++;
-			class32.anInt565--;
-			class32.anInt566++;
-			if (class32.anInt566 == 0)
-				class32.anInt567++;
-		} while (true);
-		return j;
+			entry.anInt576 = entry.anInt576 << 8 | entry.buffer[entry.anInt564] & 0xff;
+			entry.anInt577 += 8;
+			entry.anInt564++;
+			entry.anInt565--;
+			entry.anInt566++;
+			if (entry.anInt566 == 0)
+				entry.anInt567++;
+		}
 	}
 
-	private static byte readByte(Bzip2FileEntry class32) {
-		return (byte) readBits(8, class32);
+	private static byte readByte(Bzip2FileEntry entry) {
+		return (byte) readBits(8, entry);
 	}
 
 	private static final Bzip2FileEntry aClass32_305 = new Bzip2FileEntry();

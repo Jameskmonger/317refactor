@@ -21,7 +21,7 @@ package com.jagex.runescape.bzip2;
 
 final class Bzip2FileEntry {
 
-	byte aByteArray563[];
+	byte buffer[];
 
 	int anInt564;
 	int anInt565;
