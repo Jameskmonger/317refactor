@@ -19,7 +19,7 @@ package com.jagex.runescape.bzip2;
  * This file was renamed as part of the 317refactor project.
  */
 
-public final class BZ2Decompressor {
+public final class Bzip2Decompressor {
 
 	public static int decompress(byte abyte0[], int i, byte abyte1[], int j, int k) {
 		synchronized (aClass32_305) {
@@ -42,14 +42,14 @@ public final class BZ2Decompressor {
 		}
 	}
 
-	private static void decompress(BZ2Context block) {
+	private static void decompress(Bzip2FileEntry block) {
 		int tMinLen = 0;
 		int tLimit[] = null;
 		int tBase[] = null;
 		int tPerm[] = null;
 		block.blockSize_100k = 1;
-		if (BZ2Context.anIntArray587 == null)
-			BZ2Context.anIntArray587 = new int[block.blockSize_100k * 0x186a0];
+		if (Bzip2FileEntry.anIntArray587 == null)
+			Bzip2FileEntry.anIntArray587 = new int[block.blockSize_100k * 0x186a0];
 		boolean reading = true;
 		while (reading) {
 			byte head = readUnsignedChar(block);
@@ -225,7 +225,7 @@ public final class BZ2Decompressor {
 					byte byte5 = block.aByteArray591[block.aByteArray592[block.anIntArray593[0]] & 0xff];
 					block.anIntArray583[byte5 & 0xff] += j6;
 					for (; j6 > 0; j6--) {
-						BZ2Context.anIntArray587[i6] = byte5 & 0xff;
+						Bzip2FileEntry.anIntArray587[i6] = byte5 & 0xff;
 						i6++;
 					}
 
@@ -278,7 +278,7 @@ public final class BZ2Decompressor {
 						}
 					}
 					block.anIntArray583[block.aByteArray591[byte6 & 0xff] & 0xff]++;
-					BZ2Context.anIntArray587[i6] = block.aByteArray591[byte6 & 0xff] & 0xff;
+					Bzip2FileEntry.anIntArray587[i6] = block.aByteArray591[byte6 & 0xff] & 0xff;
 					i6++;
 					if (j5 == 0) {
 						i5++;
@@ -311,14 +311,14 @@ public final class BZ2Decompressor {
 				block.anIntArray585[k2] += block.anIntArray585[k2 - 1];
 
 			for (int l2 = 0; l2 < i6; l2++) {
-				byte byte7 = (byte) (BZ2Context.anIntArray587[l2] & 0xff);
-				BZ2Context.anIntArray587[block.anIntArray585[byte7 & 0xff]] |= l2 << 8;
+				byte byte7 = (byte) (Bzip2FileEntry.anIntArray587[l2] & 0xff);
+				Bzip2FileEntry.anIntArray587[block.anIntArray585[byte7 & 0xff]] |= l2 << 8;
 				block.anIntArray585[byte7 & 0xff]++;
 			}
 
-			block.anInt581 = BZ2Context.anIntArray587[block.originalPointer] >> 8;
+			block.anInt581 = Bzip2FileEntry.anIntArray587[block.originalPointer] >> 8;
 			block.anInt584 = 0;
-			block.anInt581 = BZ2Context.anIntArray587[block.anInt581];
+			block.anInt581 = Bzip2FileEntry.anIntArray587[block.anInt581];
 			block.anInt582 = (byte) (block.anInt581 & 0xff);
 			block.anInt581 >>= 8;
 			block.anInt584++;
@@ -328,7 +328,7 @@ public final class BZ2Decompressor {
 		}
 	}
 
-	private static void makeMaps(BZ2Context class32) {
+	private static void makeMaps(Bzip2FileEntry class32) {
 		class32.nInUse = 0;
 		for (int i = 0; i < 256; i++)
 			if (class32.inUse[i]) {
@@ -338,12 +338,12 @@ public final class BZ2Decompressor {
 
 	}
 
-	private static void method226(BZ2Context context) {
+	private static void method226(Bzip2FileEntry context) {
 		byte byte4 = context.aByte573;
 		int i = context.anInt574;
 		int j = context.anInt584;
 		int k = context.anInt582;
-		int ai[] = BZ2Context.anIntArray587;
+		int ai[] = Bzip2FileEntry.anIntArray587;
 		int l = context.anInt581;
 		byte abyte0[] = context.aByteArray568;
 		int i1 = context.anInt569;
@@ -442,7 +442,7 @@ public final class BZ2Decompressor {
 		context.anInt574 = i;
 		context.anInt584 = j;
 		context.anInt582 = k;
-		BZ2Context.anIntArray587 = ai;
+		Bzip2FileEntry.anIntArray587 = ai;
 		context.anInt581 = l;
 		context.aByteArray568 = abyte0;
 		context.anInt569 = i1;
@@ -484,11 +484,11 @@ public final class BZ2Decompressor {
 
 	}
 
-	private static byte readBit(BZ2Context class32) {
+	private static byte readBit(Bzip2FileEntry class32) {
 		return (byte) readBits(1, class32);
 	}
 
-	private static int readBits(int i, BZ2Context class32) {
+	private static int readBits(int i, Bzip2FileEntry class32) {
 		int j;
 		do {
 			if (class32.anInt577 >= i) {
@@ -508,10 +508,10 @@ public final class BZ2Decompressor {
 		return j;
 	}
 
-	private static byte readUnsignedChar(BZ2Context class32) {
+	private static byte readUnsignedChar(Bzip2FileEntry class32) {
 		return (byte) readBits(8, class32);
 	}
 
-	private static final BZ2Context aClass32_305 = new BZ2Context();
+	private static final Bzip2FileEntry aClass32_305 = new Bzip2FileEntry();
 
 }

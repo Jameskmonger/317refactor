@@ -19,7 +19,7 @@ package com.jagex.runescape.bzip2;
  * This file was renamed as part of the 317refactor project.
  */
 
-final class BZ2Context {
+final class Bzip2FileEntry {
 
 	byte aByteArray563[];
 
@@ -61,7 +61,7 @@ final class BZ2Context {
 	final int[] anIntArray600;
 	int anInt601;
 
-	BZ2Context() {
+	Bzip2FileEntry() {
 		anIntArray583 = new int[256];
 		anIntArray585 = new int[257];
 		inUse = new boolean[256];
