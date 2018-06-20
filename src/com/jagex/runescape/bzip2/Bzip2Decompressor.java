@@ -52,29 +52,29 @@ public final class Bzip2Decompressor {
 			Bzip2FileEntry.anIntArray587 = new int[block.blockSize_100k * 0x186a0];
 		boolean reading = true;
 		while (reading) {
-			byte head = readUnsignedChar(block);
+			byte head = readByte(block);
 			if (head == 23)
 				return;
-			head = readUnsignedChar(block);
-			head = readUnsignedChar(block);
-			head = readUnsignedChar(block);
-			head = readUnsignedChar(block);
-			head = readUnsignedChar(block);
+			head = readByte(block);
+			head = readByte(block);
+			head = readByte(block);
+			head = readByte(block);
+			head = readByte(block);
 			block.anInt579++;
-			head = readUnsignedChar(block);
-			head = readUnsignedChar(block);
-			head = readUnsignedChar(block);
-			head = readUnsignedChar(block);
+			head = readByte(block);
+			head = readByte(block);
+			head = readByte(block);
+			head = readByte(block);
 			head = readBit(block);
 			block.randomised = head != 0;
 			if (block.randomised)
 				System.out.println("PANIC! RANDOMISED BLOCK!");
 			block.originalPointer = 0;
-			head = readUnsignedChar(block);
+			head = readByte(block);
 			block.originalPointer = block.originalPointer << 8 | head & 0xff;
-			head = readUnsignedChar(block);
+			head = readByte(block);
 			block.originalPointer = block.originalPointer << 8 | head & 0xff;
-			head = readUnsignedChar(block);
+			head = readByte(block);
 			block.originalPointer = block.originalPointer << 8 | head & 0xff;
 			for (int i = 0; i < 16; i++) {
 				byte used = readBit(block);
@@ -508,7 +508,7 @@ public final class Bzip2Decompressor {
 		return j;
 	}
 
-	private static byte readUnsignedChar(Bzip2FileEntry class32) {
+	private static byte readByte(Bzip2FileEntry class32) {
 		return (byte) readBits(8, class32);
 	}
 
