@@ -1,26 +1,30 @@
 package com.jagex.runescape.collection;
 
+/*
+ * A least-recently-used cache
+ */
 public class Cache {
 
 	private final Cacheable empty;
 	private final int size;
 	private int available;
 	private final LinkedHashMap hashmap;
-	private final Deque deque;
+	private final Deque retrievedItems;
 
 	public Cache(int length) {
 		empty = new Cacheable();
-		deque = new Deque();
-		size = length;
-		available = length;
+		retrievedItems = new Deque();
 		hashmap = new LinkedHashMap(1024);
+
+		size = length;
+		available = length;		
 	}
 
 	public Cacheable get(long key) {
 		Cacheable item = (Cacheable) hashmap.get(key);
 
 		if (item != null) {
-			deque.push(item);
+			retrievedItems.push(item);
 		}
 
 		return item;
@@ -28,35 +32,35 @@ public class Cache {
 
 	public void put(Cacheable item, long key) {
 		if (available == 0) {
-			Cacheable head = deque.pull();
-			head.unlink();
-			head.unlinkCacheable();
+			Cacheable oldest = retrievedItems.pull();
+			oldest.unlink();
+			oldest.unlinkCacheable();
 
-			if (head == empty) {
-				Cacheable secondHead = deque.pull();
-				secondHead.unlink();
-				secondHead.unlinkCacheable();
+			if (oldest == empty) {
+				Cacheable secondOldest = retrievedItems.pull();
+				secondOldest.unlink();
+				secondOldest.unlinkCacheable();
 			}
 		} else {
 			available--;
 		}
 
 		hashmap.put(key, item);
-		deque.push(item);
+		retrievedItems.push(item);
 		return;
 	}
 
 	public void clear() {
 		while (true) {
-			Cacheable head = deque.pull();
+			Cacheable oldest = retrievedItems.pull();
 
-			if (head == null) {
+			if (oldest == null) {
 				available = size;
 				return;
 			}
 
-			head.unlink();
-			head.unlinkCacheable();
+			oldest.unlink();
+			oldest.unlinkCacheable();
 		}
 	}
 }
