@@ -264,7 +264,7 @@ public final class OnDemandFetcher implements Runnable {
 
 	public int immediateRequestCount() {
 		synchronized (nodeSubList) {
-			return nodeSubList.getNodeCount();
+			return nodeSubList.getSize();
 		}
 	}
 
