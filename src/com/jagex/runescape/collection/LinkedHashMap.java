@@ -4,14 +4,14 @@ import com.jagex.runescape.collection.Linkable;
 
 final class LinkedHashMap {
 
-	private final int length;
+	private final int size;
 	private final Linkable[] entries;
 
-	public LinkedHashMap(int length) {
-		this.length = length;
-		this.entries = new Linkable[length];
+	public LinkedHashMap(int size) {
+		this.size = size;
+		this.entries = new Linkable[size];
 		
-		for (int i = 0; i < length; i++) {
+		for (int i = 0; i < size; i++) {
 			Linkable entry = new Linkable();
 			entry.next = entry;
 			entry.previous = entry;
@@ -20,7 +20,7 @@ final class LinkedHashMap {
 	}
 
 	public Linkable get(long key) {
-		Linkable start = entries[(int) (key & length - 1)];
+		Linkable start = entries[(int) (key & size - 1)];
 
 		for (Linkable next = start.next; next != start; next = next.next) {
 			if (next.id == key) {
@@ -36,7 +36,7 @@ final class LinkedHashMap {
 			item.unlink();
 		}
 		
-		Linkable current = entries[(int) (key & length - 1)];
+		Linkable current = entries[(int) (key & size - 1)];
 		item.previous = current.previous;
 		item.next = current;
 		item.previous.next = item;
