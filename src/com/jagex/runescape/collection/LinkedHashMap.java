@@ -31,7 +31,7 @@ final class LinkedHashMap {
 		return null;
 	}
 
-	public void put(Linkable item, long key) {
+	public void put(long key, Linkable item) {
 		if (item.previous != null) {
 			item.unlink();
 		}

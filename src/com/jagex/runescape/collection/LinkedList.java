@@ -40,7 +40,7 @@ public final class LinkedList {
 			} else {
 				available--;
 			}
-			array.put(l, id);
+			array.put(id, l);
 			deque.push(l);
 			return;
 		} catch (RuntimeException e) {
