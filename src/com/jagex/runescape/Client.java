@@ -5587,7 +5587,7 @@ public final class Client extends RSApplet {
 						privateMessagePointer = (privateMessagePointer + 1) % 100;
 						String message = TextInput.readFromStream(packetSize - 13, inStream);
 						if (playerRights != 3)
-							message = Censor.doCensor(message);
+							message = Censor.censor(message);
 						if (playerRights == 2 || playerRights == 3)
 							pushMessage(message, 7, "@cr2@" + TextClass.formatName(TextClass.longToName(nameAsLong)));
 						else if (playerRights == 1)
@@ -7148,7 +7148,7 @@ public final class Client extends RSApplet {
 						TextInput.writeToStream(promptInput, stream);
 						stream.putSizeByte(stream.position - originalOffset);
 						promptInput = TextInput.processText(promptInput);
-						promptInput = Censor.doCensor(promptInput);
+						promptInput = Censor.censor(promptInput);
 						pushMessage(promptInput, 6, TextClass.formatName(TextClass.longToName(privateMessageTarget)));
 						if (privateChatMode == 2) {
 							privateChatMode = 1;
@@ -7314,7 +7314,7 @@ public final class Client extends RSApplet {
 						stream.putBytesA(0, textStream.buffer, textStream.position);
 						stream.putSizeByte(stream.position - originalOffset);
 						inputString = TextInput.processText(inputString);
-						inputString = Censor.doCensor(inputString);
+						inputString = Censor.censor(inputString);
 						localPlayer.overheadTextMessage = inputString;
 						localPlayer.chatColour = colour;
 						localPlayer.chatEffect = effect;
@@ -10566,7 +10566,7 @@ public final class Client extends RSApplet {
 						stream.getBytes(messageLength, 0, textStream.buffer);
 						textStream.position = 0;
 						String text = TextInput.readFromStream(messageLength, textStream);
-						text = Censor.doCensor(text);
+						text = Censor.censor(text);
 						player.overheadTextMessage = text;
 						player.chatColour = colourAndEffect >> 8;
 						player.rights = rights;
