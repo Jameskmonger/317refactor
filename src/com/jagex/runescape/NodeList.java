@@ -10,22 +10,11 @@ final class NodeList {
 
 	public NodeList() {
 		head = new Linkable();
-		head.previous = head;
 		head.next = head;
+		head.previous = head;
 	}
 
 	public Linkable peekLast() {
-		Linkable node = head.previous;
-		if (node == head) {
-			current = null;
-			return null;
-		} else {
-			current = node.previous;
-			return node;
-		}
-	}
-
-	public Linkable getFirst() {
 		Linkable node = head.next;
 		if (node == head) {
 			current = null;
@@ -36,36 +25,47 @@ final class NodeList {
 		}
 	}
 
+	public Linkable getFirst() {
+		Linkable node = head.previous;
+		if (node == head) {
+			current = null;
+			return null;
+		} else {
+			current = node.previous;
+			return node;
+		}
+	}
+
 	public Linkable getNext() {
 		Linkable node = current;
 		if (node == head) {
 			current = null;
 			return null;
 		}
-		current = node.next;
+		current = node.previous;
 		return node;
 	}
 
 	public void insertHead(Linkable node) {
-		if (node.next != null)
+		if (node.previous != null)
 			node.unlink();
-		node.next = head.next;
-		node.previous = head;
-		node.next.previous = node;
+		node.previous = head.previous;
+		node.next = head;
 		node.previous.next = node;
+		node.next.previous = node;
 	}
 
 	public void insertTail(Linkable node) {
-		if (node.next != null)
+		if (node.previous != null)
 			node.unlink();
-		node.next = head;
-		node.previous = head.previous;
-		node.next.previous = node;
+		node.previous = head;
+		node.next = head.next;
 		node.previous.next = node;
+		node.next.previous = node;
 	}
 
 	public Linkable popHead() {
-		Linkable node = head.previous;
+		Linkable node = head.next;
 		if (node == head) {
 			return null;
 		} else {
@@ -75,10 +75,10 @@ final class NodeList {
 	}
 
 	public void removeAll() {
-		if (head.previous == head)
+		if (head.next == head)
 			return;
 		do {
-			Linkable node = head.previous;
+			Linkable node = head.next;
 			if (node == head)
 				return;
 			node.unlink();
@@ -91,7 +91,7 @@ final class NodeList {
 			current = null;
 			return null;
 		} else {
-			current = node.previous;
+			current = node.next;
 			return node;
 		}
 	}
