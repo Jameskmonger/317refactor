@@ -14,7 +14,7 @@ public final class Buffer extends Cacheable {
 
             if (cacheCount > 0) {
                 cacheCount--;
-                stream = (Buffer) BUFFER_CACHE.popHead();
+                stream = (Buffer) BUFFER_CACHE.popFront();
             }
 
             if (stream != null) {
@@ -42,7 +42,7 @@ public final class Buffer extends Cacheable {
 
     private static int cacheCount;
 
-    private static final NodeList BUFFER_CACHE = new NodeList();
+    private static final DoubleEndedQueue BUFFER_CACHE = new DoubleEndedQueue();
 
     private Buffer() {
     }

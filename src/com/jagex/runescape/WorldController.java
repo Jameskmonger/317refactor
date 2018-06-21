@@ -1,6 +1,6 @@
 package com.jagex.runescape;
 
-import com.jagex.runescape.collection.NodeList;
+import com.jagex.runescape.collection.DoubleEndedQueue;
 
 final class WorldController {
 
@@ -199,7 +199,7 @@ final class WorldController {
 
 	private static final CullingCluster[] processedCullingClusters = new CullingCluster[500];
 
-	private static NodeList tileList = new NodeList();
+	private static DoubleEndedQueue tileList = new DoubleEndedQueue();
 
 	private static final int[] anIntArray478 = { 19, 55, 38, 155, 255, 110, 137, 205, 76 };
 
@@ -1555,11 +1555,11 @@ final class WorldController {
 	}
 
 	private void renderTile(Ground _tile, boolean flag) {
-		tileList.insertHead(_tile);
+		tileList.pushBack(_tile);
 		do {
 			Ground groundTile;
 			do {
-				groundTile = (Ground) tileList.popHead();
+				groundTile = (Ground) tileList.popFront();
 				if (groundTile == null)
 					return;
 			} while (!groundTile.aBoolean1323);
@@ -1743,22 +1743,22 @@ final class WorldController {
 					if (x < cameraPositionTileX && (interactiveObjectsSizeOR & 4) != 0) {
 						Ground tile = tiles[x + 1][y];
 						if (tile != null && tile.aBoolean1323)
-							tileList.insertHead(tile);
+							tileList.pushBack(tile);
 					}
 					if (y < cameraPositionTileY && (interactiveObjectsSizeOR & 2) != 0) {
 						Ground tile = tiles[x][y + 1];
 						if (tile != null && tile.aBoolean1323)
-							tileList.insertHead(tile);
+							tileList.pushBack(tile);
 					}
 					if (x > cameraPositionTileX && (interactiveObjectsSizeOR & 1) != 0) {
 						Ground tile = tiles[x - 1][y];
 						if (tile != null && tile.aBoolean1323)
-							tileList.insertHead(tile);
+							tileList.pushBack(tile);
 					}
 					if (y > cameraPositionTileY && (interactiveObjectsSizeOR & 8) != 0) {
 						Ground tile = tiles[x][y - 1];
 						if (tile != null && tile.aBoolean1323)
-							tileList.insertHead(tile);
+							tileList.pushBack(tile);
 					}
 				}
 			}
@@ -1863,9 +1863,9 @@ final class WorldController {
 							for (int _y = entity.tileTop; _y <= entity.tileBottom; _y++) {
 								Ground tile = tiles[_x][_y];
 								if (tile.anInt1325 != 0)
-									tileList.insertHead(tile);
+									tileList.pushBack(tile);
 								else if ((_x != x || _y != y) && tile.aBoolean1323)
-									tileList.insertHead(tile);
+									tileList.pushBack(tile);
 							}
 
 						}
@@ -1967,27 +1967,27 @@ final class WorldController {
 			if (z < mapSizeZ - 1) {
 				Ground tile = groundArray[z + 1][x][y];
 				if (tile != null && tile.aBoolean1323)
-					tileList.insertHead(tile);
+					tileList.pushBack(tile);
 			}
 			if (x < cameraPositionTileX) {
 				Ground tile = tiles[x + 1][y];
 				if (tile != null && tile.aBoolean1323)
-					tileList.insertHead(tile);
+					tileList.pushBack(tile);
 			}
 			if (y < cameraPositionTileY) {
 				Ground tile = tiles[x][y + 1];
 				if (tile != null && tile.aBoolean1323)
-					tileList.insertHead(tile);
+					tileList.pushBack(tile);
 			}
 			if (x > cameraPositionTileX) {
 				Ground tile = tiles[x - 1][y];
 				if (tile != null && tile.aBoolean1323)
-					tileList.insertHead(tile);
+					tileList.pushBack(tile);
 			}
 			if (y > cameraPositionTileY) {
 				Ground tile = tiles[x][y - 1];
 				if (tile != null && tile.aBoolean1323)
-					tileList.insertHead(tile);
+					tileList.pushBack(tile);
 			}
 		} while (true);
 	}
