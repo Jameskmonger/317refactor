@@ -1,5 +1,7 @@
 package com.jagex.runescape;
 
+import com.jagex.runescape.collection.Cache;
+
 public final class Player extends Entity {
 
 	public int rights;
@@ -17,7 +19,7 @@ public final class Player extends Entity {
 	private int gender;
 
 	public String name;
-	static LinkedList mruNodes = new LinkedList(260);
+	static Cache mruNodes = new Cache(260);
 	public int combatLevel;
 	public int headIcon;
 	public int modifiedAppearanceStartTime;

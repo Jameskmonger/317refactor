@@ -1,5 +1,7 @@
 package com.jagex.runescape;
 
+import com.jagex.runescape.collection.Cache;
+
 public final class SpotAnimation {
 
 	public static void load(Archive archive) {
@@ -31,7 +33,7 @@ public final class SpotAnimation {
 	public int rotation;
 	public int modelLightFalloff;
 	public int modelLightAmbient;
-	public static LinkedList modelCache = new LinkedList(30);
+	public static Cache modelCache = new Cache(30);
 
 	private SpotAnimation() {
 		animationId = -1;

@@ -1,6 +1,8 @@
 package com.jagex.runescape;
 
-public class Animable extends QueueLink {
+import com.jagex.runescape.collection.Cacheable;
+
+public class Animable extends Cacheable {
 	VertexNormal vertexNormals[];
 	public int modelHeight;
 

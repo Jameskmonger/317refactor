@@ -1,5 +1,7 @@
 package com.jagex.runescape;
 
+import com.jagex.runescape.collection.Cache;
+
 public final class EntityDefinition {
 
 	public static EntityDefinition getDefinition(int id) {
@@ -76,7 +78,7 @@ public final class EntityDefinition {
 	private int contrast;
 	public boolean visible;
 	private int[] modelIds;
-	public static LinkedList modelCache = new LinkedList(30);
+	public static Cache modelCache = new Cache(30);
 
 	private EntityDefinition() {
 		turnLeftAnimationId = -1;

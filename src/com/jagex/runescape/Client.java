@@ -6,6 +6,7 @@ import java.io.*;
 import java.net.*;
 
 import com.jagex.runescape.audio.Effect;
+import com.jagex.runescape.collection.*;
 import com.jagex.runescape.sign.signlink;
 import com.jagex.runescape.isaac.ISAACRandomGenerator;
 
@@ -87,6 +88,7 @@ public final class Client extends RSApplet {
 			Client client1 = new Client();
 			client1.createClientFrame(765, 503);
 		} catch (Exception exception) {
+			exception.printStackTrace();
 		}
 	}
 
@@ -110,7 +112,7 @@ public final class Client extends RSApplet {
 	private long loadRegionTime;
 	private int[][] distanceValues;
 	private int[] friendsWorldIds;
-	private NodeList[][][] groundArray;
+	private DoubleEndedQueue[][][] groundArray;
 	private int[] anIntArray828;
 	private int[] anIntArray829;
 	private volatile boolean currentlyDrawingFlames;
@@ -272,7 +274,7 @@ public final class Client extends RSApplet {
 	private int anInt1009;
 	private int idleCounter;
 	private int idleLogout;
-	private NodeList projectileQueue;
+	private DoubleEndedQueue projectileQueue;
 	private int currentCameraPositionH;
 	private int currentCameraPositionV;
 	private int cameraMovedWriteDelay;
@@ -311,7 +313,7 @@ public final class Client extends RSApplet {
 	private Archive archiveTitle;
 	private int flashingSidebar;
 	private boolean multiCombatZone;
-	private NodeList stationaryGraphicQueue;
+	private DoubleEndedQueue stationaryGraphicQueue;
 	private final int[] compassWidthMap;
 	private final RSInterface chatboxInterface;
 	private Background[] mapSceneImage;
@@ -420,7 +422,7 @@ public final class Client extends RSApplet {
 	private boolean genericLoadingError;
 	private final int[] objectTypes = { 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3 };
 	private int reportAbuseInterfaceID;
-	private NodeList spawnObjectList;
+	private DoubleEndedQueue spawnObjectList;
 	private int[] chatboxLineOffsets;
 	private int[] sidebarOffsets;
 	private int[] viewportOffsets;
@@ -542,7 +544,7 @@ public final class Client extends RSApplet {
 	private Client() {
 		distanceValues = new int[104][104];
 		friendsWorldIds = new int[200];
-		groundArray = new NodeList[4][104][104];
+		groundArray = new DoubleEndedQueue[4][104][104];
 		currentlyDrawingFlames = false;
 		textStream = new Buffer(new byte[5000]);
 		npcs = new NPC[16384];
@@ -606,7 +608,7 @@ public final class Client extends RSApplet {
 		characterEditColours = new int[5];
 		SCROLLBAR_TRACK_COLOUR = 0x23201b;
 		amountOrNameInput = "";
-		projectileQueue = new NodeList();
+		projectileQueue = new DoubleEndedQueue();
 		cameraMovedWrite = false;
 		walkableInterfaceId = -1;
 		unknownCameraVariable = new int[5];
@@ -618,7 +620,7 @@ public final class Client extends RSApplet {
 		characterEditChangeGender = true;
 		minimapLeft = new int[151];
 		flashingSidebar = -1;
-		stationaryGraphicQueue = new NodeList();
+		stationaryGraphicQueue = new DoubleEndedQueue();
 		compassWidthMap = new int[33];
 		chatboxInterface = new RSInterface();
 		mapSceneImage = new Background[100];
@@ -656,7 +658,7 @@ public final class Client extends RSApplet {
 		enteredPassword = "";
 		genericLoadingError = false;
 		reportAbuseInterfaceID = -1;
-		spawnObjectList = new NodeList();
+		spawnObjectList = new DoubleEndedQueue();
 		cameraVertical = 128;
 		inventoryOverlayInterfaceID = -1;
 		stream = Buffer.create();
@@ -1067,9 +1069,9 @@ public final class Client extends RSApplet {
 				buildMenuForPlayer(x, objectId, player, y);
 			}
 			if (type == 3) {
-				NodeList itemStack = groundArray[plane][x][y];
+				DoubleEndedQueue itemStack = groundArray[plane][x][y];
 				if (itemStack != null) {
-					for (Item item = (Item) itemStack.getFirst(); item != null; item = (Item) itemStack.getNext()) {
+					for (Item item = (Item) itemStack.peekBack(); item != null; item = (Item) itemStack.getPrevious()) {
 						ItemDefinition definition = ItemDefinition.getDefinition(item.itemId);
 						if (itemSelected) {
 							menuActionName[menuActionRow] = "Use " + selectedItemName + " with @lre@" + definition.name;
@@ -1896,8 +1898,8 @@ public final class Client extends RSApplet {
 	}
 
 	private void clearObjectSpawnRequests() {
-		GameObjectSpawnRequest spawnRequest = (GameObjectSpawnRequest) spawnObjectList.peekLast();
-		for (; spawnRequest != null; spawnRequest = (GameObjectSpawnRequest) spawnObjectList.reverseGetNext())
+		GameObjectSpawnRequest spawnRequest = (GameObjectSpawnRequest) spawnObjectList.peekFront();
+		for (; spawnRequest != null; spawnRequest = (GameObjectSpawnRequest) spawnObjectList.getPrevious())
 			if (spawnRequest.delayUntilRespawn == -1) {
 				spawnRequest.delayUntilSpawn = 0;
 				configureSpawnRequest(spawnRequest);
@@ -2012,7 +2014,7 @@ public final class Client extends RSApplet {
 			int x, int delayUntilSpawn) {
 		GameObjectSpawnRequest request = null;
 		for (GameObjectSpawnRequest request2 = (GameObjectSpawnRequest) spawnObjectList
-				.peekLast(); request2 != null; request2 = (GameObjectSpawnRequest) spawnObjectList.reverseGetNext()) {
+				.peekFront(); request2 != null; request2 = (GameObjectSpawnRequest) spawnObjectList.getPrevious()) {
 			if (request2.z != z || request2.x != x || request2.y != y || request2.objectType != type)
 				continue;
 
@@ -2027,7 +2029,7 @@ public final class Client extends RSApplet {
 			request.x = x;
 			request.y = y;
 			configureSpawnRequest(request);
-			spawnObjectList.insertHead(request);
+			spawnObjectList.pushBack(request);
 		}
 		request.id2 = id2;
 		request.type2 = type2;
@@ -4393,7 +4395,7 @@ public final class Client extends RSApplet {
 
 		for (int x = 0; x < 104; x++) {
 			for (int y = 0; y < 104; y++) {
-				NodeList itemStack = groundArray[plane][x][y];
+				DoubleEndedQueue itemStack = groundArray[plane][x][y];
 				if (itemStack != null) {
 					int mapX = (x * 4 + 2) - localPlayer.x / 32;
 					int mapY = (y * 4 + 2) - localPlayer.y / 32;
@@ -4963,8 +4965,8 @@ public final class Client extends RSApplet {
 				}
 
 				for (GameObjectSpawnRequest spawnRequest = (GameObjectSpawnRequest) spawnObjectList
-						.peekLast(); spawnRequest != null; spawnRequest = (GameObjectSpawnRequest) spawnObjectList
-								.reverseGetNext())
+						.peekFront(); spawnRequest != null; spawnRequest = (GameObjectSpawnRequest) spawnObjectList
+								.getPrevious())
 					if (spawnRequest.x >= playerPositionX && spawnRequest.x < playerPositionX + 8
 							&& spawnRequest.y >= playerPositionY && spawnRequest.y < playerPositionY + 8
 							&& spawnRequest.z == plane)
@@ -5272,8 +5274,8 @@ public final class Client extends RSApplet {
 					}
 				}
 				for (GameObjectSpawnRequest spawnRequest = (GameObjectSpawnRequest) spawnObjectList
-						.peekLast(); spawnRequest != null; spawnRequest = (GameObjectSpawnRequest) spawnObjectList
-								.reverseGetNext()) {
+						.peekFront(); spawnRequest != null; spawnRequest = (GameObjectSpawnRequest) spawnObjectList
+								.getPrevious()) {
 					spawnRequest.x -= _x;
 					spawnRequest.y -= _y;
 					if (spawnRequest.x < 0 || spawnRequest.y < 0 || spawnRequest.x >= 104 || spawnRequest.y >= 104)
@@ -5967,7 +5969,7 @@ public final class Client extends RSApplet {
 				Rasterizer.calculatePalette(0.69999999999999996D);
 			if (setting == 4)
 				Rasterizer.calculatePalette(0.59999999999999998D);
-			ItemDefinition.spriteCache.unlinkAll();
+			ItemDefinition.spriteCache.clear();
 			welcomeScreenRaised = true;
 		}
 		if (attribute == 3) {
@@ -6229,8 +6231,8 @@ public final class Client extends RSApplet {
 	private void loadRegion() {
 		try {
 			lastRegionId = -1;
-			stationaryGraphicQueue.removeAll();
-			projectileQueue.removeAll();
+			stationaryGraphicQueue.clear();
+			projectileQueue.clear();
 			Rasterizer.clearTextureCache();
 			resetModelCaches();
 			worldController.initToNull();
@@ -6368,7 +6370,7 @@ public final class Client extends RSApplet {
 			clearObjectSpawnRequests();
 		} catch (Exception exception) {
 		}
-		GameObjectDefinition.modelCache.unlinkAll();
+		GameObjectDefinition.modelCache.clear();
 		if (super.gameFrame != null) {
 			stream.putOpcode(210);
 			stream.putInt(0x3f008edd);
@@ -6606,8 +6608,8 @@ public final class Client extends RSApplet {
 					npcs[n] = null;
 
 				localPlayer = players[LOCAL_PLAYER_ID] = new Player();
-				projectileQueue.removeAll();
-				stationaryGraphicQueue.removeAll();
+				projectileQueue.clear();
+				stationaryGraphicQueue.clear();
 				for (int l2 = 0; l2 < 4; l2++) {
 					for (int i3 = 0; i3 < 104; i3++) {
 						for (int k3 = 0; k3 < 104; k3++)
@@ -6617,7 +6619,7 @@ public final class Client extends RSApplet {
 
 				}
 
-				spawnObjectList = new NodeList();
+				spawnObjectList = new DoubleEndedQueue();
 				friendListStatus = 0;
 				friendsCount = 0;
 				dialogID = -1;
@@ -7433,10 +7435,10 @@ public final class Client extends RSApplet {
 			int targetItemAmount = stream.getUnsignedLEShort();
 			int itemCount = stream.getUnsignedLEShort();
 			if (x >= 0 && y >= 0 && x < 104 && y < 104) {
-				NodeList groundItemArray = groundArray[plane][x][y];
+				DoubleEndedQueue groundItemArray = groundArray[plane][x][y];
 				if (groundItemArray != null) {
-					for (Item item = (Item) groundItemArray.peekLast(); item != null; item = (Item) groundItemArray
-							.reverseGetNext()) {
+					for (Item item = (Item) groundItemArray.peekFront(); item != null; item = (Item) groundItemArray
+							.getPrevious()) {
 						if (item.itemId != (targetItemId & 0x7fff) || item.itemCount != targetItemAmount)
 							continue;
 						item.itemCount = itemCount;
@@ -7477,8 +7479,8 @@ public final class Client extends RSApplet {
 				item.itemId = id;
 				item.itemCount = count;
 				if (groundArray[plane][x][y] == null)
-					groundArray[plane][x][y] = new NodeList();
-				groundArray[plane][x][y].insertHead(item);
+					groundArray[plane][x][y] = new DoubleEndedQueue();
+				groundArray[plane][x][y].pushBack(item);
 				spawnGroundItem(x, y);
 			}
 			return;
@@ -7489,17 +7491,17 @@ public final class Client extends RSApplet {
 			int y = playerPositionY + (positionOffset & 7);
 			int itemId = stream.getUnsignedLEShort();
 			if (x >= 0 && y >= 0 && x < 104 && y < 104) {
-				NodeList groundItems = groundArray[plane][x][y];
+				DoubleEndedQueue groundItems = groundArray[plane][x][y];
 				if (groundItems != null) {
-					for (Item item = (Item) groundItems.peekLast(); item != null; item = (Item) groundItems
-							.reverseGetNext()) {
+					for (Item item = (Item) groundItems.peekFront(); item != null; item = (Item) groundItems
+							.getPrevious()) {
 						if (item.itemId != (itemId & 0x7fff))
 							continue;
 						item.unlink();
 						break;
 					}
 
-					if (groundItems.peekLast() == null)
+					if (groundItems.peekFront() == null)
 						groundArray[plane][x][y] = null;
 					spawnGroundItem(x, y);
 				}
@@ -7645,7 +7647,7 @@ public final class Client extends RSApplet {
 				y = y * 128 + 64;
 				StationaryGraphic stationaryGraphic = new StationaryGraphic(x, y, plane,
 						getFloorDrawHeight(plane, y, x) - drawHeight, graphicId, tick, delay);
-				stationaryGraphicQueue.insertHead(stationaryGraphic);
+				stationaryGraphicQueue.pushBack(stationaryGraphic);
 			}
 			return;
 		}
@@ -7660,8 +7662,8 @@ public final class Client extends RSApplet {
 				item.itemId = itemId;
 				item.itemCount = itemAmount;
 				if (groundArray[plane][x][y] == null)
-					groundArray[plane][x][y] = new NodeList();
-				groundArray[plane][x][y].insertHead(item);
+					groundArray[plane][x][y] = new DoubleEndedQueue();
+				groundArray[plane][x][y].pushBack(item);
 				spawnGroundItem(x, y);
 			}
 			return;
@@ -7706,7 +7708,7 @@ public final class Client extends RSApplet {
 				projectile.trackTarget(projectileCreatedTime + tick, projectileOffsetY,
 						getFloorDrawHeight(plane, projectileOffsetY, projectileOffsetX) - projectileHeightEnd,
 						projectileOffsetX);
-				projectileQueue.insertHead(projectile);
+				projectileQueue.pushBack(projectile);
 			}
 		}
 	}
@@ -8933,7 +8935,7 @@ public final class Client extends RSApplet {
 
 	private void renderProjectiles() {
 		for (Projectile projectile = (Projectile) projectileQueue
-				.peekLast(); projectile != null; projectile = (Projectile) projectileQueue.reverseGetNext())
+				.peekFront(); projectile != null; projectile = (Projectile) projectileQueue.getPrevious())
 			if (projectile.plane != plane || tick > projectile.endCycle)
 				projectile.unlink();
 			else if (tick >= projectile.delay) {
@@ -8962,9 +8964,9 @@ public final class Client extends RSApplet {
 	}
 
 	private void renderStationaryGraphics() {
-		StationaryGraphic stationaryGraphic = (StationaryGraphic) stationaryGraphicQueue.peekLast();
+		StationaryGraphic stationaryGraphic = (StationaryGraphic) stationaryGraphicQueue.peekFront();
 		for (; stationaryGraphic != null; stationaryGraphic = (StationaryGraphic) stationaryGraphicQueue
-				.reverseGetNext())
+				.getPrevious())
 			if (stationaryGraphic.z != plane || stationaryGraphic.transformationCompleted)
 				stationaryGraphic.unlink();
 			else if (tick >= stationaryGraphic.stationaryGraphicLoopCycle) {
@@ -9153,13 +9155,13 @@ public final class Client extends RSApplet {
 	}
 
 	private void resetModelCaches() {
-		GameObjectDefinition.modelCache.unlinkAll();
-		GameObjectDefinition.animatedModelCache.unlinkAll();
-		EntityDefinition.modelCache.unlinkAll();
-		ItemDefinition.modelCache.unlinkAll();
-		ItemDefinition.spriteCache.unlinkAll();
-		Player.mruNodes.unlinkAll();
-		SpotAnimation.modelCache.unlinkAll();
+		GameObjectDefinition.modelCache.clear();
+		GameObjectDefinition.animatedModelCache.clear();
+		EntityDefinition.modelCache.clear();
+		ItemDefinition.modelCache.clear();
+		ItemDefinition.spriteCache.clear();
+		Player.mruNodes.clear();
+		SpotAnimation.modelCache.clear();
 	}
 
 	private int rotateFlameColour(int r, int g, int b) {
@@ -9451,8 +9453,8 @@ public final class Client extends RSApplet {
 	private void spawnGameObjects() {
 		if (loadingStage == 2) {
 			for (GameObjectSpawnRequest spawnRequest = (GameObjectSpawnRequest) spawnObjectList
-					.peekLast(); spawnRequest != null; spawnRequest = (GameObjectSpawnRequest) spawnObjectList
-							.reverseGetNext()) {
+					.peekFront(); spawnRequest != null; spawnRequest = (GameObjectSpawnRequest) spawnObjectList
+							.getPrevious()) {
 				if (spawnRequest.delayUntilRespawn > 0)
 					spawnRequest.delayUntilRespawn--;
 				if (spawnRequest.delayUntilRespawn == 0) {
@@ -9482,7 +9484,7 @@ public final class Client extends RSApplet {
 	}
 
 	private void spawnGroundItem(int x, int y) {
-		NodeList groundItemList = groundArray[plane][x][y];
+		DoubleEndedQueue groundItemList = groundArray[plane][x][y];
 		if (groundItemList == null) {
 			worldController.removeGroundItemTile(x, y, plane);
 			return;
@@ -9490,7 +9492,7 @@ public final class Client extends RSApplet {
 		int highestValue = -99999999;
 		Object item = null;
 		for (Item currentItem = (Item) groundItemList
-				.peekLast(); currentItem != null; currentItem = (Item) groundItemList.reverseGetNext()) {
+				.peekFront(); currentItem != null; currentItem = (Item) groundItemList.getPrevious()) {
 			ItemDefinition itemDef = ItemDefinition.getDefinition(currentItem.itemId);
 			int value = itemDef.value;
 			if (itemDef.stackable)
@@ -9501,11 +9503,11 @@ public final class Client extends RSApplet {
 			}
 		}
 
-		groundItemList.insertTail(((Link) (item)));
+		groundItemList.pushFront(((Linkable) (item)));
 		Object secondItem = null;
 		Object thirdItem = null;
 		for (Item currentItem = (Item) groundItemList
-				.peekLast(); currentItem != null; currentItem = (Item) groundItemList.reverseGetNext()) {
+				.peekFront(); currentItem != null; currentItem = (Item) groundItemList.getPrevious()) {
 			if (currentItem.itemId != ((Item) (item)).itemId && secondItem == null)
 				secondItem = currentItem;
 			if (currentItem.itemId != ((Item) (item)).itemId && currentItem.itemId != ((Item) (secondItem)).itemId

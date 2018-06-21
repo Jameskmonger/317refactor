@@ -1,11 +1,12 @@
 package com.jagex.runescape;
 
 import com.jagex.runescape.sign.signlink;
+import com.jagex.runescape.collection.*;
 import com.jagex.runescape.isaac.ISAACRandomGenerator;
 
 import java.math.BigInteger;
 
-public final class Buffer extends QueueLink {
+public final class Buffer extends Cacheable {
 
     public static Buffer create() {
         synchronized (BUFFER_CACHE) {
@@ -13,7 +14,7 @@ public final class Buffer extends QueueLink {
 
             if (cacheCount > 0) {
                 cacheCount--;
-                stream = (Buffer) BUFFER_CACHE.popHead();
+                stream = (Buffer) BUFFER_CACHE.popFront();
             }
 
             if (stream != null) {
@@ -41,7 +42,7 @@ public final class Buffer extends QueueLink {
 
     private static int cacheCount;
 
-    private static final NodeList BUFFER_CACHE = new NodeList();
+    private static final DoubleEndedQueue BUFFER_CACHE = new DoubleEndedQueue();
 
     private Buffer() {
     }
