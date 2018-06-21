@@ -7,6 +7,7 @@ import java.net.*;
 
 import com.jagex.runescape.audio.Effect;
 import com.jagex.runescape.sign.signlink;
+import com.jagex.runescape.isaac.ISAACRandomGenerator;
 
 @SuppressWarnings("serial")
 public final class Client extends RSApplet {
