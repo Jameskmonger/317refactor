@@ -1,6 +1,8 @@
-package com.jagex.runescape;
+package com.jagex.runescape.isaac;
 
-/**
+/*
+ * An implementation of the ISAAC cipher
+ * 
  * Based on Rand.java by Bob Jenkins
  * http://burtleburtle.net/bob/java/rand/Rand.java
  */
