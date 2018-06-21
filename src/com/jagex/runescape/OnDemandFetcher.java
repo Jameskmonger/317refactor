@@ -214,7 +214,7 @@ public final class OnDemandFetcher implements Runnable {
 		if (onDemandData == null)
 			return null;
 		synchronized (nodeSubList) {
-			onDemandData.unlist();
+			onDemandData.unlinkCacheable();
 		}
 		if (onDemandData.buffer == null)
 			return onDemandData;

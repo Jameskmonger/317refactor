@@ -9,50 +9,50 @@ public final class Deque {
 
 	public Deque() {
 		head = new Cacheable();
-		head.prevNodeSub = head;
-		head.nextNodeSub = head;
+		head.previousCacheable = head;
+		head.nextCacheable = head;
 	}
 
 	public int getSize() {
 		int count = 0;
 
-		for (Cacheable next = head.prevNodeSub; next != head; next = next.prevNodeSub)
+		for (Cacheable next = head.previousCacheable; next != head; next = next.previousCacheable)
 			count++;
 
 		return count;
 	}
 
 	public void push(Cacheable item) {
-		if (item.nextNodeSub != null) {
-			item.unlist();
+		if (item.nextCacheable != null) {
+			item.unlinkCacheable();
 		}
 
-		item.nextNodeSub = head.nextNodeSub;
-		item.prevNodeSub = head;
-		item.nextNodeSub.prevNodeSub = item;
-		item.prevNodeSub.nextNodeSub = item;
+		item.nextCacheable = head.nextCacheable;
+		item.previousCacheable = head;
+		item.nextCacheable.previousCacheable = item;
+		item.previousCacheable.nextCacheable = item;
 	}
 
 	public Cacheable pull() {
-		Cacheable l = head.prevNodeSub;
+		Cacheable l = head.previousCacheable;
 
 		if (l == head) {
 			return null;
 		}
 		
-		l.unlist();		
+		l.unlinkCacheable();		
 		return l;
 	}
 
 	public Cacheable reverseGetFirst() {
-		Cacheable nodeSub = head.prevNodeSub;
+		Cacheable nodeSub = head.previousCacheable;
 
 		if (nodeSub == head) {
 			current = null;
 			return null;
 		}
 		
-		current = nodeSub.prevNodeSub;
+		current = nodeSub.previousCacheable;
 		return nodeSub;
 	}
 
@@ -64,7 +64,7 @@ public final class Deque {
 			return null;
 		}
 
-		current = nodeSub.prevNodeSub;
+		current = nodeSub.previousCacheable;
 		return nodeSub;
 	}
 }

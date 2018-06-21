@@ -30,12 +30,12 @@ public class Cache {
 		if (available == 0) {
 			Cacheable head = deque.pull();
 			head.unlink();
-			head.unlist();
+			head.unlinkCacheable();
 
 			if (head == empty) {
 				Cacheable secondHead = deque.pull();
 				secondHead.unlink();
-				secondHead.unlist();
+				secondHead.unlinkCacheable();
 			}
 		} else {
 			available--;
@@ -56,7 +56,7 @@ public class Cache {
 			}
 
 			head.unlink();
-			head.unlist();
+			head.unlinkCacheable();
 		}
 	}
 }
