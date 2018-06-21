@@ -9,11 +9,11 @@ public class Cache {
 	private final int size;
 	private int available;
 	private final LinkedHashMap hashmap;
-	private final Deque retrievedItems;
+	private final DoubleEndedQueue retrievedItems;
 
 	public Cache(int length) {
 		empty = new Cacheable();
-		retrievedItems = new Deque();
+		retrievedItems = new DoubleEndedQueue();
 		hashmap = new LinkedHashMap(1024);
 
 		size = length;

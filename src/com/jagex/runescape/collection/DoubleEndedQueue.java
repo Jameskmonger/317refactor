@@ -2,12 +2,12 @@ package com.jagex.runescape.collection;
 
 // This is FIFO
 
-public final class Deque {
+public final class DoubleEndedQueue {
 
 	private final Cacheable head;
 	private Cacheable current;
 
-	public Deque() {
+	public DoubleEndedQueue() {
 		head = new Cacheable();
 		head.previousCacheable = head;
 		head.nextCacheable = head;
