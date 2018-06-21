@@ -1,8 +1,6 @@
 package com.jagex.runescape.collection;
 
-import com.jagex.runescape.collection.Linkable;
-
-final class LinkedHashMap {
+public class LinkedHashMap {
 
 	private final int size;
 	private final Linkable[] entries;
