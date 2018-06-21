@@ -6,6 +6,7 @@ import java.io.*;
 import java.net.*;
 
 import com.jagex.runescape.audio.Effect;
+import com.jagex.runescape.collection.Linkable;
 import com.jagex.runescape.sign.signlink;
 import com.jagex.runescape.isaac.ISAACRandomGenerator;
 
@@ -9501,7 +9502,7 @@ public final class Client extends RSApplet {
 			}
 		}
 
-		groundItemList.insertTail(((Link) (item)));
+		groundItemList.insertTail(((Linkable) (item)));
 		Object secondItem = null;
 		Object thirdItem = null;
 		for (Item currentItem = (Item) groundItemList

@@ -1,6 +1,8 @@
 package com.jagex.runescape;
 
-public final class Ground extends Link {
+import com.jagex.runescape.collection.Linkable;
+
+public final class Ground extends Linkable {
 
 	int z;
 

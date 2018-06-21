@@ -1,19 +1,21 @@
 package com.jagex.runescape;
 
+import com.jagex.runescape.collection.Linkable;
+
 final class NodeList {
 
-	private final Link head;
+	private final Linkable head;
 
-	private Link current;
+	private Linkable current;
 
 	public NodeList() {
-		head = new Link();
+		head = new Linkable();
 		head.previous = head;
 		head.next = head;
 	}
 
-	public Link peekLast() {
-		Link node = head.previous;
+	public Linkable peekLast() {
+		Linkable node = head.previous;
 		if (node == head) {
 			current = null;
 			return null;
@@ -23,8 +25,8 @@ final class NodeList {
 		}
 	}
 
-	public Link getFirst() {
-		Link node = head.next;
+	public Linkable getFirst() {
+		Linkable node = head.next;
 		if (node == head) {
 			current = null;
 			return null;
@@ -34,8 +36,8 @@ final class NodeList {
 		}
 	}
 
-	public Link getNext() {
-		Link node = current;
+	public Linkable getNext() {
+		Linkable node = current;
 		if (node == head) {
 			current = null;
 			return null;
@@ -44,7 +46,7 @@ final class NodeList {
 		return node;
 	}
 
-	public void insertHead(Link node) {
+	public void insertHead(Linkable node) {
 		if (node.next != null)
 			node.unlink();
 		node.next = head.next;
@@ -53,7 +55,7 @@ final class NodeList {
 		node.previous.next = node;
 	}
 
-	public void insertTail(Link node) {
+	public void insertTail(Linkable node) {
 		if (node.next != null)
 			node.unlink();
 		node.next = head;
@@ -62,8 +64,8 @@ final class NodeList {
 		node.previous.next = node;
 	}
 
-	public Link popHead() {
-		Link node = head.previous;
+	public Linkable popHead() {
+		Linkable node = head.previous;
 		if (node == head) {
 			return null;
 		} else {
@@ -76,15 +78,15 @@ final class NodeList {
 		if (head.previous == head)
 			return;
 		do {
-			Link node = head.previous;
+			Linkable node = head.previous;
 			if (node == head)
 				return;
 			node.unlink();
 		} while (true);
 	}
 
-	public Link reverseGetNext() {
-		Link node = current;
+	public Linkable reverseGetNext() {
+		Linkable node = current;
 		if (node == head) {
 			current = null;
 			return null;

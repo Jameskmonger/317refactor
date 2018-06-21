@@ -1,10 +1,10 @@
-package com.jagex.runescape;
+package com.jagex.runescape.collection;
 
-public class Link {
+public class Linkable {
 
 	public long id;
-	public Link previous;
-	public Link next;
+	public Linkable previous;
+	public Linkable next;
 
 	public final void unlink() {
 		if (next == null) {
