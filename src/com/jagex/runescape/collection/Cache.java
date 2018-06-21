@@ -8,13 +8,13 @@ public class Cache {
 	private final Cacheable empty;
 	private final int size;
 	private int available;
-	private final LinkedHashMap hashmap;
+	private final LinkableHashMap hashmap;
 	private final CacheableQueue retrievedItems;
 
 	public Cache(int length) {
 		empty = new Cacheable();
 		retrievedItems = new CacheableQueue();
-		hashmap = new LinkedHashMap(1024);
+		hashmap = new LinkableHashMap(1024);
 
 		size = length;
 		available = length;		
