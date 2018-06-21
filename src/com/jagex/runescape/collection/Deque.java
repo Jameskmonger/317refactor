@@ -1,6 +1,6 @@
-package com.jagex.runescape;
+package com.jagex.runescape.collection;
 
-final class Deque {
+public final class Deque {
 
 	private final QueueLink head;
 	private QueueLink current;

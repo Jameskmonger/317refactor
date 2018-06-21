@@ -1,5 +1,7 @@
 package com.jagex.runescape;
 
+import com.jagex.runescape.collection.QueueLink;
+
 public final class OnDemandData extends QueueLink {
 
 	int dataType;

@@ -1,5 +1,7 @@
 package com.jagex.runescape;
 
+import com.jagex.runescape.collection.QueueLink;
+
 public class Animable extends QueueLink {
 	VertexNormal vertexNormals[];
 	public int modelHeight;

@@ -1,5 +1,7 @@
 package com.jagex.runescape;
 
+import com.jagex.runescape.collection.NodeList;
+
 final class WorldController {
 
 	public static void createCullingCluster(int z, int highestX, int lowestX, int highestY, int lowestY, int highestZ,

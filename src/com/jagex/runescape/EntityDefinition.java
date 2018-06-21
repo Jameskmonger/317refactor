@@ -1,5 +1,7 @@
 package com.jagex.runescape;
 
+import com.jagex.runescape.collection.LinkedList;
+
 public final class EntityDefinition {
 
 	public static EntityDefinition getDefinition(int id) {

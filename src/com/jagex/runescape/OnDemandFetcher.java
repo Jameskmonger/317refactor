@@ -4,6 +4,9 @@ import java.io.*;
 import java.net.Socket;
 import java.util.zip.CRC32;
 import java.util.zip.GZIPInputStream;
+
+import com.jagex.runescape.collection.Deque;
+import com.jagex.runescape.collection.NodeList;
 import com.jagex.runescape.sign.signlink;
 
 public final class OnDemandFetcher implements Runnable {

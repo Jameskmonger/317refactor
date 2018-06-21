@@ -6,7 +6,7 @@ import java.io.*;
 import java.net.*;
 
 import com.jagex.runescape.audio.Effect;
-import com.jagex.runescape.collection.Linkable;
+import com.jagex.runescape.collection.*;
 import com.jagex.runescape.sign.signlink;
 import com.jagex.runescape.isaac.ISAACRandomGenerator;
 

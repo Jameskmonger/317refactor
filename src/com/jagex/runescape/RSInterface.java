@@ -1,5 +1,7 @@
 package com.jagex.runescape;
 
+import com.jagex.runescape.collection.LinkedList;
+
 public final class RSInterface {
 
 	private static Sprite getImage(int spriteId, Archive streamLoader, String spriteName) {

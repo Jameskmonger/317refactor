@@ -1,4 +1,4 @@
-package com.jagex.runescape;
+package com.jagex.runescape.collection;
 
 import com.jagex.runescape.sign.signlink;
 

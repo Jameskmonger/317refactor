@@ -1,6 +1,7 @@
 package com.jagex.runescape;
 
 import com.jagex.runescape.sign.signlink;
+import com.jagex.runescape.collection.*;
 import com.jagex.runescape.isaac.ISAACRandomGenerator;
 
 import java.math.BigInteger;

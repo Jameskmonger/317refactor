@@ -1,5 +1,7 @@
 package com.jagex.runescape;
 
+import com.jagex.runescape.collection.QueueLink;
+
 public class DrawingArea extends QueueLink {
 
 	public static void clear() {
