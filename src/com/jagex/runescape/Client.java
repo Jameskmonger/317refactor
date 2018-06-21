@@ -1900,7 +1900,6 @@ public final class Client extends RSApplet {
 		FloorDefinition.cache = null;
 		IdentityKit.cache = null;
 		RSInterface.cache = null;
-		DummyClass.cache = null;
 		AnimationSequence.animations = null;
 		SpotAnimation.cache = null;
 		SpotAnimation.modelCache = null;
