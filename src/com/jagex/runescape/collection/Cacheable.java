@@ -2,17 +2,17 @@ package com.jagex.runescape.collection;
 
 public class Cacheable extends Linkable {
 
-	public Cacheable previousCacheable;
 	public Cacheable nextCacheable;
+	public Cacheable previousCacheable;
 
 	public final void unlinkCacheable() {
-		if (nextCacheable == null) {
+		if (previousCacheable == null) {
 			return;
 		}
 		
-		nextCacheable.previousCacheable = previousCacheable;
 		previousCacheable.nextCacheable = nextCacheable;
-		previousCacheable = null;
+		nextCacheable.previousCacheable = previousCacheable;
 		nextCacheable = null;
+		previousCacheable = null;
 	}
 }

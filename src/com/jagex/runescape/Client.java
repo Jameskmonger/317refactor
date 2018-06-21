@@ -88,6 +88,7 @@ public final class Client extends RSApplet {
 			Client client1 = new Client();
 			client1.createClientFrame(765, 503);
 		} catch (Exception exception) {
+			exception.printStackTrace();
 		}
 	}
 

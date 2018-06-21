@@ -5,7 +5,7 @@ import java.net.Socket;
 import java.util.zip.CRC32;
 import java.util.zip.GZIPInputStream;
 
-import com.jagex.runescape.collection.DoubleEndedQueue;
+import com.jagex.runescape.collection.CacheableQueue;
 import com.jagex.runescape.collection.NodeList;
 import com.jagex.runescape.sign.signlink;
 
@@ -61,7 +61,7 @@ public final class OnDemandFetcher implements Runnable {
 
 	private final byte[] gzipInputBuffer;
 	private int[] anIntArray1360;
-	private final DoubleEndedQueue nodeSubList;
+	private final CacheableQueue nodeSubList;
 	private InputStream inputStream;
 	private Socket socket;
 	private final int[][] versions;
@@ -86,7 +86,7 @@ public final class OnDemandFetcher implements Runnable {
 		waiting = false;
 		aClass19_1358 = new NodeList();
 		gzipInputBuffer = new byte[65000];
-		nodeSubList = new DoubleEndedQueue();
+		nodeSubList = new CacheableQueue();
 		versions = new int[4][];
 		crcs = new int[4][];
 		aClass19_1368 = new NodeList();
@@ -452,8 +452,8 @@ public final class OnDemandFetcher implements Runnable {
 			return;
 		synchronized (nodeSubList) {
 			for (OnDemandData onDemandData = (OnDemandData) nodeSubList
-					.reverseGetFirst(); onDemandData != null; onDemandData = (OnDemandData) nodeSubList
-							.reverseGetNext())
+					.peek(); onDemandData != null; onDemandData = (OnDemandData) nodeSubList
+							.getNext())
 				if (onDemandData.dataType == i && onDemandData.id == j)
 					return;
 
