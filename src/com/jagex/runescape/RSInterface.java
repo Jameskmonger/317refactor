@@ -1,6 +1,6 @@
 package com.jagex.runescape;
 
-import com.jagex.runescape.collection.LinkedList;
+import com.jagex.runescape.collection.Cache;
 
 public final class RSInterface {
 
@@ -27,7 +27,7 @@ public final class RSInterface {
 	}
 
 	public static void unpack(Archive streamLoader, GameFont fonts[], Archive mediaArchive) {
-		spriteCache = new LinkedList(50000);
+		spriteCache = new Cache(50000);
 		Buffer stream = new Buffer(streamLoader.decompressFile("data"));
 		int parentId = -1;
 		int interfaceCount = stream.getUnsignedLEShort();
@@ -264,7 +264,7 @@ public final class RSInterface {
 	public boolean itemDeletesDragged;
 	public int parentID;
 	public int spellUsableOn;
-	private static LinkedList spriteCache;
+	private static Cache spriteCache;
 	public int colourActiveHover;
 	public int children[];
 	public int childX[];
@@ -289,7 +289,7 @@ public final class RSInterface {
 	public int scrollMax;
 	public int type;
 	public int x;
-	private static final LinkedList modelCache = new LinkedList(30);
+	private static final Cache modelCache = new Cache(30);
 	public int y;
 	public boolean hoverOnly;
 	public int height;

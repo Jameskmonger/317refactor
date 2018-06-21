@@ -1,6 +1,6 @@
 package com.jagex.runescape.collection;
 
-public class LinkedList {
+public class Cache {
 
 	private final QueueLink empty;
 	private final int size;
@@ -8,7 +8,7 @@ public class LinkedList {
 	private final LinkedHashMap hashmap;
 	private final Deque deque;
 
-	public LinkedList(int length) {
+	public Cache(int length) {
 		empty = new QueueLink();
 		deque = new Deque();
 		size = length;

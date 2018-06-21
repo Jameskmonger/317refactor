@@ -1,6 +1,6 @@
 package com.jagex.runescape;
 
-import com.jagex.runescape.collection.LinkedList;
+import com.jagex.runescape.collection.Cache;
 
 public final class ItemDefinition {
 
@@ -180,9 +180,9 @@ public final class ItemDefinition {
 
 	public int id;
 
-	static LinkedList spriteCache = new LinkedList(100);
+	static Cache spriteCache = new Cache(100);
 
-	public static LinkedList modelCache = new LinkedList(50);
+	public static Cache modelCache = new Cache(50);
 
 	private int[] originalModelColors;
 

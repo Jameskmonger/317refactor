@@ -1,6 +1,6 @@
 package com.jagex.runescape;
 
-import com.jagex.runescape.collection.LinkedList;
+import com.jagex.runescape.collection.Cache;
 
 public final class GameObjectDefinition {
 
@@ -91,12 +91,12 @@ public final class GameObjectDefinition {
 	public byte description[];
 	public boolean hasActions;
 	public boolean castsShadow;
-	public static LinkedList animatedModelCache = new LinkedList(30);
+	public static Cache animatedModelCache = new Cache(30);
 	public int animationId;
 	private static GameObjectDefinition[] cache;
 	private int translateZ;
 	private int[] modifiedModelColors;
-	public static LinkedList modelCache = new LinkedList(500);
+	public static Cache modelCache = new Cache(500);
 	public String actions[];
 
 	private GameObjectDefinition() {
