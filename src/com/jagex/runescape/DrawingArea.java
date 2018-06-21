@@ -1,8 +1,8 @@
 package com.jagex.runescape;
 
-import com.jagex.runescape.collection.QueueLink;
+import com.jagex.runescape.collection.Cacheable;
 
-public class DrawingArea extends QueueLink {
+public class DrawingArea extends Cacheable {
 
 	public static void clear() {
 		int i = width * height;

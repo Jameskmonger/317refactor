@@ -1,8 +1,8 @@
 package com.jagex.runescape;
 
-import com.jagex.runescape.collection.QueueLink;
+import com.jagex.runescape.collection.Cacheable;
 
-public final class OnDemandData extends QueueLink {
+public final class OnDemandData extends Cacheable {
 
 	int dataType;
 

@@ -1,9 +1,9 @@
 package com.jagex.runescape.collection;
 
-public class QueueLink extends Linkable {
+public class Cacheable extends Linkable {
 
-	public QueueLink prevNodeSub;
-	public QueueLink nextNodeSub;
+	public Cacheable prevNodeSub;
+	public Cacheable nextNodeSub;
 
 	public final void unlist() {
 		if (nextNodeSub == null) {

@@ -4,11 +4,11 @@ package com.jagex.runescape.collection;
 
 public final class Deque {
 
-	private final QueueLink head;
-	private QueueLink current;
+	private final Cacheable head;
+	private Cacheable current;
 
 	public Deque() {
-		head = new QueueLink();
+		head = new Cacheable();
 		head.prevNodeSub = head;
 		head.nextNodeSub = head;
 	}
@@ -16,13 +16,13 @@ public final class Deque {
 	public int getSize() {
 		int count = 0;
 
-		for (QueueLink next = head.prevNodeSub; next != head; next = next.prevNodeSub)
+		for (Cacheable next = head.prevNodeSub; next != head; next = next.prevNodeSub)
 			count++;
 
 		return count;
 	}
 
-	public void push(QueueLink item) {
+	public void push(Cacheable item) {
 		if (item.nextNodeSub != null) {
 			item.unlist();
 		}
@@ -33,8 +33,8 @@ public final class Deque {
 		item.prevNodeSub.nextNodeSub = item;
 	}
 
-	public QueueLink pull() {
-		QueueLink l = head.prevNodeSub;
+	public Cacheable pull() {
+		Cacheable l = head.prevNodeSub;
 
 		if (l == head) {
 			return null;
@@ -44,8 +44,8 @@ public final class Deque {
 		return l;
 	}
 
-	public QueueLink reverseGetFirst() {
-		QueueLink nodeSub = head.prevNodeSub;
+	public Cacheable reverseGetFirst() {
+		Cacheable nodeSub = head.prevNodeSub;
 
 		if (nodeSub == head) {
 			current = null;
@@ -56,8 +56,8 @@ public final class Deque {
 		return nodeSub;
 	}
 
-	public QueueLink reverseGetNext() {
-		QueueLink nodeSub = current;
+	public Cacheable reverseGetNext() {
+		Cacheable nodeSub = current;
 		
 		if (nodeSub == head) {
 			current = null;
