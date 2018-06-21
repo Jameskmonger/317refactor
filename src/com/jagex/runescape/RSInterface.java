@@ -21,7 +21,7 @@ public final class RSInterface {
 	public static void setModel(Model model) {
 		int modelId = 0;// was parameter
 		int modelType = 5;// was parameter
-		modelCache.unlinkAll();
+		modelCache.clear();
 		if (model != null && modelType != 4)
 			modelCache.put(model, (modelType << 16) + modelId);
 	}

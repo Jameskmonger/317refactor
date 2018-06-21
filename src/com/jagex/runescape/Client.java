@@ -5968,7 +5968,7 @@ public final class Client extends RSApplet {
 				Rasterizer.calculatePalette(0.69999999999999996D);
 			if (setting == 4)
 				Rasterizer.calculatePalette(0.59999999999999998D);
-			ItemDefinition.spriteCache.unlinkAll();
+			ItemDefinition.spriteCache.clear();
 			welcomeScreenRaised = true;
 		}
 		if (attribute == 3) {
@@ -6369,7 +6369,7 @@ public final class Client extends RSApplet {
 			clearObjectSpawnRequests();
 		} catch (Exception exception) {
 		}
-		GameObjectDefinition.modelCache.unlinkAll();
+		GameObjectDefinition.modelCache.clear();
 		if (super.gameFrame != null) {
 			stream.putOpcode(210);
 			stream.putInt(0x3f008edd);
@@ -9154,13 +9154,13 @@ public final class Client extends RSApplet {
 	}
 
 	private void resetModelCaches() {
-		GameObjectDefinition.modelCache.unlinkAll();
-		GameObjectDefinition.animatedModelCache.unlinkAll();
-		EntityDefinition.modelCache.unlinkAll();
-		ItemDefinition.modelCache.unlinkAll();
-		ItemDefinition.spriteCache.unlinkAll();
-		Player.mruNodes.unlinkAll();
-		SpotAnimation.modelCache.unlinkAll();
+		GameObjectDefinition.modelCache.clear();
+		GameObjectDefinition.animatedModelCache.clear();
+		EntityDefinition.modelCache.clear();
+		ItemDefinition.modelCache.clear();
+		ItemDefinition.spriteCache.clear();
+		Player.mruNodes.clear();
+		SpotAnimation.modelCache.clear();
 	}
 
 	private int rotateFlameColour(int r, int g, int b) {

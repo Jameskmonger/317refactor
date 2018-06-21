@@ -1,64 +1,62 @@
 package com.jagex.runescape.collection;
 
-import com.jagex.runescape.sign.signlink;
+public class LinkedList {
 
-public final class LinkedList {
-
-	private final QueueLink queueLink;
+	private final QueueLink empty;
 	private final int size;
 	private int available;
-	private final LinkedHashMap array;
+	private final LinkedHashMap hashmap;
 	private final Deque deque;
 
 	public LinkedList(int length) {
-		queueLink = new QueueLink();
+		empty = new QueueLink();
 		deque = new Deque();
 		size = length;
 		available = length;
-		array = new LinkedHashMap(1024);
+		hashmap = new LinkedHashMap(1024);
 	}
 
-	public QueueLink get(long id) {
-		QueueLink l = (QueueLink) array.get(id);
-		if (l != null) {
-			deque.push(l);
+	public QueueLink get(long key) {
+		QueueLink item = (QueueLink) hashmap.get(key);
+
+		if (item != null) {
+			deque.push(item);
 		}
-		return l;
+
+		return item;
 	}
 
-	public void put(QueueLink l, long id) {
-		try {
-			if (available == 0) {
-				QueueLink l1 = deque.pull();
-				l1.unlink();
-				l1.unlist();
-				if (l1 == queueLink) {
-					QueueLink l2 = deque.pull();
-					l2.unlink();
-					l2.unlist();
-				}
-			} else {
-				available--;
+	public void put(QueueLink item, long key) {
+		if (available == 0) {
+			QueueLink head = deque.pull();
+			head.unlink();
+			head.unlist();
+
+			if (head == empty) {
+				QueueLink secondHead = deque.pull();
+				secondHead.unlink();
+				secondHead.unlist();
 			}
-			array.put(id, l);
-			deque.push(l);
-			return;
-		} catch (RuntimeException e) {
-			signlink.reporterror("47547, " + l + ", " + id + ", " + (byte) 2 + ", " + e.toString());
+		} else {
+			available--;
 		}
-		throw new RuntimeException();
+
+		hashmap.put(key, item);
+		deque.push(item);
+		return;
 	}
 
-	public void unlinkAll() {
-		do {
-			QueueLink l = deque.pull();
-			if (l != null) {
-				l.unlink();
-				l.unlist();
-			} else {
+	public void clear() {
+		while (true) {
+			QueueLink head = deque.pull();
+
+			if (head == null) {
 				available = size;
 				return;
 			}
-		} while (true);
+
+			head.unlink();
+			head.unlist();
+		}
 	}
 }
