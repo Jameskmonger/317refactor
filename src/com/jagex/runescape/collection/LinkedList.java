@@ -7,7 +7,7 @@ public final class LinkedList {
 	private final QueueLink queueLink;
 	private final int size;
 	private int available;
-	private final Array array;
+	private final LinkedHashMap array;
 	private final Deque deque;
 
 	public LinkedList(int length) {
@@ -15,7 +15,7 @@ public final class LinkedList {
 		deque = new Deque();
 		size = length;
 		available = length;
-		array = new Array(1024);
+		array = new LinkedHashMap(1024);
 	}
 
 	public QueueLink get(long id) {
