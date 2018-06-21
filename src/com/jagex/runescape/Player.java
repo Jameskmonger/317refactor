@@ -50,9 +50,9 @@ public final class Player extends Entity {
 		if (npcAppearance != null) {
 			int frameId = -1;
 			if (super.animation >= 0 && super.animationDelay == 0)
-				frameId = AnimationSequence.animations[super.animation].frame2Ids[super.currentAnimationFrame];
+				frameId = AnimationSequence.animations[super.animation].primaryFrames[super.currentAnimationFrame];
 			else if (super.queuedAnimationId >= 0)
-				frameId = AnimationSequence.animations[super.queuedAnimationId].frame2Ids[super.queuedAnimationFrame];
+				frameId = AnimationSequence.animations[super.queuedAnimationId].primaryFrames[super.queuedAnimationFrame];
 			Model model = npcAppearance.getChildModel(-1, frameId, null);
 			return model;
 		}
@@ -63,9 +63,9 @@ public final class Player extends Entity {
 		int k1 = -1;
 		if (super.animation >= 0 && super.animationDelay == 0) {
 			AnimationSequence animation = AnimationSequence.animations[super.animation];
-			k = animation.frame2Ids[super.currentAnimationFrame];
+			k = animation.primaryFrames[super.currentAnimationFrame];
 			if (super.queuedAnimationId >= 0 && super.queuedAnimationId != super.standAnimationId)
-				i1 = AnimationSequence.animations[super.queuedAnimationId].frame2Ids[super.queuedAnimationFrame];
+				i1 = AnimationSequence.animations[super.queuedAnimationId].primaryFrames[super.queuedAnimationFrame];
 			if (animation.playerReplacementShield >= 0) {
 				j1 = animation.playerReplacementShield;
 				l += j1 - appearance[5] << 40;
@@ -75,7 +75,7 @@ public final class Player extends Entity {
 				l += k1 - appearance[3] << 48;
 			}
 		} else if (super.queuedAnimationId >= 0)
-			k = AnimationSequence.animations[super.queuedAnimationId].frame2Ids[super.queuedAnimationFrame];
+			k = AnimationSequence.animations[super.queuedAnimationId].primaryFrames[super.queuedAnimationFrame];
 		Model model_1 = (Model) mruNodes.get(l);
 		if (model_1 == null) {
 			boolean flag = false;
@@ -208,7 +208,7 @@ public final class Player extends Entity {
 				Model model_3 = new Model(true, Animation.isNullFrame(super.currentAnimationId), false, model_2);
 				model_3.translate(0, -super.graphicHeight, 0);
 				model_3.createBones();
-				model_3.applyTransformation(spotAnim.sequences.frame2Ids[super.currentAnimationId]);
+				model_3.applyTransformation(spotAnim.sequences.primaryFrames[super.currentAnimationId]);
 				model_3.triangleSkin = null;
 				model_3.vertexSkin = null;
 				if (spotAnim.scaleXY != 128 || spotAnim.scaleZ != 128)

@@ -9,16 +9,16 @@ public final class NPC extends Entity {
 
 	private Model getChildModel() {
 		if (super.animation >= 0 && super.animationDelay == 0) {
-			int frameId2 = AnimationSequence.animations[super.animation].frame2Ids[super.currentAnimationFrame];
+			int frameId2 = AnimationSequence.animations[super.animation].primaryFrames[super.currentAnimationFrame];
 			int frameId1 = -1;
 			if (super.queuedAnimationId >= 0 && super.queuedAnimationId != super.standAnimationId)
-				frameId1 = AnimationSequence.animations[super.queuedAnimationId].frame2Ids[super.queuedAnimationFrame];
+				frameId1 = AnimationSequence.animations[super.queuedAnimationId].primaryFrames[super.queuedAnimationFrame];
 			return npcDefinition.getChildModel(frameId1, frameId2,
 					AnimationSequence.animations[super.animation].flowControl);
 		}
 		int frameId2 = -1;
 		if (super.queuedAnimationId >= 0)
-			frameId2 = AnimationSequence.animations[super.queuedAnimationId].frame2Ids[super.queuedAnimationFrame];
+			frameId2 = AnimationSequence.animations[super.queuedAnimationId].primaryFrames[super.queuedAnimationFrame];
 		return npcDefinition.getChildModel(-1, frameId2, null);
 	}
 
@@ -34,7 +34,7 @@ public final class NPC extends Entity {
 			SpotAnimation spotAnimation = SpotAnimation.cache[super.graphicId];
 			Model animationModel = spotAnimation.getModel();
 			if (animationModel != null) {
-				int frameId = spotAnimation.sequences.frame2Ids[super.currentAnimationId];
+				int frameId = spotAnimation.sequences.primaryFrames[super.currentAnimationId];
 				Model animatedModel = new Model(true, Animation.isNullFrame(frameId), false, animationModel);
 				animatedModel.translate(0, -super.graphicHeight, 0);
 				animatedModel.createBones();

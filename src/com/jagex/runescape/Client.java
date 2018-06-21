@@ -3540,7 +3540,7 @@ public final class Client extends RSApplet {
 					}
 
 				model.createBones();
-				model.applyTransformation(AnimationSequence.animations[localPlayer.standAnimationId].frame2Ids[0]);
+				model.applyTransformation(AnimationSequence.animations[localPlayer.standAnimationId].primaryFrames[0]);
 				model.applyLighting(64, 850, -30, -50, -30, true);
 				rsInterface.modelTypeDefault = 5;
 				rsInterface.modelIdDefault = 0;
@@ -4119,8 +4119,8 @@ public final class Client extends RSApplet {
 						model = childInterface.getAnimatedModel(-1, -1, active);
 					} else {
 						AnimationSequence animation = AnimationSequence.animations[anim];
-						model = childInterface.getAnimatedModel(animation.frame1Ids[childInterface.animationFrame],
-								animation.frame2Ids[childInterface.animationFrame], active);
+						model = childInterface.getAnimatedModel(animation.secondaryFrames[childInterface.animationFrame],
+								animation.primaryFrames[childInterface.animationFrame], active);
 					}
 					if (model != null)
 						model.renderSingle(childInterface.modelRotationY, 0, childInterface.modelRotationX, 0, sine,

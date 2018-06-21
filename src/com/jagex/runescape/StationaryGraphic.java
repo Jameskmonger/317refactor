@@ -45,7 +45,7 @@ final class StationaryGraphic extends Animable {
 		Model model = animation.getModel();
 		if (model == null)
 			return null;
-		int frame = animation.sequences.frame2Ids[elapsedFrames];
+		int frame = animation.sequences.primaryFrames[elapsedFrames];
 		Model animatedModel = new Model(true, Animation.isNullFrame(frame), false, model);
 		if (!transformationCompleted) {
 			animatedModel.createBones();

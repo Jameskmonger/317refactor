@@ -81,7 +81,7 @@ final class GameObject extends Animable {
 			}
 			nextFrameTime = Client.tick - step;
 			if (animation != null)
-				animationId = animation.frame2Ids[frame];
+				animationId = animation.primaryFrames[frame];
 		}
 		GameObjectDefinition definition;
 		if (childrenIds != null)

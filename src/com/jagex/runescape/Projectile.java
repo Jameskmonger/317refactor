@@ -55,7 +55,7 @@ final class Projectile extends Animable {
 			return null;
 		int frameId = -1;
 		if (animation.sequences != null)
-			frameId = animation.sequences.frame2Ids[animationFrame];
+			frameId = animation.sequences.primaryFrames[animationFrame];
 		Model rotatedModel = new Model(true, Animation.isNullFrame(frameId), false, model);
 		if (frameId != -1) {
 			rotatedModel.createBones();

@@ -18,9 +18,9 @@ public final class AnimationSequence {
 
 	public int frameCount;
 
-	public int frame2Ids[];
+	public int primaryFrames[];
 
-	public int frame1Ids[];
+	public int secondaryFrames[];
 	private int[] frameLengths;
 	public int frameStep;
 	public int flowControl[];
@@ -48,7 +48,7 @@ public final class AnimationSequence {
 	public int getFrameLength(int frame) {
 		int frameLength = frameLengths[frame];
 		if (frameLength == 0) {
-			Animation animation = Animation.forFrameId(frame2Ids[frame]);
+			Animation animation = Animation.forFrameId(primaryFrames[frame]);
 			if (animation != null)
 				frameLength = frameLengths[frame] = animation.displayLength;
 		}
@@ -64,14 +64,14 @@ public final class AnimationSequence {
 				break;
 			if (attribute == 1) {
 				frameCount = stream.getUnsignedByte();
-				frame2Ids = new int[frameCount];
-				frame1Ids = new int[frameCount];
+				primaryFrames = new int[frameCount];
+				secondaryFrames = new int[frameCount];
 				frameLengths = new int[frameCount];
 				for (int frame = 0; frame < frameCount; frame++) {
-					frame2Ids[frame] = stream.getUnsignedLEShort();
-					frame1Ids[frame] = stream.getUnsignedLEShort();
-					if (frame1Ids[frame] == 65535)
-						frame1Ids[frame] = -1;
+					primaryFrames[frame] = stream.getUnsignedLEShort();
+					secondaryFrames[frame] = stream.getUnsignedLEShort();
+					if (secondaryFrames[frame] == 65535)
+						secondaryFrames[frame] = -1;
 					frameLengths[frame] = stream.getUnsignedLEShort();
 				}
 
@@ -115,10 +115,10 @@ public final class AnimationSequence {
 		} while (true);
 		if (frameCount == 0) {
 			frameCount = 1;
-			frame2Ids = new int[1];
-			frame2Ids[0] = -1;
-			frame1Ids = new int[1];
-			frame1Ids[0] = -1;
+			primaryFrames = new int[1];
+			primaryFrames[0] = -1;
+			secondaryFrames = new int[1];
+			secondaryFrames[0] = -1;
 			frameLengths = new int[1];
 			frameLengths[0] = -1;
 		}
