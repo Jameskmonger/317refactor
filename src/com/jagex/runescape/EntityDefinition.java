@@ -203,37 +203,37 @@ public final class EntityDefinition {
 
 	private void loadDefinition(Buffer stream) {
 		do {
-			int attributeType = stream.getUnsignedByte();
-			if (attributeType == 0)
+			int opcode = stream.getUnsignedByte();
+			if (opcode == 0)
 				return;
-			if (attributeType == 1) {
+			if (opcode == 1) {
 				int modelCount = stream.getUnsignedByte();
 				modelIds = new int[modelCount];
 				for (int m = 0; m < modelCount; m++)
 					modelIds[m] = stream.getUnsignedLEShort();
 
-			} else if (attributeType == 2)
+			} else if (opcode == 2)
 				name = stream.getString();
-			else if (attributeType == 3)
+			else if (opcode == 3)
 				description = stream.readBytes();
-			else if (attributeType == 12)
+			else if (opcode == 12)
 				boundaryDimension = stream.get();
-			else if (attributeType == 13)
+			else if (opcode == 13)
 				standAnimationId = stream.getUnsignedLEShort();
-			else if (attributeType == 14)
+			else if (opcode == 14)
 				walkAnimationId = stream.getUnsignedLEShort();
-			else if (attributeType == 17) {
+			else if (opcode == 17) {
 				walkAnimationId = stream.getUnsignedLEShort();
 				turnAboutAnimationId = stream.getUnsignedLEShort();
 				turnRightAnimationId = stream.getUnsignedLEShort();
 				turnLeftAnimationId = stream.getUnsignedLEShort();
-			} else if (attributeType >= 30 && attributeType < 40) {
+			} else if (opcode >= 30 && opcode < 40) {
 				if (actions == null)
 					actions = new String[5];
-				actions[attributeType - 30] = stream.getString();
-				if (actions[attributeType - 30].equalsIgnoreCase("hidden"))
-					actions[attributeType - 30] = null;
-			} else if (attributeType == 40) {
+				actions[opcode - 30] = stream.getString();
+				if (actions[opcode - 30].equalsIgnoreCase("hidden"))
+					actions[opcode - 30] = null;
+			} else if (opcode == 40) {
 				int colourCount = stream.getUnsignedByte();
 				modifiedModelColours = new int[colourCount];
 				originalModelColours = new int[colourCount];
@@ -242,37 +242,37 @@ public final class EntityDefinition {
 					originalModelColours[c] = stream.getUnsignedLEShort();
 				}
 
-			} else if (attributeType == 60) {
+			} else if (opcode == 60) {
 				int additionalModelCount = stream.getUnsignedByte();
 				headModelIds = new int[additionalModelCount];
 				for (int m = 0; m < additionalModelCount; m++)
 					headModelIds[m] = stream.getUnsignedLEShort();
 
-			} else if (attributeType == 90)
+			} else if (opcode == 90)
 				stream.getUnsignedLEShort();
-			else if (attributeType == 91)
+			else if (opcode == 91)
 				stream.getUnsignedLEShort();
-			else if (attributeType == 92)
+			else if (opcode == 92)
 				stream.getUnsignedLEShort();
-			else if (attributeType == 93)
+			else if (opcode == 93)
 				visibleMinimap = false;
-			else if (attributeType == 95)
+			else if (opcode == 95)
 				combatLevel = stream.getUnsignedLEShort();
-			else if (attributeType == 97)
+			else if (opcode == 97)
 				scaleXY = stream.getUnsignedLEShort();
-			else if (attributeType == 98)
+			else if (opcode == 98)
 				scaleZ = stream.getUnsignedLEShort();
-			else if (attributeType == 99)
+			else if (opcode == 99)
 				visible = true;
-			else if (attributeType == 100)
+			else if (opcode == 100)
 				brightness = stream.get();
-			else if (attributeType == 101)
+			else if (opcode == 101)
 				contrast = stream.get() * 5;
-			else if (attributeType == 102)
+			else if (opcode == 102)
 				headIcon = stream.getUnsignedLEShort();
-			else if (attributeType == 103)
+			else if (opcode == 103)
 				degreesToTurn = stream.getUnsignedLEShort();
-			else if (attributeType == 106) {
+			else if (opcode == 106) {
 				varBitId = stream.getUnsignedLEShort();
 				if (varBitId == 65535)
 					varBitId = -1;
@@ -287,7 +287,7 @@ public final class EntityDefinition {
 						childrenIDs[c] = -1;
 				}
 
-			} else if (attributeType == 107)
+			} else if (opcode == 107)
 				clickable = false;
 		} while (true);
 	}

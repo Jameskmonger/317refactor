@@ -60,31 +60,31 @@ public final class SpotAnimation {
 
 	private void read(Buffer stream) {
 		do {
-			int attribute = stream.getUnsignedByte();
-			if (attribute == 0)
+			int opcode = stream.getUnsignedByte();
+			if (opcode == 0)
 				return;
-			if (attribute == 1)
+			if (opcode == 1)
 				modelId = stream.getUnsignedLEShort();
-			else if (attribute == 2) {
+			else if (opcode == 2) {
 				animationId = stream.getUnsignedLEShort();
 				if (AnimationSequence.animations != null)
 					sequences = AnimationSequence.animations[animationId];
-			} else if (attribute == 4)
+			} else if (opcode == 4)
 				scaleXY = stream.getUnsignedLEShort();
-			else if (attribute == 5)
+			else if (opcode == 5)
 				scaleZ = stream.getUnsignedLEShort();
-			else if (attribute == 6)
+			else if (opcode == 6)
 				rotation = stream.getUnsignedLEShort();
-			else if (attribute == 7)
+			else if (opcode == 7)
 				modelLightFalloff = stream.getUnsignedByte();
-			else if (attribute == 8)
+			else if (opcode == 8)
 				modelLightAmbient = stream.getUnsignedByte();
-			else if (attribute >= 40 && attribute < 50)
-				originalModelColours[attribute - 40] = stream.getUnsignedLEShort();
-			else if (attribute >= 50 && attribute < 60)
-				modifiedModelColours[attribute - 50] = stream.getUnsignedLEShort();
+			else if (opcode >= 40 && opcode < 50)
+				originalModelColours[opcode - 40] = stream.getUnsignedLEShort();
+			else if (opcode >= 50 && opcode < 60)
+				modifiedModelColours[opcode - 50] = stream.getUnsignedLEShort();
 			else
-				System.out.println("Error unrecognised spotanim config code: " + attribute);
+				System.out.println("Error unrecognised spotanim config code: " + opcode);
 		} while (true);
 	}
 }

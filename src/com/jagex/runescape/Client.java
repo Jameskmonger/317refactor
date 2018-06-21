@@ -5955,11 +5955,11 @@ public final class Client extends RSApplet {
 	}
 
 	private void handleInterfaceSetting(int s) {
-		int attribute = Varp.cache[s].type;
-		if (attribute == 0)
+		int opcode = Varp.cache[s].type;
+		if (opcode == 0)
 			return;
 		int setting = interfaceSettings[s];
-		if (attribute == 1) {
+		if (opcode == 1) {
 			// Brightness
 			if (setting == 1)
 				Rasterizer.calculatePalette(0.90000000000000002D);
@@ -5972,7 +5972,7 @@ public final class Client extends RSApplet {
 			ItemDefinition.spriteCache.clear();
 			welcomeScreenRaised = true;
 		}
-		if (attribute == 3) {
+		if (opcode == 3) {
 			// Music volume
 			boolean originalMusicEnabled = musicEnabled;
 			if (setting == 0) {
@@ -6004,7 +6004,7 @@ public final class Client extends RSApplet {
 				prevSong = 0;
 			}
 		}
-		if (attribute == 4) {
+		if (opcode == 4) {
 
 			if (setting == 0) {
 				effectsEnabled = true;
@@ -6025,15 +6025,15 @@ public final class Client extends RSApplet {
 			if (setting == 4)
 				effectsEnabled = false;
 		}
-		if (attribute == 5)
+		if (opcode == 5)
 			oneMouseButton = setting;
-		if (attribute == 6)
+		if (opcode == 6)
 			chatEffectsDisabled = setting;
-		if (attribute == 8) {
+		if (opcode == 8) {
 			splitPrivateChat = setting;
 			redrawChatbox = true;
 		}
-		if (attribute == 9)
+		if (opcode == 9)
 			bankInsertMode = setting;
 	}
 

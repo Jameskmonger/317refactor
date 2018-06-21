@@ -382,58 +382,58 @@ public final class ItemDefinition {
 
 	private void readValues(Buffer stream) {
 		do {
-			int attribute = stream.getUnsignedByte();
-			if (attribute == 0)
+			int opcode = stream.getUnsignedByte();
+			if (opcode == 0)
 				return;
-			if (attribute == 1)
+			if (opcode == 1)
 				modelId = stream.getUnsignedLEShort();
-			else if (attribute == 2)
+			else if (opcode == 2)
 				name = stream.getString();
-			else if (attribute == 3)
+			else if (opcode == 3)
 				description = stream.readBytes();
-			else if (attribute == 4)
+			else if (opcode == 4)
 				modelZoom = stream.getUnsignedLEShort();
-			else if (attribute == 5)
+			else if (opcode == 5)
 				modelRotationX = stream.getUnsignedLEShort();
-			else if (attribute == 6)
+			else if (opcode == 6)
 				modelRotationY = stream.getUnsignedLEShort();
-			else if (attribute == 7) {
+			else if (opcode == 7) {
 				modelOffset1 = stream.getUnsignedLEShort();
 				if (modelOffset1 > 32767)
 					modelOffset1 -= 0x10000;
-			} else if (attribute == 8) {
+			} else if (opcode == 8) {
 				modelOffset2 = stream.getUnsignedLEShort();
 				if (modelOffset2 > 32767)
 					modelOffset2 -= 0x10000;
-			} else if (attribute == 10)
+			} else if (opcode == 10)
 				stream.getUnsignedLEShort();
-			else if (attribute == 11)
+			else if (opcode == 11)
 				stackable = true;
-			else if (attribute == 12)
+			else if (opcode == 12)
 				value = stream.getInt();
-			else if (attribute == 16)
+			else if (opcode == 16)
 				membersObject = true;
-			else if (attribute == 23) {
+			else if (opcode == 23) {
 				maleEquipModelIdPrimary = stream.getUnsignedLEShort();
 				equipModelTranslationMale = stream.get();
-			} else if (attribute == 24)
+			} else if (opcode == 24)
 				maleEquipModelIdSecondary = stream.getUnsignedLEShort();
-			else if (attribute == 25) {
+			else if (opcode == 25) {
 				femaleEquipModelIdPrimary = stream.getUnsignedLEShort();
 				equipModelTranslationFemale = stream.get();
-			} else if (attribute == 26)
+			} else if (opcode == 26)
 				femaleEquipModelIdSecondary = stream.getUnsignedLEShort();
-			else if (attribute >= 30 && attribute < 35) {
+			else if (opcode >= 30 && opcode < 35) {
 				if (groundActions == null)
 					groundActions = new String[5];
-				groundActions[attribute - 30] = stream.getString();
-				if (groundActions[attribute - 30].equalsIgnoreCase("hidden"))
-					groundActions[attribute - 30] = null;
-			} else if (attribute >= 35 && attribute < 40) {
+				groundActions[opcode - 30] = stream.getString();
+				if (groundActions[opcode - 30].equalsIgnoreCase("hidden"))
+					groundActions[opcode - 30] = null;
+			} else if (opcode >= 35 && opcode < 40) {
 				if (actions == null)
 					actions = new String[5];
-				actions[attribute - 35] = stream.getString();
-			} else if (attribute == 40) {
+				actions[opcode - 35] = stream.getString();
+			} else if (opcode == 40) {
 				int colourCount = stream.getUnsignedByte();
 				modifiedModelColors = new int[colourCount];
 				originalModelColors = new int[colourCount];
@@ -442,42 +442,42 @@ public final class ItemDefinition {
 					originalModelColors[c] = stream.getUnsignedLEShort();
 				}
 
-			} else if (attribute == 78)
+			} else if (opcode == 78)
 				maleEquipModelIdEmblem = stream.getUnsignedLEShort();
-			else if (attribute == 79)
+			else if (opcode == 79)
 				femaleEquipModelIdEmblem = stream.getUnsignedLEShort();
-			else if (attribute == 90)
+			else if (opcode == 90)
 				maleDialogueModelId = stream.getUnsignedLEShort();
-			else if (attribute == 91)
+			else if (opcode == 91)
 				femaleDialogueModelId = stream.getUnsignedLEShort();
-			else if (attribute == 92)
+			else if (opcode == 92)
 				maleDialogueHatModelId = stream.getUnsignedLEShort();
-			else if (attribute == 93)
+			else if (opcode == 93)
 				femaleDialogueHatModelId = stream.getUnsignedLEShort();
-			else if (attribute == 95)
+			else if (opcode == 95)
 				modelRotationZ = stream.getUnsignedLEShort();
-			else if (attribute == 97)
+			else if (opcode == 97)
 				noteId = stream.getUnsignedLEShort();
-			else if (attribute == 98)
+			else if (opcode == 98)
 				noteTemplateId = stream.getUnsignedLEShort();
-			else if (attribute >= 100 && attribute < 110) {
+			else if (opcode >= 100 && opcode < 110) {
 				if (stackableIds == null) {
 					stackableIds = new int[10];
 					stackableAmounts = new int[10];
 				}
-				stackableIds[attribute - 100] = stream.getUnsignedLEShort();
-				stackableAmounts[attribute - 100] = stream.getUnsignedLEShort();
-			} else if (attribute == 110)
+				stackableIds[opcode - 100] = stream.getUnsignedLEShort();
+				stackableAmounts[opcode - 100] = stream.getUnsignedLEShort();
+			} else if (opcode == 110)
 				modelScaleX = stream.getUnsignedLEShort();
-			else if (attribute == 111)
+			else if (opcode == 111)
 				modelScaleY = stream.getUnsignedLEShort();
-			else if (attribute == 112)
+			else if (opcode == 112)
 				modelScaleZ = stream.getUnsignedLEShort();
-			else if (attribute == 113)
+			else if (opcode == 113)
 				lightModifier = stream.get();
-			else if (attribute == 114)
+			else if (opcode == 114)
 				shadowModifier = stream.get() * 5;
-			else if (attribute == 115)
+			else if (opcode == 115)
 				teamId = stream.getUnsignedByte();
 		} while (true);
 	}

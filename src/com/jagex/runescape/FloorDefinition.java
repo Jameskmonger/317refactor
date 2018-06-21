@@ -38,21 +38,21 @@ public final class FloorDefinition {
 
 	private void loadDefinition(Buffer stream) {
 		do {
-			int attribute = stream.getUnsignedByte();
-			if (attribute == 0)
+			int opcode = stream.getUnsignedByte();
+			if (opcode == 0)
 				return;
-			else if (attribute == 1) {
+			else if (opcode == 1) {
 				rgbColour = stream.get3Bytes();
 				rgbToHls(rgbColour);
-			} else if (attribute == 2)
+			} else if (opcode == 2)
 				textureId = stream.getUnsignedByte();
-			else if (attribute == 3) {
+			else if (opcode == 3) {
 			} // dummy attribute
-			else if (attribute == 5)
+			else if (opcode == 5)
 				occlude = false;
-			else if (attribute == 6)
+			else if (opcode == 6)
 				name = stream.getString();
-			else if (attribute == 7) {
+			else if (opcode == 7) {
 				int oldHue2 = hue2;
 				int oldSat = saturation;
 				int oldLight = lightness;
@@ -65,7 +65,7 @@ public final class FloorDefinition {
 				hue = oldHue;
 				hueDivisor = oldHue;
 			} else {
-				System.out.println("Error unrecognised config code: " + attribute);
+				System.out.println("Error unrecognised config code: " + opcode);
 			}
 
 		} while (true);

@@ -96,28 +96,28 @@ public final class IdentityKit {
 
 	private void loadDefinition(Buffer stream) {
 		do {
-			int attribute = stream.getUnsignedByte();
-			if (attribute == 0)
+			int opcode = stream.getUnsignedByte();
+			if (opcode == 0)
 				return;
-			if (attribute == 1)
+			if (opcode == 1)
 				partId = stream.getUnsignedByte();
-			else if (attribute == 2) {
+			else if (opcode == 2) {
 				int modelCount = stream.getUnsignedByte();
 				modelIds = new int[modelCount];
 				for (int m = 0; m < modelCount; m++) {
 					modelIds[m] = stream.getUnsignedLEShort();
 				}
 
-			} else if (attribute == 3)
+			} else if (opcode == 3)
 				widgetDisplayed = true;
-			else if (attribute >= 40 && attribute < 50)
-				originalModelColours[attribute - 40] = stream.getUnsignedLEShort();
-			else if (attribute >= 50 && attribute < 60)
-				modifiedModelColours[attribute - 50] = stream.getUnsignedLEShort();
-			else if (attribute >= 60 && attribute < 70)
-				headModelIds[attribute - 60] = stream.getUnsignedLEShort();
+			else if (opcode >= 40 && opcode < 50)
+				originalModelColours[opcode - 40] = stream.getUnsignedLEShort();
+			else if (opcode >= 50 && opcode < 60)
+				modifiedModelColours[opcode - 50] = stream.getUnsignedLEShort();
+			else if (opcode >= 60 && opcode < 70)
+				headModelIds[opcode - 60] = stream.getUnsignedLEShort();
 			else
-				System.out.println("Error unrecognised config code: " + attribute);
+				System.out.println("Error unrecognised config code: " + opcode);
 		} while (true);
 	}
 }

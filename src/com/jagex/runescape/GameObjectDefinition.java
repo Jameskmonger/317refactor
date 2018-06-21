@@ -237,12 +237,12 @@ public final class GameObjectDefinition {
 	private void loadDefinition(Buffer stream) {
 		int _actions = -1;
 		label0: do {
-			int attribute;
+			int opcode;
 			do {
-				attribute = stream.getUnsignedByte();
-				if (attribute == 0)
+				opcode = stream.getUnsignedByte();
+				if (opcode == 0)
 					break label0;
-				if (attribute == 1) {
+				if (opcode == 1) {
 					int modelCount = stream.getUnsignedByte();
 					if (modelCount > 0)
 						if (modelIds == null || lowMemory) {
@@ -256,11 +256,11 @@ public final class GameObjectDefinition {
 						} else {
 							stream.position += modelCount * 3;
 						}
-				} else if (attribute == 2)
+				} else if (opcode == 2)
 					name = stream.getString();
-				else if (attribute == 3)
+				else if (opcode == 3)
 					description = stream.readBytes();
-				else if (attribute == 5) {
+				else if (opcode == 5) {
 					int modelCount = stream.getUnsignedByte();
 					if (modelCount > 0)
 						if (modelIds == null || lowMemory) {
@@ -272,41 +272,41 @@ public final class GameObjectDefinition {
 						} else {
 							stream.position += modelCount * 2;
 						}
-				} else if (attribute == 14)
+				} else if (opcode == 14)
 					sizeX = stream.getUnsignedByte();
-				else if (attribute == 15)
+				else if (opcode == 15)
 					sizeY = stream.getUnsignedByte();
-				else if (attribute == 17)
+				else if (opcode == 17)
 					solid = false;
-				else if (attribute == 18)
+				else if (opcode == 18)
 					walkable = false;
-				else if (attribute == 19) {
+				else if (opcode == 19) {
 					_actions = stream.getUnsignedByte();
 					if (_actions == 1)
 						hasActions = true;
-				} else if (attribute == 21)
+				} else if (opcode == 21)
 					adjustToTerrain = true;
-				else if (attribute == 22)
+				else if (opcode == 22)
 					delayShading = true;
-				else if (attribute == 23)
+				else if (opcode == 23)
 					wall = true;
-				else if (attribute == 24) {
+				else if (opcode == 24) {
 					animationId = stream.getUnsignedLEShort();
 					if (animationId == 65535)
 						animationId = -1;
-				} else if (attribute == 28)
+				} else if (opcode == 28)
 					offsetAmplifier = stream.getUnsignedByte();
-				else if (attribute == 29)
+				else if (opcode == 29)
 					ambient = stream.get();
-				else if (attribute == 39)
+				else if (opcode == 39)
 					diffuse = stream.get();
-				else if (attribute >= 30 && attribute < 39) {
+				else if (opcode >= 30 && opcode < 39) {
 					if (actions == null)
 						actions = new String[5];
-					actions[attribute - 30] = stream.getString();
-					if (actions[attribute - 30].equalsIgnoreCase("hidden"))
-						actions[attribute - 30] = null;
-				} else if (attribute == 40) {
+					actions[opcode - 30] = stream.getString();
+					if (actions[opcode - 30].equalsIgnoreCase("hidden"))
+						actions[opcode - 30] = null;
+				} else if (opcode == 40) {
 					int colourCount = stream.getUnsignedByte();
 					modifiedModelColors = new int[colourCount];
 					originalModelColors = new int[colourCount];
@@ -315,39 +315,39 @@ public final class GameObjectDefinition {
 						originalModelColors[c] = stream.getUnsignedLEShort();
 					}
 
-				} else if (attribute == 60)
+				} else if (opcode == 60)
 					icon = stream.getUnsignedLEShort();
-				else if (attribute == 62)
+				else if (opcode == 62)
 					rotated = true;
-				else if (attribute == 64)
+				else if (opcode == 64)
 					castsShadow = false;
-				else if (attribute == 65)
+				else if (opcode == 65)
 					scaleX = stream.getUnsignedLEShort();
-				else if (attribute == 66)
+				else if (opcode == 66)
 					scaleY = stream.getUnsignedLEShort();
-				else if (attribute == 67)
+				else if (opcode == 67)
 					scaleZ = stream.getUnsignedLEShort();
-				else if (attribute == 68)
+				else if (opcode == 68)
 					mapScene = stream.getUnsignedLEShort();
-				else if (attribute == 69)
+				else if (opcode == 69)
 					face = stream.getUnsignedByte();
-				else if (attribute == 70)
+				else if (opcode == 70)
 					translateX = stream.getShort();
-				else if (attribute == 71)
+				else if (opcode == 71)
 					translateY = stream.getShort();
-				else if (attribute == 72)
+				else if (opcode == 72)
 					translateZ = stream.getShort();
-				else if (attribute == 73)
+				else if (opcode == 73)
 					unknownAttribute = true;
-				else if (attribute == 74) {
+				else if (opcode == 74) {
 					unwalkableSolid = true;
 				} else {
-					if (attribute != 75)
+					if (opcode != 75)
 						continue;
 					_solid = stream.getUnsignedByte();
 				}
 				continue label0;
-			} while (attribute != 77);
+			} while (opcode != 77);
 			varBitId = stream.getUnsignedLEShort();
 			if (varBitId == 65535)
 				varBitId = -1;

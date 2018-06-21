@@ -59,10 +59,10 @@ public final class AnimationSequence {
 
 	private void readValues(Buffer stream) {
 		do {
-			int attribute = stream.getUnsignedByte();
-			if (attribute == 0)
+			int opcode = stream.getUnsignedByte();
+			if (opcode == 0)
 				break;
-			if (attribute == 1) {
+			if (opcode == 1) {
 				frameCount = stream.getUnsignedByte();
 				primaryFrames = new int[frameCount];
 				secondaryFrames = new int[frameCount];
@@ -75,43 +75,43 @@ public final class AnimationSequence {
 					frameLengths[frame] = stream.getUnsignedLEShort();
 				}
 
-			} else if (attribute == 2)
+			} else if (opcode == 2)
 				frameStep = stream.getUnsignedLEShort();
-			else if (attribute == 3) {
+			else if (opcode == 3) {
 				int flowCount = stream.getUnsignedByte();
 				flowControl = new int[flowCount + 1];
 				for (int flow = 0; flow < flowCount; flow++)
 					flowControl[flow] = stream.getUnsignedByte();
 
 				flowControl[flowCount] = 0x98967f;
-			} else if (attribute == 4)
+			} else if (opcode == 4)
 				dynamic = true;
-			else if (attribute == 5)
+			else if (opcode == 5)
 				priority = stream.getUnsignedByte();
-			else if (attribute == 6)
+			else if (opcode == 6)
 				playerReplacementShield = stream.getUnsignedLEShort();
-			else if (attribute == 7)
+			else if (opcode == 7)
 				playerReplacementWeapon = stream.getUnsignedLEShort();
-			else if (attribute == 8)
+			else if (opcode == 8)
 				maximumLoops = stream.getUnsignedByte();
-			else if (attribute == 9)
+			else if (opcode == 9)
 				/*
 				 * when animating, 0 -> block walking, 1 -> yield to walking, 2 -> interleave
 				 * with walking
 				 */
 				precedenceAnimating = stream.getUnsignedByte();
-			else if (attribute == 10)
+			else if (opcode == 10)
 				/*
 				 * when walking, 0 -> block walking, 1 -> yield to walking, 2 -> never used...
 				 * interleave with walking?
 				 */
 				precedenceWalking = stream.getUnsignedByte();
-			else if (attribute == 11)
+			else if (opcode == 11)
 				replayMode = stream.getUnsignedByte();
-			else if (attribute == 12)
+			else if (opcode == 12)
 				stream.getInt();
 			else
-				System.out.println("Error unrecognised seq config code: " + attribute);
+				System.out.println("Error unrecognised seq config code: " + opcode);
 		} while (true);
 		if (frameCount == 0) {
 			frameCount = 1;
