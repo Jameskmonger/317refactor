@@ -15,7 +15,7 @@ public final class LinkedList {
 		deque = new Deque();
 		size = length;
 		available = length;
-		array = new Array();
+		array = new Array(1024);
 	}
 
 	public QueueLink get(long id) {

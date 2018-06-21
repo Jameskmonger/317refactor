@@ -8,8 +8,7 @@ final class Array {
 	private final int length;
 	private final Linkable[] array;
 
-	public Array() {
-		int size = 1024;// was parameter
+	public Array(int size) {
 		length = size;
 		array = new Linkable[size];
 		for (int n = 0; n < size; n++) {
