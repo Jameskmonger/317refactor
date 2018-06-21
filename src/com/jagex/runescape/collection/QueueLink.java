@@ -1,7 +1,5 @@
 package com.jagex.runescape.collection;
 
-import com.jagex.runescape.collection.Linkable;
-
 public class QueueLink extends Linkable {
 
 	public QueueLink prevNodeSub;

@@ -1,7 +1,5 @@
 package com.jagex.runescape.collection;
 
-import com.jagex.runescape.collection.Linkable;
-
 public final class NodeList {
 
 	private final Linkable head;
