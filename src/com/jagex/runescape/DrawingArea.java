@@ -243,7 +243,4 @@ public class DrawingArea extends Cacheable {
 	public static int viewportCentreX;
 	public static int viewportCentreY;
 
-	DrawingArea() {
-	}
-
 }

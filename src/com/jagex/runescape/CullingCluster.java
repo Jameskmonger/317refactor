@@ -3,7 +3,6 @@ package com.jagex.runescape;
 final class CullingCluster {
 
 	int tileStartX;
-
 	int tileEndX;
 	int tileStartY;
 	int tileEndY;
@@ -22,6 +21,4 @@ final class CullingCluster {
 	int worldDistanceFromCameraStartZ;
 	int worldDistanceFromCameraEndZ;
 
-	CullingCluster() {
-	}
 }

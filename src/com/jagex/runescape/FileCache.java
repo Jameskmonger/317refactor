@@ -10,11 +10,8 @@ import java.io.*;
 final class FileCache {
 
 	private static final byte[] buffer = new byte[520];
-
 	private final RandomAccessFile dataFile;
-
 	private final RandomAccessFile indexFile;
-
 	private final int storeId;
 
 	public FileCache(RandomAccessFile data, RandomAccessFile index, int storeId) {

@@ -24,11 +24,7 @@ final class Envelope {
 	private int step;
 	private int amplitude;
 	private int ticks;
-	public static int anInt546;
-
-	public Envelope() {
-	}
-
+	
 	public void decode(Buffer stream) {
 		form = stream.getUnsignedByte();
 		start = stream.getInt();
