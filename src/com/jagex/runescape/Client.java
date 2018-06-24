@@ -29,32 +29,41 @@ public final class Client extends RSApplet {
 	private static String getAmountString(int amount) {
 		if (amount < 100000)
 			return String.valueOf(amount);
+		
 		if (amount < 10000000)
 			return amount / 1000 + "K";
-		else
-			return amount / 1000000 + "M";
+		
+		return amount / 1000000 + "M";
 	}
 
 	private static String getCombatLevelDifferenceColour(int localLevel, int otherLevel) {
 		int difference = localLevel - otherLevel;
+
 		if (difference < -9)
 			return "@red@";
+
 		if (difference < -6)
 			return "@or3@";
+
 		if (difference < -3)
 			return "@or2@";
+
 		if (difference < 0)
 			return "@or1@";
+
 		if (difference > 9)
 			return "@gre@";
+
 		if (difference > 6)
 			return "@gr3@";
+
 		if (difference > 3)
 			return "@gr2@";
+
 		if (difference > 0)
 			return "@gr1@";
-		else
-			return "@yel@";
+
+		return "@yel@";
 	}
 
 	public static void main(String args[]) {
@@ -230,7 +239,7 @@ public final class Client extends RSApplet {
 	private volatile boolean drawingFlames;
 	private int spriteDrawX;
 	private int spriteDrawY;
-	private final int[] SPOKEN_TEXT_COLOURS = { 0xffff00, 0xff0000, 65280, 65535, 0xff00ff, 0xffffff };
+	private final int[] SPOKEN_TEXT_COLOURS = { 0xFFFF00, 0xFF0000, 0x00FF00, 0x00FFFF, 0xFF00FF, 0xFFFFFF };
 	private Background titleBoxImage;
 	private Background titleButtonImage;
 	private final int[] compassHingeSize;
@@ -916,7 +925,7 @@ public final class Client extends RSApplet {
 				int distanceX = entity.x - npc.x;
 				int distanceY = entity.y - npc.y;
 				if (distanceX != 0 || distanceY != 0)
-					entity.turnDirection = (int) (Math.atan2(distanceX, distanceY) * 325.949) & 0x7ff;
+					entity.turnDirection = (int) (Math.atan2(distanceX, distanceY) * 325.949) & 0x7FF;
 			}
 		}
 		if (entity.interactingEntity >= 32768) {
@@ -928,7 +937,7 @@ public final class Client extends RSApplet {
 				int distanceX = entity.x - player.x;
 				int distanceY = entity.y - player.y;
 				if (distanceX != 0 || distanceY != 0)
-					entity.turnDirection = (int) (Math.atan2(distanceX, distanceY) * 325.949) & 0x7ff;
+					entity.turnDirection = (int) (Math.atan2(distanceX, distanceY) * 325.949) & 0x7FF;
 			}
 		}
 		if ((entity.faceTowardX != 0 || entity.faceTowardY != 0)
@@ -936,11 +945,11 @@ public final class Client extends RSApplet {
 			int distanceX = entity.x - (entity.faceTowardX - baseX - baseX) * 64;
 			int distanceY = entity.y - (entity.faceTowardY - baseY - baseY) * 64;
 			if (distanceX != 0 || distanceY != 0)
-				entity.turnDirection = (int) (Math.atan2(distanceX, distanceY) * 325.949) & 0x7ff;
+				entity.turnDirection = (int) (Math.atan2(distanceX, distanceY) * 325.949) & 0x7FF;
 			entity.faceTowardX = 0;
 			entity.faceTowardY = 0;
 		}
-		int angle = entity.turnDirection - entity.currentRotation & 0x7ff;
+		int angle = entity.turnDirection - entity.currentRotation & 0x7FF;
 		if (angle != 0) {
 			if (angle < entity.degreesToTurn || angle > 2048 - entity.degreesToTurn)
 				entity.currentRotation = entity.turnDirection;
@@ -948,7 +957,7 @@ public final class Client extends RSApplet {
 				entity.currentRotation -= entity.degreesToTurn;
 			else
 				entity.currentRotation += entity.degreesToTurn;
-			entity.currentRotation &= 0x7ff;
+			entity.currentRotation &= 0x7FF;
 			if (entity.queuedAnimationId == entity.standAnimationId && entity.currentRotation != entity.turnDirection) {
 				if (entity.standTurnAnimationId != -1) {
 					entity.queuedAnimationId = entity.standTurnAnimationId;
@@ -970,10 +979,10 @@ public final class Client extends RSApplet {
 		int originalHash = -1;
 		for (int k = 0; k < Model.resourceCount; k++) {
 			int hash = Model.resourceId[k];
-			int x = hash & 0x7f;
-			int y = hash >> 7 & 0x7f;
+			int x = hash & 0x7F;
+			int y = hash >> 7 & 0x7F;
 			int type = hash >> 29 & 3;
-			int objectId = hash >> 14 & 0x7fff;
+			int objectId = hash >> 14 & 0x7FFF;
 			if (hash == originalHash)
 				continue;
 			originalHash = hash;
@@ -1032,7 +1041,7 @@ public final class Client extends RSApplet {
 			}
 			if (type == 1) {
 				NPC npc = npcs[objectId];
-				if (npc.npcDefinition.boundaryDimension == 1 && (npc.x & 0x7f) == 64 && (npc.y & 0x7f) == 64) {
+				if (npc.npcDefinition.boundaryDimension == 1 && (npc.x & 0x7F) == 64 && (npc.y & 0x7F) == 64) {
 					for (int n = 0; n < npcCount; n++) {
 						NPC npc2 = npcs[npcIds[n]];
 						if (npc2 != null && npc2 != npc && npc2.npcDefinition.boundaryDimension == 1 && npc2.x == npc.x
@@ -1051,7 +1060,7 @@ public final class Client extends RSApplet {
 			}
 			if (type == 0) {
 				Player player = players[objectId];
-				if ((player.x & 0x7f) == 64 && (player.y & 0x7f) == 64) {
+				if ((player.x & 0x7F) == 64 && (player.y & 0x7F) == 64) {
 					for (int n = 0; n < npcCount; n++) {
 						NPC npc = npcs[npcIds[n]];
 						if (npc != null && npc.npcDefinition.boundaryDimension == 1 && npc.x == player.x
@@ -1926,11 +1935,11 @@ public final class Client extends RSApplet {
 	}
 
 	private boolean clickInteractiveObject(int hash, int y, int x) {
-		int objectId = hash >> 14 & 0x7fff;
+		int objectId = hash >> 14 & 0x7FFF;
 		int config = worldController.getConfig(hash, x, y, plane);
 		if (config == -1)
 			return false;
-		int type = config & 0x1f;
+		int type = config & 0x1F;
 		int rotation = config >> 6 & 3;
 		if (type == 10 || type == 11 || type == 22) {
 			GameObjectDefinition object = GameObjectDefinition.getDefinition(objectId);
@@ -1973,8 +1982,8 @@ public final class Client extends RSApplet {
 			uid = worldController.getGroundDecorationHash(spawnRequest.x, spawnRequest.y, spawnRequest.z);
 		if (uid != 0) {
 			int config = worldController.getConfig(uid, spawnRequest.x, spawnRequest.y, spawnRequest.z);
-			id = uid >> 14 & 0x7fff;
-			type = config & 0x1f;
+			id = uid >> 14 & 0x7FFF;
+			type = config & 0x1F;
 			face = config >> 6;
 		}
 		spawnRequest.id = id;
@@ -2126,8 +2135,8 @@ public final class Client extends RSApplet {
 				hash = worldController.getGroundDecorationHash(x, y, z);
 			if (hash != 0) {
 				int config = worldController.getConfig(hash, x, y, z);
-				int _objectId = hash >> 14 & 0x7fff;
-				int position = config & 0x1f;
+				int _objectId = hash >> 14 & 0x7FFF;
+				int position = config & 0x1F;
 				int orientation = config >> 6;
 				if (objectType == 0) {
 					worldController.removeWallObject(x, z, y);
@@ -2211,7 +2220,7 @@ public final class Client extends RSApplet {
 		if (menuAction == 62 && clickInteractiveObject(actionTarget, actionInformation1, actionInformation2)) {
 			stream.putOpcode(192);
 			stream.putShort(lastItemSelectedInterface);
-			stream.putLEShort(actionTarget >> 14 & 0x7fff);
+			stream.putLEShort(actionTarget >> 14 & 0x7FFF);
 			stream.putLEShortA(actionInformation1 + baseY);
 			stream.putLEShort(lastItemSelectedSlot);
 			stream.putLEShortA(actionInformation2 + baseX);
@@ -2306,7 +2315,7 @@ public final class Client extends RSApplet {
 		if (menuAction == 1062) {
 			clickInteractiveObject(actionTarget, actionInformation1, actionInformation2);
 			stream.putOpcode(228);
-			stream.putShortA(actionTarget >> 14 & 0x7fff);
+			stream.putShortA(actionTarget >> 14 & 0x7FFF);
 			stream.putShortA(actionInformation1 + baseY);
 			stream.putShort(actionInformation2 + baseX);
 		}
@@ -2630,7 +2639,7 @@ public final class Client extends RSApplet {
 		if (menuAction == 900) {
 			clickInteractiveObject(actionTarget, actionInformation1, actionInformation2);
 			stream.putOpcode(252);
-			stream.putLEShortA(actionTarget >> 14 & 0x7fff);
+			stream.putLEShortA(actionTarget >> 14 & 0x7FFF);
 			stream.putLEShort(actionInformation1 + baseY);
 			stream.putShortA(actionInformation2 + baseX);
 		}
@@ -2692,7 +2701,7 @@ public final class Client extends RSApplet {
 			stream.putLEShort(actionInformation2 + baseX);
 			stream.putShortA(selectedSpellId);
 			stream.putShortA(actionInformation1 + baseY);
-			stream.putLEShort(actionTarget >> 14 & 0x7fff);
+			stream.putLEShort(actionTarget >> 14 & 0x7FFF);
 		}
 		if (menuAction == 567) {
 			boolean flag6 = doWalkTo(2, 0, 0, 0, localPlayer.waypointY[0], 0, 0, actionInformation1,
@@ -2829,20 +2838,20 @@ public final class Client extends RSApplet {
 			stream.putOpcode(70);
 			stream.putLEShort(actionInformation2 + baseX);
 			stream.putShort(actionInformation1 + baseY);
-			stream.putLEShortA(actionTarget >> 14 & 0x7fff);
+			stream.putLEShortA(actionTarget >> 14 & 0x7FFF);
 		}
 		if (menuAction == 872) {
 			clickInteractiveObject(actionTarget, actionInformation1, actionInformation2);
 			stream.putOpcode(234);
 			stream.putLEShortA(actionInformation2 + baseX);
-			stream.putShortA(actionTarget >> 14 & 0x7fff);
+			stream.putShortA(actionTarget >> 14 & 0x7FFF);
 			stream.putLEShortA(actionInformation1 + baseY);
 		}
 		if (menuAction == 502) {
 			clickInteractiveObject(actionTarget, actionInformation1, actionInformation2);
 			stream.putOpcode(132);
 			stream.putLEShortA(actionInformation2 + baseX);
-			stream.putShort(actionTarget >> 14 & 0x7fff);
+			stream.putShort(actionTarget >> 14 & 0x7FFF);
 			stream.putShortA(actionInformation1 + baseY);
 		}
 		if (menuAction == 1125) {
@@ -2879,7 +2888,7 @@ public final class Client extends RSApplet {
 			return;
 		}
 		if (menuAction == 1226) {
-			int objectId = actionTarget >> 14 & 0x7fff;
+			int objectId = actionTarget >> 14 & 0x7FFF;
 			GameObjectDefinition object = GameObjectDefinition.getDefinition(objectId);
 			String description;
 			if (object.description != null)
@@ -2958,8 +2967,8 @@ public final class Client extends RSApplet {
 					int j4 = 256 - j3;
 					j3 = currentFlameColours[j3];
 					int l4 = flameLeftBackground.pixels[j1];
-					flameLeftBackground.pixels[j1++] = ((j3 & 0xff00ff) * l3 + (l4 & 0xff00ff) * j4 & 0xff00ff00)
-							+ ((j3 & 0xff00) * l3 + (l4 & 0xff00) * j4 & 0xff0000) >> 8;
+					flameLeftBackground.pixels[j1++] = ((j3 & 0xFF00ff) * l3 + (l4 & 0xFF00FF) * j4 & 0xFF00FF00)
+							+ ((j3 & 0xFF00) * l3 + (l4 & 0xFF00) * j4 & 0xFF0000) >> 8;
 				} else {
 					j1++;
 				}
@@ -2984,8 +2993,8 @@ public final class Client extends RSApplet {
 					int j5 = 256 - k4;
 					k4 = currentFlameColours[k4];
 					int k5 = flameRightBackground.pixels[j1];
-					flameRightBackground.pixels[j1++] = ((k4 & 0xff00ff) * i5 + (k5 & 0xff00ff) * j5 & 0xff00ff00)
-							+ ((k4 & 0xff00) * i5 + (k5 & 0xff00) * j5 & 0xff0000) >> 8;
+					flameRightBackground.pixels[j1++] = ((k4 & 0xFF00FF) * i5 + (k5 & 0xFF00FF) * j5 & 0xFF00FF00)
+							+ ((k4 & 0xFF00) * i5 + (k5 & 0xFF00) * j5 & 0xFF0000) >> 8;
 				} else {
 					j1++;
 				}
@@ -3005,7 +3014,7 @@ public final class Client extends RSApplet {
 		for (int x = 0; x < mapSizeX; x++) {
 			for (int y = 0; y < mapSizeY; y++) {
 				wayPoints[x][y] = 0;
-				distanceValues[x][y] = 0x5f5e0ff;
+				distanceValues[x][y] = 0x5F5E0FF;
 			}
 		}
 
@@ -3233,17 +3242,17 @@ public final class Client extends RSApplet {
 		if (displayFpsAndMemory) {
 			int x = 507;
 			int y = 20;
-			int colour = 0xffff00;
+			int colour = 0xFFFF00;
 			if (super.fps < 15)
-				colour = 0xff0000;
+				colour = 0xFF0000;
 			fontPlain.drawTextLeft("Fps:" + super.fps, x, y, colour);
 			y += 15;
 			Runtime runtime = Runtime.getRuntime();
 			int memory = (int) ((runtime.totalMemory() - runtime.freeMemory()) / 1024L);
-			colour = 0xffff00;
+			colour = 0xFFFF00;
 			if (memory > 0x2000000 && lowMemory)
-				colour = 0xff0000;
-			fontPlain.drawTextLeft("Mem:" + memory + "k", x, y, 0xffff00);
+				colour = 0xFF0000;
+			fontPlain.drawTextLeft("Mem:" + memory + "k", x, y, 0xFFFF00);
 			y += 15;
 		}
 		if (systemUpdateTime != 0) {
@@ -3251,9 +3260,9 @@ public final class Client extends RSApplet {
 			int minutes = seconds / 60;
 			seconds %= 60;
 			if (seconds < 10)
-				fontPlain.drawText("System update in: " + minutes + ":0" + seconds, 4, 329, 0xffff00);
+				fontPlain.drawText("System update in: " + minutes + ":0" + seconds, 4, 329, 0xFFFF00);
 			else
-				fontPlain.drawText("System update in: " + minutes + ":" + seconds, 4, 329, 0xffff00);
+				fontPlain.drawText("System update in: " + minutes + ":" + seconds, 4, 329, 0xFFFF00);
 		}
 	}
 
@@ -3513,7 +3522,7 @@ public final class Client extends RSApplet {
 		}
 		if (type == 327) {
 			rsInterface.modelRotationX = 150;
-			rsInterface.modelRotationY = (int) (Math.sin(tick / 40D) * 256D) & 0x7ff;
+			rsInterface.modelRotationY = (int) (Math.sin(tick / 40D) * 256D) & 0x7FF;
 			if (characterModelChanged) {
 				for (int k = 0; k < 7; k++) {
 					int kit = characterEditIdentityKits[k];
@@ -3587,10 +3596,10 @@ public final class Client extends RSApplet {
 		if (type == 613)
 			if (playerRights >= 1) {
 				if (reportAbuseMute) {
-					rsInterface.colourDefault = 0xff0000;
+					rsInterface.colourDefault = 0xFF0000;
 					rsInterface.textDefault = "Moderator option: Mute player for 48 hours: <ON>";
 				} else {
-					rsInterface.colourDefault = 0xffffff;
+					rsInterface.colourDefault = 0xFFFFFF;
 					rsInterface.textDefault = "Moderator option: Mute player for 48 hours: <OFF>";
 				}
 			} else {
@@ -3612,15 +3621,15 @@ public final class Client extends RSApplet {
 		if (type == 651) {
 			if (unreadMessages == 0) {
 				rsInterface.textDefault = "0 unread messages";
-				rsInterface.colourDefault = 0xffff00;
+				rsInterface.colourDefault = 0xFFFF00;
 			}
 			if (unreadMessages == 1) {
 				rsInterface.textDefault = "1 unread message";
-				rsInterface.colourDefault = 65280;
+				rsInterface.colourDefault = 0x00FF00;
 			}
 			if (unreadMessages > 1) {
 				rsInterface.textDefault = unreadMessages + " unread messages";
-				rsInterface.colourDefault = 65280;
+				rsInterface.colourDefault = 0x00FF00;
 			}
 		}
 		if (type == 652)
@@ -3825,30 +3834,30 @@ public final class Client extends RSApplet {
 			updateChatSettings = false;
 			chatSettingImageProducer.initDrawingArea();
 			backBase1Image.drawImage(0, 0);
-			fontPlain.drawCentredTextWithPotentialShadow("Public chat", 55, 28, 0xffffff, true);
+			fontPlain.drawCentredTextWithPotentialShadow("Public chat", 55, 28, 0xFFFFFF, true);
 			if (publicChatMode == 0)
-				fontPlain.drawCentredTextWithPotentialShadow("On", 55, 41, 65280, true);
+				fontPlain.drawCentredTextWithPotentialShadow("On", 55, 41, 0x00FF00, true);
 			if (publicChatMode == 1)
-				fontPlain.drawCentredTextWithPotentialShadow("Friends", 55, 41, 0xffff00, true);
+				fontPlain.drawCentredTextWithPotentialShadow("Friends", 55, 41, 0xFFFF00, true);
 			if (publicChatMode == 2)
-				fontPlain.drawCentredTextWithPotentialShadow("Off", 55, 41, 0xff0000, true);
+				fontPlain.drawCentredTextWithPotentialShadow("Off", 55, 41, 0xFF0000, true);
 			if (publicChatMode == 3)
-				fontPlain.drawCentredTextWithPotentialShadow("Hide", 55, 41, 65535, true);
-			fontPlain.drawCentredTextWithPotentialShadow("Private chat", 184, 28, 0xffffff, true);
+				fontPlain.drawCentredTextWithPotentialShadow("Hide", 55, 41, 0x00FFFF, true);
+			fontPlain.drawCentredTextWithPotentialShadow("Private chat", 184, 28, 0xFFFFFF, true);
 			if (privateChatMode == 0)
-				fontPlain.drawCentredTextWithPotentialShadow("On", 184, 41, 65280, true);
+				fontPlain.drawCentredTextWithPotentialShadow("On", 184, 41, 0x00FF00, true);
 			if (privateChatMode == 1)
-				fontPlain.drawCentredTextWithPotentialShadow("Friends", 184, 41, 0xffff00, true);
+				fontPlain.drawCentredTextWithPotentialShadow("Friends", 184, 41, 0xFFFF00, true);
 			if (privateChatMode == 2)
-				fontPlain.drawCentredTextWithPotentialShadow("Off", 184, 41, 0xff0000, true);
-			fontPlain.drawCentredTextWithPotentialShadow("Trade/compete", 324, 28, 0xffffff, true);
+				fontPlain.drawCentredTextWithPotentialShadow("Off", 184, 41, 0xFF0000, true);
+			fontPlain.drawCentredTextWithPotentialShadow("Trade/compete", 324, 28, 0xFFFFFF, true);
 			if (tradeMode == 0)
-				fontPlain.drawCentredTextWithPotentialShadow("On", 324, 41, 65280, true);
+				fontPlain.drawCentredTextWithPotentialShadow("On", 324, 41, 0x00FF00, true);
 			if (tradeMode == 1)
-				fontPlain.drawCentredTextWithPotentialShadow("Friends", 324, 41, 0xffff00, true);
+				fontPlain.drawCentredTextWithPotentialShadow("Friends", 324, 41, 0xFFFF00, true);
 			if (tradeMode == 2)
-				fontPlain.drawCentredTextWithPotentialShadow("Off", 324, 41, 0xff0000, true);
-			fontPlain.drawCentredTextWithPotentialShadow("Report abuse", 458, 33, 0xffffff, true);
+				fontPlain.drawCentredTextWithPotentialShadow("Off", 324, 41, 0xFF0000, true);
+			fontPlain.drawCentredTextWithPotentialShadow("Report abuse", 458, 33, 0xFFFFFF, true);
 			chatSettingImageProducer.drawGraphics(453, super.gameGraphics, 0);
 			gameScreenImageProducer.initDrawingArea();
 		}
@@ -3914,7 +3923,7 @@ public final class Client extends RSApplet {
 									int outlineColour = 0;
 									if (itemSelected && lastItemSelectedSlot == item
 											&& lastItemSelectedInterface == childInterface.id)
-										outlineColour = 0xffffff;
+										outlineColour = 0xFFFFFF;
 									Sprite sprite = ItemDefinition.getSprite(itemId,
 											childInterface.inventoryStackSize[item], outlineColour);
 									if (sprite != null) {
@@ -3966,7 +3975,7 @@ public final class Client extends RSApplet {
 											fontSmall.drawText(getAmountString(stackSize), tileX + 1 + differenceX,
 													tileY + 10 + differenceY, 0);
 											fontSmall.drawText(getAmountString(stackSize), tileX + differenceX,
-													tileY + 9 + differenceY, 0xffff00);
+													tileY + 9 + differenceY, 0xFFFF00);
 										}
 									}
 								}
@@ -4004,10 +4013,10 @@ public final class Client extends RSApplet {
 									_y);
 					} else if (childInterface.filled)
 						DrawingArea.drawFilledRectangleAlpha(colour, _y, childInterface.width, childInterface.height,
-								256 - (childInterface.alpha & 0xff), _x);
+								256 - (childInterface.alpha & 0xFF), _x);
 					else
 						DrawingArea.drawUnfilledRectangleAlpha(_y, childInterface.height,
-								256 - (childInterface.alpha & 0xff), colour, childInterface.width, _x);
+								256 - (childInterface.alpha & 0xFF), colour, childInterface.width, _x);
 				} else if (childInterface.type == 4) {
 					GameFont textDrawingArea = childInterface.textDrawingAreas;
 					String text = childInterface.textDefault;
@@ -4032,10 +4041,10 @@ public final class Client extends RSApplet {
 						colour = childInterface.colourDefault;
 					}
 					if (DrawingArea.width == 479) {
-						if (colour == 0xffff00)
+						if (colour == 0xFFFF00)
 							colour = 255;
 						if (colour == 49152)
-							colour = 0xffffff;
+							colour = 0xFFFFFF;
 					}
 					for (int __y = _y + textDrawingArea.fontHeight; text
 							.length() > 0; __y += textDrawingArea.fontHeight) {
@@ -4172,15 +4181,15 @@ public final class Client extends RSApplet {
 		int verticalOffset1 = 200;
 		int verticalOffset2 = 20;
 		fontBold.drawCentredText("RuneScape is loading - please wait...", horizontalOffset / 2,
-				verticalOffset1 / 2 - 26 - verticalOffset2, 0xffffff);
+				verticalOffset1 / 2 - 26 - verticalOffset2, 0xFFFFFF);
 		int loadingBarHeight = verticalOffset1 / 2 - 18 - verticalOffset2;
 
-		DrawingArea.drawUnfilledRectangle(horizontalOffset / 2 - 152, 304, 34, 0x8c1111, loadingBarHeight);
+		DrawingArea.drawUnfilledRectangle(horizontalOffset / 2 - 152, 304, 34, 0x8C1111, loadingBarHeight);
 		DrawingArea.drawUnfilledRectangle(horizontalOffset / 2 - 151, 302, 32, 0, loadingBarHeight + 1);
-		DrawingArea.drawFilledRectangle(horizontalOffset / 2 - 150, loadingBarHeight + 2, percentage * 3, 30, 0x8c1111);
+		DrawingArea.drawFilledRectangle(horizontalOffset / 2 - 150, loadingBarHeight + 2, percentage * 3, 30, 0x8C1111);
 		DrawingArea.drawFilledRectangle((horizontalOffset / 2 - 150) + percentage * 3, loadingBarHeight + 2,
 				300 - percentage * 3, 30, 0);
-		fontBold.drawCentredText(text, horizontalOffset / 2, (verticalOffset1 / 2 + 5) - verticalOffset2, 0xffffff);
+		fontBold.drawCentredText(text, horizontalOffset / 2, (verticalOffset1 / 2 + 5) - verticalOffset2, 0xFFFFFF);
 		loginBoxLeftBackgroundTile.drawGraphics(171, super.gameGraphics, 202);
 		if (welcomeScreenRaised) {
 			welcomeScreenRaised = false;
@@ -4205,66 +4214,66 @@ public final class Client extends RSApplet {
 		int y = 200;
 		if (loginScreenState == 0) {
 			int _y = y / 2 + 80;
-			fontSmall.drawCentredTextWithPotentialShadow(onDemandFetcher.statusString, x / 2, _y, 0x75a9a9, true);
+			fontSmall.drawCentredTextWithPotentialShadow(onDemandFetcher.statusString, x / 2, _y, 0x75A9A9, true);
 			_y = y / 2 - 20;
-			fontBold.drawCentredTextWithPotentialShadow("Welcome to RuneScape", x / 2, _y, 0xffff00, true);
+			fontBold.drawCentredTextWithPotentialShadow("Welcome to RuneScape", x / 2, _y, 0xFFFF00, true);
 			_y += 30;
 			int _x = x / 2 - 80;
 			int __y = y / 2 + 20;
 			titleButtonImage.drawImage(_x - 73, __y - 20);
-			fontBold.drawCentredTextWithPotentialShadow("New User", _x, __y + 5, 0xffffff, true);
+			fontBold.drawCentredTextWithPotentialShadow("New User", _x, __y + 5, 0xFFFFFF, true);
 			_x = x / 2 + 80;
 			titleButtonImage.drawImage(_x - 73, __y - 20);
-			fontBold.drawCentredTextWithPotentialShadow("Existing User", _x, __y + 5, 0xffffff, true);
+			fontBold.drawCentredTextWithPotentialShadow("Existing User", _x, __y + 5, 0xFFFFFF, true);
 		}
 		if (loginScreenState == 2) {
 			int _y = y / 2 - 40;
 			if (loginMessage1.length() > 0) {
-				fontBold.drawCentredTextWithPotentialShadow(loginMessage1, x / 2, _y - 15, 0xffff00, true);
-				fontBold.drawCentredTextWithPotentialShadow(loginMessage2, x / 2, _y, 0xffff00, true);
+				fontBold.drawCentredTextWithPotentialShadow(loginMessage1, x / 2, _y - 15, 0xFFFF00, true);
+				fontBold.drawCentredTextWithPotentialShadow(loginMessage2, x / 2, _y, 0xFFFF00, true);
 				_y += 30;
 			} else {
-				fontBold.drawCentredTextWithPotentialShadow(loginMessage2, x / 2, _y - 7, 0xffff00, true);
+				fontBold.drawCentredTextWithPotentialShadow(loginMessage2, x / 2, _y - 7, 0xFFFF00, true);
 				_y += 30;
 			}
 			fontBold.drawTextWithPotentialShadow(
 					"Username: " + enteredUsername + ((loginScreenFocus == 0) & (tick % 40 < 20) ? "@yel@|" : ""),
-					x / 2 - 90, _y, 0xffffff, true);
+					x / 2 - 90, _y, 0xFFFFFF, true);
 			_y += 15;
 			fontBold.drawTextWithPotentialShadow(
 					"Password: " + TextClass.asterisksForString(enteredPassword)
 							+ ((loginScreenFocus == 1) & (tick % 40 < 20) ? "@yel@|" : ""),
-					x / 2 - 88, _y, 0xffffff, true);
+					x / 2 - 88, _y, 0xFFFFFF, true);
 			_y += 15;
 			if (!originalLoginScreen) {
 				int _x = x / 2 - 80;
 				int __y = y / 2 + 50;
 				titleButtonImage.drawImage(_x - 73, __y - 20);
-				fontBold.drawCentredTextWithPotentialShadow("Login", _x, __y + 5, 0xffffff, true);
+				fontBold.drawCentredTextWithPotentialShadow("Login", _x, __y + 5, 0xFFFFFF, true);
 				_x = x / 2 + 80;
 				titleButtonImage.drawImage(_x - 73, __y - 20);
-				fontBold.drawCentredTextWithPotentialShadow("Cancel", _x, __y + 5, 0xffffff, true);
+				fontBold.drawCentredTextWithPotentialShadow("Cancel", _x, __y + 5, 0xFFFFFF, true);
 			}
 		}
 		if (loginScreenState == 3) {
-			fontBold.drawCentredTextWithPotentialShadow("Create a free account", x / 2, y / 2 - 60, 0xffff00, true);
+			fontBold.drawCentredTextWithPotentialShadow("Create a free account", x / 2, y / 2 - 60, 0xFFFF00, true);
 			int _y = y / 2 - 35;
-			fontBold.drawCentredTextWithPotentialShadow("To create a new account you need to", x / 2, _y, 0xffffff,
+			fontBold.drawCentredTextWithPotentialShadow("To create a new account you need to", x / 2, _y, 0xFFFFFF,
 					true);
 			_y += 15;
-			fontBold.drawCentredTextWithPotentialShadow("go back to the main RuneScape webpage", x / 2, _y, 0xffffff,
+			fontBold.drawCentredTextWithPotentialShadow("go back to the main RuneScape webpage", x / 2, _y, 0xFFFFFF,
 					true);
 			_y += 15;
-			fontBold.drawCentredTextWithPotentialShadow("and choose the red 'create account'", x / 2, _y, 0xffffff,
+			fontBold.drawCentredTextWithPotentialShadow("and choose the red 'create account'", x / 2, _y, 0xFFFFFF,
 					true);
 			_y += 15;
-			fontBold.drawCentredTextWithPotentialShadow("button at the top right of that page.", x / 2, _y, 0xffffff,
+			fontBold.drawCentredTextWithPotentialShadow("button at the top right of that page.", x / 2, _y, 0xFFFFFF,
 					true);
 			_y += 15;
 			int _x = x / 2;
 			int __y = y / 2 + 50;
 			titleButtonImage.drawImage(_x - 73, __y - 20);
-			fontBold.drawCentredTextWithPotentialShadow("Cancel", _x, __y + 5, 0xffffff, true);
+			fontBold.drawCentredTextWithPotentialShadow("Cancel", _x, __y + 5, 0xFFFFFF, true);
 		}
 		loginBoxLeftBackgroundTile.drawGraphics(171, super.gameGraphics, 202);
 		if (welcomeScreenRaised) {
@@ -4339,7 +4348,7 @@ public final class Client extends RSApplet {
 		int offsetY = menuOffsetY;
 		int width = menuWidth;
 		int height = menuHeight;
-		int colour = 0x5d5447;
+		int colour = 0x5D5447;
 		DrawingArea.drawFilledRectangle(offsetX, offsetY, width, height, colour);
 		DrawingArea.drawFilledRectangle(offsetX + 1, offsetY + 1, width - 2, 16, 0);
 		DrawingArea.drawUnfilledRectangle(offsetX + 1, width - 2, height - 19, 0, offsetY + 18);
@@ -4360,9 +4369,9 @@ public final class Client extends RSApplet {
 		}
 		for (int action = 0; action < menuActionRow; action++) {
 			int actionY = offsetY + 31 + (menuActionRow - 1 - action) * 15;
-			int actionColour = 0xffffff;
+			int actionColour = 0xFFFFFF;
 			if (x > offsetX && x < offsetX + width && y > actionY - 13 && y < actionY + 3)
-				actionColour = 0xffff00;
+				actionColour = 0xFFFF00;
 			fontBold.drawTextWithPotentialShadow(menuActionName[action], offsetX + 3, actionY, actionColour, true);
 		}
 
@@ -4382,7 +4391,7 @@ public final class Client extends RSApplet {
 			gameScreenImageProducer.initDrawingArea();
 			return;
 		}
-		int angle = cameraHorizontal + minimapRotation & 0x7ff;
+		int angle = cameraHorizontal + minimapRotation & 0x7FF;
 		int centreX = 48 + localPlayer.x / 32;
 		int centreY = 464 - localPlayer.y / 32;
 		minimapImage.rotate(151, angle, minimapLineWidth, 256 + minimapZoom, minimapLeft, centreY, 5, 25, 146, centreX);
@@ -4472,7 +4481,7 @@ public final class Client extends RSApplet {
 			int mapY = (destinationY * 4 + 2) - localPlayer.y / 32;
 			markMinimap(mapFlag, mapX, mapY);
 		}
-		DrawingArea.drawFilledRectangle(97, 78, 3, 3, 0xffffff);
+		DrawingArea.drawFilledRectangle(97, 78, 3, 3, 0xFFFFFF);
 		gameScreenImageProducer.initDrawingArea();
 	}
 
@@ -4483,13 +4492,13 @@ public final class Client extends RSApplet {
 
 			int config = worldController.getConfig(uid, x, y, z);
 			int direction = config >> 6 & 3;
-			int type = config & 0x1f;
+			int type = config & 0x1F;
 			int colour = lineColour;
 			if (uid > 0)
 				colour = interfactiveColour;
 			int pixels[] = minimapImage.pixels;
 			int pixel = 24624 + x * 4 + (103 - y) * 512 * 4;
-			int objectId = uid >> 14 & 0x7fff;
+			int objectId = uid >> 14 & 0x7FFF;
 			GameObjectDefinition definition = GameObjectDefinition.getDefinition(objectId);
 			if (definition.mapScene != -1) {
 				Background background = mapSceneImage[definition.mapScene];
@@ -4559,8 +4568,8 @@ public final class Client extends RSApplet {
 		if (uid != 0) {
 			int config = worldController.getConfig(uid, x, y, z);
 			int direction = config >> 6 & 3;
-			int type = config & 0x1f;
-			int objectId = uid >> 14 & 0x7fff;
+			int type = config & 0x1F;
+			int objectId = uid >> 14 & 0x7FFF;
 			GameObjectDefinition definition = GameObjectDefinition.getDefinition(objectId);
 			if (definition.mapScene != -1) {
 				Background background = mapSceneImage[definition.mapScene];
@@ -4572,9 +4581,9 @@ public final class Client extends RSApplet {
 			} else if (type == 9) {
 				// Diagonal walls and doors
 
-				int colour = 0xeeeeee;
+				int colour = 0xEEEEEE;
 				if (uid > 0)
-					colour = 0xee0000;
+					colour = 0xEE0000;
 				int pixels[] = minimapImage.pixels;
 				int pixel = 24624 + x * 4 + (103 - y) * 512 * 4;
 				if (direction == 0 || direction == 2) {
@@ -4593,7 +4602,7 @@ public final class Client extends RSApplet {
 
 		uid = worldController.getGroundDecorationHash(x, y, z);
 		if (uid != 0) {
-			int objectId = uid >> 14 & 0x7fff;
+			int objectId = uid >> 14 & 0x7FFF;
 			GameObjectDefinition definition = GameObjectDefinition.getDefinition(objectId);
 			if (definition.mapScene != -1) {
 				Background background = mapSceneImage[definition.mapScene];
@@ -4608,8 +4617,8 @@ public final class Client extends RSApplet {
 
 	private void drawMinimapTarget(Sprite sprite, int y, int x) {
 		int l = x * x + y * y;
-		if (l > 4225 && l < 0x15f90) {
-			int angle = cameraHorizontal + minimapRotation & 0x7ff;
+		if (l > 4225 && l < 0x15F90) {
+			int angle = cameraHorizontal + minimapRotation & 0x7FF;
 			int sine = Model.SINE[angle];
 			int cosine = Model.COSINE[angle];
 			sine = (sine * 256) / (minimapZoom + 256);
@@ -4650,7 +4659,7 @@ public final class Client extends RSApplet {
 					int y = 329 - updating * 13;
 					int x = 4;
 					textDrawingArea.drawText("From", x, y, 0);
-					textDrawingArea.drawText("From", x, y - 1, 65535);
+					textDrawingArea.drawText("From", x, y - 1, 0x00FFFF);
 					x += textDrawingArea.getTextDisplayedWidth("From ");
 					if (playerRights == 1) {
 						modIcons[0].drawImage(x, y - 12);
@@ -4661,21 +4670,21 @@ public final class Client extends RSApplet {
 						x += 14;
 					}
 					textDrawingArea.drawText(chatName + ": " + chatMessages[m], x, y, 0);
-					textDrawingArea.drawText(chatName + ": " + chatMessages[m], x, y - 1, 65535);
+					textDrawingArea.drawText(chatName + ": " + chatMessages[m], x, y - 1, 0x00FFFF);
 					if (++updating >= 5)
 						return;
 				}
 				if (chatType == 5 && privateChatMode < 2) {
 					int y = 329 - updating * 13;
 					textDrawingArea.drawText(chatMessages[m], 4, y, 0);
-					textDrawingArea.drawText(chatMessages[m], 4, y - 1, 65535);
+					textDrawingArea.drawText(chatMessages[m], 4, y - 1, 0x00FFFF);
 					if (++updating >= 5)
 						return;
 				}
 				if (chatType == 6 && privateChatMode < 2) {
 					int y = 329 - updating * 13;
 					textDrawingArea.drawText("To " + chatName + ": " + chatMessages[m], 4, y, 0);
-					textDrawingArea.drawText("To " + chatName + ": " + chatMessages[m], 4, y - 1, 65535);
+					textDrawingArea.drawText("To " + chatName + ": " + chatMessages[m], 4, y - 1, 0x00FFFF);
 					if (++updating >= 5)
 						return;
 				}
@@ -4709,7 +4718,7 @@ public final class Client extends RSApplet {
 			s = menuActionName[menuActionRow - 1];
 		if (menuActionRow > 2)
 			s = s + "@whi@ / " + (menuActionRow - 2) + " more options";
-		fontBold.drawAlphaTextWithShadow(s, 4, 15, 0xffffff, tick / 1000);
+		fontBold.drawAlphaTextWithShadow(s, 4, 15, 0xFFFFFF, tick / 1000);
 	}
 
 	private void dropClient() {
@@ -4719,9 +4728,9 @@ public final class Client extends RSApplet {
 		}
 		gameScreenImageProducer.initDrawingArea();
 		fontPlain.drawCentredText("Connection lost", 257, 144, 0);
-		fontPlain.drawCentredText("Connection lost", 256, 143, 0xffffff);
+		fontPlain.drawCentredText("Connection lost", 256, 143, 0xFFFFFF);
 		fontPlain.drawCentredText("Please wait - attempting to reestablish", 257, 159, 0);
-		fontPlain.drawCentredText("Please wait - attempting to reestablish", 256, 158, 0xffffff);
+		fontPlain.drawCentredText("Please wait - attempting to reestablish", 256, 158, 0xFFFFFF);
 		gameScreenImageProducer.drawGraphics(4, super.gameGraphics, 4);
 		minimapState = 0;
 		destinationX = 0;
@@ -4783,8 +4792,8 @@ public final class Client extends RSApplet {
 		int groundZ = z;
 		if (groundZ < 3 && (tileFlags[1][groundX][groundY] & 2) == 2)
 			groundZ++;
-		int _x = x & 0x7f;
-		int _y = y & 0x7f;
+		int _x = x & 0x7F;
+		int _y = y & 0x7F;
 		int i2 = intGroundArray[groundZ][groundX][groundY] * (128 - _x)
 				+ intGroundArray[groundZ][groundX + 1][groundY] * _x >> 7;
 		int j2 = intGroundArray[groundZ][groundX][groundY + 1] * (128 - _x)
@@ -4889,16 +4898,16 @@ public final class Client extends RSApplet {
 				return false;
 			if (packetOpcode == -1) {
 				socket.read(inStream.buffer, 1);
-				packetOpcode = inStream.buffer[0] & 0xff;
+				packetOpcode = inStream.buffer[0] & 0xFF;
 				if (encryption != null)
-					packetOpcode = packetOpcode - encryption.value() & 0xff;
+					packetOpcode = packetOpcode - encryption.value() & 0xFF;
 				packetSize = SizeConstants.PACKET_SIZES[packetOpcode];
 				availableBytes--;
 			}
 			if (packetSize == -1)
 				if (availableBytes > 0) {
 					socket.read(inStream.buffer, 1);
-					packetSize = inStream.buffer[0] & 0xff;
+					packetSize = inStream.buffer[0] & 0xFF;
 					availableBytes--;
 				} else {
 					return false;
@@ -5048,7 +5057,7 @@ public final class Client extends RSApplet {
 			if (packetOpcode == 71) {
 				int sidebarId = inStream.getUnsignedLEShort();
 				int interfaceId = inStream.getUnsignedByteA();
-				if (sidebarId == 65535)
+				if (sidebarId == 0x00FFFF)
 					sidebarId = -1;
 				tabInterfaceIDs[interfaceId] = sidebarId;
 				redrawTab = true;
@@ -5058,7 +5067,7 @@ public final class Client extends RSApplet {
 			}
 			if (packetOpcode == 74) {
 				int songId = inStream.getUnsignedShort();
-				if (songId == 65535)
+				if (songId == 0x00FFFF)
 					songId = -1;
 				if (songId != currentSong && musicEnabled && !lowMemory && prevSong == 0) {
 					nextSong = songId;
@@ -5140,7 +5149,7 @@ public final class Client extends RSApplet {
 				loadRegionTime = System.currentTimeMillis();
 				gameScreenImageProducer.initDrawingArea();
 				fontPlain.drawCentredText("Loading - please wait.", 257, 151, 0);
-				fontPlain.drawCentredText("Loading - please wait.", 256, 150, 0xffffff);
+				fontPlain.drawCentredText("Loading - please wait.", 256, 150, 0xFFFFFF);
 				gameScreenImageProducer.drawGraphics(4, super.gameGraphics, 4);
 				if (packetOpcode == 73) {
 					int r = 0;
@@ -5183,8 +5192,8 @@ public final class Client extends RSApplet {
 							for (int y = 0; y < 13; y++) {
 								int k30 = constructMapTiles[plane][x][y];
 								if (k30 != -1) {
-									int k31 = k30 >> 14 & 0x3ff;
-									int i32 = k30 >> 3 & 0x7ff;
+									int k31 = k30 >> 14 & 0x3FF;
+									int i32 = k30 >> 3 & 0x7FF;
 									int k32 = (k31 / 8 << 8) + i32 / 8;
 									for (int j33 = 0; j33 < l16; j33++) {
 										if (ai[j33] != k32)
@@ -5207,8 +5216,8 @@ public final class Client extends RSApplet {
 					objectDataIds = new int[l16];
 					for (int r = 0; r < l16; r++) {
 						int coords = mapCoordinates[r] = ai[r];
-						int x = coords >> 8 & 0xff;
-						int y = coords & 0xff;
+						int x = coords >> 8 & 0xFF;
+						int y = coords & 0xFF;
 						int terrainId = terrainDataIds[r] = onDemandFetcher.getMapId(0, x, y);
 						if (terrainId != -1)
 							onDemandFetcher.request(3, terrainId);
@@ -5624,7 +5633,7 @@ public final class Client extends RSApplet {
 				int interfaceId = inStream.getUnsignedShort();
 				int itemModelZoom = inStream.getUnsignedLEShort();
 				int itemId = inStream.getUnsignedLEShort();
-				if (itemId == 65535) {
+				if (itemId == 0x00FFFF) {
 					RSInterface.cache[interfaceId].modelTypeDefault = 0;
 					packetOpcode = -1;
 					return true;
@@ -5701,9 +5710,9 @@ public final class Client extends RSApplet {
 			if (packetOpcode == 122) {
 				int interfaceId = inStream.getUnsignedShortA();
 				int rgb = inStream.getUnsignedShortA();
-				int r = rgb >> 10 & 0x1f;
-				int g = rgb >> 5 & 0x1f;
-				int b = rgb & 0x1f;
+				int r = rgb >> 10 & 0x1F;
+				int g = rgb >> 5 & 0x1F;
+				int b = rgb & 0x1F;
 				RSInterface.cache[interfaceId].colourDefault = (r << 19) + (g << 11) + (b << 3);
 				packetOpcode = -1;
 				return true;
@@ -5760,8 +5769,8 @@ public final class Client extends RSApplet {
 					int distanceY = y - cameraPositionY;
 					int distanceScalar = (int) Math.sqrt(distanceX * distanceX + distanceY * distanceY);
 					cameraVerticalRotation = (int) (Math.atan2(distanceZ, distanceScalar) * 325.94900000000001D)
-							& 0x7ff;
-					cameraHorizontalRotation = (int) (Math.atan2(distanceX, distanceY) * -325.94900000000001D) & 0x7ff;
+							& 0x7FF;
+					cameraHorizontalRotation = (int) (Math.atan2(distanceX, distanceY) * -325.94900000000001D) & 0x7FF;
 					if (cameraVerticalRotation < 128)
 						cameraVerticalRotation = 128;
 					if (cameraVerticalRotation > 383)
@@ -6115,7 +6124,7 @@ public final class Client extends RSApplet {
 			byte objects[] = objectData[region];
 			if (objects != null) {
 				int blockX = (mapCoordinates[region] >> 8) * 64 - baseX;
-				int blockY = (mapCoordinates[region] & 0xff) * 64 - baseY;
+				int blockY = (mapCoordinates[region] & 0xFF) * 64 - baseY;
 				if (loadGeneratedMap) {
 					blockX = 10;
 					blockY = 10;
@@ -6195,7 +6204,7 @@ public final class Client extends RSApplet {
 		if (lowMemory && loadingStage == 2 && Region.plane != plane) {
 			gameScreenImageProducer.initDrawingArea();
 			fontPlain.drawCentredText("Loading - please wait.", 257, 151, 0);
-			fontPlain.drawCentredText("Loading - please wait.", 256, 150, 0xffffff);
+			fontPlain.drawCentredText("Loading - please wait.", 256, 150, 0xFFFFFF);
 			gameScreenImageProducer.drawGraphics(4, super.gameGraphics, 4);
 			loadingStage = 1;
 			loadRegionTime = System.currentTimeMillis();
@@ -6255,7 +6264,7 @@ public final class Client extends RSApplet {
 			if (!loadGeneratedMap) {
 				for (int pointer = 0; pointer < dataLength; pointer++) {
 					int offsetX = (mapCoordinates[pointer] >> 8) * 64 - baseX;
-					int offsetY = (mapCoordinates[pointer] & 0xff) * 64 - baseY;
+					int offsetY = (mapCoordinates[pointer] & 0xFF) * 64 - baseY;
 					byte data[] = terrainData[pointer];
 					if (data != null)
 						objectManager.loadTerrainBlock(data, offsetY, offsetX, (regionX - 6) * 8, (regionY - 6) * 8,
@@ -6264,7 +6273,7 @@ public final class Client extends RSApplet {
 
 				for (int pointer = 0; pointer < dataLength; pointer++) {
 					int offsetX = (mapCoordinates[pointer] >> 8) * 64 - baseX;
-					int offsetY = (mapCoordinates[pointer] & 0xff) * 64 - baseY;
+					int offsetY = (mapCoordinates[pointer] & 0xFF) * 64 - baseY;
 					byte data[] = terrainData[pointer];
 					if (data == null && regionY < 800)
 						objectManager.initiateVertexHeights(offsetY, 64, 64, offsetX);
@@ -6274,7 +6283,7 @@ public final class Client extends RSApplet {
 					byte data[] = objectData[region];
 					if (data != null) {
 						int offsetX = (mapCoordinates[region] >> 8) * 64 - baseX;
-						int offsetY = (mapCoordinates[region] & 0xff) * 64 - baseY;
+						int offsetY = (mapCoordinates[region] & 0xFF) * 64 - baseY;
 						objectManager.loadObjectBlock(offsetX, currentCollisionMap, offsetY, worldController, data);
 					}
 				}
@@ -6288,8 +6297,8 @@ public final class Client extends RSApplet {
 							if (data != -1) {
 								int tileZ = data >> 24 & 3;
 								int tileRotation = data >> 1 & 3;
-								int tileX = data >> 14 & 0x3ff;
-								int tileY = data >> 3 & 0x7ff;
+								int tileX = data >> 14 & 0x3FF;
+								int tileY = data >> 3 & 0x7FF;
 								int tileCoordinates = (tileX / 8 << 8) + tileY / 8;
 								for (int pointer = 0; pointer < mapCoordinates.length; pointer++) {
 									if (mapCoordinates[pointer] != tileCoordinates || terrainData[pointer] == null)
@@ -6323,8 +6332,8 @@ public final class Client extends RSApplet {
 							if (bits != -1) {
 								int tileZ = bits >> 24 & 3;
 								int tileRotation = bits >> 1 & 3;
-								int tileX = bits >> 14 & 0x3ff;
-								int tileY = bits >> 3 & 0x7ff;
+								int tileX = bits >> 14 & 0x3FF;
+								int tileY = bits >> 3 & 0x7FF;
 								int tileCoorindates = (tileX / 8 << 8) + tileY / 8;
 								for (int pointer = 0; pointer < mapCoordinates.length; pointer++) {
 									if (mapCoordinates[pointer] != tileCoorindates || objectData[pointer] == null)
@@ -6373,7 +6382,7 @@ public final class Client extends RSApplet {
 		GameObjectDefinition.modelCache.clear();
 		if (super.gameFrame != null) {
 			stream.putOpcode(210);
-			stream.putInt(0x3f008edd);
+			stream.putInt(0x3F008EDD);
 		}
 		if (lowMemory && signlink.cache_dat != null) {
 			int modelCount = onDemandFetcher.fileCount(0);
@@ -6441,26 +6450,26 @@ public final class Client extends RSApplet {
 			flameColour1[c] = c * 0x40000;
 
 		for (int c = 0; c < 64; c++)
-			flameColour1[c + 64] = 0xff0000 + 1024 * c;
+			flameColour1[c + 64] = 0xFF0000 + 1024 * c;
 
 		for (int c = 0; c < 64; c++)
-			flameColour1[c + 128] = 0xffff00 + 4 * c;
+			flameColour1[c + 128] = 0xFFFF00 + 4 * c;
 
 		for (int c = 0; c < 64; c++)
-			flameColour1[c + 192] = 0xffffff;
+			flameColour1[c + 192] = 0xFFFFFF;
 
 		flameColour2 = new int[256];
 		for (int c = 0; c < 64; c++)
 			flameColour2[c] = c * 1024;
 
 		for (int c = 0; c < 64; c++)
-			flameColour2[c + 64] = 65280 + 4 * c;
+			flameColour2[c + 64] = 0x00FF00 + 4 * c;
 
 		for (int c = 0; c < 64; c++)
-			flameColour2[c + 128] = 65535 + 0x40000 * c;
+			flameColour2[c + 128] = 0x00FFFF + 0x40000 * c;
 
 		for (int c = 0; c < 64; c++)
-			flameColour2[c + 192] = 0xffffff;
+			flameColour2[c + 192] = 0xFFFFFF;
 
 		flameColour3 = new int[256];
 		for (int c = 0; c < 64; c++)
@@ -6470,10 +6479,10 @@ public final class Client extends RSApplet {
 			flameColour3[c + 64] = 255 + 0x40000 * c;
 
 		for (int c = 0; c < 64; c++)
-			flameColour3[c + 128] = 0xff00ff + 1024 * c;
+			flameColour3[c + 128] = 0xFF00ff + 1024 * c;
 
 		for (int c = 0; c < 64; c++)
-			flameColour3[c + 192] = 0xffffff;
+			flameColour3[c + 192] = 0xFFFFFF;
 
 		currentFlameColours = new int[256];
 		anIntArray1190 = new int[32768];
@@ -6592,7 +6601,7 @@ public final class Client extends RSApplet {
 				cameraRandomisationA = (int) (Math.random() * 80D) - 40;
 				minimapRotation = (int) (Math.random() * 120D) - 60;
 				minimapZoom = (int) (Math.random() * 30D) - 20;
-				cameraHorizontal = (int) (Math.random() * 20D) - 10 & 0x7ff;
+				cameraHorizontal = (int) (Math.random() * 20D) - 10 & 0x7FF;
 				minimapState = 0;
 				lastRegionId = -1;
 				destinationX = 0;
@@ -6847,7 +6856,7 @@ public final class Client extends RSApplet {
 						if (mouseDetection.coordsY[c] == -1 && mouseDetection.coordsX[c] == -1) {
 							x = -1;
 							y = -1;
-							pixelOffset = 0x7ffff;
+							pixelOffset = 0x7FFFf;
 						}
 						if (x == lastClickX && y == lastClickY) {
 							if (sameClickPositionCounter < 2047)
@@ -7344,7 +7353,7 @@ public final class Client extends RSApplet {
 	}
 
 	private void markMinimap(Sprite sprite, int x, int y) {
-		int angle = cameraHorizontal + minimapRotation & 0x7ff;
+		int angle = cameraHorizontal + minimapRotation & 0x7FF;
 		int l = x * x + y * y;
 		if (l > 6400)
 			return;
@@ -7439,7 +7448,7 @@ public final class Client extends RSApplet {
 				if (groundItemArray != null) {
 					for (Item item = (Item) groundItemArray.peekFront(); item != null; item = (Item) groundItemArray
 							.getPrevious()) {
-						if (item.itemId != (targetItemId & 0x7fff) || item.itemCount != targetItemAmount)
+						if (item.itemId != (targetItemId & 0x7FFF) || item.itemCount != targetItemAmount)
 							continue;
 						item.itemCount = itemCount;
 						break;
@@ -7495,7 +7504,7 @@ public final class Client extends RSApplet {
 				if (groundItems != null) {
 					for (Item item = (Item) groundItems.peekFront(); item != null; item = (Item) groundItems
 							.getPrevious()) {
-						if (item.itemId != (itemId & 0x7fff))
+						if (item.itemId != (itemId & 0x7FFF))
 							continue;
 						item.unlink();
 						break;
@@ -7526,7 +7535,7 @@ public final class Client extends RSApplet {
 				if (type == 0) {
 					WallObject wallObject = worldController.getWallObject(x, y, plane);
 					if (wallObject != null) {
-						int uid = wallObject.uid >> 14 & 0x7fff;
+						int uid = wallObject.uid >> 14 & 0x7FFF;
 						if (objectType == 2) {
 							wallObject.renderable = new GameObject(uid, 4 + orientation, 2, tileHeightX1Y0,
 									tileHeightX1Y1, tileHeightX0Y0, tileHeightX0Y1, animationId, false);
@@ -7541,7 +7550,7 @@ public final class Client extends RSApplet {
 				if (type == 1) {
 					WallDecoration wallDecoration = worldController.getWallDecoration(x, y, plane);
 					if (wallDecoration != null)
-						wallDecoration.renderable = new GameObject(wallDecoration.uid >> 14 & 0x7fff, 0, 4,
+						wallDecoration.renderable = new GameObject(wallDecoration.uid >> 14 & 0x7FFF, 0, 4,
 								tileHeightX1Y0, tileHeightX1Y1, tileHeightX0Y0, tileHeightX0Y1, animationId, false);
 				}
 				if (type == 2) {
@@ -7549,14 +7558,14 @@ public final class Client extends RSApplet {
 					if (objectType == 11)
 						objectType = 10;
 					if (interactiveObject != null)
-						interactiveObject.renderable = new GameObject(interactiveObject.uid >> 14 & 0x7fff, orientation,
+						interactiveObject.renderable = new GameObject(interactiveObject.uid >> 14 & 0x7FFF, orientation,
 								objectType, tileHeightX1Y0, tileHeightX1Y1, tileHeightX0Y0, tileHeightX0Y1, animationId,
 								false);
 				}
 				if (type == 3) {
 					GroundDecoration groundDecoration = worldController.getGroundDecoration(x, y, plane);
 					if (groundDecoration != null)
-						groundDecoration.renderable = new GameObject(groundDecoration.uid >> 14 & 0x7fff, orientation,
+						groundDecoration.renderable = new GameObject(groundDecoration.uid >> 14 & 0x7FFF, orientation,
 								22, tileHeightX1Y0, tileHeightX1Y1, tileHeightX0Y0, tileHeightX0Y1, animationId, false);
 				}
 			}
@@ -7696,7 +7705,7 @@ public final class Client extends RSApplet {
 			int projectileDistanceFromSource = stream.getUnsignedByte();
 			if (projectileX >= 0 && projectileY >= 0 && projectileX < 104 && projectileY < 104 && projectileOffsetX >= 0
 					&& projectileOffsetY >= 0 && projectileOffsetX < 104 && projectileOffsetY < 104
-					&& projectileGraphicId != 65535) {
+					&& projectileGraphicId != 0x00FFFF) {
 				projectileX = projectileX * 128 + 64;
 				projectileY = projectileY * 128 + 64;
 				projectileOffsetX = projectileOffsetX * 128 + 64;
@@ -8193,7 +8202,7 @@ public final class Client extends RSApplet {
 			if (i >= 0 && j >= 0 && i < 146 && j < 151) {
 				i -= 73;
 				j -= 75;
-				int k = cameraHorizontal + minimapRotation & 0x7ff;
+				int k = cameraHorizontal + minimapRotation & 0x7FF;
 				int sine = Rasterizer.SINE[k];
 				int cosine = Rasterizer.COSINE[k];
 				sine = sine * (minimapZoom + 256) >> 8;
@@ -8480,7 +8489,7 @@ public final class Client extends RSApplet {
 			entity.turnDirection = 1024;
 		else
 			entity.turnDirection = 0;
-		int rotationDifference = entity.turnDirection - entity.currentRotation & 0x7ff;
+		int rotationDifference = entity.turnDirection - entity.currentRotation & 0x7FF;
 		if (rotationDifference > 1024)
 			rotationDifference -= 2048;
 		int anim = entity.turnAboutAnimationId;
@@ -8731,7 +8740,7 @@ public final class Client extends RSApplet {
 				vertical = secondaryCameraVertical / 256;
 			if (customCameraActive[4] && cameraAmplitude[4] + 128 > vertical)
 				vertical = cameraAmplitude[4] + 128;
-			int horizontal = cameraHorizontal + cameraRandomisationA & 0x7ff;
+			int horizontal = cameraHorizontal + cameraRandomisationA & 0x7FF;
 			setCameraPosition(currentCameraPositionH, currentCameraPositionV,
 					getFloorDrawHeight(plane, localPlayer.y, localPlayer.x) - 50, horizontal, vertical);
 		}
@@ -8756,7 +8765,7 @@ public final class Client extends RSApplet {
 				if (i == 2)
 					cameraPositionY += randomisation;
 				if (i == 3)
-					cameraHorizontalRotation = cameraHorizontalRotation + randomisation & 0x7ff;
+					cameraHorizontalRotation = cameraHorizontalRotation + randomisation & 0x7FF;
 				if (i == 4) {
 					cameraVerticalRotation += randomisation;
 					if (cameraVerticalRotation < 128)
@@ -8825,7 +8834,7 @@ public final class Client extends RSApplet {
 			for (int y = 0; y < 104; y++) {
 				int hash = worldController.getGroundDecorationHash(x, y, plane);
 				if (hash != 0) {
-					hash = hash >> 14 & 0x7fff;
+					hash = hash >> 14 & 0x7FFF;
 					int icon = GameObjectDefinition.getDefinition(hash).icon;
 
 					if (icon >= 0) {
@@ -8877,7 +8886,7 @@ public final class Client extends RSApplet {
 			int npcHeight = npc.y >> 7;
 			if (npcWidth < 0 || npcWidth >= 104 || npcHeight < 0 || npcHeight >= 104)
 				continue;
-			if (npc.boundaryDimension == 1 && (npc.x & 0x7f) == 64 && (npc.y & 0x7f) == 64) {
+			if (npc.boundaryDimension == 1 && (npc.x & 0x7F) == 64 && (npc.y & 0x7F) == 64) {
 				if (tileRenderCount[npcWidth][npcHeight] == renderCount)
 					continue;
 				tileRenderCount[npcWidth][npcHeight] = renderCount;
@@ -8921,7 +8930,7 @@ public final class Client extends RSApplet {
 						player.currentRotation, player.playerTileWidth, player.playerTileHeight, player, hash);
 				continue;
 			}
-			if ((player.x & 0x7f) == 64 && (player.y & 0x7f) == 64) {
+			if ((player.x & 0x7F) == 64 && (player.y & 0x7F) == 64) {
 				if (tileRenderCount[x][y] == renderCount)
 					continue;
 				tileRenderCount[x][y] = renderCount;
@@ -9166,8 +9175,8 @@ public final class Client extends RSApplet {
 
 	private int rotateFlameColour(int r, int g, int b) {
 		int alpha = 256 - b;
-		return ((r & 0xff00ff) * alpha + (g & 0xff00ff) * b & 0xff00ff00)
-				+ ((r & 0xff00) * alpha + (g & 0xff00) * b & 0xff0000) >> 8;
+		return ((r & 0xFF00ff) * alpha + (g & 0xFF00ff) * b & 0xFF00FF00)
+				+ ((r & 0xFF00) * alpha + (g & 0xFF00) * b & 0xFF0000) >> 8;
 	}
 
 	@Override
@@ -9220,8 +9229,8 @@ public final class Client extends RSApplet {
 	}
 
 	private void setCameraPosition(int x, int y, int z, int horizontal, int vertical) {
-		int verticalDifference = 2048 - vertical & 0x7ff;
-		int horizontalDifference = 2048 - horizontal & 0x7ff;
+		int verticalDifference = 2048 - vertical & 0x7FF;
+		int horizontalDifference = 2048 - horizontal & 0x7FF;
 		int offsetX = 0;
 		int offsetZ = 0;
 		int offsetY = 600 + vertical * 3;
@@ -9287,8 +9296,8 @@ public final class Client extends RSApplet {
 		int distanceZ = z - cameraPositionZ;
 		int distanceY = y - cameraPositionY;
 		int distanceScalar = (int) Math.sqrt(distanceX * distanceX + distanceY * distanceY);
-		int curveHorizontal = (int) (Math.atan2(distanceZ, distanceScalar) * 325.94900000000001D) & 0x7ff;
-		int curveVertical = (int) (Math.atan2(distanceX, distanceY) * -325.94900000000001D) & 0x7ff;
+		int curveHorizontal = (int) (Math.atan2(distanceZ, distanceScalar) * 325.94900000000001D) & 0x7FF;
+		int curveVertical = (int) (Math.atan2(distanceX, distanceY) * -325.94900000000001D) & 0x7FF;
 		if (curveHorizontal < 128)
 			curveHorizontal = 128;
 		if (curveHorizontal > 383)
@@ -9310,11 +9319,11 @@ public final class Client extends RSApplet {
 			_vertical1 += 2048;
 		if (_vertical1 > 0) {
 			cameraHorizontalRotation += anInt998 + (_vertical1 * anInt999) / 1000;
-			cameraHorizontalRotation &= 0x7ff;
+			cameraHorizontalRotation &= 0x7FF;
 		}
 		if (_vertical1 < 0) {
 			cameraHorizontalRotation -= anInt998 + (-_vertical1 * anInt999) / 1000;
-			cameraHorizontalRotation &= 0x7ff;
+			cameraHorizontalRotation &= 0x7FF;
 		}
 		int _vertical2 = curveVertical - cameraHorizontalRotation;
 		if (_vertical2 > 1024)
@@ -9351,7 +9360,7 @@ public final class Client extends RSApplet {
 				cameraModificationV += (-12 - cameraModificationV) / 2;
 			else
 				cameraModificationV /= 2;
-			cameraHorizontal = cameraHorizontal + cameraModificationH / 2 & 0x7ff;
+			cameraHorizontal = cameraHorizontal + cameraModificationH / 2 & 0x7FF;
 			cameraVertical += cameraModificationV / 2;
 			if (cameraVertical < 128)
 				cameraVertical = 128;
@@ -9934,7 +9943,7 @@ public final class Client extends RSApplet {
 					target = players[localPlayers[entity]];
 				else
 					target = npcs[npcIds[entity - localPlayerCount]];
-				if (target == null || !(target).isVisible())
+				if (target == null || !target.isVisible())
 					continue;
 				if (target instanceof NPC) {
 					EntityDefinition definition = ((NPC) target).npcDefinition;
@@ -9947,7 +9956,7 @@ public final class Client extends RSApplet {
 					int height = 30;
 					Player player = (Player) target;
 					if (player.headIcon != 0) {
-						calculateEntityScreenPosition(((target)), (target).height + 15);
+						calculateEntityScreenPosition(((target)), target.height + 15);
 						if (spriteDrawX > -1) {
 							for (int icon = 0; icon < 8; icon++)
 								if ((player.headIcon & 1 << icon) != 0) {
@@ -9958,62 +9967,62 @@ public final class Client extends RSApplet {
 						}
 					}
 					if (entity >= 0 && hintIconType == 10 && hintIconPlayerId == localPlayers[entity]) {
-						calculateEntityScreenPosition(((target)), (target).height + 15);
+						calculateEntityScreenPosition(((target)), target.height + 15);
 						if (spriteDrawX > -1)
 							headIcons[7].drawImage(spriteDrawX - 12, spriteDrawY - height);
 					}
 				} else {
 					EntityDefinition definition = ((NPC) target).npcDefinition;
 					if (definition.headIcon >= 0 && definition.headIcon < headIcons.length) {
-						calculateEntityScreenPosition(((target)), (target).height + 15);
+						calculateEntityScreenPosition(((target)), target.height + 15);
 						if (spriteDrawX > -1)
 							headIcons[definition.headIcon].drawImage(spriteDrawX - 12, spriteDrawY - 30);
 					}
 					if (hintIconType == 1 && hintIconNpcId == npcIds[entity - localPlayerCount] && tick % 20 < 10) {
-						calculateEntityScreenPosition(((target)), (target).height + 15);
+						calculateEntityScreenPosition(((target)), target.height + 15);
 						if (spriteDrawX > -1)
 							headIcons[2].drawImage(spriteDrawX - 12, spriteDrawY - 28);
 					}
 				}
-				if ((target).overheadTextMessage != null && (entity >= localPlayerCount || publicChatMode == 0
+				if (target.overheadTextMessage != null && (entity >= localPlayerCount || publicChatMode == 0
 						|| publicChatMode == 3 || publicChatMode == 1 && isFriendOrSelf(((Player) target).name))) {
-					calculateEntityScreenPosition(((target)), (target).height);
+					calculateEntityScreenPosition(((target)), target.height);
 					if (spriteDrawX > -1 && overheadMessage < overheadMessageCount) {
-						overheadTextWidth[overheadMessage] = fontBold.getTextWidth((target).overheadTextMessage) / 2;
+						overheadTextWidth[overheadMessage] = fontBold.getTextWidth(target.overheadTextMessage) / 2;
 						overheadTextHeight[overheadMessage] = fontBold.fontHeight;
 						overheadTextDrawX[overheadMessage] = spriteDrawX;
 						overheadTextDrawY[overheadMessage] = spriteDrawY;
-						overheadTextColour[overheadMessage] = (target).chatColour;
-						overheadTextEffect[overheadMessage] = (target).chatEffect;
-						overheadTextCycle[overheadMessage] = (target).textCycle;
-						overheadTextMessage[overheadMessage++] = (target).overheadTextMessage;
-						if (chatEffectsDisabled == 0 && (target).chatEffect >= 1 && (target).chatEffect <= 3) {
+						overheadTextColour[overheadMessage] = target.chatColour;
+						overheadTextEffect[overheadMessage] = target.chatEffect;
+						overheadTextCycle[overheadMessage] = target.textCycle;
+						overheadTextMessage[overheadMessage++] = target.overheadTextMessage;
+						if (chatEffectsDisabled == 0 && target.chatEffect >= 1 && target.chatEffect <= 3) {
 							overheadTextHeight[overheadMessage] += 10;
 							overheadTextDrawY[overheadMessage] += 5;
 						}
-						if (chatEffectsDisabled == 0 && (target).chatEffect == 4)
+						if (chatEffectsDisabled == 0 && target.chatEffect == 4)
 							overheadTextWidth[overheadMessage] = 60;
-						if (chatEffectsDisabled == 0 && (target).chatEffect == 5)
+						if (chatEffectsDisabled == 0 && target.chatEffect == 5)
 							overheadTextHeight[overheadMessage] += 5;
 					}
 				}
-				if ((target).loopCycleStatus > tick) {
+				if (target.loopCycleStatus > tick) {
 					try {
-						calculateEntityScreenPosition(((target)), (target).height + 15);
+						calculateEntityScreenPosition(((target)), target.height + 15);
 						if (spriteDrawX > -1) {
-							int percentage = ((target).currentHealth * 30) / (target).maxHealth;
+							int percentage = (target.currentHealth * 30) / target.maxHealth;
 							if (percentage > 30)
 								percentage = 30;
-							DrawingArea.drawFilledRectangle(spriteDrawX - 15, spriteDrawY - 3, percentage, 5, 65280);
+							DrawingArea.drawFilledRectangle(spriteDrawX - 15, spriteDrawY - 3, percentage, 5, 0x00FF00);
 							DrawingArea.drawFilledRectangle((spriteDrawX - 15) + percentage, spriteDrawY - 3,
-									30 - percentage, 5, 0xff0000);
+									30 - percentage, 5, 0xFF0000);
 						}
 					} catch (Exception e) {
 					}
 				}
 				for (int hit = 0; hit < 4; hit++)
-					if ((target).hitsLoopCycle[hit] > tick) {
-						calculateEntityScreenPosition(((target)), (target).height / 2);
+					if (target.hitsLoopCycle[hit] > tick) {
+						calculateEntityScreenPosition(((target)), target.height / 2);
 						if (spriteDrawX > -1) {
 							if (hit == 1)
 								spriteDrawY -= 20;
@@ -10025,11 +10034,11 @@ public final class Client extends RSApplet {
 								spriteDrawX += 15;
 								spriteDrawY -= 10;
 							}
-							hitMarkImage[(target).hitMarkTypes[hit]].drawImage(spriteDrawX - 12, spriteDrawY - 12);
-							fontSmall.drawCentredText(String.valueOf((target).hitArray[hit]), spriteDrawX,
+							hitMarkImage[target.hitMarkTypes[hit]].drawImage(spriteDrawX - 12, spriteDrawY - 12);
+							fontSmall.drawCentredText(String.valueOf(target.hitArray[hit]), spriteDrawX,
 									spriteDrawY + 4, 0);
-							fontSmall.drawCentredText(String.valueOf((target).hitArray[hit]), spriteDrawX - 1,
-									spriteDrawY + 3, 0xffffff);
+							fontSmall.drawCentredText(String.valueOf(target.hitArray[hit]), spriteDrawX - 1,
+									spriteDrawY + 3, 0xFFFFFF);
 						}
 					}
 
@@ -10056,41 +10065,41 @@ public final class Client extends RSApplet {
 				spriteDrawY = overheadTextDrawY[m] = y;
 				String message = overheadTextMessage[m];
 				if (chatEffectsDisabled == 0) {
-					int colour = 0xffff00;
+					int colour = 0xFFFF00;
 					if (overheadTextColour[m] < 6)
 						colour = SPOKEN_TEXT_COLOURS[overheadTextColour[m]];
 					if (overheadTextColour[m] == 6)
-						colour = renderCount % 20 >= 10 ? 0xffff00 : 0xff0000;
+						colour = renderCount % 20 >= 10 ? 0xFFFF00 : 0xFF0000;
 					if (overheadTextColour[m] == 7)
-						colour = renderCount % 20 >= 10 ? 65535 : 255;
+						colour = renderCount % 20 >= 10 ? 0x00FFFF : 0x0000FF;
 					if (overheadTextColour[m] == 8)
-						colour = renderCount % 20 >= 10 ? 0x80ff80 : 45056;
+						colour = renderCount % 20 >= 10 ? 0x80FF80 : 0x00B000;
 					if (overheadTextColour[m] == 9) {
 						int cycle = 150 - overheadTextCycle[m];
 						if (cycle < 50)
-							colour = 0xff0000 + 1280 * cycle;
+							colour = 0xFF0000 + 0x000500 * cycle;
 						else if (cycle < 100)
-							colour = 0xffff00 - 0x50000 * (cycle - 50);
+							colour = 0xFFFF00 - 0x050000 * (cycle - 50);
 						else if (cycle < 150)
-							colour = 65280 + 5 * (cycle - 100);
+							colour = 0x00FF00 + 0x000005 * (cycle - 100);
 					}
 					if (overheadTextColour[m] == 10) {
 						int cycle = 150 - overheadTextCycle[m];
 						if (cycle < 50)
-							colour = 0xff0000 + 5 * cycle;
+							colour = 0xFF0000 + 5 * cycle;
 						else if (cycle < 100)
-							colour = 0xff00ff - 0x50000 * (cycle - 50);
+							colour = 0xFF00FF - 0x050000 * (cycle - 50);
 						else if (cycle < 150)
-							colour = (255 + 0x50000 * (cycle - 100)) - 5 * (cycle - 100);
+							colour = (0x0000FF + 0x050000 * (cycle - 100)) - 5 * (cycle - 100);
 					}
 					if (overheadTextColour[m] == 11) {
 						int cycle = 150 - overheadTextCycle[m];
 						if (cycle < 50)
-							colour = 0xffffff - 0x50005 * cycle;
+							colour = 0xFFFFFF - 0x050005 * cycle;
 						else if (cycle < 100)
-							colour = 65280 + 0x50005 * (cycle - 50);
+							colour = 0x00FF00 + 0x050005 * (cycle - 50);
 						else if (cycle < 150)
-							colour = 0xffffff - 0x50000 * (cycle - 100);
+							colour = 0xFFFFFF - 0x050000 * (cycle - 100);
 					}
 					if (overheadTextEffect[m] == 0) {
 						fontBold.drawCentredText(message, spriteDrawX, spriteDrawY + 1, 0);
@@ -10134,7 +10143,7 @@ public final class Client extends RSApplet {
 					}
 				} else {
 					fontBold.drawCentredText(message, spriteDrawX, spriteDrawY + 1, 0);
-					fontBold.drawCentredText(message, spriteDrawX, spriteDrawY, 0xffff00);
+					fontBold.drawCentredText(message, spriteDrawX, spriteDrawY, 0xFFFF00);
 				}
 			}
 		} catch (Exception e) {
@@ -10243,7 +10252,7 @@ public final class Client extends RSApplet {
 			int updateType = stream.getUnsignedByte();
 			if ((updateType & 0x10) != 0) {
 				int animationId = stream.getUnsignedShort();
-				if (animationId == 65535)
+				if (animationId == 0x00FFFF)
 					animationId = -1;
 				int animationDelay = stream.getUnsignedByte();
 				if (animationId == npc.animation && animationId != -1) {
@@ -10278,17 +10287,17 @@ public final class Client extends RSApplet {
 				npc.graphicId = stream.getUnsignedLEShort();
 				int delay = stream.getInt();
 				npc.graphicHeight = delay >> 16;
-				npc.graphicEndCycle = tick + (delay & 0xffff);
+				npc.graphicEndCycle = tick + (delay & 0xFFff);
 				npc.currentAnimationId = 0;
 				npc.currentAnimationTimeRemaining = 0;
 				if (npc.graphicEndCycle > tick)
 					npc.currentAnimationId = -1;
-				if (npc.graphicId == 65535)
+				if (npc.graphicId == 0x00FFFF)
 					npc.graphicId = -1;
 			}
 			if ((updateType & 0x20) != 0) {
 				npc.interactingEntity = stream.getUnsignedLEShort();
-				if (npc.interactingEntity == 65535)
+				if (npc.interactingEntity == 0x00FFFF)
 					npc.interactingEntity = -1;
 			}
 			if ((updateType & 1) != 0) {
@@ -10501,17 +10510,17 @@ public final class Client extends RSApplet {
 			player.graphicId = stream.getUnsignedShort();
 			int delay = stream.getInt();
 			player.graphicHeight = delay >> 16;
-			player.graphicEndCycle = tick + (delay & 0xffff);
+			player.graphicEndCycle = tick + (delay & 0xFFff);
 			player.currentAnimationId = 0;
 			player.currentAnimationTimeRemaining = 0;
 			if (player.graphicEndCycle > tick)
 				player.currentAnimationId = -1;
-			if (player.graphicId == 65535)
+			if (player.graphicId == 0x00FFFF)
 				player.graphicId = -1;
 		}
-		if ((updateType & 8) != 0) {
+		if ((updateType & 0x008) != 0) {
 			int animationId = stream.getUnsignedShort();
-			if (animationId == 65535)
+			if (animationId == 0x00FFFF)
 				animationId = -1;
 			int animationDelay = stream.getUnsignedByteC();
 			if (animationId == player.animation && animationId != -1) {
@@ -10534,7 +10543,7 @@ public final class Client extends RSApplet {
 				player.stepsRemaining = player.waypointCount;
 			}
 		}
-		if ((updateType & 4) != 0) {
+		if ((updateType & 0x004) != 0) {
 			player.overheadTextMessage = stream.getString();
 			if (player.overheadTextMessage.charAt(0) == '~') {
 				player.overheadTextMessage = player.overheadTextMessage.substring(1);
@@ -10545,7 +10554,7 @@ public final class Client extends RSApplet {
 			player.chatEffect = 0;
 			player.textCycle = 150;
 		}
-		if ((updateType & 0x80) != 0) {
+		if ((updateType & 0x080) != 0) {
 			int colourAndEffect = stream.getUnsignedShort();
 			int rights = stream.getUnsignedByte();
 			int messageLength = stream.getUnsignedByteC();
@@ -10575,7 +10584,7 @@ public final class Client extends RSApplet {
 
 						// entityMessage(player);
 
-						player.chatEffect = colourAndEffect & 0xff;
+						player.chatEffect = colourAndEffect & 0xFF;
 						player.textCycle = 150;
 						if (rights == 2 || rights == 3)
 							pushMessage(text, 1, "@cr2@" + player.name);
@@ -10589,12 +10598,12 @@ public final class Client extends RSApplet {
 			}
 			stream.position = originalOffset + messageLength;
 		}
-		if ((updateType & 1) != 0) {
+		if ((updateType & 0x001) != 0) {
 			player.interactingEntity = stream.getUnsignedShort();
-			if (player.interactingEntity == 65535)
+			if (player.interactingEntity == 0x00FFFF)
 				player.interactingEntity = -1;
 		}
-		if ((updateType & 0x10) != 0) {
+		if ((updateType & 0x010) != 0) {
 			int appearanceBufferSize = stream.getUnsignedByteC();
 			byte _appearanceBuffer[] = new byte[appearanceBufferSize];
 			Buffer appearanceBuffer = new Buffer(_appearanceBuffer);
@@ -10602,11 +10611,11 @@ public final class Client extends RSApplet {
 			playerAppearanceData[playerId] = appearanceBuffer;
 			player.updatePlayerAppearance(appearanceBuffer);
 		}
-		if ((updateType & 2) != 0) {
+		if ((updateType & 0x002) != 0) {
 			player.faceTowardX = stream.getUnsignedShortA();
 			player.faceTowardY = stream.getUnsignedShort();
 		}
-		if ((updateType & 0x20) != 0) {
+		if ((updateType & 0x020) != 0) {
 			int hitDamage = stream.getUnsignedByte();
 			int hitType = stream.getUnsignedByteA();
 			player.updateHitData(hitType, hitDamage, tick);
