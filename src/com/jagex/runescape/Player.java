@@ -99,7 +99,7 @@ public final class Player extends Entity {
 			}
 		}
 		if (model_1 == null) {
-			Model aclass30_sub2_sub4_sub6s[] = new Model[12];
+			Model models[] = new Model[12];
 			int j2 = 0;
 			for (int l2 = 0; l2 < 12; l2++) {
 				int i3 = appearance[l2];
@@ -110,16 +110,16 @@ public final class Player extends Entity {
 				if (i3 >= 256 && i3 < 512) {
 					Model model_3 = IdentityKit.cache[i3 - 256].getBodyModel();
 					if (model_3 != null)
-						aclass30_sub2_sub4_sub6s[j2++] = model_3;
+						models[j2++] = model_3;
 				}
 				if (i3 >= 512) {
 					Model model_4 = ItemDefinition.getDefinition(i3 - 512).getEquippedModel(gender);
 					if (model_4 != null)
-						aclass30_sub2_sub4_sub6s[j2++] = model_4;
+						models[j2++] = model_4;
 				}
 			}
 
-			model_1 = new Model(j2, aclass30_sub2_sub4_sub6s);
+			model_1 = new Model(j2, models);
 			for (int part = 0; part < 5; part++)
 				if (bodyPartColour[part] != 0) {
 					model_1.recolour(Client.APPEARANCE_COLOURS[part][0],
@@ -163,23 +163,23 @@ public final class Player extends Entity {
 
 		if (flag)
 			return null;
-		Model aclass30_sub2_sub4_sub6s[] = new Model[12];
+		Model models[] = new Model[12];
 		int k = 0;
 		for (int l = 0; l < 12; l++) {
 			int i1 = appearance[l];
 			if (i1 >= 256 && i1 < 512) {
 				Model model_1 = IdentityKit.cache[i1 - 256].getHeadModel();
 				if (model_1 != null)
-					aclass30_sub2_sub4_sub6s[k++] = model_1;
+					models[k++] = model_1;
 			}
 			if (i1 >= 512) {
 				Model model_2 = ItemDefinition.getDefinition(i1 - 512).getDialogueModel(gender);
 				if (model_2 != null)
-					aclass30_sub2_sub4_sub6s[k++] = model_2;
+					models[k++] = model_2;
 			}
 		}
 
-		Model model = new Model(k, aclass30_sub2_sub4_sub6s);
+		Model model = new Model(k, models);
 		for (int j1 = 0; j1 < 5; j1++)
 			if (bodyPartColour[j1] != 0) {
 				model.recolour(Client.APPEARANCE_COLOURS[j1][0], Client.APPEARANCE_COLOURS[j1][bodyPartColour[j1]]);
@@ -194,63 +194,63 @@ public final class Player extends Entity {
 	public Model getRotatedModel() {
 		if (!visible)
 			return null;
-		Model model = getAnimatedModel();
-		if (model == null)
+		Model appearanceModel = getAnimatedModel();
+		if (appearanceModel == null)
 			return null;
-		super.height = model.modelHeight;
-		model.singleTile = true;
+		super.height = appearanceModel.modelHeight;
+		appearanceModel.singleTile = true;
 		if (preventRotation)
-			return model;
+			return appearanceModel;
 		if (super.graphicId != -1 && super.currentAnimationId != -1) {
-			SpotAnimation spotAnim = SpotAnimation.cache[super.graphicId];
-			Model model_2 = spotAnim.getModel();
-			if (model_2 != null) {
-				Model model_3 = new Model(true, Animation.isNullFrame(super.currentAnimationId), false, model_2);
-				model_3.translate(0, -super.graphicHeight, 0);
-				model_3.createBones();
-				model_3.applyTransformation(spotAnim.sequences.primaryFrames[super.currentAnimationId]);
-				model_3.triangleSkin = null;
-				model_3.vertexSkin = null;
-				if (spotAnim.scaleXY != 128 || spotAnim.scaleZ != 128)
-					model_3.scaleT(spotAnim.scaleXY, spotAnim.scaleXY, spotAnim.scaleZ);
-				model_3.applyLighting(64 + spotAnim.modelLightFalloff, 850 + spotAnim.modelLightAmbient, -30, -50, -30,
+			SpotAnimation animation = SpotAnimation.cache[super.graphicId];
+			Model graphicModel = animation.getModel();
+			if (graphicModel != null) {
+				Model model = new Model(true, Animation.isNullFrame(super.currentAnimationId), false, graphicModel);
+				model.translate(0, -super.graphicHeight, 0);
+				model.createBones();
+				model.applyTransformation(animation.sequences.primaryFrames[super.currentAnimationId]);
+				model.triangleSkin = null;
+				model.vertexSkin = null;
+				if (animation.scaleXY != 128 || animation.scaleZ != 128)
+					model.scaleT(animation.scaleXY, animation.scaleXY, animation.scaleZ);
+				model.applyLighting(64 + animation.modelLightFalloff, 850 + animation.modelLightAmbient, -30, -50, -30,
 						true);
-				Model aclass30_sub2_sub4_sub6_1s[] = { model, model_3 };
-				model = new Model(aclass30_sub2_sub4_sub6_1s);
+				Model models[] = { appearanceModel, model };
+				appearanceModel = new Model(models);
 			}
 		}
 		if (playerModel != null) {
 			if (Client.tick >= modifiedAppearanceEndTime)
 				playerModel = null;
 			if (Client.tick >= modifiedAppearanceStartTime && Client.tick < modifiedAppearanceEndTime) {
-				Model model_1 = playerModel;
-				model_1.translate(anInt1711 - super.x, drawHeight - drawHeight2, anInt1713 - super.y);
+				Model model = playerModel;
+				model.translate(anInt1711 - super.x, drawHeight - drawHeight2, anInt1713 - super.y);
 				if (super.turnDirection == 512) {
-					model_1.rotate90Degrees();
-					model_1.rotate90Degrees();
-					model_1.rotate90Degrees();
+					model.rotate90Degrees();
+					model.rotate90Degrees();
+					model.rotate90Degrees();
 				} else if (super.turnDirection == 1024) {
-					model_1.rotate90Degrees();
-					model_1.rotate90Degrees();
+					model.rotate90Degrees();
+					model.rotate90Degrees();
 				} else if (super.turnDirection == 1536)
-					model_1.rotate90Degrees();
-				Model aclass30_sub2_sub4_sub6s[] = { model, model_1 };
-				model = new Model(aclass30_sub2_sub4_sub6s);
+					model.rotate90Degrees();
+				Model models[] = { appearanceModel, model };
+				appearanceModel = new Model(models);
 				if (super.turnDirection == 512)
-					model_1.rotate90Degrees();
+					model.rotate90Degrees();
 				else if (super.turnDirection == 1024) {
-					model_1.rotate90Degrees();
-					model_1.rotate90Degrees();
+					model.rotate90Degrees();
+					model.rotate90Degrees();
 				} else if (super.turnDirection == 1536) {
-					model_1.rotate90Degrees();
-					model_1.rotate90Degrees();
-					model_1.rotate90Degrees();
+					model.rotate90Degrees();
+					model.rotate90Degrees();
+					model.rotate90Degrees();
 				}
-				model_1.translate(super.x - anInt1711, drawHeight2 - drawHeight, super.y - anInt1713);
+				model.translate(super.x - anInt1711, drawHeight2 - drawHeight, super.y - anInt1713);
 			}
 		}
-		model.singleTile = true;
-		return model;
+		appearanceModel.singleTile = true;
+		return appearanceModel;
 	}
 
 	@Override
