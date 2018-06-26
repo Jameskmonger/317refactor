@@ -153,11 +153,11 @@ public final class Client extends RSApplet {
 	private int cameraHorizontalRotation;
 	private int playerRights;
 	private final int[] skillExperience;
-	private Background redStone1_3;
-	private Background redStone2_3;
-	private Background redStone3_2;
-	private Background redStone1_4;
-	private Background redStone2_4;
+	private IndexedImage redStone1_3;
+	private IndexedImage redStone2_3;
+	private IndexedImage redStone3_2;
+	private IndexedImage redStone1_4;
+	private IndexedImage redStone2_4;
 	private Sprite mapFlag;
 	private Sprite mapMarker;
 	private boolean aBoolean872;
@@ -222,7 +222,7 @@ public final class Client extends RSApplet {
 	private final String[] chatMessages;
 	private int animationTimePassed;
 	private WorldController worldController;
-	private Background[] sideIconImage;
+	private IndexedImage[] sideIconImage;
 	private int menuScreenArea;
 	private int menuOffsetX;
 	private int menuOffsetY;
@@ -240,8 +240,8 @@ public final class Client extends RSApplet {
 	private int spriteDrawX;
 	private int spriteDrawY;
 	private final int[] SPOKEN_TEXT_COLOURS = { 0xFFFF00, 0xFF0000, 0x00FF00, 0x00FFFF, 0xFF00FF, 0xFFFFFF };
-	private Background titleBoxImage;
-	private Background titleButtonImage;
+	private IndexedImage titleBoxImage;
+	private IndexedImage titleButtonImage;
 	private final int[] compassHingeSize;
 	private final int[] anIntArray969;
 	final FileCache[] caches;
@@ -293,12 +293,12 @@ public final class Client extends RSApplet {
 	private int minimapState;
 	private int sameClickPositionCounter;
 	private int loadingStage;
-	private Background scrollBarUp;
-	private Background scrollBarDown;
+	private IndexedImage scrollBarUp;
+	private IndexedImage scrollBarDown;
 	private int anInt1026;
-	private Background backBase1Image;
-	private Background backBase2Image;
-	private Background backHmid1Image;
+	private IndexedImage backBase1Image;
+	private IndexedImage backBase2Image;
+	private IndexedImage backHmid1Image;
 	private final int[] unknownCameraVariable;
 	private boolean characterModelChanged;
 	private Sprite[] mapFunctionImage;
@@ -325,7 +325,7 @@ public final class Client extends RSApplet {
 	private DoubleEndedQueue stationaryGraphicQueue;
 	private final int[] compassWidthMap;
 	private final RSInterface chatboxInterface;
-	private Background[] mapSceneImage;
+	private IndexedImage[] mapSceneImage;
 	private static int drawCycle;
 	private int trackCount;
 	private final int SCROLLBAR_GRIP_FOREGROUND;
@@ -397,16 +397,16 @@ public final class Client extends RSApplet {
 	private String spellTooltip;
 	private Sprite[] minimapHint;
 	private boolean inTutorialIsland;
-	private Background redStone1;
-	private Background redStone2;
-	private Background redStone3;
-	private Background redStone1_2;
-	private Background redStone2_2;
+	private IndexedImage redStone1;
+	private IndexedImage redStone2;
+	private IndexedImage redStone3;
+	private IndexedImage redStone1_2;
+	private IndexedImage redStone2_2;
 	private int playerEnergy;
 	private boolean continuedDialogue;
 	private Sprite[] crosses;
 	private boolean musicEnabled;
-	private Background[] flameRuneImage;
+	private IndexedImage[] flameRuneImage;
 	private boolean redrawTab;
 	private int unreadMessages;
 	private static boolean displayFpsAndMemory;
@@ -446,9 +446,9 @@ public final class Client extends RSApplet {
 	private Buffer stream;
 	private int lastAddress;
 	private int splitPrivateChat;
-	private Background inventoryBackgroundImage;
-	private Background minimapBackgroundImage;
-	private Background chatBackgroundImage;
+	private IndexedImage inventoryBackgroundImage;
+	private IndexedImage minimapBackgroundImage;
+	private IndexedImage chatBackgroundImage;
 	private String[] menuActionName;
 	private Sprite flameLeftBackground2;
 	private Sprite flameRightBackground2;
@@ -466,7 +466,7 @@ public final class Client extends RSApplet {
 	private int[][][] intGroundArray;
 	private long serverSessionKey;
 	private int loginScreenFocus;
-	private final Background[] modIcons;
+	private final IndexedImage[] modIcons;
 	private long lastClickTime;
 	private int currentTabId;
 	private int hintIconNpcId;
@@ -591,7 +591,7 @@ public final class Client extends RSApplet {
 		chatTypes = new int[100];
 		chatNames = new String[100];
 		chatMessages = new String[100];
-		sideIconImage = new Background[13];
+		sideIconImage = new IndexedImage[13];
 		windowFocused = true;
 		friendsListAsLongs = new long[200];
 		currentSong = -1;
@@ -632,7 +632,7 @@ public final class Client extends RSApplet {
 		stationaryGraphicQueue = new DoubleEndedQueue();
 		compassWidthMap = new int[33];
 		chatboxInterface = new RSInterface();
-		mapSceneImage = new Background[100];
+		mapSceneImage = new IndexedImage[100];
 		SCROLLBAR_GRIP_FOREGROUND = 0x4d4233;
 		characterEditIdentityKits = new int[7];
 		minimapHintX = new int[1000];
@@ -677,7 +677,7 @@ public final class Client extends RSApplet {
 		randomisationMinimapRotation = 2;
 		chatboxScrollMax = 78;
 		promptInput = "";
-		modIcons = new Background[2];
+		modIcons = new IndexedImage[2];
 		currentTabId = 3;
 		redrawChatbox = false;
 		songChanging = true;
@@ -818,7 +818,7 @@ public final class Client extends RSApplet {
 	private void animateTexture(int textureId) {
 		if (!lowMemory) {
 			if (Rasterizer.textureLastUsed[17] >= textureId) {
-				Background background = Rasterizer.textureImages[17];
+				IndexedImage background = Rasterizer.textureImages[17];
 				int area = background.width * background.height - 1;
 				int difference = background.width * animationTimePassed * 2;
 				byte originalPixels[] = background.pixels;
@@ -831,7 +831,7 @@ public final class Client extends RSApplet {
 				Rasterizer.resetTexture(17);
 			}
 			if (Rasterizer.textureLastUsed[24] >= textureId) {
-				Background background = Rasterizer.textureImages[24];
+				IndexedImage background = Rasterizer.textureImages[24];
 				int area = background.width * background.height - 1;
 				int difference = background.width * animationTimePassed * 2;
 				byte originalPixels[] = background.pixels;
@@ -844,7 +844,7 @@ public final class Client extends RSApplet {
 				Rasterizer.resetTexture(24);
 			}
 			if (Rasterizer.textureLastUsed[34] >= textureId) {
-				Background background = Rasterizer.textureImages[34];
+				IndexedImage background = Rasterizer.textureImages[34];
 				int area = background.width * background.height - 1;
 				int difference = background.width * animationTimePassed * 2;
 				byte originalPixels[] = background.pixels;
@@ -4501,7 +4501,7 @@ public final class Client extends RSApplet {
 			int objectId = uid >> 14 & 0x7FFF;
 			GameObjectDefinition definition = GameObjectDefinition.getDefinition(objectId);
 			if (definition.mapScene != -1) {
-				Background background = mapSceneImage[definition.mapScene];
+				IndexedImage background = mapSceneImage[definition.mapScene];
 				if (background != null) {
 					int _x = (definition.sizeX * 4 - background.width) / 2;
 					int _y = (definition.sizeY * 4 - background.height) / 2;
@@ -4572,7 +4572,7 @@ public final class Client extends RSApplet {
 			int objectId = uid >> 14 & 0x7FFF;
 			GameObjectDefinition definition = GameObjectDefinition.getDefinition(objectId);
 			if (definition.mapScene != -1) {
-				Background background = mapSceneImage[definition.mapScene];
+				IndexedImage background = mapSceneImage[definition.mapScene];
 				if (background != null) {
 					int _x = (definition.sizeX * 4 - background.width) / 2;
 					int _y = (definition.sizeY * 4 - background.height) / 2;
@@ -4605,7 +4605,7 @@ public final class Client extends RSApplet {
 			int objectId = uid >> 14 & 0x7FFF;
 			GameObjectDefinition definition = GameObjectDefinition.getDefinition(objectId);
 			if (definition.mapScene != -1) {
-				Background background = mapSceneImage[definition.mapScene];
+				IndexedImage background = mapSceneImage[definition.mapScene];
 				if (background != null) {
 					int _x = (definition.sizeX * 4 - background.width) / 2;
 					int _y = (definition.sizeY * 4 - background.height) / 2;
@@ -6422,9 +6422,9 @@ public final class Client extends RSApplet {
 	}
 
 	private void loadTitleScreen() {
-		titleBoxImage = new Background(archiveTitle, "titlebox", 0);
-		titleButtonImage = new Background(archiveTitle, "titlebutton", 0);
-		flameRuneImage = new Background[12];
+		titleBoxImage = new IndexedImage(archiveTitle, "titlebox", 0);
+		titleButtonImage = new IndexedImage(archiveTitle, "titlebutton", 0);
+		flameRuneImage = new IndexedImage[12];
 		int icon = 0;
 		try {
 			icon = Integer.parseInt(getParameter("fl_icon"));
@@ -6432,11 +6432,11 @@ public final class Client extends RSApplet {
 		}
 		if (icon == 0) {
 			for (int r = 0; r < 12; r++)
-				flameRuneImage[r] = new Background(archiveTitle, "runes", r);
+				flameRuneImage[r] = new IndexedImage(archiveTitle, "runes", r);
 
 		} else {
 			for (int r = 0; r < 12; r++)
-				flameRuneImage[r] = new Background(archiveTitle, "runes", 12 + (r & 3));
+				flameRuneImage[r] = new IndexedImage(archiveTitle, "runes", 12 + (r & 3));
 
 		}
 		flameLeftBackground2 = new Sprite(128, 265);
@@ -8661,7 +8661,7 @@ public final class Client extends RSApplet {
 		chatMessages[0] = message;
 	}
 
-	private void randomizeBackground(Background background) {
+	private void randomizeBackground(IndexedImage background) {
 		int j = 256;
 		for (int k = 0; k < anIntArray1190.length; k++)
 			anIntArray1190[k] = 0;
@@ -9722,21 +9722,21 @@ public final class Client extends RSApplet {
 
 			}
 			drawLoadingText(80, "Unpacking media");
-			inventoryBackgroundImage = new Background(archiveMedia, "invback", 0);
-			chatBackgroundImage = new Background(archiveMedia, "chatback", 0);
-			minimapBackgroundImage = new Background(archiveMedia, "mapback", 0);
-			backBase1Image = new Background(archiveMedia, "backbase1", 0);
-			backBase2Image = new Background(archiveMedia, "backbase2", 0);
-			backHmid1Image = new Background(archiveMedia, "backhmid1", 0);
+			inventoryBackgroundImage = new IndexedImage(archiveMedia, "invback", 0);
+			chatBackgroundImage = new IndexedImage(archiveMedia, "chatback", 0);
+			minimapBackgroundImage = new IndexedImage(archiveMedia, "mapback", 0);
+			backBase1Image = new IndexedImage(archiveMedia, "backbase1", 0);
+			backBase2Image = new IndexedImage(archiveMedia, "backbase2", 0);
+			backHmid1Image = new IndexedImage(archiveMedia, "backhmid1", 0);
 			for (int icon = 0; icon < 13; icon++)
-				sideIconImage[icon] = new Background(archiveMedia, "sideicons", icon);
+				sideIconImage[icon] = new IndexedImage(archiveMedia, "sideicons", icon);
 
 			minimapCompassImage = new Sprite(archiveMedia, "compass", 0);
 			minimapEdgeImage = new Sprite(archiveMedia, "mapedge", 0);
 			minimapEdgeImage.trim();
 			try {
 				for (int i = 0; i < 100; i++)
-					mapSceneImage[i] = new Background(archiveMedia, "mapscene", i);
+					mapSceneImage[i] = new IndexedImage(archiveMedia, "mapscene", i);
 
 			} catch (Exception _ex) {
 			}
@@ -9770,29 +9770,29 @@ public final class Client extends RSApplet {
 			mapDotPlayer = new Sprite(archiveMedia, "mapdots", 2);
 			mapDotFriend = new Sprite(archiveMedia, "mapdots", 3);
 			mapDotTeam = new Sprite(archiveMedia, "mapdots", 4);
-			scrollBarUp = new Background(archiveMedia, "scrollbar", 0);
-			scrollBarDown = new Background(archiveMedia, "scrollbar", 1);
-			redStone1 = new Background(archiveMedia, "redstone1", 0);
-			redStone2 = new Background(archiveMedia, "redstone2", 0);
-			redStone3 = new Background(archiveMedia, "redstone3", 0);
-			redStone1_2 = new Background(archiveMedia, "redstone1", 0);
+			scrollBarUp = new IndexedImage(archiveMedia, "scrollbar", 0);
+			scrollBarDown = new IndexedImage(archiveMedia, "scrollbar", 1);
+			redStone1 = new IndexedImage(archiveMedia, "redstone1", 0);
+			redStone2 = new IndexedImage(archiveMedia, "redstone2", 0);
+			redStone3 = new IndexedImage(archiveMedia, "redstone3", 0);
+			redStone1_2 = new IndexedImage(archiveMedia, "redstone1", 0);
 			redStone1_2.flipHorizontally();
-			redStone2_2 = new Background(archiveMedia, "redstone2", 0);
+			redStone2_2 = new IndexedImage(archiveMedia, "redstone2", 0);
 			redStone2_2.flipHorizontally();
-			redStone1_3 = new Background(archiveMedia, "redstone1", 0);
+			redStone1_3 = new IndexedImage(archiveMedia, "redstone1", 0);
 			redStone1_3.flipVertically();
-			redStone2_3 = new Background(archiveMedia, "redstone2", 0);
+			redStone2_3 = new IndexedImage(archiveMedia, "redstone2", 0);
 			redStone2_3.flipVertically();
-			redStone3_2 = new Background(archiveMedia, "redstone3", 0);
+			redStone3_2 = new IndexedImage(archiveMedia, "redstone3", 0);
 			redStone3_2.flipVertically();
-			redStone1_4 = new Background(archiveMedia, "redstone1", 0);
+			redStone1_4 = new IndexedImage(archiveMedia, "redstone1", 0);
 			redStone1_4.flipHorizontally();
 			redStone1_4.flipVertically();
-			redStone2_4 = new Background(archiveMedia, "redstone2", 0);
+			redStone2_4 = new IndexedImage(archiveMedia, "redstone2", 0);
 			redStone2_4.flipHorizontally();
 			redStone2_4.flipVertically();
 			for (int i = 0; i < 2; i++)
-				modIcons[i] = new Background(archiveMedia, "mod_icons", i);
+				modIcons[i] = new IndexedImage(archiveMedia, "mod_icons", i);
 
 			Sprite sprite = new Sprite(archiveMedia, "backleft1", 0);
 			backLeftIP1 = new RSImageProducer(sprite.width, sprite.height, getGameComponent());

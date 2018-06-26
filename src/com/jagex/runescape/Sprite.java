@@ -326,7 +326,7 @@ public final class Sprite extends DrawingArea {
 		DrawingArea.initDrawingArea(height, width, pixels);
 	}
 
-	public void method354(Background background, int x, int y) {
+	public void method354(IndexedImage background, int x, int y) {
 		y += offsetX;
 		x += offsetY;
 		int k = y + x * DrawingArea.width;

@@ -1356,7 +1356,7 @@ final class Rasterizer extends DrawingArea {
 			texelCache[target] = null;
 		}
 		texelCache[textureId] = texels;
-		Background background = textureImages[textureId];
+		IndexedImage background = textureImages[textureId];
 		int texturePalette[] = texturePalettes[textureId];
 		if (lowMemory) {
 			transparent[textureId] = false;
@@ -1937,7 +1937,7 @@ final class Rasterizer extends DrawingArea {
 		loadedTextureCount = 0;
 		for (int i = 0; i < 50; i++)
 			try {
-				textureImages[i] = new Background(archive, String.valueOf(i), 0);
+				textureImages[i] = new IndexedImage(archive, String.valueOf(i), 0);
 				if (lowMemory && textureImages[i].resizeWidth == 128)
 					textureImages[i].resizeToHalf();
 				else
@@ -1962,7 +1962,7 @@ final class Rasterizer extends DrawingArea {
 	public static int COSINE[];
 	public static int lineOffsets[];
 	private static int loadedTextureCount;
-	public static Background textureImages[] = new Background[50];
+	public static IndexedImage textureImages[] = new IndexedImage[50];
 	private static boolean[] transparent = new boolean[50];
 	private static int[] averageTextureColour = new int[50];
 	private static int texelPoolPointer;

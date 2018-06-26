@@ -1,6 +1,6 @@
 package com.jagex.runescape;
 
-public final class Background extends DrawingArea {
+public final class IndexedImage extends DrawingArea {
 
 	public byte pixels[];
 
@@ -18,7 +18,7 @@ public final class Background extends DrawingArea {
 
 	private int resizeHeight;
 
-	public Background(Archive archive, String name, int id) {
+	public IndexedImage(Archive archive, String name, int id) {
 		Buffer imageBuffer = new Buffer(archive.decompressFile(name + ".dat"));
 		Buffer metadataBuffer = new Buffer(archive.decompressFile("index.dat"));
 
