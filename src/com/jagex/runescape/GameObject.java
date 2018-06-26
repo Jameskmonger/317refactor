@@ -47,7 +47,7 @@ final class GameObject extends Animable {
 	private GameObjectDefinition getChildDefinition() {
 		int child = -1;
 		if (varBitId != -1) {
-			VarBit varBit = VarBit.cache[varBitId];
+			VarBit varBit = VarBit.values[varBitId];
 			int configId = varBit.configId;
 			int lsb = varBit.leastSignificantBit;
 			int msb = varBit.mostSignificantBit;

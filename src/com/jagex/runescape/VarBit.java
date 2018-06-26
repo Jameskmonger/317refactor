@@ -2,54 +2,51 @@ package com.jagex.runescape;
 
 public final class VarBit {
 
-	public static void load(Archive archive) {
-		Buffer stream = new Buffer(archive.decompressFile("varbit.dat"));
-		int cacheSize = stream.getUnsignedLEShort();
-		if (cache == null)
-			cache = new VarBit[cacheSize];
-		for (int j = 0; j < cacheSize; j++) {
-			if (cache[j] == null)
-				cache[j] = new VarBit();
-			cache[j].loadDefinition(stream);
-			if (cache[j].aBoolean651)
-				Varp.cache[cache[j].configId].aBoolean713 = true;
-		}
-
-		if (stream.position != stream.buffer.length)
-			System.out.println("varbit load mismatch");
-	}
-
-	public static VarBit cache[];
-
+	public static VarBit values[];
 	public int configId;
-
 	public int leastSignificantBit;
 	public int mostSignificantBit;
-	private boolean aBoolean651;
 
-	private VarBit() {
-		aBoolean651 = false;
+	public static void load(Archive archive) {
+		Buffer buffer = new Buffer(archive.decompressFile("varbit.dat"));
+		int count = buffer.getUnsignedLEShort();
+
+		if (values == null) {
+			values = new VarBit[count];
+		}
+
+		for (int i = 0; i < count; i++) {
+			if (values[i] == null) {
+				values[i] = new VarBit();
+			}
+
+			values[i].load(buffer);
+		}
+
+		if (buffer.position != buffer.buffer.length) {
+			System.out.println("varbit load mismatch");
+		}
 	}
 
-	private void loadDefinition(Buffer stream) {
+	private void load(Buffer buffer) {
 		do {
-			int j = stream.getUnsignedByte();
-			if (j == 0)
+			int opcode = buffer.getUnsignedByte();
+			if (opcode == 0)
 				return;
-			if (j == 1) {
-				configId = stream.getUnsignedLEShort();
-				leastSignificantBit = stream.getUnsignedByte();
-				mostSignificantBit = stream.getUnsignedByte();
-			} else if (j == 10)
-				stream.getString();
-			else if (j == 2)
-				aBoolean651 = true;
-			else if (j == 3)
-				stream.getInt();
-			else if (j == 4)
-				stream.getInt();
+			if (opcode == 1) {
+				configId = buffer.getUnsignedLEShort();
+				leastSignificantBit = buffer.getUnsignedByte();
+				mostSignificantBit = buffer.getUnsignedByte();
+			} else if (opcode == 10)
+				buffer.getString();
+			else if (opcode == 2) {
+			} // dummy
+			else if (opcode == 3)
+				buffer.getInt();
+			else if (opcode == 4)
+				buffer.getInt();
 			else
-				System.out.println("Error unrecognised config code: " + j);
+				System.out.println("Error unrecognised config code: " + opcode);
 		} while (true);
 	}
 }

@@ -1896,7 +1896,7 @@ public final class Client extends RSApplet {
 		AnimationSequence.animations = null;
 		SpotAnimation.cache = null;
 		SpotAnimation.modelCache = null;
-		Varp.cache = null;
+		Varp.values = null;
 		super.fullGameScreen = null;
 		Player.mruNodes = null;
 		Rasterizer.nullLoader();
@@ -5964,7 +5964,7 @@ public final class Client extends RSApplet {
 	}
 
 	private void handleInterfaceSetting(int s) {
-		int opcode = Varp.cache[s].type;
+		int opcode = Varp.values[s].type;
 		if (opcode == 0)
 			return;
 		int setting = interfaceSettings[s];
@@ -7792,7 +7792,7 @@ public final class Client extends RSApplet {
 				}
 				if (opcode == 14) {
 					int varBitId = opcodes[counter++];
-					VarBit varBit = VarBit.cache[varBitId];
+					VarBit varBit = VarBit.values[varBitId];
 					int configId = varBit.configId;
 					int lsb = varBit.leastSignificantBit;
 					int msb = varBit.mostSignificantBit;
