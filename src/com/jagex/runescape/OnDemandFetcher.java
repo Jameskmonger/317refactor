@@ -21,13 +21,13 @@ public final class OnDemandFetcher implements Runnable {
 
 	private int writeLoopCycle;
 
-	private long openSocketTime;
+	private long lastRequestTime;
 
 	private int[] mapIndices3;
 
 	private final CRC32 crc32;
 
-	private final byte[] ioBuffer;
+	private final byte[] payload;
 
 	public int onDemandCycle;
 
@@ -41,7 +41,7 @@ public final class OnDemandFetcher implements Runnable {
 
 	private int expectedSize;
 
-	private int[] anIntArray1348;
+	private int[] musicPriorities;
 
 	public int failedRequests;
 
@@ -57,10 +57,10 @@ public final class OnDemandFetcher implements Runnable {
 
 	private boolean waiting;
 
-	private final DoubleEndedQueue aClass19_1358;
+	private final DoubleEndedQueue complete;
 
 	private final byte[] gzipInputBuffer;
-	private int[] anIntArray1360;
+	private int[] frames;
 	private final CacheableQueue nodeSubList;
 	private InputStream inputStream;
 	private Socket socket;
@@ -68,9 +68,9 @@ public final class OnDemandFetcher implements Runnable {
 	private final int[][] crcs;
 	private int uncompletedCount;
 	private int completedCount;
-	private final DoubleEndedQueue aClass19_1368;
+	private final DoubleEndedQueue unrequested;
 	private OnDemandData current;
-	private final DoubleEndedQueue aClass19_1370;
+	private final DoubleEndedQueue mandatoryRequests;
 	private int[] mapIndices1;
 	private byte[] modelIndices;
 	private int loopCycle;
@@ -79,43 +79,43 @@ public final class OnDemandFetcher implements Runnable {
 		requested = new DoubleEndedQueue();
 		statusString = "";
 		crc32 = new CRC32();
-		ioBuffer = new byte[500];
+		payload = new byte[500];
 		filePriorities = new byte[4][];
 		passiveRequests = new DoubleEndedQueue();
 		running = true;
 		waiting = false;
-		aClass19_1358 = new DoubleEndedQueue();
+		complete = new DoubleEndedQueue();
 		gzipInputBuffer = new byte[65000];
 		nodeSubList = new CacheableQueue();
 		versions = new int[4][];
 		crcs = new int[4][];
-		aClass19_1368 = new DoubleEndedQueue();
-		aClass19_1370 = new DoubleEndedQueue();
+		unrequested = new DoubleEndedQueue();
+		mandatoryRequests = new DoubleEndedQueue();
 	}
 
 	private void checkReceived() {
-		OnDemandData onDemandData;
-		synchronized (aClass19_1370) {
-			onDemandData = (OnDemandData) aClass19_1370.popFront();
+		OnDemandData request;
+		synchronized (mandatoryRequests) {
+			request = (OnDemandData) mandatoryRequests.popFront();
 		}
-		while (onDemandData != null) {
+		while (request != null) {
 			waiting = true;
-			byte abyte0[] = null;
+			byte data[] = null;
 			if (clientInstance.caches[0] != null)
-				abyte0 = clientInstance.caches[onDemandData.dataType + 1].decompress(onDemandData.id);
-			if (!crcMatches(versions[onDemandData.dataType][onDemandData.id],
-					crcs[onDemandData.dataType][onDemandData.id], abyte0))
-				abyte0 = null;
-			synchronized (aClass19_1370) {
-				if (abyte0 == null) {
-					aClass19_1368.pushBack(onDemandData);
+				data = clientInstance.caches[request.dataType + 1].decompress(request.id);
+			if (!crcMatches(versions[request.dataType][request.id],
+					crcs[request.dataType][request.id], data))
+				data = null;
+			synchronized (mandatoryRequests) {
+				if (data == null) {
+					unrequested.pushBack(request);
 				} else {
-					onDemandData.buffer = abyte0;
-					synchronized (aClass19_1358) {
-						aClass19_1358.pushBack(onDemandData);
+					request.buffer = data;
+					synchronized (complete) {
+						complete.pushBack(request);
 					}
 				}
-				onDemandData = (OnDemandData) aClass19_1370.popFront();
+				request = (OnDemandData) mandatoryRequests.popFront();
 			}
 		}
 	}
@@ -126,13 +126,13 @@ public final class OnDemandFetcher implements Runnable {
 		}
 	}
 
-	private void closeRequest(OnDemandData onDemandData) {
+	private void closeRequest(OnDemandData request) {
 		try {
 			if (socket == null) {
-				long l = System.currentTimeMillis();
-				if (l - openSocketTime < 4000L)
+				long currentTime = System.currentTimeMillis();
+				if (currentTime - lastRequestTime < 4000L)
 					return;
-				openSocketTime = l;
+				lastRequestTime = currentTime;
 				socket = clientInstance.openSocket(43594 + Client.portOffset);
 				inputStream = socket.getInputStream();
 				outputStream = socket.getOutputStream();
@@ -142,16 +142,16 @@ public final class OnDemandFetcher implements Runnable {
 
 				loopCycle = 0;
 			}
-			ioBuffer[0] = (byte) onDemandData.dataType;
-			ioBuffer[1] = (byte) (onDemandData.id >> 8);
-			ioBuffer[2] = (byte) onDemandData.id;
-			if (onDemandData.incomplete)
-				ioBuffer[3] = 2;
+			payload[0] = (byte) request.dataType;
+			payload[1] = (byte) (request.id >> 8);
+			payload[2] = (byte) request.id;
+			if (request.incomplete)
+				payload[3] = 2;
 			else if (!clientInstance.loggedIn)
-				ioBuffer[3] = 1;
+				payload[3] = 1;
 			else
-				ioBuffer[3] = 0;
-			outputStream.write(ioBuffer, 0, 4);
+				payload[3] = 0;
+			outputStream.write(payload, 0, 4);
 			writeLoopCycle = 0;
 			failedRequests = -10000;
 			return;
@@ -168,15 +168,16 @@ public final class OnDemandFetcher implements Runnable {
 		failedRequests++;
 	}
 
-	private boolean crcMatches(int i, int j, byte abyte0[]) {
-		if (abyte0 == null || abyte0.length < 2)
+	private boolean crcMatches(int cacheVersion, int cacheChecksum, byte data[]) {
+		if (data == null || data.length < 2)
 			return false;
-		int k = abyte0.length - 2;
-		int l = ((abyte0[k] & 0xff) << 8) + (abyte0[k + 1] & 0xff);
+
+		int length = data.length - 2;
+		int version = ((data[length] & 0xff) << 8) + (data[length + 1] & 0xff);
 		crc32.reset();
-		crc32.update(abyte0, 0, k);
-		int i1 = (int) crc32.getValue();
-		return l == i && i1 == j;
+		crc32.update(data, 0, length);
+		int calculatedChecksum = (int) crc32.getValue();
+		return version == cacheVersion && calculatedChecksum == cacheChecksum;
 	}
 
 	public void disable() {
@@ -188,7 +189,7 @@ public final class OnDemandFetcher implements Runnable {
 	}
 
 	public int getAnimCount() {
-		return anIntArray1360.length;
+		return frames.length;
 	}
 
 	public int getMapId(int type, int mapX, int mapY) {
@@ -208,8 +209,8 @@ public final class OnDemandFetcher implements Runnable {
 
 	public OnDemandData getNextNode() {
 		OnDemandData onDemandData;
-		synchronized (aClass19_1358) {
-			onDemandData = (OnDemandData) aClass19_1358.popFront();
+		synchronized (complete) {
+			onDemandData = (OnDemandData) complete.popFront();
 		}
 		if (onDemandData == null)
 			return null;
@@ -249,7 +250,7 @@ public final class OnDemandFetcher implements Runnable {
 				completedCount++;
 
 		while (uncompletedCount < 10) {
-			OnDemandData onDemandData_1 = (OnDemandData) aClass19_1368.popFront();
+			OnDemandData onDemandData_1 = (OnDemandData) unrequested.popFront();
 			if (onDemandData_1 == null)
 				break;
 			if (filePriorities[onDemandData_1.dataType][onDemandData_1.id] != 0)
@@ -328,7 +329,7 @@ public final class OnDemandFetcher implements Runnable {
 	}
 
 	public boolean midiIdEqualsOne(int i) {
-		return anIntArray1348[i] == 1;
+		return musicPriorities[i] == 1;
 	}
 
 	public void passiveRequest(int id, int type) {
@@ -364,12 +365,12 @@ public final class OnDemandFetcher implements Runnable {
 			int j = inputStream.available();
 			if (expectedSize == 0 && j >= 6) {
 				waiting = true;
-				for (int k = 0; k < 6; k += inputStream.read(ioBuffer, k, 6 - k))
+				for (int k = 0; k < 6; k += inputStream.read(payload, k, 6 - k))
 					;
-				int l = ioBuffer[0] & 0xff;
-				int j1 = ((ioBuffer[1] & 0xff) << 8) + (ioBuffer[2] & 0xff);
-				int l1 = ((ioBuffer[3] & 0xff) << 8) + (ioBuffer[4] & 0xff);
-				int i2 = ioBuffer[5] & 0xff;
+				int l = payload[0] & 0xff;
+				int j1 = ((payload[1] & 0xff) << 8) + (payload[2] & 0xff);
+				int l1 = ((payload[3] & 0xff) << 8) + (payload[4] & 0xff);
+				int i2 = payload[5] & 0xff;
 				current = null;
 				for (OnDemandData onDemandData = (OnDemandData) requested
 						.peekFront(); onDemandData != null; onDemandData = (OnDemandData) requested.getPrevious()) {
@@ -385,8 +386,8 @@ public final class OnDemandFetcher implements Runnable {
 						signlink.reporterror("Rej: " + l + "," + j1);
 						current.buffer = null;
 						if (current.incomplete)
-							synchronized (aClass19_1358) {
-								aClass19_1358.pushBack(current);
+							synchronized (complete) {
+								complete.pushBack(current);
 							}
 						else
 							current.unlink();
@@ -405,7 +406,7 @@ public final class OnDemandFetcher implements Runnable {
 			}
 			if (expectedSize > 0 && j >= expectedSize) {
 				waiting = true;
-				byte abyte0[] = ioBuffer;
+				byte abyte0[] = payload;
 				int i1 = 0;
 				if (current != null) {
 					abyte0 = current.buffer;
@@ -421,8 +422,8 @@ public final class OnDemandFetcher implements Runnable {
 						current.dataType = 93;
 					}
 					if (current.incomplete)
-						synchronized (aClass19_1358) {
-							aClass19_1358.pushBack(current);
+						synchronized (complete) {
+							complete.pushBack(current);
 						}
 					else
 						current.unlink();
@@ -461,8 +462,8 @@ public final class OnDemandFetcher implements Runnable {
 			onDemandData_1.dataType = i;
 			onDemandData_1.id = j;
 			onDemandData_1.incomplete = true;
-			synchronized (aClass19_1370) {
-				aClass19_1370.pushBack(onDemandData_1);
+			synchronized (mandatoryRequests) {
+				mandatoryRequests.pushBack(onDemandData_1);
 			}
 			nodeSubList.push(onDemandData_1);
 		}
@@ -540,12 +541,12 @@ public final class OnDemandFetcher implements Runnable {
 					writeLoopCycle++;
 					if (writeLoopCycle > 500) {
 						writeLoopCycle = 0;
-						ioBuffer[0] = 0;
-						ioBuffer[1] = 0;
-						ioBuffer[2] = 0;
-						ioBuffer[3] = 10;
+						payload[0] = 0;
+						payload[1] = 0;
+						payload[2] = 0;
+						payload[3] = 10;
 						try {
-							outputStream.write(ioBuffer, 0, 4);
+							outputStream.write(payload, 0, 4);
 						} catch (IOException _ex) {
 							loopCycle = 5000;
 						}
@@ -621,16 +622,16 @@ public final class OnDemandFetcher implements Runnable {
 		abyte2 = streamLoader.decompressFile("anim_index");
 		stream2 = new Buffer(abyte2);
 		j1 = abyte2.length / 2;
-		anIntArray1360 = new int[j1];
+		frames = new int[j1];
 		for (int j2 = 0; j2 < j1; j2++)
-			anIntArray1360[j2] = stream2.getUnsignedLEShort();
+			frames[j2] = stream2.getUnsignedLEShort();
 
 		abyte2 = streamLoader.decompressFile("midi_index");
 		stream2 = new Buffer(abyte2);
 		j1 = abyte2.length;
-		anIntArray1348 = new int[j1];
+		musicPriorities = new int[j1];
 		for (int k2 = 0; k2 < j1; k2++)
-			anIntArray1348[k2] = stream2.getUnsignedByte();
+			musicPriorities[k2] = stream2.getUnsignedByte();
 
 		clientInstance = client1;
 		running = true;
