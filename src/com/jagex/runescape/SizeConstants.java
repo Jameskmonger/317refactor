@@ -2,6 +2,19 @@ package com.jagex.runescape;
 
 final class PacketInformation {
 
+	/*
+	 * suspected to be a link between a "real" opcode and an "obfuscated" opcode.
+	 * 
+	 * in RS revision #317, the client -> server 'chat' packet
+	 * has opcode 4. in the array below, the element at index 4 is `254`
+	 * 
+	 * in RS revision #377, the array below is shuffled. however, the chat packet
+	 * in #377 has opcode 49. in the array for the #377 client, the element
+	 * at index 49 is also `254`
+	 * 
+	 * However, it is unclear how this would have been used. There are no references
+	 * to it in the code. 
+	 */
 	public static final int[] PACKET_MAP = { 6, 21, 25, 33, 254, 127, 183, 87, 216, 215, 211, 48, 15, 195, 149, 233,
 			162, 102, 104, 179, 222, 103, 224, 81, 152, 89, 45, 11, 197, 187, 210, 37, 135, 220, 137, 128, 63, 188, 207,
 			144, 201, 161, 28, 192, 206, 32, 115, 57, 196, 22, 132, 226, 227, 169, 237, 105, 174, 109, 5, 55, 205, 156,
