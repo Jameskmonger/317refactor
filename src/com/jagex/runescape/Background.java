@@ -2,193 +2,198 @@ package com.jagex.runescape;
 
 public final class Background extends DrawingArea {
 
-	public byte imagePixels[];
+	public byte pixels[];
 
 	public final int[] palette;
 
-	public int imageWidth;
+	public int width;
 
-	public int imageHeight;
+	public int height;
 
 	public int drawOffsetX;
 
 	public int drawOffsetY;
 
-	public int libWidth;
+	public int resizeWidth;
 
-	private int anInt1457;
+	private int resizeHeight;
 
-	public Background(Archive streamLoader, String s, int i) {
-		Buffer stream = new Buffer(streamLoader.decompressFile(s + ".dat"));
-		Buffer stream_1 = new Buffer(streamLoader.decompressFile("index.dat"));
-		stream_1.position = stream.getUnsignedLEShort();
-		libWidth = stream_1.getUnsignedLEShort();
-		anInt1457 = stream_1.getUnsignedLEShort();
-		int j = stream_1.getUnsignedByte();
-		palette = new int[j];
-		for (int k = 0; k < j - 1; k++)
-			palette[k + 1] = stream_1.get3Bytes();
+	public Background(Archive archive, String name, int id) {
+		Buffer imageBuffer = new Buffer(archive.decompressFile(name + ".dat"));
+		Buffer metadataBuffer = new Buffer(archive.decompressFile("index.dat"));
 
-		for (int l = 0; l < i; l++) {
-			stream_1.position += 2;
-			stream.position += stream_1.getUnsignedLEShort() * stream_1.getUnsignedLEShort();
-			stream_1.position++;
+		metadataBuffer.position = imageBuffer.getUnsignedLEShort();
+		resizeWidth = metadataBuffer.getUnsignedLEShort();
+		resizeHeight = metadataBuffer.getUnsignedLEShort();
+		
+		int colourCount = metadataBuffer.getUnsignedByte();
+		palette = new int[colourCount];
+		for (int c = 0; c < colourCount - 1; c++)
+			palette[c + 1] = metadataBuffer.get3Bytes();
+
+		for (int i = 0; i < id; i++) {
+			metadataBuffer.position += 2;
+			imageBuffer.position += metadataBuffer.getUnsignedLEShort() * metadataBuffer.getUnsignedLEShort();
+			metadataBuffer.position++;
 		}
 
-		drawOffsetX = stream_1.getUnsignedByte();
-		drawOffsetY = stream_1.getUnsignedByte();
-		imageWidth = stream_1.getUnsignedLEShort();
-		imageHeight = stream_1.getUnsignedLEShort();
-		int i1 = stream_1.getUnsignedByte();
-		int j1 = imageWidth * imageHeight;
-		imagePixels = new byte[j1];
-		if (i1 == 0) {
-			for (int k1 = 0; k1 < j1; k1++)
-				imagePixels[k1] = stream.get();
+		drawOffsetX = metadataBuffer.getUnsignedByte();
+		drawOffsetY = metadataBuffer.getUnsignedByte();
+		width = metadataBuffer.getUnsignedLEShort();
+		height = metadataBuffer.getUnsignedLEShort();
+		int type = metadataBuffer.getUnsignedByte();
+		int pixelCount = width * height;
+		pixels = new byte[pixelCount];
 
+		if (type == 0) {
+			for (int i = 0; i < pixelCount; i++) {
+				pixels[i] = imageBuffer.get();
+			}
 			return;
 		}
-		if (i1 == 1) {
-			for (int l1 = 0; l1 < imageWidth; l1++) {
-				for (int i2 = 0; i2 < imageHeight; i2++)
-					imagePixels[l1 + i2 * imageWidth] = stream.get();
 
+		if (type == 1) {
+			for (int x = 0; x < width; x++) {
+				for (int y = 0; y < height; y++) {
+					pixels[x + y * width] = imageBuffer.get();
+				}
 			}
-
 		}
 	}
 
-	public void drawImage(int i, int k) {
-		i += drawOffsetX;
-		k += drawOffsetY;
-		int l = i + k * DrawingArea.width;
+	public void draw(int x, int y) {
+		x += drawOffsetX;
+		y += drawOffsetY;
+		int l = x + y * DrawingArea.width;
 		int i1 = 0;
-		int j1 = imageHeight;
-		int k1 = imageWidth;
-		int l1 = DrawingArea.width - k1;
+		int height = this.height;
+		int width = this.width;
+		int l1 = DrawingArea.width - width;
 		int i2 = 0;
-		if (k < DrawingArea.topY) {
-			int j2 = DrawingArea.topY - k;
-			j1 -= j2;
-			k = DrawingArea.topY;
-			i1 += j2 * k1;
+		if (y < DrawingArea.topY) {
+			int j2 = DrawingArea.topY - y;
+			height -= j2;
+			y = DrawingArea.topY;
+			i1 += j2 * width;
 			l += j2 * DrawingArea.width;
 		}
-		if (k + j1 > DrawingArea.bottomY)
-			j1 -= (k + j1) - DrawingArea.bottomY;
-		if (i < DrawingArea.topX) {
-			int k2 = DrawingArea.topX - i;
-			k1 -= k2;
-			i = DrawingArea.topX;
+		if (y + height > DrawingArea.bottomY)
+			height -= (y + height) - DrawingArea.bottomY;
+		if (x < DrawingArea.topX) {
+			int k2 = DrawingArea.topX - x;
+			width -= k2;
+			x = DrawingArea.topX;
 			i1 += k2;
 			l += k2;
 			i2 += k2;
 			l1 += k2;
 		}
-		if (i + k1 > DrawingArea.bottomX) {
-			int l2 = (i + k1) - DrawingArea.bottomX;
-			k1 -= l2;
+		if (x + width > DrawingArea.bottomX) {
+			int l2 = (x + width) - DrawingArea.bottomX;
+			width -= l2;
 			i2 += l2;
 			l1 += l2;
 		}
-		if (!(k1 <= 0 || j1 <= 0)) {
-			method362(j1, DrawingArea.pixels, imagePixels, l1, l, k1, i1, palette, i2);
+		if (!(width <= 0 || height <= 0)) {
+			draw(height, DrawingArea.pixels, pixels, l1, l, width, i1, palette, i2);
 		}
 	}
 
-	public void method356() {
-		libWidth /= 2;
-		anInt1457 /= 2;
-		byte abyte0[] = new byte[libWidth * anInt1457];
-		int i = 0;
-		for (int j = 0; j < imageHeight; j++) {
-			for (int k = 0; k < imageWidth; k++)
-				abyte0[(k + drawOffsetX >> 1) + (j + drawOffsetY >> 1) * libWidth] = imagePixels[i++];
+	public void resizeToHalf() {
+		resizeWidth /= 2;
+		resizeHeight /= 2;
 
+		byte pixels[] = new byte[resizeWidth * resizeHeight];
+		int i = 0;
+		for (int x = 0; x < height; x++) {
+			for (int y = 0; y < width; y++) {
+				pixels[(y + drawOffsetX >> 1) + (x + drawOffsetY >> 1) * resizeWidth] = pixels[i++];
+			}
 		}
 
-		imagePixels = abyte0;
-		imageWidth = libWidth;
-		imageHeight = anInt1457;
+		this.pixels = pixels;
+		width = resizeWidth;
+		height = resizeHeight;
 		drawOffsetX = 0;
 		drawOffsetY = 0;
 	}
 
-	public void method357() {
-		if (imageWidth == libWidth && imageHeight == anInt1457)
+	public void resize() {
+		if (width == resizeWidth && height == resizeHeight)
 			return;
-		byte abyte0[] = new byte[libWidth * anInt1457];
-		int i = 0;
-		for (int j = 0; j < imageHeight; j++) {
-			for (int k = 0; k < imageWidth; k++)
-				abyte0[k + drawOffsetX + (j + drawOffsetY) * libWidth] = imagePixels[i++];
 
+		byte pixels[] = new byte[resizeWidth * resizeHeight];
+		int i = 0;
+		for (int y = 0; y < height; y++) {
+			for (int x = 0; x < width; x++) {
+				pixels[x + drawOffsetX + (y + drawOffsetY) * resizeWidth] = pixels[i++];
+			}
 		}
 
-		imagePixels = abyte0;
-		imageWidth = libWidth;
-		imageHeight = anInt1457;
+		this.pixels = pixels;
+		width = resizeWidth;
+		height = resizeHeight;
 		drawOffsetX = 0;
 		drawOffsetY = 0;
 	}
 
-	public void method358() {
-		byte abyte0[] = new byte[imageWidth * imageHeight];
-		int j = 0;
-		for (int k = 0; k < imageHeight; k++) {
-			for (int l = imageWidth - 1; l >= 0; l--)
-				abyte0[j++] = imagePixels[l + k * imageWidth];
-
-		}
-
-		imagePixels = abyte0;
-		drawOffsetX = libWidth - imageWidth - drawOffsetX;
-	}
-
-	public void method359() {
-		byte abyte0[] = new byte[imageWidth * imageHeight];
+	public void flipHorizontally() {
+		byte pixels[] = new byte[width * height];
 		int i = 0;
-		for (int j = imageHeight - 1; j >= 0; j--) {
-			for (int k = 0; k < imageWidth; k++)
-				abyte0[i++] = imagePixels[k + j * imageWidth];
-
+		for (int y = 0; y < height; y++) {
+			for (int x = width - 1; x >= 0; x--) {
+				pixels[i++] = pixels[x + y * width];
+			}
 		}
 
-		imagePixels = abyte0;
-		drawOffsetY = anInt1457 - imageHeight - drawOffsetY;
+		this.pixels = pixels;
+		drawOffsetX = resizeWidth - width - drawOffsetX;
 	}
 
-	private void method362(int i, int ai[], byte abyte0[], int j, int k, int l, int i1, int ai1[], int j1) {
+	public void flipVertically() {
+		byte pixels[] = new byte[width * height];
+		int i = 0;
+		for (int y = height - 1; y >= 0; y--) {
+			for (int x = 0; x < width; x++) {
+				pixels[i++] = pixels[x + y * width];
+			}
+		}
+
+		this.pixels = pixels;
+		drawOffsetY = resizeHeight - height - drawOffsetY;
+	}
+
+	private void draw(int i, int pixels[], byte image[], int j, int k, int l, int i1, int palette[], int j1) {
 		int k1 = -(l >> 2);
 		l = -(l & 3);
 		for (int l1 = -i; l1 < 0; l1++) {
 			for (int i2 = k1; i2 < 0; i2++) {
-				byte byte1 = abyte0[i1++];
-				if (byte1 != 0)
-					ai[k++] = ai1[byte1 & 0xff];
+				byte pixel = image[i1++];
+				if (pixel != 0)
+					pixels[k++] = palette[pixel & 0xff];
 				else
 					k++;
-				byte1 = abyte0[i1++];
-				if (byte1 != 0)
-					ai[k++] = ai1[byte1 & 0xff];
+				pixel = image[i1++];
+				if (pixel != 0)
+					pixels[k++] = palette[pixel & 0xff];
 				else
 					k++;
-				byte1 = abyte0[i1++];
-				if (byte1 != 0)
-					ai[k++] = ai1[byte1 & 0xff];
+				pixel = image[i1++];
+				if (pixel != 0)
+					pixels[k++] = palette[pixel & 0xff];
 				else
 					k++;
-				byte1 = abyte0[i1++];
-				if (byte1 != 0)
-					ai[k++] = ai1[byte1 & 0xff];
+				pixel = image[i1++];
+				if (pixel != 0)
+					pixels[k++] = palette[pixel & 0xff];
 				else
 					k++;
 			}
 
 			for (int j2 = l; j2 < 0; j2++) {
-				byte byte2 = abyte0[i1++];
-				if (byte2 != 0)
-					ai[k++] = ai1[byte2 & 0xff];
+				byte pixel = image[i1++];
+				if (pixel != 0)
+					pixels[k++] = palette[pixel & 0xff];
 				else
 					k++;
 			}

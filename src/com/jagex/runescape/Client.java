@@ -819,40 +819,40 @@ public final class Client extends RSApplet {
 		if (!lowMemory) {
 			if (Rasterizer.textureLastUsed[17] >= textureId) {
 				Background background = Rasterizer.textureImages[17];
-				int area = background.imageWidth * background.imageHeight - 1;
-				int difference = background.imageWidth * animationTimePassed * 2;
-				byte originalPixels[] = background.imagePixels;
+				int area = background.width * background.height - 1;
+				int difference = background.width * animationTimePassed * 2;
+				byte originalPixels[] = background.pixels;
 				byte shiftedPixels[] = animatedPixels;
 				for (int pixel = 0; pixel <= area; pixel++)
 					shiftedPixels[pixel] = originalPixels[pixel - difference & area];
 
-				background.imagePixels = shiftedPixels;
+				background.pixels = shiftedPixels;
 				animatedPixels = originalPixels;
 				Rasterizer.resetTexture(17);
 			}
 			if (Rasterizer.textureLastUsed[24] >= textureId) {
 				Background background = Rasterizer.textureImages[24];
-				int area = background.imageWidth * background.imageHeight - 1;
-				int difference = background.imageWidth * animationTimePassed * 2;
-				byte originalPixels[] = background.imagePixels;
+				int area = background.width * background.height - 1;
+				int difference = background.width * animationTimePassed * 2;
+				byte originalPixels[] = background.pixels;
 				byte shiftedPixels[] = animatedPixels;
 				for (int pixel = 0; pixel <= area; pixel++)
 					shiftedPixels[pixel] = originalPixels[pixel - difference & area];
 
-				background.imagePixels = shiftedPixels;
+				background.pixels = shiftedPixels;
 				animatedPixels = originalPixels;
 				Rasterizer.resetTexture(24);
 			}
 			if (Rasterizer.textureLastUsed[34] >= textureId) {
 				Background background = Rasterizer.textureImages[34];
-				int area = background.imageWidth * background.imageHeight - 1;
-				int difference = background.imageWidth * animationTimePassed * 2;
-				byte originalPixels[] = background.imagePixels;
+				int area = background.width * background.height - 1;
+				int difference = background.width * animationTimePassed * 2;
+				byte originalPixels[] = background.pixels;
 				byte shiftedPixels[] = animatedPixels;
 				for (int pixel = 0; pixel <= area; pixel++)
 					shiftedPixels[pixel] = originalPixels[pixel - difference & area];
 
-				background.imagePixels = shiftedPixels;
+				background.pixels = shiftedPixels;
 				animatedPixels = originalPixels;
 				Rasterizer.resetTexture(34);
 			}
@@ -3269,7 +3269,7 @@ public final class Client extends RSApplet {
 	private void drawChatArea() {
 		chatboxImageProducer.initDrawingArea();
 		Rasterizer.lineOffsets = chatboxLineOffsets;
-		chatBackgroundImage.drawImage(0, 0);
+		chatBackgroundImage.draw(0, 0);
 		if (messagePromptRaised) {
 			fontBold.drawCentredText(chatboxInputNeededString, 239, 40, 0);
 			fontBold.drawCentredText(promptInput + "*", 239, 60, 128);
@@ -3314,11 +3314,11 @@ public final class Client extends RSApplet {
 						if (y > 0 && y < 110) {
 							int x = 4;
 							if (playerRights == 1) {
-								modIcons[0].drawImage(x, y - 12);
+								modIcons[0].draw(x, y - 12);
 								x += 14;
 							}
 							if (playerRights == 2) {
-								modIcons[1].drawImage(x, y - 12);
+								modIcons[1].draw(x, y - 12);
 								x += 14;
 							}
 							textDrawingArea.drawText(name + ":", x, y, 0);
@@ -3334,11 +3334,11 @@ public final class Client extends RSApplet {
 							textDrawingArea.drawText("From", x, y, 0);
 							x += textDrawingArea.getTextDisplayedWidth("From ");
 							if (playerRights == 1) {
-								modIcons[0].drawImage(x, y - 12);
+								modIcons[0].draw(x, y - 12);
 								x += 14;
 							}
 							if (playerRights == 2) {
-								modIcons[1].drawImage(x, y - 12);
+								modIcons[1].draw(x, y - 12);
 								x += 14;
 							}
 							textDrawingArea.drawText(name + ":", x, y, 0);
@@ -3761,71 +3761,71 @@ public final class Client extends RSApplet {
 			}
 			drawTabIcons = false;
 			topSideIconImageProducer.initDrawingArea();
-			backHmid1Image.drawImage(0, 0);
+			backHmid1Image.draw(0, 0);
 			if (inventoryOverlayInterfaceID == -1) {
 				if (tabInterfaceIDs[currentTabId] != -1) {
 					if (currentTabId == 0)
-						redStone1.drawImage(22, 10);
+						redStone1.draw(22, 10);
 					if (currentTabId == 1)
-						redStone2.drawImage(54, 8);
+						redStone2.draw(54, 8);
 					if (currentTabId == 2)
-						redStone2.drawImage(82, 8);
+						redStone2.draw(82, 8);
 					if (currentTabId == 3)
-						redStone3.drawImage(110, 8);
+						redStone3.draw(110, 8);
 					if (currentTabId == 4)
-						redStone2_2.drawImage(153, 8);
+						redStone2_2.draw(153, 8);
 					if (currentTabId == 5)
-						redStone2_2.drawImage(181, 8);
+						redStone2_2.draw(181, 8);
 					if (currentTabId == 6)
-						redStone1_2.drawImage(209, 9);
+						redStone1_2.draw(209, 9);
 				}
 				if (tabInterfaceIDs[0] != -1 && (flashingSidebar != 0 || tick % 20 < 10))
-					sideIconImage[0].drawImage(29, 13);
+					sideIconImage[0].draw(29, 13);
 				if (tabInterfaceIDs[1] != -1 && (flashingSidebar != 1 || tick % 20 < 10))
-					sideIconImage[1].drawImage(53, 11);
+					sideIconImage[1].draw(53, 11);
 				if (tabInterfaceIDs[2] != -1 && (flashingSidebar != 2 || tick % 20 < 10))
-					sideIconImage[2].drawImage(82, 11);
+					sideIconImage[2].draw(82, 11);
 				if (tabInterfaceIDs[3] != -1 && (flashingSidebar != 3 || tick % 20 < 10))
-					sideIconImage[3].drawImage(115, 12);
+					sideIconImage[3].draw(115, 12);
 				if (tabInterfaceIDs[4] != -1 && (flashingSidebar != 4 || tick % 20 < 10))
-					sideIconImage[4].drawImage(153, 13);
+					sideIconImage[4].draw(153, 13);
 				if (tabInterfaceIDs[5] != -1 && (flashingSidebar != 5 || tick % 20 < 10))
-					sideIconImage[5].drawImage(180, 11);
+					sideIconImage[5].draw(180, 11);
 				if (tabInterfaceIDs[6] != -1 && (flashingSidebar != 6 || tick % 20 < 10))
-					sideIconImage[6].drawImage(208, 13);
+					sideIconImage[6].draw(208, 13);
 			}
 			topSideIconImageProducer.drawGraphics(160, super.gameGraphics, 516);
 			bottomSideIconImageProducer.initDrawingArea();
-			backBase2Image.drawImage(0, 0);
+			backBase2Image.draw(0, 0);
 			if (inventoryOverlayInterfaceID == -1) {
 				if (tabInterfaceIDs[currentTabId] != -1) {
 					if (currentTabId == 7)
-						redStone1_3.drawImage(42, 0);
+						redStone1_3.draw(42, 0);
 					if (currentTabId == 8)
-						redStone2_3.drawImage(74, 0);
+						redStone2_3.draw(74, 0);
 					if (currentTabId == 9)
-						redStone2_3.drawImage(102, 0);
+						redStone2_3.draw(102, 0);
 					if (currentTabId == 10)
-						redStone3_2.drawImage(130, 1);
+						redStone3_2.draw(130, 1);
 					if (currentTabId == 11)
-						redStone2_4.drawImage(173, 0);
+						redStone2_4.draw(173, 0);
 					if (currentTabId == 12)
-						redStone2_4.drawImage(201, 0);
+						redStone2_4.draw(201, 0);
 					if (currentTabId == 13)
-						redStone1_4.drawImage(229, 0);
+						redStone1_4.draw(229, 0);
 				}
 				if (tabInterfaceIDs[8] != -1 && (flashingSidebar != 8 || tick % 20 < 10))
-					sideIconImage[7].drawImage(74, 2);
+					sideIconImage[7].draw(74, 2);
 				if (tabInterfaceIDs[9] != -1 && (flashingSidebar != 9 || tick % 20 < 10))
-					sideIconImage[8].drawImage(102, 3);
+					sideIconImage[8].draw(102, 3);
 				if (tabInterfaceIDs[10] != -1 && (flashingSidebar != 10 || tick % 20 < 10))
-					sideIconImage[9].drawImage(137, 4);
+					sideIconImage[9].draw(137, 4);
 				if (tabInterfaceIDs[11] != -1 && (flashingSidebar != 11 || tick % 20 < 10))
-					sideIconImage[10].drawImage(174, 2);
+					sideIconImage[10].draw(174, 2);
 				if (tabInterfaceIDs[12] != -1 && (flashingSidebar != 12 || tick % 20 < 10))
-					sideIconImage[11].drawImage(201, 2);
+					sideIconImage[11].draw(201, 2);
 				if (tabInterfaceIDs[13] != -1 && (flashingSidebar != 13 || tick % 20 < 10))
-					sideIconImage[12].drawImage(226, 2);
+					sideIconImage[12].draw(226, 2);
 			}
 			bottomSideIconImageProducer.drawGraphics(466, super.gameGraphics, 496);
 			gameScreenImageProducer.initDrawingArea();
@@ -3833,7 +3833,7 @@ public final class Client extends RSApplet {
 		if (updateChatSettings) {
 			updateChatSettings = false;
 			chatSettingImageProducer.initDrawingArea();
-			backBase1Image.drawImage(0, 0);
+			backBase1Image.draw(0, 0);
 			fontPlain.drawCentredTextWithPotentialShadow("Public chat", 55, 28, 0xFFFFFF, true);
 			if (publicChatMode == 0)
 				fontPlain.drawCentredTextWithPotentialShadow("On", 55, 41, 0x00FF00, true);
@@ -4209,7 +4209,7 @@ public final class Client extends RSApplet {
 	private void drawLoginScreen(boolean originalLoginScreen) {
 		setupLoginScreen();
 		loginBoxLeftBackgroundTile.initDrawingArea();
-		titleBoxImage.drawImage(0, 0);
+		titleBoxImage.draw(0, 0);
 		int x = 360;
 		int y = 200;
 		if (loginScreenState == 0) {
@@ -4220,10 +4220,10 @@ public final class Client extends RSApplet {
 			_y += 30;
 			int _x = x / 2 - 80;
 			int __y = y / 2 + 20;
-			titleButtonImage.drawImage(_x - 73, __y - 20);
+			titleButtonImage.draw(_x - 73, __y - 20);
 			fontBold.drawCentredTextWithPotentialShadow("New User", _x, __y + 5, 0xFFFFFF, true);
 			_x = x / 2 + 80;
-			titleButtonImage.drawImage(_x - 73, __y - 20);
+			titleButtonImage.draw(_x - 73, __y - 20);
 			fontBold.drawCentredTextWithPotentialShadow("Existing User", _x, __y + 5, 0xFFFFFF, true);
 		}
 		if (loginScreenState == 2) {
@@ -4248,10 +4248,10 @@ public final class Client extends RSApplet {
 			if (!originalLoginScreen) {
 				int _x = x / 2 - 80;
 				int __y = y / 2 + 50;
-				titleButtonImage.drawImage(_x - 73, __y - 20);
+				titleButtonImage.draw(_x - 73, __y - 20);
 				fontBold.drawCentredTextWithPotentialShadow("Login", _x, __y + 5, 0xFFFFFF, true);
 				_x = x / 2 + 80;
-				titleButtonImage.drawImage(_x - 73, __y - 20);
+				titleButtonImage.draw(_x - 73, __y - 20);
 				fontBold.drawCentredTextWithPotentialShadow("Cancel", _x, __y + 5, 0xFFFFFF, true);
 			}
 		}
@@ -4272,7 +4272,7 @@ public final class Client extends RSApplet {
 			_y += 15;
 			int _x = x / 2;
 			int __y = y / 2 + 50;
-			titleButtonImage.drawImage(_x - 73, __y - 20);
+			titleButtonImage.draw(_x - 73, __y - 20);
 			fontBold.drawCentredTextWithPotentialShadow("Cancel", _x, __y + 5, 0xFFFFFF, true);
 		}
 		loginBoxLeftBackgroundTile.drawGraphics(171, super.gameGraphics, 202);
@@ -4380,7 +4380,7 @@ public final class Client extends RSApplet {
 	private void drawMinimap() {
 		minimapImageProducer.initDrawingArea();
 		if (minimapState == 2) {
-			byte backgroundPixels[] = minimapBackgroundImage.imagePixels;
+			byte backgroundPixels[] = minimapBackgroundImage.pixels;
 			int rasterPixels[] = DrawingArea.pixels;
 			int pixelCount = backgroundPixels.length;
 			for (int p = 0; p < pixelCount; p++)
@@ -4503,9 +4503,9 @@ public final class Client extends RSApplet {
 			if (definition.mapScene != -1) {
 				Background background = mapSceneImage[definition.mapScene];
 				if (background != null) {
-					int _x = (definition.sizeX * 4 - background.imageWidth) / 2;
-					int _y = (definition.sizeY * 4 - background.imageHeight) / 2;
-					background.drawImage(48 + x * 4 + _x, 48 + (104 - y - definition.sizeY) * 4 + _y);
+					int _x = (definition.sizeX * 4 - background.width) / 2;
+					int _y = (definition.sizeY * 4 - background.height) / 2;
+					background.draw(48 + x * 4 + _x, 48 + (104 - y - definition.sizeY) * 4 + _y);
 				}
 			} else {
 				if (type == 0 || type == 2)
@@ -4574,9 +4574,9 @@ public final class Client extends RSApplet {
 			if (definition.mapScene != -1) {
 				Background background = mapSceneImage[definition.mapScene];
 				if (background != null) {
-					int _x = (definition.sizeX * 4 - background.imageWidth) / 2;
-					int _y = (definition.sizeY * 4 - background.imageHeight) / 2;
-					background.drawImage(48 + x * 4 + _x, 48 + (104 - y - definition.sizeY) * 4 + _y);
+					int _x = (definition.sizeX * 4 - background.width) / 2;
+					int _y = (definition.sizeY * 4 - background.height) / 2;
+					background.draw(48 + x * 4 + _x, 48 + (104 - y - definition.sizeY) * 4 + _y);
 				}
 			} else if (type == 9) {
 				// Diagonal walls and doors
@@ -4607,9 +4607,9 @@ public final class Client extends RSApplet {
 			if (definition.mapScene != -1) {
 				Background background = mapSceneImage[definition.mapScene];
 				if (background != null) {
-					int _x = (definition.sizeX * 4 - background.imageWidth) / 2;
-					int _y = (definition.sizeY * 4 - background.imageHeight) / 2;
-					background.drawImage(48 + x * 4 + _x, 48 + (104 - y - definition.sizeY) * 4 + _y);
+					int _x = (definition.sizeX * 4 - background.width) / 2;
+					int _y = (definition.sizeY * 4 - background.height) / 2;
+					background.draw(48 + x * 4 + _x, 48 + (104 - y - definition.sizeY) * 4 + _y);
 				}
 			}
 		}
@@ -4662,11 +4662,11 @@ public final class Client extends RSApplet {
 					textDrawingArea.drawText("From", x, y - 1, 0x00FFFF);
 					x += textDrawingArea.getTextDisplayedWidth("From ");
 					if (playerRights == 1) {
-						modIcons[0].drawImage(x, y - 12);
+						modIcons[0].draw(x, y - 12);
 						x += 14;
 					}
 					if (playerRights == 2) {
-						modIcons[1].drawImage(x, y - 12);
+						modIcons[1].draw(x, y - 12);
 						x += 14;
 					}
 					textDrawingArea.drawText(chatName + ": " + chatMessages[m], x, y, 0);
@@ -4694,7 +4694,7 @@ public final class Client extends RSApplet {
 	private void drawTabArea() {
 		tabImageProducer.initDrawingArea();
 		Rasterizer.lineOffsets = sidebarOffsets;
-		inventoryBackgroundImage.drawImage(0, 0);
+		inventoryBackgroundImage.draw(0, 0);
 		if (inventoryOverlayInterfaceID != -1)
 			drawInterface(0, 0, RSInterface.cache[inventoryOverlayInterfaceID], 0);
 		else if (tabInterfaceIDs[currentTabId] != -1)
@@ -8688,9 +8688,9 @@ public final class Client extends RSApplet {
 
 		if (background != null) {
 			int l1 = 0;
-			for (int row = 0; row < background.imageHeight; row++) {
-				for (int column = 0; column < background.imageWidth; column++)
-					if (background.imagePixels[l1++] != 0) {
+			for (int row = 0; row < background.height; row++) {
+				for (int column = 0; column < background.width; column++)
+					if (background.pixels[l1++] != 0) {
 						int i3 = column + 16 + background.drawOffsetX;
 						int j3 = row + 16 + background.drawOffsetY;
 						int k3 = i3 + (j3 << 7);
@@ -8708,8 +8708,8 @@ public final class Client extends RSApplet {
 	}
 
 	private void renderChatInterface(int x, int y, int height, int scrollPosition, int scrollMaximum) {
-		scrollBarUp.drawImage(x, y);
-		scrollBarDown.drawImage(x, (y + height) - 16);
+		scrollBarUp.draw(x, y);
+		scrollBarDown.draw(x, (y + height) - 16);
 		DrawingArea.drawFilledRectangle(x, y + 16, 16, height - 32, SCROLLBAR_TRACK_COLOUR);
 		int length = ((height - 32) * height) / scrollMaximum;
 		if (length < 8)
@@ -9153,7 +9153,7 @@ public final class Client extends RSApplet {
 		chatboxImageProducer = new RSImageProducer(479, 96, getGameComponent());
 		minimapImageProducer = new RSImageProducer(172, 156, getGameComponent());
 		DrawingArea.clear();
-		minimapBackgroundImage.drawImage(0, 0);
+		minimapBackgroundImage.draw(0, 0);
 		tabImageProducer = new RSImageProducer(190, 261, getGameComponent());
 		gameScreenImageProducer = new RSImageProducer(512, 334, getGameComponent());
 		DrawingArea.clear();
@@ -9776,21 +9776,21 @@ public final class Client extends RSApplet {
 			redStone2 = new Background(archiveMedia, "redstone2", 0);
 			redStone3 = new Background(archiveMedia, "redstone3", 0);
 			redStone1_2 = new Background(archiveMedia, "redstone1", 0);
-			redStone1_2.method358();
+			redStone1_2.flipHorizontally();
 			redStone2_2 = new Background(archiveMedia, "redstone2", 0);
-			redStone2_2.method358();
+			redStone2_2.flipHorizontally();
 			redStone1_3 = new Background(archiveMedia, "redstone1", 0);
-			redStone1_3.method359();
+			redStone1_3.flipVertically();
 			redStone2_3 = new Background(archiveMedia, "redstone2", 0);
-			redStone2_3.method359();
+			redStone2_3.flipVertically();
 			redStone3_2 = new Background(archiveMedia, "redstone3", 0);
-			redStone3_2.method359();
+			redStone3_2.flipVertically();
 			redStone1_4 = new Background(archiveMedia, "redstone1", 0);
-			redStone1_4.method358();
-			redStone1_4.method359();
+			redStone1_4.flipHorizontally();
+			redStone1_4.flipVertically();
 			redStone2_4 = new Background(archiveMedia, "redstone2", 0);
-			redStone2_4.method358();
-			redStone2_4.method359();
+			redStone2_4.flipHorizontally();
+			redStone2_4.flipVertically();
 			for (int i = 0; i < 2; i++)
 				modIcons[i] = new Background(archiveMedia, "mod_icons", i);
 
@@ -9863,7 +9863,7 @@ public final class Client extends RSApplet {
 				int firstXOfLine = 999;
 				int lastXOfLine = 0;
 				for (int _x = 0; _x < 34; _x++) {
-					if (minimapBackgroundImage.imagePixels[_x + _y * minimapBackgroundImage.imageWidth] == 0) {
+					if (minimapBackgroundImage.pixels[_x + _y * minimapBackgroundImage.width] == 0) {
 						if (firstXOfLine == 999)
 							firstXOfLine = _x;
 						continue;
@@ -9882,7 +9882,7 @@ public final class Client extends RSApplet {
 				int min = 999;
 				int max = 0;
 				for (int _x = 25; _x < 172; _x++) {
-					if (minimapBackgroundImage.imagePixels[_x + _y * minimapBackgroundImage.imageWidth] == 0
+					if (minimapBackgroundImage.pixels[_x + _y * minimapBackgroundImage.width] == 0
 							&& (_x > 34 || _y > 34)) {
 						if (min == 999)
 							min = _x;

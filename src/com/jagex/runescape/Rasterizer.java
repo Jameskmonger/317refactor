@@ -1361,7 +1361,7 @@ final class Rasterizer extends DrawingArea {
 		if (lowMemory) {
 			transparent[textureId] = false;
 			for (int texelPointer = 0; texelPointer < 4096; texelPointer++) {
-				int texel = texels[texelPointer] = texturePalette[background.imagePixels[texelPointer]] & 0xf8f8ff;
+				int texel = texels[texelPointer] = texturePalette[background.pixels[texelPointer]] & 0xf8f8ff;
 				if (texel == 0)
 					transparent[textureId] = true;
 				texels[4096 + texelPointer] = texel - (texel >>> 3) & 0xf8f8ff;
@@ -1370,16 +1370,16 @@ final class Rasterizer extends DrawingArea {
 			}
 
 		} else {
-			if (background.imageWidth == 64) {
+			if (background.width == 64) {
 				for (int y = 0; y < 128; y++) {
 					for (int x = 0; x < 128; x++)
-						texels[x + (y << 7)] = texturePalette[background.imagePixels[(x >> 1) + ((y >> 1) << 6)]];
+						texels[x + (y << 7)] = texturePalette[background.pixels[(x >> 1) + ((y >> 1) << 6)]];
 
 				}
 
 			} else {
 				for (int texelPointer = 0; texelPointer < 16384; texelPointer++)
-					texels[texelPointer] = texturePalette[background.imagePixels[texelPointer]];
+					texels[texelPointer] = texturePalette[background.pixels[texelPointer]];
 
 			}
 			transparent[textureId] = false;
@@ -1938,10 +1938,10 @@ final class Rasterizer extends DrawingArea {
 		for (int i = 0; i < 50; i++)
 			try {
 				textureImages[i] = new Background(archive, String.valueOf(i), 0);
-				if (lowMemory && textureImages[i].libWidth == 128)
-					textureImages[i].method356();
+				if (lowMemory && textureImages[i].resizeWidth == 128)
+					textureImages[i].resizeToHalf();
 				else
-					textureImages[i].method357();
+					textureImages[i].resize();
 				loadedTextureCount++;
 			} catch (Exception _ex) {
 			}
