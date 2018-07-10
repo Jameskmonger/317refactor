@@ -1,6 +1,6 @@
 package com.jagex.runescape;
 
-final class Rasterizer extends DrawingArea {
+public final class Rasterizer extends DrawingArea {
 
 	private static int adjustBrightness(int rgb, double intensity) {
 		double r = (rgb >> 16) / 256D;
@@ -1950,7 +1950,7 @@ final class Rasterizer extends DrawingArea {
 
 	public static final int anInt1459 = -477;
 	public static boolean lowMemory = true;
-	static boolean restrictEdges;
+	public static boolean restrictEdges;
 	private static boolean opaque;
 	public static boolean textured = true;
 	public static int alpha;

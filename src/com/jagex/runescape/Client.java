@@ -9,6 +9,10 @@ import com.jagex.runescape.audio.Effect;
 import com.jagex.runescape.collection.*;
 import com.jagex.runescape.sign.signlink;
 import com.jagex.runescape.isaac.ISAACRandomGenerator;
+import com.jagex.runescape.scene.WorldController;
+import com.jagex.runescape.scene.object.GroundDecoration;
+import com.jagex.runescape.scene.object.Wall;
+import com.jagex.runescape.scene.object.WallDecoration;
 
 @SuppressWarnings("serial")
 public final class Client extends RSApplet {

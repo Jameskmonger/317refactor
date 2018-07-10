@@ -1,28 +1,28 @@
-package com.jagex.runescape;
+package com.jagex.runescape.scene.tile;
 
-final class ShapedTile {
+public final class ShapedTile {
 
-	final int[] originalVertexX;
+	public final int[] originalVertexX;
 
-	final int[] originalVertexY;
-	final int[] originalVertexZ;
-	final int[] triangleHSLA;
-	final int[] triangleHSLB;
-	final int[] triangleHSLC;
-	final int[] triangleA;
-	final int[] triangleB;
-	final int[] triangleC;
-	int triangleTexture[];
-	final boolean flat;
-	final int shape;
-	final int rotation;
-	final int underlayRGB;
-	final int overlayRGB;
-	static final int[] screenX = new int[6];
-	static final int[] screenY = new int[6];
-	static final int[] viewspaceX = new int[6];
-	static final int[] viewspaceY = new int[6];
-	static final int[] viewspaceZ = new int[6];
+	public final int[] originalVertexY;
+	public final int[] originalVertexZ;
+	public final int[] triangleHSLA;
+	public final int[] triangleHSLB;
+	public final int[] triangleHSLC;
+	public final int[] triangleA;
+	public final int[] triangleB;
+	public final int[] triangleC;
+	public int triangleTexture[];
+	public final boolean flat;
+	public final int shape;
+	public final int rotation;
+	public final int underlayRGB;
+	public final int overlayRGB;
+	public static final int[] screenX = new int[6];
+	public static final int[] screenY = new int[6];
+	public static final int[] viewspaceX = new int[6];
+	public static final int[] viewspaceY = new int[6];
+	public static final int[] viewspaceZ = new int[6];
 	private static final int[][] shapedTilePointData = { { 1, 3, 5, 7 }, { 1, 3, 5, 7 }, { 1, 3, 5, 7 },
 			{ 1, 3, 5, 7, 6 }, { 1, 3, 5, 7, 6 }, { 1, 3, 5, 7, 6 }, { 1, 3, 5, 7, 6 }, { 1, 3, 5, 7, 2, 6 },
 			{ 1, 3, 5, 7, 2, 8 }, { 1, 3, 5, 7, 2, 8 }, { 1, 3, 5, 7, 11, 12 }, { 1, 3, 5, 7, 11, 12 },
@@ -36,7 +36,7 @@ final class ShapedTile {
 			{ 1, 0, 1, 5, 1, 1, 4, 5, 1, 1, 2, 4, 0, 0, 5, 3, 0, 5, 4, 3, 0, 4, 2, 3 },
 			{ 1, 0, 5, 4, 1, 0, 1, 5, 0, 0, 4, 3, 0, 4, 5, 3, 0, 5, 2, 3, 0, 1, 2, 5 } };
 
-	ShapedTile(int tileX, int yA, int yB, int yC, int yD, int tileZ, int rotation, int texture, int shape, int cA,
+	public ShapedTile(int tileX, int yA, int yB, int yC, int yD, int tileZ, int rotation, int texture, int shape, int cA,
 			int cAA, int cB, int cBA, int cC, int cCA, int cD, int cDA, int overlayRGB, int underlayRGB) {
 		flat = !(yA != yB || yA != yD || yA != yC);
 		this.shape = shape;

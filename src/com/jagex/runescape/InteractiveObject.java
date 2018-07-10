@@ -2,21 +2,21 @@ package com.jagex.runescape;
 
 public final class InteractiveObject {
 
-	int z;
+	public int z;
 
-	int worldZ;
-	int worldX;
-	int worldY;
+	public int worldZ;
+	public int worldX;
+	public int worldY;
 	public Animable renderable;
 	public int rotation;
-	int tileLeft;
-	int tileRight;
-	int tileTop;
-	int tileBottom;
-	int anInt527;
-	int anInt528;
+	public int tileLeft;
+	public int tileRight;
+	public int tileTop;
+	public int tileBottom;
+	public int anInt527;
+	public int anInt528;
 	public int uid;
-	byte objConf;
+	public byte objConf;
 
 	public InteractiveObject() {
 	}

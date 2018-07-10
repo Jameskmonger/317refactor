@@ -1,24 +1,24 @@
 package com.jagex.runescape;
 
-final class CullingCluster {
+public final class CullingCluster {
 
-	int tileStartX;
-	int tileEndX;
-	int tileStartY;
-	int tileEndY;
-	int searchMask;
-	int worldStartX;
-	int worldEndX;
-	int worldStartY;
-	int worldEndY;
-	int worldEndZ;
-	int worldStartZ;
-	int tileDistanceEnum;
-	int worldDistanceFromCameraStartX;
-	int worldDistanceFromCameraEndX;
-	int worldDistanceFromCameraStartY;
-	int worldDistanceFromCameraEndY;
-	int worldDistanceFromCameraStartZ;
-	int worldDistanceFromCameraEndZ;
+	public int tileStartX;
+	public int tileEndX;
+	public int tileStartY;
+	public int tileEndY;
+	public int searchMask;
+	public int worldStartX;
+	public int worldEndX;
+	public int worldStartY;
+	public int worldEndY;
+	public int worldEndZ;
+	public int worldStartZ;
+	public int tileDistanceEnum;
+	public int worldDistanceFromCameraStartX;
+	public int worldDistanceFromCameraEndX;
+	public int worldDistanceFromCameraStartY;
+	public int worldDistanceFromCameraEndY;
+	public int worldDistanceFromCameraStartZ;
+	public int worldDistanceFromCameraEndZ;
 
 }
