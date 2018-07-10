@@ -1163,7 +1163,7 @@ final class Region {
 			if (objectDefinition.solid && collisionMap != null)
 				collisionMap.markWall(y, face, x, type, objectDefinition.walkable);
 			if (objectDefinition.offsetAmplifier != 16)
-				worldController.method290(y, objectDefinition.offsetAmplifier, x, plane);
+				worldController.displaceWallDecoration(y, objectDefinition.offsetAmplifier, x, plane);
 			return;
 		}
 		if (type == 1) {
@@ -1223,7 +1223,7 @@ final class Region {
 			if (objectDefinition.solid && collisionMap != null)
 				collisionMap.markWall(y, face, x, type, objectDefinition.walkable);
 			if (objectDefinition.offsetAmplifier != 16)
-				worldController.method290(y, objectDefinition.offsetAmplifier, x, plane);
+				worldController.displaceWallDecoration(y, objectDefinition.offsetAmplifier, x, plane);
 			return;
 		}
 		if (type == 3) {

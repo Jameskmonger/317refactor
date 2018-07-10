@@ -268,29 +268,32 @@ final class WorldController {
 				(tileHeight - x) + 1, uid, entity, true, (byte) 0);
 	}
 
-	public boolean addEntityA(int z, int worldX, int worldY, int worldZ, int rotation, Animable entity, int uid, int j1,
-			boolean isDynamic) {
+	public boolean addEntity(int z, int worldX, int worldY, int worldZ, int yaw, Animable entity, int uid, int delta,
+			boolean accountForYaw) {
 		if (entity == null)
 			return true;
-		int x = worldX - j1;
-		int y = worldY - j1;
-		int tileHeight = worldX + j1;
-		int tileWidth = worldY + j1;
-		if (isDynamic) {
-			if (rotation > 640 && rotation < 1408)
-				tileWidth += 128;
-			if (rotation > 1152 && rotation < 1920)
-				tileHeight += 128;
-			if (rotation > 1664 || rotation < 384)
-				y -= 128;
-			if (rotation > 128 && rotation < 896)
-				x -= 128;
+		int minX = worldX - delta;
+		int minY = worldY - delta;
+		int maxX = worldX + delta;
+		int maxY = worldY + delta;
+
+		if (accountForYaw) {
+			if (yaw > 640 && yaw < 1408)
+				maxY += 128;
+			if (yaw > 1152 && yaw < 1920)
+				maxX += 128;
+			if (yaw > 1664 || yaw < 384)
+				minY -= 128;
+			if (yaw > 128 && yaw < 896)
+				minX -= 128;
 		}
-		x /= 128;
-		y /= 128;
-		tileHeight /= 128;
-		tileWidth /= 128;
-		return addEntityC(x, y, z, worldX, worldY, worldZ, rotation, (tileWidth - y) + 1, (tileHeight - x) + 1, uid,
+
+		minX /= 128;
+		minY /= 128;
+		maxX /= 128;
+		maxY /= 128;
+
+		return addEntityC(minX, minY, z, worldX, worldY, worldZ, yaw, (maxY - minY) + 1, (maxX - minX) + 1, uid,
 				entity, true, (byte) 0);
 	}
 
@@ -306,13 +309,13 @@ final class WorldController {
 		}
 	}
 
-	private boolean addEntityC(int x, int y, int z, int worldX, int worldY, int worldZ, int rotation, int tileWidth,
+	private boolean addEntityC(int minX, int minY, int z, int worldX, int worldY, int worldZ, int rotation, int tileWidth,
 			int tileHeight, int uid, Animable renderable, boolean isDynamic, byte objConf) {
-		for (int _x = x; _x < x + tileHeight; _x++) {
-			for (int _y = y; _y < y + tileWidth; _y++) {
-				if (_x < 0 || _y < 0 || _x >= mapSizeX || _y >= mapSizeY)
+		for (int x = minX; x < minX + tileHeight; x++) {
+			for (int y = minY; y < minY + tileWidth; y++) {
+				if (x < 0 || y < 0 || x >= mapSizeX || y >= mapSizeY)
 					return false;
-				Ground tile = groundArray[z][_x][_y];
+				Ground tile = groundArray[z][x][y];
 				if (tile != null && tile.entityCount >= 5)
 					return false;
 			}
@@ -328,26 +331,27 @@ final class WorldController {
 		entity.worldZ = worldZ;
 		entity.renderable = renderable;
 		entity.rotation = rotation;
-		entity.tileLeft = x;
-		entity.tileTop = y;
-		entity.tileRight = (x + tileHeight) - 1;
-		entity.tileBottom = (y + tileWidth) - 1;
-		for (int _x = x; _x < x + tileHeight; _x++) {
-			for (int _y = y; _y < y + tileWidth; _y++) {
+		entity.tileLeft = minX;
+		entity.tileTop = minY;
+		entity.tileRight = (minX + tileHeight) - 1;
+		entity.tileBottom = (minY + tileWidth) - 1;
+		for (int x = minX; x < minX + tileHeight; x++) {
+			for (int y = minY; y < minY + tileWidth; y++) {
 				int size = 0;
-				if (_x > x)
-					size++;
-				if (_x < (x + tileHeight) - 1)
-					size += 4;
-				if (_y > y)
-					size += 8;
-				if (_y < (y + tileWidth) - 1)
-					size += 2;
+				if (x > minX)
+					size += 0b0001;
+				if (x < (minX + tileHeight) - 1)
+					size += 0b0100;
+				if (y > minY)
+					size += 0b1000;
+				if (y < (minY + tileWidth) - 1)
+					size += 0b0010;
+					
 				for (int _z = z; _z >= 0; _z--)
-					if (groundArray[_z][_x][_y] == null)
-						groundArray[_z][_x][_y] = new Ground(_z, _x, _y);
+					if (groundArray[_z][x][y] == null)
+						groundArray[_z][x][y] = new Ground(_z, x, y);
 
-				Ground tile = groundArray[z][_x][_y];
+				Ground tile = groundArray[z][x][y];
 				tile.interactiveObjects[tile.entityCount] = entity;
 				tile.interactiveObjectsSize[tile.entityCount] = size;
 				tile.interactiveObjectsSizeOR |= size;
@@ -663,16 +667,19 @@ final class WorldController {
 		return b1 * b3 > 0 && b3 * b2 > 0;
 	}
 
-	public void method290(int y, int k, int x, int z) {
+	public void displaceWallDecoration(int y, int displacement, int x, int z) {
 		Ground tile = groundArray[z][x][y];
+		
 		if (tile == null)
 			return;
+
 		WallDecoration wallDecoration = tile.wallDecoration;
+
 		if (wallDecoration != null) {
-			int j1 = x * 128 + 64;
-			int k1 = y * 128 + 64;
-			wallDecoration.x = j1 + ((wallDecoration.x - j1) * k) / 16;
-			wallDecoration.y = k1 + ((wallDecoration.y - k1) * k) / 16;
+			int absX = x * 128 + 64;
+			int absY = y * 128 + 64;
+			wallDecoration.x = absX + ((wallDecoration.x - absX) * displacement) / 16;
+			wallDecoration.y = absY + ((wallDecoration.y - absY) * displacement) / 16;
 		}
 	}
 
@@ -680,22 +687,22 @@ final class WorldController {
 		if (x < mapSizeX) {
 			Ground tile = groundArray[z][x + 1][y];
 			if (tile != null && tile.groundDecoration != null && tile.groundDecoration.renderable.vertexNormals != null)
-				method308(model, (Model) tile.groundDecoration.renderable, 128, 0, 0, true);
+				mergeNormals(model, (Model) tile.groundDecoration.renderable, 128, 0, 0, true);
 		}
 		if (y < mapSizeX) {
 			Ground tile = groundArray[z][x][y + 1];
 			if (tile != null && tile.groundDecoration != null && tile.groundDecoration.renderable.vertexNormals != null)
-				method308(model, (Model) tile.groundDecoration.renderable, 0, 0, 128, true);
+				mergeNormals(model, (Model) tile.groundDecoration.renderable, 0, 0, 128, true);
 		}
 		if (x < mapSizeX && y < mapSizeY) {
 			Ground tile = groundArray[z][x + 1][y + 1];
 			if (tile != null && tile.groundDecoration != null && tile.groundDecoration.renderable.vertexNormals != null)
-				method308(model, (Model) tile.groundDecoration.renderable, 128, 0, 128, true);
+				mergeNormals(model, (Model) tile.groundDecoration.renderable, 128, 0, 128, true);
 		}
 		if (x < mapSizeX && y > 0) {
 			Ground tile = groundArray[z][x + 1][y - 1];
 			if (tile != null && tile.groundDecoration != null && tile.groundDecoration.renderable.vertexNormals != null)
-				method308(model, (Model) tile.groundDecoration.renderable, 128, 0, -128, true);
+				mergeNormals(model, (Model) tile.groundDecoration.renderable, 128, 0, -128, true);
 		}
 	}
 
@@ -721,11 +728,11 @@ final class WorldController {
 									Wall wallObject = tile.wall;
 									if (wallObject != null && wallObject.primary != null
 											&& wallObject.primary.vertexNormals != null)
-										method308(model, (Model) wallObject.primary, (_x - x) * 128 + (1 - j) * 64,
+										mergeNormals(model, (Model) wallObject.primary, (_x - x) * 128 + (1 - j) * 64,
 												i3, (_y - y) * 128 + (1 - k) * 64, flag);
 									if (wallObject != null && wallObject.secondary != null
 											&& wallObject.secondary.vertexNormals != null)
-										method308(model, (Model) wallObject.secondary, (_x - x) * 128 + (1 - j) * 64,
+										mergeNormals(model, (Model) wallObject.secondary, (_x - x) * 128 + (1 - j) * 64,
 												i3, (_y - y) * 128 + (1 - k) * 64, flag);
 									for (int e = 0; e < tile.entityCount; e++) {
 										InteractiveObject entity = tile.interactiveObjects[e];
@@ -733,7 +740,7 @@ final class WorldController {
 												&& entity.renderable.vertexNormals != null) {
 											int k3 = (entity.tileRight - entity.tileLeft) + 1;
 											int l3 = (entity.tileBottom - entity.tileTop) + 1;
-											method308(model, (Model) entity.renderable,
+											mergeNormals(model, (Model) entity.renderable,
 													(entity.tileLeft - x) * 128 + (k3 - j) * 64, i3,
 													(entity.tileTop - y) * 128 + (l3 - k) * 64, flag);
 										}
@@ -750,25 +757,26 @@ final class WorldController {
 
 	}
 
-	private void method308(Model model, Model model_1, int posX, int posY, int posZ, boolean flag) {
+	private void mergeNormals(Model model, Model secondModel, int posX, int posY, int posZ, boolean flag) {
 		anInt488++;
-		int l = 0;
-		int vertices[] = model_1.verticesX;
-		int vertexCount = model_1.vertexCount;
+		int count = 0;
+		int vertices[] = secondModel.verticesX;
+		int vertexCount = secondModel.vertexCount;
+
 		for (int vertex = 0; vertex < model.vertexCount; vertex++) {
 			VertexNormal vertexNormal = model.vertexNormals[vertex];
 			VertexNormal offsetVertexNormal = model.vertexNormalOffset[vertex];
 			if (offsetVertexNormal.magnitude != 0) {
 				int y = model.verticesY[vertex] - posY;
-				if (y <= model_1.maxY) {
+				if (y <= secondModel.maxY) {
 					int x = model.verticesX[vertex] - posX;
-					if (x >= model_1.maxY && x <= model_1.maxX) {
+					if (x >= secondModel.maxY && x <= secondModel.maxX) {
 						int z = model.verticesZ[vertex] - posZ;
-						if (z >= model_1.minZ && z <= model_1.maxZ) {
+						if (z >= secondModel.minZ && z <= secondModel.maxZ) {
 							for (int v = 0; v < vertexCount; v++) {
-								VertexNormal vertexNormal2 = model_1.vertexNormals[v];
-								VertexNormal offsetVertexNormal2 = model_1.vertexNormalOffset[v];
-								if (x == vertices[v] && z == model_1.verticesZ[v] && y == model_1.verticesY[v]
+								VertexNormal vertexNormal2 = secondModel.vertexNormals[v];
+								VertexNormal offsetVertexNormal2 = secondModel.vertexNormalOffset[v];
+								if (x == vertices[v] && z == secondModel.verticesZ[v] && y == secondModel.verticesY[v]
 										&& offsetVertexNormal2.magnitude != 0) {
 									vertexNormal.x += offsetVertexNormal2.x;
 									vertexNormal.y += offsetVertexNormal2.y;
@@ -778,7 +786,7 @@ final class WorldController {
 									vertexNormal2.y += offsetVertexNormal.y;
 									vertexNormal2.z += offsetVertexNormal.z;
 									vertexNormal2.magnitude += offsetVertexNormal.magnitude;
-									l++;
+									count++;
 									anIntArray486[vertex] = anInt488;
 									anIntArray487[v] = anInt488;
 								}
@@ -790,19 +798,20 @@ final class WorldController {
 			}
 		}
 
-		if (l < 3 || !flag)
+		if (count < 3 || !flag)
 			return;
+		
 		for (int triangle = 0; triangle < model.triangleCount; triangle++)
 			if (anIntArray486[model.triangleX[triangle]] == anInt488
 					&& anIntArray486[model.triangleY[triangle]] == anInt488
 					&& anIntArray486[model.triangleZ[triangle]] == anInt488)
 				model.triangleDrawType[triangle] = -1;
 
-		for (int triangle = 0; triangle < model_1.triangleCount; triangle++)
-			if (anIntArray487[model_1.triangleX[triangle]] == anInt488
-					&& anIntArray487[model_1.triangleY[triangle]] == anInt488
-					&& anIntArray487[model_1.triangleZ[triangle]] == anInt488)
-				model_1.triangleDrawType[triangle] = -1;
+		for (int triangle = 0; triangle < secondModel.triangleCount; triangle++)
+			if (anIntArray487[secondModel.triangleX[triangle]] == anInt488
+					&& anIntArray487[secondModel.triangleY[triangle]] == anInt488
+					&& anIntArray487[secondModel.triangleZ[triangle]] == anInt488)
+				secondModel.triangleDrawType[triangle] = -1;
 
 	}
 
@@ -2067,7 +2076,7 @@ final class WorldController {
 							method307(_z, 1, 1, _x, _y, (Model) wallObject.primary);
 							if (wallObject.secondary != null && wallObject.secondary.vertexNormals != null) {
 								method307(_z, 1, 1, _x, _y, (Model) wallObject.secondary);
-								method308((Model) wallObject.primary, (Model) wallObject.secondary, 0, 0, 0,
+								mergeNormals((Model) wallObject.primary, (Model) wallObject.secondary, 0, 0, 0,
 										false);
 								((Model) wallObject.secondary).handleShading(lightness, magnitude, x, y, z);
 							}

@@ -8893,7 +8893,7 @@ public final class Client extends RSApplet {
 			}
 			if (!npc.npcDefinition.clickable)
 				hash += 0x80000000;
-			worldController.addEntityA(plane, npc.x, npc.y, getFloorDrawHeight(plane, npc.y, npc.x),
+			worldController.addEntity(plane, npc.x, npc.y, getFloorDrawHeight(plane, npc.y, npc.x),
 					npc.currentRotation, npc, hash, (npc.boundaryDimension - 1) * 64 + 60, npc.dynamic);
 		}
 	}
@@ -8936,7 +8936,7 @@ public final class Client extends RSApplet {
 				tileRenderCount[x][y] = renderCount;
 			}
 			player.drawHeight2 = getFloorDrawHeight(plane, player.y, player.x);
-			worldController.addEntityA(plane, player.x, player.y, player.drawHeight2, player.currentRotation, player,
+			worldController.addEntity(plane, player.x, player.y, player.drawHeight2, player.currentRotation, player,
 					hash, 60, player.dynamic);
 		}
 
@@ -8966,7 +8966,7 @@ public final class Client extends RSApplet {
 								getFloorDrawHeight(projectile.plane, player.y, player.x) - projectile.endZ, player.x);
 				}
 				projectile.move(animationTimePassed);
-				worldController.addEntityA(plane, (int) projectile.currentX, (int) projectile.currentY,
+				worldController.addEntity(plane, (int) projectile.currentX, (int) projectile.currentY,
 						(int) projectile.currentZ, projectile.rotationY, projectile, -1, 60, false);
 			}
 
@@ -8983,7 +8983,7 @@ public final class Client extends RSApplet {
 				if (stationaryGraphic.transformationCompleted)
 					stationaryGraphic.unlink();
 				else
-					worldController.addEntityA(stationaryGraphic.z, stationaryGraphic.x, stationaryGraphic.y,
+					worldController.addEntity(stationaryGraphic.z, stationaryGraphic.x, stationaryGraphic.y,
 							stationaryGraphic.drawHeight, 0, stationaryGraphic, -1, 60, false);
 			}
 
