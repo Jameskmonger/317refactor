@@ -211,7 +211,7 @@ public final class Model extends Animable {
 	public int vertexSkin[][];
 	public int triangleSkin[][];
 	public boolean singleTile;
-	VertexNormal vertexNormalOffset[];
+	public VertexNormal vertexNormalOffset[];
 	private static ModelHeader[] modelHeaders;
 	private static OnDemandFetcher requester;
 	private static boolean[] restrictEdges = new boolean[4096];

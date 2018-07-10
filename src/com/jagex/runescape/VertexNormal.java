@@ -1,12 +1,12 @@
 package com.jagex.runescape;
 
-final class VertexNormal {
+public final class VertexNormal {
 
-	int x;
+	public int x;
 
-	int y;
-	int z;
-	int magnitude;
+	public int y;
+	public int z;
+	public int magnitude;
 
 	public VertexNormal() {
 	}

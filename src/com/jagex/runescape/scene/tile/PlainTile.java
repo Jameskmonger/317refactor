@@ -1,15 +1,15 @@
-package com.jagex.runescape;
+package com.jagex.runescape.scene.tile;
 
-final class PlainTile {
+public final class PlainTile {
 
-	final int colourA;
+	public final int colourA;
 
-	final int colourB;
-	final int colourD;
-	final int colourC;
-	final int texture;
-	boolean flat;
-	final int colourRGB;
+	public final int colourB;
+	public final int colourD;
+	public final int colourC;
+	public final int texture;
+	public boolean flat;
+	public final int colourRGB;
 
 	public PlainTile(int colourA, int colourB, int colourC, int colourD, int colourRGB, int texture, boolean flat) {
 		this.flat = true;
