@@ -7533,16 +7533,16 @@ public final class Client extends RSApplet {
 				int tileHeightX1Y1 = intGroundArray[plane][x + 1][y + 1];
 				int tileHeightX0Y1 = intGroundArray[plane][x][y + 1];
 				if (type == 0) {
-					WallObject wallObject = worldController.getWallObject(x, y, plane);
+					Wall wallObject = worldController.getWallObject(x, y, plane);
 					if (wallObject != null) {
 						int uid = wallObject.uid >> 14 & 0x7FFF;
 						if (objectType == 2) {
-							wallObject.renderable = new GameObject(uid, 4 + orientation, 2, tileHeightX1Y0,
+							wallObject.primary = new GameObject(uid, 4 + orientation, 2, tileHeightX1Y0,
 									tileHeightX1Y1, tileHeightX0Y0, tileHeightX0Y1, animationId, false);
-							wallObject.renderable2 = new GameObject(uid, orientation + 1 & 3, 2, tileHeightX1Y0,
+							wallObject.secondary = new GameObject(uid, orientation + 1 & 3, 2, tileHeightX1Y0,
 									tileHeightX1Y1, tileHeightX0Y0, tileHeightX0Y1, animationId, false);
 						} else {
-							wallObject.renderable = new GameObject(uid, orientation, objectType, tileHeightX1Y0,
+							wallObject.primary = new GameObject(uid, orientation, objectType, tileHeightX1Y0,
 									tileHeightX1Y1, tileHeightX0Y0, tileHeightX0Y1, animationId, false);
 						}
 					}

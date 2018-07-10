@@ -93,7 +93,7 @@ final class Region {
 			else
 				animable = new GameObject(objectId, face, 0, vertexHeightSE, vertexHeightNE, vertexHeightSW,
 						vertexHeightNW, definition.animationId, true);
-			worldController.addWallObject(x, y, z, drawHeight, POWERS_OF_TWO[face], 0, hash, ((animable)), null,
+			worldController.addWall(x, y, z, drawHeight, POWERS_OF_TWO[face], 0, hash, ((animable)), null,
 					config);
 			if (definition.solid)
 				collisionMap.markWall(y, face, x, type, definition.walkable);
@@ -107,7 +107,7 @@ final class Region {
 			else
 				animable = new GameObject(objectId, face, 1, vertexHeightSE, vertexHeightNE, vertexHeightSW,
 						vertexHeightNW, definition.animationId, true);
-			worldController.addWallObject(x, y, z, drawHeight, WALL_CORNER_ORIENTATION[face], 0, hash, ((animable)),
+			worldController.addWall(x, y, z, drawHeight, WALL_CORNER_ORIENTATION[face], 0, hash, ((animable)),
 					null, config);
 			if (definition.solid)
 				collisionMap.markWall(y, face, x, type, definition.walkable);
@@ -128,7 +128,7 @@ final class Region {
 				animable2 = new GameObject(objectId, _face, 2, vertexHeightSE, vertexHeightNE, vertexHeightSW,
 						vertexHeightNW, definition.animationId, true);
 			}
-			worldController.addWallObject(x, y, z, drawHeight, POWERS_OF_TWO[face], POWERS_OF_TWO[_face], hash,
+			worldController.addWall(x, y, z, drawHeight, POWERS_OF_TWO[face], POWERS_OF_TWO[_face], hash,
 					((animable1)), ((animable2)), config);
 			if (definition.solid)
 				collisionMap.markWall(y, face, x, type, definition.walkable);
@@ -142,7 +142,7 @@ final class Region {
 			else
 				animable = new GameObject(objectId, face, 3, vertexHeightSE, vertexHeightNE, vertexHeightSW,
 						vertexHeightNW, definition.animationId, true);
-			worldController.addWallObject(x, y, z, drawHeight, WALL_CORNER_ORIENTATION[face], 0, hash, ((animable)),
+			worldController.addWall(x, y, z, drawHeight, WALL_CORNER_ORIENTATION[face], 0, hash, ((animable)),
 					null, config);
 			if (definition.solid)
 				collisionMap.markWall(y, face, x, type, definition.walkable);
@@ -1129,7 +1129,7 @@ final class Region {
 			else
 				animable = new GameObject(objectId, face, 0, vertexHeightSE, vertexHeightNE, vertexHeightSW,
 						vertexHeightNW, objectDefinition.animationId, true);
-			worldController.addWallObject(x, y, plane, drawHeight, POWERS_OF_TWO[face], 0, hash, ((animable)), null,
+			worldController.addWall(x, y, plane, drawHeight, POWERS_OF_TWO[face], 0, hash, ((animable)), null,
 					config);
 			if (face == 0) {
 				if (objectDefinition.castsShadow) {
@@ -1174,7 +1174,7 @@ final class Region {
 			else
 				animable = new GameObject(objectId, face, 1, vertexHeightSE, vertexHeightNE, vertexHeightSW,
 						vertexHeightNW, objectDefinition.animationId, true);
-			worldController.addWallObject(x, y, plane, drawHeight, WALL_CORNER_ORIENTATION[face], 0, hash, ((animable)),
+			worldController.addWall(x, y, plane, drawHeight, WALL_CORNER_ORIENTATION[face], 0, hash, ((animable)),
 					null, config);
 			if (objectDefinition.castsShadow)
 				if (face == 0)
@@ -1204,7 +1204,7 @@ final class Region {
 				animable2 = new GameObject(objectId, orientation, 2, vertexHeightSE, vertexHeightNE, vertexHeightSW,
 						vertexHeightNW, objectDefinition.animationId, true);
 			}
-			worldController.addWallObject(x, y, plane, drawHeight, POWERS_OF_TWO[face], POWERS_OF_TWO[orientation],
+			worldController.addWall(x, y, plane, drawHeight, POWERS_OF_TWO[face], POWERS_OF_TWO[orientation],
 					hash, ((animable1)), ((animable2)), config);
 			if (objectDefinition.wall)
 				if (face == 0) {
@@ -1234,7 +1234,7 @@ final class Region {
 			else
 				animable = new GameObject(objectId, face, 3, vertexHeightSE, vertexHeightNE, vertexHeightSW,
 						vertexHeightNW, objectDefinition.animationId, true);
-			worldController.addWallObject(x, y, plane, drawHeight, WALL_CORNER_ORIENTATION[face], 0, hash, ((animable)),
+			worldController.addWall(x, y, plane, drawHeight, WALL_CORNER_ORIENTATION[face], 0, hash, ((animable)),
 					null, config);
 			if (objectDefinition.castsShadow)
 				if (face == 0)

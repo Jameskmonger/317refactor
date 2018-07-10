@@ -11,7 +11,7 @@ public final class Ground extends Linkable {
 	final int anInt1310;
 	public PlainTile plainTile;
 	public ShapedTile shapedTile;
-	public WallObject wallObject;
+	public Wall wall;
 	public WallDecoration wallDecoration;
 	public GroundDecoration groundDecoration;
 	public GroundItemTile groundItemTile;

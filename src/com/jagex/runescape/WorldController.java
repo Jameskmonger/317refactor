@@ -423,25 +423,27 @@ final class WorldController {
 		groundArray[z][x][y].wallDecoration = wallDecoration;
 	}
 
-	protected void addWallObject(int x, int y, int z, int drawHeight, int orientation, int orientation2, int uid,
-			Animable renderable, Animable renderable2, byte objConf) {
-		if (renderable == null && renderable2 == null)
+	protected void addWall(int x, int y, int z, int drawHeight, int orientation, int orientation2, int uid,
+			Animable primary, Animable secondary, byte objConf) {
+		if (primary == null && secondary == null)
 			return;
-		WallObject wallObject = new WallObject();
-		wallObject.uid = uid;
-		wallObject.objConf = objConf;
-		wallObject.x = x * 128 + 64;
-		wallObject.y = y * 128 + 64;
-		wallObject.z = drawHeight;
-		wallObject.renderable = renderable;
-		wallObject.renderable2 = renderable2;
-		wallObject.orientation = orientation;
-		wallObject.orientation2 = orientation2;
+
+		Wall wall = new Wall();
+		wall.uid = uid;
+		wall.objConf = objConf;
+		wall.x = x * 128 + 64;
+		wall.y = y * 128 + 64;
+		wall.z = drawHeight;
+		wall.primary = primary;
+		wall.secondary = secondary;
+		wall.orientation = orientation;
+		wall.orientation2 = orientation2;
+
 		for (int _z = z; _z >= 0; _z--)
 			if (groundArray[_z][x][y] == null)
 				groundArray[_z][x][y] = new Ground(_z, x, y);
 
-		groundArray[z][x][y].wallObject = wallObject;
+		groundArray[z][x][y].wall = wall;
 	}
 
 	public void applyBridgeMode(int x, int y) {
@@ -533,8 +535,8 @@ final class WorldController {
 		Ground tile = groundArray[z][x][y];
 		if (tile == null)
 			return -1;
-		if (tile.wallObject != null && tile.wallObject.uid == uid)
-			return tile.wallObject.objConf & 0xff;
+		if (tile.wall != null && tile.wall.uid == uid)
+			return tile.wall.objConf & 0xff;
 		if (tile.wallDecoration != null && tile.wallDecoration.uid == uid)
 			return tile.wallDecoration.objConf & 0xff;
 		if (tile.groundDecoration != null && tile.groundDecoration.uid == uid)
@@ -603,20 +605,20 @@ final class WorldController {
 			return tile.wallDecoration.uid;
 	}
 
-	public WallObject getWallObject(int x, int y, int z) {
+	public Wall getWallObject(int x, int y, int z) {
 		Ground tile = groundArray[z][x][y];
 		if (tile == null)
 			return null;
 		else
-			return tile.wallObject;
+			return tile.wall;
 	}
 
 	public int getWallObjectHash(int x, int y, int z) {
 		Ground tile = groundArray[z][x][y];
-		if (tile == null || tile.wallObject == null)
+		if (tile == null || tile.wall == null)
 			return 0;
 		else
-			return tile.wallObject.uid;
+			return tile.wall.uid;
 	}
 
 	public void initToNull() {
@@ -716,14 +718,14 @@ final class WorldController {
 											+ heightMap[_z][_x][_y + 1] + heightMap[_z][_x + 1][_y + 1]) / 4
 											- (heightMap[z][x][y] + heightMap[z][x + 1][y] + heightMap[z][x][y + 1]
 													+ heightMap[z][x + 1][y + 1]) / 4;
-									WallObject wallObject = tile.wallObject;
-									if (wallObject != null && wallObject.renderable != null
-											&& wallObject.renderable.vertexNormals != null)
-										method308(model, (Model) wallObject.renderable, (_x - x) * 128 + (1 - j) * 64,
+									Wall wallObject = tile.wall;
+									if (wallObject != null && wallObject.primary != null
+											&& wallObject.primary.vertexNormals != null)
+										method308(model, (Model) wallObject.primary, (_x - x) * 128 + (1 - j) * 64,
 												i3, (_y - y) * 128 + (1 - k) * 64, flag);
-									if (wallObject != null && wallObject.renderable2 != null
-											&& wallObject.renderable2.vertexNormals != null)
-										method308(model, (Model) wallObject.renderable2, (_x - x) * 128 + (1 - j) * 64,
+									if (wallObject != null && wallObject.secondary != null
+											&& wallObject.secondary.vertexNormals != null)
+										method308(model, (Model) wallObject.secondary, (_x - x) * 128 + (1 - j) * 64,
 												i3, (_y - y) * 128 + (1 - k) * 64, flag);
 									for (int e = 0; e < tile.entityCount; e++) {
 										InteractiveObject entity = tile.interactiveObjects[e];
@@ -1212,7 +1214,7 @@ final class WorldController {
 	public void removeWallObject(int x, int z, int y) {
 		Ground tile = groundArray[z][x][y];
 		if (tile != null) {
-			tile.wallObject = null;
+			tile.wall = null;
 		}
 	}
 
@@ -1611,9 +1613,9 @@ final class WorldController {
 									curveCosineY);
 					} else if (tile.shapedTile != null && !method320(x, y, 0))
 						renderShapedTile(tile.shapedTile, x, y, curveSineX, curveCosineX, curveSineY, curveCosineY);
-					WallObject wallObject = tile.wallObject;
+					Wall wallObject = tile.wall;
 					if (wallObject != null)
-						wallObject.renderable.renderAtPoint(0, curveSineY, curveCosineY, curveSineX, curveCosineX,
+						wallObject.primary.renderAtPoint(0, curveSineY, curveCosineY, curveSineX, curveCosineX,
 								wallObject.x - cameraPosX, wallObject.z - cameraPosZ, wallObject.y - cameraPosY,
 								wallObject.uid);
 					for (int e = 0; e < tile.entityCount; e++) {
@@ -1638,7 +1640,7 @@ final class WorldController {
 				}
 				int j1 = 0;
 				int j2 = 0;
-				WallObject wallObject = groundTile.wallObject;
+				Wall wallObject = groundTile.wall;
 				WallDecoration wallDecoration = groundTile.wallDecoration;
 				if (wallObject != null || wallDecoration != null) {
 					if (cameraPositionTileX == x)
@@ -1675,11 +1677,11 @@ final class WorldController {
 						groundTile.anInt1325 = 0;
 					}
 					if ((wallObject.orientation & j2) != 0 && !method321(x, y, l, wallObject.orientation))
-						wallObject.renderable.renderAtPoint(0, curveSineY, curveCosineY, curveSineX, curveCosineX,
+						wallObject.primary.renderAtPoint(0, curveSineY, curveCosineY, curveSineX, curveCosineX,
 								wallObject.x - cameraPosX, wallObject.z - cameraPosZ, wallObject.y - cameraPosY,
 								wallObject.uid);
 					if ((wallObject.orientation2 & j2) != 0 && !method321(x, y, l, wallObject.orientation2))
-						wallObject.renderable2.renderAtPoint(0, curveSineY, curveCosineY, curveSineX, curveCosineX,
+						wallObject.secondary.renderAtPoint(0, curveSineY, curveCosineY, curveSineX, curveCosineX,
 								wallObject.x - cameraPosX, wallObject.z - cameraPosZ, wallObject.y - cameraPosY,
 								wallObject.uid);
 				}
@@ -1773,9 +1775,9 @@ final class WorldController {
 				}
 
 				if (flag2) {
-					WallObject wallObject = groundTile.wallObject;
+					Wall wallObject = groundTile.wall;
 					if (!method321(x, y, l, wallObject.orientation))
-						wallObject.renderable.renderAtPoint(0, curveSineY, curveCosineY, curveSineX, curveCosineX,
+						wallObject.primary.renderAtPoint(0, curveSineY, curveCosineY, curveSineX, curveCosineX,
 								wallObject.x - cameraPosX, wallObject.z - cameraPosZ, wallObject.y - cameraPosY,
 								wallObject.uid);
 					groundTile.anInt1325 = 0;
@@ -1950,16 +1952,16 @@ final class WorldController {
 									curveSineX, curveCosineX, j9, j3, j10, wallDecoration.uid);
 						}
 					}
-				WallObject wallObject = groundTile.wallObject;
+				Wall wallObject = groundTile.wall;
 				if (wallObject != null) {
 					if ((wallObject.orientation2 & groundTile.anInt1328) != 0
 							&& !method321(x, y, l, wallObject.orientation2))
-						wallObject.renderable2.renderAtPoint(0, curveSineY, curveCosineY, curveSineX, curveCosineX,
+						wallObject.secondary.renderAtPoint(0, curveSineY, curveCosineY, curveSineX, curveCosineX,
 								wallObject.x - cameraPosX, wallObject.z - cameraPosZ, wallObject.y - cameraPosY,
 								wallObject.uid);
 					if ((wallObject.orientation & groundTile.anInt1328) != 0
 							&& !method321(x, y, l, wallObject.orientation))
-						wallObject.renderable.renderAtPoint(0, curveSineY, curveCosineY, curveSineX, curveCosineX,
+						wallObject.primary.renderAtPoint(0, curveSineY, curveCosineY, curveSineX, curveCosineX,
 								wallObject.x - cameraPosX, wallObject.z - cameraPosZ, wallObject.y - cameraPosY,
 								wallObject.uid);
 				}
@@ -2059,17 +2061,17 @@ final class WorldController {
 				for (int _y = 0; _y < mapSizeY; _y++) {
 					Ground tile = groundArray[_z][_x][_y];
 					if (tile != null) {
-						WallObject wallObject = tile.wallObject;
-						if (wallObject != null && wallObject.renderable != null
-								&& wallObject.renderable.vertexNormals != null) {
-							method307(_z, 1, 1, _x, _y, (Model) wallObject.renderable);
-							if (wallObject.renderable2 != null && wallObject.renderable2.vertexNormals != null) {
-								method307(_z, 1, 1, _x, _y, (Model) wallObject.renderable2);
-								method308((Model) wallObject.renderable, (Model) wallObject.renderable2, 0, 0, 0,
+						Wall wallObject = tile.wall;
+						if (wallObject != null && wallObject.primary != null
+								&& wallObject.primary.vertexNormals != null) {
+							method307(_z, 1, 1, _x, _y, (Model) wallObject.primary);
+							if (wallObject.secondary != null && wallObject.secondary.vertexNormals != null) {
+								method307(_z, 1, 1, _x, _y, (Model) wallObject.secondary);
+								method308((Model) wallObject.primary, (Model) wallObject.secondary, 0, 0, 0,
 										false);
-								((Model) wallObject.renderable2).handleShading(lightness, magnitude, x, y, z);
+								((Model) wallObject.secondary).handleShading(lightness, magnitude, x, y, z);
 							}
-							((Model) wallObject.renderable).handleShading(lightness, magnitude, x, y, z);
+							((Model) wallObject.primary).handleShading(lightness, magnitude, x, y, z);
 						}
 						for (int e = 0; e < tile.entityCount; e++) {
 							InteractiveObject entity = tile.interactiveObjects[e];

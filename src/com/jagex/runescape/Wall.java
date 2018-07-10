@@ -1,6 +1,6 @@
 package com.jagex.runescape;
 
-public final class WallObject {
+public final class Wall {
 
 	int z;
 
@@ -8,11 +8,11 @@ public final class WallObject {
 	int y;
 	int orientation;
 	int orientation2;
-	public Animable renderable;
-	public Animable renderable2;
+	public Animable primary;
+	public Animable secondary;
 	public int uid;
 	byte objConf;
 
-	public WallObject() {
+	public Wall() {
 	}
 }
