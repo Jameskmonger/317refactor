@@ -284,7 +284,7 @@ public final class Client extends RSApplet {
 	private int daysSinceLogin;
 	private int packetSize;
 	private int packetOpcode;
-	private int anInt1009;
+	private int packetReadAnticheat;
 	private int idleCounter;
 	private int idleLogout;
 	private DoubleEndedQueue projectileQueue;
@@ -1665,11 +1665,11 @@ public final class Client extends RSApplet {
 			if (k < 50)
 				anIntArray828[j + (c - 2 << 7)] = 255;
 		}
-		for (int l = 0; l < 100; l++) {
-			int i1 = (int) (Math.random() * 124D) + 2;
-			int k1 = (int) (Math.random() * 128D) + 128;
-			int k2 = i1 + (k1 << 7);
-			anIntArray828[k2] = 192;
+		for (int i = 0; i < 100; i++) {
+			int a = (int) (Math.random() * 124D) + 2;
+			int b = (int) (Math.random() * 128D) + 128;
+			int index = a + (b << 7);
+			anIntArray828[index] = 192;
 		}
 
 		for (int j1 = 1; j1 < c - 1; j1++) {
@@ -1707,10 +1707,10 @@ public final class Client extends RSApplet {
 		if (anInt1041 > 0)
 			anInt1041 -= 4;
 		if (anInt1040 == 0 && anInt1041 == 0) {
-			int l3 = (int) (Math.random() * 2000D);
-			if (l3 == 0)
+			int rand = (int) (Math.random() * 2000D);
+			if (rand == 0)
 				anInt1040 = 1024;
-			if (l3 == 1)
+			if (rand == 1)
 				anInt1041 = 1024;
 		}
 	}
@@ -4630,9 +4630,9 @@ public final class Client extends RSApplet {
 			int l1 = y * sine + x * cosine >> 16;
 			int i2 = y * cosine - x * sine >> 16;
 			double d = Math.atan2(l1, i2);
-			int j2 = (int) (Math.sin(d) * 63D);
-			int k2 = (int) (Math.cos(d) * 57D);
-			minimapEdgeImage.rotate((94 + j2 + 4) - 10, 83 - k2 - 20, d);
+			int randomX = (int) (Math.sin(d) * 63D);
+			int randomY = (int) (Math.cos(d) * 57D);
+			minimapEdgeImage.rotate(88 + randomX, 63 - randomY, d);
 		} else {
 			markMinimap(sprite, x, y);
 		}
@@ -4929,7 +4929,7 @@ public final class Client extends RSApplet {
 				return false;
 			inStream.position = 0;
 			socket.read(inStream.buffer, packetSize);
-			anInt1009 = 0;
+			packetReadAnticheat = 0;
 			thirdMostRecentOpcode = secondMostRecentOpcode;
 			secondMostRecentOpcode = mostRecentOpcode;
 			mostRecentOpcode = packetOpcode;
@@ -5726,17 +5726,23 @@ public final class Client extends RSApplet {
 				int interfaceId = inStream.getUnsignedLEShort();
 				RSInterface rsInterface = RSInterface.cache[interfaceId];
 				int itemCount = inStream.getUnsignedLEShort();
+
 				for (int item = 0; item < itemCount; item++) {
 					int stackSize = inStream.getUnsignedByte();
-					if (stackSize == 255)
+					
+					if (stackSize == 255) {
 						stackSize = inStream.getMEBInt();
+					}
+
 					rsInterface.inventoryItemId[item] = inStream.getUnsignedShortA();
 					rsInterface.inventoryStackSize[item] = stackSize;
 				}
-				for (int j25 = itemCount; j25 < rsInterface.inventoryItemId.length; j25++) {
-					rsInterface.inventoryItemId[j25] = 0;
-					rsInterface.inventoryStackSize[j25] = 0;
+
+				for (int i = itemCount; i < rsInterface.inventoryItemId.length; i++) {
+					rsInterface.inventoryItemId[i] = 0;
+					rsInterface.inventoryStackSize[i] = 0;
 				}
+
 				packetOpcode = -1;
 				return true;
 			}
@@ -6586,7 +6592,7 @@ public final class Client extends RSApplet {
 				secondMostRecentOpcode = -1;
 				thirdMostRecentOpcode = -1;
 				packetSize = 0;
-				anInt1009 = 0;
+				packetReadAnticheat = 0;
 				systemUpdateTime = 0;
 				idleLogout = 0;
 				hintIconType = 0;
@@ -6730,7 +6736,7 @@ public final class Client extends RSApplet {
 				secondMostRecentOpcode = -1;
 				thirdMostRecentOpcode = -1;
 				packetSize = 0;
-				anInt1009 = 0;
+				packetReadAnticheat = 0;
 				systemUpdateTime = 0;
 				menuActionRow = 0;
 				menuOpen = false;
@@ -6949,8 +6955,8 @@ public final class Client extends RSApplet {
 		loadingStages();
 		spawnGameObjects();
 		handleMusic();
-		anInt1009++;
-		if (anInt1009 > 750)
+		packetReadAnticheat++;
+		if (packetReadAnticheat > 750)
 			dropClient();
 		updatePlayerInstances();
 		updateNPCInstances();
