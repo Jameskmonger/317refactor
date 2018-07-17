@@ -1,6 +1,11 @@
-package com.jagex.runescape;
+package com.jagex.runescape.definition;
 
 import com.jagex.runescape.collection.Cache;
+import com.jagex.runescape.Animation;
+import com.jagex.runescape.Archive;
+import com.jagex.runescape.Buffer;
+import com.jagex.runescape.Client;
+import com.jagex.runescape.Model;
 
 public final class EntityDefinition {
 

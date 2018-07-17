@@ -1,5 +1,7 @@
 package com.jagex.runescape;
 
+import com.jagex.runescape.definition.FloorDefinition;
+import com.jagex.runescape.definition.GameObjectDefinition;
 import com.jagex.runescape.scene.WorldController;
 
 final class Region {

@@ -1,5 +1,7 @@
 package com.jagex.runescape;
 
+import com.jagex.runescape.definition.*;
+
 final class GameObject extends Animable {
 
 	private int frame;

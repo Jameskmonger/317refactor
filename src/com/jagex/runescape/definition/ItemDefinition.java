@@ -1,5 +1,11 @@
-package com.jagex.runescape;
+package com.jagex.runescape.definition;
 
+import com.jagex.runescape.Archive;
+import com.jagex.runescape.Buffer;
+import com.jagex.runescape.DrawingArea;
+import com.jagex.runescape.Model;
+import com.jagex.runescape.Rasterizer;
+import com.jagex.runescape.Sprite;
 import com.jagex.runescape.collection.Cache;
 
 public final class ItemDefinition {
@@ -180,7 +186,7 @@ public final class ItemDefinition {
 
 	public int id;
 
-	static Cache spriteCache = new Cache(100);
+	public static Cache spriteCache = new Cache(100);
 
 	public static Cache modelCache = new Cache(50);
 
