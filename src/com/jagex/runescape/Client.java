@@ -372,15 +372,15 @@ public final class Client extends RSApplet {
 	private int anInt1102;
 	private boolean drawTabIcons;
 	private int systemUpdateTime;
-	private RSImageProducer topLeft1BackgroundTile;
-	private RSImageProducer bottomLeft1BackgroundTile;
+	private RSImageProducer topCentreBackgroundTile;
+	private RSImageProducer bottomCentreBackgroundTile;
 	private RSImageProducer loginBoxLeftBackgroundTile;
 	private RSImageProducer flameLeftBackground;
 	private RSImageProducer flameRightBackground;
-	private RSImageProducer bottomLeft0BackgroundTile;
-	private RSImageProducer aRSImageProducer_1113;
-	private RSImageProducer middleLeft1BackgroundTile;
-	private RSImageProducer aRSImageProducer_1115;
+	private RSImageProducer bottomLeftBackgroundTile;
+	private RSImageProducer bottomRightBackgroundTile;
+	private RSImageProducer middleLeftBackgroundTile;
+	private RSImageProducer middleRightBackgroundTile;
 	private static int mouseClickCounter;
 	private int membership;
 	private String chatboxInputNeededString;
@@ -1884,13 +1884,13 @@ public final class Client extends RSApplet {
 		friendsWorldIds = null;
 		flameLeftBackground = null;
 		flameRightBackground = null;
-		topLeft1BackgroundTile = null;
-		bottomLeft1BackgroundTile = null;
+		topCentreBackgroundTile = null;
+		bottomCentreBackgroundTile = null;
 		loginBoxLeftBackgroundTile = null;
-		bottomLeft0BackgroundTile = null;
-		aRSImageProducer_1113 = null;
-		middleLeft1BackgroundTile = null;
-		aRSImageProducer_1115 = null;
+		bottomLeftBackgroundTile = null;
+		bottomRightBackgroundTile = null;
+		middleLeftBackgroundTile = null;
+		middleRightBackgroundTile = null;
 		nullLoader();
 		GameObjectDefinition.nullLoader();
 		EntityDefinition.nullLoader();
@@ -4202,12 +4202,12 @@ public final class Client extends RSApplet {
 				flameLeftBackground.drawGraphics(0, super.gameGraphics, 0);
 				flameRightBackground.drawGraphics(0, super.gameGraphics, 637);
 			}
-			topLeft1BackgroundTile.drawGraphics(0, super.gameGraphics, 128);
-			bottomLeft1BackgroundTile.drawGraphics(371, super.gameGraphics, 202);
-			bottomLeft0BackgroundTile.drawGraphics(265, super.gameGraphics, 0);
-			aRSImageProducer_1113.drawGraphics(265, super.gameGraphics, 562);
-			middleLeft1BackgroundTile.drawGraphics(171, super.gameGraphics, 128);
-			aRSImageProducer_1115.drawGraphics(171, super.gameGraphics, 562);
+			topCentreBackgroundTile.drawGraphics(0, super.gameGraphics, 128);
+			bottomCentreBackgroundTile.drawGraphics(371, super.gameGraphics, 202);
+			bottomLeftBackgroundTile.drawGraphics(265, super.gameGraphics, 0);
+			bottomRightBackgroundTile.drawGraphics(265, super.gameGraphics, 562);
+			middleLeftBackgroundTile.drawGraphics(171, super.gameGraphics, 128);
+			middleRightBackgroundTile.drawGraphics(171, super.gameGraphics, 562);
 		}
 	}
 
@@ -4283,12 +4283,12 @@ public final class Client extends RSApplet {
 		loginBoxLeftBackgroundTile.drawGraphics(171, super.gameGraphics, 202);
 		if (welcomeScreenRaised) {
 			welcomeScreenRaised = false;
-			topLeft1BackgroundTile.drawGraphics(0, super.gameGraphics, 128);
-			bottomLeft1BackgroundTile.drawGraphics(371, super.gameGraphics, 202);
-			bottomLeft0BackgroundTile.drawGraphics(265, super.gameGraphics, 0);
-			aRSImageProducer_1113.drawGraphics(265, super.gameGraphics, 562);
-			middleLeft1BackgroundTile.drawGraphics(171, super.gameGraphics, 128);
-			aRSImageProducer_1115.drawGraphics(171, super.gameGraphics, 562);
+			topCentreBackgroundTile.drawGraphics(0, super.gameGraphics, 128);
+			bottomCentreBackgroundTile.drawGraphics(371, super.gameGraphics, 202);
+			bottomLeftBackgroundTile.drawGraphics(265, super.gameGraphics, 0);
+			bottomRightBackgroundTile.drawGraphics(265, super.gameGraphics, 562);
+			middleLeftBackgroundTile.drawGraphics(171, super.gameGraphics, 128);
+			middleRightBackgroundTile.drawGraphics(171, super.gameGraphics, 562);
 		}
 	}
 
@@ -4299,19 +4299,19 @@ public final class Client extends RSApplet {
 		sprite.drawInverse(0, 0);
 		flameRightBackground.initDrawingArea();
 		sprite.drawInverse(-637, 0);
-		topLeft1BackgroundTile.initDrawingArea();
+		topCentreBackgroundTile.initDrawingArea();
 		sprite.drawInverse(-128, 0);
-		bottomLeft1BackgroundTile.initDrawingArea();
+		bottomCentreBackgroundTile.initDrawingArea();
 		sprite.drawInverse(-202, -371);
 		loginBoxLeftBackgroundTile.initDrawingArea();
 		sprite.drawInverse(-202, -171);
-		bottomLeft0BackgroundTile.initDrawingArea();
+		bottomLeftBackgroundTile.initDrawingArea();
 		sprite.drawInverse(0, -265);
-		aRSImageProducer_1113.initDrawingArea();
+		bottomRightBackgroundTile.initDrawingArea();
 		sprite.drawInverse(-562, -265);
-		middleLeft1BackgroundTile.initDrawingArea();
+		middleLeftBackgroundTile.initDrawingArea();
 		sprite.drawInverse(-128, -171);
-		aRSImageProducer_1115.initDrawingArea();
+		middleRightBackgroundTile.initDrawingArea();
 		sprite.drawInverse(-562, -171);
 		int modifiedPixels[] = new int[sprite.width];
 		for (int row = 0; row < sprite.height; row++) {
@@ -4326,22 +4326,22 @@ public final class Client extends RSApplet {
 		sprite.drawInverse(382, 0);
 		flameRightBackground.initDrawingArea();
 		sprite.drawInverse(-255, 0);
-		topLeft1BackgroundTile.initDrawingArea();
+		topCentreBackgroundTile.initDrawingArea();
 		sprite.drawInverse(254, 0);
-		bottomLeft1BackgroundTile.initDrawingArea();
+		bottomCentreBackgroundTile.initDrawingArea();
 		sprite.drawInverse(180, -371);
 		loginBoxLeftBackgroundTile.initDrawingArea();
 		sprite.drawInverse(180, -171);
-		bottomLeft0BackgroundTile.initDrawingArea();
+		bottomLeftBackgroundTile.initDrawingArea();
 		sprite.drawInverse(382, -265);
-		aRSImageProducer_1113.initDrawingArea();
+		bottomRightBackgroundTile.initDrawingArea();
 		sprite.drawInverse(-180, -265);
-		middleLeft1BackgroundTile.initDrawingArea();
+		middleLeftBackgroundTile.initDrawingArea();
 		sprite.drawInverse(254, -171);
-		aRSImageProducer_1115.initDrawingArea();
+		middleRightBackgroundTile.initDrawingArea();
 		sprite.drawInverse(-180, -171);
 		sprite = new Sprite(archiveTitle, "logo", 0);
-		topLeft1BackgroundTile.initDrawingArea();
+		topCentreBackgroundTile.initDrawingArea();
 		sprite.drawImage(382 - sprite.width / 2 - 128, 18);
 		sprite = null;
 		System.gc();
@@ -9112,7 +9112,7 @@ public final class Client extends RSApplet {
 	}
 
 	private void setupLoginScreen() {
-		if (topLeft1BackgroundTile != null)
+		if (topCentreBackgroundTile != null)
 			return;
 		super.fullGameScreen = null;
 		chatboxImageProducer = null;
@@ -9126,19 +9126,19 @@ public final class Client extends RSApplet {
 		DrawingArea.clear();
 		flameRightBackground = new RSImageProducer(128, 265, getGameComponent());
 		DrawingArea.clear();
-		topLeft1BackgroundTile = new RSImageProducer(509, 171, getGameComponent());
+		topCentreBackgroundTile = new RSImageProducer(509, 171, getGameComponent());
 		DrawingArea.clear();
-		bottomLeft1BackgroundTile = new RSImageProducer(360, 132, getGameComponent());
+		bottomCentreBackgroundTile = new RSImageProducer(360, 132, getGameComponent());
 		DrawingArea.clear();
 		loginBoxLeftBackgroundTile = new RSImageProducer(360, 200, getGameComponent());
 		DrawingArea.clear();
-		bottomLeft0BackgroundTile = new RSImageProducer(202, 238, getGameComponent());
+		bottomLeftBackgroundTile = new RSImageProducer(202, 238, getGameComponent());
 		DrawingArea.clear();
-		aRSImageProducer_1113 = new RSImageProducer(203, 238, getGameComponent());
+		bottomRightBackgroundTile = new RSImageProducer(203, 238, getGameComponent());
 		DrawingArea.clear();
-		middleLeft1BackgroundTile = new RSImageProducer(74, 94, getGameComponent());
+		middleLeftBackgroundTile = new RSImageProducer(74, 94, getGameComponent());
 		DrawingArea.clear();
-		aRSImageProducer_1115 = new RSImageProducer(75, 94, getGameComponent());
+		middleRightBackgroundTile = new RSImageProducer(75, 94, getGameComponent());
 		DrawingArea.clear();
 		if (archiveTitle != null) {
 			drawLogo();
@@ -9152,15 +9152,15 @@ public final class Client extends RSApplet {
 			return;
 		nullLoader();
 		super.fullGameScreen = null;
-		topLeft1BackgroundTile = null;
-		bottomLeft1BackgroundTile = null;
+		topCentreBackgroundTile = null;
+		bottomCentreBackgroundTile = null;
 		loginBoxLeftBackgroundTile = null;
 		flameLeftBackground = null;
 		flameRightBackground = null;
-		bottomLeft0BackgroundTile = null;
-		aRSImageProducer_1113 = null;
-		middleLeft1BackgroundTile = null;
-		aRSImageProducer_1115 = null;
+		bottomLeftBackgroundTile = null;
+		bottomRightBackgroundTile = null;
+		middleLeftBackgroundTile = null;
+		middleRightBackgroundTile = null;
 		chatboxImageProducer = new RSImageProducer(479, 96, getGameComponent());
 		minimapImageProducer = new RSImageProducer(172, 156, getGameComponent());
 		DrawingArea.clear();
