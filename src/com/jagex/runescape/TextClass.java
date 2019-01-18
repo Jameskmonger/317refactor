@@ -2,7 +2,7 @@ package com.jagex.runescape;
 
 import com.jagex.runescape.sign.signlink;
 
-final class TextClass {
+public final class TextClass {
 
 	public static String asterisksForString(String string) {
 		StringBuffer asterisks = new StringBuffer();

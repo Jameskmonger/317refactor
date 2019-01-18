@@ -12,36 +12,25 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/jagex/runescape/Client.java">
+        <entry file="file://$PROJECT_DIR$/src/com/jagex/runescape/screen/title/TitleScreen.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="146">
-              <caret line="6087" column="35" selection-start-line="6087" selection-start-column="35" selection-end-line="6087" selection-end-column="35" />
+            <state relative-caret-position="306">
+              <caret line="63" column="44" selection-start-line="63" selection-start-column="44" selection-end-line="63" selection-end-column="44" />
               <folding>
-                <element signature="e#278055#278056#0" expanded="true" />
-                <element signature="e#289341#289342#0" expanded="true" />
-                <element signature="e#294119#294120#0" expanded="true" />
-                <element signature="e#301552#301553#0" expanded="true" />
+                <element signature="imports" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/jagex/runescape/Sprite.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1003">
-              <caret line="5" column="19" selection-start-line="5" selection-start-column="19" selection-end-line="5" selection-end-column="19" />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/com/jagex/runescape/TitleScreen.java">
+        <entry file="file://$PROJECT_DIR$/src/com/jagex/runescape/screen/title/FlameColours.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="278">
-              <caret line="255" lean-forward="true" selection-start-line="255" selection-end-line="255" />
+            <state relative-caret-position="579">
+              <caret line="80" column="28" lean-forward="true" selection-start-line="80" selection-start-column="28" selection-end-line="80" selection-end-column="28" />
               <folding>
-                <element signature="imports" expanded="true" />
+                <element signature="e#1495#1496#0" expanded="true" />
+                <element signature="e#1536#1537#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -58,10 +47,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>anInt1040</find>
-      <find>anint1040</find>
-      <find>anIntArray828</find>
-      <find>drawingFlames</find>
       <find>drawingFlames =</find>
       <find>currentlyDrawingFlames</find>
       <find />
@@ -88,6 +73,10 @@
       <find>flameLeftBackground</find>
       <find>drawLogodrawLogo</find>
       <find>drawLogo</find>
+      <find>flame</find>
+      <find>void run()</find>
+      <find>flameColour2</find>
+      <find>anInt1040</find>
     </findStrings>
     <replaceStrings>
       <replace>titleFlamesTemp</replace>
@@ -96,6 +85,7 @@
     </replaceStrings>
     <dirStrings>
       <dir>C:\Code\personal\317refactor\src</dir>
+      <dir>C:\Code\personal\317refactor\src\com\jagex\runescape</dir>
     </dirStrings>
   </component>
   <component name="Git.Settings">
@@ -105,8 +95,12 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/src/com/jagex/runescape/GlobalConfig.java" />
-        <option value="$PROJECT_DIR$/src/com/jagex/runescape/Client.java" />
         <option value="$PROJECT_DIR$/src/com/jagex/runescape/TitleScreen.java" />
+        <option value="$PROJECT_DIR$/src/com/jagex/runescape/Client.java" />
+        <option value="$PROJECT_DIR$/src/com/jagex/runescape/RSImageProducer.java" />
+        <option value="$PROJECT_DIR$/src/com/jagex/runescape/TextClass.java" />
+        <option value="$PROJECT_DIR$/src/com/jagex/runescape/screen/title/TitleScreen.java" />
+        <option value="$PROJECT_DIR$/src/com/jagex/runescape/screen/title/FlameColours.java" />
       </list>
     </option>
   </component>
@@ -139,6 +133,13 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="runescape" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="317refactor" type="b2602c69:ProjectViewProjectNode" />
+              <item name="317refactor" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="runescape" type="462c0819:PsiDirectoryNode" />
+              <item name="title" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
@@ -148,7 +149,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1547831655960" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1547832762200" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../venomite/venomite-server/venomite-server" />
     <property name="settings.editor.selected.configurable" value="preferences.editor" />
   </component>
@@ -203,10 +204,10 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
+    <frame x="1912" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.16308725" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.12953092" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -214,14 +215,14 @@
       <window_info id="Capture Tool" order="5" />
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.32577905" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.4986577" visible="true" weight="0.08640227" />
+      <window_info anchor="bottom" id="Find" order="1" sideWeight="0.49946696" weight="0.32502708" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49840087" visible="true" weight="0.22860238" />
       <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.4986577" weight="0.39943343" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.3286119" />
       <window_info anchor="bottom" id="Terminal" order="7" weight="0.3286119" />
-      <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.5013423" side_tool="true" visible="true" weight="0.08640227" />
+      <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.50159913" side_tool="true" visible="true" weight="0.22860238" />
       <window_info anchor="bottom" id="Version Control" order="9" />
       <window_info anchor="bottom" id="Messages" order="10" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -233,42 +234,6 @@
       <window_info anchor="right" id="Capture Analysis" order="6" />
       <window_info anchor="right" id="Palette&#9;" order="7" />
     </layout>
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/com/jagex/runescape/TitleScreen.java</url>
-          <line>306</line>
-          <properties />
-          <option name="timeStamp" value="6" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/com/jagex/runescape/TitleScreen.java</url>
-          <line>568</line>
-          <properties />
-          <option name="timeStamp" value="9" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/com/jagex/runescape/TitleScreen.java</url>
-          <line>66</line>
-          <properties />
-          <option name="timeStamp" value="10" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/com/jagex/runescape/TitleScreen.java</url>
-          <line>289</line>
-          <properties />
-          <option name="timeStamp" value="12" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/com/jagex/runescape/TitleScreen.java</url>
-          <line>227</line>
-          <properties />
-          <option name="timeStamp" value="13" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
   <component name="debuggerHistoryManager">
     <expressions id="evaluateExpression">
@@ -383,8 +348,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/jagex/runescape/Client.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="146">
-          <caret line="6087" column="35" selection-start-line="6087" selection-start-column="35" selection-end-line="6087" selection-end-column="35" />
+        <state relative-caret-position="360">
+          <caret line="8664" column="30" selection-start-line="8664" selection-start-column="30" selection-end-line="8664" selection-end-column="30" />
           <folding>
             <element signature="e#278055#278056#0" expanded="true" />
             <element signature="e#289341#289342#0" expanded="true" />
@@ -394,12 +359,37 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/jagex/runescape/TitleScreen.java">
+    <entry file="file://$PROJECT_DIR$/src/com/jagex/runescape/RSImageProducer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="278">
-          <caret line="255" lean-forward="true" selection-start-line="255" selection-end-line="255" />
+        <state relative-caret-position="68">
+          <caret line="5" column="7" selection-start-line="5" selection-start-column="7" selection-end-line="5" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/jagex/runescape/TextClass.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="4" column="7" selection-start-line="4" selection-start-column="7" selection-end-line="4" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/jagex/runescape/screen/title/TitleScreen.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="63" column="44" selection-start-line="63" selection-start-column="44" selection-end-line="63" selection-end-column="44" />
           <folding>
             <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/jagex/runescape/screen/title/FlameColours.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="579">
+          <caret line="80" column="28" lean-forward="true" selection-start-line="80" selection-start-column="28" selection-end-line="80" selection-end-column="28" />
+          <folding>
+            <element signature="e#1495#1496#0" expanded="true" />
+            <element signature="e#1536#1537#0" expanded="true" />
           </folding>
         </state>
       </provider>

@@ -1,5 +1,6 @@
-package com.jagex.runescape;
+package com.jagex.runescape.screen.title;
 
+import com.jagex.runescape.*;
 import com.jagex.runescape.definition.GameFont;
 
 import java.awt.*;
@@ -12,10 +13,6 @@ public class TitleScreen {
     private Sprite flameRightBackground2;
     private RSImageProducer flameLeftBackground;
     private RSImageProducer flameRightBackground;
-    private int[] currentFlameColours;
-    private int[] flameColour1;
-    private int[] flameColour2;
-    private int[] flameColour3;
     private int[] titleFlames;
     private int[] titleFlamesTemp;
     private RSImageProducer topCentreBackgroundTile;
@@ -40,11 +37,15 @@ public class TitleScreen {
     public volatile boolean drawingFlames;
     public volatile boolean currentlyDrawingFlames;
 
+    private FlameColours flameColours;
+
     public TitleScreen() {
         anIntArray969 = new int[256];
         welcomeScreenRaised = false;
         drawingFlames = false;
         currentlyDrawingFlames = false;
+
+        this.flameColours = new FlameColours();
     }
 
     public void load(Component component, Archive archive, GameFont fontSmall, GameFont fontPlain, GameFont fontBold) {
@@ -68,46 +69,6 @@ public class TitleScreen {
 
         System.arraycopy(flameRightBackground.pixels, 0, flameRightBackground2.pixels, 0, 33920);
 
-        flameColour1 = new int[256];
-        for (int c = 0; c < 64; c++)
-            flameColour1[c] = c * 0x40000;
-
-        for (int c = 0; c < 64; c++)
-            flameColour1[c + 64] = 0xFF0000 + 1024 * c;
-
-        for (int c = 0; c < 64; c++)
-            flameColour1[c + 128] = 0xFFFF00 + 4 * c;
-
-        for (int c = 0; c < 64; c++)
-            flameColour1[c + 192] = 0xFFFFFF;
-
-        flameColour2 = new int[256];
-        for (int c = 0; c < 64; c++)
-            flameColour2[c] = c * 1024;
-
-        for (int c = 0; c < 64; c++)
-            flameColour2[c + 64] = 0x00FF00 + 4 * c;
-
-        for (int c = 0; c < 64; c++)
-            flameColour2[c + 128] = 0x00FFFF + 0x40000 * c;
-
-        for (int c = 0; c < 64; c++)
-            flameColour2[c + 192] = 0xFFFFFF;
-
-        flameColour3 = new int[256];
-        for (int c = 0; c < 64; c++)
-            flameColour3[c] = c * 4;
-
-        for (int c = 0; c < 64; c++)
-            flameColour3[c + 64] = 255 + 0x40000 * c;
-
-        for (int c = 0; c < 64; c++)
-            flameColour3[c + 128] = 0xFF00ff + 1024 * c;
-
-        for (int c = 0; c < 64; c++)
-            flameColour3[c + 192] = 0xFFFFFF;
-
-        currentFlameColours = new int[256];
         titleFlames = new int[32768];
         titleFlamesTemp = new int[32768];
 
@@ -186,10 +147,6 @@ public class TitleScreen {
         titleBoxImage = null;
         titleButtonImage = null;
         titleFlameRuneImages = null;
-        currentFlameColours = null;
-        flameColour1 = null;
-        flameColour2 = null;
-        flameColour3 = null;
         titleFlames = null;
         titleFlamesTemp = null;
         flameLeftBackground2 = null;
@@ -203,27 +160,8 @@ public class TitleScreen {
 
     private void doFlamesDrawing(Graphics gameGraphics) {
         char c = '\u0100';
-        if (anInt1040 > 0) {
-            for (int i = 0; i < 256; i++)
-                if (anInt1040 > 768)
-                    currentFlameColours[i] = rotateFlameColour(flameColour1[i], flameColour2[i], 1024 - anInt1040);
-                else if (anInt1040 > 256)
-                    currentFlameColours[i] = flameColour2[i];
-                else
-                    currentFlameColours[i] = rotateFlameColour(flameColour2[i], flameColour1[i], 256 - anInt1040);
 
-        } else if (anInt1041 > 0) {
-            for (int j = 0; j < 256; j++)
-                if (anInt1041 > 768)
-                    currentFlameColours[j] = rotateFlameColour(flameColour1[j], flameColour3[j], 1024 - anInt1041);
-                else if (anInt1041 > 256)
-                    currentFlameColours[j] = flameColour3[j];
-                else
-                    currentFlameColours[j] = rotateFlameColour(flameColour3[j], flameColour1[j], 256 - anInt1041);
-
-        } else {
-            System.arraycopy(flameColour1, 0, currentFlameColours, 0, 256);
-        }
+        flameColours.changeColours(anInt1040, anInt1041);
 
         System.arraycopy(flameLeftBackground2.pixels, 0, flameLeftBackground.pixels, 0, 33920);
 
@@ -240,7 +178,7 @@ public class TitleScreen {
                 if (j3 != 0) {
                     int l3 = j3;
                     int j4 = 256 - j3;
-                    j3 = currentFlameColours[j3];
+                    j3 = flameColours.getCurrentColour(j3);
                     int l4 = flameLeftBackground.pixels[j1];
                     flameLeftBackground.pixels[j1++] = ((j3 & 0xFF00ff) * l3 + (l4 & 0xFF00FF) * j4 & 0xFF00FF00)
                             + ((j3 & 0xFF00) * l3 + (l4 & 0xFF00) * j4 & 0xFF0000) >> 8;
@@ -267,7 +205,7 @@ public class TitleScreen {
                 if (k4 != 0) {
                     int i5 = k4;
                     int j5 = 256 - k4;
-                    k4 = currentFlameColours[k4];
+                    k4 = flameColours.getCurrentColour(k4);
                     int k5 = flameRightBackground.pixels[j1];
                     flameRightBackground.pixels[j1++] = ((k4 & 0xFF00FF) * i5 + (k5 & 0xFF00FF) * j5 & 0xFF00FF00)
                             + ((k4 & 0xFF00) * i5 + (k5 & 0xFF00) * j5 & 0xFF0000) >> 8;
@@ -568,11 +506,5 @@ public class TitleScreen {
             middleLeftBackgroundTile.drawGraphics(171, gameGraphics, 128);
             middleRightBackgroundTile.drawGraphics(171, gameGraphics, 562);
         }
-    }
-
-    private int rotateFlameColour(int r, int g, int b) {
-        int alpha = 256 - b;
-        return ((r & 0xFF00ff) * alpha + (g & 0xFF00ff) * b & 0xFF00FF00)
-                + ((r & 0xFF00) * alpha + (g & 0xFF00) * b & 0xFF0000) >> 8;
     }
 }
