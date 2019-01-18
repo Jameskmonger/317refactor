@@ -27,27 +27,27 @@ public final class Archive {
 		if (decompressedLength != compressedLength) {
 			byte output[] = new byte[compressedLength];
 			Bzip2Decompressor.decompress(output, compressedLength, data, decompressedLength, 6);
-			outputData = output;
-			buffer = new Buffer(outputData);
+            this.outputData = output;
+			buffer = new Buffer(this.outputData);
 			this.decompressed = true;
 		} else {
-			outputData = data;
+            this.outputData = data;
 			this.decompressed = false;
 		}
 
-		fileCount = buffer.getUnsignedLEShort();
-		hashes = new int[fileCount];
-		decompressedSizes = new int[fileCount];
-		compressedSizes = new int[fileCount];
-		initialOffsets = new int[fileCount];
-		int offset = buffer.position + fileCount * 10;
+        this.fileCount = buffer.getUnsignedLEShort();
+        this.hashes = new int[this.fileCount];
+        this.decompressedSizes = new int[this.fileCount];
+        this.compressedSizes = new int[this.fileCount];
+        this.initialOffsets = new int[this.fileCount];
+		int offset = buffer.position + this.fileCount * 10;
 
-		for (int index = 0; index < fileCount; index++) {
-			hashes[index] = buffer.getInt();
-			decompressedSizes[index] = buffer.get3Bytes();
-			compressedSizes[index] = buffer.get3Bytes();
-			initialOffsets[index] = offset;
-			offset += compressedSizes[index];
+		for (int index = 0; index < this.fileCount; index++) {
+            this.hashes[index] = buffer.getInt();
+            this.decompressedSizes[index] = buffer.get3Bytes();
+            this.compressedSizes[index] = buffer.get3Bytes();
+            this.initialOffsets[index] = offset;
+			offset += this.compressedSizes[index];
 		}
 	}
 
@@ -58,14 +58,14 @@ public final class Archive {
             hash = (hash * 61 + name.charAt(c)) - 32;
         }
 
-		for (int file = 0; file < fileCount; file++) {
-            if (hashes[file] == hash) {
-                byte[] output = new byte[decompressedSizes[file]];
-                if (!decompressed) {
-                    Bzip2Decompressor.decompress(output, decompressedSizes[file], outputData, compressedSizes[file],
-                            initialOffsets[file]);
+		for (int file = 0; file < this.fileCount; file++) {
+            if (this.hashes[file] == hash) {
+                byte[] output = new byte[this.decompressedSizes[file]];
+                if (!this.decompressed) {
+                    Bzip2Decompressor.decompress(output, this.decompressedSizes[file], this.outputData, this.compressedSizes[file],
+                            this.initialOffsets[file]);
                 } else {
-                    System.arraycopy(outputData, initialOffsets[file], output, 0, decompressedSizes[file]);
+                    System.arraycopy(this.outputData, this.initialOffsets[file], output, 0, this.decompressedSizes[file]);
                 }
                 return output;
             }

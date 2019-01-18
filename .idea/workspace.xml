@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AnalysisUIOptions">
+    <option name="SCOPE_TYPE" value="3" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="21491aa0-0eb7-4d56-9c39-3c7d87baa446" name="Default Changelist" comment="" />
     <ignored path="$PROJECT_DIR$/out/" />
@@ -15,7 +18,7 @@
         <entry file="file://$PROJECT_DIR$/src/com/jagex/runescape/Region.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="170">
-              <caret line="602" column="54" lean-forward="true" selection-start-line="602" selection-start-column="54" selection-end-line="602" selection-end-column="54" />
+              <caret line="648" column="54" selection-start-line="648" selection-start-column="54" selection-end-line="648" selection-end-column="54" />
             </state>
           </provider>
         </entry>
@@ -23,8 +26,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/jagex/runescape/scene/WorldController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="105">
-              <caret line="2022" column="69" selection-start-line="2022" selection-start-column="69" selection-end-line="2022" selection-end-column="69" />
+            <state relative-caret-position="194">
+              <caret line="1803" column="48" lean-forward="true" selection-start-line="1803" selection-start-column="48" selection-end-line="1803" selection-end-column="48" />
             </state>
           </provider>
         </entry>
@@ -147,7 +150,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1547848469796" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1547849043612" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../venomite/venomite-server/venomite-server" />
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
     <property name="settings.editor.selected.configurable" value="Errors" />
@@ -204,7 +207,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.1328859" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -213,15 +215,16 @@
       <window_info id="UI Designer" order="4" />
       <window_info id="Capture Tool" order="5" />
       <window_info id="Favorites" order="6" side_tool="true" />
+      <window_info active="true" anchor="bottom" id="Inspection Results" sideWeight="0.4986577" visible="true" weight="0.3286119" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" sideWeight="0.49798658" weight="0.3243626" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49395972" visible="true" weight="0.22804533" />
+      <window_info anchor="bottom" id="Find" order="1" sideWeight="0.49731544" weight="0.08498584" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49395972" weight="0.22804533" />
       <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.4978678" weight="0.39869988" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.3286119" />
       <window_info anchor="bottom" id="Terminal" order="7" weight="0.3286119" />
-      <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.5060403" side_tool="true" visible="true" weight="0.22804533" />
+      <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.5013423" side_tool="true" visible="true" weight="0.3286119" />
       <window_info anchor="bottom" id="Version Control" order="9" />
       <window_info anchor="bottom" id="Messages" order="10" sideWeight="0.4989339" weight="0.32936078" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -425,14 +428,14 @@
     <entry file="file://$PROJECT_DIR$/src/com/jagex/runescape/Region.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="170">
-          <caret line="602" column="54" lean-forward="true" selection-start-line="602" selection-start-column="54" selection-end-line="602" selection-end-column="54" />
+          <caret line="648" column="54" selection-start-line="648" selection-start-column="54" selection-end-line="648" selection-end-column="54" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/jagex/runescape/scene/WorldController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="2022" column="69" selection-start-line="2022" selection-start-column="69" selection-end-line="2022" selection-end-column="69" />
+        <state relative-caret-position="194">
+          <caret line="1803" column="48" lean-forward="true" selection-start-line="1803" selection-start-column="48" selection-end-line="1803" selection-end-column="48" />
         </state>
       </provider>
     </entry>

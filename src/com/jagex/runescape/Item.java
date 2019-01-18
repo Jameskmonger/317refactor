@@ -16,7 +16,7 @@ final class Item extends Animable {
 
 	@Override
 	public final Model getRotatedModel() {
-		ItemDefinition itemDef = ItemDefinition.getDefinition(itemId);
-		return itemDef.getAmountModel(itemCount);
+		ItemDefinition itemDef = ItemDefinition.getDefinition(this.itemId);
+		return itemDef.getAmountModel(this.itemCount);
 	}
 }

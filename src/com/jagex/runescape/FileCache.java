@@ -22,10 +22,10 @@ final class FileCache {
 
 	public synchronized byte[] decompress(int index) {
 		try {
-			seek(indexFile, index * 6);
+			this.seek(this.indexFile, index * 6);
 			int in;
 			for (int r = 0; r < 6; r += in) {
-				in = indexFile.read(buffer, r, 6 - r);
+				in = this.indexFile.read(buffer, r, 6 - r);
 				if (in == -1) {
                     return null;
                 }
@@ -38,7 +38,7 @@ final class FileCache {
                 return null;
             }
 
-			if (sector <= 0 || sector > dataFile.length() / 520L) {
+			if (sector <= 0 || sector > this.dataFile.length() / 520L) {
                 return null;
             }
 
@@ -48,7 +48,7 @@ final class FileCache {
 				if (sector == 0) {
                     return null;
                 }
-				seek(dataFile, sector * 520);
+				this.seek(this.dataFile, sector * 520);
 				int r = 0;
 				int unread = size - read;
 				if (unread > 512) {
@@ -56,7 +56,7 @@ final class FileCache {
                 }
 				int in_;
 				for (; r < unread + 8; r += in_) {
-					in_ = dataFile.read(buffer, r, (unread + 8) - r);
+					in_ = this.dataFile.read(buffer, r, (unread + 8) - r);
 					if (in_ == -1) {
                         return null;
                     }
@@ -67,11 +67,11 @@ final class FileCache {
 				int decompressedSector = ((buffer[4] & 0xff) << 16) + ((buffer[5] & 0xff) << 8) + (buffer[6] & 0xff);
 				int decompressedStoreId = buffer[7] & 0xff;
 
-				if (decompressedIndex != index || decompressedPart != part || decompressedStoreId != storeId) {
+				if (decompressedIndex != index || decompressedPart != part || decompressedStoreId != this.storeId) {
                     return null;
                 }
 
-				if (decompressedSector < 0 || decompressedSector > dataFile.length() / 520L) {
+				if (decompressedSector < 0 || decompressedSector > this.dataFile.length() / 520L) {
                     return null;
                 }
 
@@ -89,9 +89,9 @@ final class FileCache {
 	}
 
 	public synchronized boolean put(int size, byte data[], int index) {
-		boolean exists = put(true, index, size, data);
+		boolean exists = this.put(true, index, size, data);
 		if (!exists) {
-            exists = put(false, index, size, data);
+            exists = this.put(false, index, size, data);
         }
 		return exists;
 	}
@@ -100,21 +100,21 @@ final class FileCache {
 		try {
 			int sector;
 			if (exists) {
-				seek(indexFile, index * 6);
+				this.seek(this.indexFile, index * 6);
 				int in;
 				for (int r = 0; r < 6; r += in) {
-					in = indexFile.read(buffer, r, 6 - r);
+					in = this.indexFile.read(buffer, r, 6 - r);
 					if (in == -1) {
                         return false;
                     }
 				}
 
 				sector = ((buffer[3] & 0xff) << 16) + ((buffer[4] & 0xff) << 8) + (buffer[5] & 0xff);
-				if (sector <= 0 || sector > dataFile.length() / 520L) {
+				if (sector <= 0 || sector > this.dataFile.length() / 520L) {
                     return false;
                 }
 			} else {
-				sector = (int) ((dataFile.length() + 519L) / 520L);
+				sector = (int) ((this.dataFile.length() + 519L) / 520L);
 				if (sector == 0) {
                     sector = 1;
                 }
@@ -125,17 +125,17 @@ final class FileCache {
 			buffer[3] = (byte) (sector >> 16);
 			buffer[4] = (byte) (sector >> 8);
 			buffer[5] = (byte) sector;
-			seek(indexFile, index * 6);
-			indexFile.write(buffer, 0, 6);
+			this.seek(this.indexFile, index * 6);
+            this.indexFile.write(buffer, 0, 6);
 			int written = 0;
 			for (int part = 0; written < size; part++) {
 				int decompressedSector = 0;
 				if (exists) {
-					seek(dataFile, sector * 520);
+					this.seek(this.dataFile, sector * 520);
 					int read;
 					int in;
 					for (read = 0; read < 8; read += in) {
-						in = dataFile.read(buffer, read, 8 - read);
+						in = this.dataFile.read(buffer, read, 8 - read);
 						if (in == -1) {
                             break;
                         }
@@ -147,10 +147,10 @@ final class FileCache {
 						decompressedSector = ((buffer[4] & 0xff) << 16) + ((buffer[5] & 0xff) << 8)
 								+ (buffer[6] & 0xff);
 						int decompressedStoreId = buffer[7] & 0xff;
-						if (decompressedIndex != index || decompressedPart != part || decompressedStoreId != storeId) {
+						if (decompressedIndex != index || decompressedPart != part || decompressedStoreId != this.storeId) {
                             return false;
                         }
-						if (decompressedSector < 0 || decompressedSector > dataFile.length() / 520L) {
+						if (decompressedSector < 0 || decompressedSector > this.dataFile.length() / 520L) {
                             return false;
                         }
 					}
@@ -158,7 +158,7 @@ final class FileCache {
 
 				if (decompressedSector == 0) {
 					exists = false;
-					decompressedSector = (int) ((dataFile.length() + 519L) / 520L);
+					decompressedSector = (int) ((this.dataFile.length() + 519L) / 520L);
 					if (decompressedSector == 0) {
                         decompressedSector++;
                     }
@@ -178,15 +178,15 @@ final class FileCache {
 				buffer[4] = (byte) (decompressedSector >> 16);
 				buffer[5] = (byte) (decompressedSector >> 8);
 				buffer[6] = (byte) decompressedSector;
-				buffer[7] = (byte) storeId;
-				seek(dataFile, sector * 520);
-				dataFile.write(buffer, 0, 8);
+				buffer[7] = (byte) this.storeId;
+				this.seek(this.dataFile, sector * 520);
+                this.dataFile.write(buffer, 0, 8);
 
 				int unwritten = size - written;
 				if (unwritten > 512) {
                     unwritten = 512;
                 }
-				dataFile.write(data, written, unwritten);
+                this.dataFile.write(data, written, unwritten);
 				written += unwritten;
 				sector = decompressedSector;
 			}

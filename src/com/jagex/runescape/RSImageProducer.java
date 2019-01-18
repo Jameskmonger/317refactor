@@ -20,36 +20,36 @@ public final class RSImageProducer implements ImageProducer, ImageObserver {
 	public RSImageProducer(int width, int height, Component component) {
 		this.width = width;
 		this.height = height;
-		pixels = new int[width * height];
-		colourModel = new DirectColorModel(32, 0xff0000, 65280, 255);
-		image = component.createImage(this);
-		drawPixels();
-		component.prepareImage(image, this);
-		drawPixels();
-		component.prepareImage(image, this);
-		drawPixels();
-		component.prepareImage(image, this);
-		initDrawingArea();
+        this.pixels = new int[width * height];
+        this.colourModel = new DirectColorModel(32, 0xff0000, 65280, 255);
+        this.image = component.createImage(this);
+		this.drawPixels();
+		component.prepareImage(this.image, this);
+		this.drawPixels();
+		component.prepareImage(this.image, this);
+		this.drawPixels();
+		component.prepareImage(this.image, this);
+		this.initDrawingArea();
 	}
 
 	@Override
 	public synchronized void addConsumer(ImageConsumer imageConsumer) {
 		this.imageConsumer = imageConsumer;
-		imageConsumer.setDimensions(width, height);
+		imageConsumer.setDimensions(this.width, this.height);
 		imageConsumer.setProperties(null);
-		imageConsumer.setColorModel(colourModel);
+		imageConsumer.setColorModel(this.colourModel);
 		imageConsumer.setHints(14);
 	}
 
 	public void drawGraphics(int y, Graphics g, int x) {
-		drawPixels();
-		g.drawImage(image, x, y, this);
+		this.drawPixels();
+		g.drawImage(this.image, x, y, this);
 	}
 
 	private synchronized void drawPixels() {
-		if (imageConsumer != null) {
-			imageConsumer.setPixels(0, 0, width, height, colourModel, pixels, 0, width);
-			imageConsumer.imageComplete(2);
+		if (this.imageConsumer != null) {
+            this.imageConsumer.setPixels(0, 0, this.width, this.height, this.colourModel, this.pixels, 0, this.width);
+            this.imageConsumer.imageComplete(2);
 		}
 	}
 
@@ -59,18 +59,18 @@ public final class RSImageProducer implements ImageProducer, ImageObserver {
 	}
 
 	public void initDrawingArea() {
-		DrawingArea.initDrawingArea(height, width, pixels);
+		DrawingArea.initDrawingArea(this.height, this.width, this.pixels);
 	}
 
 	@Override
 	public synchronized boolean isConsumer(ImageConsumer imageconsumer) {
-		return imageConsumer == imageconsumer;
+		return this.imageConsumer == imageconsumer;
 	}
 
 	@Override
 	public synchronized void removeConsumer(ImageConsumer imageconsumer) {
-		if (imageConsumer == imageconsumer) {
-            imageConsumer = null;
+		if (this.imageConsumer == imageconsumer) {
+            this.imageConsumer = null;
         }
 	}
 
@@ -81,6 +81,6 @@ public final class RSImageProducer implements ImageProducer, ImageObserver {
 
 	@Override
 	public void startProduction(ImageConsumer imageconsumer) {
-		addConsumer(imageconsumer);
+		this.addConsumer(imageconsumer);
 	}
 }

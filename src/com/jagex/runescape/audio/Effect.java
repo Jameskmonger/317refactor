@@ -46,7 +46,7 @@ public final class Effect {
 	private int loopEnd;
 
 	private Effect() {
-		instruments = new Instrument[10];
+        this.instruments = new Instrument[10];
 	}
 
 	private void decode(Buffer stream) {
@@ -54,16 +54,16 @@ public final class Effect {
 			int active = stream.getUnsignedByte();
 			if (active != 0) {
 				stream.position--;
-				instruments[instrument] = new Instrument();
-				instruments[instrument].decode(stream);
+                this.instruments[instrument] = new Instrument();
+                this.instruments[instrument].decode(stream);
 			}
 		}
-		loopStart = stream.getUnsignedLEShort();
-		loopEnd = stream.getUnsignedLEShort();
+        this.loopStart = stream.getUnsignedLEShort();
+        this.loopEnd = stream.getUnsignedLEShort();
 	}
 
 	private Buffer encode(int loops) {
-		int size = mix(loops);
+		int size = this.mix(loops);
 		output.position = 0;
 		output.putInt(0x52494646);
 		output.putLEInt(36 + size);
@@ -85,26 +85,26 @@ public final class Effect {
 	private int getDelay() {
 		int delay = 0x98967f;
 		for (int instrument = 0; instrument < 10; instrument++) {
-            if (instruments[instrument] != null && instruments[instrument].begin / 20 < delay) {
-                delay = instruments[instrument].begin / 20;
+            if (this.instruments[instrument] != null && this.instruments[instrument].begin / 20 < delay) {
+                delay = this.instruments[instrument].begin / 20;
             }
         }
 
-		if (loopStart < loopEnd && loopStart / 20 < delay) {
-            delay = loopStart / 20;
+		if (this.loopStart < this.loopEnd && this.loopStart / 20 < delay) {
+            delay = this.loopStart / 20;
         }
 		if (delay == 0x98967f || delay == 0) {
             return 0;
         }
 		for (int instrument = 0; instrument < 10; instrument++) {
-            if (instruments[instrument] != null) {
-                instruments[instrument].begin -= delay * 20;
+            if (this.instruments[instrument] != null) {
+                this.instruments[instrument].begin -= delay * 20;
             }
         }
 
-		if (loopStart < loopEnd) {
-			loopStart -= delay * 20;
-			loopEnd -= delay * 20;
+		if (this.loopStart < this.loopEnd) {
+            this.loopStart -= delay * 20;
+            this.loopEnd -= delay * 20;
 		}
 		return delay;
 	}
@@ -112,9 +112,9 @@ public final class Effect {
 	private int mix(int loopCount) {
 		int _duration = 0;
 		for (int instrument = 0; instrument < 10; instrument++) {
-            if (instruments[instrument] != null
-                    && instruments[instrument].duration + instruments[instrument].begin > _duration) {
-                _duration = instruments[instrument].duration + instruments[instrument].begin;
+            if (this.instruments[instrument] != null
+                    && this.instruments[instrument].duration + this.instruments[instrument].begin > _duration) {
+                _duration = this.instruments[instrument].duration + this.instruments[instrument].begin;
             }
         }
 
@@ -133,10 +133,10 @@ public final class Effect {
         }
 
 		for (int instrument = 0; instrument < 10; instrument++) {
-            if (instruments[instrument] != null) {
-                int duration = (instruments[instrument].duration * 22050) / 1000;
-                int offset = (instruments[instrument].begin * 22050) / 1000;
-                int samples[] = instruments[instrument].synthesise(duration, instruments[instrument].duration);
+            if (this.instruments[instrument] != null) {
+                int duration = (this.instruments[instrument].duration * 22050) / 1000;
+                int offset = (this.instruments[instrument].begin * 22050) / 1000;
+                int samples[] = this.instruments[instrument].synthesise(duration, this.instruments[instrument].duration);
                 for (int sample = 0; sample < duration; sample++) {
                     _output[sample + offset + 44] += (byte) (samples[sample] >> 8);
                 }

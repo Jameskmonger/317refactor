@@ -64,59 +64,59 @@ final class Instrument {
 	private static final int[] pitchBaseStep = new int[5];
 
 	public Instrument() {
-		oscillationVolume = new int[5];
-		oscillationPitch = new int[5];
-		oscillationDelay = new int[5];
-		delayFeedback = 100;
-		duration = 500;
+        this.oscillationVolume = new int[5];
+        this.oscillationPitch = new int[5];
+        this.oscillationDelay = new int[5];
+        this.delayFeedback = 100;
+        this.duration = 500;
 	}
 
 	public void decode(Buffer stream) {
-		pitchEnvelope = new Envelope();
-		pitchEnvelope.decode(stream);
-		volumeEnvelope = new Envelope();
-		volumeEnvelope.decode(stream);
+        this.pitchEnvelope = new Envelope();
+        this.pitchEnvelope.decode(stream);
+        this.volumeEnvelope = new Envelope();
+        this.volumeEnvelope.decode(stream);
 		int option = stream.getUnsignedByte();
 		if (option != 0) {
 			stream.position--;
-			pitchModulationEnvelope = new Envelope();
-			pitchModulationEnvelope.decode(stream);
-			pitchModulationAmplitudeEnvelope = new Envelope();
-			pitchModulationAmplitudeEnvelope.decode(stream);
+            this.pitchModulationEnvelope = new Envelope();
+            this.pitchModulationEnvelope.decode(stream);
+            this.pitchModulationAmplitudeEnvelope = new Envelope();
+            this.pitchModulationAmplitudeEnvelope.decode(stream);
 		}
 		option = stream.getUnsignedByte();
 		if (option != 0) {
 			stream.position--;
-			volumeModulationEnvelope = new Envelope();
-			volumeModulationEnvelope.decode(stream);
-			volumeModulationAmplitude = new Envelope();
-			volumeModulationAmplitude.decode(stream);
+            this.volumeModulationEnvelope = new Envelope();
+            this.volumeModulationEnvelope.decode(stream);
+            this.volumeModulationAmplitude = new Envelope();
+            this.volumeModulationAmplitude.decode(stream);
 		}
 		option = stream.getUnsignedByte();
 		if (option != 0) {
 			stream.position--;
-			gatingReleaseEnvelope = new Envelope();
-			gatingReleaseEnvelope.decode(stream);
-			gatingAttackEnvelope = new Envelope();
-			gatingAttackEnvelope.decode(stream);
+            this.gatingReleaseEnvelope = new Envelope();
+            this.gatingReleaseEnvelope.decode(stream);
+            this.gatingAttackEnvelope = new Envelope();
+            this.gatingAttackEnvelope.decode(stream);
 		}
 		for (int oscillationId = 0; oscillationId < 10; oscillationId++) {
 			int volume = stream.getSmartB();
 			if (volume == 0) {
                 break;
             }
-			oscillationVolume[oscillationId] = volume;
-			oscillationPitch[oscillationId] = stream.getSmartA();
-			oscillationDelay[oscillationId] = stream.getSmartB();
+            this.oscillationVolume[oscillationId] = volume;
+            this.oscillationPitch[oscillationId] = stream.getSmartA();
+            this.oscillationDelay[oscillationId] = stream.getSmartB();
 		}
 
-		delayTime = stream.getSmartB();
-		delayFeedback = stream.getSmartB();
-		duration = stream.getUnsignedLEShort();
-		begin = stream.getUnsignedLEShort();
-		filter = new SoundFilter();
-		filterEnvelope = new Envelope();
-		filter.decode(stream, filterEnvelope);
+        this.delayTime = stream.getSmartB();
+        this.delayFeedback = stream.getSmartB();
+        this.duration = stream.getUnsignedLEShort();
+        this.begin = stream.getUnsignedLEShort();
+        this.filter = new SoundFilter();
+        this.filterEnvelope = new Envelope();
+        this.filter.decode(stream, this.filterEnvelope);
 	}
 
 	private int evaluateWave(int amplitude, int phase, int table) {
@@ -149,62 +149,62 @@ final class Instrument {
             return output;
         }
 		double d = steps / (j + 0.0D);
-		pitchEnvelope.resetValues();
-		volumeEnvelope.resetValues();
+        this.pitchEnvelope.resetValues();
+        this.volumeEnvelope.resetValues();
 		int pitchModulationStep = 0;
 		int pitchModulationBaseStep = 0;
 		int pitchModulationPhase = 0;
-		if (pitchModulationEnvelope != null) {
-			pitchModulationEnvelope.resetValues();
-			pitchModulationAmplitudeEnvelope.resetValues();
-			pitchModulationStep = (int) (((pitchModulationEnvelope.end - pitchModulationEnvelope.start)
+		if (this.pitchModulationEnvelope != null) {
+            this.pitchModulationEnvelope.resetValues();
+            this.pitchModulationAmplitudeEnvelope.resetValues();
+			pitchModulationStep = (int) (((this.pitchModulationEnvelope.end - this.pitchModulationEnvelope.start)
 					* 32.768000000000001D) / d);
-			pitchModulationBaseStep = (int) ((pitchModulationEnvelope.start * 32.768000000000001D) / d);
+			pitchModulationBaseStep = (int) ((this.pitchModulationEnvelope.start * 32.768000000000001D) / d);
 		}
 		int volumeModulationStep = 0;
 		int volumeModulationBaseStep = 0;
 		int volumeModulationPhase = 0;
-		if (volumeModulationEnvelope != null) {
-			volumeModulationEnvelope.resetValues();
-			volumeModulationAmplitude.resetValues();
-			volumeModulationStep = (int) (((volumeModulationEnvelope.end - volumeModulationEnvelope.start)
+		if (this.volumeModulationEnvelope != null) {
+            this.volumeModulationEnvelope.resetValues();
+            this.volumeModulationAmplitude.resetValues();
+			volumeModulationStep = (int) (((this.volumeModulationEnvelope.end - this.volumeModulationEnvelope.start)
 					* 32.768000000000001D) / d);
-			volumeModulationBaseStep = (int) ((volumeModulationEnvelope.start * 32.768000000000001D) / d);
+			volumeModulationBaseStep = (int) ((this.volumeModulationEnvelope.start * 32.768000000000001D) / d);
 		}
 		for (int oscillationVolumeId = 0; oscillationVolumeId < 5; oscillationVolumeId++) {
-            if (oscillationVolume[oscillationVolumeId] != 0) {
+            if (this.oscillationVolume[oscillationVolumeId] != 0) {
                 phases[oscillationVolumeId] = 0;
-                delays[oscillationVolumeId] = (int) (oscillationDelay[oscillationVolumeId] * d);
-                volumeStep[oscillationVolumeId] = (oscillationVolume[oscillationVolumeId] << 14) / 100;
-                pitchStep[oscillationVolumeId] = (int) (((pitchEnvelope.end - pitchEnvelope.start) * 32.768000000000001D
-                        * Math.pow(1.0057929410678534D, oscillationPitch[oscillationVolumeId])) / d);
-                pitchBaseStep[oscillationVolumeId] = (int) ((pitchEnvelope.start * 32.768000000000001D) / d);
+                delays[oscillationVolumeId] = (int) (this.oscillationDelay[oscillationVolumeId] * d);
+                volumeStep[oscillationVolumeId] = (this.oscillationVolume[oscillationVolumeId] << 14) / 100;
+                pitchStep[oscillationVolumeId] = (int) (((this.pitchEnvelope.end - this.pitchEnvelope.start) * 32.768000000000001D
+                        * Math.pow(1.0057929410678534D, this.oscillationPitch[oscillationVolumeId])) / d);
+                pitchBaseStep[oscillationVolumeId] = (int) ((this.pitchEnvelope.start * 32.768000000000001D) / d);
             }
         }
 
 		for (int offset = 0; offset < steps; offset++) {
-			int pitchChange = pitchEnvelope.step(steps);
-			int volumeChange = volumeEnvelope.step(steps);
-			if (pitchModulationEnvelope != null) {
-				int modulation = pitchModulationEnvelope.step(steps);
-				int modulationAmplitude = pitchModulationAmplitudeEnvelope.step(steps);
-				pitchChange += evaluateWave(modulationAmplitude, pitchModulationPhase,
-						pitchModulationEnvelope.form) >> 1;
+			int pitchChange = this.pitchEnvelope.step(steps);
+			int volumeChange = this.volumeEnvelope.step(steps);
+			if (this.pitchModulationEnvelope != null) {
+				int modulation = this.pitchModulationEnvelope.step(steps);
+				int modulationAmplitude = this.pitchModulationAmplitudeEnvelope.step(steps);
+				pitchChange += this.evaluateWave(modulationAmplitude, pitchModulationPhase,
+                        this.pitchModulationEnvelope.form) >> 1;
 				pitchModulationPhase += (modulation * pitchModulationStep >> 16) + pitchModulationBaseStep;
 			}
-			if (volumeModulationEnvelope != null) {
-				int modulation = volumeModulationEnvelope.step(steps);
-				int modulationAmplitude = volumeModulationAmplitude.step(steps);
-				volumeChange = volumeChange * ((evaluateWave(modulationAmplitude, volumeModulationPhase,
-						volumeModulationEnvelope.form) >> 1) + 32768) >> 15;
+			if (this.volumeModulationEnvelope != null) {
+				int modulation = this.volumeModulationEnvelope.step(steps);
+				int modulationAmplitude = this.volumeModulationAmplitude.step(steps);
+				volumeChange = volumeChange * ((this.evaluateWave(modulationAmplitude, volumeModulationPhase,
+                        this.volumeModulationEnvelope.form) >> 1) + 32768) >> 15;
 				volumeModulationPhase += (modulation * volumeModulationStep >> 16) + volumeModulationBaseStep;
 			}
 			for (int oscillationId = 0; oscillationId < 5; oscillationId++) {
-                if (oscillationVolume[oscillationId] != 0) {
+                if (this.oscillationVolume[oscillationId] != 0) {
                     int position = offset + delays[oscillationId];
                     if (position < steps) {
-                        output[position] += evaluateWave(volumeChange * volumeStep[oscillationId] >> 15,
-                                phases[oscillationId], pitchEnvelope.form);
+                        output[position] += this.evaluateWave(volumeChange * volumeStep[oscillationId] >> 15,
+                                phases[oscillationId], this.pitchEnvelope.form);
                         phases[oscillationId] += (pitchChange * pitchStep[oscillationId] >> 16)
                                 + pitchBaseStep[oscillationId];
                     }
@@ -213,21 +213,21 @@ final class Instrument {
 
 		}
 
-		if (gatingReleaseEnvelope != null) {
-			gatingReleaseEnvelope.resetValues();
-			gatingAttackEnvelope.resetValues();
+		if (this.gatingReleaseEnvelope != null) {
+            this.gatingReleaseEnvelope.resetValues();
+            this.gatingAttackEnvelope.resetValues();
 			int counter = 0;
 			boolean muted = true;
 			for (int position = 0; position < steps; position++) {
-				int stepOn = gatingReleaseEnvelope.step(steps);
-				int stepOff = gatingAttackEnvelope.step(steps);
+				int stepOn = this.gatingReleaseEnvelope.step(steps);
+				int stepOff = this.gatingAttackEnvelope.step(steps);
 				int threshold;
 				if (muted) {
-                    threshold = gatingReleaseEnvelope.start
-                            + ((gatingReleaseEnvelope.end - gatingReleaseEnvelope.start) * stepOn >> 8);
+                    threshold = this.gatingReleaseEnvelope.start
+                            + ((this.gatingReleaseEnvelope.end - this.gatingReleaseEnvelope.start) * stepOn >> 8);
                 } else {
-                    threshold = gatingReleaseEnvelope.start
-                            + ((gatingReleaseEnvelope.end - gatingReleaseEnvelope.start) * stepOff >> 8);
+                    threshold = this.gatingReleaseEnvelope.start
+                            + ((this.gatingReleaseEnvelope.end - this.gatingReleaseEnvelope.start) * stepOff >> 8);
                 }
 				if ((counter += 256) >= threshold) {
 					counter = 0;
@@ -239,18 +239,18 @@ final class Instrument {
 			}
 
 		}
-		if (delayTime > 0 && delayFeedback > 0) {
-			int delay = (int) (delayTime * d);
+		if (this.delayTime > 0 && this.delayFeedback > 0) {
+			int delay = (int) (this.delayTime * d);
 			for (int position = delay; position < steps; position++) {
-                output[position] += (output[position - delay] * delayFeedback) / 100;
+                output[position] += (output[position - delay] * this.delayFeedback) / 100;
             }
 
 		}
-		if (filter.pairCount[0] > 0 || filter.pairCount[1] > 0) {
-			filterEnvelope.resetValues();
-			int t = filterEnvelope.step(steps + 1);
-			int M = filter.compute(0, t / 65536F);
-			int N = filter.compute(1, t / 65536F);
+		if (this.filter.pairCount[0] > 0 || this.filter.pairCount[1] > 0) {
+            this.filterEnvelope.resetValues();
+			int t = this.filterEnvelope.step(steps + 1);
+			int M = this.filter.compute(0, t / 65536F);
+			int N = this.filter.compute(1, t / 65536F);
 			if (steps >= M + N) {
 				int n = 0;
 				int delay = N;
@@ -268,7 +268,7 @@ final class Instrument {
                     }
 
 					output[n] = y;
-					t = filterEnvelope.step(steps + 1);
+					t = this.filterEnvelope.step(steps + 1);
 				}
 
 				char offset = '\200'; // 128
@@ -290,14 +290,14 @@ final class Instrument {
                         }
 
 						output[n] = y;
-						t = filterEnvelope.step(steps + 1);
+						t = this.filterEnvelope.step(steps + 1);
 					}
 
 					if (n >= steps - M) {
                         break;
                     }
-					M = filter.compute(0, t / 65536F);
-					N = filter.compute(1, t / 65536F);
+					M = this.filter.compute(0, t / 65536F);
+					N = this.filter.compute(1, t / 65536F);
 					delay += offset;
 				} while (true);
 				for (; n < steps; n++) {

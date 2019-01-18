@@ -38,7 +38,7 @@ public final class ShapedTile {
 
 	public ShapedTile(int tileX, int yA, int yB, int yC, int yD, int tileZ, int rotation, int texture, int shape, int cA,
 			int cAA, int cB, int cBA, int cC, int cCA, int cD, int cDA, int overlayRGB, int underlayRGB) {
-		flat = !(yA != yB || yA != yD || yA != yC);
+        this.flat = !(yA != yB || yA != yD || yA != yC);
 		this.shape = shape;
 		this.rotation = rotation;
 		this.underlayRGB = underlayRGB;
@@ -49,9 +49,9 @@ public final class ShapedTile {
 		int const384 = (const512 * 3) / 4;
 		int shapedTileMesh[] = shapedTilePointData[shape];
 		int shapedTileMeshLength = shapedTileMesh.length;
-		originalVertexX = new int[shapedTileMeshLength];
-		originalVertexY = new int[shapedTileMeshLength];
-		originalVertexZ = new int[shapedTileMeshLength];
+        this.originalVertexX = new int[shapedTileMeshLength];
+        this.originalVertexY = new int[shapedTileMeshLength];
+        this.originalVertexZ = new int[shapedTileMeshLength];
 		int vertexColourOverlay[] = new int[shapedTileMeshLength];
 		int vertexColourUnderlay[] = new int[shapedTileMeshLength];
 		int x512 = tileX * const512;
@@ -169,23 +169,23 @@ public final class ShapedTile {
 				vertexCOverlay = cC;
 				vertexCUnderlay = cCA;
 			}
-			originalVertexX[vertex] = vertexX;
-			originalVertexY[vertex] = vertexY;
-			originalVertexZ[vertex] = vertexZ;
+            this.originalVertexX[vertex] = vertexX;
+            this.originalVertexY[vertex] = vertexY;
+            this.originalVertexZ[vertex] = vertexZ;
 			vertexColourOverlay[vertex] = vertexCOverlay;
 			vertexColourUnderlay[vertex] = vertexCUnderlay;
 		}
 
 		int shapedTileElements[] = shapedTileElementData[shape];
 		int vertexCount = shapedTileElements.length / 4;
-		triangleA = new int[vertexCount];
-		triangleB = new int[vertexCount];
-		triangleC = new int[vertexCount];
-		triangleHSLA = new int[vertexCount];
-		triangleHSLB = new int[vertexCount];
-		triangleHSLC = new int[vertexCount];
+        this.triangleA = new int[vertexCount];
+        this.triangleB = new int[vertexCount];
+        this.triangleC = new int[vertexCount];
+        this.triangleHSLA = new int[vertexCount];
+        this.triangleHSLB = new int[vertexCount];
+        this.triangleHSLC = new int[vertexCount];
 		if (texture != -1) {
-            triangleTexture = new int[vertexCount];
+            this.triangleTexture = new int[vertexCount];
         }
 		int offset = 0;
 		for (int vertex = 0; vertex < vertexCount; vertex++) {
@@ -203,22 +203,22 @@ public final class ShapedTile {
 			if (idxC < 4) {
                 idxC = idxC - rotation & 3;
             }
-			triangleA[vertex] = idxA;
-			triangleB[vertex] = idxB;
-			triangleC[vertex] = idxC;
+            this.triangleA[vertex] = idxA;
+            this.triangleB[vertex] = idxB;
+            this.triangleC[vertex] = idxC;
 			if (overlayOrUnderlay == 0) {
-				triangleHSLA[vertex] = vertexColourOverlay[idxA];
-				triangleHSLB[vertex] = vertexColourOverlay[idxB];
-				triangleHSLC[vertex] = vertexColourOverlay[idxC];
-				if (triangleTexture != null) {
-                    triangleTexture[vertex] = -1;
+                this.triangleHSLA[vertex] = vertexColourOverlay[idxA];
+                this.triangleHSLB[vertex] = vertexColourOverlay[idxB];
+                this.triangleHSLC[vertex] = vertexColourOverlay[idxC];
+				if (this.triangleTexture != null) {
+                    this.triangleTexture[vertex] = -1;
                 }
 			} else {
-				triangleHSLA[vertex] = vertexColourUnderlay[idxA];
-				triangleHSLB[vertex] = vertexColourUnderlay[idxB];
-				triangleHSLC[vertex] = vertexColourUnderlay[idxC];
-				if (triangleTexture != null) {
-                    triangleTexture[vertex] = texture;
+                this.triangleHSLA[vertex] = vertexColourUnderlay[idxA];
+                this.triangleHSLB[vertex] = vertexColourUnderlay[idxB];
+                this.triangleHSLC[vertex] = vertexColourUnderlay[idxC];
+				if (this.triangleTexture != null) {
+                    this.triangleTexture[vertex] = texture;
                 }
 			}
 		}

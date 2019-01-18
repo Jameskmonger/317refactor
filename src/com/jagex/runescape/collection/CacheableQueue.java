@@ -6,15 +6,15 @@ public final class CacheableQueue {
 	private Cacheable current;
 
 	public CacheableQueue() {
-		head = new Cacheable();
-		head.nextCacheable = head;
-		head.previousCacheable = head;
+        this.head = new Cacheable();
+        this.head.nextCacheable = this.head;
+        this.head.previousCacheable = this.head;
 	}
 
 	public int getSize() {
 		int count = 0;
 
-		for (Cacheable next = head.nextCacheable; next != head; next = next.nextCacheable) {
+		for (Cacheable next = this.head.nextCacheable; next != this.head; next = next.nextCacheable) {
             count++;
         }
 
@@ -26,16 +26,16 @@ public final class CacheableQueue {
 			item.unlinkCacheable();
 		}
 
-		item.previousCacheable = head.previousCacheable;
-		item.nextCacheable = head;
+		item.previousCacheable = this.head.previousCacheable;
+		item.nextCacheable = this.head;
 		item.previousCacheable.nextCacheable = item;
 		item.nextCacheable.previousCacheable = item;
 	}
 
 	public Cacheable pop() {
-		Cacheable next = head.nextCacheable;
+		Cacheable next = this.head.nextCacheable;
 
-		if (next == head) {
+		if (next == this.head) {
 			return null;
 		}
 		
@@ -44,21 +44,21 @@ public final class CacheableQueue {
 	}
 
 	public Cacheable peek() {
-		Cacheable next = head.nextCacheable;
+		Cacheable next = this.head.nextCacheable;
 
-		if (next == head) {
-			current = null;
+		if (next == this.head) {
+            this.current = null;
 			return null;
 		}
-		
-		current = next.nextCacheable;
+
+        this.current = next.nextCacheable;
 		return next;
 	}
 
 	public Cacheable getNext() {
 		Cacheable current = this.current;
 		
-		if (current == head) {
+		if (current == this.head) {
 			this.current = null;
 			return null;
 		}

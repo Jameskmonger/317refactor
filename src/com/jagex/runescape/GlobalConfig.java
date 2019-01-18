@@ -52,20 +52,20 @@ public class GlobalConfig {
 
 			@Override
 			public void insertUpdate(DocumentEvent e) {
-				changedUpdate(e);
+				this.changedUpdate(e);
 			}
 
 			@Override
 			public void removeUpdate(DocumentEvent e) {
-				changedUpdate(e);
+				this.changedUpdate(e);
 			}
 
 			@Override
 			public void changedUpdate(DocumentEvent e) {
-				lastChange++;
+                this.lastChange++;
 				SwingUtilities.invokeLater(() -> {
-					if (lastNotifiedChange != lastChange) {
-						lastNotifiedChange = lastChange;
+					if (this.lastNotifiedChange != this.lastChange) {
+                        this.lastNotifiedChange = this.lastChange;
 						changeListener.stateChanged(new ChangeEvent(text));
 					}
 				});

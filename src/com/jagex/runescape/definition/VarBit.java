@@ -38,9 +38,9 @@ public final class VarBit {
                 return;
             }
 			if (opcode == 1) {
-				configId = buffer.getUnsignedLEShort();
-				leastSignificantBit = buffer.getUnsignedByte();
-				mostSignificantBit = buffer.getUnsignedByte();
+                this.configId = buffer.getUnsignedLEShort();
+                this.leastSignificantBit = buffer.getUnsignedByte();
+                this.mostSignificantBit = buffer.getUnsignedByte();
 			} else if (opcode == 10) {
                 buffer.getString();
             } else if (opcode == 2) {

@@ -261,97 +261,97 @@ public final class Model extends Animable {
 	}
 
 	private Model() {
-		singleTile = false;
+        this.singleTile = false;
 	}
 
 	public Model(boolean flag, boolean flag1, boolean flag2, Model model) {
-		singleTile = false;
-		vertexCount = model.vertexCount;
-		triangleCount = model.triangleCount;
-		texturedTriangleCount = model.texturedTriangleCount;
+        this.singleTile = false;
+        this.vertexCount = model.vertexCount;
+        this.triangleCount = model.triangleCount;
+        this.texturedTriangleCount = model.texturedTriangleCount;
 		if (flag2) {
-			verticesX = model.verticesX;
-			verticesY = model.verticesY;
-			verticesZ = model.verticesZ;
+            this.verticesX = model.verticesX;
+            this.verticesY = model.verticesY;
+            this.verticesZ = model.verticesZ;
 		} else {
-			verticesX = new int[vertexCount];
-			verticesY = new int[vertexCount];
-			verticesZ = new int[vertexCount];
-			for (int vertex = 0; vertex < vertexCount; vertex++) {
-				verticesX[vertex] = model.verticesX[vertex];
-				verticesY[vertex] = model.verticesY[vertex];
-				verticesZ[vertex] = model.verticesZ[vertex];
+            this.verticesX = new int[this.vertexCount];
+            this.verticesY = new int[this.vertexCount];
+            this.verticesZ = new int[this.vertexCount];
+			for (int vertex = 0; vertex < this.vertexCount; vertex++) {
+                this.verticesX[vertex] = model.verticesX[vertex];
+                this.verticesY[vertex] = model.verticesY[vertex];
+                this.verticesZ[vertex] = model.verticesZ[vertex];
 			}
 
 		}
 		if (flag) {
-			triangleColours = model.triangleColours;
+            this.triangleColours = model.triangleColours;
 		} else {
-			triangleColours = new int[triangleCount];
-			System.arraycopy(model.triangleColours, 0, triangleColours, 0, triangleCount);
+            this.triangleColours = new int[this.triangleCount];
+			System.arraycopy(model.triangleColours, 0, this.triangleColours, 0, this.triangleCount);
 
 		}
 		if (flag1) {
-			triangleAlpha = model.triangleAlpha;
+            this.triangleAlpha = model.triangleAlpha;
 		} else {
-			triangleAlpha = new int[triangleCount];
+            this.triangleAlpha = new int[this.triangleCount];
 			if (model.triangleAlpha == null) {
-				for (int triangle = 0; triangle < triangleCount; triangle++) {
-                    triangleAlpha[triangle] = 0;
+				for (int triangle = 0; triangle < this.triangleCount; triangle++) {
+                    this.triangleAlpha[triangle] = 0;
                 }
 
 			} else {
-				System.arraycopy(model.triangleAlpha, 0, triangleAlpha, 0, triangleCount);
+				System.arraycopy(model.triangleAlpha, 0, this.triangleAlpha, 0, this.triangleCount);
 
 			}
 		}
-		vertexSkins = model.vertexSkins;
-		triangleSkins = model.triangleSkins;
-		triangleDrawType = model.triangleDrawType;
-		triangleX = model.triangleX;
-		triangleY = model.triangleY;
-		triangleZ = model.triangleZ;
-		trianglePriorities = model.trianglePriorities;
-		trianglePriority = model.trianglePriority;
-		texturedTrianglePointsX = model.texturedTrianglePointsX;
-		texturedTrianglePointsY = model.texturedTrianglePointsY;
-		texturedTrianglePointsZ = model.texturedTrianglePointsZ;
+        this.vertexSkins = model.vertexSkins;
+        this.triangleSkins = model.triangleSkins;
+        this.triangleDrawType = model.triangleDrawType;
+        this.triangleX = model.triangleX;
+        this.triangleY = model.triangleY;
+        this.triangleZ = model.triangleZ;
+        this.trianglePriorities = model.trianglePriorities;
+        this.trianglePriority = model.trianglePriority;
+        this.texturedTrianglePointsX = model.texturedTrianglePointsX;
+        this.texturedTrianglePointsY = model.texturedTrianglePointsY;
+        this.texturedTrianglePointsZ = model.texturedTrianglePointsZ;
 	}
 
 	public Model(boolean flag, boolean flag1, Model model) {
-		singleTile = false;
-		vertexCount = model.vertexCount;
-		triangleCount = model.triangleCount;
-		texturedTriangleCount = model.texturedTriangleCount;
+        this.singleTile = false;
+        this.vertexCount = model.vertexCount;
+        this.triangleCount = model.triangleCount;
+        this.texturedTriangleCount = model.texturedTriangleCount;
 		if (flag) {
-			verticesY = new int[vertexCount];
-			System.arraycopy(model.verticesY, 0, verticesY, 0, vertexCount);
+            this.verticesY = new int[this.vertexCount];
+			System.arraycopy(model.verticesY, 0, this.verticesY, 0, this.vertexCount);
 
 		} else {
-			verticesY = model.verticesY;
+            this.verticesY = model.verticesY;
 		}
 		if (flag1) {
-			triangleHSLA = new int[triangleCount];
-			triangleHSLB = new int[triangleCount];
-			triangleHSLC = new int[triangleCount];
-			for (int triangle = 0; triangle < triangleCount; triangle++) {
-				triangleHSLA[triangle] = model.triangleHSLA[triangle];
-				triangleHSLB[triangle] = model.triangleHSLB[triangle];
-				triangleHSLC[triangle] = model.triangleHSLC[triangle];
+            this.triangleHSLA = new int[this.triangleCount];
+            this.triangleHSLB = new int[this.triangleCount];
+            this.triangleHSLC = new int[this.triangleCount];
+			for (int triangle = 0; triangle < this.triangleCount; triangle++) {
+                this.triangleHSLA[triangle] = model.triangleHSLA[triangle];
+                this.triangleHSLB[triangle] = model.triangleHSLB[triangle];
+                this.triangleHSLC[triangle] = model.triangleHSLC[triangle];
 			}
 
-			triangleDrawType = new int[triangleCount];
+            this.triangleDrawType = new int[this.triangleCount];
 			if (model.triangleDrawType == null) {
-				for (int triangle = 0; triangle < triangleCount; triangle++) {
-                    triangleDrawType[triangle] = 0;
+				for (int triangle = 0; triangle < this.triangleCount; triangle++) {
+                    this.triangleDrawType[triangle] = 0;
                 }
 
 			} else {
-				System.arraycopy(model.triangleDrawType, 0, triangleDrawType, 0, triangleCount);
+				System.arraycopy(model.triangleDrawType, 0, this.triangleDrawType, 0, this.triangleCount);
 
 			}
-			super.vertexNormals = new VertexNormal[vertexCount];
-			for (int vertex = 0; vertex < vertexCount; vertex++) {
+			super.vertexNormals = new VertexNormal[this.vertexCount];
+			for (int vertex = 0; vertex < this.vertexCount; vertex++) {
 				VertexNormal vertexNormalNew = super.vertexNormals[vertex] = new VertexNormal();
 				VertexNormal vertexNormalOld = model.vertexNormals[vertex];
 				vertexNormalNew.x = vertexNormalOld.x;
@@ -360,69 +360,69 @@ public final class Model extends Animable {
 				vertexNormalNew.magnitude = vertexNormalOld.magnitude;
 			}
 
-			vertexNormalOffset = model.vertexNormalOffset;
+            this.vertexNormalOffset = model.vertexNormalOffset;
 		} else {
-			triangleHSLA = model.triangleHSLA;
-			triangleHSLB = model.triangleHSLB;
-			triangleHSLC = model.triangleHSLC;
-			triangleDrawType = model.triangleDrawType;
+            this.triangleHSLA = model.triangleHSLA;
+            this.triangleHSLB = model.triangleHSLB;
+            this.triangleHSLC = model.triangleHSLC;
+            this.triangleDrawType = model.triangleDrawType;
 		}
-		verticesX = model.verticesX;
-		verticesZ = model.verticesZ;
-		triangleColours = model.triangleColours;
-		triangleAlpha = model.triangleAlpha;
-		trianglePriorities = model.trianglePriorities;
-		trianglePriority = model.trianglePriority;
-		triangleX = model.triangleX;
-		triangleY = model.triangleY;
-		triangleZ = model.triangleZ;
-		texturedTrianglePointsX = model.texturedTrianglePointsX;
-		texturedTrianglePointsY = model.texturedTrianglePointsY;
-		texturedTrianglePointsZ = model.texturedTrianglePointsZ;
+        this.verticesX = model.verticesX;
+        this.verticesZ = model.verticesZ;
+        this.triangleColours = model.triangleColours;
+        this.triangleAlpha = model.triangleAlpha;
+        this.trianglePriorities = model.trianglePriorities;
+        this.trianglePriority = model.trianglePriority;
+        this.triangleX = model.triangleX;
+        this.triangleY = model.triangleY;
+        this.triangleZ = model.triangleZ;
+        this.texturedTrianglePointsX = model.texturedTrianglePointsX;
+        this.texturedTrianglePointsY = model.texturedTrianglePointsY;
+        this.texturedTrianglePointsZ = model.texturedTrianglePointsZ;
 		super.modelHeight = model.modelHeight;
-		maxY = model.maxY;
-		diagonal2DAboveOrigin = model.diagonal2DAboveOrigin;
-		diagonal3DAboveOrigin = model.diagonal3DAboveOrigin;
-		diagonal3D = model.diagonal3D;
-		minX = model.minX;
-		maxZ = model.maxZ;
-		minZ = model.minZ;
-		maxX = model.maxX;
+        this.maxY = model.maxY;
+        this.diagonal2DAboveOrigin = model.diagonal2DAboveOrigin;
+        this.diagonal3DAboveOrigin = model.diagonal3DAboveOrigin;
+        this.diagonal3D = model.diagonal3D;
+        this.minX = model.minX;
+        this.maxZ = model.maxZ;
+        this.minZ = model.minZ;
+        this.maxX = model.maxX;
 	}
 
 	private Model(int model) {
-		singleTile = false;
+        this.singleTile = false;
 		ModelHeader modelHeader = modelHeaders[model];
-		vertexCount = modelHeader.vertexCount;
-		triangleCount = modelHeader.triangleCount;
-		texturedTriangleCount = modelHeader.texturedTriangleCount;
-		verticesX = new int[vertexCount];
-		verticesY = new int[vertexCount];
-		verticesZ = new int[vertexCount];
-		triangleX = new int[triangleCount];
-		triangleY = new int[triangleCount];
-		triangleZ = new int[triangleCount];
-		texturedTrianglePointsX = new int[texturedTriangleCount];
-		texturedTrianglePointsY = new int[texturedTriangleCount];
-		texturedTrianglePointsZ = new int[texturedTriangleCount];
+        this.vertexCount = modelHeader.vertexCount;
+        this.triangleCount = modelHeader.triangleCount;
+        this.texturedTriangleCount = modelHeader.texturedTriangleCount;
+        this.verticesX = new int[this.vertexCount];
+        this.verticesY = new int[this.vertexCount];
+        this.verticesZ = new int[this.vertexCount];
+        this.triangleX = new int[this.triangleCount];
+        this.triangleY = new int[this.triangleCount];
+        this.triangleZ = new int[this.triangleCount];
+        this.texturedTrianglePointsX = new int[this.texturedTriangleCount];
+        this.texturedTrianglePointsY = new int[this.texturedTriangleCount];
+        this.texturedTrianglePointsZ = new int[this.texturedTriangleCount];
 		if (modelHeader.vertexSkinOffset >= 0) {
-            vertexSkins = new int[vertexCount];
+            this.vertexSkins = new int[this.vertexCount];
         }
 		if (modelHeader.texturePointerOffset >= 0) {
-            triangleDrawType = new int[triangleCount];
+            this.triangleDrawType = new int[this.triangleCount];
         }
 		if (modelHeader.trianglePriorityOffset >= 0) {
-            trianglePriorities = new int[triangleCount];
+            this.trianglePriorities = new int[this.triangleCount];
         } else {
-            trianglePriority = -modelHeader.trianglePriorityOffset - 1;
+            this.trianglePriority = -modelHeader.trianglePriorityOffset - 1;
         }
 		if (modelHeader.triangleAlphaOffset >= 0) {
-            triangleAlpha = new int[triangleCount];
+            this.triangleAlpha = new int[this.triangleCount];
         }
 		if (modelHeader.triangleSkinOffset >= 0) {
-            triangleSkins = new int[triangleCount];
+            this.triangleSkins = new int[this.triangleCount];
         }
-		triangleColours = new int[triangleCount];
+        this.triangleColours = new int[this.triangleCount];
 		Buffer vertexDirectionOffsetStream = new Buffer(modelHeader.modelData);
 		vertexDirectionOffsetStream.position = modelHeader.vertexDirectionOffset;
 		Buffer xDataOffsetStream = new Buffer(modelHeader.modelData);
@@ -436,7 +436,7 @@ public final class Model extends Animable {
 		int baseOffsetX = 0;
 		int baseOffsetY = 0;
 		int baseOffsetZ = 0;
-		for (int vertex = 0; vertex < vertexCount; vertex++) {
+		for (int vertex = 0; vertex < this.vertexCount; vertex++) {
 			int flag = vertexDirectionOffsetStream.getUnsignedByte();
 			int currentOffsetX = 0;
 			if ((flag & 1) != 0) {
@@ -450,14 +450,14 @@ public final class Model extends Animable {
 			if ((flag & 4) != 0) {
                 currentOffsetZ = zDataOffsetStream.getSmartA();
             }
-			verticesX[vertex] = baseOffsetX + currentOffsetX;
-			verticesY[vertex] = baseOffsetY + currentOffsetY;
-			verticesZ[vertex] = baseOffsetZ + currentOffsetZ;
-			baseOffsetX = verticesX[vertex];
-			baseOffsetY = verticesY[vertex];
-			baseOffsetZ = verticesZ[vertex];
-			if (vertexSkins != null) {
-                vertexSkins[vertex] = vertexSkinOffsetStream.getUnsignedByte();
+            this.verticesX[vertex] = baseOffsetX + currentOffsetX;
+            this.verticesY[vertex] = baseOffsetY + currentOffsetY;
+            this.verticesZ[vertex] = baseOffsetZ + currentOffsetZ;
+			baseOffsetX = this.verticesX[vertex];
+			baseOffsetY = this.verticesY[vertex];
+			baseOffsetZ = this.verticesZ[vertex];
+			if (this.vertexSkins != null) {
+                this.vertexSkins[vertex] = vertexSkinOffsetStream.getUnsignedByte();
             }
 		}
 
@@ -466,19 +466,19 @@ public final class Model extends Animable {
 		yDataOffsetStream.position = modelHeader.trianglePriorityOffset;
 		zDataOffsetStream.position = modelHeader.triangleAlphaOffset;
 		vertexSkinOffsetStream.position = modelHeader.triangleSkinOffset;
-		for (int triangle = 0; triangle < triangleCount; triangle++) {
-			triangleColours[triangle] = vertexDirectionOffsetStream.getUnsignedLEShort();
-			if (triangleDrawType != null) {
-                triangleDrawType[triangle] = xDataOffsetStream.getUnsignedByte();
+		for (int triangle = 0; triangle < this.triangleCount; triangle++) {
+            this.triangleColours[triangle] = vertexDirectionOffsetStream.getUnsignedLEShort();
+			if (this.triangleDrawType != null) {
+                this.triangleDrawType[triangle] = xDataOffsetStream.getUnsignedByte();
             }
-			if (trianglePriorities != null) {
-                trianglePriorities[triangle] = yDataOffsetStream.getUnsignedByte();
+			if (this.trianglePriorities != null) {
+                this.trianglePriorities[triangle] = yDataOffsetStream.getUnsignedByte();
             }
-			if (triangleAlpha != null) {
-                triangleAlpha[triangle] = zDataOffsetStream.getUnsignedByte();
+			if (this.triangleAlpha != null) {
+                this.triangleAlpha[triangle] = zDataOffsetStream.getUnsignedByte();
             }
-			if (triangleSkins != null) {
-                triangleSkins[triangle] = vertexSkinOffsetStream.getUnsignedByte();
+			if (this.triangleSkins != null) {
+                this.triangleSkins[triangle] = vertexSkinOffsetStream.getUnsignedByte();
             }
 		}
 
@@ -488,7 +488,7 @@ public final class Model extends Animable {
 		int trianglePointOffsetY = 0;
 		int trianglePointOffsetZ = 0;
 		int offset = 0;
-		for (int triangle = 0; triangle < triangleCount; triangle++) {
+		for (int triangle = 0; triangle < this.triangleCount; triangle++) {
 			int type = xDataOffsetStream.getUnsignedByte();
 			if (type == 1) {
 				trianglePointOffsetX = vertexDirectionOffsetStream.getSmartA() + offset;
@@ -497,25 +497,25 @@ public final class Model extends Animable {
 				offset = trianglePointOffsetY;
 				trianglePointOffsetZ = vertexDirectionOffsetStream.getSmartA() + offset;
 				offset = trianglePointOffsetZ;
-				triangleX[triangle] = trianglePointOffsetX;
-				triangleY[triangle] = trianglePointOffsetY;
-				triangleZ[triangle] = trianglePointOffsetZ;
+                this.triangleX[triangle] = trianglePointOffsetX;
+                this.triangleY[triangle] = trianglePointOffsetY;
+                this.triangleZ[triangle] = trianglePointOffsetZ;
 			}
 			if (type == 2) {
 				trianglePointOffsetY = trianglePointOffsetZ;
 				trianglePointOffsetZ = vertexDirectionOffsetStream.getSmartA() + offset;
 				offset = trianglePointOffsetZ;
-				triangleX[triangle] = trianglePointOffsetX;
-				triangleY[triangle] = trianglePointOffsetY;
-				triangleZ[triangle] = trianglePointOffsetZ;
+                this.triangleX[triangle] = trianglePointOffsetX;
+                this.triangleY[triangle] = trianglePointOffsetY;
+                this.triangleZ[triangle] = trianglePointOffsetZ;
 			}
 			if (type == 3) {
 				trianglePointOffsetX = trianglePointOffsetZ;
 				trianglePointOffsetZ = vertexDirectionOffsetStream.getSmartA() + offset;
 				offset = trianglePointOffsetZ;
-				triangleX[triangle] = trianglePointOffsetX;
-				triangleY[triangle] = trianglePointOffsetY;
-				triangleZ[triangle] = trianglePointOffsetZ;
+                this.triangleX[triangle] = trianglePointOffsetX;
+                this.triangleY[triangle] = trianglePointOffsetY;
+                this.triangleZ[triangle] = trianglePointOffsetZ;
 			}
 			if (type == 4) {
 				int oldTrianglePointOffsetX = trianglePointOffsetX;
@@ -523,45 +523,45 @@ public final class Model extends Animable {
 				trianglePointOffsetY = oldTrianglePointOffsetX;
 				trianglePointOffsetZ = vertexDirectionOffsetStream.getSmartA() + offset;
 				offset = trianglePointOffsetZ;
-				triangleX[triangle] = trianglePointOffsetX;
-				triangleY[triangle] = trianglePointOffsetY;
-				triangleZ[triangle] = trianglePointOffsetZ;
+                this.triangleX[triangle] = trianglePointOffsetX;
+                this.triangleY[triangle] = trianglePointOffsetY;
+                this.triangleZ[triangle] = trianglePointOffsetZ;
 			}
 		}
 
 		vertexDirectionOffsetStream.position = modelHeader.texturedTriangleOffset;
-		for (int triangle = 0; triangle < texturedTriangleCount; triangle++) {
-			texturedTrianglePointsX[triangle] = vertexDirectionOffsetStream.getUnsignedLEShort();
-			texturedTrianglePointsY[triangle] = vertexDirectionOffsetStream.getUnsignedLEShort();
-			texturedTrianglePointsZ[triangle] = vertexDirectionOffsetStream.getUnsignedLEShort();
+		for (int triangle = 0; triangle < this.texturedTriangleCount; triangle++) {
+            this.texturedTrianglePointsX[triangle] = vertexDirectionOffsetStream.getUnsignedLEShort();
+            this.texturedTrianglePointsY[triangle] = vertexDirectionOffsetStream.getUnsignedLEShort();
+            this.texturedTrianglePointsZ[triangle] = vertexDirectionOffsetStream.getUnsignedLEShort();
 		}
 
 	}
 
 	public Model(int modelCount, Model models[]) {
-		singleTile = false;
+        this.singleTile = false;
 		boolean setDrawType = false;
 		boolean setPriority = false;
 		boolean setAlpha = false;
 		boolean setSkins = false;
-		vertexCount = 0;
-		triangleCount = 0;
-		texturedTriangleCount = 0;
-		trianglePriority = -1;
+        this.vertexCount = 0;
+        this.triangleCount = 0;
+        this.texturedTriangleCount = 0;
+        this.trianglePriority = -1;
 		for (int m = 0; m < modelCount; m++) {
 			Model model = models[m];
 			if (model != null) {
-				vertexCount += model.vertexCount;
-				triangleCount += model.triangleCount;
-				texturedTriangleCount += model.texturedTriangleCount;
+                this.vertexCount += model.vertexCount;
+                this.triangleCount += model.triangleCount;
+                this.texturedTriangleCount += model.texturedTriangleCount;
 				setDrawType |= model.triangleDrawType != null;
 				if (model.trianglePriorities != null) {
 					setPriority = true;
 				} else {
-					if (trianglePriority == -1) {
-                        trianglePriority = model.trianglePriority;
+					if (this.trianglePriority == -1) {
+                        this.trianglePriority = model.trianglePriority;
                     }
-					if (trianglePriority != model.trianglePriority) {
+					if (this.trianglePriority != model.trianglePriority) {
                         setPriority = true;
                     }
 				}
@@ -570,32 +570,32 @@ public final class Model extends Animable {
 			}
 		}
 
-		verticesX = new int[vertexCount];
-		verticesY = new int[vertexCount];
-		verticesZ = new int[vertexCount];
-		vertexSkins = new int[vertexCount];
-		triangleX = new int[triangleCount];
-		triangleY = new int[triangleCount];
-		triangleZ = new int[triangleCount];
-		texturedTrianglePointsX = new int[texturedTriangleCount];
-		texturedTrianglePointsY = new int[texturedTriangleCount];
-		texturedTrianglePointsZ = new int[texturedTriangleCount];
+        this.verticesX = new int[this.vertexCount];
+        this.verticesY = new int[this.vertexCount];
+        this.verticesZ = new int[this.vertexCount];
+        this.vertexSkins = new int[this.vertexCount];
+        this.triangleX = new int[this.triangleCount];
+        this.triangleY = new int[this.triangleCount];
+        this.triangleZ = new int[this.triangleCount];
+        this.texturedTrianglePointsX = new int[this.texturedTriangleCount];
+        this.texturedTrianglePointsY = new int[this.texturedTriangleCount];
+        this.texturedTrianglePointsZ = new int[this.texturedTriangleCount];
 		if (setDrawType) {
-            triangleDrawType = new int[triangleCount];
+            this.triangleDrawType = new int[this.triangleCount];
         }
 		if (setPriority) {
-            trianglePriorities = new int[triangleCount];
+            this.trianglePriorities = new int[this.triangleCount];
         }
 		if (setAlpha) {
-            triangleAlpha = new int[triangleCount];
+            this.triangleAlpha = new int[this.triangleCount];
         }
 		if (setSkins) {
-            triangleSkins = new int[triangleCount];
+            this.triangleSkins = new int[this.triangleCount];
         }
-		triangleColours = new int[triangleCount];
-		vertexCount = 0;
-		triangleCount = 0;
-		texturedTriangleCount = 0;
+        this.triangleColours = new int[this.triangleCount];
+        this.vertexCount = 0;
+        this.triangleCount = 0;
+        this.texturedTriangleCount = 0;
 		int count = 0;
 		for (int m = 0; m < modelCount; m++) {
 			Model model = models[m];
@@ -603,47 +603,47 @@ public final class Model extends Animable {
 				for (int triangle = 0; triangle < model.triangleCount; triangle++) {
 					if (setDrawType) {
                         if (model.triangleDrawType == null) {
-                            triangleDrawType[triangleCount] = 0;
+                            this.triangleDrawType[this.triangleCount] = 0;
                         } else {
                             int drawType = model.triangleDrawType[triangle];
                             if ((drawType & 2) == 2) {
                                 drawType += count << 2;
                             }
-                            triangleDrawType[triangleCount] = drawType;
+                            this.triangleDrawType[this.triangleCount] = drawType;
                         }
                     }
 					if (setPriority) {
                         if (model.trianglePriorities == null) {
-                            trianglePriorities[triangleCount] = model.trianglePriority;
+                            this.trianglePriorities[this.triangleCount] = model.trianglePriority;
                         } else {
-                            trianglePriorities[triangleCount] = model.trianglePriorities[triangle];
+                            this.trianglePriorities[this.triangleCount] = model.trianglePriorities[triangle];
                         }
                     }
 					if (setAlpha) {
                         if (model.triangleAlpha == null) {
-                            triangleAlpha[triangleCount] = 0;
+                            this.triangleAlpha[this.triangleCount] = 0;
                         } else {
-                            triangleAlpha[triangleCount] = model.triangleAlpha[triangle];
+                            this.triangleAlpha[this.triangleCount] = model.triangleAlpha[triangle];
                         }
                     }
 					if (setSkins && model.triangleSkins != null) {
-                        triangleSkins[triangleCount] = model.triangleSkins[triangle];
+                        this.triangleSkins[this.triangleCount] = model.triangleSkins[triangle];
                     }
-					triangleColours[triangleCount] = model.triangleColours[triangle];
-					triangleX[triangleCount] = getFirstIdenticalVertexId(model, model.triangleX[triangle]);
-					triangleY[triangleCount] = getFirstIdenticalVertexId(model, model.triangleY[triangle]);
-					triangleZ[triangleCount] = getFirstIdenticalVertexId(model, model.triangleZ[triangle]);
-					triangleCount++;
+                    this.triangleColours[this.triangleCount] = model.triangleColours[triangle];
+                    this.triangleX[this.triangleCount] = this.getFirstIdenticalVertexId(model, model.triangleX[triangle]);
+                    this.triangleY[this.triangleCount] = this.getFirstIdenticalVertexId(model, model.triangleY[triangle]);
+                    this.triangleZ[this.triangleCount] = this.getFirstIdenticalVertexId(model, model.triangleZ[triangle]);
+                    this.triangleCount++;
 				}
 
 				for (int triangle = 0; triangle < model.texturedTriangleCount; triangle++) {
-					texturedTrianglePointsX[texturedTriangleCount] = getFirstIdenticalVertexId(model,
+                    this.texturedTrianglePointsX[this.texturedTriangleCount] = this.getFirstIdenticalVertexId(model,
 							model.texturedTrianglePointsX[triangle]);
-					texturedTrianglePointsY[texturedTriangleCount] = getFirstIdenticalVertexId(model,
+                    this.texturedTrianglePointsY[this.texturedTriangleCount] = this.getFirstIdenticalVertexId(model,
 							model.texturedTrianglePointsY[triangle]);
-					texturedTrianglePointsZ[texturedTriangleCount] = getFirstIdenticalVertexId(model,
+                    this.texturedTrianglePointsZ[this.texturedTriangleCount] = this.getFirstIdenticalVertexId(model,
 							model.texturedTrianglePointsZ[triangle]);
-					texturedTriangleCount++;
+                    this.texturedTriangleCount++;
 				}
 
 				count += model.texturedTriangleCount;
@@ -654,29 +654,29 @@ public final class Model extends Animable {
 
 	public Model(Model models[]) {
 		int modelCount = 2;// was parameter
-		singleTile = false;
+        this.singleTile = false;
 		boolean flag1 = false;
 		boolean flag2 = false;
 		boolean flag3 = false;
 		boolean flag4 = false;
-		vertexCount = 0;
-		triangleCount = 0;
-		texturedTriangleCount = 0;
-		trianglePriority = -1;
+        this.vertexCount = 0;
+        this.triangleCount = 0;
+        this.texturedTriangleCount = 0;
+        this.trianglePriority = -1;
 		for (int m = 0; m < modelCount; m++) {
 			Model model = models[m];
 			if (model != null) {
-				vertexCount += model.vertexCount;
-				triangleCount += model.triangleCount;
-				texturedTriangleCount += model.texturedTriangleCount;
+                this.vertexCount += model.vertexCount;
+                this.triangleCount += model.triangleCount;
+                this.texturedTriangleCount += model.texturedTriangleCount;
 				flag1 |= model.triangleDrawType != null;
 				if (model.trianglePriorities != null) {
 					flag2 = true;
 				} else {
-					if (trianglePriority == -1) {
-                        trianglePriority = model.trianglePriority;
+					if (this.trianglePriority == -1) {
+                        this.trianglePriority = model.trianglePriority;
                     }
-					if (trianglePriority != model.trianglePriority) {
+					if (this.trianglePriority != model.trianglePriority) {
                         flag2 = true;
                     }
 				}
@@ -685,123 +685,123 @@ public final class Model extends Animable {
 			}
 		}
 
-		verticesX = new int[vertexCount];
-		verticesY = new int[vertexCount];
-		verticesZ = new int[vertexCount];
-		triangleX = new int[triangleCount];
-		triangleY = new int[triangleCount];
-		triangleZ = new int[triangleCount];
-		triangleHSLA = new int[triangleCount];
-		triangleHSLB = new int[triangleCount];
-		triangleHSLC = new int[triangleCount];
-		texturedTrianglePointsX = new int[texturedTriangleCount];
-		texturedTrianglePointsY = new int[texturedTriangleCount];
-		texturedTrianglePointsZ = new int[texturedTriangleCount];
+        this.verticesX = new int[this.vertexCount];
+        this.verticesY = new int[this.vertexCount];
+        this.verticesZ = new int[this.vertexCount];
+        this.triangleX = new int[this.triangleCount];
+        this.triangleY = new int[this.triangleCount];
+        this.triangleZ = new int[this.triangleCount];
+        this.triangleHSLA = new int[this.triangleCount];
+        this.triangleHSLB = new int[this.triangleCount];
+        this.triangleHSLC = new int[this.triangleCount];
+        this.texturedTrianglePointsX = new int[this.texturedTriangleCount];
+        this.texturedTrianglePointsY = new int[this.texturedTriangleCount];
+        this.texturedTrianglePointsZ = new int[this.texturedTriangleCount];
 		if (flag1) {
-            triangleDrawType = new int[triangleCount];
+            this.triangleDrawType = new int[this.triangleCount];
         }
 		if (flag2) {
-            trianglePriorities = new int[triangleCount];
+            this.trianglePriorities = new int[this.triangleCount];
         }
 		if (flag3) {
-            triangleAlpha = new int[triangleCount];
+            this.triangleAlpha = new int[this.triangleCount];
         }
 		if (flag4) {
-            triangleColours = new int[triangleCount];
+            this.triangleColours = new int[this.triangleCount];
         }
-		vertexCount = 0;
-		triangleCount = 0;
-		texturedTriangleCount = 0;
+        this.vertexCount = 0;
+        this.triangleCount = 0;
+        this.texturedTriangleCount = 0;
 		int count = 0;
 		for (int m = 0; m < modelCount; m++) {
 			Model model = models[m];
 			if (model != null) {
-				int v = vertexCount;
+				int v = this.vertexCount;
 				for (int vertex = 0; vertex < model.vertexCount; vertex++) {
-					verticesX[vertexCount] = model.verticesX[vertex];
-					verticesY[vertexCount] = model.verticesY[vertex];
-					verticesZ[vertexCount] = model.verticesZ[vertex];
-					vertexCount++;
+                    this.verticesX[this.vertexCount] = model.verticesX[vertex];
+                    this.verticesY[this.vertexCount] = model.verticesY[vertex];
+                    this.verticesZ[this.vertexCount] = model.verticesZ[vertex];
+                    this.vertexCount++;
 				}
 
 				for (int triangle = 0; triangle < model.triangleCount; triangle++) {
-					triangleX[triangleCount] = model.triangleX[triangle] + v;
-					triangleY[triangleCount] = model.triangleY[triangle] + v;
-					triangleZ[triangleCount] = model.triangleZ[triangle] + v;
-					triangleHSLA[triangleCount] = model.triangleHSLA[triangle];
-					triangleHSLB[triangleCount] = model.triangleHSLB[triangle];
-					triangleHSLC[triangleCount] = model.triangleHSLC[triangle];
+                    this.triangleX[this.triangleCount] = model.triangleX[triangle] + v;
+                    this.triangleY[this.triangleCount] = model.triangleY[triangle] + v;
+                    this.triangleZ[this.triangleCount] = model.triangleZ[triangle] + v;
+                    this.triangleHSLA[this.triangleCount] = model.triangleHSLA[triangle];
+                    this.triangleHSLB[this.triangleCount] = model.triangleHSLB[triangle];
+                    this.triangleHSLC[this.triangleCount] = model.triangleHSLC[triangle];
 					if (flag1) {
                         if (model.triangleDrawType == null) {
-                            triangleDrawType[triangleCount] = 0;
+                            this.triangleDrawType[this.triangleCount] = 0;
                         } else {
                             int drawType = model.triangleDrawType[triangle];
                             if ((drawType & 2) == 2) {
                                 drawType += count << 2;
                             }
-                            triangleDrawType[triangleCount] = drawType;
+                            this.triangleDrawType[this.triangleCount] = drawType;
                         }
                     }
 					if (flag2) {
                         if (model.trianglePriorities == null) {
-                            trianglePriorities[triangleCount] = model.trianglePriority;
+                            this.trianglePriorities[this.triangleCount] = model.trianglePriority;
                         } else {
-                            trianglePriorities[triangleCount] = model.trianglePriorities[triangle];
+                            this.trianglePriorities[this.triangleCount] = model.trianglePriorities[triangle];
                         }
                     }
 					if (flag3) {
                         if (model.triangleAlpha == null) {
-                            triangleAlpha[triangleCount] = 0;
+                            this.triangleAlpha[this.triangleCount] = 0;
                         } else {
-                            triangleAlpha[triangleCount] = model.triangleAlpha[triangle];
+                            this.triangleAlpha[this.triangleCount] = model.triangleAlpha[triangle];
                         }
                     }
 					if (flag4 && model.triangleColours != null) {
-                        triangleColours[triangleCount] = model.triangleColours[triangle];
+                        this.triangleColours[this.triangleCount] = model.triangleColours[triangle];
                     }
-					triangleCount++;
+                    this.triangleCount++;
 				}
 
 				for (int triangle = 0; triangle < model.texturedTriangleCount; triangle++) {
-					texturedTrianglePointsX[texturedTriangleCount] = model.texturedTrianglePointsX[triangle] + v;
-					texturedTrianglePointsY[texturedTriangleCount] = model.texturedTrianglePointsY[triangle] + v;
-					texturedTrianglePointsZ[texturedTriangleCount] = model.texturedTrianglePointsZ[triangle] + v;
-					texturedTriangleCount++;
+                    this.texturedTrianglePointsX[this.texturedTriangleCount] = model.texturedTrianglePointsX[triangle] + v;
+                    this.texturedTrianglePointsY[this.texturedTriangleCount] = model.texturedTrianglePointsY[triangle] + v;
+                    this.texturedTrianglePointsZ[this.texturedTriangleCount] = model.texturedTrianglePointsZ[triangle] + v;
+                    this.texturedTriangleCount++;
 				}
 
 				count += model.texturedTriangleCount;
 			}
 		}
 
-		calculateDiagonals();
+		this.calculateDiagonals();
 	}
 
 	public void applyLighting(int lightMod, int magnitudeMultiplier, int lightX, int lightY, int lightZ,
 			boolean flatShading) {
 		int lightMagnitude = (int) Math.sqrt(lightX * lightX + lightY * lightY + lightZ * lightZ);
 		int magnitude = magnitudeMultiplier * lightMagnitude >> 8;
-		if (triangleHSLA == null) {
-			triangleHSLA = new int[triangleCount];
-			triangleHSLB = new int[triangleCount];
-			triangleHSLC = new int[triangleCount];
+		if (this.triangleHSLA == null) {
+            this.triangleHSLA = new int[this.triangleCount];
+            this.triangleHSLB = new int[this.triangleCount];
+            this.triangleHSLC = new int[this.triangleCount];
 		}
 		if (super.vertexNormals == null) {
-			super.vertexNormals = new VertexNormal[vertexCount];
-			for (int vertex = 0; vertex < vertexCount; vertex++) {
+			super.vertexNormals = new VertexNormal[this.vertexCount];
+			for (int vertex = 0; vertex < this.vertexCount; vertex++) {
                 super.vertexNormals[vertex] = new VertexNormal();
             }
 
 		}
-		for (int triangle = 0; triangle < triangleCount; triangle++) {
-			int _triangleX = triangleX[triangle];
-			int _triangleY = triangleY[triangle];
-			int _triangleZ = triangleZ[triangle];
-			int distanceXXY = verticesX[_triangleY] - verticesX[_triangleX];
-			int distanceYXY = verticesY[_triangleY] - verticesY[_triangleX];
-			int distanceZXY = verticesZ[_triangleY] - verticesZ[_triangleX];
-			int distanceXZX = verticesX[_triangleZ] - verticesX[_triangleX];
-			int distanceYZX = verticesY[_triangleZ] - verticesY[_triangleX];
-			int distanceZZX = verticesZ[_triangleZ] - verticesZ[_triangleX];
+		for (int triangle = 0; triangle < this.triangleCount; triangle++) {
+			int _triangleX = this.triangleX[triangle];
+			int _triangleY = this.triangleY[triangle];
+			int _triangleZ = this.triangleZ[triangle];
+			int distanceXXY = this.verticesX[_triangleY] - this.verticesX[_triangleX];
+			int distanceYXY = this.verticesY[_triangleY] - this.verticesY[_triangleX];
+			int distanceZXY = this.verticesZ[_triangleY] - this.verticesZ[_triangleX];
+			int distanceXZX = this.verticesX[_triangleZ] - this.verticesX[_triangleX];
+			int distanceYZX = this.verticesY[_triangleZ] - this.verticesY[_triangleX];
+			int distanceZZX = this.verticesZ[_triangleZ] - this.verticesZ[_triangleX];
 			int normalX = distanceYXY * distanceZZX - distanceYZX * distanceZXY;
 			int normalY = distanceZXY * distanceXZX - distanceZZX * distanceXXY;
 			int normalZ;
@@ -818,7 +818,7 @@ public final class Model extends Animable {
 			normalX = (normalX * 256) / normalLength;
 			normalY = (normalY * 256) / normalLength;
 			normalZ = (normalZ * 256) / normalLength;
-			if (triangleDrawType == null || (triangleDrawType[triangle] & 1) == 0) {
+			if (this.triangleDrawType == null || (this.triangleDrawType[triangle] & 1) == 0) {
 				VertexNormal vertexNormal = super.vertexNormals[_triangleX];
 				vertexNormal.x += normalX;
 				vertexNormal.y += normalY;
@@ -837,17 +837,17 @@ public final class Model extends Animable {
 			} else {
 				int lightness = lightMod
 						+ (lightX * normalX + lightY * normalY + lightZ * normalZ) / (magnitude + magnitude / 2);
-				triangleHSLA[triangle] = mixLightness(triangleColours[triangle], lightness, triangleDrawType[triangle]);
+                this.triangleHSLA[triangle] = mixLightness(this.triangleColours[triangle], lightness, this.triangleDrawType[triangle]);
 			}
 		}
 
 		if (flatShading) {
-			handleShading(lightMod, magnitude, lightX, lightY, lightZ);
+			this.handleShading(lightMod, magnitude, lightX, lightY, lightZ);
 		} else {
-			vertexNormalOffset = new VertexNormal[vertexCount];
-			for (int vertex = 0; vertex < vertexCount; vertex++) {
+            this.vertexNormalOffset = new VertexNormal[this.vertexCount];
+			for (int vertex = 0; vertex < this.vertexCount; vertex++) {
 				VertexNormal vertexNormal = super.vertexNormals[vertex];
-				VertexNormal shadowVertexNormal = vertexNormalOffset[vertex] = new VertexNormal();
+				VertexNormal shadowVertexNormal = this.vertexNormalOffset[vertex] = new VertexNormal();
 				shadowVertexNormal.x = vertexNormal.x;
 				shadowVertexNormal.y = vertexNormal.y;
 				shadowVertexNormal.z = vertexNormal.z;
@@ -856,14 +856,14 @@ public final class Model extends Animable {
 
 		}
 		if (flatShading) {
-			calculateDiagonals();
+			this.calculateDiagonals();
 		} else {
-			calculateDiagonalsAndBounds();
+			this.calculateDiagonalsAndBounds();
 		}
 	}
 
 	public void applyTransformation(int frameId) {
-		if (vertexSkin == null) {
+		if (this.vertexSkin == null) {
             return;
         }
 		if (frameId == -1) {
@@ -879,129 +879,129 @@ public final class Model extends Animable {
 		vertexModifierZ = 0;
 		for (int stepId = 0; stepId < animationFrame.frameCount; stepId++) {
 			int opcode = animationFrame.opcodeTable[stepId];
-			transformFrame(skins.opcodes[opcode], skins.skinList[opcode], animationFrame.transformationX[stepId],
+			this.transformFrame(skins.opcodes[opcode], skins.skinList[opcode], animationFrame.transformationX[stepId],
 					animationFrame.transformationY[stepId], animationFrame.transformationZ[stepId]);
 		}
 	}
 
 	public void calculateDiagonals() {
 		super.modelHeight = 0;
-		diagonal2DAboveOrigin = 0;
-		maxY = 0;
-		for (int vertex = 0; vertex < vertexCount; vertex++) {
-			int x = verticesX[vertex];
-			int y = verticesY[vertex];
-			int z = verticesZ[vertex];
+        this.diagonal2DAboveOrigin = 0;
+        this.maxY = 0;
+		for (int vertex = 0; vertex < this.vertexCount; vertex++) {
+			int x = this.verticesX[vertex];
+			int y = this.verticesY[vertex];
+			int z = this.verticesZ[vertex];
 			if (-y > super.modelHeight) {
                 super.modelHeight = -y;
             }
-			if (y > maxY) {
-                maxY = y;
+			if (y > this.maxY) {
+                this.maxY = y;
             }
 			int bounds = x * x + z * z;
-			if (bounds > diagonal2DAboveOrigin) {
-                diagonal2DAboveOrigin = bounds;
+			if (bounds > this.diagonal2DAboveOrigin) {
+                this.diagonal2DAboveOrigin = bounds;
             }
 		}
-		diagonal2DAboveOrigin = (int) (Math.sqrt(diagonal2DAboveOrigin) + 0.98999999999999999D);
-		diagonal3DAboveOrigin = (int) (Math
-				.sqrt(diagonal2DAboveOrigin * diagonal2DAboveOrigin + super.modelHeight * super.modelHeight)
+        this.diagonal2DAboveOrigin = (int) (Math.sqrt(this.diagonal2DAboveOrigin) + 0.98999999999999999D);
+        this.diagonal3DAboveOrigin = (int) (Math
+				.sqrt(this.diagonal2DAboveOrigin * this.diagonal2DAboveOrigin + super.modelHeight * super.modelHeight)
 				+ 0.98999999999999999D);
-		diagonal3D = diagonal3DAboveOrigin
-				+ (int) (Math.sqrt(diagonal2DAboveOrigin * diagonal2DAboveOrigin + maxY * maxY) + 0.98999999999999999D);
+        this.diagonal3D = this.diagonal3DAboveOrigin
+				+ (int) (Math.sqrt(this.diagonal2DAboveOrigin * this.diagonal2DAboveOrigin + this.maxY * this.maxY) + 0.98999999999999999D);
 	}
 
 	private void calculateDiagonalsAndBounds() {
 		super.modelHeight = 0;
-		diagonal2DAboveOrigin = 0;
-		maxY = 0;
-		minX = 0xf423f;
-		maxX = 0xfff0bdc1;
-		maxZ = 0xfffe7961;
-		minZ = 0x1869f;
-		for (int vertex = 0; vertex < vertexCount; vertex++) {
-			int x = verticesX[vertex];
-			int y = verticesY[vertex];
-			int z = verticesZ[vertex];
-			if (x < minX) {
-                minX = x;
+        this.diagonal2DAboveOrigin = 0;
+        this.maxY = 0;
+        this.minX = 0xf423f;
+        this.maxX = 0xfff0bdc1;
+        this.maxZ = 0xfffe7961;
+        this.minZ = 0x1869f;
+		for (int vertex = 0; vertex < this.vertexCount; vertex++) {
+			int x = this.verticesX[vertex];
+			int y = this.verticesY[vertex];
+			int z = this.verticesZ[vertex];
+			if (x < this.minX) {
+                this.minX = x;
             }
-			if (x > maxX) {
-                maxX = x;
+			if (x > this.maxX) {
+                this.maxX = x;
             }
-			if (z < minZ) {
-                minZ = z;
+			if (z < this.minZ) {
+                this.minZ = z;
             }
-			if (z > maxZ) {
-                maxZ = z;
+			if (z > this.maxZ) {
+                this.maxZ = z;
             }
 			if (-y > super.modelHeight) {
                 super.modelHeight = -y;
             }
-			if (y > maxY) {
-                maxY = y;
+			if (y > this.maxY) {
+                this.maxY = y;
             }
 			int bounds = x * x + z * z;
-			if (bounds > diagonal2DAboveOrigin) {
-                diagonal2DAboveOrigin = bounds;
+			if (bounds > this.diagonal2DAboveOrigin) {
+                this.diagonal2DAboveOrigin = bounds;
             }
 		}
 
-		diagonal2DAboveOrigin = (int) Math.sqrt(diagonal2DAboveOrigin);
-		diagonal3DAboveOrigin = (int) Math
-				.sqrt(diagonal2DAboveOrigin * diagonal2DAboveOrigin + super.modelHeight * super.modelHeight);
-		diagonal3D = diagonal3DAboveOrigin
-				+ (int) Math.sqrt(diagonal2DAboveOrigin * diagonal2DAboveOrigin + maxY * maxY);
+        this.diagonal2DAboveOrigin = (int) Math.sqrt(this.diagonal2DAboveOrigin);
+        this.diagonal3DAboveOrigin = (int) Math
+				.sqrt(this.diagonal2DAboveOrigin * this.diagonal2DAboveOrigin + super.modelHeight * super.modelHeight);
+        this.diagonal3D = this.diagonal3DAboveOrigin
+				+ (int) Math.sqrt(this.diagonal2DAboveOrigin * this.diagonal2DAboveOrigin + this.maxY * this.maxY);
 	}
 
 	public void createBones() {
-		if (vertexSkins != null) {
+		if (this.vertexSkins != null) {
 			int ai[] = new int[256];
 			int count = 0;
-			for (int vertex = 0; vertex < vertexCount; vertex++) {
-				int skins = vertexSkins[vertex];
+			for (int vertex = 0; vertex < this.vertexCount; vertex++) {
+				int skins = this.vertexSkins[vertex];
 				ai[skins]++;
 				if (skins > count) {
                     count = skins;
                 }
 			}
 
-			vertexSkin = new int[count + 1][];
+            this.vertexSkin = new int[count + 1][];
 			for (int vertex = 0; vertex <= count; vertex++) {
-				vertexSkin[vertex] = new int[ai[vertex]];
+                this.vertexSkin[vertex] = new int[ai[vertex]];
 				ai[vertex] = 0;
 			}
 
-			for (int vertex = 0; vertex < vertexCount; vertex++) {
-				int skin = vertexSkins[vertex];
-				vertexSkin[skin][ai[skin]++] = vertex;
+			for (int vertex = 0; vertex < this.vertexCount; vertex++) {
+				int skin = this.vertexSkins[vertex];
+                this.vertexSkin[skin][ai[skin]++] = vertex;
 			}
 
-			vertexSkins = null;
+            this.vertexSkins = null;
 		}
-		if (triangleSkins != null) {
+		if (this.triangleSkins != null) {
 			int ai1[] = new int[256];
 			int count = 0;
-			for (int triangle = 0; triangle < triangleCount; triangle++) {
-				int skins = triangleSkins[triangle];
+			for (int triangle = 0; triangle < this.triangleCount; triangle++) {
+				int skins = this.triangleSkins[triangle];
 				ai1[skins]++;
 				if (skins > count) {
                     count = skins;
                 }
 			}
 
-			triangleSkin = new int[count + 1][];
+            this.triangleSkin = new int[count + 1][];
 			for (int triangle = 0; triangle <= count; triangle++) {
-				triangleSkin[triangle] = new int[ai1[triangle]];
+                this.triangleSkin[triangle] = new int[ai1[triangle]];
 				ai1[triangle] = 0;
 			}
 
-			for (int triangle = 0; triangle < triangleCount; triangle++) {
-				int skins = triangleSkins[triangle];
-				triangleSkin[skins][ai1[skins]++] = triangle;
+			for (int triangle = 0; triangle < this.triangleCount; triangle++) {
+				int skins = this.triangleSkins[triangle];
+                this.triangleSkin[skins][ai1[skins]++] = triangle;
 			}
 
-			triangleSkins = null;
+            this.triangleSkins = null;
 		}
 	}
 
@@ -1010,8 +1010,8 @@ public final class Model extends Animable {
 		int x = model.verticesX[vertex];
 		int y = model.verticesY[vertex];
 		int z = model.verticesZ[vertex];
-		for (int v = 0; v < vertexCount; v++) {
-			if (x != verticesX[v] || y != verticesY[v] || z != verticesZ[v]) {
+		for (int v = 0; v < this.vertexCount; v++) {
+			if (x != this.verticesX[v] || y != this.verticesY[v] || z != this.verticesZ[v]) {
                 continue;
             }
 			vertexId = v;
@@ -1019,90 +1019,90 @@ public final class Model extends Animable {
 		}
 
 		if (vertexId == -1) {
-			verticesX[vertexCount] = x;
-			verticesY[vertexCount] = y;
-			verticesZ[vertexCount] = z;
+            this.verticesX[this.vertexCount] = x;
+            this.verticesY[this.vertexCount] = y;
+            this.verticesZ[this.vertexCount] = z;
 			if (model.vertexSkins != null) {
-                vertexSkins[vertexCount] = model.vertexSkins[vertex];
+                this.vertexSkins[this.vertexCount] = model.vertexSkins[vertex];
             }
-			vertexId = vertexCount++;
+			vertexId = this.vertexCount++;
 		}
 		return vertexId;
 	}
 
 	public void handleShading(int intensity, int falloff, int lightX, int lightY, int lightZ) {
-		for (int triangle = 0; triangle < triangleCount; triangle++) {
-			int x = triangleX[triangle];
-			int y = triangleY[triangle];
-			int z = triangleZ[triangle];
-			if (triangleDrawType == null) {
-				int colour = triangleColours[triangle];
+		for (int triangle = 0; triangle < this.triangleCount; triangle++) {
+			int x = this.triangleX[triangle];
+			int y = this.triangleY[triangle];
+			int z = this.triangleZ[triangle];
+			if (this.triangleDrawType == null) {
+				int colour = this.triangleColours[triangle];
 				VertexNormal vertexNormal = super.vertexNormals[x];
 				int lightness = intensity
 						+ (lightX * vertexNormal.x + lightY * vertexNormal.y + lightZ * vertexNormal.z)
 								/ (falloff * vertexNormal.magnitude);
-				triangleHSLA[triangle] = mixLightness(colour, lightness, 0);
+                this.triangleHSLA[triangle] = mixLightness(colour, lightness, 0);
 				vertexNormal = super.vertexNormals[y];
 				lightness = intensity + (lightX * vertexNormal.x + lightY * vertexNormal.y + lightZ * vertexNormal.z)
 						/ (falloff * vertexNormal.magnitude);
-				triangleHSLB[triangle] = mixLightness(colour, lightness, 0);
+                this.triangleHSLB[triangle] = mixLightness(colour, lightness, 0);
 				vertexNormal = super.vertexNormals[z];
 				lightness = intensity + (lightX * vertexNormal.x + lightY * vertexNormal.y + lightZ * vertexNormal.z)
 						/ (falloff * vertexNormal.magnitude);
-				triangleHSLC[triangle] = mixLightness(colour, lightness, 0);
-			} else if ((triangleDrawType[triangle] & 1) == 0) {
-				int colour = triangleColours[triangle];
-				int drawType = triangleDrawType[triangle];
+                this.triangleHSLC[triangle] = mixLightness(colour, lightness, 0);
+			} else if ((this.triangleDrawType[triangle] & 1) == 0) {
+				int colour = this.triangleColours[triangle];
+				int drawType = this.triangleDrawType[triangle];
 				VertexNormal vertexNormal = super.vertexNormals[x];
 				int lightness = intensity
 						+ (lightX * vertexNormal.x + lightY * vertexNormal.y + lightZ * vertexNormal.z)
 								/ (falloff * vertexNormal.magnitude);
-				triangleHSLA[triangle] = mixLightness(colour, lightness, drawType);
+                this.triangleHSLA[triangle] = mixLightness(colour, lightness, drawType);
 				vertexNormal = super.vertexNormals[y];
 				lightness = intensity + (lightX * vertexNormal.x + lightY * vertexNormal.y + lightZ * vertexNormal.z)
 						/ (falloff * vertexNormal.magnitude);
-				triangleHSLB[triangle] = mixLightness(colour, lightness, drawType);
+                this.triangleHSLB[triangle] = mixLightness(colour, lightness, drawType);
 				vertexNormal = super.vertexNormals[z];
 				lightness = intensity + (lightX * vertexNormal.x + lightY * vertexNormal.y + lightZ * vertexNormal.z)
 						/ (falloff * vertexNormal.magnitude);
-				triangleHSLC[triangle] = mixLightness(colour, lightness, drawType);
+                this.triangleHSLC[triangle] = mixLightness(colour, lightness, drawType);
 			}
 		}
 
 		super.vertexNormals = null;
-		vertexNormalOffset = null;
-		vertexSkins = null;
-		triangleSkins = null;
-		if (triangleDrawType != null) {
-			for (int triangle = 0; triangle < triangleCount; triangle++) {
-                if ((triangleDrawType[triangle] & 2) == 2) {
+        this.vertexNormalOffset = null;
+        this.vertexSkins = null;
+        this.triangleSkins = null;
+		if (this.triangleDrawType != null) {
+			for (int triangle = 0; triangle < this.triangleCount; triangle++) {
+                if ((this.triangleDrawType[triangle] & 2) == 2) {
                     return;
                 }
             }
 
 		}
-		triangleColours = null;
+        this.triangleColours = null;
 	}
 
 	private void method483(boolean flag, boolean flag1, int i) {
-		for (int j = 0; j < diagonal3D; j++) {
+		for (int j = 0; j < this.diagonal3D; j++) {
             anIntArray1671[j] = 0;
         }
 
-		for (int triangle = 0; triangle < triangleCount; triangle++) {
-            if (triangleDrawType == null || triangleDrawType[triangle] != -1) {
-                int x = triangleX[triangle];
-                int y = triangleY[triangle];
-                int z = triangleZ[triangle];
+		for (int triangle = 0; triangle < this.triangleCount; triangle++) {
+            if (this.triangleDrawType == null || this.triangleDrawType[triangle] != -1) {
+                int x = this.triangleX[triangle];
+                int y = this.triangleY[triangle];
+                int z = this.triangleZ[triangle];
                 int screenXX = vertexScreenX[x];
                 int screenXY = vertexScreenX[y];
                 int screenXZ = vertexScreenX[z];
                 if (flag && (screenXX == -5000 || screenXY == -5000 || screenXZ == -5000)) {
                     aBooleanArray1664[triangle] = true;
-                    int j5 = (vertexScreenZ[x] + vertexScreenZ[y] + vertexScreenZ[z]) / 3 + diagonal3DAboveOrigin;
+                    int j5 = (vertexScreenZ[x] + vertexScreenZ[y] + vertexScreenZ[z]) / 3 + this.diagonal3DAboveOrigin;
                     anIntArrayArray1672[j5][anIntArray1671[j5]++] = triangle;
                 } else {
-                    if (flag1 && method486(cursorX, cursorY, vertexScreenY[x], vertexScreenY[y], vertexScreenY[z],
+                    if (flag1 && this.method486(cursorX, cursorY, vertexScreenY[x], vertexScreenY[y], vertexScreenY[z],
                             screenXX, screenXY, screenXZ)) {
                         resourceId[resourceCount++] = i;
                         flag1 = false;
@@ -1113,20 +1113,20 @@ public final class Model extends Animable {
                         restrictEdges[triangle] = screenXX < 0 || screenXY < 0 || screenXZ < 0
                                 || screenXX > DrawingArea.centerX || screenXY > DrawingArea.centerX
                                 || screenXZ > DrawingArea.centerX;
-                        int k5 = (vertexScreenZ[x] + vertexScreenZ[y] + vertexScreenZ[z]) / 3 + diagonal3DAboveOrigin;
+                        int k5 = (vertexScreenZ[x] + vertexScreenZ[y] + vertexScreenZ[z]) / 3 + this.diagonal3DAboveOrigin;
                         anIntArrayArray1672[k5][anIntArray1671[k5]++] = triangle;
                     }
                 }
             }
         }
 
-		if (trianglePriorities == null) {
-			for (int i1 = diagonal3D - 1; i1 >= 0; i1--) {
+		if (this.trianglePriorities == null) {
+			for (int i1 = this.diagonal3D - 1; i1 >= 0; i1--) {
 				int l1 = anIntArray1671[i1];
 				if (l1 > 0) {
 					int ai[] = anIntArrayArray1672[i1];
 					for (int j3 = 0; j3 < l1; j3++) {
-                        rasterise(ai[j3]);
+						this.rasterise(ai[j3]);
                     }
 
 				}
@@ -1139,13 +1139,13 @@ public final class Model extends Animable {
 			anIntArray1677[j1] = 0;
 		}
 
-		for (int i2 = diagonal3D - 1; i2 >= 0; i2--) {
+		for (int i2 = this.diagonal3D - 1; i2 >= 0; i2--) {
 			int k2 = anIntArray1671[i2];
 			if (k2 > 0) {
 				int ai1[] = anIntArrayArray1672[i2];
 				for (int i4 = 0; i4 < k2; i4++) {
 					int l4 = ai1[i4];
-					int l5 = trianglePriorities[l4];
+					int l5 = this.trianglePriorities[l4];
 					int j6 = anIntArray1673[l5]++;
 					anIntArrayArray1674[l5][j6] = l4;
 					if (l5 < 10) {
@@ -1190,7 +1190,7 @@ public final class Model extends Animable {
         }
 		for (int l6 = 0; l6 < 10; l6++) {
 			while (l6 == 0 && i5 > l2) {
-				rasterise(ai2[i6++]);
+				this.rasterise(ai2[i6++]);
 				if (i6 == k6 && ai2 != anIntArrayArray1674[11]) {
 					i6 = 0;
 					k6 = anIntArray1673[11];
@@ -1204,7 +1204,7 @@ public final class Model extends Animable {
                 }
 			}
 			while (l6 == 3 && i5 > k3) {
-				rasterise(ai2[i6++]);
+				this.rasterise(ai2[i6++]);
 				if (i6 == k6 && ai2 != anIntArrayArray1674[11]) {
 					i6 = 0;
 					k6 = anIntArray1673[11];
@@ -1218,7 +1218,7 @@ public final class Model extends Animable {
                 }
 			}
 			while (l6 == 5 && i5 > j4) {
-				rasterise(ai2[i6++]);
+				this.rasterise(ai2[i6++]);
 				if (i6 == k6 && ai2 != anIntArrayArray1674[11]) {
 					i6 = 0;
 					k6 = anIntArray1673[11];
@@ -1234,13 +1234,13 @@ public final class Model extends Animable {
 			int i7 = anIntArray1673[l6];
 			int ai4[] = anIntArrayArray1674[l6];
 			for (int j7 = 0; j7 < i7; j7++) {
-                rasterise(ai4[j7]);
+				this.rasterise(ai4[j7]);
             }
 
 		}
 
 		while (i5 != -1000) {
-			rasterise(ai2[i6++]);
+			this.rasterise(ai2[i6++]);
 			if (i6 == k6 && ai2 != anIntArrayArray1674[11]) {
 				i6 = 0;
 				ai2 = anIntArrayArray1674[11];
@@ -1259,73 +1259,73 @@ public final class Model extends Animable {
 		int centreX = Rasterizer.centreX;
 		int centreY = Rasterizer.centreY;
 		int counter = 0;
-		int x = triangleX[triangle];
-		int y = triangleY[triangle];
-		int z = triangleZ[triangle];
+		int x = this.triangleX[triangle];
+		int y = this.triangleY[triangle];
+		int z = this.triangleZ[triangle];
 		int movedX = vertexMovedZ[x];
 		int movedY = vertexMovedZ[y];
 		int movedZ = vertexMovedZ[z];
 		if (movedX >= 50) {
 			xPosition[counter] = vertexScreenX[x];
 			yPosition[counter] = vertexScreenY[x];
-			zPosition[counter++] = triangleHSLA[triangle];
+			zPosition[counter++] = this.triangleHSLA[triangle];
 		} else {
 			int movedX2 = vertexMovedX[x];
 			int movedY2 = vertexMovedY[x];
-			int colour = triangleHSLA[triangle];
+			int colour = this.triangleHSLA[triangle];
 			if (movedZ >= 50) {
 				int k5 = (50 - movedX) * modelIntArray4[movedZ - movedX];
 				xPosition[counter] = centreX + (movedX2 + ((vertexMovedX[z] - movedX2) * k5 >> 16) << 9) / 50;
 				yPosition[counter] = centreY + (movedY2 + ((vertexMovedY[z] - movedY2) * k5 >> 16) << 9) / 50;
-				zPosition[counter++] = colour + ((triangleHSLC[triangle] - colour) * k5 >> 16);
+				zPosition[counter++] = colour + ((this.triangleHSLC[triangle] - colour) * k5 >> 16);
 			}
 			if (movedY >= 50) {
 				int l5 = (50 - movedX) * modelIntArray4[movedY - movedX];
 				xPosition[counter] = centreX + (movedX2 + ((vertexMovedX[y] - movedX2) * l5 >> 16) << 9) / 50;
 				yPosition[counter] = centreY + (movedY2 + ((vertexMovedY[y] - movedY2) * l5 >> 16) << 9) / 50;
-				zPosition[counter++] = colour + ((triangleHSLB[triangle] - colour) * l5 >> 16);
+				zPosition[counter++] = colour + ((this.triangleHSLB[triangle] - colour) * l5 >> 16);
 			}
 		}
 		if (movedY >= 50) {
 			xPosition[counter] = vertexScreenX[y];
 			yPosition[counter] = vertexScreenY[y];
-			zPosition[counter++] = triangleHSLB[triangle];
+			zPosition[counter++] = this.triangleHSLB[triangle];
 		} else {
 			int movedX2 = vertexMovedX[y];
 			int movedY2 = vertexMovedY[y];
-			int colour = triangleHSLB[triangle];
+			int colour = this.triangleHSLB[triangle];
 			if (movedX >= 50) {
 				int i6 = (50 - movedY) * modelIntArray4[movedX - movedY];
 				xPosition[counter] = centreX + (movedX2 + ((vertexMovedX[x] - movedX2) * i6 >> 16) << 9) / 50;
 				yPosition[counter] = centreY + (movedY2 + ((vertexMovedY[x] - movedY2) * i6 >> 16) << 9) / 50;
-				zPosition[counter++] = colour + ((triangleHSLA[triangle] - colour) * i6 >> 16);
+				zPosition[counter++] = colour + ((this.triangleHSLA[triangle] - colour) * i6 >> 16);
 			}
 			if (movedZ >= 50) {
 				int j6 = (50 - movedY) * modelIntArray4[movedZ - movedY];
 				xPosition[counter] = centreX + (movedX2 + ((vertexMovedX[z] - movedX2) * j6 >> 16) << 9) / 50;
 				yPosition[counter] = centreY + (movedY2 + ((vertexMovedY[z] - movedY2) * j6 >> 16) << 9) / 50;
-				zPosition[counter++] = colour + ((triangleHSLC[triangle] - colour) * j6 >> 16);
+				zPosition[counter++] = colour + ((this.triangleHSLC[triangle] - colour) * j6 >> 16);
 			}
 		}
 		if (movedZ >= 50) {
 			xPosition[counter] = vertexScreenX[z];
 			yPosition[counter] = vertexScreenY[z];
-			zPosition[counter++] = triangleHSLC[triangle];
+			zPosition[counter++] = this.triangleHSLC[triangle];
 		} else {
 			int movedX2 = vertexMovedX[z];
 			int movedY2 = vertexMovedY[z];
-			int colour = triangleHSLC[triangle];
+			int colour = this.triangleHSLC[triangle];
 			if (movedY >= 50) {
 				int k6 = (50 - movedZ) * modelIntArray4[movedY - movedZ];
 				xPosition[counter] = centreX + (movedX2 + ((vertexMovedX[y] - movedX2) * k6 >> 16) << 9) / 50;
 				yPosition[counter] = centreY + (movedY2 + ((vertexMovedY[y] - movedY2) * k6 >> 16) << 9) / 50;
-				zPosition[counter++] = colour + ((triangleHSLB[triangle] - colour) * k6 >> 16);
+				zPosition[counter++] = colour + ((this.triangleHSLB[triangle] - colour) * k6 >> 16);
 			}
 			if (movedX >= 50) {
 				int l6 = (50 - movedZ) * modelIntArray4[movedX - movedZ];
 				xPosition[counter] = centreX + (movedX2 + ((vertexMovedX[x] - movedX2) * l6 >> 16) << 9) / 50;
 				yPosition[counter] = centreY + (movedY2 + ((vertexMovedY[x] - movedY2) * l6 >> 16) << 9) / 50;
-				zPosition[counter++] = colour + ((triangleHSLA[triangle] - colour) * l6 >> 16);
+				zPosition[counter++] = colour + ((this.triangleHSLA[triangle] - colour) * l6 >> 16);
 			}
 		}
 		int xA = xPosition[0];
@@ -1342,33 +1342,33 @@ public final class Model extends Animable {
                     Rasterizer.restrictEdges = true;
                 }
 				int drawType;
-				if (triangleDrawType == null) {
+				if (this.triangleDrawType == null) {
                     drawType = 0;
                 } else {
-                    drawType = triangleDrawType[triangle] & 3;
+                    drawType = this.triangleDrawType[triangle] & 3;
                 }
 				if (drawType == 0) {
                     Rasterizer.drawShadedTriangle(yA, yB, yC, xA, xB, xC, zPosition[0], zPosition[1], zPosition[2]);
                 } else if (drawType == 1) {
-                    Rasterizer.drawFlatTriangle(yA, yB, yC, xA, xB, xC, HSLtoRGB[triangleHSLA[triangle]]);
+                    Rasterizer.drawFlatTriangle(yA, yB, yC, xA, xB, xC, HSLtoRGB[this.triangleHSLA[triangle]]);
                 } else if (drawType == 2) {
-					int tri = triangleDrawType[triangle] >> 2;
-					int x2 = texturedTrianglePointsX[tri];
-					int y2 = texturedTrianglePointsY[tri];
-					int z2 = texturedTrianglePointsZ[tri];
+					int tri = this.triangleDrawType[triangle] >> 2;
+					int x2 = this.texturedTrianglePointsX[tri];
+					int y2 = this.texturedTrianglePointsY[tri];
+					int z2 = this.texturedTrianglePointsZ[tri];
 					Rasterizer.drawTexturedTriangle(yA, yB, yC, xA, xB, xC, zPosition[0], zPosition[1], zPosition[2],
 							vertexMovedX[x2], vertexMovedX[y2], vertexMovedX[z2], vertexMovedY[x2], vertexMovedY[y2],
 							vertexMovedY[z2], vertexMovedZ[x2], vertexMovedZ[y2], vertexMovedZ[z2],
-							triangleColours[triangle]);
+                            this.triangleColours[triangle]);
 				} else if (drawType == 3) {
-					int tri = triangleDrawType[triangle] >> 2;
-					int x2 = texturedTrianglePointsX[tri];
-					int y2 = texturedTrianglePointsY[tri];
-					int z2 = texturedTrianglePointsZ[tri];
-					Rasterizer.drawTexturedTriangle(yA, yB, yC, xA, xB, xC, triangleHSLA[triangle],
-							triangleHSLA[triangle], triangleHSLA[triangle], vertexMovedX[x2], vertexMovedX[y2],
+					int tri = this.triangleDrawType[triangle] >> 2;
+					int x2 = this.texturedTrianglePointsX[tri];
+					int y2 = this.texturedTrianglePointsY[tri];
+					int z2 = this.texturedTrianglePointsZ[tri];
+					Rasterizer.drawTexturedTriangle(yA, yB, yC, xA, xB, xC, this.triangleHSLA[triangle],
+                            this.triangleHSLA[triangle], this.triangleHSLA[triangle], vertexMovedX[x2], vertexMovedX[y2],
 							vertexMovedX[z2], vertexMovedY[x2], vertexMovedY[y2], vertexMovedY[z2], vertexMovedZ[x2],
-							vertexMovedZ[y2], vertexMovedZ[z2], triangleColours[triangle]);
+							vertexMovedZ[y2], vertexMovedZ[z2], this.triangleColours[triangle]);
 				}
 			}
 			if (counter == 4) {
@@ -1377,10 +1377,10 @@ public final class Model extends Animable {
                     Rasterizer.restrictEdges = true;
                 }
 				int drawType;
-				if (triangleDrawType == null) {
+				if (this.triangleDrawType == null) {
                     drawType = 0;
                 } else {
-                    drawType = triangleDrawType[triangle] & 3;
+                    drawType = this.triangleDrawType[triangle] & 3;
                 }
 				if (drawType == 0) {
 					Rasterizer.drawShadedTriangle(yA, yB, yC, xA, xB, xC, zPosition[0], zPosition[1], zPosition[2]);
@@ -1389,39 +1389,39 @@ public final class Model extends Animable {
 					return;
 				}
 				if (drawType == 1) {
-					int colour = HSLtoRGB[triangleHSLA[triangle]];
+					int colour = HSLtoRGB[this.triangleHSLA[triangle]];
 					Rasterizer.drawFlatTriangle(yA, yB, yC, xA, xB, xC, colour);
 					Rasterizer.drawFlatTriangle(yA, yC, yPosition[3], xA, xC, xPosition[3], colour);
 					return;
 				}
 				if (drawType == 2) {
-					int tri = triangleDrawType[triangle] >> 2;
-					int x2 = texturedTrianglePointsX[tri];
-					int y2 = texturedTrianglePointsY[tri];
-					int z2 = texturedTrianglePointsZ[tri];
+					int tri = this.triangleDrawType[triangle] >> 2;
+					int x2 = this.texturedTrianglePointsX[tri];
+					int y2 = this.texturedTrianglePointsY[tri];
+					int z2 = this.texturedTrianglePointsZ[tri];
 					Rasterizer.drawTexturedTriangle(yA, yB, yC, xA, xB, xC, zPosition[0], zPosition[1], zPosition[2],
 							vertexMovedX[x2], vertexMovedX[y2], vertexMovedX[z2], vertexMovedY[x2], vertexMovedY[y2],
 							vertexMovedY[z2], vertexMovedZ[x2], vertexMovedZ[y2], vertexMovedZ[z2],
-							triangleColours[triangle]);
+                            this.triangleColours[triangle]);
 					Rasterizer.drawTexturedTriangle(yA, yC, yPosition[3], xA, xC, xPosition[3], zPosition[0],
 							zPosition[2], zPosition[3], vertexMovedX[x2], vertexMovedX[y2], vertexMovedX[z2],
 							vertexMovedY[x2], vertexMovedY[y2], vertexMovedY[z2], vertexMovedZ[x2], vertexMovedZ[y2],
-							vertexMovedZ[z2], triangleColours[triangle]);
+							vertexMovedZ[z2], this.triangleColours[triangle]);
 					return;
 				}
 				if (drawType == 3) {
-					int tri = triangleDrawType[triangle] >> 2;
-					int x2 = texturedTrianglePointsX[tri];
-					int y2 = texturedTrianglePointsY[tri];
-					int z2 = texturedTrianglePointsZ[tri];
-					Rasterizer.drawTexturedTriangle(yA, yB, yC, xA, xB, xC, triangleHSLA[triangle],
-							triangleHSLA[triangle], triangleHSLA[triangle], vertexMovedX[x2], vertexMovedX[y2],
+					int tri = this.triangleDrawType[triangle] >> 2;
+					int x2 = this.texturedTrianglePointsX[tri];
+					int y2 = this.texturedTrianglePointsY[tri];
+					int z2 = this.texturedTrianglePointsZ[tri];
+					Rasterizer.drawTexturedTriangle(yA, yB, yC, xA, xB, xC, this.triangleHSLA[triangle],
+                            this.triangleHSLA[triangle], this.triangleHSLA[triangle], vertexMovedX[x2], vertexMovedX[y2],
 							vertexMovedX[z2], vertexMovedY[x2], vertexMovedY[y2], vertexMovedY[z2], vertexMovedZ[x2],
-							vertexMovedZ[y2], vertexMovedZ[z2], triangleColours[triangle]);
-					Rasterizer.drawTexturedTriangle(yA, yC, yPosition[3], xA, xC, xPosition[3], triangleHSLA[triangle],
-							triangleHSLA[triangle], triangleHSLA[triangle], vertexMovedX[x2], vertexMovedX[y2],
+							vertexMovedZ[y2], vertexMovedZ[z2], this.triangleColours[triangle]);
+					Rasterizer.drawTexturedTriangle(yA, yC, yPosition[3], xA, xC, xPosition[3], this.triangleHSLA[triangle],
+                            this.triangleHSLA[triangle], this.triangleHSLA[triangle], vertexMovedX[x2], vertexMovedX[y2],
 							vertexMovedX[z2], vertexMovedY[x2], vertexMovedY[y2], vertexMovedY[z2], vertexMovedZ[x2],
-							vertexMovedZ[y2], vertexMovedZ[z2], triangleColours[triangle]);
+							vertexMovedZ[y2], vertexMovedZ[z2], this.triangleColours[triangle]);
 				}
 			}
 		}
@@ -1438,14 +1438,14 @@ public final class Model extends Animable {
 	}
 
 	public void mirror() {
-		for (int vertex = 0; vertex < vertexCount; vertex++) {
-            verticesZ[vertex] = -verticesZ[vertex];
+		for (int vertex = 0; vertex < this.vertexCount; vertex++) {
+            this.verticesZ[vertex] = -this.verticesZ[vertex];
         }
 
-		for (int triangle = 0; triangle < triangleCount; triangle++) {
-			int newTriangleC = triangleX[triangle];
-			triangleX[triangle] = triangleZ[triangle];
-			triangleZ[triangle] = newTriangleC;
+		for (int triangle = 0; triangle < this.triangleCount; triangle++) {
+			int newTriangleC = this.triangleX[triangle];
+            this.triangleX[triangle] = this.triangleZ[triangle];
+            this.triangleZ[triangle] = newTriangleC;
 		}
 	}
 
@@ -1454,7 +1454,7 @@ public final class Model extends Animable {
             return;
         }
 		if (framesFrom2 == null || frameId2 == -1) {
-			applyTransformation(frameId1);
+			this.applyTransformation(frameId1);
 			return;
 		}
 		Animation animationFrame1 = Animation.forFrameId(frameId1);
@@ -1463,7 +1463,7 @@ public final class Model extends Animable {
         }
 		Animation animationFrame2 = Animation.forFrameId(frameId2);
 		if (animationFrame2 == null) {
-			applyTransformation(frameId1);
+			this.applyTransformation(frameId1);
 			return;
 		}
 		Skins skins = animationFrame1.animationSkins;
@@ -1478,7 +1478,7 @@ public final class Model extends Animable {
                 ;
             }
 			if (skin != frameCount || skins.opcodes[skin] == 0) {
-                transformFrame(skins.opcodes[skin], skins.skinList[skin], animationFrame1.transformationX[frame],
+				this.transformFrame(skins.opcodes[skin], skins.skinList[skin], animationFrame1.transformationX[frame],
                         animationFrame1.transformationY[frame], animationFrame1.transformationZ[frame]);
             }
 		}
@@ -1494,7 +1494,7 @@ public final class Model extends Animable {
                 ;
             }
 			if (skin == frameCount || skins.opcodes[skin] == 0) {
-                transformFrame(skins.opcodes[skin], skins.skinList[skin], animationFrame2.transformationX[frame],
+				this.transformFrame(skins.opcodes[skin], skins.skinList[skin], animationFrame2.transformationX[frame],
                         animationFrame2.transformationY[frame], animationFrame2.transformationZ[frame]);
             }
 		}
@@ -1503,81 +1503,81 @@ public final class Model extends Animable {
 
 	public void normalise() {
 		super.modelHeight = 0;
-		maxY = 0;
-		for (int vertex = 0; vertex < vertexCount; vertex++) {
-			int y = verticesY[vertex];
+        this.maxY = 0;
+		for (int vertex = 0; vertex < this.vertexCount; vertex++) {
+			int y = this.verticesY[vertex];
 			if (-y > super.modelHeight) {
                 super.modelHeight = -y;
             }
-			if (y > maxY) {
-                maxY = y;
+			if (y > this.maxY) {
+                this.maxY = y;
             }
 		}
 
-		diagonal3DAboveOrigin = (int) (Math
-				.sqrt(diagonal2DAboveOrigin * diagonal2DAboveOrigin + super.modelHeight * super.modelHeight)
+        this.diagonal3DAboveOrigin = (int) (Math
+				.sqrt(this.diagonal2DAboveOrigin * this.diagonal2DAboveOrigin + super.modelHeight * super.modelHeight)
 				+ 0.98999999999999999D);
-		diagonal3D = diagonal3DAboveOrigin
-				+ (int) (Math.sqrt(diagonal2DAboveOrigin * diagonal2DAboveOrigin + maxY * maxY) + 0.98999999999999999D);
+        this.diagonal3D = this.diagonal3DAboveOrigin
+				+ (int) (Math.sqrt(this.diagonal2DAboveOrigin * this.diagonal2DAboveOrigin + this.maxY * this.maxY) + 0.98999999999999999D);
 	}
 
 	private void rasterise(int i) {
 		if (aBooleanArray1664[i]) {
-			method485(i);
+			this.method485(i);
 			return;
 		}
-		int x = triangleX[i];
-		int y = triangleY[i];
-		int z = triangleZ[i];
+		int x = this.triangleX[i];
+		int y = this.triangleY[i];
+		int z = this.triangleZ[i];
 		Rasterizer.restrictEdges = restrictEdges[i];
-		if (triangleAlpha == null) {
+		if (this.triangleAlpha == null) {
             Rasterizer.alpha = 0;
         } else {
-            Rasterizer.alpha = triangleAlpha[i];
+            Rasterizer.alpha = this.triangleAlpha[i];
         }
 		int drawType;
-		if (triangleDrawType == null) {
+		if (this.triangleDrawType == null) {
             drawType = 0;
         } else {
-            drawType = triangleDrawType[i] & 3;
+            drawType = this.triangleDrawType[i] & 3;
         }
 		if (drawType == 0) {
 			Rasterizer.drawShadedTriangle(vertexScreenY[x], vertexScreenY[y], vertexScreenY[z], vertexScreenX[x],
-					vertexScreenX[y], vertexScreenX[z], triangleHSLA[i], triangleHSLB[i], triangleHSLC[i]);
+					vertexScreenX[y], vertexScreenX[z], this.triangleHSLA[i], this.triangleHSLB[i], this.triangleHSLC[i]);
 			return;
 		}
 		if (drawType == 1) {
 			Rasterizer.drawFlatTriangle(vertexScreenY[x], vertexScreenY[y], vertexScreenY[z], vertexScreenX[x],
-					vertexScreenX[y], vertexScreenX[z], HSLtoRGB[triangleHSLA[i]]);
+					vertexScreenX[y], vertexScreenX[z], HSLtoRGB[this.triangleHSLA[i]]);
 			return;
 		}
 		if (drawType == 2) {
-			int triangle = triangleDrawType[i] >> 2;
-			int x2 = texturedTrianglePointsX[triangle];
-			int y2 = texturedTrianglePointsY[triangle];
-			int z2 = texturedTrianglePointsZ[triangle];
+			int triangle = this.triangleDrawType[i] >> 2;
+			int x2 = this.texturedTrianglePointsX[triangle];
+			int y2 = this.texturedTrianglePointsY[triangle];
+			int z2 = this.texturedTrianglePointsZ[triangle];
 			Rasterizer.drawTexturedTriangle(vertexScreenY[x], vertexScreenY[y], vertexScreenY[z], vertexScreenX[x],
-					vertexScreenX[y], vertexScreenX[z], triangleHSLA[i], triangleHSLB[i], triangleHSLC[i],
+					vertexScreenX[y], vertexScreenX[z], this.triangleHSLA[i], this.triangleHSLB[i], this.triangleHSLC[i],
 					vertexMovedX[x2], vertexMovedX[y2], vertexMovedX[z2], vertexMovedY[x2], vertexMovedY[y2],
-					vertexMovedY[z2], vertexMovedZ[x2], vertexMovedZ[y2], vertexMovedZ[z2], triangleColours[i]);
+					vertexMovedY[z2], vertexMovedZ[x2], vertexMovedZ[y2], vertexMovedZ[z2], this.triangleColours[i]);
 			return;
 		}
 		if (drawType == 3) {
-			int triangle = triangleDrawType[i] >> 2;
-			int x2 = texturedTrianglePointsX[triangle];
-			int y2 = texturedTrianglePointsY[triangle];
-			int z2 = texturedTrianglePointsZ[triangle];
+			int triangle = this.triangleDrawType[i] >> 2;
+			int x2 = this.texturedTrianglePointsX[triangle];
+			int y2 = this.texturedTrianglePointsY[triangle];
+			int z2 = this.texturedTrianglePointsZ[triangle];
 			Rasterizer.drawTexturedTriangle(vertexScreenY[x], vertexScreenY[y], vertexScreenY[z], vertexScreenX[x],
-					vertexScreenX[y], vertexScreenX[z], triangleHSLA[i], triangleHSLA[i], triangleHSLA[i],
+					vertexScreenX[y], vertexScreenX[z], this.triangleHSLA[i], this.triangleHSLA[i], this.triangleHSLA[i],
 					vertexMovedX[x2], vertexMovedX[y2], vertexMovedX[z2], vertexMovedY[x2], vertexMovedY[y2],
-					vertexMovedY[z2], vertexMovedZ[x2], vertexMovedZ[y2], vertexMovedZ[z2], triangleColours[i]);
+					vertexMovedY[z2], vertexMovedZ[x2], vertexMovedZ[y2], vertexMovedZ[z2], this.triangleColours[i]);
 		}
 	}
 
 	public void recolour(int targetColour, int replacementColour) {
-		for (int triangle = 0; triangle < triangleCount; triangle++) {
-            if (triangleColours[triangle] == targetColour) {
-                triangleColours[triangle] = replacementColour;
+		for (int triangle = 0; triangle < this.triangleCount; triangle++) {
+            if (this.triangleColours[triangle] == targetColour) {
+                this.triangleColours[triangle] = replacementColour;
             }
         }
 
@@ -1588,22 +1588,22 @@ public final class Model extends Animable {
 			int y, int z, int i2) {
 		int j2 = z * xCameraCosine - x * xCameraSine >> 16;
 		int k2 = y * yCameraSine + j2 * yCameraCosine >> 16;
-		int l2 = diagonal2DAboveOrigin * yCameraCosine >> 16;
+		int l2 = this.diagonal2DAboveOrigin * yCameraCosine >> 16;
 		int i3 = k2 + l2;
 		if (i3 <= 50 || k2 >= 3500) {
             return;
         }
 		int j3 = z * xCameraSine + x * xCameraCosine >> 16;
-		int k3 = j3 - diagonal2DAboveOrigin << 9;
+		int k3 = j3 - this.diagonal2DAboveOrigin << 9;
 		if (k3 / i3 >= DrawingArea.viewportCentreX) {
             return;
         }
-		int l3 = j3 + diagonal2DAboveOrigin << 9;
+		int l3 = j3 + this.diagonal2DAboveOrigin << 9;
 		if (l3 / i3 <= -DrawingArea.viewportCentreX) {
             return;
         }
 		int i4 = y * yCameraCosine - j2 * yCameraSine >> 16;
-		int j4 = diagonal2DAboveOrigin * yCameraSine >> 16;
+		int j4 = this.diagonal2DAboveOrigin * yCameraSine >> 16;
 		int k4 = i4 + j4 << 9;
 		if (k4 / i3 <= -DrawingArea.viewportCentreY) {
             return;
@@ -1641,7 +1641,7 @@ public final class Model extends Animable {
 			int i6 = cursorX - Rasterizer.centreX;
 			int k6 = cursorY - Rasterizer.centreY;
 			if (i6 > k3 && i6 < l3 && k6 > i5 && k6 < k4) {
-                if (singleTile) {
+                if (this.singleTile) {
                     resourceId[resourceCount++] = i2;
                 } else {
                     flag1 = true;
@@ -1656,10 +1656,10 @@ public final class Model extends Animable {
 			sine = SINE[i];
 			cosine = COSINE[i];
 		}
-		for (int vertex = 0; vertex < vertexCount; vertex++) {
-			int x2 = verticesX[vertex];
-			int y2 = verticesY[vertex];
-			int z2 = verticesZ[vertex];
+		for (int vertex = 0; vertex < this.vertexCount; vertex++) {
+			int x2 = this.verticesX[vertex];
+			int y2 = this.verticesY[vertex];
+			int z2 = this.verticesZ[vertex];
 			if (i != 0) {
 				int newX2 = z2 * sine + x2 * cosine >> 16;
 				z2 = z2 * cosine - x2 * sine >> 16;
@@ -1683,7 +1683,7 @@ public final class Model extends Animable {
 				vertexScreenX[vertex] = -5000;
 				flag = true;
 			}
-			if (flag || texturedTriangleCount > 0) {
+			if (flag || this.texturedTriangleCount > 0) {
 				vertexMovedX[vertex] = x2;
 				vertexMovedY[vertex] = y2;
 				vertexMovedZ[vertex] = z2;
@@ -1691,7 +1691,7 @@ public final class Model extends Animable {
 		}
 
 		try {
-			method483(flag, flag1, i2);
+			this.method483(flag, flag1, i2);
 		} catch (Exception _ex) {
 		}
 	}
@@ -1710,10 +1710,10 @@ public final class Model extends Animable {
 		int sineXW = SINE[rotationXW];
 		int cosineXW = COSINE[rotationXW];
 		int transformation = translationY * sineXW + translationZ * cosineXW >> 16;
-		for (int vertex = 0; vertex < vertexCount; vertex++) {
-			int x = verticesX[vertex];
-			int y = verticesY[vertex];
-			int z = verticesZ[vertex];
+		for (int vertex = 0; vertex < this.vertexCount; vertex++) {
+			int x = this.verticesX[vertex];
+			int y = this.verticesY[vertex];
+			int z = this.verticesZ[vertex];
 			if (rotationZ != 0) {
 				int newX = y * sineZ + x * cosineZ >> 16;
 				y = y * cosineZ - x * sineZ >> 16;
@@ -1738,7 +1738,7 @@ public final class Model extends Animable {
 			vertexScreenZ[vertex] = z - transformation;
 			vertexScreenX[vertex] = centerX + (x << 9) / z;
 			vertexScreenY[vertex] = centerY + (y << 9) / z;
-			if (texturedTriangleCount > 0) {
+			if (this.texturedTriangleCount > 0) {
 				vertexMovedX[vertex] = x;
 				vertexMovedY[vertex] = y;
 				vertexMovedZ[vertex] = z;
@@ -1746,86 +1746,86 @@ public final class Model extends Animable {
 		}
 
 		try {
-			method483(false, false, 0);
+			this.method483(false, false, 0);
 		} catch (Exception _ex) {
 		}
 	}
 
 	public void replaceWithModel(Model model, boolean replaceAlpha) {
-		vertexCount = model.vertexCount;
-		triangleCount = model.triangleCount;
-		texturedTriangleCount = model.texturedTriangleCount;
-		if (anIntArray1622.length < vertexCount) {
-			anIntArray1622 = new int[vertexCount + 100];
-			anIntArray1623 = new int[vertexCount + 100];
-			anIntArray1624 = new int[vertexCount + 100];
+        this.vertexCount = model.vertexCount;
+        this.triangleCount = model.triangleCount;
+        this.texturedTriangleCount = model.texturedTriangleCount;
+		if (anIntArray1622.length < this.vertexCount) {
+			anIntArray1622 = new int[this.vertexCount + 100];
+			anIntArray1623 = new int[this.vertexCount + 100];
+			anIntArray1624 = new int[this.vertexCount + 100];
 		}
-		verticesX = anIntArray1622;
-		verticesY = anIntArray1623;
-		verticesZ = anIntArray1624;
-		for (int vertex = 0; vertex < vertexCount; vertex++) {
-			verticesX[vertex] = model.verticesX[vertex];
-			verticesY[vertex] = model.verticesY[vertex];
-			verticesZ[vertex] = model.verticesZ[vertex];
+        this.verticesX = anIntArray1622;
+        this.verticesY = anIntArray1623;
+        this.verticesZ = anIntArray1624;
+		for (int vertex = 0; vertex < this.vertexCount; vertex++) {
+            this.verticesX[vertex] = model.verticesX[vertex];
+            this.verticesY[vertex] = model.verticesY[vertex];
+            this.verticesZ[vertex] = model.verticesZ[vertex];
 		}
 
 		if (replaceAlpha) {
-			triangleAlpha = model.triangleAlpha;
+            this.triangleAlpha = model.triangleAlpha;
 		} else {
-			if (anIntArray1625.length < triangleCount) {
-                anIntArray1625 = new int[triangleCount + 100];
+			if (anIntArray1625.length < this.triangleCount) {
+                anIntArray1625 = new int[this.triangleCount + 100];
             }
-			triangleAlpha = anIntArray1625;
+            this.triangleAlpha = anIntArray1625;
 			if (model.triangleAlpha == null) {
-				for (int triangle = 0; triangle < triangleCount; triangle++) {
-                    triangleAlpha[triangle] = 0;
+				for (int triangle = 0; triangle < this.triangleCount; triangle++) {
+                    this.triangleAlpha[triangle] = 0;
                 }
 
 			} else {
-				System.arraycopy(model.triangleAlpha, 0, triangleAlpha, 0, triangleCount);
+				System.arraycopy(model.triangleAlpha, 0, this.triangleAlpha, 0, this.triangleCount);
 
 			}
 		}
-		triangleDrawType = model.triangleDrawType;
-		triangleColours = model.triangleColours;
-		trianglePriorities = model.trianglePriorities;
-		trianglePriority = model.trianglePriority;
-		triangleSkin = model.triangleSkin;
-		vertexSkin = model.vertexSkin;
-		triangleX = model.triangleX;
-		triangleY = model.triangleY;
-		triangleZ = model.triangleZ;
-		triangleHSLA = model.triangleHSLA;
-		triangleHSLB = model.triangleHSLB;
-		triangleHSLC = model.triangleHSLC;
-		texturedTrianglePointsX = model.texturedTrianglePointsX;
-		texturedTrianglePointsY = model.texturedTrianglePointsY;
-		texturedTrianglePointsZ = model.texturedTrianglePointsZ;
+        this.triangleDrawType = model.triangleDrawType;
+        this.triangleColours = model.triangleColours;
+        this.trianglePriorities = model.trianglePriorities;
+        this.trianglePriority = model.trianglePriority;
+        this.triangleSkin = model.triangleSkin;
+        this.vertexSkin = model.vertexSkin;
+        this.triangleX = model.triangleX;
+        this.triangleY = model.triangleY;
+        this.triangleZ = model.triangleZ;
+        this.triangleHSLA = model.triangleHSLA;
+        this.triangleHSLB = model.triangleHSLB;
+        this.triangleHSLC = model.triangleHSLC;
+        this.texturedTrianglePointsX = model.texturedTrianglePointsX;
+        this.texturedTrianglePointsY = model.texturedTrianglePointsY;
+        this.texturedTrianglePointsZ = model.texturedTrianglePointsZ;
 	}
 
 	public void rotate90Degrees() {
-		for (int vertex = 0; vertex < vertexCount; vertex++) {
-			int vertexX = verticesX[vertex];
-			verticesX[vertex] = verticesZ[vertex];
-			verticesZ[vertex] = -vertexX;
+		for (int vertex = 0; vertex < this.vertexCount; vertex++) {
+			int vertexX = this.verticesX[vertex];
+            this.verticesX[vertex] = this.verticesZ[vertex];
+            this.verticesZ[vertex] = -vertexX;
 		}
 	}
 
 	public void rotateX(int degrees) {
 		int sine = SINE[degrees];
 		int cosine = COSINE[degrees];
-		for (int vertex = 0; vertex < vertexCount; vertex++) {
-			int newVertexY = verticesY[vertex] * cosine - verticesZ[vertex] * sine >> 16;
-			verticesZ[vertex] = verticesY[vertex] * sine + verticesZ[vertex] * cosine >> 16;
-			verticesY[vertex] = newVertexY;
+		for (int vertex = 0; vertex < this.vertexCount; vertex++) {
+			int newVertexY = this.verticesY[vertex] * cosine - this.verticesZ[vertex] * sine >> 16;
+            this.verticesZ[vertex] = this.verticesY[vertex] * sine + this.verticesZ[vertex] * cosine >> 16;
+            this.verticesY[vertex] = newVertexY;
 		}
 	}
 
 	public void scaleT(int x, int z, int y) {
-		for (int vertex = 0; vertex < vertexCount; vertex++) {
-			verticesX[vertex] = (verticesX[vertex] * x) / 128;
-			verticesY[vertex] = (verticesY[vertex] * y) / 128;
-			verticesZ[vertex] = (verticesZ[vertex] * z) / 128;
+		for (int vertex = 0; vertex < this.vertexCount; vertex++) {
+            this.verticesX[vertex] = (this.verticesX[vertex] * x) / 128;
+            this.verticesY[vertex] = (this.verticesY[vertex] * y) / 128;
+            this.verticesZ[vertex] = (this.verticesZ[vertex] * z) / 128;
 		}
 
 	}
@@ -1840,13 +1840,13 @@ public final class Model extends Animable {
 			vertexModifierZ = 0;
 			for (int skinListId = 0; skinListId < skinListCount; skinListId++) {
 				int skinId = skinList[skinListId];
-				if (skinId < vertexSkin.length) {
-					int vertexSkins[] = vertexSkin[skinId];
+				if (skinId < this.vertexSkin.length) {
+					int vertexSkins[] = this.vertexSkin[skinId];
 					for (int skin = 0; skin < vertexSkins.length; skin++) {
 						int vertex = vertexSkins[skin];
-						vertexModifierX += verticesX[vertex];
-						vertexModifierY += verticesY[vertex];
-						vertexModifierZ += verticesZ[vertex];
+						vertexModifierX += this.verticesX[vertex];
+						vertexModifierY += this.verticesY[vertex];
+						vertexModifierZ += this.verticesZ[vertex];
 						affectedSkins++;
 					}
 
@@ -1868,13 +1868,13 @@ public final class Model extends Animable {
 		if (opcode == 1) {
 			for (int skinListId = 0; skinListId < skinListCount; skinListId++) {
 				int skinId = skinList[skinListId];
-				if (skinId < vertexSkin.length) {
-					int vertexSkins[] = vertexSkin[skinId];
+				if (skinId < this.vertexSkin.length) {
+					int vertexSkins[] = this.vertexSkin[skinId];
 					for (int skin = 0; skin < vertexSkins.length; skin++) {
 						int vertex = vertexSkins[skin];
-						verticesX[vertex] += vertexTransformationX;
-						verticesY[vertex] += vertexTransformationY;
-						verticesZ[vertex] += vertexTransformationZ;
+                        this.verticesX[vertex] += vertexTransformationX;
+                        this.verticesY[vertex] += vertexTransformationY;
+                        this.verticesZ[vertex] += vertexTransformationZ;
 					}
 
 				}
@@ -1885,40 +1885,40 @@ public final class Model extends Animable {
 		if (opcode == 2) {
 			for (int skinListId = 0; skinListId < skinListCount; skinListId++) {
 				int skinId = skinList[skinListId];
-				if (skinId < vertexSkin.length) {
-					int vertexSkins[] = vertexSkin[skinId];
+				if (skinId < this.vertexSkin.length) {
+					int vertexSkins[] = this.vertexSkin[skinId];
 					for (int skin = 0; skin < vertexSkins.length; skin++) {
 						int vertex = vertexSkins[skin];
-						verticesX[vertex] -= vertexModifierX;
-						verticesY[vertex] -= vertexModifierY;
-						verticesZ[vertex] -= vertexModifierZ;
+                        this.verticesX[vertex] -= vertexModifierX;
+                        this.verticesY[vertex] -= vertexModifierY;
+                        this.verticesZ[vertex] -= vertexModifierZ;
 						int rotationX = (vertexTransformationX & 0xff) * 8;
 						int rotationY = (vertexTransformationY & 0xff) * 8;
 						int rotationZ = (vertexTransformationZ & 0xff) * 8;
 						if (rotationZ != 0) {
 							int sine = SINE[rotationZ];
 							int cosine = COSINE[rotationZ];
-							int newVertexX = verticesY[vertex] * sine + verticesX[vertex] * cosine >> 16;
-							verticesY[vertex] = verticesY[vertex] * cosine - verticesX[vertex] * sine >> 16;
-							verticesX[vertex] = newVertexX;
+							int newVertexX = this.verticesY[vertex] * sine + this.verticesX[vertex] * cosine >> 16;
+                            this.verticesY[vertex] = this.verticesY[vertex] * cosine - this.verticesX[vertex] * sine >> 16;
+                            this.verticesX[vertex] = newVertexX;
 						}
 						if (rotationX != 0) {
 							int sine = SINE[rotationX];
 							int cosine = COSINE[rotationX];
-							int newVertexY = verticesY[vertex] * cosine - verticesZ[vertex] * sine >> 16;
-							verticesZ[vertex] = verticesY[vertex] * sine + verticesZ[vertex] * cosine >> 16;
-							verticesY[vertex] = newVertexY;
+							int newVertexY = this.verticesY[vertex] * cosine - this.verticesZ[vertex] * sine >> 16;
+                            this.verticesZ[vertex] = this.verticesY[vertex] * sine + this.verticesZ[vertex] * cosine >> 16;
+                            this.verticesY[vertex] = newVertexY;
 						}
 						if (rotationY != 0) {
 							int sine = SINE[rotationY];
 							int cosine = COSINE[rotationY];
-							int newVertexZ = verticesZ[vertex] * sine + verticesX[vertex] * cosine >> 16;
-							verticesZ[vertex] = verticesZ[vertex] * cosine - verticesX[vertex] * sine >> 16;
-							verticesX[vertex] = newVertexZ;
+							int newVertexZ = this.verticesZ[vertex] * sine + this.verticesX[vertex] * cosine >> 16;
+                            this.verticesZ[vertex] = this.verticesZ[vertex] * cosine - this.verticesX[vertex] * sine >> 16;
+                            this.verticesX[vertex] = newVertexZ;
 						}
-						verticesX[vertex] += vertexModifierX;
-						verticesY[vertex] += vertexModifierY;
-						verticesZ[vertex] += vertexModifierZ;
+                        this.verticesX[vertex] += vertexModifierX;
+                        this.verticesY[vertex] += vertexModifierY;
+                        this.verticesZ[vertex] += vertexModifierZ;
 					}
 
 				}
@@ -1929,19 +1929,19 @@ public final class Model extends Animable {
 		if (opcode == 3) {
 			for (int skinListId = 0; skinListId < skinListCount; skinListId++) {
 				int skinId = skinList[skinListId];
-				if (skinId < vertexSkin.length) {
-					int vertexSkins[] = vertexSkin[skinId];
+				if (skinId < this.vertexSkin.length) {
+					int vertexSkins[] = this.vertexSkin[skinId];
 					for (int skin = 0; skin < vertexSkins.length; skin++) {
 						int vertex = vertexSkins[skin];
-						verticesX[vertex] -= vertexModifierX;
-						verticesY[vertex] -= vertexModifierY;
-						verticesZ[vertex] -= vertexModifierZ;
-						verticesX[vertex] = (verticesX[vertex] * vertexTransformationX) / 128;
-						verticesY[vertex] = (verticesY[vertex] * vertexTransformationY) / 128;
-						verticesZ[vertex] = (verticesZ[vertex] * vertexTransformationZ) / 128;
-						verticesX[vertex] += vertexModifierX;
-						verticesY[vertex] += vertexModifierY;
-						verticesZ[vertex] += vertexModifierZ;
+                        this.verticesX[vertex] -= vertexModifierX;
+                        this.verticesY[vertex] -= vertexModifierY;
+                        this.verticesZ[vertex] -= vertexModifierZ;
+                        this.verticesX[vertex] = (this.verticesX[vertex] * vertexTransformationX) / 128;
+                        this.verticesY[vertex] = (this.verticesY[vertex] * vertexTransformationY) / 128;
+                        this.verticesZ[vertex] = (this.verticesZ[vertex] * vertexTransformationZ) / 128;
+                        this.verticesX[vertex] += vertexModifierX;
+                        this.verticesY[vertex] += vertexModifierY;
+                        this.verticesZ[vertex] += vertexModifierZ;
 					}
 
 				}
@@ -1949,19 +1949,19 @@ public final class Model extends Animable {
 
 			return;
 		}
-		if (opcode == 5 && triangleSkin != null && triangleAlpha != null) {
+		if (opcode == 5 && this.triangleSkin != null && this.triangleAlpha != null) {
 			for (int skinListId = 0; skinListId < skinListCount; skinListId++) {
 				int skinId = skinList[skinListId];
-				if (skinId < triangleSkin.length) {
-					int triangleSkins[] = triangleSkin[skinId];
+				if (skinId < this.triangleSkin.length) {
+					int triangleSkins[] = this.triangleSkin[skinId];
 					for (int skin = 0; skin < triangleSkins.length; skin++) {
 						int triangle = triangleSkins[skin];
-						triangleAlpha[triangle] += vertexTransformationX * 8;
-						if (triangleAlpha[triangle] < 0) {
-                            triangleAlpha[triangle] = 0;
+                        this.triangleAlpha[triangle] += vertexTransformationX * 8;
+						if (this.triangleAlpha[triangle] < 0) {
+                            this.triangleAlpha[triangle] = 0;
                         }
-						if (triangleAlpha[triangle] > 255) {
-                            triangleAlpha[triangle] = 255;
+						if (this.triangleAlpha[triangle] > 255) {
+                            this.triangleAlpha[triangle] = 255;
                         }
 					}
 
@@ -1972,10 +1972,10 @@ public final class Model extends Animable {
 	}
 
 	public void translate(int x, int y, int z) {
-		for (int vertex = 0; vertex < vertexCount; vertex++) {
-			verticesX[vertex] += x;
-			verticesY[vertex] += y;
-			verticesZ[vertex] += z;
+		for (int vertex = 0; vertex < this.vertexCount; vertex++) {
+            this.verticesX[vertex] += x;
+            this.verticesY[vertex] += y;
+            this.verticesZ[vertex] += z;
 		}
 
 	}

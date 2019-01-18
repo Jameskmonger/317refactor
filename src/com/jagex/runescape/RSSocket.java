@@ -25,75 +25,75 @@ final class RSSocket implements Runnable {
 	private boolean hasIOError;
 
 	public RSSocket(RSApplet RSApplet_, Socket socket1) throws IOException {
-		closed = false;
-		isWriter = false;
-		hasIOError = false;
-		rsApplet = RSApplet_;
-		socket = socket1;
-		socket.setSoTimeout(30000);
-		socket.setTcpNoDelay(true);
-		inputStream = socket.getInputStream();
-		outputStream = socket.getOutputStream();
+        this.closed = false;
+        this.isWriter = false;
+        this.hasIOError = false;
+        this.rsApplet = RSApplet_;
+        this.socket = socket1;
+        this.socket.setSoTimeout(30000);
+        this.socket.setTcpNoDelay(true);
+        this.inputStream = this.socket.getInputStream();
+        this.outputStream = this.socket.getOutputStream();
 	}
 
 	public int available() throws IOException {
-		if (closed) {
+		if (this.closed) {
             return 0;
         } else {
-            return inputStream.available();
+            return this.inputStream.available();
         }
 	}
 
 	public void close() {
-		closed = true;
+        this.closed = true;
 		try {
-			if (inputStream != null) {
-                inputStream.close();
+			if (this.inputStream != null) {
+                this.inputStream.close();
             }
-			if (outputStream != null) {
-                outputStream.close();
+			if (this.outputStream != null) {
+                this.outputStream.close();
             }
-			if (socket != null) {
-                socket.close();
+			if (this.socket != null) {
+                this.socket.close();
             }
 		} catch (IOException _ex) {
 			System.out.println("Error closing stream");
 		}
-		isWriter = false;
+        this.isWriter = false;
 		synchronized (this) {
-			notify();
+			this.notify();
 		}
-		buffer = null;
+        this.buffer = null;
 	}
 
 	public void printDebug() {
-		System.out.println("dummy:" + closed);
-		System.out.println("tcycl:" + writeIndex);
-		System.out.println("tnum:" + buffIndex);
-		System.out.println("writer:" + isWriter);
-		System.out.println("ioerror:" + hasIOError);
+		System.out.println("dummy:" + this.closed);
+		System.out.println("tcycl:" + this.writeIndex);
+		System.out.println("tnum:" + this.buffIndex);
+		System.out.println("writer:" + this.isWriter);
+		System.out.println("ioerror:" + this.hasIOError);
 		try {
-			System.out.println("available:" + available());
+			System.out.println("available:" + this.available());
 		} catch (IOException _ex) {
 		}
 	}
 
 	public int read() throws IOException {
-		if (closed) {
+		if (this.closed) {
             return 0;
         } else {
-            return inputStream.read();
+            return this.inputStream.read();
         }
 	}
 
 	public void read(byte abyte0[], int j) throws IOException {
 		int i = 0;// was parameter
-		if (closed) {
+		if (this.closed) {
             return;
         }
 		int k;
 		for (; j > 0; j -= k) {
-			k = inputStream.read(abyte0, i, j);
+			k = this.inputStream.read(abyte0, i, j);
 			if (k <= 0) {
                 throw new IOException("EOF");
             }
@@ -104,69 +104,69 @@ final class RSSocket implements Runnable {
 
 	@Override
 	public void run() {
-		while (isWriter) {
+		while (this.isWriter) {
 			int i;
 			int j;
 			synchronized (this) {
-				if (buffIndex == writeIndex) {
+				if (this.buffIndex == this.writeIndex) {
                     try {
-                        wait();
+						this.wait();
                     } catch (InterruptedException _ex) {
                     }
                 }
-				if (!isWriter) {
+				if (!this.isWriter) {
                     return;
                 }
-				j = writeIndex;
-				if (buffIndex >= writeIndex) {
-                    i = buffIndex - writeIndex;
+				j = this.writeIndex;
+				if (this.buffIndex >= this.writeIndex) {
+                    i = this.buffIndex - this.writeIndex;
                 } else {
-                    i = 5000 - writeIndex;
+                    i = 5000 - this.writeIndex;
                 }
 			}
 			if (i > 0) {
 				try {
-					outputStream.write(buffer, j, i);
+                    this.outputStream.write(this.buffer, j, i);
 				} catch (IOException _ex) {
-					hasIOError = true;
+                    this.hasIOError = true;
 				}
-				writeIndex = (writeIndex + i) % 5000;
+                this.writeIndex = (this.writeIndex + i) % 5000;
 				try {
-					if (buffIndex == writeIndex) {
-                        outputStream.flush();
+					if (this.buffIndex == this.writeIndex) {
+                        this.outputStream.flush();
                     }
 				} catch (IOException _ex) {
-					hasIOError = true;
+                    this.hasIOError = true;
 				}
 			}
 		}
 	}
 
 	public void write(int i, byte abyte0[]) throws IOException {
-		if (closed) {
+		if (this.closed) {
             return;
         }
-		if (hasIOError) {
-			hasIOError = false;
+		if (this.hasIOError) {
+            this.hasIOError = false;
 			throw new IOException("Error in writer thread");
 		}
-		if (buffer == null) {
-            buffer = new byte[5000];
+		if (this.buffer == null) {
+            this.buffer = new byte[5000];
         }
 		synchronized (this) {
 			for (int l = 0; l < i; l++) {
-				buffer[buffIndex] = abyte0[l];
-				buffIndex = (buffIndex + 1) % 5000;
-				if (buffIndex == (writeIndex + 4900) % 5000) {
+                this.buffer[this.buffIndex] = abyte0[l];
+                this.buffIndex = (this.buffIndex + 1) % 5000;
+				if (this.buffIndex == (this.writeIndex + 4900) % 5000) {
                     throw new IOException("buffer overflow");
                 }
 			}
 
-			if (!isWriter) {
-				isWriter = true;
-				rsApplet.startRunnable(this, 3);
+			if (!this.isWriter) {
+                this.isWriter = true;
+                this.rsApplet.startRunnable(this, 3);
 			}
-			notify();
+			this.notify();
 		}
 	}
 }

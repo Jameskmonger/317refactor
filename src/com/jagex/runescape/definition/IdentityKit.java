@@ -36,19 +36,19 @@ public final class IdentityKit {
 	public boolean widgetDisplayed;
 
 	private IdentityKit() {
-		partId = -1;
-		originalModelColours = new int[6];
-		modifiedModelColours = new int[6];
-		widgetDisplayed = false;
+        this.partId = -1;
+        this.originalModelColours = new int[6];
+        this.modifiedModelColours = new int[6];
+        this.widgetDisplayed = false;
 	}
 
 	public boolean bodyModelCached() {
-		if (modelIds == null) {
+		if (this.modelIds == null) {
             return true;
         }
 		boolean cached = true;
-		for (int m = 0; m < modelIds.length; m++) {
-            if (!Model.isCached(modelIds[m])) {
+		for (int m = 0; m < this.modelIds.length; m++) {
+            if (!Model.isCached(this.modelIds[m])) {
                 cached = false;
             }
         }
@@ -57,12 +57,12 @@ public final class IdentityKit {
 	}
 
 	public Model getBodyModel() {
-		if (modelIds == null) {
+		if (this.modelIds == null) {
             return null;
         }
-		Model models[] = new Model[modelIds.length];
-		for (int m = 0; m < modelIds.length; m++) {
-            models[m] = Model.getModel(modelIds[m]);
+		Model models[] = new Model[this.modelIds.length];
+		for (int m = 0; m < this.modelIds.length; m++) {
+            models[m] = Model.getModel(this.modelIds[m]);
         }
 
 		Model model;
@@ -72,10 +72,10 @@ public final class IdentityKit {
             model = new Model(models.length, models);
         }
 		for (int colour = 0; colour < 6; colour++) {
-			if (originalModelColours[colour] == 0) {
+			if (this.originalModelColours[colour] == 0) {
                 break;
             }
-			model.recolour(originalModelColours[colour], modifiedModelColours[colour]);
+			model.recolour(this.originalModelColours[colour], this.modifiedModelColours[colour]);
 		}
 
 		return model;
@@ -85,17 +85,17 @@ public final class IdentityKit {
 		Model models[] = new Model[5];
 		int modelCount = 0;
 		for (int m = 0; m < 5; m++) {
-            if (headModelIds[m] != -1) {
-                models[modelCount++] = Model.getModel(headModelIds[m]);
+            if (this.headModelIds[m] != -1) {
+                models[modelCount++] = Model.getModel(this.headModelIds[m]);
             }
         }
 
 		Model model = new Model(modelCount, models);
 		for (int colour = 0; colour < 6; colour++) {
-			if (originalModelColours[colour] == 0) {
+			if (this.originalModelColours[colour] == 0) {
                 break;
             }
-			model.recolour(originalModelColours[colour], modifiedModelColours[colour]);
+			model.recolour(this.originalModelColours[colour], this.modifiedModelColours[colour]);
 		}
 
 		return model;
@@ -104,7 +104,7 @@ public final class IdentityKit {
 	public boolean headModelCached() {
 		boolean cached = true;
 		for (int m = 0; m < 5; m++) {
-            if (headModelIds[m] != -1 && !Model.isCached(headModelIds[m])) {
+            if (this.headModelIds[m] != -1 && !Model.isCached(this.headModelIds[m])) {
                 cached = false;
             }
         }
@@ -119,22 +119,22 @@ public final class IdentityKit {
                 return;
             }
 			if (opcode == 1) {
-                partId = stream.getUnsignedByte();
+                this.partId = stream.getUnsignedByte();
             } else if (opcode == 2) {
 				int modelCount = stream.getUnsignedByte();
-				modelIds = new int[modelCount];
+                this.modelIds = new int[modelCount];
 				for (int m = 0; m < modelCount; m++) {
-					modelIds[m] = stream.getUnsignedLEShort();
+                    this.modelIds[m] = stream.getUnsignedLEShort();
 				}
 
 			} else if (opcode == 3) {
-                widgetDisplayed = true;
+                this.widgetDisplayed = true;
             } else if (opcode >= 40 && opcode < 50) {
-                originalModelColours[opcode - 40] = stream.getUnsignedLEShort();
+                this.originalModelColours[opcode - 40] = stream.getUnsignedLEShort();
             } else if (opcode >= 50 && opcode < 60) {
-                modifiedModelColours[opcode - 50] = stream.getUnsignedLEShort();
+                this.modifiedModelColours[opcode - 50] = stream.getUnsignedLEShort();
             } else if (opcode >= 60 && opcode < 70) {
-                headModelIds[opcode - 60] = stream.getUnsignedLEShort();
+                this.headModelIds[opcode - 60] = stream.getUnsignedLEShort();
             } else {
                 System.out.println("Error unrecognised config code: " + opcode);
             }

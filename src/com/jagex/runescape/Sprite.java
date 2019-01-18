@@ -23,8 +23,8 @@ public final class Sprite extends DrawingArea {
 		Buffer dataStream = new Buffer(streamLoader.decompressFile(target + ".dat"));
 		Buffer indexStream = new Buffer(streamLoader.decompressFile("index.dat"));
 		indexStream.position = dataStream.getUnsignedLEShort();
-		maxWidth = indexStream.getUnsignedLEShort();
-		maxHeight = indexStream.getUnsignedLEShort();
+        this.maxWidth = indexStream.getUnsignedLEShort();
+        this.maxHeight = indexStream.getUnsignedLEShort();
 		int length = indexStream.getUnsignedByte();
 		int pixels[] = new int[length];
 		for (int p = 0; p < length - 1; p++) {
@@ -40,12 +40,12 @@ public final class Sprite extends DrawingArea {
 			indexStream.position++;
 		}
 
-		offsetX = indexStream.getUnsignedByte();
-		offsetY = indexStream.getUnsignedByte();
-		width = indexStream.getUnsignedLEShort();
-		height = indexStream.getUnsignedLEShort();
+        this.offsetX = indexStream.getUnsignedByte();
+        this.offsetY = indexStream.getUnsignedByte();
+        this.width = indexStream.getUnsignedLEShort();
+        this.height = indexStream.getUnsignedLEShort();
 		int type = indexStream.getUnsignedByte();
-		int pixelCount = width * height;
+		int pixelCount = this.width * this.height;
 		this.pixels = new int[pixelCount];
 		if (type == 0) {
 			for (int p = 0; p < pixelCount; p++) {
@@ -55,9 +55,9 @@ public final class Sprite extends DrawingArea {
 			return;
 		}
 		if (type == 1) {
-			for (int x = 0; x < width; x++) {
-				for (int y = 0; y < height; y++) {
-                    this.pixels[x + y * width] = pixels[dataStream.getUnsignedByte()];
+			for (int x = 0; x < this.width; x++) {
+				for (int y = 0; y < this.height; y++) {
+                    this.pixels[x + y * this.width] = pixels[dataStream.getUnsignedByte()];
                 }
 
 			}
@@ -73,14 +73,14 @@ public final class Sprite extends DrawingArea {
 			MediaTracker mediatracker = new MediaTracker(component);
 			mediatracker.addImage(image, 0);
 			mediatracker.waitForAll();
-			width = image.getWidth(component);
-			height = image.getHeight(component);
-			maxWidth = width;
-			maxHeight = height;
-			offsetX = 0;
-			offsetY = 0;
-			pixels = new int[width * height];
-			PixelGrabber pixelgrabber = new PixelGrabber(image, 0, 0, width, height, pixels, 0, width);
+            this.width = image.getWidth(component);
+            this.height = image.getHeight(component);
+            this.maxWidth = this.width;
+            this.maxHeight = this.height;
+            this.offsetX = 0;
+            this.offsetY = 0;
+            this.pixels = new int[this.width * this.height];
+			PixelGrabber pixelgrabber = new PixelGrabber(image, 0, 0, this.width, this.height, this.pixels, 0, this.width);
 			pixelgrabber.grabPixels();
 		} catch (Exception _ex) {
 			System.out.println("Error converting jpg");
@@ -88,15 +88,15 @@ public final class Sprite extends DrawingArea {
 	}
 
 	public Sprite(int i, int j) {
-		pixels = new int[i * j];
-		width = maxWidth = i;
-		height = maxHeight = j;
-		offsetX = offsetY = 0;
+        this.pixels = new int[i * j];
+        this.width = this.maxWidth = i;
+        this.height = this.maxHeight = j;
+        this.offsetX = this.offsetY = 0;
 	}
 
 	public void adjustRGB(int adjustmentR, int adjustmentG, int adjustmentB) {
-		for (int pixel = 0; pixel < pixels.length; pixel++) {
-			int originalColour = pixels[pixel];
+		for (int pixel = 0; pixel < this.pixels.length; pixel++) {
+			int originalColour = this.pixels[pixel];
 			if (originalColour != 0) {
 				int red = originalColour >> 16 & 0xff;
 				red += adjustmentR;
@@ -119,7 +119,7 @@ public final class Sprite extends DrawingArea {
                 } else if (blue > 255) {
                     blue = 255;
                 }
-				pixels[pixel] = (red << 16) + (green << 8) + blue;
+                this.pixels[pixel] = (red << 16) + (green << 8) + blue;
 			}
 		}
 
@@ -218,12 +218,12 @@ public final class Sprite extends DrawingArea {
 	}
 
 	public void drawImage(int x, int y) {
-		x += offsetX;
-		y += offsetY;
+		x += this.offsetX;
+		y += this.offsetY;
 		int destinationOffset = x + y * DrawingArea.width;
 		int sourceOffset = 0;
-		int rowCount = height;
-		int columnCount = width;
+		int rowCount = this.height;
+		int columnCount = this.width;
 		int lineDestinationOffset = DrawingArea.width - columnCount;
 		int lineSourceOffset = 0;
 		if (y < DrawingArea.topY) {
@@ -252,19 +252,19 @@ public final class Sprite extends DrawingArea {
 			lineDestinationOffset += clipWidth;
 		}
 		if (!(columnCount <= 0 || rowCount <= 0)) {
-			blockCopyTransparent(DrawingArea.pixels, pixels, sourceOffset, destinationOffset, columnCount, rowCount,
+			this.blockCopyTransparent(DrawingArea.pixels, this.pixels, sourceOffset, destinationOffset, columnCount, rowCount,
 					lineDestinationOffset, lineSourceOffset);
 		}
 	}
 
 	public void drawImageAlpha(int i, int j) {
 		int k = 128;// was parameter
-		i += offsetX;
-		j += offsetY;
+		i += this.offsetX;
+		j += this.offsetY;
 		int i1 = i + j * DrawingArea.width;
 		int j1 = 0;
-		int k1 = height;
-		int l1 = width;
+		int k1 = this.height;
+		int l1 = this.width;
 		int i2 = DrawingArea.width - l1;
 		int j2 = 0;
 		if (j < DrawingArea.topY) {
@@ -293,17 +293,17 @@ public final class Sprite extends DrawingArea {
 			i2 += i3;
 		}
 		if (!(l1 <= 0 || k1 <= 0)) {
-			blockCopyAlpha(j1, l1, DrawingArea.pixels, pixels, j2, k1, i2, k, i1);
+			this.blockCopyAlpha(j1, l1, DrawingArea.pixels, this.pixels, j2, k1, i2, k, i1);
 		}
 	}
 
 	public void drawInverse(int i, int j) {
-		i += offsetX;
-		j += offsetY;
+		i += this.offsetX;
+		j += this.offsetY;
 		int l = i + j * DrawingArea.width;
 		int i1 = 0;
-		int j1 = height;
-		int k1 = width;
+		int j1 = this.height;
+		int k1 = this.width;
 		int l1 = DrawingArea.width - k1;
 		int i2 = 0;
 		if (j < DrawingArea.topY) {
@@ -333,21 +333,21 @@ public final class Sprite extends DrawingArea {
 		}
 		if (k1 <= 0 || j1 <= 0) {
 		} else {
-			blockCopy(l, k1, j1, i2, i1, l1, pixels, DrawingArea.pixels);
+			this.blockCopy(l, k1, j1, i2, i1, l1, this.pixels, DrawingArea.pixels);
 		}
 	}
 
 	public void initDrawingArea() {
-		DrawingArea.initDrawingArea(height, width, pixels);
+		DrawingArea.initDrawingArea(this.height, this.width, this.pixels);
 	}
 
 	public void method354(IndexedImage background, int x, int y) {
-		y += offsetX;
-		x += offsetY;
+		y += this.offsetX;
+		x += this.offsetY;
 		int k = y + x * DrawingArea.width;
 		int l = 0;
-		int i1 = height;
-		int j1 = width;
+		int i1 = this.height;
+		int j1 = this.width;
 		int k1 = DrawingArea.width - j1;
 		int l1 = 0;
 		if (x < DrawingArea.topY) {
@@ -376,7 +376,7 @@ public final class Sprite extends DrawingArea {
 			k1 += k2;
 		}
 		if (!(j1 <= 0 || i1 <= 0)) {
-			method355(pixels, j1, background.pixels, i1, DrawingArea.pixels, 0, k1, k, l1, l);
+			this.method355(this.pixels, j1, background.pixels, i1, DrawingArea.pixels, 0, k1, k, l1, l);
 		}
 	}
 
@@ -449,7 +449,7 @@ public final class Sprite extends DrawingArea {
 				int i4 = i3;
 				int j4 = j3;
 				for (x = -width; x < 0; x++) {
-					int k4 = pixels[(i4 >> 16) + (j4 >> 16) * this.width];
+					int k4 = this.pixels[(i4 >> 16) + (j4 >> 16) * this.width];
 					if (k4 != 0) {
                         DrawingArea.pixels[l3++] = k4;
                     } else {
@@ -486,7 +486,7 @@ public final class Sprite extends DrawingArea {
 				int k4 = j3 + offsetX * i4;
 				int l4 = k3 - offsetY * i4;
 				for (x = -widthMap[y]; x < 0; x++) {
-					DrawingArea.pixels[j4++] = pixels[(k4 >> 16) + (l4 >> 16) * this.width];
+					DrawingArea.pixels[j4++] = this.pixels[(k4 >> 16) + (l4 >> 16) * this.width];
 					k4 += offsetX;
 					l4 -= offsetY;
 				}
@@ -501,15 +501,15 @@ public final class Sprite extends DrawingArea {
 	}
 
 	public void trim() {
-		int targetPixels[] = new int[maxWidth * maxHeight];
-		for (int _y = 0; _y < height; _y++) {
-			System.arraycopy(pixels, _y * width, targetPixels, _y + offsetY * maxWidth + offsetX, width);
+		int targetPixels[] = new int[this.maxWidth * this.maxHeight];
+		for (int _y = 0; _y < this.height; _y++) {
+			System.arraycopy(this.pixels, _y * this.width, targetPixels, _y + this.offsetY * this.maxWidth + this.offsetX, this.width);
 		}
 
-		pixels = targetPixels;
-		width = maxWidth;
-		height = maxHeight;
-		offsetX = 0;
-		offsetY = 0;
+        this.pixels = targetPixels;
+        this.width = this.maxWidth;
+        this.height = this.maxHeight;
+        this.offsetX = 0;
+        this.offsetY = 0;
 	}
 }

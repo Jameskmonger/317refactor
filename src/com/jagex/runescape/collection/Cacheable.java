@@ -6,13 +6,13 @@ public class Cacheable extends Linkable {
 	public Cacheable previousCacheable;
 
 	public final void unlinkCacheable() {
-		if (previousCacheable == null) {
+		if (this.previousCacheable == null) {
 			return;
 		}
-		
-		previousCacheable.nextCacheable = nextCacheable;
-		nextCacheable.previousCacheable = previousCacheable;
-		nextCacheable = null;
-		previousCacheable = null;
+
+        this.previousCacheable.nextCacheable = this.nextCacheable;
+        this.nextCacheable.previousCacheable = this.previousCacheable;
+        this.nextCacheable = null;
+        this.previousCacheable = null;
 	}
 }

@@ -260,17 +260,17 @@ public final class ItemDefinition {
 	private byte equipModelTranslationMale;
 
 	private ItemDefinition() {
-		id = -1;
+        this.id = -1;
 	}
 
 	public boolean equipModelCached(int gender) {
-		int equipModelIdPrimary = maleEquipModelIdPrimary;
-		int equipModelIdSecondary = maleEquipModelIdSecondary;
-		int equipModelIdEmblem = maleEquipModelIdEmblem;
+		int equipModelIdPrimary = this.maleEquipModelIdPrimary;
+		int equipModelIdSecondary = this.maleEquipModelIdSecondary;
+		int equipModelIdEmblem = this.maleEquipModelIdEmblem;
 		if (gender == 1) {
-			equipModelIdPrimary = femaleEquipModelIdPrimary;
-			equipModelIdSecondary = femaleEquipModelIdSecondary;
-			equipModelIdEmblem = femaleEquipModelIdEmblem;
+			equipModelIdPrimary = this.femaleEquipModelIdPrimary;
+			equipModelIdSecondary = this.femaleEquipModelIdSecondary;
+			equipModelIdEmblem = this.femaleEquipModelIdEmblem;
 		}
 		if (equipModelIdPrimary == -1) {
             return true;
@@ -289,11 +289,11 @@ public final class ItemDefinition {
 	}
 
 	public Model getAmountModel(int amount) {
-		if (stackableIds != null && amount > 1) {
+		if (this.stackableIds != null && amount > 1) {
 			int stackableId = -1;
 			for (int i = 0; i < 10; i++) {
-                if (amount >= stackableAmounts[i] && stackableAmounts[i] != 0) {
-                    stackableId = stackableIds[i];
+                if (amount >= this.stackableAmounts[i] && this.stackableAmounts[i] != 0) {
+                    stackableId = this.stackableIds[i];
                 }
             }
 
@@ -301,35 +301,35 @@ public final class ItemDefinition {
                 return getDefinition(stackableId).getAmountModel(1);
             }
 		}
-		Model stackedModel = (Model) modelCache.get(id);
+		Model stackedModel = (Model) modelCache.get(this.id);
 		if (stackedModel != null) {
             return stackedModel;
         }
-		stackedModel = Model.getModel(modelId);
+		stackedModel = Model.getModel(this.modelId);
 		if (stackedModel == null) {
             return null;
         }
-		if (modelScaleX != 128 || modelScaleY != 128 || modelScaleZ != 128) {
-            stackedModel.scaleT(modelScaleX, modelScaleZ, modelScaleY);
+		if (this.modelScaleX != 128 || this.modelScaleY != 128 || this.modelScaleZ != 128) {
+            stackedModel.scaleT(this.modelScaleX, this.modelScaleZ, this.modelScaleY);
         }
-		if (modifiedModelColors != null) {
-			for (int l = 0; l < modifiedModelColors.length; l++) {
-                stackedModel.recolour(modifiedModelColors[l], originalModelColors[l]);
+		if (this.modifiedModelColors != null) {
+			for (int l = 0; l < this.modifiedModelColors.length; l++) {
+                stackedModel.recolour(this.modifiedModelColors[l], this.originalModelColors[l]);
             }
 
 		}
-		stackedModel.applyLighting(64 + lightModifier, 768 + shadowModifier, -50, -10, -50, true);
+		stackedModel.applyLighting(64 + this.lightModifier, 768 + this.shadowModifier, -50, -10, -50, true);
 		stackedModel.singleTile = true;
-		modelCache.put(stackedModel, id);
+		modelCache.put(stackedModel, this.id);
 		return stackedModel;
 	}
 
 	public Model getDialogueModel(int gender) {
-		int dialogueModelId = maleDialogueModelId;
-		int dialogueHatModelId = maleDialogueHatModelId;
+		int dialogueModelId = this.maleDialogueModelId;
+		int dialogueHatModelId = this.maleDialogueHatModelId;
 		if (gender == 1) {
-			dialogueModelId = femaleDialogueModelId;
-			dialogueHatModelId = femaleDialogueHatModelId;
+			dialogueModelId = this.femaleDialogueModelId;
+			dialogueHatModelId = this.femaleDialogueHatModelId;
 		}
 		if (dialogueModelId == -1) {
             return null;
@@ -340,9 +340,9 @@ public final class ItemDefinition {
 			Model dialogueModels[] = { dialogueModel, dialogueHatModel };
 			dialogueModel = new Model(2, dialogueModels);
 		}
-		if (modifiedModelColors != null) {
-			for (int c = 0; c < modifiedModelColors.length; c++) {
-                dialogueModel.recolour(modifiedModelColors[c], originalModelColors[c]);
+		if (this.modifiedModelColors != null) {
+			for (int c = 0; c < this.modifiedModelColors.length; c++) {
+                dialogueModel.recolour(this.modifiedModelColors[c], this.originalModelColors[c]);
             }
 
 		}
@@ -350,13 +350,13 @@ public final class ItemDefinition {
 	}
 
 	public Model getEquippedModel(int gender) {
-		int equipModelIdPrimary = maleEquipModelIdPrimary;
-		int equipModelIdSecondary = maleEquipModelIdSecondary;
-		int equipModelIdEmblem = maleEquipModelIdEmblem;
+		int equipModelIdPrimary = this.maleEquipModelIdPrimary;
+		int equipModelIdSecondary = this.maleEquipModelIdSecondary;
+		int equipModelIdEmblem = this.maleEquipModelIdEmblem;
 		if (gender == 1) {
-			equipModelIdPrimary = femaleEquipModelIdPrimary;
-			equipModelIdSecondary = femaleEquipModelIdSecondary;
-			equipModelIdEmblem = femaleEquipModelIdEmblem;
+			equipModelIdPrimary = this.femaleEquipModelIdPrimary;
+			equipModelIdSecondary = this.femaleEquipModelIdSecondary;
+			equipModelIdEmblem = this.femaleEquipModelIdEmblem;
 		}
 		if (equipModelIdPrimary == -1) {
             return null;
@@ -374,15 +374,15 @@ public final class ItemDefinition {
                 modelPrimary = new Model(2, models);
             }
         }
-		if (gender == 0 && equipModelTranslationMale != 0) {
-            modelPrimary.translate(0, equipModelTranslationMale, 0);
+		if (gender == 0 && this.equipModelTranslationMale != 0) {
+            modelPrimary.translate(0, this.equipModelTranslationMale, 0);
         }
-		if (gender == 1 && equipModelTranslationFemale != 0) {
-            modelPrimary.translate(0, equipModelTranslationFemale, 0);
+		if (gender == 1 && this.equipModelTranslationFemale != 0) {
+            modelPrimary.translate(0, this.equipModelTranslationFemale, 0);
         }
-		if (modifiedModelColors != null) {
-			for (int c = 0; c < modifiedModelColors.length; c++) {
-                modelPrimary.recolour(modifiedModelColors[c], originalModelColors[c]);
+		if (this.modifiedModelColors != null) {
+			for (int c = 0; c < this.modifiedModelColors.length; c++) {
+                modelPrimary.recolour(this.modifiedModelColors[c], this.originalModelColors[c]);
             }
 
 		}
@@ -390,11 +390,11 @@ public final class ItemDefinition {
 	}
 
 	public Model getInventoryModel(int amount) {
-		if (stackableIds != null && amount > 1) {
+		if (this.stackableIds != null && amount > 1) {
 			int stackableId = -1;
 			for (int i = 0; i < 10; i++) {
-                if (amount >= stackableAmounts[i] && stackableAmounts[i] != 0) {
-                    stackableId = stackableIds[i];
+                if (amount >= this.stackableAmounts[i] && this.stackableAmounts[i] != 0) {
+                    stackableId = this.stackableIds[i];
                 }
             }
 
@@ -402,13 +402,13 @@ public final class ItemDefinition {
                 return getDefinition(stackableId).getInventoryModel(1);
             }
 		}
-		Model stackedModel = Model.getModel(modelId);
+		Model stackedModel = Model.getModel(this.modelId);
 		if (stackedModel == null) {
             return null;
         }
-		if (modifiedModelColors != null) {
-			for (int c = 0; c < modifiedModelColors.length; c++) {
-                stackedModel.recolour(modifiedModelColors[c], originalModelColors[c]);
+		if (this.modifiedModelColors != null) {
+			for (int c = 0; c < this.modifiedModelColors.length; c++) {
+                stackedModel.recolour(this.modifiedModelColors[c], this.originalModelColors[c]);
             }
 
 		}
@@ -416,11 +416,11 @@ public final class ItemDefinition {
 	}
 
 	public boolean isDialogueModelCached(int gender) {
-		int dialogueModelId = maleDialogueModelId;
-		int dialogueHatModelId = maleDialogueHatModelId;
+		int dialogueModelId = this.maleDialogueModelId;
+		int dialogueHatModelId = this.maleDialogueHatModelId;
 		if (gender == 1) {
-			dialogueModelId = femaleDialogueModelId;
-			dialogueHatModelId = femaleDialogueHatModelId;
+			dialogueModelId = this.femaleDialogueModelId;
+			dialogueHatModelId = this.femaleDialogueHatModelId;
 		}
 		if (dialogueModelId == -1) {
             return true;
@@ -442,174 +442,174 @@ public final class ItemDefinition {
                 return;
             }
 			if (opcode == 1) {
-                modelId = stream.getUnsignedLEShort();
+                this.modelId = stream.getUnsignedLEShort();
             } else if (opcode == 2) {
-                name = stream.getString();
+                this.name = stream.getString();
             } else if (opcode == 3) {
-                description = stream.readBytes();
+                this.description = stream.readBytes();
             } else if (opcode == 4) {
-                modelZoom = stream.getUnsignedLEShort();
+                this.modelZoom = stream.getUnsignedLEShort();
             } else if (opcode == 5) {
-                modelRotationX = stream.getUnsignedLEShort();
+                this.modelRotationX = stream.getUnsignedLEShort();
             } else if (opcode == 6) {
-                modelRotationY = stream.getUnsignedLEShort();
+                this.modelRotationY = stream.getUnsignedLEShort();
             } else if (opcode == 7) {
-				modelOffset1 = stream.getUnsignedLEShort();
-				if (modelOffset1 > 32767) {
-                    modelOffset1 -= 0x10000;
+                this.modelOffset1 = stream.getUnsignedLEShort();
+				if (this.modelOffset1 > 32767) {
+                    this.modelOffset1 -= 0x10000;
                 }
 			} else if (opcode == 8) {
-				modelOffset2 = stream.getUnsignedLEShort();
-				if (modelOffset2 > 32767) {
-                    modelOffset2 -= 0x10000;
+                this.modelOffset2 = stream.getUnsignedLEShort();
+				if (this.modelOffset2 > 32767) {
+                    this.modelOffset2 -= 0x10000;
                 }
 			} else if (opcode == 10) {
                 stream.getUnsignedLEShort();
             } else if (opcode == 11) {
-                stackable = true;
+                this.stackable = true;
             } else if (opcode == 12) {
-                value = stream.getInt();
+                this.value = stream.getInt();
             } else if (opcode == 16) {
-                membersObject = true;
+                this.membersObject = true;
             } else if (opcode == 23) {
-				maleEquipModelIdPrimary = stream.getUnsignedLEShort();
-				equipModelTranslationMale = stream.get();
+                this.maleEquipModelIdPrimary = stream.getUnsignedLEShort();
+                this.equipModelTranslationMale = stream.get();
 			} else if (opcode == 24) {
-                maleEquipModelIdSecondary = stream.getUnsignedLEShort();
+                this.maleEquipModelIdSecondary = stream.getUnsignedLEShort();
             } else if (opcode == 25) {
-				femaleEquipModelIdPrimary = stream.getUnsignedLEShort();
-				equipModelTranslationFemale = stream.get();
+                this.femaleEquipModelIdPrimary = stream.getUnsignedLEShort();
+                this.equipModelTranslationFemale = stream.get();
 			} else if (opcode == 26) {
-                femaleEquipModelIdSecondary = stream.getUnsignedLEShort();
+                this.femaleEquipModelIdSecondary = stream.getUnsignedLEShort();
             } else if (opcode >= 30 && opcode < 35) {
-				if (groundActions == null) {
-                    groundActions = new String[5];
+				if (this.groundActions == null) {
+                    this.groundActions = new String[5];
                 }
-				groundActions[opcode - 30] = stream.getString();
-				if (groundActions[opcode - 30].equalsIgnoreCase("hidden")) {
-                    groundActions[opcode - 30] = null;
+                this.groundActions[opcode - 30] = stream.getString();
+				if (this.groundActions[opcode - 30].equalsIgnoreCase("hidden")) {
+                    this.groundActions[opcode - 30] = null;
                 }
 			} else if (opcode >= 35 && opcode < 40) {
-				if (actions == null) {
-                    actions = new String[5];
+				if (this.actions == null) {
+                    this.actions = new String[5];
                 }
-				actions[opcode - 35] = stream.getString();
+                this.actions[opcode - 35] = stream.getString();
 			} else if (opcode == 40) {
 				int colourCount = stream.getUnsignedByte();
-				modifiedModelColors = new int[colourCount];
-				originalModelColors = new int[colourCount];
+                this.modifiedModelColors = new int[colourCount];
+                this.originalModelColors = new int[colourCount];
 				for (int c = 0; c < colourCount; c++) {
-					modifiedModelColors[c] = stream.getUnsignedLEShort();
-					originalModelColors[c] = stream.getUnsignedLEShort();
+                    this.modifiedModelColors[c] = stream.getUnsignedLEShort();
+                    this.originalModelColors[c] = stream.getUnsignedLEShort();
 				}
 
 			} else if (opcode == 78) {
-                maleEquipModelIdEmblem = stream.getUnsignedLEShort();
+                this.maleEquipModelIdEmblem = stream.getUnsignedLEShort();
             } else if (opcode == 79) {
-                femaleEquipModelIdEmblem = stream.getUnsignedLEShort();
+                this.femaleEquipModelIdEmblem = stream.getUnsignedLEShort();
             } else if (opcode == 90) {
-                maleDialogueModelId = stream.getUnsignedLEShort();
+                this.maleDialogueModelId = stream.getUnsignedLEShort();
             } else if (opcode == 91) {
-                femaleDialogueModelId = stream.getUnsignedLEShort();
+                this.femaleDialogueModelId = stream.getUnsignedLEShort();
             } else if (opcode == 92) {
-                maleDialogueHatModelId = stream.getUnsignedLEShort();
+                this.maleDialogueHatModelId = stream.getUnsignedLEShort();
             } else if (opcode == 93) {
-                femaleDialogueHatModelId = stream.getUnsignedLEShort();
+                this.femaleDialogueHatModelId = stream.getUnsignedLEShort();
             } else if (opcode == 95) {
-                modelRotationZ = stream.getUnsignedLEShort();
+                this.modelRotationZ = stream.getUnsignedLEShort();
             } else if (opcode == 97) {
-                noteId = stream.getUnsignedLEShort();
+                this.noteId = stream.getUnsignedLEShort();
             } else if (opcode == 98) {
-                noteTemplateId = stream.getUnsignedLEShort();
+                this.noteTemplateId = stream.getUnsignedLEShort();
             } else if (opcode >= 100 && opcode < 110) {
-				if (stackableIds == null) {
-					stackableIds = new int[10];
-					stackableAmounts = new int[10];
+				if (this.stackableIds == null) {
+                    this.stackableIds = new int[10];
+                    this.stackableAmounts = new int[10];
 				}
-				stackableIds[opcode - 100] = stream.getUnsignedLEShort();
-				stackableAmounts[opcode - 100] = stream.getUnsignedLEShort();
+                this.stackableIds[opcode - 100] = stream.getUnsignedLEShort();
+                this.stackableAmounts[opcode - 100] = stream.getUnsignedLEShort();
 			} else if (opcode == 110) {
-                modelScaleX = stream.getUnsignedLEShort();
+                this.modelScaleX = stream.getUnsignedLEShort();
             } else if (opcode == 111) {
-                modelScaleY = stream.getUnsignedLEShort();
+                this.modelScaleY = stream.getUnsignedLEShort();
             } else if (opcode == 112) {
-                modelScaleZ = stream.getUnsignedLEShort();
+                this.modelScaleZ = stream.getUnsignedLEShort();
             } else if (opcode == 113) {
-                lightModifier = stream.get();
+                this.lightModifier = stream.get();
             } else if (opcode == 114) {
-                shadowModifier = stream.get() * 5;
+                this.shadowModifier = stream.get() * 5;
             } else if (opcode == 115) {
-                teamId = stream.getUnsignedByte();
+                this.teamId = stream.getUnsignedByte();
             }
 		} while (true);
 	}
 
 	private void setDefaults() {
-		modelId = 0;
-		name = null;
-		description = null;
-		modifiedModelColors = null;
-		originalModelColors = null;
-		modelZoom = 2000;
-		modelRotationX = 0;
-		modelRotationY = 0;
-		modelRotationZ = 0;
-		modelOffset1 = 0;
-		modelOffset2 = 0;
-		stackable = false;
-		value = 1;
-		membersObject = false;
-		groundActions = null;
-		actions = null;
-		maleEquipModelIdPrimary = -1;
-		maleEquipModelIdSecondary = -1;
-		equipModelTranslationMale = 0;
-		femaleEquipModelIdPrimary = -1;
-		femaleEquipModelIdSecondary = -1;
-		equipModelTranslationFemale = 0;
-		maleEquipModelIdEmblem = -1;
-		femaleEquipModelIdEmblem = -1;
-		maleDialogueModelId = -1;
-		maleDialogueHatModelId = -1;
-		femaleDialogueModelId = -1;
-		femaleDialogueHatModelId = -1;
-		stackableIds = null;
-		stackableAmounts = null;
-		noteId = -1;
-		noteTemplateId = -1;
-		modelScaleX = 128;
-		modelScaleY = 128;
-		modelScaleZ = 128;
-		lightModifier = 0;
-		shadowModifier = 0;
-		teamId = 0;
+        this.modelId = 0;
+        this.name = null;
+        this.description = null;
+        this.modifiedModelColors = null;
+        this.originalModelColors = null;
+        this.modelZoom = 2000;
+        this.modelRotationX = 0;
+        this.modelRotationY = 0;
+        this.modelRotationZ = 0;
+        this.modelOffset1 = 0;
+        this.modelOffset2 = 0;
+        this.stackable = false;
+        this.value = 1;
+        this.membersObject = false;
+        this.groundActions = null;
+        this.actions = null;
+        this.maleEquipModelIdPrimary = -1;
+        this.maleEquipModelIdSecondary = -1;
+        this.equipModelTranslationMale = 0;
+        this.femaleEquipModelIdPrimary = -1;
+        this.femaleEquipModelIdSecondary = -1;
+        this.equipModelTranslationFemale = 0;
+        this.maleEquipModelIdEmblem = -1;
+        this.femaleEquipModelIdEmblem = -1;
+        this.maleDialogueModelId = -1;
+        this.maleDialogueHatModelId = -1;
+        this.femaleDialogueModelId = -1;
+        this.femaleDialogueHatModelId = -1;
+        this.stackableIds = null;
+        this.stackableAmounts = null;
+        this.noteId = -1;
+        this.noteTemplateId = -1;
+        this.modelScaleX = 128;
+        this.modelScaleY = 128;
+        this.modelScaleZ = 128;
+        this.lightModifier = 0;
+        this.shadowModifier = 0;
+        this.teamId = 0;
 	}
 
 	private void toNote() {
-		ItemDefinition noteTemplateDefinition = getDefinition(noteTemplateId);
-		modelId = noteTemplateDefinition.modelId;
-		modelZoom = noteTemplateDefinition.modelZoom;
-		modelRotationX = noteTemplateDefinition.modelRotationX;
-		modelRotationY = noteTemplateDefinition.modelRotationY;
+		ItemDefinition noteTemplateDefinition = getDefinition(this.noteTemplateId);
+        this.modelId = noteTemplateDefinition.modelId;
+        this.modelZoom = noteTemplateDefinition.modelZoom;
+        this.modelRotationX = noteTemplateDefinition.modelRotationX;
+        this.modelRotationY = noteTemplateDefinition.modelRotationY;
 
-		modelRotationZ = noteTemplateDefinition.modelRotationZ;
-		modelOffset1 = noteTemplateDefinition.modelOffset1;
-		modelOffset2 = noteTemplateDefinition.modelOffset2;
-		modifiedModelColors = noteTemplateDefinition.modifiedModelColors;
-		originalModelColors = noteTemplateDefinition.originalModelColors;
+        this.modelRotationZ = noteTemplateDefinition.modelRotationZ;
+        this.modelOffset1 = noteTemplateDefinition.modelOffset1;
+        this.modelOffset2 = noteTemplateDefinition.modelOffset2;
+        this.modifiedModelColors = noteTemplateDefinition.modifiedModelColors;
+        this.originalModelColors = noteTemplateDefinition.originalModelColors;
 
-		ItemDefinition noteDefinition = getDefinition(noteId);
-		name = noteDefinition.name;
-		membersObject = noteDefinition.membersObject;
-		value = noteDefinition.value;
+		ItemDefinition noteDefinition = getDefinition(this.noteId);
+        this.name = noteDefinition.name;
+        this.membersObject = noteDefinition.membersObject;
+        this.value = noteDefinition.value;
 		String prefix = "a";
 		char firstCharacter = noteDefinition.name.charAt(0);
 		if (firstCharacter == 'A' || firstCharacter == 'E' || firstCharacter == 'I' || firstCharacter == 'O'
 				|| firstCharacter == 'U') {
             prefix = "an";
         }
-		description = ("Swap this note at any bank for " + prefix + " " + noteDefinition.name + ".").getBytes();
-		stackable = true;
+        this.description = ("Swap this note at any bank for " + prefix + " " + noteDefinition.name + ".").getBytes();
+        this.stackable = true;
 	}
 
 }

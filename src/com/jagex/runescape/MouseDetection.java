@@ -12,21 +12,21 @@ final class MouseDetection implements Runnable {
 	public int coordsIndex;
 
 	public MouseDetection(Client client1) {
-		syncObject = new Object();
-		coordsY = new int[500];
-		running = true;
-		coordsX = new int[500];
-		clientInstance = client1;
+        this.syncObject = new Object();
+        this.coordsY = new int[500];
+        this.running = true;
+        this.coordsX = new int[500];
+        this.clientInstance = client1;
 	}
 
 	@Override
 	public void run() {
-		while (running) {
-			synchronized (syncObject) {
-				if (coordsIndex < 500) {
-					coordsX[coordsIndex] = clientInstance.mouseX;
-					coordsY[coordsIndex] = clientInstance.mouseY;
-					coordsIndex++;
+		while (this.running) {
+			synchronized (this.syncObject) {
+				if (this.coordsIndex < 500) {
+                    this.coordsX[this.coordsIndex] = this.clientInstance.mouseX;
+                    this.coordsY[this.coordsIndex] = this.clientInstance.mouseY;
+                    this.coordsIndex++;
 				}
 			}
 			try {

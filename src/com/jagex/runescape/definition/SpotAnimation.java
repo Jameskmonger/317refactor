@@ -41,29 +41,29 @@ public final class SpotAnimation {
 	public static Cache modelCache = new Cache(30);
 
 	private SpotAnimation() {
-		animationId = -1;
-		originalModelColours = new int[6];
-		modifiedModelColours = new int[6];
-		scaleXY = 128;
-		scaleZ = 128;
+        this.animationId = -1;
+        this.originalModelColours = new int[6];
+        this.modifiedModelColours = new int[6];
+        this.scaleXY = 128;
+        this.scaleZ = 128;
 	}
 
 	public Model getModel() {
-		Model model = (Model) modelCache.get(id);
+		Model model = (Model) modelCache.get(this.id);
 		if (model != null) {
             return model;
         }
-		model = Model.getModel(modelId);
+		model = Model.getModel(this.modelId);
 		if (model == null) {
             return null;
         }
 		for (int colour = 0; colour < 6; colour++) {
-            if (originalModelColours[0] != 0) {
-                model.recolour(originalModelColours[colour], modifiedModelColours[colour]);
+            if (this.originalModelColours[0] != 0) {
+                model.recolour(this.originalModelColours[colour], this.modifiedModelColours[colour]);
             }
         }
 
-		modelCache.put(model, id);
+		modelCache.put(model, this.id);
 		return model;
 	}
 
@@ -74,26 +74,26 @@ public final class SpotAnimation {
                 return;
             }
 			if (opcode == 1) {
-                modelId = stream.getUnsignedLEShort();
+                this.modelId = stream.getUnsignedLEShort();
             } else if (opcode == 2) {
-				animationId = stream.getUnsignedLEShort();
+                this.animationId = stream.getUnsignedLEShort();
 				if (AnimationSequence.animations != null) {
-                    sequences = AnimationSequence.animations[animationId];
+                    this.sequences = AnimationSequence.animations[this.animationId];
                 }
 			} else if (opcode == 4) {
-                scaleXY = stream.getUnsignedLEShort();
+                this.scaleXY = stream.getUnsignedLEShort();
             } else if (opcode == 5) {
-                scaleZ = stream.getUnsignedLEShort();
+                this.scaleZ = stream.getUnsignedLEShort();
             } else if (opcode == 6) {
-                rotation = stream.getUnsignedLEShort();
+                this.rotation = stream.getUnsignedLEShort();
             } else if (opcode == 7) {
-                modelLightFalloff = stream.getUnsignedByte();
+                this.modelLightFalloff = stream.getUnsignedByte();
             } else if (opcode == 8) {
-                modelLightAmbient = stream.getUnsignedByte();
+                this.modelLightAmbient = stream.getUnsignedByte();
             } else if (opcode >= 40 && opcode < 50) {
-                originalModelColours[opcode - 40] = stream.getUnsignedLEShort();
+                this.originalModelColours[opcode - 40] = stream.getUnsignedLEShort();
             } else if (opcode >= 50 && opcode < 60) {
-                modifiedModelColours[opcode - 50] = stream.getUnsignedLEShort();
+                this.modifiedModelColours[opcode - 50] = stream.getUnsignedLEShort();
             } else {
                 System.out.println("Error unrecognised spotanim config code: " + opcode);
             }

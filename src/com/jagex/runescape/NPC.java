@@ -18,22 +18,22 @@ public final class NPC extends Entity {
 			if (super.queuedAnimationId >= 0 && super.queuedAnimationId != super.standAnimationId) {
                 frameId1 = AnimationSequence.animations[super.queuedAnimationId].primaryFrames[super.queuedAnimationFrame];
             }
-			return npcDefinition.getChildModel(frameId1, frameId2,
+			return this.npcDefinition.getChildModel(frameId1, frameId2,
 					AnimationSequence.animations[super.animation].flowControl);
 		}
 		int frameId2 = -1;
 		if (super.queuedAnimationId >= 0) {
             frameId2 = AnimationSequence.animations[super.queuedAnimationId].primaryFrames[super.queuedAnimationFrame];
         }
-		return npcDefinition.getChildModel(-1, frameId2, null);
+		return this.npcDefinition.getChildModel(-1, frameId2, null);
 	}
 
 	@Override
 	public Model getRotatedModel() {
-		if (npcDefinition == null) {
+		if (this.npcDefinition == null) {
             return null;
         }
-		Model rotatedModel = getChildModel();
+		Model rotatedModel = this.getChildModel();
 		if (rotatedModel == null) {
             return null;
         }
@@ -58,7 +58,7 @@ public final class NPC extends Entity {
 				rotatedModel = new Model(models);
 			}
 		}
-		if (npcDefinition.boundaryDimension == 1) {
+		if (this.npcDefinition.boundaryDimension == 1) {
             rotatedModel.singleTile = true;
         }
 		return rotatedModel;
@@ -66,6 +66,6 @@ public final class NPC extends Entity {
 
 	@Override
 	public boolean isVisible() {
-		return npcDefinition != null;
+		return this.npcDefinition != null;
 	}
 }

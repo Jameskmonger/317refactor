@@ -8,17 +8,17 @@ public final class Skins {
 
 	public Skins(Buffer buffer) {
 		int count = buffer.getUnsignedByte();
-		opcodes = new int[count];
-		skinList = new int[count][];
+        this.opcodes = new int[count];
+        this.skinList = new int[count][];
 		for (int opcode = 0; opcode < count; opcode++) {
-            opcodes[opcode] = buffer.getUnsignedByte();
+            this.opcodes[opcode] = buffer.getUnsignedByte();
         }
 
 		for (int skin = 0; skin < count; skin++) {
 			int subSkinAmount = buffer.getUnsignedByte();
-			skinList[skin] = new int[subSkinAmount];
+            this.skinList[skin] = new int[subSkinAmount];
 			for (int subSkin = 0; subSkin < subSkinAmount; subSkin++) {
-                skinList[skin][subSkin] = buffer.getUnsignedByte();
+                this.skinList[skin][subSkin] = buffer.getUnsignedByte();
             }
 
 		}

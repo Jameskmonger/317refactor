@@ -86,20 +86,20 @@ class BZip2DecompressionState {
 	int totalOutHigh32;
 
 	BZip2DecompressionState() {
-		unzftab = new int[256];
-		cftab = new int[257];
-		inUse = new boolean[256];
-		inUse16 = new boolean[16];
-		seqToUnseq = new byte[256];
-		mtfa = new byte[4096];
-		mtfbase = new int[16];
-		selector = new byte[18002];
-		selectorMtf = new byte[18002];
-		len = new byte[6][258];
-		limit = new int[6][258];
-		base = new int[6][258];
-		perm = new int[6][258];
-		minLens = new int[6];
+        this.unzftab = new int[256];
+        this.cftab = new int[257];
+        this.inUse = new boolean[256];
+        this.inUse16 = new boolean[16];
+        this.seqToUnseq = new byte[256];
+        this.mtfa = new byte[4096];
+        this.mtfbase = new int[16];
+        this.selector = new byte[18002];
+        this.selectorMtf = new byte[18002];
+        this.len = new byte[6][258];
+        this.limit = new int[6][258];
+        this.base = new int[6][258];
+        this.perm = new int[6][258];
+        this.minLens = new int[6];
 	}
 
 }

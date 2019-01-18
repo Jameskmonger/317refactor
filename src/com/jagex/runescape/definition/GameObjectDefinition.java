@@ -109,28 +109,28 @@ public final class GameObjectDefinition {
 	public String actions[];
 
 	private GameObjectDefinition() {
-		id = -1;
+        this.id = -1;
 	}
 
 	private Model getAnimatedModel(int type, int animationId, int face) {
 		Model subModel = null;
 		long hash;
-		if (modelTypes == null) {
+		if (this.modelTypes == null) {
 			if (type != 10) {
                 return null;
             }
-			hash = (id << 6) + face + ((long) (animationId + 1) << 32);
+			hash = (this.id << 6) + face + ((long) (animationId + 1) << 32);
 			Model cachedModel = (Model) animatedModelCache.get(hash);
 			if (cachedModel != null) {
                 return cachedModel;
             }
-			if (modelIds == null) {
+			if (this.modelIds == null) {
                 return null;
             }
-			boolean mirror = rotated ^ (face > 3);
-			int modelCount = modelIds.length;
+			boolean mirror = this.rotated ^ (face > 3);
+			int modelCount = this.modelIds.length;
 			for (int m = 0; m < modelCount; m++) {
-				int subModelId = modelIds[m];
+				int subModelId = this.modelIds[m];
 				if (mirror) {
                     subModelId += 0x10000;
                 }
@@ -155,8 +155,8 @@ public final class GameObjectDefinition {
             }
 		} else {
 			int modelType = -1;
-			for (int t = 0; t < modelTypes.length; t++) {
-				if (modelTypes[t] != type) {
+			for (int t = 0; t < this.modelTypes.length; t++) {
+				if (this.modelTypes[t] != type) {
                     continue;
                 }
 				modelType = t;
@@ -166,13 +166,13 @@ public final class GameObjectDefinition {
 			if (modelType == -1) {
                 return null;
             }
-			hash = (id << 6) + (modelType << 3) + face + ((long) (animationId + 1) << 32);
+			hash = (this.id << 6) + (modelType << 3) + face + ((long) (animationId + 1) << 32);
 			Model model = (Model) animatedModelCache.get(hash);
 			if (model != null) {
                 return model;
             }
-			int modelId = modelIds[modelType];
-			boolean mirror = rotated ^ (face > 3);
+			int modelId = this.modelIds[modelType];
+			boolean mirror = this.rotated ^ (face > 3);
 			if (mirror) {
                 modelId += 0x10000;
             }
@@ -189,10 +189,10 @@ public final class GameObjectDefinition {
 			}
 		}
 		boolean scale;
-		scale = scaleX != 128 || scaleY != 128 || scaleZ != 128;
+		scale = this.scaleX != 128 || this.scaleY != 128 || this.scaleZ != 128;
 		boolean translate;
-		translate = translateX != 0 || translateY != 0 || translateZ != 0;
-		Model animatedModel = new Model(modifiedModelColors == null, Animation.isNullFrame(animationId),
+		translate = this.translateX != 0 || this.translateY != 0 || this.translateZ != 0;
+		Model animatedModel = new Model(this.modifiedModelColors == null, Animation.isNullFrame(animationId),
 				face == 0 && animationId == -1 && !scale && !translate, subModel);
 		if (animationId != -1) {
 			animatedModel.createBones();
@@ -203,20 +203,20 @@ public final class GameObjectDefinition {
 		while (face-- > 0) {
             animatedModel.rotate90Degrees();
         }
-		if (modifiedModelColors != null) {
-			for (int c = 0; c < modifiedModelColors.length; c++) {
-                animatedModel.recolour(modifiedModelColors[c], originalModelColors[c]);
+		if (this.modifiedModelColors != null) {
+			for (int c = 0; c < this.modifiedModelColors.length; c++) {
+                animatedModel.recolour(this.modifiedModelColors[c], this.originalModelColors[c]);
             }
 
 		}
 		if (scale) {
-            animatedModel.scaleT(scaleX, scaleZ, scaleY);
+            animatedModel.scaleT(this.scaleX, this.scaleZ, this.scaleY);
         }
 		if (translate) {
-            animatedModel.translate(translateX, translateY, translateZ);
+            animatedModel.translate(this.translateX, this.translateY, this.translateZ);
         }
-		animatedModel.applyLighting(64 + ambient, 768 + diffuse * 5, -50, -10, -50, !delayShading);
-		if (_solid == 1) {
+		animatedModel.applyLighting(64 + this.ambient, 768 + this.diffuse * 5, -50, -10, -50, !this.delayShading);
+		if (this._solid == 1) {
             animatedModel.anInt1654 = animatedModel.modelHeight;
         }
 		animatedModelCache.put(animatedModel, hash);
@@ -225,32 +225,32 @@ public final class GameObjectDefinition {
 
 	public GameObjectDefinition getChildDefinition() {
 		int child = -1;
-		if (varBitId != -1) {
-			VarBit varBit = VarBit.values[varBitId];
+		if (this.varBitId != -1) {
+			VarBit varBit = VarBit.values[this.varBitId];
 			int configId = varBit.configId;
 			int lsb = varBit.leastSignificantBit;
 			int msb = varBit.mostSignificantBit;
 			int bit = Client.BITFIELD_MAX_VALUE[msb - lsb];
 			child = clientInstance.interfaceSettings[configId] >> lsb & bit;
-		} else if (configIds != -1) {
-            child = clientInstance.interfaceSettings[configIds];
+		} else if (this.configIds != -1) {
+            child = clientInstance.interfaceSettings[this.configIds];
         }
-		if (child < 0 || child >= childIds.length || childIds[child] == -1) {
+		if (child < 0 || child >= this.childIds.length || this.childIds[child] == -1) {
             return null;
         } else {
-            return getDefinition(childIds[child]);
+            return getDefinition(this.childIds[child]);
         }
 	}
 
 	public Model getModelAt(int i, int j, int k, int l, int i1, int j1, int k1) {
-		Model model = getAnimatedModel(i, k1, j);
+		Model model = this.getAnimatedModel(i, k1, j);
 		if (model == null) {
             return null;
         }
-		if (adjustToTerrain || delayShading) {
-            model = new Model(adjustToTerrain, delayShading, model);
+		if (this.adjustToTerrain || this.delayShading) {
+            model = new Model(this.adjustToTerrain, this.delayShading, model);
         }
-		if (adjustToTerrain) {
+		if (this.adjustToTerrain) {
 			int l1 = (k + l + i1 + j1) / 4;
 			for (int v = 0; v < model.vertexCount; v++) {
 				int x = model.verticesX[v];
@@ -278,12 +278,12 @@ public final class GameObjectDefinition {
 				if (opcode == 1) {
 					int modelCount = stream.getUnsignedByte();
 					if (modelCount > 0) {
-                        if (modelIds == null || lowMemory) {
-                            modelTypes = new int[modelCount];
-                            modelIds = new int[modelCount];
+                        if (this.modelIds == null || lowMemory) {
+                            this.modelTypes = new int[modelCount];
+                            this.modelIds = new int[modelCount];
                             for (int m = 0; m < modelCount; m++) {
-                                modelIds[m] = stream.getUnsignedLEShort();
-                                modelTypes[m] = stream.getUnsignedByte();
+                                this.modelIds[m] = stream.getUnsignedLEShort();
+                                this.modelTypes[m] = stream.getUnsignedByte();
                             }
 
                         } else {
@@ -291,17 +291,17 @@ public final class GameObjectDefinition {
                         }
                     }
 				} else if (opcode == 2) {
-                    name = stream.getString();
+                    this.name = stream.getString();
                 } else if (opcode == 3) {
-                    description = stream.readBytes();
+                    this.description = stream.readBytes();
                 } else if (opcode == 5) {
 					int modelCount = stream.getUnsignedByte();
 					if (modelCount > 0) {
-                        if (modelIds == null || lowMemory) {
-                            modelTypes = null;
-                            modelIds = new int[modelCount];
+                        if (this.modelIds == null || lowMemory) {
+                            this.modelTypes = null;
+                            this.modelIds = new int[modelCount];
                             for (int m = 0; m < modelCount; m++) {
-                                modelIds[m] = stream.getUnsignedLEShort();
+                                this.modelIds[m] = stream.getUnsignedLEShort();
                             }
 
                         } else {
@@ -309,148 +309,148 @@ public final class GameObjectDefinition {
                         }
                     }
 				} else if (opcode == 14) {
-                    sizeX = stream.getUnsignedByte();
+                    this.sizeX = stream.getUnsignedByte();
                 } else if (opcode == 15) {
-                    sizeY = stream.getUnsignedByte();
+                    this.sizeY = stream.getUnsignedByte();
                 } else if (opcode == 17) {
-                    solid = false;
+                    this.solid = false;
                 } else if (opcode == 18) {
-                    walkable = false;
+                    this.walkable = false;
                 } else if (opcode == 19) {
 					_actions = stream.getUnsignedByte();
 					if (_actions == 1) {
-                        hasActions = true;
+                        this.hasActions = true;
                     }
 				} else if (opcode == 21) {
-                    adjustToTerrain = true;
+                    this.adjustToTerrain = true;
                 } else if (opcode == 22) {
-                    delayShading = true;
+                    this.delayShading = true;
                 } else if (opcode == 23) {
-                    wall = true;
+                    this.wall = true;
                 } else if (opcode == 24) {
-					animationId = stream.getUnsignedLEShort();
-					if (animationId == 65535) {
-                        animationId = -1;
+                    this.animationId = stream.getUnsignedLEShort();
+					if (this.animationId == 65535) {
+                        this.animationId = -1;
                     }
 				} else if (opcode == 28) {
-                    offsetAmplifier = stream.getUnsignedByte();
+                    this.offsetAmplifier = stream.getUnsignedByte();
                 } else if (opcode == 29) {
-                    ambient = stream.get();
+                    this.ambient = stream.get();
                 } else if (opcode == 39) {
-                    diffuse = stream.get();
+                    this.diffuse = stream.get();
                 } else if (opcode >= 30 && opcode < 39) {
-					if (actions == null) {
-                        actions = new String[5];
+					if (this.actions == null) {
+                        this.actions = new String[5];
                     }
-					actions[opcode - 30] = stream.getString();
-					if (actions[opcode - 30].equalsIgnoreCase("hidden")) {
-                        actions[opcode - 30] = null;
+                    this.actions[opcode - 30] = stream.getString();
+					if (this.actions[opcode - 30].equalsIgnoreCase("hidden")) {
+                        this.actions[opcode - 30] = null;
                     }
 				} else if (opcode == 40) {
 					int colourCount = stream.getUnsignedByte();
-					modifiedModelColors = new int[colourCount];
-					originalModelColors = new int[colourCount];
+                    this.modifiedModelColors = new int[colourCount];
+                    this.originalModelColors = new int[colourCount];
 					for (int c = 0; c < colourCount; c++) {
-						modifiedModelColors[c] = stream.getUnsignedLEShort();
-						originalModelColors[c] = stream.getUnsignedLEShort();
+                        this.modifiedModelColors[c] = stream.getUnsignedLEShort();
+                        this.originalModelColors[c] = stream.getUnsignedLEShort();
 					}
 
 				} else if (opcode == 60) {
-                    icon = stream.getUnsignedLEShort();
+                    this.icon = stream.getUnsignedLEShort();
                 } else if (opcode == 62) {
-                    rotated = true;
+                    this.rotated = true;
                 } else if (opcode == 64) {
-                    castsShadow = false;
+                    this.castsShadow = false;
                 } else if (opcode == 65) {
-                    scaleX = stream.getUnsignedLEShort();
+                    this.scaleX = stream.getUnsignedLEShort();
                 } else if (opcode == 66) {
-                    scaleY = stream.getUnsignedLEShort();
+                    this.scaleY = stream.getUnsignedLEShort();
                 } else if (opcode == 67) {
-                    scaleZ = stream.getUnsignedLEShort();
+                    this.scaleZ = stream.getUnsignedLEShort();
                 } else if (opcode == 68) {
-                    mapScene = stream.getUnsignedLEShort();
+                    this.mapScene = stream.getUnsignedLEShort();
                 } else if (opcode == 69) {
-                    face = stream.getUnsignedByte();
+                    this.face = stream.getUnsignedByte();
                 } else if (opcode == 70) {
-                    translateX = stream.getShort();
+                    this.translateX = stream.getShort();
                 } else if (opcode == 71) {
-                    translateY = stream.getShort();
+                    this.translateY = stream.getShort();
                 } else if (opcode == 72) {
-                    translateZ = stream.getShort();
+                    this.translateZ = stream.getShort();
                 } else if (opcode == 73) {
-                    unknownAttribute = true;
+                    this.unknownAttribute = true;
                 } else if (opcode == 74) {
-					unwalkableSolid = true;
+                    this.unwalkableSolid = true;
 				} else {
 					if (opcode != 75) {
                         continue;
                     }
-					_solid = stream.getUnsignedByte();
+                    this._solid = stream.getUnsignedByte();
 				}
 				continue label0;
 			} while (opcode != 77);
-			varBitId = stream.getUnsignedLEShort();
-			if (varBitId == 65535) {
-                varBitId = -1;
+            this.varBitId = stream.getUnsignedLEShort();
+			if (this.varBitId == 65535) {
+                this.varBitId = -1;
             }
-			configIds = stream.getUnsignedLEShort();
-			if (configIds == 65535) {
-                configIds = -1;
+            this.configIds = stream.getUnsignedLEShort();
+			if (this.configIds == 65535) {
+                this.configIds = -1;
             }
 			int childCount = stream.getUnsignedByte();
-			childIds = new int[childCount + 1];
+            this.childIds = new int[childCount + 1];
 			for (int c = 0; c <= childCount; c++) {
-				childIds[c] = stream.getUnsignedLEShort();
-				if (childIds[c] == 65535) {
-                    childIds[c] = -1;
+                this.childIds[c] = stream.getUnsignedLEShort();
+				if (this.childIds[c] == 65535) {
+                    this.childIds[c] = -1;
                 }
 			}
 
 		} while (true);
 		if (_actions == -1) {
-			hasActions = modelIds != null && (modelTypes == null || modelTypes[0] == 10);
-			if (actions != null) {
-                hasActions = true;
+            this.hasActions = this.modelIds != null && (this.modelTypes == null || this.modelTypes[0] == 10);
+			if (this.actions != null) {
+                this.hasActions = true;
             }
 		}
-		if (unwalkableSolid) {
-			solid = false;
-			walkable = false;
+		if (this.unwalkableSolid) {
+            this.solid = false;
+            this.walkable = false;
 		}
-		if (_solid == -1) {
-            _solid = solid ? 1 : 0;
+		if (this._solid == -1) {
+            this._solid = this.solid ? 1 : 0;
         }
 	}
 
 	public boolean modelCached() {
-		if (modelIds == null) {
+		if (this.modelIds == null) {
             return true;
         }
 		boolean cached = true;
-		for (int m = 0; m < modelIds.length; m++) {
-            cached &= Model.isCached(modelIds[m] & 0xffff);
+		for (int m = 0; m < this.modelIds.length; m++) {
+            cached &= Model.isCached(this.modelIds[m] & 0xffff);
         }
 		return cached;
 	}
 
 	public boolean modelTypeCached(int modelType) {
-		if (modelTypes == null) {
-			if (modelIds == null) {
+		if (this.modelTypes == null) {
+			if (this.modelIds == null) {
                 return true;
             }
 			if (modelType != 10) {
                 return true;
             }
 			boolean cached = true;
-			for (int id = 0; id < modelIds.length; id++) {
-                cached &= Model.isCached(modelIds[id] & 0xffff);
+			for (int id = 0; id < this.modelIds.length; id++) {
+                cached &= Model.isCached(this.modelIds[id] & 0xffff);
             }
 
 			return cached;
 		}
-		for (int type = 0; type < modelTypes.length; type++) {
-            if (modelTypes[type] == modelType) {
-                return Model.isCached(modelIds[type] & 0xffff);
+		for (int type = 0; type < this.modelTypes.length; type++) {
+            if (this.modelTypes[type] == modelType) {
+                return Model.isCached(this.modelIds[type] & 0xffff);
             }
         }
 
@@ -458,50 +458,50 @@ public final class GameObjectDefinition {
 	}
 
 	public void passivelyRequestModels(OnDemandFetcher requester) {
-		if (modelIds == null) {
+		if (this.modelIds == null) {
             return;
         }
-		for (int modelId = 0; modelId < modelIds.length; modelId++) {
-            requester.passiveRequest(modelIds[modelId] & 0xffff, 0);
+		for (int modelId = 0; modelId < this.modelIds.length; modelId++) {
+            requester.passiveRequest(this.modelIds[modelId] & 0xffff, 0);
         }
 	}
 
 	private void setDefaults() {
-		modelIds = null;
-		modelTypes = null;
-		name = null;
-		description = null;
-		modifiedModelColors = null;
-		originalModelColors = null;
-		sizeX = 1;
-		sizeY = 1;
-		solid = true;
-		walkable = true;
-		hasActions = false;
-		adjustToTerrain = false;
-		delayShading = false;
-		wall = false;
-		animationId = -1;
-		offsetAmplifier = 16;
-		ambient = 0;
-		diffuse = 0;
-		actions = null;
-		icon = -1;
-		mapScene = -1;
-		rotated = false;
-		castsShadow = true;
-		scaleX = 128;
-		scaleY = 128;
-		scaleZ = 128;
-		face = 0;
-		translateX = 0;
-		translateY = 0;
-		translateZ = 0;
-		unknownAttribute = false;
-		unwalkableSolid = false;
-		_solid = -1;
-		varBitId = -1;
-		configIds = -1;
-		childIds = null;
+        this.modelIds = null;
+        this.modelTypes = null;
+        this.name = null;
+        this.description = null;
+        this.modifiedModelColors = null;
+        this.originalModelColors = null;
+        this.sizeX = 1;
+        this.sizeY = 1;
+        this.solid = true;
+        this.walkable = true;
+        this.hasActions = false;
+        this.adjustToTerrain = false;
+        this.delayShading = false;
+        this.wall = false;
+        this.animationId = -1;
+        this.offsetAmplifier = 16;
+        this.ambient = 0;
+        this.diffuse = 0;
+        this.actions = null;
+        this.icon = -1;
+        this.mapScene = -1;
+        this.rotated = false;
+        this.castsShadow = true;
+        this.scaleX = 128;
+        this.scaleY = 128;
+        this.scaleZ = 128;
+        this.face = 0;
+        this.translateX = 0;
+        this.translateY = 0;
+        this.translateZ = 0;
+        this.unknownAttribute = false;
+        this.unwalkableSolid = false;
+        this._solid = -1;
+        this.varBitId = -1;
+        this.configIds = -1;
+        this.childIds = null;
 	}
 }

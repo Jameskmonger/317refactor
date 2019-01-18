@@ -44,7 +44,7 @@ public final class Varp {
 			else if (opcode == 4) {
 			} // dummy
 			else if (opcode == 5) {
-                type = buffer.getUnsignedLEShort();
+                this.type = buffer.getUnsignedLEShort();
             } else if (opcode == 6) {
 			} // dummy
 			else if (opcode == 7) {

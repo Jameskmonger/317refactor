@@ -323,9 +323,9 @@ public final class RSInterface {
 	public Model getAnimatedModel(int frame1Id, int frame2Id, boolean active) {
 		Model model;
 		if (active) {
-            model = getModel(modelTypeActive, modelIdActive);
+            model = this.getModel(this.modelTypeActive, this.modelIdActive);
         } else {
-            model = getModel(modelTypeDefault, modelIdDefault);
+            model = this.getModel(this.modelTypeDefault, this.modelIdDefault);
         }
 		if (model == null) {
             return null;
@@ -376,13 +376,13 @@ public final class RSInterface {
 	}
 
 	public void swapInventoryItems(int originalSlot, int newSlot) {
-		int originalItem = inventoryItemId[originalSlot];
-		inventoryItemId[originalSlot] = inventoryItemId[newSlot];
-		inventoryItemId[newSlot] = originalItem;
+		int originalItem = this.inventoryItemId[originalSlot];
+        this.inventoryItemId[originalSlot] = this.inventoryItemId[newSlot];
+        this.inventoryItemId[newSlot] = originalItem;
 
-		originalItem = inventoryStackSize[originalSlot];
-		inventoryStackSize[originalSlot] = inventoryStackSize[newSlot];
-		inventoryStackSize[newSlot] = originalItem;
+		originalItem = this.inventoryStackSize[originalSlot];
+        this.inventoryStackSize[originalSlot] = this.inventoryStackSize[newSlot];
+        this.inventoryStackSize[newSlot] = originalItem;
 	}
 
 }

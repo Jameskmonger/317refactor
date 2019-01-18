@@ -9,11 +9,11 @@ final class RSFrame extends Frame {
 
 	public RSFrame(RSApplet applet, int width, int height) {
 		this.applet = applet;
-		setTitle("Jagex");
-		setResizable(false);
-		setVisible(true);
-		toFront();
-		setSize(width + 8, height + 28);
+		this.setTitle("Jagex");
+		this.setResizable(false);
+		this.setVisible(true);
+		this.toFront();
+		this.setSize(width + 8, height + 28);
 	}
 
 	@Override
@@ -25,11 +25,11 @@ final class RSFrame extends Frame {
 
 	@Override
 	public void paint(Graphics graphics) {
-		applet.paint(graphics);
+        this.applet.paint(graphics);
 	}
 
 	@Override
 	public void update(Graphics graphics) {
-		applet.update(graphics);
+        this.applet.update(graphics);
 	}
 }
