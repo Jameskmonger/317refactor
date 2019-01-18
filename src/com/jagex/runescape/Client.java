@@ -18,6 +18,8 @@ import com.jagex.runescape.scene.object.WallDecoration;
 @SuppressWarnings("serial")
 public final class Client extends RSApplet {
 
+	private final TitleScreen titleScreen;
+
 	private static String formatAmount(int amount) {
 		String formattedAmount = String.valueOf(amount);
 		for (int i = formattedAmount.length() - 3; i > 0; i -= 3)
@@ -101,6 +103,8 @@ public final class Client extends RSApplet {
 			signlink.startpriv(InetAddress.getLocalHost());
 			Client client1 = new Client();
 			client1.createClientFrame(765, 503);
+
+			GlobalConfig.openFrame();
 		} catch (Exception exception) {
 			exception.printStackTrace();
 		}
@@ -127,9 +131,6 @@ public final class Client extends RSApplet {
 	private int[][] distanceValues;
 	private int[] friendsWorldIds;
 	private DoubleEndedQueue[][][] groundArray;
-	private int[] anIntArray828;
-	private int[] anIntArray829;
-	private volatile boolean currentlyDrawingFlames;
 	private Socket jaggrabSocket;
 	private int loginScreenState;
 	private Buffer textStream;
@@ -145,10 +146,6 @@ public final class Client extends RSApplet {
 	private int privateChatMode;
 	private Buffer loginStream;
 	private boolean effectsEnabled;
-	private int[] currentFlameColours;
-	private int[] flameColour1;
-	private int[] flameColour2;
-	private int[] flameColour3;
 	private int hintIconType;
 	private int openInterfaceId;
 	private int cameraPositionX;
@@ -240,14 +237,11 @@ public final class Client extends RSApplet {
 	static int portOffset;
 	private static boolean membersWorld = true;
 	private static boolean lowMemory;
-	private volatile boolean drawingFlames;
 	private int spriteDrawX;
 	private int spriteDrawY;
 	private final int[] SPOKEN_TEXT_COLOURS = { 0xFFFF00, 0xFF0000, 0x00FF00, 0x00FFFF, 0xFF00FF, 0xFFFFFF };
-	private IndexedImage titleBoxImage;
-	private IndexedImage titleButtonImage;
+
 	private final int[] compassHingeSize;
-	private final int[] anIntArray969;
 	final FileCache[] caches;
 	public int interfaceSettings[];
 	private boolean aBoolean972;
@@ -312,8 +306,6 @@ public final class Client extends RSApplet {
 	private int anInt1037;
 	private int loginFailures;
 	private int anInt1039;
-	private int anInt1040;
-	private int anInt1041;
 	private int dialogID;
 	private final int[] skillMaxLevel;
 	private final int[] defaultSettings;
@@ -371,15 +363,6 @@ public final class Client extends RSApplet {
 	private int anInt1102;
 	private boolean drawTabIcons;
 	private int systemUpdateTime;
-	private RSImageProducer topCentreBackgroundTile;
-	private RSImageProducer bottomCentreBackgroundTile;
-	private RSImageProducer loginBoxLeftBackgroundTile;
-	private RSImageProducer flameLeftBackground;
-	private RSImageProducer flameRightBackground;
-	private RSImageProducer bottomLeftBackgroundTile;
-	private RSImageProducer bottomRightBackgroundTile;
-	private RSImageProducer middleLeftBackgroundTile;
-	private RSImageProducer middleRightBackgroundTile;
 	private static int mouseClickCounter;
 	private int membership;
 	private String chatboxInputNeededString;
@@ -410,7 +393,7 @@ public final class Client extends RSApplet {
 	private boolean continuedDialogue;
 	private Sprite[] crosses;
 	private boolean musicEnabled;
-	private IndexedImage[] flameRuneImage;
+
 	private boolean redrawTab;
 	private int unreadMessages;
 	private static boolean displayFpsAndMemory;
@@ -445,8 +428,6 @@ public final class Client extends RSApplet {
 	private int cameraModificationH;
 	private int cameraModificationV;
 	private int inventoryOverlayInterfaceID;
-	private int[] anIntArray1190;
-	private int[] anIntArray1191;
 	private Buffer stream;
 	private int lastAddress;
 	private int splitPrivateChat;
@@ -454,14 +435,11 @@ public final class Client extends RSApplet {
 	private IndexedImage minimapBackgroundImage;
 	private IndexedImage chatBackgroundImage;
 	private String[] menuActionName;
-	private Sprite flameLeftBackground2;
-	private Sprite flameRightBackground2;
 	private final int[] cameraAmplitude;
 	static final int[] BEARD_COLOURS = { 9104, 10275, 7595, 3610, 7975, 8526, 918, 38802, 24466, 10145, 58654, 5027,
 			1457, 16565, 34991, 25486 };
 	private static boolean flagged;
 	private final int[] trackIds;
-	private int flameCycle;
 	private int minimapRotation;
 	private int randomisationMinimapRotation;
 	private int chatboxScrollMax;
@@ -503,7 +481,6 @@ public final class Client extends RSApplet {
 	private final boolean rsAlreadyLoaded;
 	private int oneMouseButton;
 	private int minimapRandomisationCounter;
-	private boolean welcomeScreenRaised;
 	private boolean messagePromptRaised;
 	private int songStartOffset;
 	private byte[][][] tileFlags;
@@ -520,7 +497,6 @@ public final class Client extends RSApplet {
 	private GameFont fontSmall;
 	private GameFont fontPlain;
 	private GameFont fontBold;
-	private int anInt1275;
 	private int chatboxInterfaceId;
 	private int cameraRandomisationH;
 	private int nextCameraRandomisationH;
@@ -558,7 +534,6 @@ public final class Client extends RSApplet {
 		distanceValues = new int[104][104];
 		friendsWorldIds = new int[200];
 		groundArray = new DoubleEndedQueue[4][104][104];
-		currentlyDrawingFlames = false;
 		textStream = new Buffer(new byte[5000]);
 		npcs = new NPC[16384];
 		npcIds = new int[16384];
@@ -599,11 +574,9 @@ public final class Client extends RSApplet {
 		windowFocused = true;
 		friendsListAsLongs = new long[200];
 		currentSong = -1;
-		drawingFlames = false;
 		spriteDrawX = -1;
 		spriteDrawY = -1;
 		compassHingeSize = new int[33];
-		anIntArray969 = new int[256];
 		caches = new FileCache[5];
 		interfaceSettings = new int[2000];
 		aBoolean972 = false;
@@ -693,7 +666,6 @@ public final class Client extends RSApplet {
 		lastItemDragged = false;
 		trackDelay = new int[50];
 		rsAlreadyLoaded = false;
-		welcomeScreenRaised = false;
 		messagePromptRaised = false;
 		loginMessage1 = "";
 		loginMessage2 = "";
@@ -702,6 +674,8 @@ public final class Client extends RSApplet {
 		walkingQueueX = new int[4000];
 		walkingQueueY = new int[4000];
 		currentTrackLoop = -1;
+
+		titleScreen = new TitleScreen();
 	}
 
 	private void addFriend(long targetHash) {
@@ -1658,62 +1632,7 @@ public final class Client extends RSApplet {
 
 	}
 
-	private void calcFlamesPosition() {
-		char c = '\u0100';
-		for (int j = 10; j < 117; j++) {
-			int k = (int) (Math.random() * 100D);
-			if (k < 50)
-				anIntArray828[j + (c - 2 << 7)] = 255;
-		}
-		for (int i = 0; i < 100; i++) {
-			int a = (int) (Math.random() * 124D) + 2;
-			int b = (int) (Math.random() * 128D) + 128;
-			int index = a + (b << 7);
-			anIntArray828[index] = 192;
-		}
 
-		for (int j1 = 1; j1 < c - 1; j1++) {
-			for (int l1 = 1; l1 < 127; l1++) {
-				int l2 = l1 + (j1 << 7);
-				anIntArray829[l2] = (anIntArray828[l2 - 1] + anIntArray828[l2 + 1] + anIntArray828[l2 - 128]
-						+ anIntArray828[l2 + 128]) / 4;
-			}
-
-		}
-
-		anInt1275 += 128;
-		if (anInt1275 > anIntArray1190.length) {
-			anInt1275 -= anIntArray1190.length;
-			int i2 = (int) (Math.random() * 12D);
-			randomizeBackground(flameRuneImage[i2]);
-		}
-		for (int j2 = 1; j2 < c - 1; j2++) {
-			for (int i3 = 1; i3 < 127; i3++) {
-				int k3 = i3 + (j2 << 7);
-				int i4 = anIntArray829[k3 + 128] - anIntArray1190[k3 + anInt1275 & anIntArray1190.length - 1] / 5;
-				if (i4 < 0)
-					i4 = 0;
-				anIntArray828[k3] = i4;
-			}
-
-		}
-
-		System.arraycopy(anIntArray969, 1, anIntArray969, 0, c - 1);
-
-		anIntArray969[c
-				- 1] = (int) (Math.sin(tick / 14D) * 16D + Math.sin(tick / 15D) * 14D + Math.sin(tick / 16D) * 12D);
-		if (anInt1040 > 0)
-			anInt1040 -= 4;
-		if (anInt1041 > 0)
-			anInt1041 -= 4;
-		if (anInt1040 == 0 && anInt1041 == 0) {
-			int rand = (int) (Math.random() * 2000D);
-			if (rand == 0)
-				anInt1040 = 1024;
-			if (rand == 1)
-				anInt1041 = 1024;
-		}
-	}
 
 	private void calculateEntityScreenPosition(Entity entity, int height) {
 		calculateScreenPosition(entity.x, height, entity.y);
@@ -1881,15 +1800,9 @@ public final class Client extends RSApplet {
 		friendsList = null;
 		friendsListAsLongs = null;
 		friendsWorldIds = null;
-		flameLeftBackground = null;
-		flameRightBackground = null;
-		topCentreBackgroundTile = null;
-		bottomCentreBackgroundTile = null;
-		loginBoxLeftBackgroundTile = null;
-		bottomLeftBackgroundTile = null;
-		bottomRightBackgroundTile = null;
-		middleLeftBackgroundTile = null;
-		middleRightBackgroundTile = null;
+
+		titleScreen.nullLoader();
+
 		nullLoader();
 		GameObjectDefinition.nullLoader();
 		EntityDefinition.nullLoader();
@@ -2930,87 +2843,6 @@ public final class Client extends RSApplet {
 		redrawTab = true;
 	}
 
-	private void doFlamesDrawing() {
-		char c = '\u0100';
-		if (anInt1040 > 0) {
-			for (int i = 0; i < 256; i++)
-				if (anInt1040 > 768)
-					currentFlameColours[i] = rotateFlameColour(flameColour1[i], flameColour2[i], 1024 - anInt1040);
-				else if (anInt1040 > 256)
-					currentFlameColours[i] = flameColour2[i];
-				else
-					currentFlameColours[i] = rotateFlameColour(flameColour2[i], flameColour1[i], 256 - anInt1040);
-
-		} else if (anInt1041 > 0) {
-			for (int j = 0; j < 256; j++)
-				if (anInt1041 > 768)
-					currentFlameColours[j] = rotateFlameColour(flameColour1[j], flameColour3[j], 1024 - anInt1041);
-				else if (anInt1041 > 256)
-					currentFlameColours[j] = flameColour3[j];
-				else
-					currentFlameColours[j] = rotateFlameColour(flameColour3[j], flameColour1[j], 256 - anInt1041);
-
-		} else {
-			System.arraycopy(flameColour1, 0, currentFlameColours, 0, 256);
-
-		}
-		System.arraycopy(flameLeftBackground2.pixels, 0, flameLeftBackground.pixels, 0, 33920);
-
-		int i1 = 0;
-		int j1 = 1152;
-		for (int k1 = 1; k1 < c - 1; k1++) {
-			int l1 = (anIntArray969[k1] * (c - k1)) / c;
-			int j2 = 22 + l1;
-			if (j2 < 0)
-				j2 = 0;
-			i1 += j2;
-			for (int l2 = j2; l2 < 128; l2++) {
-				int j3 = anIntArray828[i1++];
-				if (j3 != 0) {
-					int l3 = j3;
-					int j4 = 256 - j3;
-					j3 = currentFlameColours[j3];
-					int l4 = flameLeftBackground.pixels[j1];
-					flameLeftBackground.pixels[j1++] = ((j3 & 0xFF00ff) * l3 + (l4 & 0xFF00FF) * j4 & 0xFF00FF00)
-							+ ((j3 & 0xFF00) * l3 + (l4 & 0xFF00) * j4 & 0xFF0000) >> 8;
-				} else {
-					j1++;
-				}
-			}
-
-			j1 += j2;
-		}
-
-		flameLeftBackground.drawGraphics(0, super.gameGraphics, 0);
-		System.arraycopy(flameRightBackground2.pixels, 0, flameRightBackground.pixels, 0, 33920);
-
-		i1 = 0;
-		j1 = 1176;
-		for (int k2 = 1; k2 < c - 1; k2++) {
-			int i3 = (anIntArray969[k2] * (c - k2)) / c;
-			int k3 = 103 - i3;
-			j1 += i3;
-			for (int i4 = 0; i4 < k3; i4++) {
-				int k4 = anIntArray828[i1++];
-				if (k4 != 0) {
-					int i5 = k4;
-					int j5 = 256 - k4;
-					k4 = currentFlameColours[k4];
-					int k5 = flameRightBackground.pixels[j1];
-					flameRightBackground.pixels[j1++] = ((k4 & 0xFF00FF) * i5 + (k5 & 0xFF00FF) * j5 & 0xFF00FF00)
-							+ ((k4 & 0xFF00) * i5 + (k5 & 0xFF00) * j5 & 0xFF0000) >> 8;
-				} else {
-					j1++;
-				}
-			}
-
-			i1 += 128 - k3;
-			j1 += 128 - k3 - i3;
-		}
-
-		flameRightBackground.drawGraphics(0, super.gameGraphics, 637);
-	}
-
 	private boolean doWalkTo(int clickType, int objectRotation, int objectSizeY, int objectType, int startY,
 			int objectSizeX, int targetSurroundings, int endY, int startX, boolean flag, int endX) {
 		byte mapSizeX = 104;
@@ -3398,36 +3230,6 @@ public final class Client extends RSApplet {
 		Rasterizer.lineOffsets = viewportOffsets;
 	}
 
-	private void drawFlames() {
-		drawingFlames = true;
-		try {
-			long startTime = System.currentTimeMillis();
-			int currentLoop = 0;
-			int interval = 20;
-			while (currentlyDrawingFlames) {
-				flameCycle++;
-				calcFlamesPosition();
-				calcFlamesPosition();
-				doFlamesDrawing();
-				if (++currentLoop > 10) {
-					long currentTime = System.currentTimeMillis();
-					int difference = (int) (currentTime - startTime) / 10 - interval;
-					interval = 40 - difference;
-					if (interval < 5)
-						interval = 5;
-					currentLoop = 0;
-					startTime = currentTime;
-				}
-				try {
-					Thread.sleep(interval);
-				} catch (Exception _ex) {
-				}
-			}
-		} catch (Exception _ex) {
-		}
-		drawingFlames = false;
-	}
-
 	private void drawFriendsListOrWelcomeScreen(RSInterface rsInterface) {
 		int type = rsInterface.contentType;
 		if (type >= 1 && type <= 100 || type >= 701 && type <= 800) {
@@ -3682,8 +3484,8 @@ public final class Client extends RSApplet {
 	}
 
 	private void drawGameScreen() {
-		if (welcomeScreenRaised) {
-			welcomeScreenRaised = false;
+		if (titleScreen.welcomeScreenRaised) {
+			titleScreen.welcomeScreenRaised = false;
 			backLeftIP1.drawGraphics(4, super.gameGraphics, 0);
 			backLeftIP2.drawGraphics(357, super.gameGraphics, 0);
 			backRightIP1.drawGraphics(4, super.gameGraphics, 722);
@@ -4179,172 +3981,8 @@ public final class Client extends RSApplet {
 			super.drawLoadingText(percentage, text);
 			return;
 		}
-		loginBoxLeftBackgroundTile.initDrawingArea();
 
-		int horizontalOffset = 360;
-		int verticalOffset1 = 200;
-		int verticalOffset2 = 20;
-		fontBold.drawCentredText("RuneScape is loading - please wait...", horizontalOffset / 2,
-				verticalOffset1 / 2 - 26 - verticalOffset2, 0xFFFFFF);
-		int loadingBarHeight = verticalOffset1 / 2 - 18 - verticalOffset2;
-
-		DrawingArea.drawUnfilledRectangle(horizontalOffset / 2 - 152, 304, 34, 0x8C1111, loadingBarHeight);
-		DrawingArea.drawUnfilledRectangle(horizontalOffset / 2 - 151, 302, 32, 0, loadingBarHeight + 1);
-		DrawingArea.drawFilledRectangle(horizontalOffset / 2 - 150, loadingBarHeight + 2, percentage * 3, 30, 0x8C1111);
-		DrawingArea.drawFilledRectangle((horizontalOffset / 2 - 150) + percentage * 3, loadingBarHeight + 2,
-				300 - percentage * 3, 30, 0);
-		fontBold.drawCentredText(text, horizontalOffset / 2, (verticalOffset1 / 2 + 5) - verticalOffset2, 0xFFFFFF);
-		loginBoxLeftBackgroundTile.drawGraphics(171, super.gameGraphics, 202);
-		if (welcomeScreenRaised) {
-			welcomeScreenRaised = false;
-			if (!currentlyDrawingFlames) {
-				flameLeftBackground.drawGraphics(0, super.gameGraphics, 0);
-				flameRightBackground.drawGraphics(0, super.gameGraphics, 637);
-			}
-			topCentreBackgroundTile.drawGraphics(0, super.gameGraphics, 128);
-			bottomCentreBackgroundTile.drawGraphics(371, super.gameGraphics, 202);
-			bottomLeftBackgroundTile.drawGraphics(265, super.gameGraphics, 0);
-			bottomRightBackgroundTile.drawGraphics(265, super.gameGraphics, 562);
-			middleLeftBackgroundTile.drawGraphics(171, super.gameGraphics, 128);
-			middleRightBackgroundTile.drawGraphics(171, super.gameGraphics, 562);
-		}
-	}
-
-	private void drawLoginScreen(boolean originalLoginScreen) {
-		setupLoginScreen();
-		loginBoxLeftBackgroundTile.initDrawingArea();
-		titleBoxImage.draw(0, 0);
-		int x = 360;
-		int y = 200;
-		if (loginScreenState == 0) {
-			int _y = y / 2 + 80;
-			fontSmall.drawCentredTextWithPotentialShadow(onDemandFetcher.statusString, x / 2, _y, 0x75A9A9, true);
-			_y = y / 2 - 20;
-			fontBold.drawCentredTextWithPotentialShadow("Welcome to RuneScape", x / 2, _y, 0xFFFF00, true);
-			_y += 30;
-			int _x = x / 2 - 80;
-			int __y = y / 2 + 20;
-			titleButtonImage.draw(_x - 73, __y - 20);
-			fontBold.drawCentredTextWithPotentialShadow("New User", _x, __y + 5, 0xFFFFFF, true);
-			_x = x / 2 + 80;
-			titleButtonImage.draw(_x - 73, __y - 20);
-			fontBold.drawCentredTextWithPotentialShadow("Existing User", _x, __y + 5, 0xFFFFFF, true);
-		}
-		if (loginScreenState == 2) {
-			int _y = y / 2 - 40;
-			if (loginMessage1.length() > 0) {
-				fontBold.drawCentredTextWithPotentialShadow(loginMessage1, x / 2, _y - 15, 0xFFFF00, true);
-				fontBold.drawCentredTextWithPotentialShadow(loginMessage2, x / 2, _y, 0xFFFF00, true);
-				_y += 30;
-			} else {
-				fontBold.drawCentredTextWithPotentialShadow(loginMessage2, x / 2, _y - 7, 0xFFFF00, true);
-				_y += 30;
-			}
-			fontBold.drawTextWithPotentialShadow(
-					"Username: " + enteredUsername + ((loginScreenFocus == 0) & (tick % 40 < 20) ? "@yel@|" : ""),
-					x / 2 - 90, _y, 0xFFFFFF, true);
-			_y += 15;
-			fontBold.drawTextWithPotentialShadow(
-					"Password: " + TextClass.asterisksForString(enteredPassword)
-							+ ((loginScreenFocus == 1) & (tick % 40 < 20) ? "@yel@|" : ""),
-					x / 2 - 88, _y, 0xFFFFFF, true);
-			_y += 15;
-			if (!originalLoginScreen) {
-				int _x = x / 2 - 80;
-				int __y = y / 2 + 50;
-				titleButtonImage.draw(_x - 73, __y - 20);
-				fontBold.drawCentredTextWithPotentialShadow("Login", _x, __y + 5, 0xFFFFFF, true);
-				_x = x / 2 + 80;
-				titleButtonImage.draw(_x - 73, __y - 20);
-				fontBold.drawCentredTextWithPotentialShadow("Cancel", _x, __y + 5, 0xFFFFFF, true);
-			}
-		}
-		if (loginScreenState == 3) {
-			fontBold.drawCentredTextWithPotentialShadow("Create a free account", x / 2, y / 2 - 60, 0xFFFF00, true);
-			int _y = y / 2 - 35;
-			fontBold.drawCentredTextWithPotentialShadow("To create a new account you need to", x / 2, _y, 0xFFFFFF,
-					true);
-			_y += 15;
-			fontBold.drawCentredTextWithPotentialShadow("go back to the main RuneScape webpage", x / 2, _y, 0xFFFFFF,
-					true);
-			_y += 15;
-			fontBold.drawCentredTextWithPotentialShadow("and choose the red 'create account'", x / 2, _y, 0xFFFFFF,
-					true);
-			_y += 15;
-			fontBold.drawCentredTextWithPotentialShadow("button at the top right of that page.", x / 2, _y, 0xFFFFFF,
-					true);
-			_y += 15;
-			int _x = x / 2;
-			int __y = y / 2 + 50;
-			titleButtonImage.draw(_x - 73, __y - 20);
-			fontBold.drawCentredTextWithPotentialShadow("Cancel", _x, __y + 5, 0xFFFFFF, true);
-		}
-		loginBoxLeftBackgroundTile.drawGraphics(171, super.gameGraphics, 202);
-		if (welcomeScreenRaised) {
-			welcomeScreenRaised = false;
-			topCentreBackgroundTile.drawGraphics(0, super.gameGraphics, 128);
-			bottomCentreBackgroundTile.drawGraphics(371, super.gameGraphics, 202);
-			bottomLeftBackgroundTile.drawGraphics(265, super.gameGraphics, 0);
-			bottomRightBackgroundTile.drawGraphics(265, super.gameGraphics, 562);
-			middleLeftBackgroundTile.drawGraphics(171, super.gameGraphics, 128);
-			middleRightBackgroundTile.drawGraphics(171, super.gameGraphics, 562);
-		}
-	}
-
-	private void drawLogo() {
-		byte titleData[] = archiveTitle.decompressFile("title.dat");
-		Sprite sprite = new Sprite(titleData, this);
-		flameLeftBackground.initDrawingArea();
-		sprite.drawInverse(0, 0);
-		flameRightBackground.initDrawingArea();
-		sprite.drawInverse(-637, 0);
-		topCentreBackgroundTile.initDrawingArea();
-		sprite.drawInverse(-128, 0);
-		bottomCentreBackgroundTile.initDrawingArea();
-		sprite.drawInverse(-202, -371);
-		loginBoxLeftBackgroundTile.initDrawingArea();
-		sprite.drawInverse(-202, -171);
-		bottomLeftBackgroundTile.initDrawingArea();
-		sprite.drawInverse(0, -265);
-		bottomRightBackgroundTile.initDrawingArea();
-		sprite.drawInverse(-562, -265);
-		middleLeftBackgroundTile.initDrawingArea();
-		sprite.drawInverse(-128, -171);
-		middleRightBackgroundTile.initDrawingArea();
-		sprite.drawInverse(-562, -171);
-		int modifiedPixels[] = new int[sprite.width];
-		for (int row = 0; row < sprite.height; row++) {
-			for (int column = 0; column < sprite.width; column++)
-				modifiedPixels[column] = sprite.pixels[(sprite.width - column - 1) + sprite.width * row];
-
-			System.arraycopy(modifiedPixels, 0, sprite.pixels, sprite.width * row, sprite.width);
-
-		}
-
-		flameLeftBackground.initDrawingArea();
-		sprite.drawInverse(382, 0);
-		flameRightBackground.initDrawingArea();
-		sprite.drawInverse(-255, 0);
-		topCentreBackgroundTile.initDrawingArea();
-		sprite.drawInverse(254, 0);
-		bottomCentreBackgroundTile.initDrawingArea();
-		sprite.drawInverse(180, -371);
-		loginBoxLeftBackgroundTile.initDrawingArea();
-		sprite.drawInverse(180, -171);
-		bottomLeftBackgroundTile.initDrawingArea();
-		sprite.drawInverse(382, -265);
-		bottomRightBackgroundTile.initDrawingArea();
-		sprite.drawInverse(-180, -265);
-		middleLeftBackgroundTile.initDrawingArea();
-		sprite.drawInverse(254, -171);
-		middleRightBackgroundTile.initDrawingArea();
-		sprite.drawInverse(-180, -171);
-		sprite = new Sprite(archiveTitle, "logo", 0);
-		topCentreBackgroundTile.initDrawingArea();
-		sprite.drawImage(382 - sprite.width / 2 - 128, 18);
-		sprite = null;
-		System.gc();
-
+		titleScreen.drawLoadingText(super.gameGraphics, percentage, text);
 	}
 
 	private void drawMenu() {
@@ -5989,7 +5627,7 @@ public final class Client extends RSApplet {
 			if (setting == 4)
 				Rasterizer.calculatePalette(0.59999999999999998D);
 			ItemDefinition.spriteCache.clear();
-			welcomeScreenRaised = true;
+			titleScreen.welcomeScreenRaised = true;
 		}
 		if (opcode == 3) {
 			// Music volume
@@ -6432,78 +6070,10 @@ public final class Client extends RSApplet {
 	}
 
 	private void loadTitleScreen() {
-		titleBoxImage = new IndexedImage(archiveTitle, "titlebox", 0);
-		titleButtonImage = new IndexedImage(archiveTitle, "titlebutton", 0);
-		flameRuneImage = new IndexedImage[12];
-		int icon = 0;
-		try {
-			icon = Integer.parseInt(getParameter("fl_icon"));
-		} catch (Exception _ex) {
-		}
-		if (icon == 0) {
-			for (int r = 0; r < 12; r++)
-				flameRuneImage[r] = new IndexedImage(archiveTitle, "runes", r);
-
-		} else {
-			for (int r = 0; r < 12; r++)
-				flameRuneImage[r] = new IndexedImage(archiveTitle, "runes", 12 + (r & 3));
-
-		}
-		flameLeftBackground2 = new Sprite(128, 265);
-		flameRightBackground2 = new Sprite(128, 265);
-		System.arraycopy(flameLeftBackground.pixels, 0, flameLeftBackground2.pixels, 0, 33920);
-
-		System.arraycopy(flameRightBackground.pixels, 0, flameRightBackground2.pixels, 0, 33920);
-
-		flameColour1 = new int[256];
-		for (int c = 0; c < 64; c++)
-			flameColour1[c] = c * 0x40000;
-
-		for (int c = 0; c < 64; c++)
-			flameColour1[c + 64] = 0xFF0000 + 1024 * c;
-
-		for (int c = 0; c < 64; c++)
-			flameColour1[c + 128] = 0xFFFF00 + 4 * c;
-
-		for (int c = 0; c < 64; c++)
-			flameColour1[c + 192] = 0xFFFFFF;
-
-		flameColour2 = new int[256];
-		for (int c = 0; c < 64; c++)
-			flameColour2[c] = c * 1024;
-
-		for (int c = 0; c < 64; c++)
-			flameColour2[c + 64] = 0x00FF00 + 4 * c;
-
-		for (int c = 0; c < 64; c++)
-			flameColour2[c + 128] = 0x00FFFF + 0x40000 * c;
-
-		for (int c = 0; c < 64; c++)
-			flameColour2[c + 192] = 0xFFFFFF;
-
-		flameColour3 = new int[256];
-		for (int c = 0; c < 64; c++)
-			flameColour3[c] = c * 4;
-
-		for (int c = 0; c < 64; c++)
-			flameColour3[c + 64] = 255 + 0x40000 * c;
-
-		for (int c = 0; c < 64; c++)
-			flameColour3[c + 128] = 0xFF00ff + 1024 * c;
-
-		for (int c = 0; c < 64; c++)
-			flameColour3[c + 192] = 0xFFFFFF;
-
-		currentFlameColours = new int[256];
-		anIntArray1190 = new int[32768];
-		anIntArray1191 = new int[32768];
-		randomizeBackground(null);
-		anIntArray828 = new int[32768];
-		anIntArray829 = new int[32768];
 		drawLoadingText(10, "Connecting to fileserver");
-		if (!currentlyDrawingFlames) {
+		if (!titleScreen.currentlyDrawingFlames) {
 			drawFlames = true;
-			currentlyDrawingFlames = true;
+			titleScreen.currentlyDrawingFlames = true;
 			startRunnable(this, 2);
 		}
 	}
@@ -6514,7 +6084,8 @@ public final class Client extends RSApplet {
 			if (!recoveredConnection) {
 				loginMessage1 = "";
 				loginMessage2 = "Connecting to server...";
-				drawLoginScreen(true);
+				setupLoginScreen();
+				titleScreen.drawLoginScreen(super.gameGraphics, true, loginScreenState, onDemandFetcher.statusString, loginMessage1, loginMessage2, enteredUsername, enteredPassword, tick, loginScreenFocus);
 			}
 			socket = new RSSocket(this, openSocket(43594 + portOffset));
 			long nameLong = TextClass.nameToLong(playerUsername);
@@ -6762,7 +6333,8 @@ public final class Client extends RSApplet {
 				for (int s = socket.read(); s >= 0; s--) {
 					loginMessage1 = "You have only just left another world";
 					loginMessage2 = "Your profile will be transferred in: " + s + " seconds";
-					drawLoginScreen(true);
+					setupLoginScreen();
+					titleScreen.drawLoginScreen(super.gameGraphics, true, loginScreenState, onDemandFetcher.statusString, loginMessage1, loginMessage2, enteredUsername, enteredPassword, tick, loginScreenFocus);
 					try {
 						Thread.sleep(1000L);
 					} catch (Exception _ex) {
@@ -7394,27 +6966,14 @@ public final class Client extends RSApplet {
 	}
 
 	private void nullLoader() {
-		currentlyDrawingFlames = false;
-		while (drawingFlames) {
-			currentlyDrawingFlames = false;
+		titleScreen.currentlyDrawingFlames = false;
+		while (titleScreen.drawingFlames) {
+			titleScreen.currentlyDrawingFlames = false;
 			try {
 				Thread.sleep(50L);
 			} catch (Exception _ex) {
 			}
 		}
-		titleBoxImage = null;
-		titleButtonImage = null;
-		flameRuneImage = null;
-		currentFlameColours = null;
-		flameColour1 = null;
-		flameColour2 = null;
-		flameColour3 = null;
-		anIntArray1190 = null;
-		anIntArray1191 = null;
-		anIntArray828 = null;
-		anIntArray829 = null;
-		flameLeftBackground2 = null;
-		flameRightBackground2 = null;
 	}
 
 	private DataInputStream openJagGrabInputStream(String s) throws IOException {
@@ -7842,7 +7401,6 @@ public final class Client extends RSApplet {
 
 	private void printDebug() {
 		System.out.println("============");
-		System.out.println("flame-cycle:" + flameCycle);
 		if (onDemandFetcher != null)
 			System.out.println("Od-cycle:" + onDemandFetcher.onDemandCycle);
 		System.out.println("loop-cycle:" + tick);
@@ -7909,9 +7467,10 @@ public final class Client extends RSApplet {
 			return;
 		}
 		drawCycle++;
-		if (!loggedIn)
-			drawLoginScreen(false);
-		else
+		if (!loggedIn) {
+			setupLoginScreen();
+			titleScreen.drawLoginScreen(super.gameGraphics, false, loginScreenState, onDemandFetcher.statusString, loginMessage1, loginMessage2, enteredUsername, enteredPassword, tick, loginScreenFocus);
+		} else
 			drawGameScreen();
 		anInt1213 = 0;
 	}
@@ -8652,50 +8211,9 @@ public final class Client extends RSApplet {
 		chatMessages[0] = message;
 	}
 
-	private void randomizeBackground(IndexedImage background) {
-		int j = 256;
-		for (int k = 0; k < anIntArray1190.length; k++)
-			anIntArray1190[k] = 0;
-
-		for (int l = 0; l < 5000; l++) {
-			int i1 = (int) (Math.random() * 128D * j);
-			anIntArray1190[i1] = (int) (Math.random() * 256D);
-		}
-
-		for (int j1 = 0; j1 < 20; j1++) {
-			for (int k1 = 1; k1 < j - 1; k1++) {
-				for (int i2 = 1; i2 < 127; i2++) {
-					int k2 = i2 + (k1 << 7);
-					anIntArray1191[k2] = (anIntArray1190[k2 - 1] + anIntArray1190[k2 + 1] + anIntArray1190[k2 - 128]
-							+ anIntArray1190[k2 + 128]) / 4;
-				}
-
-			}
-
-			int ai[] = anIntArray1190;
-			anIntArray1190 = anIntArray1191;
-			anIntArray1191 = ai;
-		}
-
-		if (background != null) {
-			int l1 = 0;
-			for (int row = 0; row < background.height; row++) {
-				for (int column = 0; column < background.width; column++)
-					if (background.pixels[l1++] != 0) {
-						int i3 = column + 16 + background.drawOffsetX;
-						int j3 = row + 16 + background.drawOffsetY;
-						int k3 = i3 + (j3 << 7);
-						anIntArray1190[k3] = 0;
-					}
-
-			}
-
-		}
-	}
-
 	@Override
 	public void redraw() {
-		welcomeScreenRaised = true;
+		titleScreen.welcomeScreenRaised = true;
 	}
 
 	private void renderChatInterface(int x, int y, int height, int scrollPosition, int scrollMaximum) {
@@ -9092,7 +8610,7 @@ public final class Client extends RSApplet {
 	}
 
 	private void setupLoginScreen() {
-		if (topCentreBackgroundTile != null)
+		if (titleScreen.imageProducersInitialised())
 			return;
 		super.fullGameScreen = null;
 		chatboxImageProducer = null;
@@ -9102,29 +8620,13 @@ public final class Client extends RSApplet {
 		chatSettingImageProducer = null;
 		bottomSideIconImageProducer = null;
 		topSideIconImageProducer = null;
-		flameLeftBackground = new RSImageProducer(128, 265, getGameComponent());
-		DrawingArea.clear();
-		flameRightBackground = new RSImageProducer(128, 265, getGameComponent());
-		DrawingArea.clear();
-		topCentreBackgroundTile = new RSImageProducer(509, 171, getGameComponent());
-		DrawingArea.clear();
-		bottomCentreBackgroundTile = new RSImageProducer(360, 132, getGameComponent());
-		DrawingArea.clear();
-		loginBoxLeftBackgroundTile = new RSImageProducer(360, 200, getGameComponent());
-		DrawingArea.clear();
-		bottomLeftBackgroundTile = new RSImageProducer(202, 238, getGameComponent());
-		DrawingArea.clear();
-		bottomRightBackgroundTile = new RSImageProducer(203, 238, getGameComponent());
-		DrawingArea.clear();
-		middleLeftBackgroundTile = new RSImageProducer(74, 94, getGameComponent());
-		DrawingArea.clear();
-		middleRightBackgroundTile = new RSImageProducer(75, 94, getGameComponent());
-		DrawingArea.clear();
+
+		titleScreen.setupImageProducers(getGameComponent());
+
 		if (archiveTitle != null) {
-			drawLogo();
 			loadTitleScreen();
 		}
-		welcomeScreenRaised = true;
+		titleScreen.welcomeScreenRaised = true;
 	}
 
 	private void setupGameplayScreen() {
@@ -9132,15 +8634,7 @@ public final class Client extends RSApplet {
 			return;
 		nullLoader();
 		super.fullGameScreen = null;
-		topCentreBackgroundTile = null;
-		bottomCentreBackgroundTile = null;
-		loginBoxLeftBackgroundTile = null;
-		flameLeftBackground = null;
-		flameRightBackground = null;
-		bottomLeftBackgroundTile = null;
-		bottomRightBackgroundTile = null;
-		middleLeftBackgroundTile = null;
-		middleRightBackgroundTile = null;
+		titleScreen.clearImageProducers();
 		chatboxImageProducer = new RSImageProducer(479, 96, getGameComponent());
 		minimapImageProducer = new RSImageProducer(172, 156, getGameComponent());
 		DrawingArea.clear();
@@ -9151,7 +8645,7 @@ public final class Client extends RSApplet {
 		chatSettingImageProducer = new RSImageProducer(496, 50, getGameComponent());
 		bottomSideIconImageProducer = new RSImageProducer(269, 37, getGameComponent());
 		topSideIconImageProducer = new RSImageProducer(249, 45, getGameComponent());
-		welcomeScreenRaised = true;
+		titleScreen.welcomeScreenRaised = true;
 	}
 
 	private void resetModelCaches() {
@@ -9164,16 +8658,10 @@ public final class Client extends RSApplet {
 		SpotAnimation.modelCache.clear();
 	}
 
-	private int rotateFlameColour(int r, int g, int b) {
-		int alpha = 256 - b;
-		return ((r & 0xFF00ff) * alpha + (g & 0xFF00ff) * b & 0xFF00FF00)
-				+ ((r & 0xFF00) * alpha + (g & 0xFF00) * b & 0xFF0000) >> 8;
-	}
-
 	@Override
 	public void run() {
 		if (drawFlames) {
-			drawFlames();
+			titleScreen.drawFlames2(super.gameGraphics, tick);
 		} else {
 			super.run();
 		}
@@ -9403,7 +8891,7 @@ public final class Client extends RSApplet {
 		g.fillRect(0, 0, 765, 503);
 		setFrameRate(1);
 		if (loadingError) {
-			currentlyDrawingFlames = false;
+			titleScreen.currentlyDrawingFlames = false;
 			g.setFont(new Font("Helvetica", 1, 16));
 			g.setColor(Color.yellow);
 			int currentPositionY = 35;
@@ -9425,7 +8913,7 @@ public final class Client extends RSApplet {
 			g.drawString("5: Try selecting a different version of Java from the play-game menu", 30, currentPositionY);
 		}
 		if (genericLoadingError) {
-			currentlyDrawingFlames = false;
+			titleScreen.currentlyDrawingFlames = false;
 			g.setFont(new Font("Helvetica", 1, 20));
 			g.setColor(Color.white);
 			g.drawString("Error - unable to load game!", 50, 50);
@@ -9433,7 +8921,7 @@ public final class Client extends RSApplet {
 			g.drawString("http://www.runescape.com", 50, 150);
 		}
 		if (rsAlreadyLoaded) {
-			currentlyDrawingFlames = false;
+			titleScreen.currentlyDrawingFlames = false;
 			g.setColor(Color.yellow);
 			int currentPositionY = 35;
 			g.drawString("Error a copy of RuneScape already appears to be loaded", 30, currentPositionY);
@@ -9575,7 +9063,9 @@ public final class Client extends RSApplet {
 			fontPlain = new GameFont("p12_full", archiveTitle, false);
 			fontBold = new GameFont("b12_full", archiveTitle, false);
 			GameFont fontFancy = new GameFont("q8_full", archiveTitle, true);
-			drawLogo();
+
+			titleScreen.load(this, archiveTitle, fontSmall, fontPlain, fontBold);
+
 			loadTitleScreen();
 			Archive archiveConfig = requestArchive(2, "config", "config", expectedCRCs[2], 30);
 			Archive archiveInterface = requestArchive(3, "interface", "interface", expectedCRCs[3], 35);
