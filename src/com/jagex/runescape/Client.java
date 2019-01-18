@@ -297,7 +297,6 @@ public final class Client extends RSApplet {
 	private IndexedImage backHmid1Image;
 	private final int[] unknownCameraVariable;
 	private boolean characterModelChanged;
-	private Sprite[] mapFunctionImage;
 	private int baseX;
 	private int baseY;
 	private int anInt1036;
@@ -317,7 +316,6 @@ public final class Client extends RSApplet {
 	private boolean multiCombatZone;
 	private DoubleEndedQueue stationaryGraphicQueue;
 	private final RSInterface chatboxInterface;
-	private IndexedImage[] mapSceneImage;
 	private static int drawCycle;
 	private int trackCount;
 	private final int SCROLLBAR_GRIP_FOREGROUND;
@@ -578,7 +576,6 @@ public final class Client extends RSApplet {
 		walkableInterfaceId = -1;
 		unknownCameraVariable = new int[5];
 		characterModelChanged = false;
-		mapFunctionImage = new Sprite[100];
 		dialogID = -1;
 		skillMaxLevel = new int[Skills.skillsCount];
 		defaultSettings = new int[2000];
@@ -586,7 +583,6 @@ public final class Client extends RSApplet {
 		flashingSidebar = -1;
 		stationaryGraphicQueue = new DoubleEndedQueue();
 		chatboxInterface = new RSInterface();
-		mapSceneImage = new IndexedImage[100];
 		SCROLLBAR_GRIP_FOREGROUND = 0x4d4233;
 		characterEditIdentityKits = new int[7];
 		loadingMap = false;
@@ -1739,8 +1735,6 @@ public final class Client extends RSApplet {
 		hitMarkImage = null;
 		headIcons = null;
 		crosses = null;
-		mapSceneImage = null;
-		mapFunctionImage = null;
 		tileRenderCount = null;
 		players = null;
 		localPlayers = null;
@@ -3516,8 +3510,17 @@ public final class Client extends RSApplet {
 			redrawChatbox = false;
 		}
 		if (loadingStage == 2) {
-			drawMinimap();
+			minimap.updateImageProducer(
+					baseX, baseY,
+					localPlayerCount, players, localPlayers,
+					friendsCount, friendsListAsLongs, friendsWorldIds,
+					groundArray[plane],
+					npcCount, npcs, npcIds,
+					hintIconType, hintIconNpcId, hintIconPlayerId, hintIconX, hintIconY,
+					destinationX, destinationY, tick
+			);
 			minimap.draw(super.gameGraphics);
+			gameScreenImageProducer.initDrawingArea();
 		}
 		if (flashingSidebar != -1)
 			drawTabIcons = true;
@@ -3979,149 +3982,6 @@ public final class Client extends RSApplet {
 			fontBold.drawTextWithPotentialShadow(menuActionName[action], offsetX + 3, actionY, actionColour, true);
 		}
 
-	}
-
-	private void drawMinimap() {
-		minimap.updateImageProducer(
-				baseX, baseY,
-				localPlayerCount, players, localPlayers,
-				friendsCount, friendsListAsLongs, friendsWorldIds,
-				groundArray[plane],
-				npcCount, npcs, npcIds,
-				hintIconType, hintIconNpcId, hintIconPlayerId, hintIconX, hintIconY,
-				destinationX, destinationY, tick
-		);
-		gameScreenImageProducer.initDrawingArea();
-	}
-
-	private void drawMinimapScene(int y, int lineColour, int x, int interfactiveColour, int z) {
-		int uid = worldController.getWallObjectHash(x, y, z);
-		if (uid != 0) {
-			// Walls
-
-			int config = worldController.getConfig(uid, x, y, z);
-			int direction = config >> 6 & 3;
-			int type = config & 0x1F;
-			int colour = lineColour;
-			if (uid > 0)
-				colour = interfactiveColour;
-			int pixels[] = minimap.minimapImage.pixels;
-			int pixel = 24624 + x * 4 + (103 - y) * 512 * 4;
-			int objectId = uid >> 14 & 0x7FFF;
-			GameObjectDefinition definition = GameObjectDefinition.getDefinition(objectId);
-			if (definition.mapScene != -1) {
-				IndexedImage background = mapSceneImage[definition.mapScene];
-				if (background != null) {
-					int _x = (definition.sizeX * 4 - background.width) / 2;
-					int _y = (definition.sizeY * 4 - background.height) / 2;
-					background.draw(48 + x * 4 + _x, 48 + (104 - y - definition.sizeY) * 4 + _y);
-				}
-			} else {
-				if (type == 0 || type == 2)
-					if (direction == 0) {
-						pixels[pixel] = colour;
-						pixels[pixel + 512] = colour;
-						pixels[pixel + 1024] = colour;
-						pixels[pixel + 1536] = colour;
-					} else if (direction == 1) {
-						pixels[pixel] = colour;
-						pixels[pixel + 1] = colour;
-						pixels[pixel + 2] = colour;
-						pixels[pixel + 3] = colour;
-					} else if (direction == 2) {
-						pixels[pixel + 3] = colour;
-						pixels[pixel + 3 + 512] = colour;
-						pixels[pixel + 3 + 1024] = colour;
-						pixels[pixel + 3 + 1536] = colour;
-					} else if (direction == 3) {
-						pixels[pixel + 1536] = colour;
-						pixels[pixel + 1536 + 1] = colour;
-						pixels[pixel + 1536 + 2] = colour;
-						pixels[pixel + 1536 + 3] = colour;
-					}
-				if (type == 3)
-					if (direction == 0)
-						pixels[pixel] = colour;
-					else if (direction == 1)
-						pixels[pixel + 3] = colour;
-					else if (direction == 2)
-						pixels[pixel + 3 + 1536] = colour;
-					else if (direction == 3)
-						pixels[pixel + 1536] = colour;
-				if (type == 2)
-					if (direction == 3) {
-						pixels[pixel] = colour;
-						pixels[pixel + 512] = colour;
-						pixels[pixel + 1024] = colour;
-						pixels[pixel + 1536] = colour;
-					} else if (direction == 0) {
-						pixels[pixel] = colour;
-						pixels[pixel + 1] = colour;
-						pixels[pixel + 2] = colour;
-						pixels[pixel + 3] = colour;
-					} else if (direction == 1) {
-						pixels[pixel + 3] = colour;
-						pixels[pixel + 3 + 512] = colour;
-						pixels[pixel + 3 + 1024] = colour;
-						pixels[pixel + 3 + 1536] = colour;
-					} else if (direction == 2) {
-						pixels[pixel + 1536] = colour;
-						pixels[pixel + 1536 + 1] = colour;
-						pixels[pixel + 1536 + 2] = colour;
-						pixels[pixel + 1536 + 3] = colour;
-					}
-			}
-		}
-
-		uid = worldController.getInteractibleObjectHash(x, y, z);
-		if (uid != 0) {
-			int config = worldController.getConfig(uid, x, y, z);
-			int direction = config >> 6 & 3;
-			int type = config & 0x1F;
-			int objectId = uid >> 14 & 0x7FFF;
-			GameObjectDefinition definition = GameObjectDefinition.getDefinition(objectId);
-			if (definition.mapScene != -1) {
-				IndexedImage background = mapSceneImage[definition.mapScene];
-				if (background != null) {
-					int _x = (definition.sizeX * 4 - background.width) / 2;
-					int _y = (definition.sizeY * 4 - background.height) / 2;
-					background.draw(48 + x * 4 + _x, 48 + (104 - y - definition.sizeY) * 4 + _y);
-				}
-			} else if (type == 9) {
-				// Diagonal walls and doors
-
-				int colour = 0xEEEEEE;
-				if (uid > 0)
-					colour = 0xEE0000;
-				int pixels[] = minimap.minimapImage.pixels;
-				int pixel = 24624 + x * 4 + (103 - y) * 512 * 4;
-				if (direction == 0 || direction == 2) {
-					pixels[pixel + 1536] = colour;
-					pixels[pixel + 1024 + 1] = colour;
-					pixels[pixel + 512 + 2] = colour;
-					pixels[pixel + 3] = colour;
-				} else {
-					pixels[pixel] = colour;
-					pixels[pixel + 512 + 1] = colour;
-					pixels[pixel + 1024 + 2] = colour;
-					pixels[pixel + 1536 + 3] = colour;
-				}
-			}
-		}
-
-		uid = worldController.getGroundDecorationHash(x, y, z);
-		if (uid != 0) {
-			int objectId = uid >> 14 & 0x7FFF;
-			GameObjectDefinition definition = GameObjectDefinition.getDefinition(objectId);
-			if (definition.mapScene != -1) {
-				IndexedImage background = mapSceneImage[definition.mapScene];
-				if (background != null) {
-					int _x = (definition.sizeX * 4 - background.width) / 2;
-					int _y = (definition.sizeY * 4 - background.height) / 2;
-					background.draw(48 + x * 4 + _x, 48 + (104 - y - definition.sizeY) * 4 + _y);
-				}
-			}
-		}
 	}
 
 	private void drawSplitPrivateChat() {
@@ -5716,7 +5576,9 @@ public final class Client extends RSApplet {
 		}
 		if (loadingStage == 2 && plane != lastRegionId) {
 			lastRegionId = plane;
-			renderMinimap(plane);
+			minimap.render(worldController, plane, tileFlags, currentCollisionMap);
+
+			gameScreenImageProducer.initDrawingArea();
 		}
 	}
 
@@ -8131,86 +7993,6 @@ public final class Client extends RSApplet {
 		cameraHorizontalRotation = curveZ;
 	}
 
-	private void renderMinimap(int z) {
-		int pixels[] = minimap.minimapImage.pixels;
-		int pixelCount = pixels.length;
-		for (int pixel = 0; pixel < pixelCount; pixel++)
-			pixels[pixel] = 0;
-
-		for (int y = 1; y < 103; y++) {
-			int pixel = 24628 + (103 - y) * 512 * 4;
-			for (int x = 1; x < 103; x++) {
-				if ((tileFlags[z][x][y] & 0x18) == 0)
-					worldController.drawMinimapTile(x, y, z, pixels, pixel);
-				if (z < 3 && (tileFlags[z + 1][x][y] & 8) != 0)
-					worldController.drawMinimapTile(x, y, z + 1, pixels, pixel);
-				pixel += 4;
-			}
-
-		}
-
-		int primaryColour = ((238 + (int) (Math.random() * 20D)) - 10 << 16)
-				+ ((238 + (int) (Math.random() * 20D)) - 10 << 8) + ((238 + (int) (Math.random() * 20D)) - 10);
-		int secondaryColour = (238 + (int) (Math.random() * 20D)) - 10 << 16;
-		minimap.minimapImage.initDrawingArea();
-		for (int y = 1; y < 103; y++) {
-			for (int x = 1; x < 103; x++) {
-				if ((tileFlags[z][x][y] & 0x18) == 0)
-					drawMinimapScene(y, primaryColour, x, secondaryColour, z);
-				if (z < 3 && (tileFlags[z + 1][x][y] & 8) != 0)
-					drawMinimapScene(y, primaryColour, x, secondaryColour, z + 1);
-			}
-
-		}
-
-		gameScreenImageProducer.initDrawingArea();
-		minimap.minimapHintCount = 0;
-		for (int x = 0; x < 104; x++) {
-			for (int y = 0; y < 104; y++) {
-				int hash = worldController.getGroundDecorationHash(x, y, plane);
-				if (hash != 0) {
-					hash = hash >> 14 & 0x7FFF;
-					int icon = GameObjectDefinition.getDefinition(hash).icon;
-
-					if (icon >= 0) {
-						int drawPointX = x;
-						int drawPointY = y;
-
-						// All the shop icons, it seems
-						if (icon != 22 && icon != 29 && icon != 34 && icon != 36 && icon != 46 && icon != 47
-								&& icon != 48) {
-							byte regionWidth = 104;
-							byte regionHeight = 104;
-							int clippingFlags[][] = currentCollisionMap[plane].clippingData;
-							for (int off = 0; off < 10; off++) {
-								int randomDirection = (int) (Math.random() * 4D);
-								if (randomDirection == 0 && drawPointX > 0 && drawPointX > x - 3
-										&& (clippingFlags[drawPointX - 1][drawPointY] & 0x1280108) == 0)
-									drawPointX--;
-								if (randomDirection == 1 && drawPointX < regionWidth - 1 && drawPointX < x + 3
-										&& (clippingFlags[drawPointX + 1][drawPointY] & 0x1280180) == 0)
-									drawPointX++;
-								if (randomDirection == 2 && drawPointY > 0 && drawPointY > y - 3
-										&& (clippingFlags[drawPointX][drawPointY - 1] & 0x1280102) == 0)
-									drawPointY--;
-								if (randomDirection == 3 && drawPointY < regionHeight - 1 && drawPointY < y + 3
-										&& (clippingFlags[drawPointX][drawPointY + 1] & 0x1280120) == 0)
-									drawPointY++;
-							}
-
-						}
-						minimap.minimapHint[minimap.minimapHintCount] = mapFunctionImage[icon];
-						minimap.minimapHintX[minimap.minimapHintCount] = drawPointX;
-						minimap.minimapHintY[minimap.minimapHintCount] = drawPointY;
-						minimap.minimapHintCount++;
-					}
-				}
-			}
-
-		}
-
-	}
-
 	private void renderNPCs(boolean flag) {
 		for (int n = 0; n < npcCount; n++) {
 			NPC npc = npcs[npcIds[n]];
@@ -9037,18 +8819,6 @@ public final class Client extends RSApplet {
 				sideIconImage[icon] = new IndexedImage(archiveMedia, "sideicons", icon);
 
 			try {
-				for (int i = 0; i < 100; i++)
-					mapSceneImage[i] = new IndexedImage(archiveMedia, "mapscene", i);
-
-			} catch (Exception _ex) {
-			}
-			try {
-				for (int i = 0; i < 100; i++)
-					mapFunctionImage[i] = new Sprite(archiveMedia, "mapfunction", i);
-
-			} catch (Exception _ex) {
-			}
-			try {
 				for (int i = 0; i < 20; i++) {
 					hitMarkImage[i] = new Sprite(archiveMedia, "hitmarks", i);
 				}
@@ -9116,18 +8886,6 @@ public final class Client extends RSApplet {
 			sprite = new Sprite(archiveMedia, "backhmid2", 0);
 			backVmidIP2_2 = new RSImageProducer(sprite.width, sprite.height, getGameComponent());
 			sprite.drawInverse(0, 0);
-			int randomRed = (int) (Math.random() * 21D) - 10;
-			int randomGreen = (int) (Math.random() * 21D) - 10;
-			int randomBlue = (int) (Math.random() * 21D) - 10;
-			int randomColour = (int) (Math.random() * 41D) - 20;
-			for (int i = 0; i < 100; i++) {
-				if (mapFunctionImage[i] != null)
-					mapFunctionImage[i].adjustRGB(randomRed + randomColour, randomGreen + randomColour,
-							randomBlue + randomColour);
-				if (mapSceneImage[i] != null)
-					mapSceneImage[i].mixPalette(randomRed + randomColour, randomGreen + randomColour,
-							randomBlue + randomColour);
-			}
 
 			drawLoadingText(83, "Unpacking textures");
 			Rasterizer.unpackTextures(archiveTextures);
@@ -9154,8 +8912,6 @@ public final class Client extends RSApplet {
 			GameFont fonts[] = { fontSmall, fontPlain, fontBold, fontFancy };
 			RSInterface.unpack(archiveInterface, fonts, archiveMedia);
 			drawLoadingText(100, "Preparing game engine");
-
-			minimap.calculateSizes();
 
 			Rasterizer.setBounds(479, 96);
 			chatboxLineOffsets = Rasterizer.lineOffsets;

@@ -9,37 +9,36 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="DockManager">
-    <window id="2">
-      <content type="file-editors">
-        <state>
-          <leaf>
-            <file pinned="false" current-in-tab="true">
-              <entry file="file://$PROJECT_DIR$/src/com/jagex/runescape/Client.java">
-                <provider selected="true" editor-type-id="text-editor">
-                  <state relative-caret-position="620">
-                    <caret line="4037" column="58" lean-forward="true" selection-start-line="4037" selection-start-column="58" selection-end-line="4037" selection-end-column="58" />
-                  </state>
-                </provider>
-              </entry>
-            </file>
-          </leaf>
-        </state>
-      </content>
-    </window>
-  </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/jagex/runescape/screen/game/Minimap.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="425">
-              <caret line="54" column="46" selection-start-line="54" selection-start-column="46" selection-end-line="54" selection-end-column="46" />
+            <state relative-caret-position="182">
+              <caret line="62" column="8" lean-forward="true" selection-start-line="62" selection-start-column="8" selection-end-line="62" selection-end-column="8" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#1547#1548#0" expanded="true" />
-                <element signature="e#1613#1614#0" expanded="true" />
+                <element signature="e#1543#1544#0" expanded="true" />
+                <element signature="e#1610#1611#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/com/jagex/runescape/Client.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="288">
+              <caret line="5578" column="26" selection-start-line="5578" selection-start-column="12" selection-end-line="5578" selection-end-column="26" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/jagex/runescape/scene/WorldController.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="462">
+              <caret line="508" column="19" selection-start-line="508" selection-start-column="19" selection-end-line="508" selection-end-column="19" />
             </state>
           </provider>
         </entry>
@@ -55,36 +54,36 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>groundarray</find>
-      <find>minimapHintCount</find>
-      <find>minimapHintX</find>
-      <find>minimapImage =</find>
-      <find>npcs</find>
-      <find>NPC[]</find>
-      <find>localplayer</find>
-      <find>localPlayer</find>
-      <find>cameraHorizontal =</find>
-      <find>hintIconType</find>
-      <find>local</find>
-      <find>players</find>
-      <find>minimapRotation</find>
-      <find>minimaprotati</find>
+      <find>mapsceneimage</find>
+      <find>mapSceneImage</find>
       <find>minimapzoom</find>
       <find>zoom</find>
-      <find>plane</find>
-      <find>friendslistas</find>
-      <find>worldids</find>
-      <find>minimapEdgeImage</find>
-      <find>minimapImage</find>
-      <find>minimapimage =</find>
-      <find>compassHingeSize</find>
-      <find>minimapHintY</find>
-      <find>compassWidthMap</find>
-      <find>minimapLeft</find>
-      <find>minimapLineWidth</find>
-      <find>cameraHorizontal</find>
+      <find>+ GlobalConfig.FlameBar</find>
+      <find>drawMinimap</find>
+      <find>mini</find>
       <find>minimap</find>
-      <find>updateImageProdu</find>
+      <find>drawminima</find>
+      <find>drawminimap</find>
+      <find>renderMinimap(</find>
+      <find>mapFunctionImage</find>
+      <find>mapfunction</find>
+      <find>tileflags</find>
+      <find>currentCollisionMap</find>
+      <find>minimap.</find>
+      <find>calculatesizes</find>
+      <find>state</find>
+      <find>drawMinimapTarget</find>
+      <find>drawTarget</find>
+      <find>drawMinimapScene</find>
+      <find>updateImageProducer</find>
+      <find>draw</find>
+      <find>void draw</find>
+      <find>void draw(</find>
+      <find>.render(</find>
+      <find>render</find>
+      <find>minimap.draw(</find>
+      <find>minimap.render(</find>
+      <find>minimap.render</find>
     </findStrings>
     <replaceStrings>
       <replace>titleFlamesTemp</replace>
@@ -109,16 +108,17 @@
         <option value="$PROJECT_DIR$/src/com/jagex/runescape/GlobalConfig.java" />
         <option value="$PROJECT_DIR$/src/com/jagex/runescape/screen/title/FlameColours.java" />
         <option value="$PROJECT_DIR$/src/com/jagex/runescape/screen/title/TitleScreen.java" />
+        <option value="$PROJECT_DIR$/src/com/jagex/runescape/CollisionMap.java" />
         <option value="$PROJECT_DIR$/src/com/jagex/runescape/screen/game/Minimap.java" />
         <option value="$PROJECT_DIR$/src/com/jagex/runescape/Client.java" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="1979" />
-    <option name="y" value="-13" />
-    <option name="width" value="1400" />
-    <option name="height" value="784" />
+    <option name="x" value="-9" />
+    <option name="y" value="-9" />
+    <option name="width" value="1938" />
+    <option name="height" value="1048" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
@@ -154,12 +154,12 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
       <pane id="PackagesPane" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1547837783441" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1547847633798" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../venomite/venomite-server/venomite-server" />
     <property name="settings.editor.selected.configurable" value="preferences.editor" />
   </component>
@@ -214,10 +214,10 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="1912" y="-8" width="1936" height="1056" extended-state="6" />
+    <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.12953092" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.13087249" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -225,14 +225,14 @@
       <window_info id="Capture Tool" order="5" />
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" sideWeight="0.4989339" weight="0.32502708" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49573562" visible="true" weight="0.22860238" />
+      <window_info anchor="bottom" id="Find" order="1" sideWeight="0.49798658" weight="0.3243626" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49463087" visible="true" weight="0.22804533" />
       <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.4978678" weight="0.39869988" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.3286119" />
       <window_info anchor="bottom" id="Terminal" order="7" weight="0.3286119" />
-      <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.5042644" side_tool="true" visible="true" weight="0.22860238" />
+      <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.5053691" side_tool="true" visible="true" weight="0.22804533" />
       <window_info anchor="bottom" id="Version Control" order="9" />
       <window_info anchor="bottom" id="Messages" order="10" sideWeight="0.4989339" weight="0.32936078" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -409,22 +409,36 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/jagex/runescape/scene/WorldController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="462">
+          <caret line="508" column="19" selection-start-line="508" selection-start-column="19" selection-end-line="508" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/jagex/runescape/CollisionMap.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" column="7" selection-start-line="2" selection-start-column="7" selection-end-line="2" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/jagex/runescape/screen/game/Minimap.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="425">
-          <caret line="54" column="46" selection-start-line="54" selection-start-column="46" selection-end-line="54" selection-end-column="46" />
+        <state relative-caret-position="182">
+          <caret line="62" column="8" lean-forward="true" selection-start-line="62" selection-start-column="8" selection-end-line="62" selection-end-column="8" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#1547#1548#0" expanded="true" />
-            <element signature="e#1613#1614#0" expanded="true" />
+            <element signature="e#1543#1544#0" expanded="true" />
+            <element signature="e#1610#1611#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/jagex/runescape/Client.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="620">
-          <caret line="4037" column="58" lean-forward="true" selection-start-line="4037" selection-start-column="58" selection-end-line="4037" selection-end-column="58" />
+        <state relative-caret-position="288">
+          <caret line="5578" column="26" selection-start-line="5578" selection-start-column="12" selection-end-line="5578" selection-end-column="26" />
         </state>
       </provider>
     </entry>
