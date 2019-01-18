@@ -34,10 +34,10 @@ public final class Client extends RSApplet {
 	private static String getAmountString(int amount) {
 		if (amount < 100000)
 			return String.valueOf(amount);
-		
+
 		if (amount < 10000000)
 			return amount / 1000 + "K";
-		
+
 		return amount / 1000000 + "M";
 	}
 
@@ -221,7 +221,6 @@ public final class Client extends RSApplet {
 	private int hintIconDrawHeight;
 	private int hintIconDrawTileX;
 	private int hintIconDrawTileY;
-	private static int anInt940;
 	private final int[] chatTypes;
 	private final String[] chatNames;
 	private final String[] chatMessages;
@@ -975,7 +974,7 @@ public final class Client extends RSApplet {
 
 	private void build3dScreenMenu() {
 		if (itemSelected == false && spellSelected == false) {
-			menuActionName[menuActionRow] = "Walk here";
+			menuActionName[menuActionRow] = "Walk here " + GlobalConfig.WalkHereTest;
 			menuActionId[menuActionRow] = 516;
 			menuActionData2[menuActionRow] = super.mouseX;
 			menuActionData3[menuActionRow] = super.mouseY;
@@ -2006,10 +2005,10 @@ public final class Client extends RSApplet {
 		 * datainputstream.readFully(class30_sub2_sub2.buffer, 0, 40);
 		 * datainputstream.close(); for(int i1 = 0; i1 < 9; i1++) expectedCRCs[i1] =
 		 * class30_sub2_sub2.readDWord();
-		 * 
+		 *
 		 * int j1 = class30_sub2_sub2.readDWord(); int k1 = 1234; for(int l1 = 0; l1 <
 		 * 9; l1++) k1 = (k1 << 1) + expectedCRCs[l1];
-		 * 
+		 *
 		 * if(j1 != k1) { s = "checksum problem"; expectedCRCs[8] = 0; } }
 		 * catch(EOFException _ex) { s = "EOF problem"; expectedCRCs[8] = 0; }
 		 * catch(IOException _ex) { s = "connection problem"; expectedCRCs[8] = 0; }
@@ -2019,7 +2018,7 @@ public final class Client extends RSApplet {
 		 * "Game updated - please reload page"); l = 10; } else { drawLoadingText(10,
 		 * (byte)4, s + " - Will retry in " + l + " secs."); } try {
 		 * Thread.sleep(1000L); } catch(Exception _ex) { } }
-		 * 
+		 *
 		 * j *= 2; if(j > 60) j = 60; aBoolean872 = !aBoolean872; } }
 		 */
 	}
@@ -5730,7 +5729,7 @@ public final class Client extends RSApplet {
 
 				for (int item = 0; item < itemCount; item++) {
 					int stackSize = inStream.getUnsignedByte();
-					
+
 					if (stackSize == 255) {
 						stackSize = inStream.getMEBInt();
 					}
@@ -7884,7 +7883,7 @@ public final class Client extends RSApplet {
 				stream.put(privateChatMode);
 				stream.put(tradeMode);
 			}
-			if (super.clickX >= 412 && super.clickX <= 512 && super.clickY >= 467 && super.clickY <= 499)
+			if (super.clickX >= 412 && super.clickX <= 512 && super.clickY >= 467 && super.clickY <= 499) {
 				if (openInterfaceId == -1) {
 					clearTopInterfaces();
 					reportAbuseInput = "";
@@ -7899,25 +7898,6 @@ public final class Client extends RSApplet {
 				} else {
 					pushMessage("Please close the interface you have open before using 'report abuse'", 0, "");
 				}
-			anInt940++;
-			if (anInt940 > 1386) {
-				anInt940 = 0;
-				stream.putOpcode(165);
-				stream.put(0);
-				int j = stream.position;
-				stream.put(139);
-				stream.put(150);
-				stream.putShort(32131);
-				stream.put((int) (Math.random() * 256D));
-				stream.putShort(3250);
-				stream.put(177);
-				stream.putShort(24859);
-				stream.put(119);
-				if ((int) (Math.random() * 2D) == 0)
-					stream.putShort(47234);
-				if ((int) (Math.random() * 2D) == 0)
-					stream.put(21);
-				stream.putSizeByte(stream.position - j);
 			}
 		}
 	}
