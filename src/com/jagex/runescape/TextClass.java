@@ -4,22 +4,22 @@ import com.jagex.runescape.sign.signlink;
 
 public final class TextClass {
 
-	public static String asterisksForString(String string) {
-		StringBuffer asterisks = new StringBuffer();
+	public static String asterisksForString(final String string) {
+		final StringBuffer asterisks = new StringBuffer();
 		for (int c = 0; c < string.length(); c++) {
             asterisks.append("*");
         }
 		return asterisks.toString();
 	}
 
-	public static String decodeDNS(int address) {
+	public static String decodeDNS(final int address) {
 		return (address >> 24 & 0xff) + "." + (address >> 16 & 0xff) + "." + (address >> 8 & 0xff) + "."
 				+ (address & 0xff);
 	}
 
-	public static String formatName(String name) {
+	public static String formatName(final String name) {
 		if (name.length() > 0) {
-			char characters[] = name.toCharArray();
+			final char[] characters = name.toCharArray();
 			for (int c = 0; c < characters.length; c++) {
                 if (characters[c] == '_') {
                     characters[c] = ' ';
@@ -47,23 +47,23 @@ public final class TextClass {
                 return "invalid_name";
             }
 			int i = 0;
-			char name[] = new char[12];
+			final char[] name = new char[12];
 			while (longName != 0L) {
-				long n = longName;
+				final long n = longName;
 				longName /= 37L;
 				name[11 - i++] = VALID_CHARACTERS[(int) (n - longName * 37L)];
 			}
 			return new String(name, 12 - i, i);
-		} catch (RuntimeException runtimeexception) {
+		} catch (final RuntimeException runtimeexception) {
 			signlink.reporterror("81570, " + longName + ", " + (byte) -99 + ", " + runtimeexception.toString());
 		}
 		throw new RuntimeException();
 	}
 
-	public static long nameToLong(String name) {
+	public static long nameToLong(final String name) {
 		long longName = 0L;
 		for (int c = 0; c < name.length() && c < 12; c++) {
-			char character = name.charAt(c);
+			final char character = name.charAt(c);
 			longName *= 37L;
 			if (character >= 'A' && character <= 'Z') {
                 longName += (1 + character) - 65;

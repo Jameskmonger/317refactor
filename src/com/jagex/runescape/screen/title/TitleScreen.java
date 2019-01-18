@@ -44,7 +44,7 @@ public class TitleScreen {
         this.flameColours = new FlameColours();
     }
 
-    public void load(Component component, Archive archive, GameFont fontSmall, GameFont fontPlain, GameFont fontBold) {
+    public void load(final Component component, final Archive archive, final GameFont fontSmall, final GameFont fontPlain, final GameFont fontBold) {
         this.archive = archive;
         this.fontSmall = fontSmall;
         this.fontPlain = fontPlain;
@@ -75,15 +75,15 @@ public class TitleScreen {
         this.updateFlameShape(null);
     }
 
-    public void drawLoadingText(Graphics gameGraphics, int percentage, String text) {
+    public void drawLoadingText(final Graphics gameGraphics, final int percentage, final String text) {
         this.loginBoxLeftBackgroundTile.initDrawingArea();
 
-        int horizontalOffset = 360;
-        int verticalOffset1 = 200;
-        int verticalOffset2 = 20;
+        final int horizontalOffset = 360;
+        final int verticalOffset1 = 200;
+        final int verticalOffset2 = 20;
         this.fontBold.drawCentredText("RuneScape is loading - please wait...", horizontalOffset / 2,
                 verticalOffset1 / 2 - 26 - verticalOffset2, 0xFFFFFF);
-        int loadingBarHeight = verticalOffset1 / 2 - 18 - verticalOffset2;
+        final int loadingBarHeight = verticalOffset1 / 2 - 18 - verticalOffset2;
 
         DrawingArea.drawUnfilledRectangle(horizontalOffset / 2 - 152, 304, 34, 0x8C1111, loadingBarHeight);
         DrawingArea.drawUnfilledRectangle(horizontalOffset / 2 - 151, 302, 32, 0, loadingBarHeight + 1);
@@ -103,7 +103,7 @@ public class TitleScreen {
         }
     }
 
-    public void setupImageProducers(Component gameComponent) {
+    public void setupImageProducers(final Component gameComponent) {
         this.flameLeftBackground = new RSImageProducer(128, 265, gameComponent);
         DrawingArea.clear();
         this.flameRightBackground = new RSImageProducer(128, 265, gameComponent);
@@ -155,8 +155,8 @@ public class TitleScreen {
         this.clearImageProducers();
     }
 
-    private void doFlamesDrawing(Graphics gameGraphics) {
-        char c = '\u0100';
+    private void doFlamesDrawing(final Graphics gameGraphics) {
+        final char c = '\u0100';
 
         this.flameColours.changeColours();
 
@@ -165,7 +165,7 @@ public class TitleScreen {
         int i1 = 0;
         int pos = 1152;
         for (int k1 = 1; k1 < c - 1; k1++) {
-            int l1 = (this.anIntArray969[k1] * (c - k1)) / c;
+            final int l1 = (this.anIntArray969[k1] * (c - k1)) / c;
 
             if (l1 != 0) {
                 System.out.println(l1);
@@ -177,12 +177,12 @@ public class TitleScreen {
             }
             i1 += j2;
             for (int l2 = j2; l2 < 128; l2++) {
-                int strength = this.flameStrengths[i1++];
+                final int strength = this.flameStrengths[i1++];
                 if (strength != 0) {
-                    int on = strength;
-                    int off = 256 - strength;
-                    int colour = this.flameColours.getCurrentColour(strength);
-                    int bg = this.flameLeftBackground.pixels[pos];
+                    final int on = strength;
+                    final int off = 256 - strength;
+                    final int colour = this.flameColours.getCurrentColour(strength);
+                    final int bg = this.flameLeftBackground.pixels[pos];
                     this.flameLeftBackground.pixels[pos++] = ((colour & 0xFF00ff) * on + (bg & 0xFF00FF) * off & 0xFF00FF00)
                             + ((colour & 0xFF00) * on + (bg & 0xFF00) * off & 0xFF0000) >> 8;
                 } else {
@@ -200,19 +200,19 @@ public class TitleScreen {
         i1 = 0;
         pos = 1176;
         for (int k2 = 1; k2 < c - 1; k2++) {
-            int i3 = (this.anIntArray969[k2] * (c - k2)) / c;
+            final int i3 = (this.anIntArray969[k2] * (c - k2)) / c;
             if (i3 != 0) {
                 System.out.println(i3);
             }
-            int k3 = 103 - i3;
+            final int k3 = 103 - i3;
             pos += i3;
             for (int i4 = 0; i4 < k3; i4++) {
-                int strength = this.flameStrengths[i1++];
+                final int strength = this.flameStrengths[i1++];
                 if (strength != 0) {
-                    int on = strength;
-                    int off = 256 - strength;
-                    int colour = this.flameColours.getCurrentColour(strength);
-                    int bg = this.flameRightBackground.pixels[pos];
+                    final int on = strength;
+                    final int off = 256 - strength;
+                    final int colour = this.flameColours.getCurrentColour(strength);
+                    final int bg = this.flameRightBackground.pixels[pos];
                     this.flameRightBackground.pixels[pos++] = ((colour & 0xFF00FF) * on + (bg & 0xFF00FF) * off & 0xFF00FF00)
                             + ((colour & 0xFF00) * on + (bg & 0xFF00) * off & 0xFF0000) >> 8;
                 } else {
@@ -227,8 +227,8 @@ public class TitleScreen {
         this.flameRightBackground.drawGraphics(0, gameGraphics, 637);
     }
 
-    private void setupSprites(Component component, Archive archive) {
-        byte titleData[] = archive.decompressFile("title.dat");
+    private void setupSprites(final Component component, final Archive archive) {
+        final byte[] titleData = archive.decompressFile("title.dat");
         Sprite sprite = new Sprite(titleData, component);
 
         this.flameLeftBackground.initDrawingArea();
@@ -250,7 +250,7 @@ public class TitleScreen {
         this.middleRightBackgroundTile.initDrawingArea();
         sprite.drawInverse(-562, -171);
 
-        int modifiedPixels[] = new int[sprite.width];
+        final int[] modifiedPixels = new int[sprite.width];
         for (int row = 0; row < sprite.height; row++) {
             for (int column = 0; column < sprite.width; column++) {
                 modifiedPixels[column] = sprite.pixels[(sprite.width - column - 1) + sprite.width * row];
@@ -283,12 +283,12 @@ public class TitleScreen {
         sprite.drawImage(382 - sprite.width / 2 - 128, 18);
     }
 
-    public void drawFlames(Graphics gameGraphics) {
+    public void drawFlames(final Graphics gameGraphics) {
         this.flameLeftBackground.drawGraphics(0, gameGraphics, 0);
         this.flameRightBackground.drawGraphics(0, gameGraphics, 637);
     }
 
-    public void drawTiles(Graphics gameGraphics) {
+    public void drawTiles(final Graphics gameGraphics) {
         this.topCentreBackgroundTile.drawGraphics(0, gameGraphics, 128);
         this.bottomCentreBackgroundTile.drawGraphics(371, gameGraphics, 202);
         this.bottomLeftBackgroundTile.drawGraphics(265, gameGraphics, 0);
@@ -297,26 +297,26 @@ public class TitleScreen {
         this.middleRightBackgroundTile.drawGraphics(171, gameGraphics, 562);
     }
 
-    private void updateFlameStrength(int tick) {
-        char c = '\u0100';
+    private void updateFlameStrength(final int tick) {
+        final char c = '\u0100';
 
         for (int j = 10; j < 117; j++) {
-            int k = (int) (Math.random() * 100D);
+            final int k = (int) (Math.random() * 100D);
             if (k < 50) {
                 this.flameStrengths[j + (c - 2 << 7)] = 255;
             }
         }
 
         for (int i = 0; i < 100; i++) {
-            int y = (int) (Math.random() * 124D) + 2;
-            int x = (int) (Math.random() * 128D) + 128;
-            int pos = y + (x << 7);
+            final int y = (int) (Math.random() * 124D) + 2;
+            final int x = (int) (Math.random() * 128D) + 128;
+            final int pos = y + (x << 7);
             this.flameStrengths[pos] = 192;
         }
 
         for (int x = 1; x < c - 1; x++) {
             for (int y = 1; y < 127; y++) {
-                int pos = y + (x << 7);
+                final int pos = y + (x << 7);
                 this.anIntArray829[pos] = (this.flameStrengths[pos - 1] + this.flameStrengths[pos + 1] + this.flameStrengths[pos - 128] + this.flameStrengths[pos + 128]) / 4;
             }
         }
@@ -325,13 +325,13 @@ public class TitleScreen {
         if (this.flameShapeIndex > this.titleFlames.length) {
             this.flameShapeIndex -= this.titleFlames.length;
 
-            int image = (int) (Math.random() * 12D);
+            final int image = (int) (Math.random() * 12D);
             this.updateFlameShape(this.titleFlameRuneImages[image]);
         }
 
         for (int x = 1; x < c - 1; x++) {
             for (int y = 1; y < 127; y++) {
-                int pos = y + (x << 7);
+                final int pos = y + (x << 7);
                 int i4 = this.anIntArray829[pos + 128] - this.titleFlames[pos + this.flameShapeIndex & this.titleFlames.length - 1] / 5;
 
                 if (i4 < 0) {
@@ -347,7 +347,7 @@ public class TitleScreen {
         this.anIntArray969[c - 1] = (int) (Math.sin(tick / 14D) * 16D + Math.sin(tick / 15D) * 14D + Math.sin(tick / 16D) * 12D);
     }
 
-    public void drawFlames2(Graphics gameGraphics, int tick) {
+    public void drawFlames2(final Graphics gameGraphics, final int tick) {
         this.drawingFlames = true;
         try {
             long startTime = System.currentTimeMillis();
@@ -358,8 +358,8 @@ public class TitleScreen {
                 this.updateFlameStrength(tick);
                 this.doFlamesDrawing(gameGraphics);
                 if (++currentLoop > 10) {
-                    long currentTime = System.currentTimeMillis();
-                    int difference = (int) (currentTime - startTime) / 10 - interval;
+                    final long currentTime = System.currentTimeMillis();
+                    final int difference = (int) (currentTime - startTime) / 10 - interval;
                     interval = 40 - difference;
                     if (interval < 5) {
                         interval = 5;
@@ -369,29 +369,29 @@ public class TitleScreen {
                 }
                 try {
                     Thread.sleep(interval);
-                } catch (Exception _ex) {
+                } catch (final Exception _ex) {
                 }
             }
-        } catch (Exception _ex) {
+        } catch (final Exception _ex) {
         }
         this.drawingFlames = false;
     }
 
-    private void updateFlameShape(IndexedImage runeImage) {
-        int j = 256;
+    private void updateFlameShape(final IndexedImage runeImage) {
+        final int j = 256;
         for (int pos = 0; pos < this.titleFlames.length; pos++) {
             this.titleFlames[pos] = 0;
         }
 
         for (int i = 0; i < 5000; i++) {
-            int pos = (int) (Math.random() * 128D * j);
+            final int pos = (int) (Math.random() * 128D * j);
             this.titleFlames[pos] = (int) (Math.random() * 256D);
         }
 
         for (int i = 0; i < 20; i++) {
             for (int x = 1; x < j - 1; x++) {
                 for (int y = 1; y < 127; y++) {
-                    int pos = y + (x << 7);
+                    final int pos = y + (x << 7);
                     this.titleFlamesTemp[pos] = (
                             this.titleFlames[pos - 1]
                                     + this.titleFlames[pos + 1]
@@ -401,7 +401,7 @@ public class TitleScreen {
                 }
             }
 
-            int temp[] = this.titleFlames;
+            final int[] temp = this.titleFlames;
             this.titleFlames = this.titleFlamesTemp;
             this.titleFlamesTemp = temp;
         }
@@ -411,9 +411,9 @@ public class TitleScreen {
             for (int x = 0; x < runeImage.height; x++) {
                 for (int y = 0; y < runeImage.width; y++) {
                     if (runeImage.pixels[imagePos++] != 0) {
-                        int _y = y + 16 + runeImage.drawOffsetX;
-                        int _x = x + 16 + runeImage.drawOffsetY;
-                        int pos = _y + (_x << 7);
+                        final int _y = y + 16 + runeImage.drawOffsetX;
+                        final int _x = x + 16 + runeImage.drawOffsetY;
+                        final int pos = _y + (_x << 7);
                         this.titleFlames[pos] = 0;
                     }
                 }
@@ -422,21 +422,21 @@ public class TitleScreen {
     }
 
     public void drawLoginScreen(
-            Graphics gameGraphics,
-            boolean originalLoginScreen,
-            int loginScreenState,
-            String statusString,
-            String message1,
-            String message2,
-            String enteredUsername,
-            String enteredPassword,
-            int tick,
-            int focus
+            final Graphics gameGraphics,
+            final boolean originalLoginScreen,
+            final int loginScreenState,
+            final String statusString,
+            final String message1,
+            final String message2,
+            final String enteredUsername,
+            final String enteredPassword,
+            final int tick,
+            final int focus
     ) {
         this.loginBoxLeftBackgroundTile.initDrawingArea();
         this.titleBoxImage.draw(0, 0);
-        int x = 360;
-        int y = 200;
+        final int x = 360;
+        final int y = 200;
         if (loginScreenState == 0) {
             int _y = y / 2 + 80;
             this.fontSmall.drawCentredTextWithPotentialShadow(statusString, x / 2, _y, 0x75A9A9, true);
@@ -444,7 +444,7 @@ public class TitleScreen {
             this.fontBold.drawCentredTextWithPotentialShadow("Welcome to RuneScape", x / 2, _y, 0xFFFF00, true);
             _y += 30;
             int _x = x / 2 - 80;
-            int __y = y / 2 + 20;
+            final int __y = y / 2 + 20;
             this.titleButtonImage.draw(_x - 73, __y - 20);
             this.fontBold.drawCentredTextWithPotentialShadow("New User", _x, __y + 5, 0xFFFFFF, true);
             _x = x / 2 + 80;
@@ -472,7 +472,7 @@ public class TitleScreen {
             _y += 15;
             if (!originalLoginScreen) {
                 int _x = x / 2 - 80;
-                int __y = y / 2 + 50;
+                final int __y = y / 2 + 50;
                 this.titleButtonImage.draw(_x - 73, __y - 20);
                 this.fontBold.drawCentredTextWithPotentialShadow("Login", _x, __y + 5, 0xFFFFFF, true);
                 _x = x / 2 + 80;
@@ -495,8 +495,8 @@ public class TitleScreen {
             this.fontBold.drawCentredTextWithPotentialShadow("button at the top right of that page.", x / 2, _y, 0xFFFFFF,
                     true);
             _y += 15;
-            int _x = x / 2;
-            int __y = y / 2 + 50;
+            final int _x = x / 2;
+            final int __y = y / 2 + 50;
             this.titleButtonImage.draw(_x - 73, __y - 20);
             this.fontBold.drawCentredTextWithPotentialShadow("Cancel", _x, __y + 5, 0xFFFFFF, true);
         }

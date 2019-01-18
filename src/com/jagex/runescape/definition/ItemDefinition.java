@@ -10,7 +10,7 @@ import com.jagex.runescape.collection.Cache;
 
 public final class ItemDefinition {
 
-	public static ItemDefinition getDefinition(int id) {
+	public static ItemDefinition getDefinition(final int id) {
 		for (int i = 0; i < 10; i++) {
             if (cache[i].id == id) {
                 return cache[i];
@@ -18,7 +18,7 @@ public final class ItemDefinition {
         }
 
 		cacheIndex = (cacheIndex + 1) % 10;
-		ItemDefinition definition = cache[cacheIndex];
+		final ItemDefinition definition = cache[cacheIndex];
 		stream.position = streamOffsets[id];
 		definition.id = id;
 		definition.setDefaults();
@@ -36,7 +36,7 @@ public final class ItemDefinition {
 		return definition;
 	}
 
-	public static Sprite getSprite(int itemId, int itemAmount, int type) {
+	public static Sprite getSprite(final int itemId, int itemAmount, final int type) {
 		if (type == 0) {
 			Sprite sprite = (Sprite) spriteCache.get(itemId);
 			if (sprite != null && sprite.maxHeight != itemAmount && sprite.maxHeight != -1) {
@@ -63,7 +63,7 @@ public final class ItemDefinition {
                 definition = getDefinition(stackedId);
             }
 		}
-		Model model = definition.getAmountModel(1);
+		final Model model = definition.getAmountModel(1);
 		if (model == null) {
             return null;
         }
@@ -74,17 +74,17 @@ public final class ItemDefinition {
                 return null;
             }
 		}
-		Sprite itemSprite = new Sprite(32, 32);
-		int textureCentreX = Rasterizer.centreX;
-		int textureCentreY = Rasterizer.centreY;
-		int lineOffsets[] = Rasterizer.lineOffsets;
-		int pixels[] = DrawingArea.pixels;
-		int width = DrawingArea.width;
-		int height = DrawingArea.height;
-		int topX = DrawingArea.topX;
-		int bottomX = DrawingArea.bottomX;
-		int topY = DrawingArea.topY;
-		int bottomY = DrawingArea.bottomY;
+		final Sprite itemSprite = new Sprite(32, 32);
+		final int textureCentreX = Rasterizer.centreX;
+		final int textureCentreY = Rasterizer.centreY;
+		final int[] lineOffsets = Rasterizer.lineOffsets;
+		final int[] pixels = DrawingArea.pixels;
+		final int width = DrawingArea.width;
+		final int height = DrawingArea.height;
+		final int topX = DrawingArea.topX;
+		final int bottomX = DrawingArea.bottomX;
+		final int topY = DrawingArea.topY;
+		final int bottomY = DrawingArea.bottomY;
 		Rasterizer.textured = false;
 		DrawingArea.initDrawingArea(32, 32, itemSprite.pixels);
 		DrawingArea.drawFilledRectangle(0, 0, 32, 32, 0);
@@ -96,8 +96,8 @@ public final class ItemDefinition {
 		if (type > 0) {
             zoom = (int) (zoom * 1.04D);
         }
-		int l3 = Rasterizer.SINE[definition.modelRotationX] * zoom >> 16;
-		int i4 = Rasterizer.COSINE[definition.modelRotationX] * zoom >> 16;
+		final int l3 = Rasterizer.SINE[definition.modelRotationX] * zoom >> 16;
+		final int i4 = Rasterizer.COSINE[definition.modelRotationX] * zoom >> 16;
 		model.renderSingle(definition.modelRotationY, definition.modelRotationZ, definition.modelRotationX,
 				definition.modelOffset1, l3 + model.modelHeight / 2 + definition.modelOffset2,
 				i4 + definition.modelOffset2);
@@ -149,8 +149,8 @@ public final class ItemDefinition {
 
 		}
 		if (definition.noteTemplateId != -1) {
-			int _maxWidth = noteSprite.maxWidth;
-			int _maxHeight = noteSprite.maxHeight;
+			final int _maxWidth = noteSprite.maxWidth;
+			final int _maxHeight = noteSprite.maxHeight;
 			noteSprite.maxWidth = 32;
 			noteSprite.maxHeight = 32;
 			noteSprite.drawImage(0, 0);
@@ -175,9 +175,9 @@ public final class ItemDefinition {
 		return itemSprite;
 	}
 
-	public static void load(Archive streamLoader) {
+	public static void load(final Archive streamLoader) {
 		stream = new Buffer(streamLoader.decompressFile("obj.dat"));
-		Buffer stream = new Buffer(streamLoader.decompressFile("obj.idx"));
+		final Buffer stream = new Buffer(streamLoader.decompressFile("obj.idx"));
 		itemCount = stream.getUnsignedLEShort();
 		streamOffsets = new int[itemCount];
 		int offset = 2;
@@ -263,7 +263,7 @@ public final class ItemDefinition {
         this.id = -1;
 	}
 
-	public boolean equipModelCached(int gender) {
+	public boolean equipModelCached(final int gender) {
 		int equipModelIdPrimary = this.maleEquipModelIdPrimary;
 		int equipModelIdSecondary = this.maleEquipModelIdSecondary;
 		int equipModelIdEmblem = this.maleEquipModelIdEmblem;
@@ -288,7 +288,7 @@ public final class ItemDefinition {
 		return cached;
 	}
 
-	public Model getAmountModel(int amount) {
+	public Model getAmountModel(final int amount) {
 		if (this.stackableIds != null && amount > 1) {
 			int stackableId = -1;
 			for (int i = 0; i < 10; i++) {
@@ -324,7 +324,7 @@ public final class ItemDefinition {
 		return stackedModel;
 	}
 
-	public Model getDialogueModel(int gender) {
+	public Model getDialogueModel(final int gender) {
 		int dialogueModelId = this.maleDialogueModelId;
 		int dialogueHatModelId = this.maleDialogueHatModelId;
 		if (gender == 1) {
@@ -336,8 +336,8 @@ public final class ItemDefinition {
         }
 		Model dialogueModel = Model.getModel(dialogueModelId);
 		if (dialogueHatModelId != -1) {
-			Model dialogueHatModel = Model.getModel(dialogueHatModelId);
-			Model dialogueModels[] = { dialogueModel, dialogueHatModel };
+			final Model dialogueHatModel = Model.getModel(dialogueHatModelId);
+			final Model[] dialogueModels = { dialogueModel, dialogueHatModel };
 			dialogueModel = new Model(2, dialogueModels);
 		}
 		if (this.modifiedModelColors != null) {
@@ -349,7 +349,7 @@ public final class ItemDefinition {
 		return dialogueModel;
 	}
 
-	public Model getEquippedModel(int gender) {
+	public Model getEquippedModel(final int gender) {
 		int equipModelIdPrimary = this.maleEquipModelIdPrimary;
 		int equipModelIdSecondary = this.maleEquipModelIdSecondary;
 		int equipModelIdEmblem = this.maleEquipModelIdEmblem;
@@ -364,13 +364,13 @@ public final class ItemDefinition {
 		Model modelPrimary = Model.getModel(equipModelIdPrimary);
 		if (equipModelIdSecondary != -1) {
             if (equipModelIdEmblem != -1) {
-                Model modelSecondary = Model.getModel(equipModelIdSecondary);
-                Model modelEmblem = Model.getModel(equipModelIdEmblem);
-                Model models[] = { modelPrimary, modelSecondary, modelEmblem };
+                final Model modelSecondary = Model.getModel(equipModelIdSecondary);
+                final Model modelEmblem = Model.getModel(equipModelIdEmblem);
+                final Model[] models = { modelPrimary, modelSecondary, modelEmblem };
                 modelPrimary = new Model(3, models);
             } else {
-                Model modelSecondary = Model.getModel(equipModelIdSecondary);
-                Model models[] = { modelPrimary, modelSecondary };
+                final Model modelSecondary = Model.getModel(equipModelIdSecondary);
+                final Model[] models = { modelPrimary, modelSecondary };
                 modelPrimary = new Model(2, models);
             }
         }
@@ -389,7 +389,7 @@ public final class ItemDefinition {
 		return modelPrimary;
 	}
 
-	public Model getInventoryModel(int amount) {
+	public Model getInventoryModel(final int amount) {
 		if (this.stackableIds != null && amount > 1) {
 			int stackableId = -1;
 			for (int i = 0; i < 10; i++) {
@@ -402,7 +402,7 @@ public final class ItemDefinition {
                 return getDefinition(stackableId).getInventoryModel(1);
             }
 		}
-		Model stackedModel = Model.getModel(this.modelId);
+		final Model stackedModel = Model.getModel(this.modelId);
 		if (stackedModel == null) {
             return null;
         }
@@ -415,7 +415,7 @@ public final class ItemDefinition {
 		return stackedModel;
 	}
 
-	public boolean isDialogueModelCached(int gender) {
+	public boolean isDialogueModelCached(final int gender) {
 		int dialogueModelId = this.maleDialogueModelId;
 		int dialogueHatModelId = this.maleDialogueHatModelId;
 		if (gender == 1) {
@@ -435,9 +435,9 @@ public final class ItemDefinition {
 		return cached;
 	}
 
-	private void readValues(Buffer stream) {
+	private void readValues(final Buffer stream) {
 		do {
-			int opcode = stream.getUnsignedByte();
+			final int opcode = stream.getUnsignedByte();
 			if (opcode == 0) {
                 return;
             }
@@ -495,7 +495,7 @@ public final class ItemDefinition {
                 }
                 this.actions[opcode - 35] = stream.getString();
 			} else if (opcode == 40) {
-				int colourCount = stream.getUnsignedByte();
+				final int colourCount = stream.getUnsignedByte();
                 this.modifiedModelColors = new int[colourCount];
                 this.originalModelColors = new int[colourCount];
 				for (int c = 0; c < colourCount; c++) {
@@ -586,7 +586,7 @@ public final class ItemDefinition {
 	}
 
 	private void toNote() {
-		ItemDefinition noteTemplateDefinition = getDefinition(this.noteTemplateId);
+		final ItemDefinition noteTemplateDefinition = getDefinition(this.noteTemplateId);
         this.modelId = noteTemplateDefinition.modelId;
         this.modelZoom = noteTemplateDefinition.modelZoom;
         this.modelRotationX = noteTemplateDefinition.modelRotationX;
@@ -598,12 +598,12 @@ public final class ItemDefinition {
         this.modifiedModelColors = noteTemplateDefinition.modifiedModelColors;
         this.originalModelColors = noteTemplateDefinition.originalModelColors;
 
-		ItemDefinition noteDefinition = getDefinition(this.noteId);
+		final ItemDefinition noteDefinition = getDefinition(this.noteId);
         this.name = noteDefinition.name;
         this.membersObject = noteDefinition.membersObject;
         this.value = noteDefinition.value;
 		String prefix = "a";
-		char firstCharacter = noteDefinition.name.charAt(0);
+		final char firstCharacter = noteDefinition.name.charAt(0);
 		if (firstCharacter == 'A' || firstCharacter == 'E' || firstCharacter == 'I' || firstCharacter == 'O'
 				|| firstCharacter == 'U') {
             prefix = "an";

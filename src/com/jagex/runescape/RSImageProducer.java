@@ -17,7 +17,7 @@ public final class RSImageProducer implements ImageProducer, ImageObserver {
 
 	private final Image image;
 
-	public RSImageProducer(int width, int height, Component component) {
+	public RSImageProducer(final int width, final int height, final Component component) {
 		this.width = width;
 		this.height = height;
         this.pixels = new int[width * height];
@@ -33,7 +33,7 @@ public final class RSImageProducer implements ImageProducer, ImageObserver {
 	}
 
 	@Override
-	public synchronized void addConsumer(ImageConsumer imageConsumer) {
+	public synchronized void addConsumer(final ImageConsumer imageConsumer) {
 		this.imageConsumer = imageConsumer;
 		imageConsumer.setDimensions(this.width, this.height);
 		imageConsumer.setProperties(null);
@@ -41,7 +41,7 @@ public final class RSImageProducer implements ImageProducer, ImageObserver {
 		imageConsumer.setHints(14);
 	}
 
-	public void drawGraphics(int y, Graphics g, int x) {
+	public void drawGraphics(final int y, final Graphics g, final int x) {
 		this.drawPixels();
 		g.drawImage(this.image, x, y, this);
 	}
@@ -54,7 +54,7 @@ public final class RSImageProducer implements ImageProducer, ImageObserver {
 	}
 
 	@Override
-	public boolean imageUpdate(Image image, int i, int j, int k, int l, int i1) {
+	public boolean imageUpdate(final Image image, final int i, final int j, final int k, final int l, final int i1) {
 		return true;
 	}
 
@@ -63,24 +63,24 @@ public final class RSImageProducer implements ImageProducer, ImageObserver {
 	}
 
 	@Override
-	public synchronized boolean isConsumer(ImageConsumer imageconsumer) {
+	public synchronized boolean isConsumer(final ImageConsumer imageconsumer) {
 		return this.imageConsumer == imageconsumer;
 	}
 
 	@Override
-	public synchronized void removeConsumer(ImageConsumer imageconsumer) {
+	public synchronized void removeConsumer(final ImageConsumer imageconsumer) {
 		if (this.imageConsumer == imageconsumer) {
             this.imageConsumer = null;
         }
 	}
 
 	@Override
-	public void requestTopDownLeftRightResend(ImageConsumer imageconsumer) {
+	public void requestTopDownLeftRightResend(final ImageConsumer imageconsumer) {
 		System.out.println("TDLR");
 	}
 
 	@Override
-	public void startProduction(ImageConsumer imageconsumer) {
+	public void startProduction(final ImageConsumer imageconsumer) {
 		this.addConsumer(imageconsumer);
 	}
 }

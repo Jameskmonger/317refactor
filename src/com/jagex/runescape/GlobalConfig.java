@@ -13,14 +13,14 @@ public class GlobalConfig {
 	public static int FlameBar = 0;
 
 	public static void openFrame() {
-		JFrame frame = new JFrame("HelloWorldSwing");
+		final JFrame frame = new JFrame("HelloWorldSwing");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		JLabel jLabel1 = new JLabel("Flame Foo");
-		SpinnerNumberModel model = new SpinnerNumberModel(0, 0, 255, 10);
-		JSpinner entry = new JSpinner(model);
+		final JLabel jLabel1 = new JLabel("Flame Foo");
+		final SpinnerNumberModel model = new SpinnerNumberModel(0, 0, 255, 10);
+		final JSpinner entry = new JSpinner(model);
 
-		Container pane = frame.getContentPane();
+		final Container pane = frame.getContentPane();
 
 		pane.setLayout(new BoxLayout(pane, BoxLayout.PAGE_AXIS));
 		pane.add(jLabel1);
@@ -30,9 +30,9 @@ public class GlobalConfig {
 			GlobalConfig.FlameFoo = model.getNumber().intValue();
 		});
 
-		JLabel jLabel2 = new JLabel("Flame Bar");
-		SpinnerNumberModel model2 = new SpinnerNumberModel(0, 0, 255, 10);
-		JSpinner entry2 = new JSpinner(model2);
+		final JLabel jLabel2 = new JLabel("Flame Bar");
+		final SpinnerNumberModel model2 = new SpinnerNumberModel(0, 0, 255, 10);
+		final JSpinner entry2 = new JSpinner(model2);
 
 		pane.add(jLabel2);
 		pane.add(entry2);
@@ -46,22 +46,22 @@ public class GlobalConfig {
 		frame.setVisible(true);
 	}
 
-	public static void addTextChangeListener(JTextComponent text, ChangeListener changeListener) {
-		DocumentListener dl = new DocumentListener() {
+	public static void addTextChangeListener(final JTextComponent text, final ChangeListener changeListener) {
+		final DocumentListener dl = new DocumentListener() {
 			private int lastChange = 0, lastNotifiedChange = 0;
 
 			@Override
-			public void insertUpdate(DocumentEvent e) {
+			public void insertUpdate(final DocumentEvent e) {
 				this.changedUpdate(e);
 			}
 
 			@Override
-			public void removeUpdate(DocumentEvent e) {
+			public void removeUpdate(final DocumentEvent e) {
 				this.changedUpdate(e);
 			}
 
 			@Override
-			public void changedUpdate(DocumentEvent e) {
+			public void changedUpdate(final DocumentEvent e) {
                 this.lastChange++;
 				SwingUtilities.invokeLater(() -> {
 					if (this.lastNotifiedChange != this.lastChange) {
@@ -72,8 +72,8 @@ public class GlobalConfig {
 			}
 		};
 		text.addPropertyChangeListener("document", (PropertyChangeEvent e) -> {
-			Document d1 = (Document)e.getOldValue();
-			Document d2 = (Document)e.getNewValue();
+			final Document d1 = (Document)e.getOldValue();
+			final Document d2 = (Document)e.getNewValue();
 			if (d1 != null) {
                 d1.removeDocumentListener(dl);
             }
@@ -82,7 +82,7 @@ public class GlobalConfig {
             }
 			dl.changedUpdate(null);
 		});
-		Document d = text.getDocument();
+		final Document d = text.getDocument();
 		if (d != null) {
             d.addDocumentListener(dl);
         }

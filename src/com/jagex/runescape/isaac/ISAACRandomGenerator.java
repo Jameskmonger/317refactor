@@ -36,7 +36,7 @@ public final class ISAACRandomGenerator {
 	 * 
 	 * @param seed The seed.
 	 */
-	public ISAACRandomGenerator(int seed[]) {
+	public ISAACRandomGenerator(final int[] seed) {
         this.memory = new int[SIZE];
         this.results = new int[SIZE];
 		System.arraycopy(seed, 0, this.results, 0, seed.length);

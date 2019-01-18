@@ -35,21 +35,21 @@ final class SoundFilter {
         this.unity = new int[2];
 	}
 
-	private float adaptMagnitude(int direction, int i, float f) {
+	private float adaptMagnitude(final int direction, final int i, final float f) {
 		float alpha = this.pairMagnitude[direction][0][i]
 				+ f * (this.pairMagnitude[direction][1][i] - this.pairMagnitude[direction][0][i]);
 		alpha *= 0.001525879F;
 		return 1.0F - (float) Math.pow(10D, -alpha / 20F);
 	}
 
-	private float adaptPhase(float f, int i, int direction) {
+	private float adaptPhase(final float f, final int i, final int direction) {
 		float alpha = this.pairPhase[direction][0][i] + f * (this.pairPhase[direction][1][i] - this.pairPhase[direction][0][i]);
 		alpha *= 0.0001220703F;
 		return this.normalise(alpha);
 	}
 
 	/* dir: 0 -> feedforward, 1 -> feedback */
-	public int compute(int direction, float f) {
+	public int compute(final int direction, final float f) {
 		if (direction == 0) {
 			float f1 = this.unity[0] + (this.unity[1] - this.unity[0]) * f;
 			f1 *= 0.003051758F;
@@ -59,13 +59,13 @@ final class SoundFilter {
 		if (this.pairCount[direction] == 0) {
             return 0;
         }
-		float _mag = this.adaptMagnitude(direction, 0, f);
+		final float _mag = this.adaptMagnitude(direction, 0, f);
 		_coefficient[direction][0] = -2F * _mag * (float) Math.cos(this.adaptPhase(f, 0, direction));
 		_coefficient[direction][1] = _mag * _mag;
 		for (int pair = 1; pair < this.pairCount[direction]; pair++) {
-			float mag = this.adaptMagnitude(direction, pair, f);
-			float phase = -2F * mag * (float) Math.cos(this.adaptPhase(f, pair, direction));
-			float coeff = mag * mag;
+			final float mag = this.adaptMagnitude(direction, pair, f);
+			final float phase = -2F * mag * (float) Math.cos(this.adaptPhase(f, pair, direction));
+			final float coeff = mag * mag;
 			_coefficient[direction][pair * 2 + 1] = _coefficient[direction][pair * 2 - 1] * coeff;
 			_coefficient[direction][pair * 2] = _coefficient[direction][pair * 2 - 1] * phase
 					+ _coefficient[direction][pair * 2 - 2] * coeff;
@@ -91,14 +91,14 @@ final class SoundFilter {
 		return this.pairCount[direction] * 2;
 	}
 
-	public void decode(Buffer stream, Envelope envelope) {
-		int count = stream.getUnsignedByte();
+	public void decode(final Buffer stream, final Envelope envelope) {
+		final int count = stream.getUnsignedByte();
         this.pairCount[0] = count >> 4;
         this.pairCount[1] = count & 0xf;
 		if (count != 0) {
             this.unity[0] = stream.getUnsignedLEShort();
             this.unity[1] = stream.getUnsignedLEShort();
-			int migrated = stream.getUnsignedByte();
+			final int migrated = stream.getUnsignedByte();
 			for (int direction = 0; direction < 2; direction++) {
 				for (int pair = 0; pair < this.pairCount[direction]; pair++) {
                     this.pairPhase[direction][0][pair] = stream.getUnsignedLEShort();
@@ -128,8 +128,8 @@ final class SoundFilter {
 		}
 	}
 
-	private float normalise(float alpha) {
-		float f = 32.7032F * (float) Math.pow(2D, alpha);
+	private float normalise(final float alpha) {
+		final float f = 32.7032F * (float) Math.pow(2D, alpha);
 		return (f * 3.141593F) / 11025F;
 	}
 

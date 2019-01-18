@@ -24,7 +24,7 @@ final class RSSocket implements Runnable {
 	private boolean isWriter;
 	private boolean hasIOError;
 
-	public RSSocket(RSApplet RSApplet_, Socket socket1) throws IOException {
+	public RSSocket(final RSApplet RSApplet_, final Socket socket1) throws IOException {
         this.closed = false;
         this.isWriter = false;
         this.hasIOError = false;
@@ -56,7 +56,7 @@ final class RSSocket implements Runnable {
 			if (this.socket != null) {
                 this.socket.close();
             }
-		} catch (IOException _ex) {
+		} catch (final IOException _ex) {
 			System.out.println("Error closing stream");
 		}
         this.isWriter = false;
@@ -74,7 +74,7 @@ final class RSSocket implements Runnable {
 		System.out.println("ioerror:" + this.hasIOError);
 		try {
 			System.out.println("available:" + this.available());
-		} catch (IOException _ex) {
+		} catch (final IOException _ex) {
 		}
 	}
 
@@ -86,7 +86,7 @@ final class RSSocket implements Runnable {
         }
 	}
 
-	public void read(byte abyte0[], int j) throws IOException {
+	public void read(final byte[] abyte0, int j) throws IOException {
 		int i = 0;// was parameter
 		if (this.closed) {
             return;
@@ -105,13 +105,13 @@ final class RSSocket implements Runnable {
 	@Override
 	public void run() {
 		while (this.isWriter) {
-			int i;
-			int j;
+			final int i;
+			final int j;
 			synchronized (this) {
 				if (this.buffIndex == this.writeIndex) {
                     try {
 						this.wait();
-                    } catch (InterruptedException _ex) {
+                    } catch (final InterruptedException _ex) {
                     }
                 }
 				if (!this.isWriter) {
@@ -127,7 +127,7 @@ final class RSSocket implements Runnable {
 			if (i > 0) {
 				try {
                     this.outputStream.write(this.buffer, j, i);
-				} catch (IOException _ex) {
+				} catch (final IOException _ex) {
                     this.hasIOError = true;
 				}
                 this.writeIndex = (this.writeIndex + i) % 5000;
@@ -135,14 +135,14 @@ final class RSSocket implements Runnable {
 					if (this.buffIndex == this.writeIndex) {
                         this.outputStream.flush();
                     }
-				} catch (IOException _ex) {
+				} catch (final IOException _ex) {
                     this.hasIOError = true;
 				}
 			}
 		}
 	}
 
-	public void write(int i, byte abyte0[]) throws IOException {
+	public void write(final int i, final byte[] abyte0) throws IOException {
 		if (this.closed) {
             return;
         }

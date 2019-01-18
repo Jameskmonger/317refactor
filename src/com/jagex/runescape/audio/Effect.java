@@ -8,21 +8,21 @@ import com.jagex.runescape.Buffer;
 
 public final class Effect {
 
-	public static Buffer data(int i, int id) {
+	public static Buffer data(final int i, final int id) {
 		if (effects[id] != null) {
-			Effect effect = effects[id];
+			final Effect effect = effects[id];
 			return effect.encode(i);
 		} else {
 			return null;
 		}
 	}
 
-	public static void load(Buffer stream) {
+	public static void load(final Buffer stream) {
 		_output = new byte[0x6baa8];
 		output = new Buffer(_output);
 		Instrument.initialise();
 		do {
-			int effect = stream.getUnsignedLEShort();
+			final int effect = stream.getUnsignedLEShort();
 			if (effect == 65535) {
                 return;
             }
@@ -49,9 +49,9 @@ public final class Effect {
         this.instruments = new Instrument[10];
 	}
 
-	private void decode(Buffer stream) {
+	private void decode(final Buffer stream) {
 		for (int instrument = 0; instrument < 10; instrument++) {
-			int active = stream.getUnsignedByte();
+			final int active = stream.getUnsignedByte();
 			if (active != 0) {
 				stream.position--;
                 this.instruments[instrument] = new Instrument();
@@ -62,8 +62,8 @@ public final class Effect {
         this.loopEnd = stream.getUnsignedLEShort();
 	}
 
-	private Buffer encode(int loops) {
-		int size = this.mix(loops);
+	private Buffer encode(final int loops) {
+		final int size = this.mix(loops);
 		output.position = 0;
 		output.putInt(0x52494646);
 		output.putLEInt(36 + size);
@@ -134,9 +134,9 @@ public final class Effect {
 
 		for (int instrument = 0; instrument < 10; instrument++) {
             if (this.instruments[instrument] != null) {
-                int duration = (this.instruments[instrument].duration * 22050) / 1000;
-                int offset = (this.instruments[instrument].begin * 22050) / 1000;
-                int samples[] = this.instruments[instrument].synthesise(duration, this.instruments[instrument].duration);
+                final int duration = (this.instruments[instrument].duration * 22050) / 1000;
+                final int offset = (this.instruments[instrument].begin * 22050) / 1000;
+                final int[] samples = this.instruments[instrument].synthesise(duration, this.instruments[instrument].duration);
                 for (int sample = 0; sample < duration; sample++) {
                     _output[sample + offset + 44] += (byte) (samples[sample] >> 8);
                 }
@@ -148,13 +148,13 @@ public final class Effect {
 			loopStart += 44;
 			loopEnd += 44;
 			stepCount += 44;
-			int offset = (length += 44) - stepCount;
+			final int offset = (length += 44) - stepCount;
 			for (int step = stepCount - 1; step >= loopEnd; step--) {
                 _output[step + offset] = _output[step];
             }
 
 			for (int loop = 1; loop < loopCount; loop++) {
-				int _offset = (loopEnd - loopStart) * loop;
+				final int _offset = (loopEnd - loopStart) * loop;
 				System.arraycopy(_output, loopStart, _output, loopStart + _offset, loopEnd - loopStart);
 
 			}

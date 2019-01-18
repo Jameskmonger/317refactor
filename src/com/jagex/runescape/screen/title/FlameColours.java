@@ -64,7 +64,7 @@ public class FlameColours {
         this.currentFlameColours = new int[256];
     }
 
-    public int getCurrentColour(int strength) {
+    public int getCurrentColour(final int strength) {
         return this.currentFlameColours[strength];
     }
 
@@ -105,7 +105,7 @@ public class FlameColours {
             this.random2 -= 4;
         }
         if (this.random1 == 0 && this.random2 == 0) {
-            int rand = (int) (Math.random() * 2000D);
+            final int rand = (int) (Math.random() * 2000D);
             if (rand == 0) {
                 this.random1 = 1024;
             }
@@ -115,8 +115,8 @@ public class FlameColours {
         }
     }
 
-    private int rotateFlameColour(int r, int g, int b) {
-        int alpha = 256 - b;
+    private int rotateFlameColour(final int r, final int g, final int b) {
+        final int alpha = 256 - b;
 
         return ((r & 0xFF00FF) * alpha + (g & 0xFF00FF) * b & 0xFF00FF00)
                 + ((r & 0x00FF00) * alpha + (g & 0x00FF00) * b & 0xFF0000) >> 8;

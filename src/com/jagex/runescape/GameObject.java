@@ -22,8 +22,8 @@ final class GameObject extends Animable {
 	private final int type;
 	private final int orientation;
 
-	public GameObject(int objectId, int orientation, int type, int vertexHeightBottomRight, int vertexHeightTopRight,
-			int vertexHeightBottomLeft, int vertexHeightTopLeft, int animationId, boolean animating) {
+	public GameObject(final int objectId, final int orientation, final int type, final int vertexHeightBottomRight, final int vertexHeightTopRight,
+                      final int vertexHeightBottomLeft, final int vertexHeightTopLeft, final int animationId, final boolean animating) {
 		this.objectId = objectId;
 		this.type = type;
 		this.orientation = orientation;
@@ -40,7 +40,7 @@ final class GameObject extends Animable {
                 this.nextFrameTime -= (int) (Math.random() * this.animation.getFrameLength(this.frame));
 			}
 		}
-		GameObjectDefinition definition = GameObjectDefinition.getDefinition(this.objectId);
+		final GameObjectDefinition definition = GameObjectDefinition.getDefinition(this.objectId);
         this.varBitId = definition.varBitId;
         this.configId = definition.configIds;
         this.childrenIds = definition.childIds;
@@ -49,11 +49,11 @@ final class GameObject extends Animable {
 	private GameObjectDefinition getChildDefinition() {
 		int child = -1;
 		if (this.varBitId != -1) {
-			VarBit varBit = VarBit.values[this.varBitId];
-			int configId = varBit.configId;
-			int lsb = varBit.leastSignificantBit;
-			int msb = varBit.mostSignificantBit;
-			int bit = Client.BITFIELD_MAX_VALUE[msb - lsb];
+			final VarBit varBit = VarBit.values[this.varBitId];
+			final int configId = varBit.configId;
+			final int lsb = varBit.leastSignificantBit;
+			final int msb = varBit.mostSignificantBit;
+			final int bit = Client.BITFIELD_MAX_VALUE[msb - lsb];
 			child = clientInstance.interfaceSettings[configId] >> lsb & bit;
 		} else if (this.configId != -1) {
             child = clientInstance.interfaceSettings[this.configId];
@@ -91,7 +91,7 @@ final class GameObject extends Animable {
                 animationId = this.animation.primaryFrames[this.frame];
             }
 		}
-		GameObjectDefinition definition;
+		final GameObjectDefinition definition;
 		if (this.childrenIds != null) {
             definition = this.getChildDefinition();
         } else {

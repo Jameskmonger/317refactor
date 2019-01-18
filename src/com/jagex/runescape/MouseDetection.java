@@ -11,7 +11,7 @@ final class MouseDetection implements Runnable {
 	public final int[] coordsX;
 	public int coordsIndex;
 
-	public MouseDetection(Client client1) {
+	public MouseDetection(final Client client1) {
         this.syncObject = new Object();
         this.coordsY = new int[500];
         this.running = true;
@@ -31,7 +31,7 @@ final class MouseDetection implements Runnable {
 			}
 			try {
 				Thread.sleep(50L);
-			} catch (Exception _ex) {
+			} catch (final Exception _ex) {
 			}
 		}
 	}

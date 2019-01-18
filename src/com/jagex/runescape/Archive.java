@@ -19,13 +19,13 @@ public final class Archive {
 	private final int[] initialOffsets;
 	private final boolean decompressed;
 
-	public Archive(byte data[]) {
+	public Archive(final byte[] data) {
 		Buffer buffer = new Buffer(data);
-		int compressedLength = buffer.get3Bytes();
-		int decompressedLength = buffer.get3Bytes();
+		final int compressedLength = buffer.get3Bytes();
+		final int decompressedLength = buffer.get3Bytes();
 
 		if (decompressedLength != compressedLength) {
-			byte output[] = new byte[compressedLength];
+			final byte[] output = new byte[compressedLength];
 			Bzip2Decompressor.decompress(output, compressedLength, data, decompressedLength, 6);
             this.outputData = output;
 			buffer = new Buffer(this.outputData);
@@ -60,7 +60,7 @@ public final class Archive {
 
 		for (int file = 0; file < this.fileCount; file++) {
             if (this.hashes[file] == hash) {
-                byte[] output = new byte[this.decompressedSizes[file]];
+                final byte[] output = new byte[this.decompressedSizes[file]];
                 if (!this.decompressed) {
                     Bzip2Decompressor.decompress(output, this.decompressedSizes[file], this.outputData, this.compressedSizes[file],
                             this.initialOffsets[file]);

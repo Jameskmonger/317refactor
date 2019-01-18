@@ -31,7 +31,7 @@ public final class Tile extends Linkable {
 	public int anInt1328;
 	public Tile tileBelow;
 
-	public Tile(int i, int j, int k) {
+	public Tile(final int i, final int j, final int k) {
         this.interactiveObjects = new InteractiveObject[5];
         this.interactiveObjectsSize = new int[5];
         this.anInt1310 = this.z = i;

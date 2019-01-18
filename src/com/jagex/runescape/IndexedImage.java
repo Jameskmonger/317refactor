@@ -18,15 +18,15 @@ public final class IndexedImage extends DrawingArea {
 
 	private int resizeHeight;
 
-	public IndexedImage(Archive archive, String name, int id) {
-		Buffer imageBuffer = new Buffer(archive.decompressFile(name + ".dat"));
-		Buffer metadataBuffer = new Buffer(archive.decompressFile("index.dat"));
+	public IndexedImage(final Archive archive, final String name, final int id) {
+		final Buffer imageBuffer = new Buffer(archive.decompressFile(name + ".dat"));
+		final Buffer metadataBuffer = new Buffer(archive.decompressFile("index.dat"));
 
 		metadataBuffer.position = imageBuffer.getUnsignedLEShort();
         this.resizeWidth = metadataBuffer.getUnsignedLEShort();
         this.resizeHeight = metadataBuffer.getUnsignedLEShort();
 		
-		int colourCount = metadataBuffer.getUnsignedByte();
+		final int colourCount = metadataBuffer.getUnsignedByte();
         this.palette = new int[colourCount];
 		for (int c = 0; c < colourCount - 1; c++) {
             this.palette[c + 1] = metadataBuffer.get3Bytes();
@@ -42,8 +42,8 @@ public final class IndexedImage extends DrawingArea {
         this.drawOffsetY = metadataBuffer.getUnsignedByte();
         this.width = metadataBuffer.getUnsignedLEShort();
         this.height = metadataBuffer.getUnsignedLEShort();
-		int type = metadataBuffer.getUnsignedByte();
-		int pixelCount = this.width * this.height;
+		final int type = metadataBuffer.getUnsignedByte();
+		final int pixelCount = this.width * this.height;
         this.pixels = new byte[pixelCount];
 
 		if (type == 0) {
@@ -72,7 +72,7 @@ public final class IndexedImage extends DrawingArea {
 		int l1 = DrawingArea.width - width;
 		int i2 = 0;
 		if (y < DrawingArea.topY) {
-			int j2 = DrawingArea.topY - y;
+			final int j2 = DrawingArea.topY - y;
 			height -= j2;
 			y = DrawingArea.topY;
 			i1 += j2 * width;
@@ -82,7 +82,7 @@ public final class IndexedImage extends DrawingArea {
             height -= (y + height) - DrawingArea.bottomY;
         }
 		if (x < DrawingArea.topX) {
-			int k2 = DrawingArea.topX - x;
+			final int k2 = DrawingArea.topX - x;
 			width -= k2;
 			x = DrawingArea.topX;
 			i1 += k2;
@@ -91,7 +91,7 @@ public final class IndexedImage extends DrawingArea {
 			l1 += k2;
 		}
 		if (x + width > DrawingArea.bottomX) {
-			int l2 = (x + width) - DrawingArea.bottomX;
+			final int l2 = (x + width) - DrawingArea.bottomX;
 			width -= l2;
 			i2 += l2;
 			l1 += l2;
@@ -105,7 +105,7 @@ public final class IndexedImage extends DrawingArea {
         this.resizeWidth /= 2;
         this.resizeHeight /= 2;
 
-		byte pixels[] = new byte[this.resizeWidth * this.resizeHeight];
+		final byte[] pixels = new byte[this.resizeWidth * this.resizeHeight];
 		int i = 0;
 		for (int x = 0; x < this.height; x++) {
 			for (int y = 0; y < this.width; y++) {
@@ -125,7 +125,7 @@ public final class IndexedImage extends DrawingArea {
             return;
         }
 
-		byte pixels[] = new byte[this.resizeWidth * this.resizeHeight];
+		final byte[] pixels = new byte[this.resizeWidth * this.resizeHeight];
 		int i = 0;
 		for (int y = 0; y < this.height; y++) {
 			for (int x = 0; x < this.width; x++) {
@@ -141,7 +141,7 @@ public final class IndexedImage extends DrawingArea {
 	}
 
 	public void flipHorizontally() {
-		byte pixels[] = new byte[this.width * this.height];
+		final byte[] pixels = new byte[this.width * this.height];
 		int i = 0;
 		for (int y = 0; y < this.height; y++) {
 			for (int x = this.width - 1; x >= 0; x--) {
@@ -154,7 +154,7 @@ public final class IndexedImage extends DrawingArea {
 	}
 
 	public void flipVertically() {
-		byte pixels[] = new byte[this.width * this.height];
+		final byte[] pixels = new byte[this.width * this.height];
 		int i = 0;
 		for (int y = this.height - 1; y >= 0; y--) {
 			for (int x = 0; x < this.width; x++) {
@@ -166,8 +166,8 @@ public final class IndexedImage extends DrawingArea {
         this.drawOffsetY = this.resizeHeight - this.height - this.drawOffsetY;
 	}
 
-	private void draw(int i, int pixels[], byte image[], int j, int k, int l, int i1, int palette[], int j1) {
-		int k1 = -(l >> 2);
+	private void draw(final int i, final int[] pixels, final byte[] image, final int j, int k, int l, int i1, final int[] palette, final int j1) {
+		final int k1 = -(l >> 2);
 		l = -(l & 3);
 		for (int l1 = -i; l1 < 0; l1++) {
 			for (int i2 = k1; i2 < 0; i2++) {
@@ -198,7 +198,7 @@ public final class IndexedImage extends DrawingArea {
 			}
 
 			for (int j2 = l; j2 < 0; j2++) {
-				byte pixel = image[i1++];
+				final byte pixel = image[i1++];
 				if (pixel != 0) {
                     pixels[k++] = palette[pixel & 0xff];
                 } else {
@@ -212,7 +212,7 @@ public final class IndexedImage extends DrawingArea {
 
 	}
 
-	public void mixPalette(int red, int green, int blue) {
+	public void mixPalette(final int red, final int green, final int blue) {
 		for (int i = 0; i < this.palette.length; i++) {
 			int r = this.palette[i] >> 16 & 0xff;
 			r += red;

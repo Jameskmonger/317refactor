@@ -6,9 +6,9 @@ import com.jagex.runescape.Buffer;
 
 public final class AnimationSequence {
 
-	public static void unpackConfig(Archive streamLoader) {
-		Buffer stream = new Buffer(streamLoader.decompressFile("seq.dat"));
-		int length = stream.getUnsignedLEShort();
+	public static void unpackConfig(final Archive streamLoader) {
+		final Buffer stream = new Buffer(streamLoader.decompressFile("seq.dat"));
+		final int length = stream.getUnsignedLEShort();
 		if (animations == null) {
             animations = new AnimationSequence[length];
         }
@@ -51,10 +51,10 @@ public final class AnimationSequence {
         this.replayMode = 2;
 	}
 
-	public int getFrameLength(int frame) {
+	public int getFrameLength(final int frame) {
 		int frameLength = this.frameLengths[frame];
 		if (frameLength == 0) {
-			Animation animation = Animation.forFrameId(this.primaryFrames[frame]);
+			final Animation animation = Animation.forFrameId(this.primaryFrames[frame]);
 			if (animation != null) {
                 frameLength = this.frameLengths[frame] = animation.displayLength;
             }
@@ -65,9 +65,9 @@ public final class AnimationSequence {
 		return frameLength;
 	}
 
-	private void readValues(Buffer stream) {
+	private void readValues(final Buffer stream) {
 		do {
-			int opcode = stream.getUnsignedByte();
+			final int opcode = stream.getUnsignedByte();
 			if (opcode == 0) {
                 break;
             }
@@ -88,7 +88,7 @@ public final class AnimationSequence {
 			} else if (opcode == 2) {
                 this.frameStep = stream.getUnsignedLEShort();
             } else if (opcode == 3) {
-				int flowCount = stream.getUnsignedByte();
+				final int flowCount = stream.getUnsignedByte();
                 this.flowControl = new int[flowCount + 1];
 				for (int flow = 0; flow < flowCount; flow++) {
                     this.flowControl[flow] = stream.getUnsignedByte();

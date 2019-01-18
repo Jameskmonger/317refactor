@@ -2,16 +2,16 @@ package com.jagex.runescape;
 
 public final class Rasterizer extends DrawingArea {
 
-	private static int adjustBrightness(int rgb, double intensity) {
+	private static int adjustBrightness(final int rgb, final double intensity) {
 		double r = (rgb >> 16) / 256D;
 		double g = (rgb >> 8 & 0xff) / 256D;
 		double b = (rgb & 0xff) / 256D;
 		r = Math.pow(r, intensity);
 		g = Math.pow(g, intensity);
 		b = Math.pow(b, intensity);
-		int byteR = (int) (r * 256D);
-		int byteG = (int) (g * 256D);
-		int byteB = (int) (b * 256D);
+		final int byteR = (int) (r * 256D);
+		final int byteG = (int) (g * 256D);
+		final int byteB = (int) (b * 256D);
 		return (byteR << 16) + (byteG << 8) + byteB;
 	}
 
@@ -19,26 +19,26 @@ public final class Rasterizer extends DrawingArea {
 		brightness += Math.random() * 0.029999999999999999D - 0.014999999999999999D;
 		int hsl = 0;
 		for (int k = 0; k < 512; k++) {
-			double d1 = k / 8 / 64D + 0.0078125D;
-			double d2 = (k & 7) / 8D + 0.0625D;
+			final double d1 = k / 8 / 64D + 0.0078125D;
+			final double d2 = (k & 7) / 8D + 0.0625D;
 			for (int k1 = 0; k1 < 128; k1++) {
-				double d3 = k1 / 128D;
+				final double d3 = k1 / 128D;
 				double r = d3;
 				double g = d3;
 				double b = d3;
 				if (d2 != 0.0D) {
-					double d7;
+					final double d7;
 					if (d3 < 0.5D) {
                         d7 = d3 * (1.0D + d2);
                     } else {
                         d7 = (d3 + d2) - d3 * d2;
                     }
-					double d8 = 2D * d3 - d7;
+					final double d8 = 2D * d3 - d7;
 					double d9 = d1 + 0.33333333333333331D;
 					if (d9 > 1.0D) {
                         d9--;
                     }
-					double d10 = d1;
+					final double d10 = d1;
 					double d11 = d1 - 0.33333333333333331D;
 					if (d11 < 0.0D) {
                         d11++;
@@ -71,9 +71,9 @@ public final class Rasterizer extends DrawingArea {
                         b = d8;
                     }
 				}
-				int byteR = (int) (r * 256D);
-				int byteG = (int) (g * 256D);
-				int byteB = (int) (b * 256D);
+				final int byteR = (int) (r * 256D);
+				final int byteG = (int) (g * 256D);
+				final int byteB = (int) (b * 256D);
 				int rgb = (byteR << 16) + (byteG << 8) + byteB;
 				rgb = adjustBrightness(rgb, brightness);
 				if (rgb == 0) {
@@ -86,7 +86,7 @@ public final class Rasterizer extends DrawingArea {
 
 		for (int textureId = 0; textureId < 50; textureId++) {
             if (textureImages[textureId] != null) {
-                int palette[] = textureImages[textureId].palette;
+                final int[] palette = textureImages[textureId].palette;
                 texturePalettes[textureId] = new int[palette.length];
                 for (int colour = 0; colour < palette.length; colour++) {
                     texturePalettes[textureId][colour] = adjustBrightness(palette[colour], brightness);
@@ -112,7 +112,7 @@ public final class Rasterizer extends DrawingArea {
 
 	}
 
-	public static void drawFlatTriangle(int i, int j, int k, int l, int i1, int j1, int k1) {
+	public static void drawFlatTriangle(int i, int j, int k, int l, int i1, int j1, final int k1) {
 		int l1 = 0;
 		if (j != i) {
             l1 = (i1 - l << 16) / (j - i);
@@ -815,8 +815,8 @@ public final class Rasterizer extends DrawingArea {
 	}
 
 	public static void drawTexturedTriangle(int yA, int yB, int yC, int xA, int xB, int xC, int zA, int zB, int zC,
-			int j2, int k2, int l2, int i3, int j3, int k3, int l3, int i4, int j4, int textureId) {
-		int texture[] = getTexturePixels(textureId);
+                                            final int j2, int k2, int l2, final int i3, int j3, int k3, final int l3, int i4, int j4, final int textureId) {
+		final int[] texture = getTexturePixels(textureId);
 		opaque = !transparent[textureId];
 		k2 = j2 - k2;
 		j3 = i3 - j3;
@@ -825,14 +825,14 @@ public final class Rasterizer extends DrawingArea {
 		k3 -= i3;
 		j4 -= l3;
 		int l4 = l2 * i3 - k3 * j2 << 14;
-		int i5 = k3 * l3 - j4 * i3 << 8;
-		int j5 = j4 * j2 - l2 * l3 << 5;
+		final int i5 = k3 * l3 - j4 * i3 << 8;
+		final int j5 = j4 * j2 - l2 * l3 << 5;
 		int k5 = k2 * i3 - j3 * j2 << 14;
-		int l5 = j3 * l3 - i4 * i3 << 8;
-		int i6 = i4 * j2 - k2 * l3 << 5;
+		final int l5 = j3 * l3 - i4 * i3 << 8;
+		final int i6 = i4 * j2 - k2 * l3 << 5;
 		int j6 = j3 * l2 - k2 * k3 << 14;
-		int k6 = i4 * k3 - j3 * j4 << 8;
-		int l6 = k2 * j4 - i4 * l2 << 5;
+		final int k6 = i4 * k3 - j3 * j4 << 8;
+		final int l6 = k2 * j4 - i4 * l2 << 5;
 		int i7 = 0;
 		int j7 = 0;
 		if (yB != yA) {
@@ -878,7 +878,7 @@ public final class Rasterizer extends DrawingArea {
 					zB -= l7 * yB;
 					yB = 0;
 				}
-				int k8 = yA - centreY;
+				final int k8 = yA - centreY;
 				l4 += j5 * k8;
 				k5 += i6 * k8;
 				j6 += l6 * k8;
@@ -957,7 +957,7 @@ public final class Rasterizer extends DrawingArea {
 				zC -= l7 * yC;
 				yC = 0;
 			}
-			int l8 = yA - centreY;
+			final int l8 = yA - centreY;
 			l4 += j5 * l8;
 			k5 += i6 * l8;
 			j6 += l6 * l8;
@@ -1047,7 +1047,7 @@ public final class Rasterizer extends DrawingArea {
 					zC -= j8 * yC;
 					yC = 0;
 				}
-				int i9 = yB - centreY;
+				final int i9 = yB - centreY;
 				l4 += j5 * i9;
 				k5 += i6 * i9;
 				j6 += l6 * i9;
@@ -1126,7 +1126,7 @@ public final class Rasterizer extends DrawingArea {
 				zA -= j8 * yA;
 				yA = 0;
 			}
-			int j9 = yB - centreY;
+			final int j9 = yB - centreY;
 			l4 += j5 * j9;
 			k5 += i6 * j9;
 			j6 += l6 * j9;
@@ -1215,7 +1215,7 @@ public final class Rasterizer extends DrawingArea {
 				zA -= j7 * yA;
 				yA = 0;
 			}
-			int k9 = yC - centreY;
+			final int k9 = yC - centreY;
 			l4 += j5 * k9;
 			k5 += i6 * k9;
 			j6 += l6 * k9;
@@ -1294,7 +1294,7 @@ public final class Rasterizer extends DrawingArea {
 			zB -= j7 * yB;
 			yB = 0;
 		}
-		int l9 = yC - centreY;
+		final int l9 = yC - centreY;
 		l4 += j5 * l9;
 		k5 += i6 * l9;
 		j6 += l6 * l9;
@@ -1355,14 +1355,14 @@ public final class Rasterizer extends DrawingArea {
 		}
 	}
 
-	public static int getAverageTextureColour(int textureId) {
+	public static int getAverageTextureColour(final int textureId) {
 		if (averageTextureColour[textureId] != 0) {
             return averageTextureColour[textureId];
         }
 		int red = 0;
 		int green = 0;
 		int blue = 0;
-		int colourCount = texturePalettes[textureId].length;
+		final int colourCount = texturePalettes[textureId].length;
 		for (int k1 = 0; k1 < colourCount; k1++) {
 			red += texturePalettes[textureId][k1] >> 16 & 0xff;
 			green += texturePalettes[textureId][k1] >> 8 & 0xff;
@@ -1378,12 +1378,12 @@ public final class Rasterizer extends DrawingArea {
 		return rgb;
 	}
 
-	private static int[] getTexturePixels(int textureId) {
+	private static int[] getTexturePixels(final int textureId) {
 		textureLastUsed[textureId] = textureGetCount++;
 		if (texelCache[textureId] != null) {
             return texelCache[textureId];
         }
-		int texels[];
+		final int[] texels;
 		if (texelPoolPointer > 0) {
 			texels = texelArrayPool[--texelPoolPointer];
 			texelArrayPool[texelPoolPointer] = null;
@@ -1401,12 +1401,12 @@ public final class Rasterizer extends DrawingArea {
 			texelCache[target] = null;
 		}
 		texelCache[textureId] = texels;
-		IndexedImage background = textureImages[textureId];
-		int texturePalette[] = texturePalettes[textureId];
+		final IndexedImage background = textureImages[textureId];
+		final int[] texturePalette = texturePalettes[textureId];
 		if (lowMemory) {
 			transparent[textureId] = false;
 			for (int texelPointer = 0; texelPointer < 4096; texelPointer++) {
-				int texel = texels[texelPointer] = texturePalette[background.pixels[texelPointer]] & 0xf8f8ff;
+				final int texel = texels[texelPointer] = texturePalette[background.pixels[texelPointer]] & 0xf8f8ff;
 				if (texel == 0) {
                     transparent[textureId] = true;
                 }
@@ -1433,7 +1433,7 @@ public final class Rasterizer extends DrawingArea {
 			transparent[textureId] = false;
 			for (int texelPointer = 0; texelPointer < 16384; texelPointer++) {
 				texels[texelPointer] &= 0xf8f8ff;
-				int texel = texels[texelPointer];
+				final int texel = texels[texelPointer];
 				if (texel == 0) {
                     transparent[textureId] = true;
                 }
@@ -1446,7 +1446,7 @@ public final class Rasterizer extends DrawingArea {
 		return texels;
 	}
 
-	private static void method375(int ai[], int i, int l, int i1, int j1, int k1) {
+	private static void method375(final int[] ai, int i, int l, int i1, int j1, final int k1) {
 		int j;// was parameter
 		int k;// was parameter
 		if (textured) {
@@ -1501,8 +1501,8 @@ public final class Rasterizer extends DrawingArea {
 					return;
 				}
 			} else {
-				int j2 = alpha;
-				int l2 = 256 - alpha;
+				final int j2 = alpha;
+				final int l2 = 256 - alpha;
 				while (--k >= 0) {
 					j = HSL_TO_RGB[j1 >> 8];
 					j1 += l1;
@@ -1527,7 +1527,7 @@ public final class Rasterizer extends DrawingArea {
 		if (l >= i1) {
             return;
         }
-		int i2 = (k1 - j1) / (i1 - l);
+		final int i2 = (k1 - j1) / (i1 - l);
 		if (restrictEdges) {
 			if (i1 > DrawingArea.centerX) {
                 i1 = DrawingArea.centerX;
@@ -1549,8 +1549,8 @@ public final class Rasterizer extends DrawingArea {
 			} while (--k > 0);
 			return;
 		}
-		int k2 = alpha;
-		int i3 = 256 - alpha;
+		final int k2 = alpha;
+		final int i3 = 256 - alpha;
 		do {
 			j = HSL_TO_RGB[j1 >> 8];
 			j1 += i2;
@@ -1559,7 +1559,7 @@ public final class Rasterizer extends DrawingArea {
 		} while (--k > 0);
 	}
 
-	private static void method377(int ai[], int i, int j, int l, int i1) {
+	private static void method377(final int[] ai, int i, int j, int l, int i1) {
 		int k;// was parameter
 		if (restrictEdges) {
 			if (i1 > DrawingArea.centerX) {
@@ -1587,8 +1587,8 @@ public final class Rasterizer extends DrawingArea {
 
 			return;
 		}
-		int j1 = alpha;
-		int k1 = 256 - alpha;
+		final int j1 = alpha;
+		final int k1 = 256 - alpha;
 		j = ((j & 0xff00ff) * k1 >> 8 & 0xff00ff) + ((j & 0xff00) * k1 >> 8 & 0xff00);
 		while (--k >= 0) {
 			ai[i++] = j + ((ai[i] & 0xff00ff) * j1 >> 8 & 0xff00ff) + ((ai[i] & 0xff00) * j1 >> 8 & 0xff00);
@@ -1602,8 +1602,8 @@ public final class Rasterizer extends DrawingArea {
 
 	}
 
-	private static void method379(int ai[], int ai1[], int k, int l, int i1, int j1, int k1, int l1, int i2, int j2,
-			int k2, int l2, int i3) {
+	private static void method379(final int[] ai, final int[] ai1, int k, int l, int i1, int j1, final int k1, int l1, int i2, int j2,
+                                  final int k2, final int l2, final int i3) {
 		int i = 0;// was parameter
 		int j = 0;// was parameter
 		if (l >= i1) {
@@ -1640,7 +1640,7 @@ public final class Rasterizer extends DrawingArea {
 		if (lowMemory) {
 			int i4 = 0;
 			int k4 = 0;
-			int k6 = l - centreX;
+			final int k6 = l - centreX;
 			l1 += (k2 >> 3) * k6;
 			i2 += (l2 >> 3) * k6;
 			j2 += (i3 >> 3) * k6;
@@ -1700,7 +1700,7 @@ public final class Rasterizer extends DrawingArea {
 					l1 += k2;
 					i2 += l2;
 					j2 += i3;
-					int j5 = j2 >> 12;
+					final int j5 = j2 >> 12;
 					if (j5 != 0) {
 						i4 = l1 / j5;
 						k4 = i2 / j5;
@@ -1777,7 +1777,7 @@ public final class Rasterizer extends DrawingArea {
 				l1 += k2;
 				i2 += l2;
 				j2 += i3;
-				int k5 = j2 >> 12;
+				final int k5 = j2 >> 12;
 				if (k5 != 0) {
 					i4 = l1 / k5;
 					k4 = i2 / k5;
@@ -1794,7 +1794,7 @@ public final class Rasterizer extends DrawingArea {
 				i8 = j1 >> 23;
 			}
 			for (k3 = i1 - l & 7; k3-- > 0;) {
-				int l8;
+				final int l8;
 				if ((l8 = ai1[(j & 0xfc0) + (i >> 6)] >>> i8) != 0) {
                     ai[k] = l8;
                 }
@@ -1807,7 +1807,7 @@ public final class Rasterizer extends DrawingArea {
 		}
 		int j4 = 0;
 		int l4 = 0;
-		int l6 = l - centreX;
+		final int l6 = l - centreX;
 		l1 += (k2 >> 3) * l6;
 		i2 += (l2 >> 3) * l6;
 		j2 += (i3 >> 3) * l6;
@@ -1867,7 +1867,7 @@ public final class Rasterizer extends DrawingArea {
 				l1 += k2;
 				i2 += l2;
 				j2 += i3;
-				int i6 = j2 >> 14;
+				final int i6 = j2 >> 14;
 				if (i6 != 0) {
 					j4 = l1 / i6;
 					l4 = i2 / i6;
@@ -1944,7 +1944,7 @@ public final class Rasterizer extends DrawingArea {
 			l1 += k2;
 			i2 += l2;
 			j2 += i3;
-			int j6 = j2 >> 14;
+			final int j6 = j2 >> 14;
 			if (j6 != 0) {
 				j4 = l1 / j6;
 				l4 = i2 / j6;
@@ -1961,7 +1961,7 @@ public final class Rasterizer extends DrawingArea {
 			j8 = j1 >> 23;
 		}
 		for (int l3 = i1 - l & 7; l3-- > 0;) {
-			int j9;
+			final int j9;
 			if ((j9 = ai1[(j & 0x3f80) + (i >> 7)] >>> j8) != 0) {
                 ai[k] = j9;
             }
@@ -1988,7 +1988,7 @@ public final class Rasterizer extends DrawingArea {
 		texturePalettes = null;
 	}
 
-	public static void resetTexture(int textureId) {
+	public static void resetTexture(final int textureId) {
 		if (texelCache[textureId] == null) {
             return;
         }
@@ -2011,7 +2011,7 @@ public final class Rasterizer extends DrawingArea {
 		}
 	}
 
-	public static void setBounds(int width, int height) {
+	public static void setBounds(final int width, final int height) {
 		lineOffsets = new int[height];
 		for (int y = 0; y < height; y++) {
             lineOffsets[y] = width * y;
@@ -2031,7 +2031,7 @@ public final class Rasterizer extends DrawingArea {
 		centreY = DrawingArea.height / 2;
 	}
 
-	public static void unpackTextures(Archive archive) {
+	public static void unpackTextures(final Archive archive) {
 		loadedTextureCount = 0;
 		for (int i = 0; i < 50; i++) {
             try {
@@ -2042,7 +2042,7 @@ public final class Rasterizer extends DrawingArea {
                     textureImages[i].resize();
                 }
                 loadedTextureCount++;
-            } catch (Exception _ex) {
+            } catch (final Exception _ex) {
             }
         }
 

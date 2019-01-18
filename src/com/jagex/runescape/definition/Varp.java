@@ -8,9 +8,9 @@ public final class Varp {
 	public static Varp values[];
 	public int type;
 
-	public static void load(Archive archive) {
-		Buffer stream = new Buffer(archive.decompressFile("varp.dat"));
-		int count = stream.getUnsignedLEShort();
+	public static void load(final Archive archive) {
+		final Buffer stream = new Buffer(archive.decompressFile("varp.dat"));
+		final int count = stream.getUnsignedLEShort();
 
 		if (values == null) {
 			values = new Varp[count];
@@ -29,9 +29,9 @@ public final class Varp {
 		}
 	}
 
-	private void load(Buffer buffer) {
+	private void load(final Buffer buffer) {
 		do {
-			int opcode = buffer.getUnsignedByte();
+			final int opcode = buffer.getUnsignedByte();
 			if (opcode == 0) {
                 return;
             }

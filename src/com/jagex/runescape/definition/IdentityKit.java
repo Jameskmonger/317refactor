@@ -6,8 +6,8 @@ import com.jagex.runescape.Model;
 
 public final class IdentityKit {
 
-	public static void load(Archive streamLoader) {
-		Buffer stream = new Buffer(streamLoader.decompressFile("idk.dat"));
+	public static void load(final Archive streamLoader) {
+		final Buffer stream = new Buffer(streamLoader.decompressFile("idk.dat"));
 		count = stream.getUnsignedLEShort();
 		if (cache == null) {
             cache = new IdentityKit[count];
@@ -60,12 +60,12 @@ public final class IdentityKit {
 		if (this.modelIds == null) {
             return null;
         }
-		Model models[] = new Model[this.modelIds.length];
+		final Model[] models = new Model[this.modelIds.length];
 		for (int m = 0; m < this.modelIds.length; m++) {
             models[m] = Model.getModel(this.modelIds[m]);
         }
 
-		Model model;
+		final Model model;
 		if (models.length == 1) {
             model = models[0];
         } else {
@@ -82,7 +82,7 @@ public final class IdentityKit {
 	}
 
 	public Model getHeadModel() {
-		Model models[] = new Model[5];
+		final Model[] models = new Model[5];
 		int modelCount = 0;
 		for (int m = 0; m < 5; m++) {
             if (this.headModelIds[m] != -1) {
@@ -90,7 +90,7 @@ public final class IdentityKit {
             }
         }
 
-		Model model = new Model(modelCount, models);
+		final Model model = new Model(modelCount, models);
 		for (int colour = 0; colour < 6; colour++) {
 			if (this.originalModelColours[colour] == 0) {
                 break;
@@ -112,16 +112,16 @@ public final class IdentityKit {
 		return cached;
 	}
 
-	private void loadDefinition(Buffer stream) {
+	private void loadDefinition(final Buffer stream) {
 		do {
-			int opcode = stream.getUnsignedByte();
+			final int opcode = stream.getUnsignedByte();
 			if (opcode == 0) {
                 return;
             }
 			if (opcode == 1) {
                 this.partId = stream.getUnsignedByte();
             } else if (opcode == 2) {
-				int modelCount = stream.getUnsignedByte();
+				final int modelCount = stream.getUnsignedByte();
                 this.modelIds = new int[modelCount];
 				for (int m = 0; m < modelCount; m++) {
                     this.modelIds[m] = stream.getUnsignedLEShort();

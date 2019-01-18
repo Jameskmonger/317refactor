@@ -7,9 +7,9 @@ import com.jagex.runescape.collection.Cache;
 
 public final class SpotAnimation {
 
-	public static void load(Archive archive) {
-		Buffer buffer = new Buffer(archive.decompressFile("spotanim.dat"));
-		int count = buffer.getUnsignedLEShort();
+	public static void load(final Archive archive) {
+		final Buffer buffer = new Buffer(archive.decompressFile("spotanim.dat"));
+		final int count = buffer.getUnsignedLEShort();
 		if (cache == null) {
             cache = new SpotAnimation[count];
         }
@@ -67,9 +67,9 @@ public final class SpotAnimation {
 		return model;
 	}
 
-	private void read(Buffer stream) {
+	private void read(final Buffer stream) {
 		do {
-			int opcode = stream.getUnsignedByte();
+			final int opcode = stream.getUnsignedByte();
 			if (opcode == 0) {
                 return;
             }

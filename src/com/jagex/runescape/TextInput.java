@@ -2,20 +2,20 @@ package com.jagex.runescape;
 
 final class TextInput {
 
-	public static String processText(String s) {
+	public static String processText(final String s) {
 		stream.position = 0;
 		writeToStream(s, stream);
-		int offset = stream.position;
+		final int offset = stream.position;
 		stream.position = 0;
-		String text = readFromStream(offset, stream);
+		final String text = readFromStream(offset, stream);
 		return text;
 	}
 
-	public static String readFromStream(int length, Buffer stream) {
+	public static String readFromStream(final int length, final Buffer stream) {
 		int pointer = 0;
 		int l = -1;
 		for (int c = 0; c < length; c++) {
-			int encodedLetter = stream.getUnsignedByte();
+			final int encodedLetter = stream.getUnsignedByte();
 			int letter = encodedLetter >> 4 & 0xf;
 			if (l == -1) {
 				if (letter < 13) {
@@ -42,7 +42,7 @@ final class TextInput {
 
 		boolean endOfSentence = true;
 		for (int c = 0; c < pointer; c++) {
-			char character = characterList[c];
+			final char character = characterList[c];
 			if (endOfSentence && character >= 'a' && character <= 'z') {
 				characterList[c] += '\uFFE0';
 				endOfSentence = false;
@@ -54,14 +54,14 @@ final class TextInput {
 		return new String(characterList, 0, pointer);
 	}
 
-	public static void writeToStream(String text, Buffer stream) {
+	public static void writeToStream(String text, final Buffer stream) {
 		if (text.length() > 80) {
             text = text.substring(0, 80);
         }
 		text = text.toLowerCase();
 		int i = -1;
 		for (int c = 0; c < text.length(); c++) {
-			char character = text.charAt(c);
+			final char character = text.charAt(c);
 			int characterCode = 0;
 			for (int l = 0; l < validChars.length; l++) {
 				if (character != validChars[l]) {

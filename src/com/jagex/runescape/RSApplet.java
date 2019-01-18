@@ -80,7 +80,7 @@ public class RSApplet extends Applet
 	void cleanUpForQuit() {
 	}
 
-	final void createClientFrame(int width, int height) {
+	final void createClientFrame(final int width, final int height) {
 		this.width = width;
 		this.height = height;
         this.gameFrame = new RSFrame(this, this.width, this.height);
@@ -94,36 +94,36 @@ public class RSApplet extends Applet
         this.gameState = -1;
 		try {
 			Thread.sleep(5000L);
-		} catch (Exception _ex) {
+		} catch (final Exception _ex) {
 		}
 		if (this.gameState == -1) {
 			this.exit();
         }
 	}
 
-	void drawLoadingText(int percentage, String s) {
+	void drawLoadingText(final int percentage, final String s) {
 		while (this.gameGraphics == null) {
             this.gameGraphics = this.getGameComponent().getGraphics();
 			try {
 				this.getGameComponent().repaint();
-			} catch (Exception _ex) {
+			} catch (final Exception _ex) {
 			}
 			try {
 				Thread.sleep(1000L);
-			} catch (Exception _ex) {
+			} catch (final Exception _ex) {
 			}
 		}
-		Font helveticaBold = new Font("Helvetica", 1, 13);
-		FontMetrics fontmetrics = this.getGameComponent().getFontMetrics(helveticaBold);
-		Font helvetica = new Font("Helvetica", 0, 13);
+		final Font helveticaBold = new Font("Helvetica", 1, 13);
+		final FontMetrics fontmetrics = this.getGameComponent().getFontMetrics(helveticaBold);
+		final Font helvetica = new Font("Helvetica", 0, 13);
 		this.getGameComponent().getFontMetrics(helvetica);
 		if (this.clearScreen) {
             this.gameGraphics.setColor(Color.black);
             this.gameGraphics.fillRect(0, 0, this.width, this.height);
             this.clearScreen = false;
 		}
-		Color color = new Color(140, 17, 17);
-		int centerHeight = this.height / 2 - 18;
+		final Color color = new Color(140, 17, 17);
+		final int centerHeight = this.height / 2 - 18;
         this.gameGraphics.setColor(color);
         this.gameGraphics.drawRect(this.width / 2 - 152, centerHeight, 304, 34);
         this.gameGraphics.fillRect(this.width / 2 - 150, centerHeight + 2, percentage * 3, 30);
@@ -140,24 +140,24 @@ public class RSApplet extends Applet
 		if (this.gameFrame != null) {
 			try {
 				Thread.sleep(1000L);
-			} catch (Exception _ex) {
+			} catch (final Exception _ex) {
 			}
 			try {
 				System.exit(0);
-			} catch (Throwable _ex) {
+			} catch (final Throwable _ex) {
 			}
 		}
 	}
 
 	@Override
-	public final void focusGained(FocusEvent focusevent) {
+	public final void focusGained(final FocusEvent focusevent) {
         this.awtFocus = true;
         this.clearScreen = true;
 		this.redraw();
 	}
 
 	@Override
-	public final void focusLost(FocusEvent focusevent) {
+	public final void focusLost(final FocusEvent focusevent) {
         this.awtFocus = false;
 		for (int key = 0; key < 128; key++) {
             this.keyStatus[key] = 0;
@@ -173,7 +173,7 @@ public class RSApplet extends Applet
         }
 	}
 
-	final void initClientFrame(int width, int height) {
+	final void initClientFrame(final int width, final int height) {
 		this.width = width;
 		this.height = height;
         this.gameGraphics = this.getGameComponent().getGraphics();
@@ -182,9 +182,9 @@ public class RSApplet extends Applet
 	}
 
 	@Override
-	public final void keyPressed(KeyEvent keyevent) {
+	public final void keyPressed(final KeyEvent keyevent) {
         this.idleTime = 0;
-		int keyCode = keyevent.getKeyCode();
+		final int keyCode = keyevent.getKeyCode();
 		int keyChar = keyevent.getKeyChar();
 
 		if (keyChar < 30) {
@@ -256,9 +256,9 @@ public class RSApplet extends Applet
 	}
 
 	@Override
-	public final void keyReleased(KeyEvent keyevent) {
+	public final void keyReleased(final KeyEvent keyevent) {
         this.idleTime = 0;
-		int keyCode = keyevent.getKeyCode();
+		final int keyCode = keyevent.getKeyCode();
 		char keyChar = keyevent.getKeyChar();
 		if (keyChar < '\036') {
             keyChar = '\0';
@@ -296,15 +296,15 @@ public class RSApplet extends Applet
 	}
 
 	@Override
-	public final void keyTyped(KeyEvent keyevent) {
+	public final void keyTyped(final KeyEvent keyevent) {
 	}
 
 	@Override
-	public final void mouseClicked(MouseEvent mouseevent) {
+	public final void mouseClicked(final MouseEvent mouseevent) {
 	}
 
 	@Override
-	public final void mouseDragged(MouseEvent mouseevent) {
+	public final void mouseDragged(final MouseEvent mouseevent) {
 		int x = mouseevent.getX();
 		int y = mouseevent.getY();
 		if (this.gameFrame != null) {
@@ -317,18 +317,18 @@ public class RSApplet extends Applet
 	}
 
 	@Override
-	public final void mouseEntered(MouseEvent mouseevent) {
+	public final void mouseEntered(final MouseEvent mouseevent) {
 	}
 
 	@Override
-	public final void mouseExited(MouseEvent mouseevent) {
+	public final void mouseExited(final MouseEvent mouseevent) {
         this.idleTime = 0;
         this.mouseX = -1;
         this.mouseY = -1;
 	}
 
 	@Override
-	public final void mouseMoved(MouseEvent mouseevent) {
+	public final void mouseMoved(final MouseEvent mouseevent) {
 		int x = mouseevent.getX();
 		int y = mouseevent.getY();
 		if (this.gameFrame != null) {
@@ -341,7 +341,7 @@ public class RSApplet extends Applet
 	}
 
 	@Override
-	public final void mousePressed(MouseEvent mouseEvent) {
+	public final void mousePressed(final MouseEvent mouseEvent) {
 		int x = mouseEvent.getX();
 		int y = mouseEvent.getY();
 		if (this.gameFrame != null) {
@@ -362,13 +362,13 @@ public class RSApplet extends Applet
 	}
 
 	@Override
-	public final void mouseReleased(MouseEvent mouseevent) {
+	public final void mouseReleased(final MouseEvent mouseevent) {
         this.idleTime = 0;
         this.mouseButton = 0;
 	}
 
 	@Override
-	public final void paint(Graphics g) {
+	public final void paint(final Graphics g) {
 		if (this.gameGraphics == null) {
             this.gameGraphics = g;
         }
@@ -422,11 +422,11 @@ public class RSApplet extends Applet
 					return;
 				}
 			}
-			int i2 = ratio;
-			int j2 = delay;
+			final int i2 = ratio;
+			final int j2 = delay;
 			ratio = 300;
 			delay = 1;
-			long currentTime = System.currentTimeMillis();
+			final long currentTime = System.currentTimeMillis();
 			if (this.otims[opos] == 0L) {
 				ratio = i2;
 				delay = j2;
@@ -458,7 +458,7 @@ public class RSApplet extends Applet
             }
 			try {
 				Thread.sleep(delay);
-			} catch (InterruptedException _ex) {
+			} catch (final InterruptedException _ex) {
 				intex++;
 			}
 			for (; count < 256; count += ratio) {
@@ -479,7 +479,7 @@ public class RSApplet extends Applet
 			if (this.debugRequested) {
 				System.out.println("ntime:" + currentTime);
 				for (int i = 0; i < 10; i++) {
-					int otim = ((opos - i - 1) + 20) % 10;
+					final int otim = ((opos - i - 1) + 20) % 10;
 					System.out.println("otim" + otim + ":" + this.otims[otim]);
 				}
 
@@ -495,7 +495,7 @@ public class RSApplet extends Applet
         }
 	}
 
-	final void setFrameRate(int frameRate) {
+	final void setFrameRate(final int frameRate) {
         this.delayTime = 1000 / frameRate;
 	}
 
@@ -506,8 +506,8 @@ public class RSApplet extends Applet
         }
 	}
 
-	public void startRunnable(Runnable runnable, int priority) {
-		Thread thread = new Thread(runnable);
+	public void startRunnable(final Runnable runnable, final int priority) {
+		final Thread thread = new Thread(runnable);
 		thread.start();
 		thread.setPriority(priority);
 	}
@@ -523,7 +523,7 @@ public class RSApplet extends Applet
 	}
 
 	@Override
-	public final void update(Graphics g) {
+	public final void update(final Graphics g) {
 		if (this.gameGraphics == null) {
             this.gameGraphics = g;
         }
@@ -532,31 +532,31 @@ public class RSApplet extends Applet
 	}
 
 	@Override
-	public final void windowActivated(WindowEvent windowevent) {
+	public final void windowActivated(final WindowEvent windowevent) {
 	}
 
 	@Override
-	public final void windowClosed(WindowEvent windowevent) {
+	public final void windowClosed(final WindowEvent windowevent) {
 	}
 
 	@Override
-	public final void windowClosing(WindowEvent windowevent) {
+	public final void windowClosing(final WindowEvent windowevent) {
 		this.destroy();
 	}
 
 	@Override
-	public final void windowDeactivated(WindowEvent windowevent) {
+	public final void windowDeactivated(final WindowEvent windowevent) {
 	}
 
 	@Override
-	public final void windowDeiconified(WindowEvent windowevent) {
+	public final void windowDeiconified(final WindowEvent windowevent) {
 	}
 
 	@Override
-	public final void windowIconified(WindowEvent windowevent) {
+	public final void windowIconified(final WindowEvent windowevent) {
 	}
 
 	@Override
-	public final void windowOpened(WindowEvent windowevent) {
+	public final void windowOpened(final WindowEvent windowevent) {
 	}
 }

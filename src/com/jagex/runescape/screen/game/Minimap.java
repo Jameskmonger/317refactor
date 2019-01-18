@@ -53,17 +53,17 @@ public class Minimap {
         this.mapFunctionImage = new Sprite[100];
     }
 
-    public void setupImageProducer(Component component) {
+    public void setupImageProducer(final Component component) {
         this.minimapImageProducer = new RSImageProducer(172, 156, component);
         DrawingArea.clear();
         this.minimapBackgroundImage.draw(0, 0);
     }
 
-    public void draw(Graphics graphics) {
+    public void draw(final Graphics graphics) {
         this.minimapImageProducer.drawGraphics(4, graphics, 550);
     }
 
-    public void load(Archive archiveMedia) {
+    public void load(final Archive archiveMedia) {
         this.minimapImage = new Sprite(512, 512);
         this.minimapBackgroundImage = new IndexedImage(archiveMedia, "mapback", 0);
         this.minimapCompassImage = new Sprite(archiveMedia, "compass", 0);
@@ -81,20 +81,20 @@ public class Minimap {
             for (int i = 0; i < 100; i++) {
                 this.mapSceneImage[i] = new IndexedImage(archiveMedia, "mapscene", i);
             }
-        } catch (Exception _ex) {
+        } catch (final Exception _ex) {
         }
 
         try {
             for (int i = 0; i < 100; i++) {
                 this.mapFunctionImage[i] = new Sprite(archiveMedia, "mapfunction", i);
             }
-        } catch (Exception _ex) {
+        } catch (final Exception _ex) {
         }
 
-        int randomRed = (int) (Math.random() * 21D) - 10;
-        int randomGreen = (int) (Math.random() * 21D) - 10;
-        int randomBlue = (int) (Math.random() * 21D) - 10;
-        int randomColour = (int) (Math.random() * 41D) - 20;
+        final int randomRed = (int) (Math.random() * 21D) - 10;
+        final int randomGreen = (int) (Math.random() * 21D) - 10;
+        final int randomBlue = (int) (Math.random() * 21D) - 10;
+        final int randomColour = (int) (Math.random() * 41D) - 20;
         for (int i = 0; i < 100; i++) {
             if (this.mapFunctionImage[i] != null) {
                 this.mapFunctionImage[i].adjustRGB(randomRed + randomColour, randomGreen + randomColour,
@@ -109,27 +109,27 @@ public class Minimap {
         this.calculateSizes();
     }
 
-    private void drawMinimapScene(WorldController worldController, int lineColour, int interactiveColour, int x, int y, int z) {
+    private void drawMinimapScene(final WorldController worldController, final int lineColour, final int interactiveColour, final int x, final int y, final int z) {
         int uid = worldController.getWallObjectHash(x, y, z);
         if (uid != 0) {
             // Walls
 
-            int config = worldController.getConfig(uid, x, y, z);
-            int direction = config >> 6 & 3;
-            int type = config & 0x1F;
+            final int config = worldController.getConfig(uid, x, y, z);
+            final int direction = config >> 6 & 3;
+            final int type = config & 0x1F;
             int colour = lineColour;
             if (uid > 0) {
                 colour = interactiveColour;
             }
-            int pixels[] = this.minimapImage.pixels;
-            int pixel = 24624 + x * 4 + (103 - y) * 512 * 4;
-            int objectId = uid >> 14 & 0x7FFF;
-            GameObjectDefinition definition = GameObjectDefinition.getDefinition(objectId);
+            final int[] pixels = this.minimapImage.pixels;
+            final int pixel = 24624 + x * 4 + (103 - y) * 512 * 4;
+            final int objectId = uid >> 14 & 0x7FFF;
+            final GameObjectDefinition definition = GameObjectDefinition.getDefinition(objectId);
             if (definition.mapScene != -1) {
-                IndexedImage background = this.mapSceneImage[definition.mapScene];
+                final IndexedImage background = this.mapSceneImage[definition.mapScene];
                 if (background != null) {
-                    int _x = (definition.sizeX * 4 - background.width) / 2;
-                    int _y = (definition.sizeY * 4 - background.height) / 2;
+                    final int _x = (definition.sizeX * 4 - background.width) / 2;
+                    final int _y = (definition.sizeY * 4 - background.height) / 2;
                     background.draw(48 + x * 4 + _x, 48 + (104 - y - definition.sizeY) * 4 + _y);
                 }
             } else {
@@ -195,16 +195,16 @@ public class Minimap {
 
         uid = worldController.getInteractibleObjectHash(x, y, z);
         if (uid != 0) {
-            int config = worldController.getConfig(uid, x, y, z);
-            int direction = config >> 6 & 3;
-            int type = config & 0x1F;
-            int objectId = uid >> 14 & 0x7FFF;
-            GameObjectDefinition definition = GameObjectDefinition.getDefinition(objectId);
+            final int config = worldController.getConfig(uid, x, y, z);
+            final int direction = config >> 6 & 3;
+            final int type = config & 0x1F;
+            final int objectId = uid >> 14 & 0x7FFF;
+            final GameObjectDefinition definition = GameObjectDefinition.getDefinition(objectId);
             if (definition.mapScene != -1) {
-                IndexedImage background = this.mapSceneImage[definition.mapScene];
+                final IndexedImage background = this.mapSceneImage[definition.mapScene];
                 if (background != null) {
-                    int _x = (definition.sizeX * 4 - background.width) / 2;
-                    int _y = (definition.sizeY * 4 - background.height) / 2;
+                    final int _x = (definition.sizeX * 4 - background.width) / 2;
+                    final int _y = (definition.sizeY * 4 - background.height) / 2;
                     background.draw(48 + x * 4 + _x, 48 + (104 - y - definition.sizeY) * 4 + _y);
                 }
             } else if (type == 9) {
@@ -214,8 +214,8 @@ public class Minimap {
                 if (uid > 0) {
                     colour = 0xEE0000;
                 }
-                int pixels[] = this.minimapImage.pixels;
-                int pixel = 24624 + x * 4 + (103 - y) * 512 * 4;
+                final int[] pixels = this.minimapImage.pixels;
+                final int pixel = 24624 + x * 4 + (103 - y) * 512 * 4;
                 if (direction == 0 || direction == 2) {
                     pixels[pixel + 1536] = colour;
                     pixels[pixel + 1024 + 1] = colour;
@@ -232,13 +232,13 @@ public class Minimap {
 
         uid = worldController.getGroundDecorationHash(x, y, z);
         if (uid != 0) {
-            int objectId = uid >> 14 & 0x7FFF;
-            GameObjectDefinition definition = GameObjectDefinition.getDefinition(objectId);
+            final int objectId = uid >> 14 & 0x7FFF;
+            final GameObjectDefinition definition = GameObjectDefinition.getDefinition(objectId);
             if (definition.mapScene != -1) {
-                IndexedImage background = this.mapSceneImage[definition.mapScene];
+                final IndexedImage background = this.mapSceneImage[definition.mapScene];
                 if (background != null) {
-                    int _x = (definition.sizeX * 4 - background.width) / 2;
-                    int _y = (definition.sizeY * 4 - background.height) / 2;
+                    final int _x = (definition.sizeX * 4 - background.width) / 2;
+                    final int _y = (definition.sizeY * 4 - background.height) / 2;
                     background.draw(48 + x * 4 + _x, 48 + (104 - y - definition.sizeY) * 4 + _y);
                 }
             }
@@ -246,32 +246,32 @@ public class Minimap {
     }
 
     public void updateImageProducer(
-            int baseX,
-            int baseY,
-            int localPlayerCount,
-            Player[] players,
-            int[] localPlayers,
-            int friendsCount,
-            long[] friendsListAsLongs,
-            int[] friendsWorldIds,
-            DoubleEndedQueue[][] items,
-            int npcCount,
-            NPC[] npcs,
-            int[] npcIds,
-            int hintIconType,
-            int hintIconNpcId,
-            int hintIconPlayerId,
-            int hintIconX,
-            int hintIconY,
-            int destinationX,
-            int destinationY,
-            int tick
+            final int baseX,
+            final int baseY,
+            final int localPlayerCount,
+            final Player[] players,
+            final int[] localPlayers,
+            final int friendsCount,
+            final long[] friendsListAsLongs,
+            final int[] friendsWorldIds,
+            final DoubleEndedQueue[][] items,
+            final int npcCount,
+            final NPC[] npcs,
+            final int[] npcIds,
+            final int hintIconType,
+            final int hintIconNpcId,
+            final int hintIconPlayerId,
+            final int hintIconX,
+            final int hintIconY,
+            final int destinationX,
+            final int destinationY,
+            final int tick
     ) {
         this.minimapImageProducer.initDrawingArea();
         if (this.state == 2) {
-            byte backgroundPixels[] = this.minimapBackgroundImage.pixels;
-            int rasterPixels[] = DrawingArea.pixels;
-            int pixelCount = backgroundPixels.length;
+            final byte[] backgroundPixels = this.minimapBackgroundImage.pixels;
+            final int[] rasterPixels = DrawingArea.pixels;
+            final int pixelCount = backgroundPixels.length;
             for (int p = 0; p < pixelCount; p++) {
                 if (backgroundPixels[p] == 0) {
                     rasterPixels[p] = 0;
@@ -281,50 +281,50 @@ public class Minimap {
             this.minimapCompassImage.rotate(33, Client.cameraHorizontal, this.compassWidthMap, 256, this.compassHingeSize, 25, 0, 0, 33, 25);
             return;
         }
-        int angle = Client.cameraHorizontal + this.rotation & 0x7FF;
-        int centreX = 48 + Client.localPlayer.x / 32;
-        int centreY = 464 - Client.localPlayer.y / 32;
+        final int angle = Client.cameraHorizontal + this.rotation & 0x7FF;
+        final int centreX = 48 + Client.localPlayer.x / 32;
+        final int centreY = 464 - Client.localPlayer.y / 32;
         this.minimapImage.rotate(151, angle, this.minimapLineWidth, 256 + this.zoom, this.minimapLeft, centreY, 5, 25, 146, centreX);
         this.minimapCompassImage.rotate(33, Client.cameraHorizontal, this.compassWidthMap, 256, this.compassHingeSize, 25, 0, 0, 33, 25);
         for (int icon = 0; icon < this.minimapHintCount; icon++) {
-            int mapX = (this.minimapHintX[icon] * 4 + 2) - Client.localPlayer.x / 32;
-            int mapY = (this.minimapHintY[icon] * 4 + 2) - Client.localPlayer.y / 32;
+            final int mapX = (this.minimapHintX[icon] * 4 + 2) - Client.localPlayer.x / 32;
+            final int mapY = (this.minimapHintY[icon] * 4 + 2) - Client.localPlayer.y / 32;
             this.drawSprite(this.minimapHint[icon], mapX, mapY);
         }
 
         for (int x = 0; x < 104; x++) {
             for (int y = 0; y < 104; y++) {
-                DoubleEndedQueue itemStack = items[x][y];
+                final DoubleEndedQueue itemStack = items[x][y];
                 if (itemStack != null) {
-                    int mapX = (x * 4 + 2) - Client.localPlayer.x / 32;
-                    int mapY = (y * 4 + 2) - Client.localPlayer.y / 32;
+                    final int mapX = (x * 4 + 2) - Client.localPlayer.x / 32;
+                    final int mapY = (y * 4 + 2) - Client.localPlayer.y / 32;
                     this.drawSprite(this.mapDotItem, mapX, mapY);
                 }
             }
         }
 
         for (int n = 0; n < npcCount; n++) {
-            NPC npc = npcs[npcIds[n]];
+            final NPC npc = npcs[npcIds[n]];
             if (npc != null && npc.isVisible()) {
                 EntityDefinition definition = npc.npcDefinition;
                 if (definition.childrenIDs != null) {
                     definition = definition.getChildDefinition();
                 }
                 if (definition != null && definition.visibleMinimap && definition.clickable) {
-                    int mapX = npc.x / 32 - Client.localPlayer.x / 32;
-                    int mapY = npc.y / 32 - Client.localPlayer.y / 32;
+                    final int mapX = npc.x / 32 - Client.localPlayer.x / 32;
+                    final int mapY = npc.y / 32 - Client.localPlayer.y / 32;
                     this.drawSprite(this.mapDotNPC, mapX, mapY);
                 }
             }
         }
 
         for (int p = 0; p < localPlayerCount; p++) {
-            Player player = players[localPlayers[p]];
+            final Player player = players[localPlayers[p]];
             if (player != null && player.isVisible()) {
-                int mapX = player.x / 32 - Client.localPlayer.x / 32;
-                int mapY = player.y / 32 - Client.localPlayer.y / 32;
+                final int mapX = player.x / 32 - Client.localPlayer.x / 32;
+                final int mapY = player.y / 32 - Client.localPlayer.y / 32;
                 boolean friend = false;
-                long nameHash = TextClass.nameToLong(player.name);
+                final long nameHash = TextClass.nameToLong(player.name);
                 for (int f = 0; f < friendsCount; f++) {
                     if (nameHash != friendsListAsLongs[f] || friendsWorldIds[f] == 0) {
                         continue;
@@ -349,40 +349,40 @@ public class Minimap {
 
         if (hintIconType != 0 && tick % 20 < 10) {
             if (hintIconType == 1 && hintIconNpcId >= 0 && hintIconNpcId < npcs.length) {
-                NPC npc = npcs[hintIconNpcId];
+                final NPC npc = npcs[hintIconNpcId];
                 if (npc != null) {
-                    int mapX = npc.x / 32 - Client.localPlayer.x / 32;
-                    int mapY = npc.y / 32 - Client.localPlayer.y / 32;
+                    final int mapX = npc.x / 32 - Client.localPlayer.x / 32;
+                    final int mapY = npc.y / 32 - Client.localPlayer.y / 32;
                     this.drawTarget(this.mapMarker, mapY, mapX);
                 }
             }
             if (hintIconType == 2) {
-                int mapX = ((hintIconX - baseX) * 4 + 2) - Client.localPlayer.x / 32;
-                int mapY = ((hintIconY - baseY) * 4 + 2) - Client.localPlayer.y / 32;
+                final int mapX = ((hintIconX - baseX) * 4 + 2) - Client.localPlayer.x / 32;
+                final int mapY = ((hintIconY - baseY) * 4 + 2) - Client.localPlayer.y / 32;
                 this.drawTarget(this.mapMarker, mapY, mapX);
             }
             if (hintIconType == 10 && hintIconPlayerId >= 0 && hintIconPlayerId < players.length) {
-                Player player = players[hintIconPlayerId];
+                final Player player = players[hintIconPlayerId];
                 if (player != null) {
-                    int mapX = player.x / 32 - Client.localPlayer.x / 32;
-                    int mapY = player.y / 32 - Client.localPlayer.y / 32;
+                    final int mapX = player.x / 32 - Client.localPlayer.x / 32;
+                    final int mapY = player.y / 32 - Client.localPlayer.y / 32;
                     this.drawTarget(this.mapMarker, mapY, mapX);
                 }
             }
         }
 
         if (destinationX != 0) {
-            int mapX = (destinationX * 4 + 2) - Client.localPlayer.x / 32;
-            int mapY = (destinationY * 4 + 2) - Client.localPlayer.y / 32;
+            final int mapX = (destinationX * 4 + 2) - Client.localPlayer.x / 32;
+            final int mapY = (destinationY * 4 + 2) - Client.localPlayer.y / 32;
             this.drawSprite(this.mapFlag, mapX, mapY);
         }
 
         DrawingArea.drawFilledRectangle(97, 78, 3, 3, 0xFFFFFF);
     }
 
-    public void render(WorldController worldController, int plane, byte[][][] tileFlags, CollisionMap[] collisionMap) {
-        int pixels[] = this.minimapImage.pixels;
-        int pixelCount = pixels.length;
+    public void render(final WorldController worldController, final int plane, final byte[][][] tileFlags, final CollisionMap[] collisionMap) {
+        final int[] pixels = this.minimapImage.pixels;
+        final int pixelCount = pixels.length;
         for (int pixel = 0; pixel < pixelCount; pixel++) {
             pixels[pixel] = 0;
         }
@@ -400,9 +400,9 @@ public class Minimap {
             }
         }
 
-        int primaryColour = ((238 + (int) (Math.random() * 20D)) - 10 << 16)
+        final int primaryColour = ((238 + (int) (Math.random() * 20D)) - 10 << 16)
                 + ((238 + (int) (Math.random() * 20D)) - 10 << 8) + ((238 + (int) (Math.random() * 20D)) - 10);
-        int secondaryColour = (238 + (int) (Math.random() * 20D)) - 10 << 16;
+        final int secondaryColour = (238 + (int) (Math.random() * 20D)) - 10 << 16;
         this.minimapImage.initDrawingArea();
         for (int y = 1; y < 103; y++) {
             for (int x = 1; x < 103; x++) {
@@ -418,14 +418,14 @@ public class Minimap {
         this.offsetMinimapIcons(worldController, collisionMap, plane);
     }
 
-    private void offsetMinimapIcons(WorldController worldController, CollisionMap[] collisionMap, int plane) {
+    private void offsetMinimapIcons(final WorldController worldController, final CollisionMap[] collisionMap, final int plane) {
         this.minimapHintCount = 0;
         for (int x = 0; x < 104; x++) {
             for (int y = 0; y < 104; y++) {
                 int hash = worldController.getGroundDecorationHash(x, y, plane);
                 if (hash != 0) {
                     hash = hash >> 14 & 0x7FFF;
-                    int icon = GameObjectDefinition.getDefinition(hash).icon;
+                    final int icon = GameObjectDefinition.getDefinition(hash).icon;
 
                     if (icon >= 0) {
                         int drawPointX = x;
@@ -433,11 +433,11 @@ public class Minimap {
 
                         // All the shop icons, it seems
                         if (this.shouldMoveIcon(icon)) {
-                            byte regionWidth = 104;
-                            byte regionHeight = 104;
-                            int clippingFlags[][] = collisionMap[plane].clippingData;
+                            final byte regionWidth = 104;
+                            final byte regionHeight = 104;
+                            final int[][] clippingFlags = collisionMap[plane].clippingData;
                             for (int off = 0; off < 10; off++) {
-                                int randomDirection = (int) (Math.random() * 4D);
+                                final int randomDirection = (int) (Math.random() * 4D);
                                 if (randomDirection == 0 && drawPointX > 0 && drawPointX > x - 3
                                         && (clippingFlags[drawPointX - 1][drawPointY] & 0x1280108) == 0) {
                                     drawPointX--;
@@ -467,7 +467,7 @@ public class Minimap {
         }
     }
 
-    private boolean shouldMoveIcon(int icon) {
+    private boolean shouldMoveIcon(final int icon) {
         return icon != 22 && icon != 29 && icon != 34 && icon != 36 && icon != 46 && icon != 47 && icon != 48;
     }
 
@@ -516,28 +516,28 @@ public class Minimap {
         }
     }
 
-    private void drawTarget(Sprite sprite, int y, int x) {
-        int l = x * x + y * y;
+    private void drawTarget(final Sprite sprite, final int y, final int x) {
+        final int l = x * x + y * y;
         if (l > 4225 && l < 0x15F90) {
-            int angle = Client.cameraHorizontal + this.rotation & 0x7FF;
+            final int angle = Client.cameraHorizontal + this.rotation & 0x7FF;
             int sine = Model.SINE[angle];
             int cosine = Model.COSINE[angle];
             sine = (sine * 256) / (this.zoom + 256);
             cosine = (cosine * 256) / (this.zoom + 256);
-            int l1 = y * sine + x * cosine >> 16;
-            int i2 = y * cosine - x * sine >> 16;
-            double d = Math.atan2(l1, i2);
-            int randomX = (int) (Math.sin(d) * 63D);
-            int randomY = (int) (Math.cos(d) * 57D);
+            final int l1 = y * sine + x * cosine >> 16;
+            final int i2 = y * cosine - x * sine >> 16;
+            final double d = Math.atan2(l1, i2);
+            final int randomX = (int) (Math.sin(d) * 63D);
+            final int randomY = (int) (Math.cos(d) * 57D);
             this.minimapEdgeImage.rotate(88 + randomX, 63 - randomY, d);
         } else {
             this.drawSprite(sprite, x, y);
         }
     }
 
-    private void drawSprite(Sprite sprite, int x, int y) {
-        int angle = Client.cameraHorizontal + this.rotation & 0x7FF;
-        int l = x * x + y * y;
+    private void drawSprite(final Sprite sprite, final int x, final int y) {
+        final int angle = Client.cameraHorizontal + this.rotation & 0x7FF;
+        final int l = x * x + y * y;
         if (l > 6400) {
             return;
         }
@@ -545,8 +545,8 @@ public class Minimap {
         int cosineAngle = Model.COSINE[angle];
         sineAngle = (sineAngle * 256) / (this.zoom + 256);
         cosineAngle = (cosineAngle * 256) / (this.zoom + 256);
-        int spriteOffsetX = y * sineAngle + x * cosineAngle >> 16;
-        int spriteOffsetY = y * cosineAngle - x * sineAngle >> 16;
+        final int spriteOffsetX = y * sineAngle + x * cosineAngle >> 16;
+        final int spriteOffsetY = y * cosineAngle - x * sineAngle >> 16;
         if (l > 2500) {
             sprite.method354(this.minimapBackgroundImage, 83 - spriteOffsetY - sprite.maxHeight / 2 - 4,
                     ((94 + spriteOffsetX) - sprite.maxWidth / 2) + 4);

@@ -22,7 +22,7 @@ public final class Buffer extends Cacheable {
                 return stream;
             }
         }
-        Buffer stream_1 = new Buffer();
+        final Buffer stream_1 = new Buffer();
         stream_1.position = 0;
         stream_1.buffer = new byte[5000];
         return stream_1;
@@ -47,7 +47,7 @@ public final class Buffer extends Cacheable {
     private Buffer() {
     }
 
-    public Buffer(byte buf[]) {
+    public Buffer(final byte[] buf) {
         this.buffer = buf;
         this.position = 0;
     }
@@ -57,13 +57,13 @@ public final class Buffer extends Cacheable {
     }
 
     public void generateKeys() {
-        int tmpPos = this.position;
+        final int tmpPos = this.position;
         this.position = 0;
-        byte buf[] = new byte[tmpPos];
+        final byte[] buf = new byte[tmpPos];
         this.readBytes(tmpPos, 0, buf);
-        BigInteger val1 = new BigInteger(buf);
-        BigInteger val2 = val1/* .modPow(val1, val2) */;
-        byte finalBuf[] = val2.toByteArray();
+        final BigInteger val1 = new BigInteger(buf);
+        final BigInteger val2 = val1/* .modPow(val1, val2) */;
+        final byte[] finalBuf = val2.toByteArray();
         this.position = 0;
         this.put(finalBuf.length);
         this.putBytes(finalBuf, finalBuf.length, 0);
@@ -83,7 +83,7 @@ public final class Buffer extends Cacheable {
         return (byte) (-this.buffer[this.position++]);
     }
 
-    public void getBytes(int startPos, int endPos, byte buf[]) {
+    public void getBytes(final int startPos, final int endPos, final byte[] buf) {
         for (int k = (endPos + startPos) - 1; k >= endPos; k--) {
             buf[k] = this.buffer[this.position++];
         }
@@ -130,8 +130,8 @@ public final class Buffer extends Cacheable {
     }
 
     public long getLong() {
-        long ms = this.getInt() & 0xffffffffL;
-        long ls = this.getInt() & 0xffffffffL;
+        final long ms = this.getInt() & 0xffffffffL;
+        final long ls = this.getInt() & 0xffffffffL;
         return (ms << 32) + ls;
     }
 
@@ -145,7 +145,7 @@ public final class Buffer extends Cacheable {
     }
 
     public int getSmartA() {
-        int i = this.buffer[this.position] & 0xff;
+        final int i = this.buffer[this.position] & 0xff;
         if (i < 128) {
             return this.getUnsignedByte() - 64;
         } else {
@@ -154,7 +154,7 @@ public final class Buffer extends Cacheable {
     }
 
     public int getSmartB() {
-        int i = this.buffer[this.position] & 0xff;
+        final int i = this.buffer[this.position] & 0xff;
         if (i < 128) {
             return this.getUnsignedByte();
         } else {
@@ -163,7 +163,7 @@ public final class Buffer extends Cacheable {
     }
 
     public String getString() {
-        int i = this.position;
+        final int i = this.position;
         while (this.buffer[this.position++] != 10) {
             ;
         }
@@ -210,63 +210,63 @@ public final class Buffer extends Cacheable {
         this.bitPosition = this.position * 8;
     }
 
-    public void put(int i) {
+    public void put(final int i) {
         this.buffer[this.position++] = (byte) i;
     }
 
-    public void put24BitInt(int i) {
+    public void put24BitInt(final int i) {
         this.buffer[this.position++] = (byte) (i >> 16);
         this.buffer[this.position++] = (byte) (i >> 8);
         this.buffer[this.position++] = (byte) i;
     }
 
-    public void putByteC(int i) {
+    public void putByteC(final int i) {
         this.buffer[this.position++] = (byte) (-i);
     }
 
-    public void putBytes(byte buf[], int length, int startPosition) {
+    public void putBytes(final byte[] buf, final int length, final int startPosition) {
         for (int k = startPosition; k < startPosition + length; k++) {
             this.buffer[this.position++] = buf[k];
         }
 
     }
 
-    public void putByteS(int j) {
+    public void putByteS(final int j) {
         this.buffer[this.position++] = (byte) (128 - j);
     }
 
-    public void putBytesA(int i, byte buf[], int j) {
+    public void putBytesA(final int i, final byte[] buf, final int j) {
         for (int k = (i + j) - 1; k >= i; k--) {
             this.buffer[this.position++] = (byte) (buf[k] + 128);
         }
 
     }
 
-    public void putInt(int i) {
+    public void putInt(final int i) {
         this.buffer[this.position++] = (byte) (i >> 24);
         this.buffer[this.position++] = (byte) (i >> 16);
         this.buffer[this.position++] = (byte) (i >> 8);
         this.buffer[this.position++] = (byte) i;
     }
 
-    public void putLEInt(int j) {
+    public void putLEInt(final int j) {
         this.buffer[this.position++] = (byte) j;
         this.buffer[this.position++] = (byte) (j >> 8);
         this.buffer[this.position++] = (byte) (j >> 16);
         this.buffer[this.position++] = (byte) (j >> 24);
     }
 
-    public void putLEShort(int i) {
+    public void putLEShort(final int i) {
         this.buffer[this.position++] = (byte) i;
         this.buffer[this.position++] = (byte) (i >> 8);
     }
 
-    public void putLEShortA(int j) {
+    public void putLEShortA(final int j) {
         this.buffer[this.position++] = (byte) (j + 128);
         this.buffer[this.position++] = (byte) (j >> 8);
     }
 
-    public void putLong(long l) {
+    public void putLong(final long l) {
         try {
             this.buffer[this.position++] = (byte) (int) (l >> 56);
             this.buffer[this.position++] = (byte) (int) (l >> 48);
@@ -276,31 +276,31 @@ public final class Buffer extends Cacheable {
             this.buffer[this.position++] = (byte) (int) (l >> 16);
             this.buffer[this.position++] = (byte) (int) (l >> 8);
             this.buffer[this.position++] = (byte) (int) l;
-        } catch (RuntimeException ex) {
+        } catch (final RuntimeException ex) {
             signlink.reporterror("14395, " + 5 + ", " + l + ", " + ex.toString());
             throw new RuntimeException();
         }
     }
 
-    public void putOpcode(int i) {
+    public void putOpcode(final int i) {
         this.buffer[this.position++] = (byte) (i + this.encryptor.value());
     }
 
-    public void putShort(int i) {
+    public void putShort(final int i) {
         this.buffer[this.position++] = (byte) (i >> 8);
         this.buffer[this.position++] = (byte) i;
     }
 
-    public void putShortA(int j) {
+    public void putShortA(final int j) {
         this.buffer[this.position++] = (byte) (j >> 8);
         this.buffer[this.position++] = (byte) (j + 128);
     }
 
-    public void putSizeByte(int i) {
+    public void putSizeByte(final int i) {
         this.buffer[this.position - i - 1] = (byte) i;
     }
 
-    public void putString(String s) {
+    public void putString(final String s) {
         // s.getBytes(0, s.length(), buffer, currentOffset); //deprecated
         System.arraycopy(s.getBytes(), 0, this.buffer, this.position, s.length());
         this.position += s.length();
@@ -325,16 +325,16 @@ public final class Buffer extends Cacheable {
     }
 
     public byte[] readBytes() {
-        int tmpPos = this.position;
+        final int tmpPos = this.position;
         while (this.buffer[this.position++] != 10) {
             ;
         }
-        byte buf[] = new byte[this.position - tmpPos - 1];
+        final byte[] buf = new byte[this.position - tmpPos - 1];
         System.arraycopy(this.buffer, tmpPos, buf, tmpPos - tmpPos, this.position - 1 - tmpPos);
         return buf;
     }
 
-    public void readBytes(int length, int startPosition, byte dest[]) {
+    public void readBytes(final int length, final int startPosition, final byte[] dest) {
         for (int i = startPosition; i < startPosition + length; i++) {
             dest[i] = this.buffer[this.position++];
         }

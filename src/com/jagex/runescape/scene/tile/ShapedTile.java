@@ -36,26 +36,26 @@ public final class ShapedTile {
 			{ 1, 0, 1, 5, 1, 1, 4, 5, 1, 1, 2, 4, 0, 0, 5, 3, 0, 5, 4, 3, 0, 4, 2, 3 },
 			{ 1, 0, 5, 4, 1, 0, 1, 5, 0, 0, 4, 3, 0, 4, 5, 3, 0, 5, 2, 3, 0, 1, 2, 5 } };
 
-	public ShapedTile(int tileX, int yA, int yB, int yC, int yD, int tileZ, int rotation, int texture, int shape, int cA,
-			int cAA, int cB, int cBA, int cC, int cCA, int cD, int cDA, int overlayRGB, int underlayRGB) {
+	public ShapedTile(final int tileX, final int yA, final int yB, final int yC, final int yD, final int tileZ, final int rotation, final int texture, final int shape, final int cA,
+                      final int cAA, final int cB, final int cBA, final int cC, final int cCA, final int cD, final int cDA, final int overlayRGB, final int underlayRGB) {
         this.flat = !(yA != yB || yA != yD || yA != yC);
 		this.shape = shape;
 		this.rotation = rotation;
 		this.underlayRGB = underlayRGB;
 		this.overlayRGB = overlayRGB;
-		char const512 = '\200';
-		int const256 = const512 / 2;
-		int const128 = const512 / 4;
-		int const384 = (const512 * 3) / 4;
-		int shapedTileMesh[] = shapedTilePointData[shape];
-		int shapedTileMeshLength = shapedTileMesh.length;
+		final char const512 = '\200';
+		final int const256 = const512 / 2;
+		final int const128 = const512 / 4;
+		final int const384 = (const512 * 3) / 4;
+		final int[] shapedTileMesh = shapedTilePointData[shape];
+		final int shapedTileMeshLength = shapedTileMesh.length;
         this.originalVertexX = new int[shapedTileMeshLength];
         this.originalVertexY = new int[shapedTileMeshLength];
         this.originalVertexZ = new int[shapedTileMeshLength];
-		int vertexColourOverlay[] = new int[shapedTileMeshLength];
-		int vertexColourUnderlay[] = new int[shapedTileMeshLength];
-		int x512 = tileX * const512;
-		int z512 = tileZ * const512;
+		final int[] vertexColourOverlay = new int[shapedTileMeshLength];
+		final int[] vertexColourUnderlay = new int[shapedTileMeshLength];
+		final int x512 = tileX * const512;
+		final int z512 = tileZ * const512;
 		for (int vertex = 0; vertex < shapedTileMeshLength; vertex++) {
 			int vertexType = shapedTileMesh[vertex];
 			if ((vertexType & 1) == 0 && vertexType <= 8) {
@@ -67,11 +67,11 @@ public final class ShapedTile {
 			if (vertexType > 12 && vertexType <= 16) {
                 vertexType = (vertexType - 13 - rotation & 3) + 13;
             }
-			int vertexX;
-			int vertexZ;
-			int vertexY;
-			int vertexCOverlay;
-			int vertexCUnderlay;
+			final int vertexX;
+			final int vertexZ;
+			final int vertexY;
+			final int vertexCOverlay;
+			final int vertexCUnderlay;
 			if (vertexType == 1) {
 				vertexX = x512;
 				vertexZ = z512;
@@ -176,8 +176,8 @@ public final class ShapedTile {
 			vertexColourUnderlay[vertex] = vertexCUnderlay;
 		}
 
-		int shapedTileElements[] = shapedTileElementData[shape];
-		int vertexCount = shapedTileElements.length / 4;
+		final int[] shapedTileElements = shapedTileElementData[shape];
+		final int vertexCount = shapedTileElements.length / 4;
         this.triangleA = new int[vertexCount];
         this.triangleB = new int[vertexCount];
         this.triangleC = new int[vertexCount];
@@ -189,7 +189,7 @@ public final class ShapedTile {
         }
 		int offset = 0;
 		for (int vertex = 0; vertex < vertexCount; vertex++) {
-			int overlayOrUnderlay = shapedTileElements[offset];
+			final int overlayOrUnderlay = shapedTileElements[offset];
 			int idxA = shapedTileElements[offset + 1];
 			int idxB = shapedTileElements[offset + 2];
 			int idxC = shapedTileElements[offset + 3];

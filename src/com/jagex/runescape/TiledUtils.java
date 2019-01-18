@@ -2,7 +2,7 @@ package com.jagex.runescape;
 
 final class TiledUtils {
 
-	public static int getRotatedLandscapeChunkX(int rotation, int objectSizeY, int x, int y, int objectSizeX) {
+	public static int getRotatedLandscapeChunkX(int rotation, final int objectSizeY, final int x, final int y, final int objectSizeX) {
 		rotation &= 3;
 		if (rotation == 0) {
             return x;
@@ -17,7 +17,7 @@ final class TiledUtils {
         }
 	}
 
-	public static int getRotatedLandscapeChunkY(int y, int objectSizeY, int rotation, int objectSizeX, int x) {
+	public static int getRotatedLandscapeChunkY(final int y, final int objectSizeY, int rotation, final int objectSizeX, final int x) {
 		rotation &= 3;
 		if (rotation == 0) {
             return y;
@@ -32,7 +32,7 @@ final class TiledUtils {
         }
 	}
 
-	public static int getRotatedMapChunkX(int rotation, int y, int x) {
+	public static int getRotatedMapChunkX(int rotation, final int y, final int x) {
 		rotation &= 3;
 		if (rotation == 0) {
             return x;
@@ -47,7 +47,7 @@ final class TiledUtils {
         }
 	}
 
-	public static int getRotatedMapChunkY(int y, int rotation, int x) {
+	public static int getRotatedMapChunkY(final int y, int rotation, final int x) {
 		rotation &= 3;
 		if (rotation == 0) {
             return y;

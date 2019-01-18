@@ -6,14 +6,14 @@ import com.jagex.runescape.scene.WorldController;
 
 final class Region {
 
-	private static int calculateNoise(int x, int seed) {
+	private static int calculateNoise(final int x, final int seed) {
 		int n = x + seed * 57;
 		n = n << 13 ^ n;
-		int noise = n * (n * n * 15731 + 0xc0ae5) + 0x5208dd0d & 0x7fffffff;
+		final int noise = n * (n * n * 15731 + 0xc0ae5) + 0x5208dd0d & 0x7fffffff;
 		return noise >> 19 & 0xff;
 	}
 
-	private static int calculateVertexHeight(int x, int y) {
+	private static int calculateVertexHeight(final int x, final int y) {
 		int vertexHeight = (method176(x + 45365, y + 0x16713, 4) - 128)
 				+ (method176(x + 10294, y + 37821, 2) - 128 >> 1) + (method176(x, y, 1) - 128 >> 2);
 		vertexHeight = (int) (vertexHeight * 0.29999999999999999D) + 35;
@@ -25,21 +25,21 @@ final class Region {
 		return vertexHeight;
 	}
 
-	public static void forceRenderObject(WorldController worldController, int face, int y, int type, int plane,
-			CollisionMap collisionMap, int groundArray[][][], int x, int objectId, int z) {
+	public static void forceRenderObject(final WorldController worldController, final int face, final int y, final int type, final int plane,
+										 final CollisionMap collisionMap, final int[][][] groundArray, final int x, final int objectId, final int z) {
 		int vertexHeightSW = groundArray[plane][x][y];
 		int vertexHeightSE = groundArray[plane][x + 1][y];
 		int vertexHeightNE = groundArray[plane][x + 1][y + 1];
 		int vertexHeightNW = groundArray[plane][x][y + 1];
-		int drawHeight = vertexHeightSW + vertexHeightSE + vertexHeightNE + vertexHeightNW >> 2;
-		GameObjectDefinition definition = GameObjectDefinition.getDefinition(objectId);
+		final int drawHeight = vertexHeightSW + vertexHeightSE + vertexHeightNE + vertexHeightNW >> 2;
+		final GameObjectDefinition definition = GameObjectDefinition.getDefinition(objectId);
 		int hash = x + (y << 7) + (objectId << 14) + 0x40000000;
 		if (!definition.hasActions) {
 			hash += 0x80000000;
 		}
-		byte config = (byte) ((face << 6) + type);
+		final byte config = (byte) ((face << 6) + type);
 		if (type == 22) {
-			Animable animable;
+			final Animable animable;
 			if (definition.animationId == -1 && definition.childIds == null) {
 				animable = definition.getModelAt(22, face, vertexHeightSW, vertexHeightSE, vertexHeightNE,
 						vertexHeightNW, -1);
@@ -54,7 +54,7 @@ final class Region {
 			return;
 		}
 		if (type == 10 || type == 11) {
-			Animable animable;
+			final Animable animable;
 			if (definition.animationId == -1 && definition.childIds == null) {
 				animable = definition.getModelAt(10, face, vertexHeightSW, vertexHeightSE, vertexHeightNE,
 						vertexHeightNW, -1);
@@ -67,8 +67,8 @@ final class Region {
 				if (type == 11) {
 					rotation += 256;
 				}
-				int sizeX;
-				int sizeY;
+				final int sizeX;
+				final int sizeY;
 				if (face == 1 || face == 3) {
 					sizeX = definition.sizeY;
 					sizeY = definition.sizeX;
@@ -84,7 +84,7 @@ final class Region {
 			return;
 		}
 		if (type >= 12) {
-			Animable animable;
+			final Animable animable;
 			if (definition.animationId == -1 && definition.childIds == null) {
 				animable = definition.getModelAt(type, face, vertexHeightSW, vertexHeightSE, vertexHeightNE,
 						vertexHeightNW, -1);
@@ -99,7 +99,7 @@ final class Region {
 			return;
 		}
 		if (type == 0) {
-			Animable animable;
+			final Animable animable;
 			if (definition.animationId == -1 && definition.childIds == null) {
 				animable = definition.getModelAt(0, face, vertexHeightSW, vertexHeightSE, vertexHeightNE,
 						vertexHeightNW, -1);
@@ -115,7 +115,7 @@ final class Region {
 			return;
 		}
 		if (type == 1) {
-			Animable animable;
+			final Animable animable;
 			if (definition.animationId == -1 && definition.childIds == null) {
 				animable = definition.getModelAt(1, face, vertexHeightSW, vertexHeightSE, vertexHeightNE,
 						vertexHeightNW, -1);
@@ -131,9 +131,9 @@ final class Region {
 			return;
 		}
 		if (type == 2) {
-			int _face = face + 1 & 3;
-			Animable animable1;
-			Animable animable2;
+			final int _face = face + 1 & 3;
+			final Animable animable1;
+			final Animable animable2;
 			if (definition.animationId == -1 && definition.childIds == null) {
 				animable1 = definition.getModelAt(2, 4 + face, vertexHeightSW, vertexHeightSE, vertexHeightNE,
 						vertexHeightNW, -1);
@@ -153,7 +153,7 @@ final class Region {
 			return;
 		}
 		if (type == 3) {
-			Animable animable;
+			final Animable animable;
 			if (definition.animationId == -1 && definition.childIds == null) {
 				animable = definition.getModelAt(3, face, vertexHeightSW, vertexHeightSE, vertexHeightNE,
 						vertexHeightNW, -1);
@@ -169,7 +169,7 @@ final class Region {
 			return;
 		}
 		if (type == 9) {
-			Animable animable;
+			final Animable animable;
 			if (definition.animationId == -1 && definition.childIds == null) {
 				animable = definition.getModelAt(type, face, vertexHeightSW, vertexHeightSE, vertexHeightNE,
 						vertexHeightNW, -1);
@@ -185,7 +185,7 @@ final class Region {
 		}
 		if (definition.adjustToTerrain) {
 			if (face == 1) {
-				int temp = vertexHeightNW;
+				final int temp = vertexHeightNW;
 				vertexHeightNW = vertexHeightNE;
 				vertexHeightNE = vertexHeightSE;
 				vertexHeightSE = vertexHeightSW;
@@ -198,7 +198,7 @@ final class Region {
 				vertexHeightNE = vertexHeightSW;
 				vertexHeightSW = temp;
 			} else if (face == 3) {
-				int temp = vertexHeightNW;
+				final int temp = vertexHeightNW;
 				vertexHeightNW = vertexHeightSW;
 				vertexHeightSW = vertexHeightSE;
 				vertexHeightSE = vertexHeightNE;
@@ -206,7 +206,7 @@ final class Region {
 			}
 		}
 		if (type == 4) {
-			Animable animable;
+			final Animable animable;
 			if (definition.animationId == -1 && definition.childIds == null) {
 				animable = definition.getModelAt(4, 0, vertexHeightSW, vertexHeightSE, vertexHeightNE, vertexHeightNW,
 						-1);
@@ -220,11 +220,11 @@ final class Region {
 		}
 		if (type == 5) {
 			int offsetAmplifier = 16;
-			int objectHash = worldController.getWallObjectHash(x, y, z);
+			final int objectHash = worldController.getWallObjectHash(x, y, z);
 			if (objectHash > 0) {
 				offsetAmplifier = GameObjectDefinition.getDefinition(objectHash >> 14 & 0x7fff).offsetAmplifier;
 			}
-			Animable animable;
+			final Animable animable;
 			if (definition.animationId == -1 && definition.childIds == null) {
 				animable = definition.getModelAt(4, 0, vertexHeightSW, vertexHeightSE, vertexHeightNE, vertexHeightNW,
 						-1);
@@ -237,7 +237,7 @@ final class Region {
 			return;
 		}
 		if (type == 6) {
-			Animable animable;
+			final Animable animable;
 			if (definition.animationId == -1 && definition.childIds == null) {
 				animable = definition.getModelAt(4, 0, vertexHeightSW, vertexHeightSE, vertexHeightNE, vertexHeightNW,
 						-1);
@@ -249,7 +249,7 @@ final class Region {
 			return;
 		}
 		if (type == 7) {
-			Animable animable;
+			final Animable animable;
 			if (definition.animationId == -1 && definition.childIds == null) {
 				animable = definition.getModelAt(4, 0, vertexHeightSW, vertexHeightSE, vertexHeightNE, vertexHeightNW,
 						-1);
@@ -261,7 +261,7 @@ final class Region {
 			return;
 		}
 		if (type == 8) {
-			Animable animable;
+			final Animable animable;
 			if (definition.animationId == -1 && definition.childIds == null) {
 				animable = definition.getModelAt(4, 0, vertexHeightSW, vertexHeightSE, vertexHeightNE, vertexHeightNW,
 						-1);
@@ -273,26 +273,26 @@ final class Region {
 		}
 	}
 
-	private static int interpolate(int a, int b, int delta, int deltaScale) {
-		int f = 0x10000 - Rasterizer.COSINE[(delta * 1024) / deltaScale] >> 1;
+	private static int interpolate(final int a, final int b, final int delta, final int deltaScale) {
+		final int f = 0x10000 - Rasterizer.COSINE[(delta * 1024) / deltaScale] >> 1;
 		return (a * (0x10000 - f) >> 16) + (b * f >> 16);
 	}
 
-	private static int method176(int deltaX, int deltaY, int deltaScale) {
-		int x = deltaX / deltaScale;
-		int deltaPrimary = deltaX & deltaScale - 1;
-		int y = deltaY / deltaScale;
-		int deltaSecondary = deltaY & deltaScale - 1;
-		int noiseSW = randomNoiseWeighedSum(x, y);
-		int noiseSE = randomNoiseWeighedSum(x + 1, y);
-		int noiseNE = randomNoiseWeighedSum(x, y + 1);
-		int noiseNW = randomNoiseWeighedSum(x + 1, y + 1);
-		int interpolationA = interpolate(noiseSW, noiseSE, deltaPrimary, deltaScale);
-		int interpolationB = interpolate(noiseNE, noiseNW, deltaPrimary, deltaScale);
+	private static int method176(final int deltaX, final int deltaY, final int deltaScale) {
+		final int x = deltaX / deltaScale;
+		final int deltaPrimary = deltaX & deltaScale - 1;
+		final int y = deltaY / deltaScale;
+		final int deltaSecondary = deltaY & deltaScale - 1;
+		final int noiseSW = randomNoiseWeighedSum(x, y);
+		final int noiseSE = randomNoiseWeighedSum(x + 1, y);
+		final int noiseNE = randomNoiseWeighedSum(x, y + 1);
+		final int noiseNW = randomNoiseWeighedSum(x + 1, y + 1);
+		final int interpolationA = interpolate(noiseSW, noiseSE, deltaPrimary, deltaScale);
+		final int interpolationB = interpolate(noiseNE, noiseNW, deltaPrimary, deltaScale);
 		return interpolate(interpolationA, interpolationB, deltaSecondary, deltaScale);
 	}
 
-	private static int mixLightness(int hsl, int lightness) {
+	private static int mixLightness(final int hsl, int lightness) {
 		if (hsl == -1) {
 			return 0xbc614e;
 		}
@@ -305,8 +305,8 @@ final class Region {
 		return (hsl & 0xff80) + lightness;
 	}
 
-	public static boolean modelTypeCached(int objectId, int type) {
-		GameObjectDefinition definition = GameObjectDefinition.getDefinition(objectId);
+	public static boolean modelTypeCached(final int objectId, int type) {
+		final GameObjectDefinition definition = GameObjectDefinition.getDefinition(objectId);
 		if (type == 11) {
 			type = 10;
 		}
@@ -316,19 +316,19 @@ final class Region {
 		return definition.modelTypeCached(type);
 	}
 
-	public static void passivelyRequestGameObjectModels(Buffer stream, OnDemandFetcher onDemandFetcher) {
+	public static void passivelyRequestGameObjectModels(final Buffer stream, final OnDemandFetcher onDemandFetcher) {
 		start: {
 			int objectId = -1;
 			do {
-				int objectIdOffset = stream.getSmartB();
+				final int objectIdOffset = stream.getSmartB();
 				if (objectIdOffset == 0) {
 					break start;
 				}
 				objectId += objectIdOffset;
-				GameObjectDefinition definition = GameObjectDefinition.getDefinition(objectId);
+				final GameObjectDefinition definition = GameObjectDefinition.getDefinition(objectId);
 				definition.passivelyRequestModels(onDemandFetcher);
 				do {
-					int terminate = stream.getSmartB();
+					final int terminate = stream.getSmartB();
 					if (terminate == 0) {
 						break;
 					}
@@ -338,21 +338,21 @@ final class Region {
 		}
 	}
 
-	private static int randomNoiseWeighedSum(int x, int y) {
-		int vDist2 = calculateNoise(x - 1, y - 1) + calculateNoise(x + 1, y - 1) + calculateNoise(x - 1, y + 1)
+	private static int randomNoiseWeighedSum(final int x, final int y) {
+		final int vDist2 = calculateNoise(x - 1, y - 1) + calculateNoise(x + 1, y - 1) + calculateNoise(x - 1, y + 1)
 				+ calculateNoise(x + 1, y + 1);
-		int vDist1 = calculateNoise(x - 1, y) + calculateNoise(x + 1, y) + calculateNoise(x, y - 1)
+		final int vDist1 = calculateNoise(x - 1, y) + calculateNoise(x + 1, y) + calculateNoise(x, y - 1)
 				+ calculateNoise(x, y + 1);
-		int vLocal = calculateNoise(x, y);
+		final int vLocal = calculateNoise(x, y);
 		return vDist2 / 16 + vDist1 / 8 + vLocal / 4;
 	}
 
-	public static boolean regionCached(int regionX, int regionY, byte[] objectData) {
+	public static boolean regionCached(final int regionX, final int regionY, final byte[] objectData) {
 		boolean cached = true;
-		Buffer objectDataStream = new Buffer(objectData);
+		final Buffer objectDataStream = new Buffer(objectData);
 		int objectId = -1;
 		do {
-			int objectIdIncrement = objectDataStream.getSmartB();
+			final int objectIdIncrement = objectDataStream.getSmartB();
 			if (objectIdIncrement == 0) {
 				break;
 			}
@@ -361,24 +361,24 @@ final class Region {
 			boolean readSecondValue = false;
 			do {
 				if (readSecondValue) {
-					int secondValue = objectDataStream.getSmartB();
+					final int secondValue = objectDataStream.getSmartB();
 					if (secondValue == 0) {
 						break;
 					}
 					objectDataStream.getUnsignedByte();
 				} else {
-					int positionOffset = objectDataStream.getSmartB();
+					final int positionOffset = objectDataStream.getSmartB();
 					if (positionOffset == 0) {
 						break;
 					}
 					pos += positionOffset - 1;
-					int regionOffsetY = pos & 0x3f;
-					int regionOffsetX = pos >> 6 & 0x3f;
-					int objectType = objectDataStream.getUnsignedByte() >> 2;
-					int objectX = regionOffsetX + regionX;
-					int objectY = regionOffsetY + regionY;
+					final int regionOffsetY = pos & 0x3f;
+					final int regionOffsetX = pos >> 6 & 0x3f;
+					final int objectType = objectDataStream.getUnsignedByte() >> 2;
+					final int objectX = regionOffsetX + regionX;
+					final int objectY = regionOffsetY + regionY;
 					if (objectX > 0 && objectY > 0 && objectX < 103 && objectY < 103) {
-						GameObjectDefinition definition = GameObjectDefinition.getDefinition(objectId);
+						final GameObjectDefinition definition = GameObjectDefinition.getDefinition(objectId);
 						if (objectType != 22 || !lowMemory || definition.hasActions || definition.unknownAttribute) {
 							cached &= definition.modelCached();
 							readSecondValue = true;
@@ -429,7 +429,7 @@ final class Region {
 	static boolean lowMemory = true;
 	private static final int POWERS_OF_TWO[] = { 1, 2, 4, 8 };
 
-	public Region(byte renderRuleFlags[][][], int vertexHeights[][][]) {
+	public Region(final byte[][][] renderRuleFlags, final int[][][] vertexHeights) {
 		lowestPlane = 99;
 		this.regionSizeX = 104;
 		this.regionSizeY = 104;
@@ -449,7 +449,7 @@ final class Region {
 		this.blendDirectionTracker = new int[this.regionSizeY];
 	}
 
-	public final void createRegion(CollisionMap collisionMap[], WorldController worldController) {
+	public final void createRegion(final CollisionMap[] collisionMap, final WorldController worldController) {
 		for (int plane = 0; plane < 4; plane++) {
 			for (int x = 0; x < 104; x++) {
 				for (int y = 0; y < 104; y++) {
@@ -480,27 +480,27 @@ final class Region {
 			randomiserLightness = 16;
 		}
 		for (int _plane = 0; _plane < 4; _plane++) {
-			byte shadowIntensity[][] = this.tileShadowIntensity[_plane];
-			int directionalLightIntensityInitial = 96;
-			int specularDistributionFactor = 768;
-			int directionalLightX = -50;
-			int directionalLightZ = -10;
-			int directionalLightY = -50;
-			int directionalLightLength = (int) Math.sqrt(directionalLightX * directionalLightX
+			final byte[][] shadowIntensity = this.tileShadowIntensity[_plane];
+			final int directionalLightIntensityInitial = 96;
+			final int specularDistributionFactor = 768;
+			final int directionalLightX = -50;
+			final int directionalLightZ = -10;
+			final int directionalLightY = -50;
+			final int directionalLightLength = (int) Math.sqrt(directionalLightX * directionalLightX
 					+ directionalLightZ * directionalLightZ + directionalLightY * directionalLightY);
-			int specularDistribution = specularDistributionFactor * directionalLightLength >> 8;
+			final int specularDistribution = specularDistributionFactor * directionalLightLength >> 8;
 			for (int y = 1; y < this.regionSizeY - 1; y++) {
 				for (int x = 1; x < this.regionSizeX - 1; x++) {
-					int heightDifferenceX = this.vertexHeights[_plane][x + 1][y] - this.vertexHeights[_plane][x - 1][y];
-					int heightDifferenceY = this.vertexHeights[_plane][x][y + 1] - this.vertexHeights[_plane][x][y - 1];
-					int normalisedLength = (int) Math.sqrt(
+					final int heightDifferenceX = this.vertexHeights[_plane][x + 1][y] - this.vertexHeights[_plane][x - 1][y];
+					final int heightDifferenceY = this.vertexHeights[_plane][x][y + 1] - this.vertexHeights[_plane][x][y - 1];
+					final int normalisedLength = (int) Math.sqrt(
 							heightDifferenceX * heightDifferenceX + 0x10000 + heightDifferenceY * heightDifferenceY);
-					int normalisedX = (heightDifferenceX << 8) / normalisedLength;
-					int normalisedZ = 0x10000 / normalisedLength;
-					int normalisedY = (heightDifferenceY << 8) / normalisedLength;
-					int directionalLightIntensity = directionalLightIntensityInitial + (directionalLightX * normalisedX
+					final int normalisedX = (heightDifferenceX << 8) / normalisedLength;
+					final int normalisedZ = 0x10000 / normalisedLength;
+					final int normalisedY = (heightDifferenceY << 8) / normalisedLength;
+					final int directionalLightIntensity = directionalLightIntensityInitial + (directionalLightX * normalisedX
 							+ directionalLightZ * normalisedZ + directionalLightY * normalisedY) / specularDistribution;
-					int weightedShadowIntensity = (shadowIntensity[x - 1][y] >> 2) + (shadowIntensity[x + 1][y] >> 3)
+					final int weightedShadowIntensity = (shadowIntensity[x - 1][y] >> 2) + (shadowIntensity[x + 1][y] >> 3)
 							+ (shadowIntensity[x][y - 1] >> 2) + (shadowIntensity[x][y + 1] >> 3)
 							+ (shadowIntensity[x][y] >> 1);
 					this.tileLightIntensity[x][y] = directionalLightIntensity - weightedShadowIntensity;
@@ -517,11 +517,11 @@ final class Region {
 
 			for (int x = -5; x < this.regionSizeX + 5; x++) {
 				for (int y = 0; y < this.regionSizeY; y++) {
-					int positiveX = x + 5;
+					final int positiveX = x + 5;
 					if (positiveX >= 0 && positiveX < this.regionSizeX) {
-						int floorId = this.underlayFloorIds[_plane][positiveX][y] & 0xff;
+						final int floorId = this.underlayFloorIds[_plane][positiveX][y] & 0xff;
 						if (floorId > 0) {
-							FloorDefinition definition = FloorDefinition.cache[floorId - 1];
+							final FloorDefinition definition = FloorDefinition.cache[floorId - 1];
 							this.blendedHue[y] += definition.hue;
 							this.blendedSaturation[y] += definition.saturation;
 							this.blendedLightness[y] += definition.lightness;
@@ -529,11 +529,11 @@ final class Region {
 							this.blendDirectionTracker[y]++;
 						}
 					}
-					int negativeX = x - 5;
+					final int negativeX = x - 5;
 					if (negativeX >= 0 && negativeX < this.regionSizeX) {
-						int floorId = this.underlayFloorIds[_plane][negativeX][y] & 0xff;
+						final int floorId = this.underlayFloorIds[_plane][negativeX][y] & 0xff;
 						if (floorId > 0) {
-							FloorDefinition definition = FloorDefinition.cache[floorId - 1];
+							final FloorDefinition definition = FloorDefinition.cache[floorId - 1];
 							this.blendedHue[y] -= definition.hue;
 							this.blendedSaturation[y] -= definition.saturation;
 							this.blendedLightness[y] -= definition.lightness;
@@ -550,7 +550,7 @@ final class Region {
 					int hueDivisor = 0;
 					int direction = 0;
 					for (int y = -5; y < this.regionSizeY + 5; y++) {
-						int positiveY = y + 5;
+						final int positiveY = y + 5;
 						if (positiveY >= 0 && positiveY < this.regionSizeY) {
 							hue += this.blendedHue[positiveY];
 							saturation += this.blendedSaturation[positiveY];
@@ -558,7 +558,7 @@ final class Region {
 							hueDivisor += this.blendedHueDivisor[positiveY];
 							direction += this.blendDirectionTracker[positiveY];
 						}
-						int negativeY = y - 5;
+						final int negativeY = y - 5;
 						if (negativeY >= 0 && negativeY < this.regionSizeY) {
 							hue -= this.blendedHue[negativeY];
 							saturation -= this.blendedSaturation[negativeY];
@@ -573,22 +573,22 @@ final class Region {
 							if (_plane < lowestPlane) {
 								lowestPlane = _plane;
 							}
-							int underlayFloorId = this.underlayFloorIds[_plane][x][y] & 0xff;
-							int overlayFloorId = this.overlayFloorIds[_plane][x][y] & 0xff;
+							final int underlayFloorId = this.underlayFloorIds[_plane][x][y] & 0xff;
+							final int overlayFloorId = this.overlayFloorIds[_plane][x][y] & 0xff;
 							if (underlayFloorId > 0 || overlayFloorId > 0) {
-								int vertexHeightSW = this.vertexHeights[_plane][x][y];
-								int vertexHeightSE = this.vertexHeights[_plane][x + 1][y];
-								int vertexHeightNE = this.vertexHeights[_plane][x + 1][y + 1];
-								int vertexHeightNW = this.vertexHeights[_plane][x][y + 1];
-								int lightIntensitySW = this.tileLightIntensity[x][y];
-								int lightIntensitySE = this.tileLightIntensity[x + 1][y];
-								int lightIntensityNE = this.tileLightIntensity[x + 1][y + 1];
-								int lightIntensityNW = this.tileLightIntensity[x][y + 1];
+								final int vertexHeightSW = this.vertexHeights[_plane][x][y];
+								final int vertexHeightSE = this.vertexHeights[_plane][x + 1][y];
+								final int vertexHeightNE = this.vertexHeights[_plane][x + 1][y + 1];
+								final int vertexHeightNW = this.vertexHeights[_plane][x][y + 1];
+								final int lightIntensitySW = this.tileLightIntensity[x][y];
+								final int lightIntensitySE = this.tileLightIntensity[x + 1][y];
+								final int lightIntensityNE = this.tileLightIntensity[x + 1][y + 1];
+								final int lightIntensityNW = this.tileLightIntensity[x][y + 1];
 								int hslBitsetOriginal = -1;
 								int hslBitsetRandomised = -1;
 								if (underlayFloorId > 0) {
 									int h = (hue * 256) / hueDivisor;
-									int s = saturation / direction;
+									final int s = saturation / direction;
 									int l = lightness / direction;
 									hslBitsetOriginal = this.generateHSLBitset(h, s, l);
 									h = h + randomiserHue & 0xff;
@@ -627,12 +627,12 @@ final class Region {
 											mixLightness(hslBitsetOriginal, lightIntensityNW), 0, 0, 0, 0,
 											underlayMinimapColour, 0);
 								} else {
-									int clippingPath = this.overlayClippingPaths[_plane][x][y] + 1;
-									byte clippingPathRotation = this.overlayOrientations[_plane][x][y];
-									FloorDefinition definition = FloorDefinition.cache[overlayFloorId - 1];
+									final int clippingPath = this.overlayClippingPaths[_plane][x][y] + 1;
+									final byte clippingPathRotation = this.overlayOrientations[_plane][x][y];
+									final FloorDefinition definition = FloorDefinition.cache[overlayFloorId - 1];
 									int textureId = definition.textureId;
-									int hslBitset;
-									int overlayMinimapColour;
+									final int hslBitset;
+									final int overlayMinimapColour;
 									if (textureId >= 0) {
 										overlayMinimapColour = Rasterizer.getAverageTextureColour(textureId);
 										hslBitset = -1;
@@ -727,13 +727,13 @@ final class Region {
 								}
 							}
 
-							int occlusionSurface = ((highestOcclusionPlane + 1) - lowestOcclusionPlane)
+							final int occlusionSurface = ((highestOcclusionPlane + 1) - lowestOcclusionPlane)
 									* ((highestOcclusionY - lowestOcclusionY) + 1);
 							if (occlusionSurface >= 8) {
-								int highestOcclusionVertexHeightOffset = 240;
-								int highestOcclusionVertexHeight = this.vertexHeights[highestOcclusionPlane][x][lowestOcclusionY]
+								final int highestOcclusionVertexHeightOffset = 240;
+								final int highestOcclusionVertexHeight = this.vertexHeights[highestOcclusionPlane][x][lowestOcclusionY]
 										- highestOcclusionVertexHeightOffset;
-								int lowestOcclusionVertexHeight = this.vertexHeights[lowestOcclusionPlane][x][lowestOcclusionY];
+								final int lowestOcclusionVertexHeight = this.vertexHeights[lowestOcclusionPlane][x][lowestOcclusionY];
 								WorldController.createCullingCluster(plane, x * 128, x * 128,
 										highestOcclusionY * 128 + 128, lowestOcclusionY * 128,
 										highestOcclusionVertexHeight, lowestOcclusionVertexHeight, 1);
@@ -778,13 +778,13 @@ final class Region {
 
 							}
 
-							int occlusionSurface = ((highestocclusionPlane + 1) - lowestocclusionPlane)
+							final int occlusionSurface = ((highestocclusionPlane + 1) - lowestocclusionPlane)
 									* ((highestOcclusionX - lowestOcclusionX) + 1);
 							if (occlusionSurface >= 8) {
-								int highestOcclusionVertexHeightOffset = 240;
-								int highestOcclusionVertexHeight = this.vertexHeights[highestocclusionPlane][lowestOcclusionX][y]
+								final int highestOcclusionVertexHeightOffset = 240;
+								final int highestOcclusionVertexHeight = this.vertexHeights[highestocclusionPlane][lowestOcclusionX][y]
 										- highestOcclusionVertexHeightOffset;
-								int lowestOcclusionVertexHeight = this.vertexHeights[lowestocclusionPlane][lowestOcclusionX][y];
+								final int lowestOcclusionVertexHeight = this.vertexHeights[lowestocclusionPlane][lowestOcclusionX][y];
 								WorldController.createCullingCluster(plane, highestOcclusionX * 128 + 128,
 										lowestOcclusionX * 128, y * 128, y * 128, highestOcclusionVertexHeight,
 										lowestOcclusionVertexHeight, 2);
@@ -832,7 +832,7 @@ final class Region {
 
 							if (((highestOcclusionX - lowestOcclusionX) + 1)
 									* ((highestOcclusionY - lowestOcclusionY) + 1) >= 4) {
-								int lowestOcclusionVertexHeight = this.vertexHeights[plane][lowestOcclusionX][lowestOcclusionY];
+								final int lowestOcclusionVertexHeight = this.vertexHeights[plane][lowestOcclusionX][lowestOcclusionY];
 								WorldController.createCullingCluster(plane, highestOcclusionX * 128 + 128,
 										lowestOcclusionX * 128, highestOcclusionY * 128 + 128, lowestOcclusionY * 128,
 										lowestOcclusionVertexHeight, lowestOcclusionVertexHeight, 4);
@@ -856,7 +856,7 @@ final class Region {
 
 	}
 
-	private int generateHSLBitset(int h, int s, int l) {
+	private int generateHSLBitset(final int h, int s, final int l) {
 		if (l > 179) {
 			s /= 2;
 		}
@@ -872,7 +872,7 @@ final class Region {
 		return (h / 4 << 10) + (s / 32 << 7) + l / 2;
 	}
 
-	private int getVisibilityPlane(int y, int plane, int x) {
+	private int getVisibilityPlane(final int y, final int plane, final int x) {
 		if ((this.renderRuleFlags[plane][x][y] & 8) != 0) {
 			return 0;
 		}
@@ -883,7 +883,7 @@ final class Region {
 		}
 	}
 
-	public final void initiateVertexHeights(int startY, int countY, int countX, int startX) {
+	public final void initiateVertexHeights(final int startY, final int countY, final int countX, final int startX) {
 		for (int y = startY; y <= startY + countY; y++) {
 			for (int x = startX; x <= startX + countX; x++) {
 				if (x >= 0 && x < this.regionSizeX && y >= 0 && y < this.regionSizeY) {
@@ -906,32 +906,32 @@ final class Region {
 		}
 	}
 
-	public final void loadObjectBlock(int blockX, CollisionMap collisionMap[], int blockY,
-			WorldController worldController, byte blockData[]) {
+	public final void loadObjectBlock(final int blockX, final CollisionMap[] collisionMap, final int blockY,
+									  final WorldController worldController, final byte[] blockData) {
 		start: {
-			Buffer stream = new Buffer(blockData);
+			final Buffer stream = new Buffer(blockData);
 			int objectId = -1;
 			do {
-				int objectIdOffset = stream.getSmartB();
+				final int objectIdOffset = stream.getSmartB();
 				if (objectIdOffset == 0) {
 					break start;
 				}
 				objectId += objectIdOffset;
 				int position = 0;
 				do {
-					int positionOffset = stream.getSmartB();
+					final int positionOffset = stream.getSmartB();
 					if (positionOffset == 0) {
 						break;
 					}
 					position += positionOffset - 1;
-					int tileY = position & 0x3f;
-					int tileX = position >> 6 & 0x3f;
-					int tilePlane = position >> 12;
-					int hash = stream.getUnsignedByte();
-					int type = hash >> 2;
-					int orientation = hash & 3;
-					int x = tileX + blockX;
-					int y = tileY + blockY;
+					final int tileY = position & 0x3f;
+					final int tileX = position >> 6 & 0x3f;
+					final int tilePlane = position >> 12;
+					final int hash = stream.getUnsignedByte();
+					final int type = hash >> 2;
+					final int orientation = hash & 3;
+					final int x = tileX + blockX;
+					final int y = tileY + blockY;
 					if (x > 0 && y > 0 && x < 103 && y < 103) {
 						int markingPlane = tilePlane;
 						if ((this.renderRuleFlags[1][x][y] & 2) == 2) {
@@ -948,35 +948,35 @@ final class Region {
 		}
 	}
 
-	public final void loadObjectSubblock(CollisionMap collisionMap[], WorldController worldController, int i, int j,
-			int k, int objectPlane, byte blockData[], int i1, int rotation, int k1) {
+	public final void loadObjectSubblock(final CollisionMap[] collisionMap, final WorldController worldController, final int i, final int j,
+										 final int k, final int objectPlane, final byte[] blockData, final int i1, final int rotation, final int k1) {
 		start: {
-			Buffer stream = new Buffer(blockData);
+			final Buffer stream = new Buffer(blockData);
 			int objectId = -1;
 			do {
-				int objectIdOffset = stream.getSmartB();
+				final int objectIdOffset = stream.getSmartB();
 				if (objectIdOffset == 0) {
 					break start;
 				}
 				objectId += objectIdOffset;
 				int position = 0;
 				do {
-					int positionOffset = stream.getSmartB();
+					final int positionOffset = stream.getSmartB();
 					if (positionOffset == 0) {
 						break;
 					}
 					position += positionOffset - 1;
-					int regionY = position & 0x3f;
-					int regionX = position >> 6 & 0x3f;
-					int plane = position >> 12;
-					int hash = stream.getUnsignedByte();
-					int type = hash >> 2;
-					int orientation = hash & 3;
+					final int regionY = position & 0x3f;
+					final int regionX = position >> 6 & 0x3f;
+					final int plane = position >> 12;
+					final int hash = stream.getUnsignedByte();
+					final int type = hash >> 2;
+					final int orientation = hash & 3;
 					if (plane == i && regionX >= i1 && regionX < i1 + 8 && regionY >= k && regionY < k + 8) {
-						GameObjectDefinition objectDefinition = GameObjectDefinition.getDefinition(objectId);
-						int x = j + TiledUtils.getRotatedLandscapeChunkX(rotation, objectDefinition.sizeY, regionX & 7,
+						final GameObjectDefinition objectDefinition = GameObjectDefinition.getDefinition(objectId);
+						final int x = j + TiledUtils.getRotatedLandscapeChunkX(rotation, objectDefinition.sizeY, regionX & 7,
 								regionY & 7, objectDefinition.sizeX);
-						int y = k1 + TiledUtils.getRotatedLandscapeChunkY(regionY & 7, objectDefinition.sizeY, rotation,
+						final int y = k1 + TiledUtils.getRotatedLandscapeChunkY(regionY & 7, objectDefinition.sizeY, rotation,
 								objectDefinition.sizeX, regionX & 7);
 						if (x > 0 && y > 0 && x < 103 && y < 103) {
 							int markingPlane = plane;
@@ -996,8 +996,8 @@ final class Region {
 		}
 	}
 
-	public final void loadTerrainBlock(byte blockData[], int blockY, int blockX, int k, int l,
-			CollisionMap collisionMap[]) {
+	public final void loadTerrainBlock(final byte[] blockData, final int blockY, final int blockX, final int k, final int l,
+									   final CollisionMap[] collisionMap) {
 		for (int plane = 0; plane < 4; plane++) {
 			for (int tileX = 0; tileX < 64; tileX++) {
 				for (int tileY = 0; tileY < 64; tileY++) {
@@ -1010,7 +1010,7 @@ final class Region {
 
 		}
 
-		Buffer stream = new Buffer(blockData);
+		final Buffer stream = new Buffer(blockData);
 		for (int plane = 0; plane < 4; plane++) {
 			for (int tileX = 0; tileX < 64; tileX++) {
 				for (int tileY = 0; tileY < 64; tileY++) {
@@ -1022,8 +1022,8 @@ final class Region {
 		}
 	}
 
-	public final void loadTerrainSubblock(int subBlockZ, int rotation, CollisionMap collisionMap[], int mapRegionX,
-			int subBlockX, byte terrainData[], int subBlockY, int blockPlane, int mapRegionY) {
+	public final void loadTerrainSubblock(final int subBlockZ, final int rotation, final CollisionMap[] collisionMap, final int mapRegionX,
+										  final int subBlockX, final byte[] terrainData, final int subBlockY, final int blockPlane, final int mapRegionY) {
 		for (int regionX = 0; regionX < 8; regionX++) {
 			for (int regionY = 0; regionY < 8; regionY++) {
 				if (mapRegionX + regionX > 0 && mapRegionX + regionX < 103 && mapRegionY + regionY > 0
@@ -1033,7 +1033,7 @@ final class Region {
 			}
 
 		}
-		Buffer terrainDataStream = new Buffer(terrainData);
+		final Buffer terrainDataStream = new Buffer(terrainData);
 		for (int plane = 0; plane < 4; plane++) {
 			for (int regionX = 0; regionX < 64; regionX++) {
 				for (int regionY = 0; regionY < 64; regionY++) {
@@ -1052,11 +1052,11 @@ final class Region {
 		}
 	}
 
-	private void loadTerrainTile(int tileY, int offsetY, Buffer stream, int tileX, int tileZ, int i1, int offsetX) {
+	private void loadTerrainTile(final int tileY, final int offsetY, final Buffer stream, final int tileX, final int tileZ, final int i1, final int offsetX) {
 		if (tileX >= 0 && tileX < 104 && tileY >= 0 && tileY < 104) {
 			this.renderRuleFlags[tileZ][tileX][tileY] = 0;
 			do {
-				int value = stream.getUnsignedByte();
+				final int value = stream.getUnsignedByte();
 				if (value == 0) {
 					if (tileZ == 0) {
 						this.vertexHeights[0][tileX][tileY] = -calculateVertexHeight(0xe3b7b + tileX + offsetX,
@@ -1092,7 +1092,7 @@ final class Region {
 			} while (true);
 		}
 		do {
-			int value = stream.getUnsignedByte();
+			final int value = stream.getUnsignedByte();
 			if (value == 0) {
 				break;
 			}
@@ -1106,7 +1106,7 @@ final class Region {
 		} while (true);
 	}
 
-	private int mixLightnessSigned(int hsl, int lightness) {
+	private int mixLightnessSigned(final int hsl, int lightness) {
 		if (hsl == -2) {
 			return 0xbc614e;
 		}
@@ -1128,8 +1128,8 @@ final class Region {
 		return (hsl & 0xff80) + lightness;
 	}
 
-	private void renderObject(int y, WorldController worldController, CollisionMap collisionMap, int type, int plane,
-			int x, int objectId, int face) {
+	private void renderObject(final int y, final WorldController worldController, final CollisionMap collisionMap, final int type, final int plane,
+							  final int x, final int objectId, final int face) {
 		if (lowMemory && (this.renderRuleFlags[0][x][y] & 2) == 0) {
 			if ((this.renderRuleFlags[plane][x][y] & 0x10) != 0) {
 				return;
@@ -1145,18 +1145,18 @@ final class Region {
 		int vertexHeightSE = this.vertexHeights[plane][x + 1][y];
 		int vertexHeightNE = this.vertexHeights[plane][x + 1][y + 1];
 		int vertexHeightNW = this.vertexHeights[plane][x][y + 1];
-		int drawHeight = vertexHeightSW + vertexHeightSE + vertexHeightNE + vertexHeightNW >> 2;
-		GameObjectDefinition objectDefinition = GameObjectDefinition.getDefinition(objectId);
+		final int drawHeight = vertexHeightSW + vertexHeightSE + vertexHeightNE + vertexHeightNW >> 2;
+		final GameObjectDefinition objectDefinition = GameObjectDefinition.getDefinition(objectId);
 		int hash = x + (y << 7) + (objectId << 14) + 0x40000000;
 		if (!objectDefinition.hasActions) {
 			hash += 0x80000000;
 		}
-		byte config = (byte) ((face << 6) + type);
+		final byte config = (byte) ((face << 6) + type);
 		if (type == 22) {
 			if (lowMemory && !objectDefinition.hasActions && !objectDefinition.unknownAttribute) {
 				return;
 			}
-			Animable animable;
+			final Animable animable;
 			if (objectDefinition.animationId == -1 && objectDefinition.childIds == null) {
 				animable = objectDefinition.getModelAt(22, face, vertexHeightSW, vertexHeightSE, vertexHeightNE,
 						vertexHeightNW, -1);
@@ -1171,7 +1171,7 @@ final class Region {
 			return;
 		}
 		if (type == 10 || type == 11) {
-			Animable animable;
+			final Animable animable;
 			if (objectDefinition.animationId == -1 && objectDefinition.childIds == null) {
 				animable = objectDefinition.getModelAt(10, face, vertexHeightSW, vertexHeightSE, vertexHeightNE,
 						vertexHeightNW, -1);
@@ -1184,8 +1184,8 @@ final class Region {
 				if (type == 11) {
 					rotation += 256;
 				}
-				int sizeX;
-				int sizeY;
+				final int sizeX;
+				final int sizeY;
 				if (face == 1 || face == 3) {
 					sizeX = objectDefinition.sizeY;
 					sizeY = objectDefinition.sizeX;
@@ -1195,7 +1195,7 @@ final class Region {
 				}
 				if (worldController.addEntityB(x, y, plane, drawHeight, rotation, sizeY, sizeX, hash, ((animable)),
 						config) && objectDefinition.castsShadow) {
-					Model model;
+					final Model model;
 					if (animable instanceof Model) {
 						model = (Model) animable;
 					} else {
@@ -1226,7 +1226,7 @@ final class Region {
 			return;
 		}
 		if (type >= 12) {
-			Animable animable;
+			final Animable animable;
 			if (objectDefinition.animationId == -1 && objectDefinition.childIds == null) {
 				animable = objectDefinition.getModelAt(type, face, vertexHeightSW, vertexHeightSE, vertexHeightNE,
 						vertexHeightNW, -1);
@@ -1245,7 +1245,7 @@ final class Region {
 			return;
 		}
 		if (type == 0) {
-			Animable animable;
+			final Animable animable;
 			if (objectDefinition.animationId == -1 && objectDefinition.childIds == null) {
 				animable = objectDefinition.getModelAt(0, face, vertexHeightSW, vertexHeightSE, vertexHeightNE,
 						vertexHeightNW, -1);
@@ -1297,7 +1297,7 @@ final class Region {
 			return;
 		}
 		if (type == 1) {
-			Animable animable;
+			final Animable animable;
 			if (objectDefinition.animationId == -1 && objectDefinition.childIds == null) {
 				animable = objectDefinition.getModelAt(1, face, vertexHeightSW, vertexHeightSE, vertexHeightNE,
 						vertexHeightNW, -1);
@@ -1324,9 +1324,9 @@ final class Region {
 			return;
 		}
 		if (type == 2) {
-			int orientation = face + 1 & 3;
-			Animable animable1;
-			Animable animable2;
+			final int orientation = face + 1 & 3;
+			final Animable animable1;
+			final Animable animable2;
 			if (objectDefinition.animationId == -1 && objectDefinition.childIds == null) {
 				animable1 = objectDefinition.getModelAt(2, 4 + face, vertexHeightSW, vertexHeightSE, vertexHeightNE,
 						vertexHeightNW, -1);
@@ -1364,7 +1364,7 @@ final class Region {
 			return;
 		}
 		if (type == 3) {
-			Animable animable;
+			final Animable animable;
 			if (objectDefinition.animationId == -1 && objectDefinition.childIds == null) {
 				animable = objectDefinition.getModelAt(3, face, vertexHeightSW, vertexHeightSE, vertexHeightNE,
 						vertexHeightNW, -1);
@@ -1391,7 +1391,7 @@ final class Region {
 			return;
 		}
 		if (type == 9) {
-			Animable animable;
+			final Animable animable;
 			if (objectDefinition.animationId == -1 && objectDefinition.childIds == null) {
 				animable = objectDefinition.getModelAt(type, face, vertexHeightSW, vertexHeightSE, vertexHeightNE,
 						vertexHeightNW, -1);
@@ -1408,7 +1408,7 @@ final class Region {
 		}
 		if (objectDefinition.adjustToTerrain) {
 			if (face == 1) {
-				int temp = vertexHeightNW;
+				final int temp = vertexHeightNW;
 				vertexHeightNW = vertexHeightNE;
 				vertexHeightNE = vertexHeightSE;
 				vertexHeightSE = vertexHeightSW;
@@ -1421,7 +1421,7 @@ final class Region {
 				vertexHeightNE = vertexHeightSW;
 				vertexHeightSW = temp;
 			} else if (face == 3) {
-				int temp = vertexHeightNW;
+				final int temp = vertexHeightNW;
 				vertexHeightNW = vertexHeightSW;
 				vertexHeightSW = vertexHeightSE;
 				vertexHeightSE = vertexHeightNE;
@@ -1429,7 +1429,7 @@ final class Region {
 			}
 		}
 		if (type == 4) {
-			Animable animable;
+			final Animable animable;
 			if (objectDefinition.animationId == -1 && objectDefinition.childIds == null) {
 				animable = objectDefinition.getModelAt(4, 0, vertexHeightSW, vertexHeightSE, vertexHeightNE,
 						vertexHeightNW, -1);
@@ -1443,11 +1443,11 @@ final class Region {
 		}
 		if (type == 5) {
 			int offsetAmplifier = 16;
-			int hash_ = worldController.getWallObjectHash(x, y, plane);
+			final int hash_ = worldController.getWallObjectHash(x, y, plane);
 			if (hash_ > 0) {
 				offsetAmplifier = GameObjectDefinition.getDefinition(hash_ >> 14 & 0x7fff).offsetAmplifier;
 			}
-			Animable animable;
+			final Animable animable;
 			if (objectDefinition.animationId == -1 && objectDefinition.childIds == null) {
 				animable = objectDefinition.getModelAt(4, 0, vertexHeightSW, vertexHeightSE, vertexHeightNE,
 						vertexHeightNW, -1);
@@ -1460,7 +1460,7 @@ final class Region {
 			return;
 		}
 		if (type == 6) {
-			Animable animable;
+			final Animable animable;
 			if (objectDefinition.animationId == -1 && objectDefinition.childIds == null) {
 				animable = objectDefinition.getModelAt(4, 0, vertexHeightSW, vertexHeightSE, vertexHeightNE,
 						vertexHeightNW, -1);
@@ -1472,7 +1472,7 @@ final class Region {
 			return;
 		}
 		if (type == 7) {
-			Animable animable;
+			final Animable animable;
 			if (objectDefinition.animationId == -1 && objectDefinition.childIds == null) {
 				animable = objectDefinition.getModelAt(4, 0, vertexHeightSW, vertexHeightSE, vertexHeightNE,
 						vertexHeightNW, -1);
@@ -1484,7 +1484,7 @@ final class Region {
 			return;
 		}
 		if (type == 8) {
-			Animable animable;
+			final Animable animable;
 			if (objectDefinition.animationId == -1 && objectDefinition.childIds == null) {
 				animable = objectDefinition.getModelAt(4, 0, vertexHeightSW, vertexHeightSE, vertexHeightNE,
 						vertexHeightNW, -1);

@@ -128,10 +128,10 @@ public final class OnDemandFetcher implements Runnable {
 		}
 	}
 
-	private void closeRequest(OnDemandData request) {
+	private void closeRequest(final OnDemandData request) {
 		try {
 			if (this.socket == null) {
-				long currentTime = System.currentTimeMillis();
+				final long currentTime = System.currentTimeMillis();
 				if (currentTime - this.lastRequestTime < 4000L) {
                     return;
                 }
@@ -160,11 +160,11 @@ public final class OnDemandFetcher implements Runnable {
             this.writeLoopCycle = 0;
             this.failedRequests = -10000;
 			return;
-		} catch (IOException ioexception) {
+		} catch (final IOException ioexception) {
 		}
 		try {
             this.socket.close();
-		} catch (Exception _ex) {
+		} catch (final Exception _ex) {
 		}
         this.socket = null;
         this.inputStream = null;
@@ -173,16 +173,16 @@ public final class OnDemandFetcher implements Runnable {
         this.failedRequests++;
 	}
 
-	private boolean crcMatches(int cacheVersion, int cacheChecksum, byte data[]) {
+	private boolean crcMatches(final int cacheVersion, final int cacheChecksum, final byte[] data) {
 		if (data == null || data.length < 2) {
             return false;
         }
 
-		int length = data.length - 2;
-		int version = ((data[length] & 0xff) << 8) + (data[length + 1] & 0xff);
+		final int length = data.length - 2;
+		final int version = ((data[length] & 0xff) << 8) + (data[length + 1] & 0xff);
         this.crc32.reset();
         this.crc32.update(data, 0, length);
-		int calculatedChecksum = (int) this.crc32.getValue();
+		final int calculatedChecksum = (int) this.crc32.getValue();
 		return version == cacheVersion && calculatedChecksum == cacheChecksum;
 	}
 
@@ -190,7 +190,7 @@ public final class OnDemandFetcher implements Runnable {
         this.running = false;
 	}
 
-	public int fileCount(int j) {
+	public int fileCount(final int j) {
 		return this.versions[j].length;
 	}
 
@@ -198,8 +198,8 @@ public final class OnDemandFetcher implements Runnable {
 		return this.frames.length;
 	}
 
-	public int getMapId(int type, int mapX, int mapY) {
-		int coordinates = (mapX << 8) + mapY;
+	public int getMapId(final int type, final int mapX, final int mapY) {
+		final int coordinates = (mapX << 8) + mapY;
 		for (int pointer = 0; pointer < this.mapIndices1.length; pointer++) {
             if (this.mapIndices1[pointer] == coordinates) {
                 if (type == 0) {
@@ -212,12 +212,12 @@ public final class OnDemandFetcher implements Runnable {
 		return -1;
 	}
 
-	public int getModelId(int i) {
+	public int getModelId(final int i) {
 		return this.modelIndices[i] & 0xff;
 	}
 
 	public OnDemandData getNextNode() {
-		OnDemandData onDemandData;
+		final OnDemandData onDemandData;
 		synchronized (this.complete) {
 			onDemandData = (OnDemandData) this.complete.popFront();
 		}
@@ -232,18 +232,18 @@ public final class OnDemandFetcher implements Runnable {
         }
 		int i = 0;
 		try {
-			GZIPInputStream gzipinputstream = new GZIPInputStream(new ByteArrayInputStream(onDemandData.buffer));
+			final GZIPInputStream gzipinputstream = new GZIPInputStream(new ByteArrayInputStream(onDemandData.buffer));
 			do {
 				if (i == this.gzipInputBuffer.length) {
                     throw new RuntimeException("buffer overflow!");
                 }
-				int k = gzipinputstream.read(this.gzipInputBuffer, i, this.gzipInputBuffer.length - i);
+				final int k = gzipinputstream.read(this.gzipInputBuffer, i, this.gzipInputBuffer.length - i);
 				if (k == -1) {
                     break;
                 }
 				i += k;
 			} while (true);
-		} catch (IOException _ex) {
+		} catch (final IOException _ex) {
 			throw new RuntimeException("error unzipping");
 		}
 		onDemandData.buffer = new byte[i];
@@ -265,7 +265,7 @@ public final class OnDemandFetcher implements Runnable {
         }
 
 		while (this.uncompletedCount < 10) {
-			OnDemandData onDemandData_1 = (OnDemandData) this.unrequested.popFront();
+			final OnDemandData onDemandData_1 = (OnDemandData) this.unrequested.popFront();
 			if (onDemandData_1 == null) {
                 break;
             }
@@ -286,7 +286,7 @@ public final class OnDemandFetcher implements Runnable {
 		}
 	}
 
-	public boolean method564(int i) {
+	public boolean method564(final int i) {
 		for (int k = 0; k < this.mapIndices1.length; k++) {
             if (this.mapIndices3[k] == i) {
                 return true;
@@ -324,12 +324,12 @@ public final class OnDemandFetcher implements Runnable {
 				}
 			}
 			for (int j = 0; j < 4; j++) {
-				byte abyte0[] = this.filePriorities[j];
-				int k = abyte0.length;
+				final byte[] abyte0 = this.filePriorities[j];
+				final int k = abyte0.length;
 				for (int l = 0; l < k; l++) {
                     if (abyte0[l] == this.highestPriority) {
                         abyte0[l] = 0;
-                        OnDemandData onDemandData_1 = new OnDemandData();
+                        final OnDemandData onDemandData_1 = new OnDemandData();
                         onDemandData_1.dataType = j;
                         onDemandData_1.id = l;
                         onDemandData_1.incomplete = false;
@@ -353,11 +353,11 @@ public final class OnDemandFetcher implements Runnable {
 		}
 	}
 
-	public boolean midiIdEqualsOne(int i) {
+	public boolean midiIdEqualsOne(final int i) {
 		return this.musicPriorities[i] == 1;
 	}
 
-	public void passiveRequest(int id, int type) {
+	public void passiveRequest(final int id, final int type) {
 		if (this.clientInstance.caches[0] == null) {
             return;
         }
@@ -370,7 +370,7 @@ public final class OnDemandFetcher implements Runnable {
 		if (this.highestPriority == 0) {
             return;
         }
-		OnDemandData onDemandData = new OnDemandData();
+		final OnDemandData onDemandData = new OnDemandData();
 		onDemandData.dataType = type;
 		onDemandData.id = id;
 		onDemandData.incomplete = false;
@@ -379,8 +379,8 @@ public final class OnDemandFetcher implements Runnable {
 		}
 	}
 
-	public void preloadRegions(boolean flag) {
-		int j = this.mapIndices1.length;
+	public void preloadRegions(final boolean flag) {
+		final int j = this.mapIndices1.length;
 		for (int k = 0; k < j; k++) {
             if (flag || this.mapIndices4[k] != 0) {
 				this.setPriority((byte) 2, 3, this.mapIndices3[k]);
@@ -392,16 +392,16 @@ public final class OnDemandFetcher implements Runnable {
 
 	private void readData() {
 		try {
-			int j = this.inputStream.available();
+			final int j = this.inputStream.available();
 			if (this.expectedSize == 0 && j >= 6) {
                 this.waiting = true;
 				for (int k = 0; k < 6; k += this.inputStream.read(this.payload, k, 6 - k)) {
                     ;
                 }
-				int l = this.payload[0] & 0xff;
-				int j1 = ((this.payload[1] & 0xff) << 8) + (this.payload[2] & 0xff);
-				int l1 = ((this.payload[3] & 0xff) << 8) + (this.payload[4] & 0xff);
-				int i2 = this.payload[5] & 0xff;
+				final int l = this.payload[0] & 0xff;
+				final int j1 = ((this.payload[1] & 0xff) << 8) + (this.payload[2] & 0xff);
+				final int l1 = ((this.payload[3] & 0xff) << 8) + (this.payload[4] & 0xff);
+				final int i2 = this.payload[5] & 0xff;
                 this.current = null;
 				for (OnDemandData onDemandData = (OnDemandData) this.requested
 						.peekFront(); onDemandData != null; onDemandData = (OnDemandData) this.requested.getPrevious()) {
@@ -470,10 +470,10 @@ public final class OnDemandFetcher implements Runnable {
 				}
                 this.expectedSize = 0;
 			}
-		} catch (IOException ioexception) {
+		} catch (final IOException ioexception) {
 			try {
                 this.socket.close();
-			} catch (Exception _ex) {
+			} catch (final Exception _ex) {
 			}
             this.socket = null;
             this.inputStream = null;
@@ -482,11 +482,11 @@ public final class OnDemandFetcher implements Runnable {
 		}
 	}
 
-	public void request(int i) {
+	public void request(final int i) {
 		this.request(0, i);
 	}
 
-	public void request(int i, int j) {
+	public void request(final int i, final int j) {
 		if (i < 0 || i > this.versions.length || j < 0 || j > this.versions[i].length) {
             return;
         }
@@ -502,7 +502,7 @@ public final class OnDemandFetcher implements Runnable {
                 }
             }
 
-			OnDemandData onDemandData_1 = new OnDemandData();
+			final OnDemandData onDemandData_1 = new OnDemandData();
 			onDemandData_1.dataType = i;
 			onDemandData_1.id = j;
 			onDemandData_1.incomplete = true;
@@ -524,7 +524,7 @@ public final class OnDemandFetcher implements Runnable {
                 }
 				try {
 					Thread.sleep(i);
-				} catch (Exception _ex) {
+				} catch (final Exception _ex) {
 				}
                 this.waiting = true;
 				for (int j = 0; j < 100; j++) {
@@ -574,7 +574,7 @@ public final class OnDemandFetcher implements Runnable {
 					if (this.loopCycle > 750) {
 						try {
                             this.socket.close();
-						} catch (Exception _ex) {
+						} catch (final Exception _ex) {
 						}
                         this.socket = null;
                         this.inputStream = null;
@@ -596,25 +596,25 @@ public final class OnDemandFetcher implements Runnable {
                         this.payload[3] = 10;
 						try {
                             this.outputStream.write(this.payload, 0, 4);
-						} catch (IOException _ex) {
+						} catch (final IOException _ex) {
                             this.loopCycle = 5000;
 						}
 					}
 				}
 			}
-		} catch (Exception exception) {
+		} catch (final Exception exception) {
 			signlink.reporterror("od_ex " + exception.getMessage());
 		}
 	}
 
-	public void setPriority(byte byte0, int i, int j) {
+	public void setPriority(final byte byte0, final int i, final int j) {
 		if (this.clientInstance.caches[0] == null) {
             return;
         }
 		if (this.versions[i][j] == 0) {
             return;
         }
-		byte abyte0[] = this.clientInstance.caches[i + 1].decompress(j);
+		final byte[] abyte0 = this.clientInstance.caches[i + 1].decompress(j);
 		if (this.crcMatches(this.versions[i][j], this.crcs[i][j], abyte0)) {
             return;
         }
@@ -625,12 +625,12 @@ public final class OnDemandFetcher implements Runnable {
         this.totalFiles++;
 	}
 
-	public void start(Archive streamLoader, Client client1) {
-		String as[] = { "model_version", "anim_version", "midi_version", "map_version" };
+	public void start(final Archive streamLoader, final Client client1) {
+		final String[] as = { "model_version", "anim_version", "midi_version", "map_version" };
 		for (int i = 0; i < 4; i++) {
-			byte abyte0[] = streamLoader.decompressFile(as[i]);
-			int j = abyte0.length / 2;
-			Buffer stream = new Buffer(abyte0);
+			final byte[] abyte0 = streamLoader.decompressFile(as[i]);
+			final int j = abyte0.length / 2;
+			final Buffer stream = new Buffer(abyte0);
             this.versions[i] = new int[j];
             this.filePriorities[i] = new byte[j];
 			for (int l = 0; l < j; l++) {
@@ -639,11 +639,11 @@ public final class OnDemandFetcher implements Runnable {
 
 		}
 
-		String as1[] = { "model_crc", "anim_crc", "midi_crc", "map_crc" };
+		final String[] as1 = { "model_crc", "anim_crc", "midi_crc", "map_crc" };
 		for (int k = 0; k < 4; k++) {
-			byte abyte1[] = streamLoader.decompressFile(as1[k]);
-			int i1 = abyte1.length / 4;
-			Buffer stream_1 = new Buffer(abyte1);
+			final byte[] abyte1 = streamLoader.decompressFile(as1[k]);
+			final int i1 = abyte1.length / 4;
+			final Buffer stream_1 = new Buffer(abyte1);
             this.crcs[k] = new int[i1];
 			for (int l1 = 0; l1 < i1; l1++) {
                 this.crcs[k][l1] = stream_1.getInt();

@@ -7,7 +7,7 @@ final class RSFrame extends Frame {
 
 	private final RSApplet applet;
 
-	public RSFrame(RSApplet applet, int width, int height) {
+	public RSFrame(final RSApplet applet, final int width, final int height) {
 		this.applet = applet;
 		this.setTitle("Jagex");
 		this.setResizable(false);
@@ -18,18 +18,18 @@ final class RSFrame extends Frame {
 
 	@Override
 	public Graphics getGraphics() {
-		Graphics graphics = super.getGraphics();
+		final Graphics graphics = super.getGraphics();
 		graphics.translate(4, 24);
 		return graphics;
 	}
 
 	@Override
-	public void paint(Graphics graphics) {
+	public void paint(final Graphics graphics) {
         this.applet.paint(graphics);
 	}
 
 	@Override
-	public void update(Graphics graphics) {
+	public void update(final Graphics graphics) {
         this.applet.update(graphics);
 	}
 }

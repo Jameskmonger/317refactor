@@ -6,8 +6,8 @@ public final class Skins {
 
 	public final int[][] skinList;
 
-	public Skins(Buffer buffer) {
-		int count = buffer.getUnsignedByte();
+	public Skins(final Buffer buffer) {
+		final int count = buffer.getUnsignedByte();
         this.opcodes = new int[count];
         this.skinList = new int[count][];
 		for (int opcode = 0; opcode < count; opcode++) {
@@ -15,7 +15,7 @@ public final class Skins {
         }
 
 		for (int skin = 0; skin < count; skin++) {
-			int subSkinAmount = buffer.getUnsignedByte();
+			final int subSkinAmount = buffer.getUnsignedByte();
             this.skinList[skin] = new int[subSkinAmount];
 			for (int subSkin = 0; subSkin < subSkinAmount; subSkin++) {
                 this.skinList[skin][subSkin] = buffer.getUnsignedByte();

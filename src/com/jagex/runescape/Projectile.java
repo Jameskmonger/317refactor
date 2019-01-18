@@ -33,8 +33,8 @@ final class Projectile extends Animable {
 	private int rotationX;
 	public final int plane;
 
-	public Projectile(int startSlope, int endZ, int delay, int endCycle, int startDistance, int plane, int startZ,
-			int startY, int startX, int targetId, int l2) {
+	public Projectile(final int startSlope, final int endZ, final int delay, final int endCycle, final int startDistance, final int plane, final int startZ,
+                      final int startY, final int startX, final int targetId, final int l2) {
         this.moving = false;
 		this.animation = SpotAnimation.cache[l2];
 		this.plane = plane;
@@ -52,7 +52,7 @@ final class Projectile extends Animable {
 
 	@Override
 	public Model getRotatedModel() {
-		Model model = this.animation.getModel();
+		final Model model = this.animation.getModel();
 		if (model == null) {
             return null;
         }
@@ -60,7 +60,7 @@ final class Projectile extends Animable {
 		if (this.animation.sequences != null) {
             frameId = this.animation.sequences.primaryFrames[this.animationFrame];
         }
-		Model rotatedModel = new Model(true, Animation.isNullFrame(frameId), false, model);
+		final Model rotatedModel = new Model(true, Animation.isNullFrame(frameId), false, model);
 		if (frameId != -1) {
 			rotatedModel.createBones();
 			rotatedModel.applyTransformation(frameId);
@@ -76,7 +76,7 @@ final class Projectile extends Animable {
 		return rotatedModel;
 	}
 
-	public void move(int time) {
+	public void move(final int time) {
         this.moving = true;
         this.currentX += this.speedVectorX * time;
         this.currentY += this.speedVectorY * time;
@@ -96,16 +96,16 @@ final class Projectile extends Animable {
 
 	}
 
-	public void trackTarget(int currentCycle, int targetY, int targetZ, int targetX) {
+	public void trackTarget(final int currentCycle, final int targetY, final int targetZ, final int targetX) {
 		if (!this.moving) {
-			double distanceX = targetX - this.startX;
-			double distanceY = targetY - this.startY;
-			double distanceScalar = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
+			final double distanceX = targetX - this.startX;
+			final double distanceY = targetY - this.startY;
+			final double distanceScalar = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
             this.currentX = this.startX + (distanceX * this.startDistance) / distanceScalar;
             this.currentY = this.startY + (distanceY * this.startDistance) / distanceScalar;
             this.currentZ = this.startZ;
 		}
-		double cyclesRemaining = (this.endCycle + 1) - currentCycle;
+		final double cyclesRemaining = (this.endCycle + 1) - currentCycle;
         this.speedVectorX = (targetX - this.currentX) / cyclesRemaining;
         this.speedVectorY = (targetY - this.currentY) / cyclesRemaining;
         this.speedScalar = Math.sqrt(this.speedVectorX * this.speedVectorX + this.speedVectorY * this.speedVectorY);

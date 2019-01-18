@@ -19,9 +19,9 @@ import com.jagex.runescape.DrawingArea;
 
 public final class WorldController {
 
-	public static void createCullingCluster(int z, int highestX, int lowestX, int highestY, int lowestY, int highestZ,
-			int lowestZ, int searchMask) {
-		CullingCluster cullingCluster = new CullingCluster();
+	public static void createCullingCluster(final int z, final int highestX, final int lowestX, final int highestY, final int lowestY, final int highestZ,
+											final int lowestZ, final int searchMask) {
+		final CullingCluster cullingCluster = new CullingCluster();
 		cullingCluster.tileStartX = lowestX / 128;
 		cullingCluster.tileEndX = highestX / 128;
 		cullingCluster.tileStartY = lowestY / 128;
@@ -45,39 +45,39 @@ public final class WorldController {
 		TILE_VISIBILITY_MAP = null;
 	}
 
-	private static boolean onScreen(int x, int y, int z) {
-		int l = y * curveSineX + x * curveCosineX >> 16;
-		int i1 = y * curveCosineX - x * curveSineX >> 16;
-		int j1 = z * curveSineY + i1 * curveCosineY >> 16;
-		int k1 = z * curveCosineY - i1 * curveSineY >> 16;
+	private static boolean onScreen(final int x, final int y, final int z) {
+		final int l = y * curveSineX + x * curveCosineX >> 16;
+		final int i1 = y * curveCosineX - x * curveSineX >> 16;
+		final int j1 = z * curveSineY + i1 * curveCosineY >> 16;
+		final int k1 = z * curveCosineY - i1 * curveSineY >> 16;
 		if (j1 < 50 || j1 > 3500) {
 			return false;
 		}
-		int l1 = midX + (l << 9) / j1;
-		int i2 = midY + (k1 << 9) / j1;
+		final int l1 = midX + (l << 9) / j1;
+		final int i2 = midY + (k1 << 9) / j1;
 		return l1 >= left && l1 <= right && i2 >= top && i2 <= bottom;
 	}
 
-	public static void setupViewport(int i, int j, int viewportWidth, int viewportHeight, int ai[]) {
+	public static void setupViewport(final int i, final int j, final int viewportWidth, final int viewportHeight, final int[] ai) {
 		left = 0;
 		top = 0;
 		right = viewportWidth;
 		bottom = viewportHeight;
 		midX = viewportWidth / 2;
 		midY = viewportHeight / 2;
-		boolean tileOnScreen[][][][] = new boolean[9][32][53][53];
+		final boolean[][][][] tileOnScreen = new boolean[9][32][53][53];
 		for (int angleY = 128; angleY <= 384; angleY += 32) {
 			for (int angleX = 0; angleX < 2048; angleX += 64) {
 				curveSineY = Model.SINE[angleY];
 				curveCosineY = Model.COSINE[angleY];
 				curveSineX = Model.SINE[angleX];
 				curveCosineX = Model.COSINE[angleX];
-				int anglePointerY = (angleY - 128) / 32;
-				int anglePointerX = angleX / 64;
+				final int anglePointerY = (angleY - 128) / 32;
+				final int anglePointerX = angleX / 64;
 				for (int x = -26; x <= 26; x++) {
 					for (int y = -26; y <= 26; y++) {
-						int worldX = x * 128;
-						int worldY = y * 128;
+						final int worldX = x * 128;
+						final int worldY = y * 128;
 						boolean visible = false;
 						for (int worldZ = -i; worldZ <= j; worldZ += 128) {
 							if (!onScreen(worldX, worldY, ai[anglePointerY] + worldZ)) {
@@ -264,10 +264,10 @@ public final class WorldController {
 		cullingClusters = new CullingCluster[anInt472][500];
 	}
 
-	public WorldController(int heightMap[][][]) {
-		int length = 104;// was parameter
-		int width = 104;// was parameter
-		int height = 4;// was parameter
+	public WorldController(final int[][][] heightMap) {
+		final int length = 104;// was parameter
+		final int width = 104;// was parameter
+		final int height = 4;// was parameter
 		this.interactiveObjectCache = new InteractiveObject[5000];
 		this.anIntArray486 = new int[10000];
 		this.anIntArray487 = new int[10000];
@@ -280,14 +280,14 @@ public final class WorldController {
 		this.initToNull();
 	}
 
-	public boolean addEntity(int x, int y, int z, int worldX, int worldY, int worldZ, int rotation, int tileWidth,
-			int tileHeight, Animable entity, int uid) {
+	public boolean addEntity(final int x, final int y, final int z, final int worldX, final int worldY, final int worldZ, final int rotation, final int tileWidth,
+							 final int tileHeight, final Animable entity, final int uid) {
 		return entity == null || this.addEntityC(x, y, z, worldX, worldY, worldZ, rotation, (tileWidth - y) + 1,
 				(tileHeight - x) + 1, uid, entity, true, (byte) 0);
 	}
 
-	public boolean addEntity(int z, int worldX, int worldY, int worldZ, int yaw, Animable entity, int uid, int delta,
-			boolean accountForYaw) {
+	public boolean addEntity(final int z, final int worldX, final int worldY, final int worldZ, final int yaw, final Animable entity, final int uid, final int delta,
+							 final boolean accountForYaw) {
 		if (entity == null) {
 			return true;
 		}
@@ -320,26 +320,26 @@ public final class WorldController {
 				entity, true, (byte) 0);
 	}
 
-	public boolean addEntityB(int x, int y, int z, int worldZ, int rotation, int tileWidth, int tileHeight, int uid,
-			Animable entity, byte objConf) {
+	public boolean addEntityB(final int x, final int y, final int z, final int worldZ, final int rotation, final int tileWidth, final int tileHeight, final int uid,
+							  final Animable entity, final byte objConf) {
 		if (entity == null) {
 			return true;
 		} else {
-			int worldX = x * 128 + 64 * tileHeight;
-			int worldY = y * 128 + 64 * tileWidth;
+			final int worldX = x * 128 + 64 * tileHeight;
+			final int worldY = y * 128 + 64 * tileWidth;
 			return this.addEntityC(x, y, z, worldX, worldY, worldZ, rotation, tileWidth, tileHeight, uid, entity, false,
 					objConf);
 		}
 	}
 
-	private boolean addEntityC(int minX, int minY, int z, int worldX, int worldY, int worldZ, int rotation, int tileWidth,
-			int tileHeight, int uid, Animable renderable, boolean isDynamic, byte objConf) {
+	private boolean addEntityC(final int minX, final int minY, final int z, final int worldX, final int worldY, final int worldZ, final int rotation, final int tileWidth,
+							   final int tileHeight, final int uid, final Animable renderable, final boolean isDynamic, final byte objConf) {
 		for (int x = minX; x < minX + tileHeight; x++) {
 			for (int y = minY; y < minY + tileWidth; y++) {
 				if (x < 0 || y < 0 || x >= this.mapSizeX || y >= this.mapSizeY) {
 					return false;
 				}
-				Tile tile = this.groundArray[z][x][y];
+				final Tile tile = this.groundArray[z][x][y];
 				if (tile != null && tile.entityCount >= 5) {
 					return false;
 				}
@@ -347,7 +347,7 @@ public final class WorldController {
 
 		}
 
-		InteractiveObject entity = new InteractiveObject();
+		final InteractiveObject entity = new InteractiveObject();
 		entity.uid = uid;
 		entity.objConf = objConf;
 		entity.z = z;
@@ -382,7 +382,7 @@ public final class WorldController {
 					}
 				}
 
-				Tile tile = this.groundArray[z][x][y];
+				final Tile tile = this.groundArray[z][x][y];
 				tile.interactiveObjects[tile.entityCount] = entity;
 				tile.interactiveObjectsSize[tile.entityCount] = size;
 				tile.interactiveObjectsSizeOR |= size;
@@ -397,11 +397,11 @@ public final class WorldController {
 		return true;
 	}
 
-	public void addGroundDecoration(int x, int y, int z, int drawHeight, int uid, Animable renderable, byte objConf) {
+	public void addGroundDecoration(final int x, final int y, final int z, final int drawHeight, final int uid, final Animable renderable, final byte objConf) {
 		if (renderable == null) {
 			return;
 		}
-		GroundDecoration groundDecoration = new GroundDecoration();
+		final GroundDecoration groundDecoration = new GroundDecoration();
 		groundDecoration.renderable = renderable;
 		groundDecoration.x = x * 128 + 64;
 		groundDecoration.y = y * 128 + 64;
@@ -414,9 +414,9 @@ public final class WorldController {
 		this.groundArray[z][x][y].groundDecoration = groundDecoration;
 	}
 
-	public void addGroundItemTile(int x, int y, int z, int drawHeight, int uid, Animable firstGroundItem,
-			Animable secondGroundItem, Animable thirdGroundItem) {
-		GroundItemTile groundItemTile = new GroundItemTile();
+	public void addGroundItemTile(final int x, final int y, final int z, final int drawHeight, final int uid, final Animable firstGroundItem,
+								  final Animable secondGroundItem, final Animable thirdGroundItem) {
+		final GroundItemTile groundItemTile = new GroundItemTile();
 		groundItemTile.firstGroundItem = firstGroundItem;
 		groundItemTile.x = x * 128 + 64;
 		groundItemTile.y = y * 128 + 64;
@@ -425,11 +425,11 @@ public final class WorldController {
 		groundItemTile.secondGroundItem = secondGroundItem;
 		groundItemTile.thirdGroundItem = thirdGroundItem;
 		int j1 = 0;
-		Tile tile = this.groundArray[z][x][y];
+		final Tile tile = this.groundArray[z][x][y];
 		if (tile != null) {
 			for (int e = 0; e < tile.entityCount; e++) {
 				if (tile.interactiveObjects[e].renderable instanceof Model) {
-					int l1 = ((Model) tile.interactiveObjects[e].renderable).anInt1654;
+					final int l1 = ((Model) tile.interactiveObjects[e].renderable).anInt1654;
 					if (l1 > j1) {
 						j1 = l1;
 					}
@@ -444,12 +444,12 @@ public final class WorldController {
 		this.groundArray[z][x][y].groundItemTile = groundItemTile;
 	}
 
-	public void addWallDecoration(int x, int y, int z, int drawHeight, int offsetX, int offsetY, int face, int uid,
-			Animable renderable, byte objConf, int faceBits) {
+	public void addWallDecoration(final int x, final int y, final int z, final int drawHeight, final int offsetX, final int offsetY, final int face, final int uid,
+								  final Animable renderable, final byte objConf, final int faceBits) {
 		if (renderable == null) {
 			return;
 		}
-		WallDecoration wallDecoration = new WallDecoration();
+		final WallDecoration wallDecoration = new WallDecoration();
 		wallDecoration.uid = uid;
 		wallDecoration.objConf = objConf;
 		wallDecoration.x = x * 128 + 64 + offsetX;
@@ -467,13 +467,13 @@ public final class WorldController {
 		this.groundArray[z][x][y].wallDecoration = wallDecoration;
 	}
 
-	public void addWall(int x, int y, int z, int drawHeight, int orientation, int orientation2, int uid,
-			Animable primary, Animable secondary, byte objConf) {
+	public void addWall(final int x, final int y, final int z, final int drawHeight, final int orientation, final int orientation2, final int uid,
+						final Animable primary, final Animable secondary, final byte objConf) {
 		if (primary == null && secondary == null) {
 			return;
 		}
 
-		Wall wall = new Wall();
+		final Wall wall = new Wall();
 		wall.uid = uid;
 		wall.objConf = objConf;
 		wall.x = x * 128 + 64;
@@ -493,14 +493,14 @@ public final class WorldController {
 		this.groundArray[z][x][y].wall = wall;
 	}
 
-	public void applyBridgeMode(int x, int y) {
-		Tile tile = this.groundArray[0][x][y];
+	public void applyBridgeMode(final int x, final int y) {
+		final Tile tile = this.groundArray[0][x][y];
 		for (int z = 0; z < 3; z++) {
-			Tile _tile = this.groundArray[z][x][y] = this.groundArray[z + 1][x][y];
+			final Tile _tile = this.groundArray[z][x][y] = this.groundArray[z + 1][x][y];
 			if (_tile != null) {
 				_tile.z--;
 				for (int e = 0; e < _tile.entityCount; e++) {
-					InteractiveObject entity = _tile.interactiveObjects[e];
+					final InteractiveObject entity = _tile.interactiveObjects[e];
 					if ((entity.uid >> 29 & 3) == 2 && entity.tileLeft == x && entity.tileTop == y) {
 						entity.z--;
 					}
@@ -517,7 +517,7 @@ public final class WorldController {
 
 	public void clearInteractiveObjectCache() {
 		for (int i = 0; i < this.interactiveObjectCacheCurrentPos; i++) {
-			InteractiveObject entity = this.interactiveObjectCache[i];
+			final InteractiveObject entity = this.interactiveObjectCache[i];
 			this.remove(entity);
 			this.interactiveObjectCache[i] = null;
 		}
@@ -525,15 +525,15 @@ public final class WorldController {
 		this.interactiveObjectCacheCurrentPos = 0;
 	}
 
-	public void drawMinimapTile(int x, int y, int z, int pixels[], int pixelPointer) {
-		int scanLength = 512;// was parameter
-		Tile tile = this.groundArray[z][x][y];
+	public void drawMinimapTile(final int x, final int y, final int z, final int[] pixels, int pixelPointer) {
+		final int scanLength = 512;// was parameter
+		final Tile tile = this.groundArray[z][x][y];
 		if (tile == null) {
 			return;
 		}
-		PlainTile plainTile = tile.plainTile;
+		final PlainTile plainTile = tile.plainTile;
 		if (plainTile != null) {
-			int colourRGB = plainTile.colourRGB;
+			final int colourRGB = plainTile.colourRGB;
 			if (colourRGB == 0) {
 				return;
 			}
@@ -547,16 +547,16 @@ public final class WorldController {
 
 			return;
 		}
-		ShapedTile shapedTile = tile.shapedTile;
+		final ShapedTile shapedTile = tile.shapedTile;
 		if (shapedTile == null) {
 			return;
 		}
-		int shape = shapedTile.shape;
-		int rotation = shapedTile.rotation;
-		int underlayRGB = shapedTile.underlayRGB;
-		int overlayRGB = shapedTile.overlayRGB;
-		int shapePoints[] = this.tileShapePoints[shape];
-		int shapeIndices[] = this.tileShapeIndices[rotation];
+		final int shape = shapedTile.shape;
+		final int rotation = shapedTile.rotation;
+		final int underlayRGB = shapedTile.underlayRGB;
+		final int overlayRGB = shapedTile.overlayRGB;
+		final int[] shapePoints = this.tileShapePoints[shape];
+		final int[] shapeIndices = this.tileShapeIndices[rotation];
 		int shapePointer = 0;
 		if (underlayRGB != 0) {
 			for (int line = 0; line < 4; line++) {
@@ -587,8 +587,8 @@ public final class WorldController {
 
 	}
 
-	public int getConfig(int uid, int x, int y, int z) {
-		Tile tile = this.groundArray[z][x][y];
+	public int getConfig(final int uid, final int x, final int y, final int z) {
+		final Tile tile = this.groundArray[z][x][y];
 		if (tile == null) {
 			return -1;
 		}
@@ -610,8 +610,8 @@ public final class WorldController {
 		return -1;
 	}
 
-	public GroundDecoration getGroundDecoration(int x, int y, int z) {
-		Tile tile = this.groundArray[z][x][y];
+	public GroundDecoration getGroundDecoration(final int x, final int y, final int z) {
+		final Tile tile = this.groundArray[z][x][y];
 		if (tile == null || tile.groundDecoration == null) {
 			return null;
 		} else {
@@ -619,8 +619,8 @@ public final class WorldController {
 		}
 	}
 
-	public int getGroundDecorationHash(int x, int y, int z) {
-		Tile tile = this.groundArray[z][x][y];
+	public int getGroundDecorationHash(final int x, final int y, final int z) {
+		final Tile tile = this.groundArray[z][x][y];
 		if (tile == null || tile.groundDecoration == null) {
 			return 0;
 		} else {
@@ -628,13 +628,13 @@ public final class WorldController {
 		}
 	}
 
-	public int getInteractibleObjectHash(int x, int y, int z) {
-		Tile tile = this.groundArray[z][x][y];
+	public int getInteractibleObjectHash(final int x, final int y, final int z) {
+		final Tile tile = this.groundArray[z][x][y];
 		if (tile == null) {
 			return 0;
 		}
 		for (int e = 0; e < tile.entityCount; e++) {
-			InteractiveObject entity = tile.interactiveObjects[e];
+			final InteractiveObject entity = tile.interactiveObjects[e];
 			if ((entity.uid >> 29 & 3) == 2 && entity.tileLeft == x && entity.tileTop == y) {
 				return entity.uid;
 			}
@@ -643,13 +643,13 @@ public final class WorldController {
 		return 0;
 	}
 
-	public InteractiveObject getInteractiveObject(int x, int y, int z) {
-		Tile tile = this.groundArray[z][x][y];
+	public InteractiveObject getInteractiveObject(final int x, final int y, final int z) {
+		final Tile tile = this.groundArray[z][x][y];
 		if (tile == null) {
 			return null;
 		}
 		for (int e = 0; e < tile.entityCount; e++) {
-			InteractiveObject entity = tile.interactiveObjects[e];
+			final InteractiveObject entity = tile.interactiveObjects[e];
 			if ((entity.uid >> 29 & 3) == 2 && entity.tileLeft == x && entity.tileTop == y) {
 				return entity;
 			}
@@ -657,8 +657,8 @@ public final class WorldController {
 		return null;
 	}
 
-	public WallDecoration getWallDecoration(int x, int y, int z) {
-		Tile tile = this.groundArray[z][x][y];
+	public WallDecoration getWallDecoration(final int x, final int y, final int z) {
+		final Tile tile = this.groundArray[z][x][y];
 		if (tile == null) {
 			return null;
 		} else {
@@ -666,8 +666,8 @@ public final class WorldController {
 		}
 	}
 
-	public int getWallDecorationHash(int x, int y, int z) {
-		Tile tile = this.groundArray[z][x][y];
+	public int getWallDecorationHash(final int x, final int y, final int z) {
+		final Tile tile = this.groundArray[z][x][y];
 		if (tile == null || tile.wallDecoration == null) {
 			return 0;
 		} else {
@@ -675,8 +675,8 @@ public final class WorldController {
 		}
 	}
 
-	public Wall getWallObject(int x, int y, int z) {
-		Tile tile = this.groundArray[z][x][y];
+	public Wall getWallObject(final int x, final int y, final int z) {
+		final Tile tile = this.groundArray[z][x][y];
 		if (tile == null) {
 			return null;
 		} else {
@@ -684,8 +684,8 @@ public final class WorldController {
 		}
 	}
 
-	public int getWallObjectHash(int x, int y, int z) {
-		Tile tile = this.groundArray[z][x][y];
+	public int getWallObjectHash(final int x, final int y, final int z) {
+		final Tile tile = this.groundArray[z][x][y];
 		if (tile == null || tile.wall == null) {
 			return 0;
 		} else {
@@ -722,8 +722,8 @@ public final class WorldController {
 
 	}
 
-	private boolean isMouseWithinTriangle(int mouseX, int mouseY, int pointAY, int pointBY, int pointCY, int pointAX,
-			int pointBX, int pointCX) {
+	private boolean isMouseWithinTriangle(final int mouseX, final int mouseY, final int pointAY, final int pointBY, final int pointCY, final int pointAX,
+										  final int pointBX, final int pointCX) {
 		if (mouseY < pointAY && mouseY < pointBY && mouseY < pointCY) {
 			return false;
 		}
@@ -737,62 +737,62 @@ public final class WorldController {
 			return false;
 		}
 
-		int b1 = (mouseY - pointAY) * (pointBX - pointAX) - (mouseX - pointAX) * (pointBY - pointAY);
-		int b2 = (mouseY - pointCY) * (pointAX - pointCX) - (mouseX - pointCX) * (pointAY - pointCY);
-		int b3 = (mouseY - pointBY) * (pointCX - pointBX) - (mouseX - pointBX) * (pointCY - pointBY);
+		final int b1 = (mouseY - pointAY) * (pointBX - pointAX) - (mouseX - pointAX) * (pointBY - pointAY);
+		final int b2 = (mouseY - pointCY) * (pointAX - pointCX) - (mouseX - pointCX) * (pointAY - pointCY);
+		final int b3 = (mouseY - pointBY) * (pointCX - pointBX) - (mouseX - pointBX) * (pointCY - pointBY);
 		return b1 * b3 > 0 && b3 * b2 > 0;
 	}
 
-	public void displaceWallDecoration(int y, int displacement, int x, int z) {
-		Tile tile = this.groundArray[z][x][y];
+	public void displaceWallDecoration(final int y, final int displacement, final int x, final int z) {
+		final Tile tile = this.groundArray[z][x][y];
 		
 		if (tile == null) {
 			return;
 		}
 
-		WallDecoration wallDecoration = tile.wallDecoration;
+		final WallDecoration wallDecoration = tile.wallDecoration;
 
 		if (wallDecoration != null) {
-			int absX = x * 128 + 64;
-			int absY = y * 128 + 64;
+			final int absX = x * 128 + 64;
+			final int absY = y * 128 + 64;
 			wallDecoration.x = absX + ((wallDecoration.x - absX) * displacement) / 16;
 			wallDecoration.y = absY + ((wallDecoration.y - absY) * displacement) / 16;
 		}
 	}
 
-	private void method306(Model model, int x, int y, int z) {
+	private void method306(final Model model, final int x, final int y, final int z) {
 		if (x < this.mapSizeX) {
-			Tile tile = this.groundArray[z][x + 1][y];
+			final Tile tile = this.groundArray[z][x + 1][y];
 			if (tile != null && tile.groundDecoration != null && tile.groundDecoration.renderable.vertexNormals != null) {
 				this.mergeNormals(model, (Model) tile.groundDecoration.renderable, 128, 0, 0, true);
 			}
 		}
 		if (y < this.mapSizeX) {
-			Tile tile = this.groundArray[z][x][y + 1];
+			final Tile tile = this.groundArray[z][x][y + 1];
 			if (tile != null && tile.groundDecoration != null && tile.groundDecoration.renderable.vertexNormals != null) {
 				this.mergeNormals(model, (Model) tile.groundDecoration.renderable, 0, 0, 128, true);
 			}
 		}
 		if (x < this.mapSizeX && y < this.mapSizeY) {
-			Tile tile = this.groundArray[z][x + 1][y + 1];
+			final Tile tile = this.groundArray[z][x + 1][y + 1];
 			if (tile != null && tile.groundDecoration != null && tile.groundDecoration.renderable.vertexNormals != null) {
 				this.mergeNormals(model, (Model) tile.groundDecoration.renderable, 128, 0, 128, true);
 			}
 		}
 		if (x < this.mapSizeX && y > 0) {
-			Tile tile = this.groundArray[z][x + 1][y - 1];
+			final Tile tile = this.groundArray[z][x + 1][y - 1];
 			if (tile != null && tile.groundDecoration != null && tile.groundDecoration.renderable.vertexNormals != null) {
 				this.mergeNormals(model, (Model) tile.groundDecoration.renderable, 128, 0, -128, true);
 			}
 		}
 	}
 
-	private void method307(int z, int j, int k, int x, int y, Model model) {
+	private void method307(final int z, final int j, final int k, final int x, final int y, final Model model) {
 		boolean flag = true;
 		int positionX = x;
-		int position2X = x + j;
-		int positionY = y - 1;
-		int position2Y = y + k;
+		final int position2X = x + j;
+		final int positionY = y - 1;
+		final int position2Y = y + k;
 		for (int _z = z; _z <= z + 1; _z++) {
 			if (_z != this.mapSizeZ) {
 				for (int _x = positionX; _x <= position2X; _x++) {
@@ -800,13 +800,13 @@ public final class WorldController {
 						for (int _y = positionY; _y <= position2Y; _y++) {
 							if (_y >= 0 && _y < this.mapSizeY
 									&& (!flag || _x >= position2X || _y >= position2Y || _y < y && _x != x)) {
-								Tile tile = this.groundArray[_z][_x][_y];
+								final Tile tile = this.groundArray[_z][_x][_y];
 								if (tile != null) {
-									int i3 = (this.heightMap[_z][_x][_y] + this.heightMap[_z][_x + 1][_y]
+									final int i3 = (this.heightMap[_z][_x][_y] + this.heightMap[_z][_x + 1][_y]
 											+ this.heightMap[_z][_x][_y + 1] + this.heightMap[_z][_x + 1][_y + 1]) / 4
 											- (this.heightMap[z][x][y] + this.heightMap[z][x + 1][y] + this.heightMap[z][x][y + 1]
 											+ this.heightMap[z][x + 1][y + 1]) / 4;
-									Wall wallObject = tile.wall;
+									final Wall wallObject = tile.wall;
 									if (wallObject != null && wallObject.primary != null
 											&& wallObject.primary.vertexNormals != null) {
 										this.mergeNormals(model, (Model) wallObject.primary, (_x - x) * 128 + (1 - j) * 64,
@@ -818,11 +818,11 @@ public final class WorldController {
 												i3, (_y - y) * 128 + (1 - k) * 64, flag);
 									}
 									for (int e = 0; e < tile.entityCount; e++) {
-										InteractiveObject entity = tile.interactiveObjects[e];
+										final InteractiveObject entity = tile.interactiveObjects[e];
 										if (entity != null && entity.renderable != null
 												&& entity.renderable.vertexNormals != null) {
-											int k3 = (entity.tileRight - entity.tileLeft) + 1;
-											int l3 = (entity.tileBottom - entity.tileTop) + 1;
+											final int k3 = (entity.tileRight - entity.tileLeft) + 1;
+											final int l3 = (entity.tileBottom - entity.tileTop) + 1;
 											this.mergeNormals(model, (Model) entity.renderable,
 													(entity.tileLeft - x) * 128 + (k3 - j) * 64, i3,
 													(entity.tileTop - y) * 128 + (l3 - k) * 64, flag);
@@ -843,25 +843,25 @@ public final class WorldController {
 
 	}
 
-	private void mergeNormals(Model model, Model secondModel, int posX, int posY, int posZ, boolean flag) {
+	private void mergeNormals(final Model model, final Model secondModel, final int posX, final int posY, final int posZ, final boolean flag) {
 		this.anInt488++;
 		int count = 0;
-		int vertices[] = secondModel.verticesX;
-		int vertexCount = secondModel.vertexCount;
+		final int[] vertices = secondModel.verticesX;
+		final int vertexCount = secondModel.vertexCount;
 
 		for (int vertex = 0; vertex < model.vertexCount; vertex++) {
-			VertexNormal vertexNormal = model.vertexNormals[vertex];
-			VertexNormal offsetVertexNormal = model.vertexNormalOffset[vertex];
+			final VertexNormal vertexNormal = model.vertexNormals[vertex];
+			final VertexNormal offsetVertexNormal = model.vertexNormalOffset[vertex];
 			if (offsetVertexNormal.magnitude != 0) {
-				int y = model.verticesY[vertex] - posY;
+				final int y = model.verticesY[vertex] - posY;
 				if (y <= secondModel.maxY) {
-					int x = model.verticesX[vertex] - posX;
+					final int x = model.verticesX[vertex] - posX;
 					if (x >= secondModel.maxY && x <= secondModel.maxX) {
-						int z = model.verticesZ[vertex] - posZ;
+						final int z = model.verticesZ[vertex] - posZ;
 						if (z >= secondModel.minZ && z <= secondModel.maxZ) {
 							for (int v = 0; v < vertexCount; v++) {
-								VertexNormal vertexNormal2 = secondModel.vertexNormals[v];
-								VertexNormal offsetVertexNormal2 = secondModel.vertexNormalOffset[v];
+								final VertexNormal vertexNormal2 = secondModel.vertexNormals[v];
+								final VertexNormal offsetVertexNormal2 = secondModel.vertexNormalOffset[v];
 								if (x == vertices[v] && z == secondModel.verticesZ[v] && y == secondModel.verticesY[v]
 										&& offsetVertexNormal2.magnitude != 0) {
 									vertexNormal.x += offsetVertexNormal2.x;
@@ -906,16 +906,16 @@ public final class WorldController {
 
 	}
 
-	private boolean method320(int x, int y, int z) {
-		int l = this.anIntArrayArrayArray445[z][x][y];
+	private boolean method320(final int x, final int y, final int z) {
+		final int l = this.anIntArrayArrayArray445[z][x][y];
 		if (l == -anInt448) {
 			return false;
 		}
 		if (l == anInt448) {
 			return true;
 		}
-		int worldX = x << 7;
-		int worldY = y << 7;
+		final int worldX = x << 7;
+		final int worldY = y << 7;
 		if (this.method324(worldX + 1, worldY + 1, this.heightMap[z][x][y])
 				&& this.method324((worldX + 128) - 1, worldY + 1, this.heightMap[z][x + 1][y])
 				&& this.method324((worldX + 128) - 1, (worldY + 128) - 1, this.heightMap[z][x + 1][y + 1])
@@ -928,16 +928,16 @@ public final class WorldController {
 		}
 	}
 
-	private boolean method321(int x, int y, int z, int wallType) {
+	private boolean method321(final int x, final int y, final int z, final int wallType) {
 		if (!this.method320(x, y, z)) {
 			return false;
 		}
-		int posX = x << 7;
-		int posY = y << 7;
-		int posZ = this.heightMap[z][x][y] - 1;
-		int z1 = posZ - 120;
-		int z2 = posZ - 230;
-		int z3 = posZ - 238;
+		final int posX = x << 7;
+		final int posY = y << 7;
+		final int posZ = this.heightMap[z][x][y] - 1;
+		final int z1 = posZ - 120;
+		final int z2 = posZ - 230;
+		final int z3 = posZ - 238;
 		if (wallType < 16) {
 			if (wallType == 1) {
 				if (posX > cameraPosX) {
@@ -1036,25 +1036,25 @@ public final class WorldController {
 		}
 	}
 
-	private boolean method322(int z, int x, int y, int offsetZ) {
+	private boolean method322(final int z, final int x, final int y, final int offsetZ) {
 		if (!this.method320(x, y, z)) {
 			return false;
 		}
-		int _x = x << 7;
-		int _y = y << 7;
+		final int _x = x << 7;
+		final int _y = y << 7;
 		return this.method324(_x + 1, _y + 1, this.heightMap[z][x][y] - offsetZ)
 				&& this.method324((_x + 128) - 1, _y + 1, this.heightMap[z][x + 1][y] - offsetZ)
 				&& this.method324((_x + 128) - 1, (_y + 128) - 1, this.heightMap[z][x + 1][y + 1] - offsetZ)
 				&& this.method324(_x + 1, (_y + 128) - 1, this.heightMap[z][x][y + 1] - offsetZ);
 	}
 
-	private boolean method323(int minimumX, int maximumX, int minimumY, int maximumY, int z, int offsetZ) {
+	private boolean method323(final int minimumX, final int maximumX, final int minimumY, final int maximumY, final int z, final int offsetZ) {
 		if (minimumX == maximumX && minimumY == maximumY) {
 			if (!this.method320(minimumX, minimumY, z)) {
 				return false;
 			}
-			int _x = minimumX << 7;
-			int _y = minimumY << 7;
+			final int _x = minimumX << 7;
+			final int _y = minimumY << 7;
 			return this.method324(_x + 1, _y + 1, this.heightMap[z][minimumX][minimumY] - offsetZ)
 					&& this.method324((_x + 128) - 1, _y + 1, this.heightMap[z][minimumX + 1][minimumY] - offsetZ)
 					&& this.method324((_x + 128) - 1, (_y + 128) - 1, this.heightMap[z][minimumX + 1][minimumY + 1] - offsetZ)
@@ -1069,74 +1069,74 @@ public final class WorldController {
 
 		}
 
-		int _x = (minimumX << 7) + 1;
-		int _y = (minimumY << 7) + 2;
-		int _z = this.heightMap[z][minimumX][minimumY] - offsetZ;
+		final int _x = (minimumX << 7) + 1;
+		final int _y = (minimumY << 7) + 2;
+		final int _z = this.heightMap[z][minimumX][minimumY] - offsetZ;
 		if (!this.method324(_x, _y, _z)) {
 			return false;
 		}
-		int x = (maximumX << 7) - 1;
+		final int x = (maximumX << 7) - 1;
 		if (!this.method324(x, _y, _z)) {
 			return false;
 		}
-		int y = (maximumY << 7) - 1;
+		final int y = (maximumY << 7) - 1;
 		return this.method324(_x, y, _z) && this.method324(x, y, _z);
 	}
 
-	private boolean method324(int x, int y, int z) {
+	private boolean method324(final int x, final int y, final int z) {
 		for (int c = 0; c < processedCullingClustersPointer; c++) {
-			CullingCluster cluster = processedCullingClusters[c];
+			final CullingCluster cluster = processedCullingClusters[c];
 			if (cluster.tileDistanceEnum == 1) {
-				int i1 = cluster.worldStartX - x;
+				final int i1 = cluster.worldStartX - x;
 				if (i1 > 0) {
-					int j2 = cluster.worldStartY + (cluster.worldDistanceFromCameraStartY * i1 >> 8);
-					int k3 = cluster.worldEndY + (cluster.worldDistanceFromCameraEndY * i1 >> 8);
-					int l4 = cluster.worldEndZ + (cluster.worldDistanceFromCameraStartZ * i1 >> 8);
-					int i6 = cluster.worldStartZ + (cluster.worldDistanceFromCameraEndZ * i1 >> 8);
+					final int j2 = cluster.worldStartY + (cluster.worldDistanceFromCameraStartY * i1 >> 8);
+					final int k3 = cluster.worldEndY + (cluster.worldDistanceFromCameraEndY * i1 >> 8);
+					final int l4 = cluster.worldEndZ + (cluster.worldDistanceFromCameraStartZ * i1 >> 8);
+					final int i6 = cluster.worldStartZ + (cluster.worldDistanceFromCameraEndZ * i1 >> 8);
 					if (y >= j2 && y <= k3 && z >= l4 && z <= i6) {
 						return true;
 					}
 				}
 			} else if (cluster.tileDistanceEnum == 2) {
-				int j1 = x - cluster.worldStartX;
+				final int j1 = x - cluster.worldStartX;
 				if (j1 > 0) {
-					int k2 = cluster.worldStartY + (cluster.worldDistanceFromCameraStartY * j1 >> 8);
-					int l3 = cluster.worldEndY + (cluster.worldDistanceFromCameraEndY * j1 >> 8);
-					int i5 = cluster.worldEndZ + (cluster.worldDistanceFromCameraStartZ * j1 >> 8);
-					int j6 = cluster.worldStartZ + (cluster.worldDistanceFromCameraEndZ * j1 >> 8);
+					final int k2 = cluster.worldStartY + (cluster.worldDistanceFromCameraStartY * j1 >> 8);
+					final int l3 = cluster.worldEndY + (cluster.worldDistanceFromCameraEndY * j1 >> 8);
+					final int i5 = cluster.worldEndZ + (cluster.worldDistanceFromCameraStartZ * j1 >> 8);
+					final int j6 = cluster.worldStartZ + (cluster.worldDistanceFromCameraEndZ * j1 >> 8);
 					if (y >= k2 && y <= l3 && z >= i5 && z <= j6) {
 						return true;
 					}
 				}
 			} else if (cluster.tileDistanceEnum == 3) {
-				int k1 = cluster.worldStartY - y;
+				final int k1 = cluster.worldStartY - y;
 				if (k1 > 0) {
-					int l2 = cluster.worldStartX + (cluster.worldDistanceFromCameraStartX * k1 >> 8);
-					int i4 = cluster.worldEndX + (cluster.worldDistanceFromCameraEndX * k1 >> 8);
-					int j5 = cluster.worldEndZ + (cluster.worldDistanceFromCameraStartZ * k1 >> 8);
-					int k6 = cluster.worldStartZ + (cluster.worldDistanceFromCameraEndZ * k1 >> 8);
+					final int l2 = cluster.worldStartX + (cluster.worldDistanceFromCameraStartX * k1 >> 8);
+					final int i4 = cluster.worldEndX + (cluster.worldDistanceFromCameraEndX * k1 >> 8);
+					final int j5 = cluster.worldEndZ + (cluster.worldDistanceFromCameraStartZ * k1 >> 8);
+					final int k6 = cluster.worldStartZ + (cluster.worldDistanceFromCameraEndZ * k1 >> 8);
 					if (x >= l2 && x <= i4 && z >= j5 && z <= k6) {
 						return true;
 					}
 				}
 			} else if (cluster.tileDistanceEnum == 4) {
-				int l1 = y - cluster.worldStartY;
+				final int l1 = y - cluster.worldStartY;
 				if (l1 > 0) {
-					int i3 = cluster.worldStartX + (cluster.worldDistanceFromCameraStartX * l1 >> 8);
-					int j4 = cluster.worldEndX + (cluster.worldDistanceFromCameraEndX * l1 >> 8);
-					int k5 = cluster.worldEndZ + (cluster.worldDistanceFromCameraStartZ * l1 >> 8);
-					int l6 = cluster.worldStartZ + (cluster.worldDistanceFromCameraEndZ * l1 >> 8);
+					final int i3 = cluster.worldStartX + (cluster.worldDistanceFromCameraStartX * l1 >> 8);
+					final int j4 = cluster.worldEndX + (cluster.worldDistanceFromCameraEndX * l1 >> 8);
+					final int k5 = cluster.worldEndZ + (cluster.worldDistanceFromCameraStartZ * l1 >> 8);
+					final int l6 = cluster.worldStartZ + (cluster.worldDistanceFromCameraEndZ * l1 >> 8);
 					if (x >= i3 && x <= j4 && z >= k5 && z <= l6) {
 						return true;
 					}
 				}
 			} else if (cluster.tileDistanceEnum == 5) {
-				int i2 = z - cluster.worldEndZ;
+				final int i2 = z - cluster.worldEndZ;
 				if (i2 > 0) {
-					int j3 = cluster.worldStartX + (cluster.worldDistanceFromCameraStartX * i2 >> 8);
-					int k4 = cluster.worldEndX + (cluster.worldDistanceFromCameraEndX * i2 >> 8);
-					int l5 = cluster.worldStartY + (cluster.worldDistanceFromCameraStartY * i2 >> 8);
-					int i7 = cluster.worldEndY + (cluster.worldDistanceFromCameraEndY * i2 >> 8);
+					final int j3 = cluster.worldStartX + (cluster.worldDistanceFromCameraStartX * i2 >> 8);
+					final int k4 = cluster.worldEndX + (cluster.worldDistanceFromCameraEndX * i2 >> 8);
+					final int l5 = cluster.worldStartY + (cluster.worldDistanceFromCameraStartY * i2 >> 8);
+					final int i7 = cluster.worldEndY + (cluster.worldDistanceFromCameraEndY * i2 >> 8);
 					if (x >= j3 && x <= k4 && y >= l5 && y <= i7) {
 						return true;
 					}
@@ -1147,7 +1147,7 @@ public final class WorldController {
 		return false;
 	}
 
-	private int mixColours(int colourA, int colourB) {
+	private int mixColours(final int colourA, int colourB) {
 		colourB = 127 - colourB;
 		colourB = (colourB * (colourA & 0x7f)) / 160;
 		if (colourB < 2) {
@@ -1159,13 +1159,13 @@ public final class WorldController {
 	}
 
 	private void processCulling() {
-		int clusterCount = cullingClusterPointer[plane];
-		CullingCluster clusters[] = cullingClusters[plane];
+		final int clusterCount = cullingClusterPointer[plane];
+		final CullingCluster[] clusters = cullingClusters[plane];
 		processedCullingClustersPointer = 0;
 		for (int c = 0; c < clusterCount; c++) {
-			CullingCluster cluster = clusters[c];
+			final CullingCluster cluster = clusters[c];
 			if (cluster.searchMask == 1) {
-				int distanceFromCameraStartX = (cluster.tileStartX - cameraPositionTileX) + 25;
+				final int distanceFromCameraStartX = (cluster.tileStartX - cameraPositionTileX) + 25;
 				if (distanceFromCameraStartX < 0 || distanceFromCameraStartX > 50) {
 					continue;
 				}
@@ -1209,7 +1209,7 @@ public final class WorldController {
 				continue;
 			}
 			if (cluster.searchMask == 2) {
-				int distanceFromCameraStartY = (cluster.tileStartY - cameraPositionTileY) + 25;
+				final int distanceFromCameraStartY = (cluster.tileStartY - cameraPositionTileY) + 25;
 				if (distanceFromCameraStartY < 0 || distanceFromCameraStartY > 50) {
 					continue;
 				}
@@ -1251,7 +1251,7 @@ public final class WorldController {
 						/ realDistanceFromCameraStartY;
 				processedCullingClusters[processedCullingClustersPointer++] = cluster;
 			} else if (cluster.searchMask == 4) {
-				int realDistanceFromCameraStartZ = cluster.worldEndZ - cameraPosZ;
+				final int realDistanceFromCameraStartZ = cluster.worldEndZ - cameraPosZ;
 				if (realDistanceFromCameraStartZ > 128) {
 					int distanceFromCameraStartY = (cluster.tileStartY - cameraPositionTileY) + 25;
 					if (distanceFromCameraStartY < 0) {
@@ -1301,10 +1301,10 @@ public final class WorldController {
 
 	}
 
-	private void remove(InteractiveObject entity) {
+	private void remove(final InteractiveObject entity) {
 		for (int x = entity.tileLeft; x <= entity.tileRight; x++) {
 			for (int y = entity.tileTop; y <= entity.tileBottom; y++) {
-				Tile tile = this.groundArray[entity.z][x][y];
+				final Tile tile = this.groundArray[entity.z][x][y];
 				if (tile != null) {
 					for (int e = 0; e < tile.entityCount; e++) {
 						if (tile.interactiveObjects[e] != entity) {
@@ -1330,28 +1330,28 @@ public final class WorldController {
 		}
 	}
 
-	public void removeGroundDecoration(int x, int y, int z) {
-		Tile tile = this.groundArray[z][x][y];
+	public void removeGroundDecoration(final int x, final int y, final int z) {
+		final Tile tile = this.groundArray[z][x][y];
 		if (tile == null) {
 			return;
 		}
 		tile.groundDecoration = null;
 	}
 
-	public void removeGroundItemTile(int x, int y, int z) {
-		Tile tile = this.groundArray[z][x][y];
+	public void removeGroundItemTile(final int x, final int y, final int z) {
+		final Tile tile = this.groundArray[z][x][y];
 		if (tile != null) {
 			tile.groundItemTile = null;
 		}
 	}
 
-	public void removeInteractiveObject(int x, int y, int z) {
-		Tile tile = this.groundArray[z][x][y];
+	public void removeInteractiveObject(final int x, final int y, final int z) {
+		final Tile tile = this.groundArray[z][x][y];
 		if (tile == null) {
 			return;
 		}
 		for (int e = 0; e < tile.entityCount; e++) {
-			InteractiveObject entity = tile.interactiveObjects[e];
+			final InteractiveObject entity = tile.interactiveObjects[e];
 			if ((entity.uid >> 29 & 3) == 2 && entity.tileLeft == x && entity.tileTop == y) {
 				this.remove(entity);
 				return;
@@ -1360,21 +1360,21 @@ public final class WorldController {
 
 	}
 
-	public void removeWallDecoration(int x, int y, int z) {
-		Tile tile = this.groundArray[z][x][y];
+	public void removeWallDecoration(final int x, final int y, final int z) {
+		final Tile tile = this.groundArray[z][x][y];
 		if (tile != null) {
 			tile.wallDecoration = null;
 		}
 	}
 
-	public void removeWallObject(int x, int z, int y) {
-		Tile tile = this.groundArray[z][x][y];
+	public void removeWallObject(final int x, final int z, final int y) {
+		final Tile tile = this.groundArray[z][x][y];
 		if (tile != null) {
 			tile.wall = null;
 		}
 	}
 
-	public void render(int cameraPosX, int cameraPosY, int curveX, int cameraPosZ, int plane, int curveY) {
+	public void render(int cameraPosX, int cameraPosY, final int curveX, final int cameraPosZ, final int plane, final int curveY) {
 		if (cameraPosX < 0) {
 			cameraPosX = 0;
 		} else if (cameraPosX >= this.mapSizeX * 128) {
@@ -1416,10 +1416,10 @@ public final class WorldController {
 		this.processCulling();
 		anInt446 = 0;
 		for (int z = this.currentPositionZ; z < this.mapSizeZ; z++) {
-			Tile tiles[][] = this.groundArray[z];
+			final Tile[][] tiles = this.groundArray[z];
 			for (int x = currentPositionX; x < mapBoundsX; x++) {
 				for (int y = currentPositionY; y < mapBoundsY; y++) {
-					Tile tile = tiles[x][y];
+					final Tile tile = tiles[x][y];
 					if (tile != null) {
 						if (tile.logicHeight > plane
 								|| !TILE_VISIBILITY_MAP[(x - cameraPositionTileX) + 25][(y - cameraPositionTileY) + 25]
@@ -1441,23 +1441,23 @@ public final class WorldController {
 		}
 
 		for (int z = this.currentPositionZ; z < this.mapSizeZ; z++) {
-			Tile tiles[][] = this.groundArray[z];
+			final Tile[][] tiles = this.groundArray[z];
 			for (int offsetX = -25; offsetX <= 0; offsetX++) {
-				int x = cameraPositionTileX + offsetX;
-				int x2 = cameraPositionTileX - offsetX;
+				final int x = cameraPositionTileX + offsetX;
+				final int x2 = cameraPositionTileX - offsetX;
 				if (x >= currentPositionX || x2 < mapBoundsX) {
 					for (int offsetY = -25; offsetY <= 0; offsetY++) {
-						int y = cameraPositionTileY + offsetY;
-						int y2 = cameraPositionTileY - offsetY;
+						final int y = cameraPositionTileY + offsetY;
+						final int y2 = cameraPositionTileY - offsetY;
 						if (x >= currentPositionX) {
 							if (y >= currentPositionY) {
-								Tile tile = tiles[x][y];
+								final Tile tile = tiles[x][y];
 								if (tile != null && tile.aBoolean1322) {
 									this.renderTile(tile, true);
 								}
 							}
 							if (y2 < mapBoundsY) {
-								Tile tile = tiles[x][y2];
+								final Tile tile = tiles[x][y2];
 								if (tile != null && tile.aBoolean1322) {
 									this.renderTile(tile, true);
 								}
@@ -1465,13 +1465,13 @@ public final class WorldController {
 						}
 						if (x2 < mapBoundsX) {
 							if (y >= currentPositionY) {
-								Tile tile = tiles[x2][y];
+								final Tile tile = tiles[x2][y];
 								if (tile != null && tile.aBoolean1322) {
 									this.renderTile(tile, true);
 								}
 							}
 							if (y2 < mapBoundsY) {
-								Tile tile = tiles[x2][y2];
+								final Tile tile = tiles[x2][y2];
 								if (tile != null && tile.aBoolean1322) {
 									this.renderTile(tile, true);
 								}
@@ -1489,23 +1489,23 @@ public final class WorldController {
 		}
 
 		for (int z = this.currentPositionZ; z < this.mapSizeZ; z++) {
-			Tile tiles[][] = this.groundArray[z];
+			final Tile[][] tiles = this.groundArray[z];
 			for (int offsetX = -25; offsetX <= 0; offsetX++) {
-				int x = cameraPositionTileX + offsetX;
-				int x2 = cameraPositionTileX - offsetX;
+				final int x = cameraPositionTileX + offsetX;
+				final int x2 = cameraPositionTileX - offsetX;
 				if (x >= currentPositionX || x2 < mapBoundsX) {
 					for (int offsetY = -25; offsetY <= 0; offsetY++) {
-						int y = cameraPositionTileY + offsetY;
-						int y2 = cameraPositionTileY - offsetY;
+						final int y = cameraPositionTileY + offsetY;
+						final int y2 = cameraPositionTileY - offsetY;
 						if (x >= currentPositionX) {
 							if (y >= currentPositionY) {
-								Tile tile = tiles[x][y];
+								final Tile tile = tiles[x][y];
 								if (tile != null && tile.aBoolean1322) {
 									this.renderTile(tile, false);
 								}
 							}
 							if (y2 < mapBoundsY) {
-								Tile tile = tiles[x][y2];
+								final Tile tile = tiles[x][y2];
 								if (tile != null && tile.aBoolean1322) {
 									this.renderTile(tile, false);
 								}
@@ -1513,13 +1513,13 @@ public final class WorldController {
 						}
 						if (x2 < mapBoundsX) {
 							if (y >= currentPositionY) {
-								Tile tile = tiles[x2][y];
+								final Tile tile = tiles[x2][y];
 								if (tile != null && tile.aBoolean1322) {
 									this.renderTile(tile, false);
 								}
 							}
 							if (y2 < mapBoundsY) {
-								Tile tile = tiles[x2][y2];
+								final Tile tile = tiles[x2][y2];
 								if (tile != null && tile.aBoolean1322) {
 									this.renderTile(tile, false);
 								}
@@ -1539,8 +1539,8 @@ public final class WorldController {
 		clicked = false;
 	}
 
-	void renderPlainTile(PlainTile plainTile, int tileX, int tileY, int tileZ, int sinX, int cosineX, int sinY,
-			int cosineY) {
+	void renderPlainTile(final PlainTile plainTile, final int tileX, final int tileY, final int tileZ, final int sinX, final int cosineX, final int sinY,
+						 final int cosineY) {
 		int xC;
 		int xA = xC = (tileX << 7) - cameraPosX;
 		int yB;
@@ -1589,14 +1589,14 @@ public final class WorldController {
 		if (yC < 50) {
 			return;
 		}
-		int screenXA = Rasterizer.centreX + (xA << 9) / yA;
-		int screenYA = Rasterizer.centreY + (zA << 9) / yA;
-		int screenXB = Rasterizer.centreX + (xB << 9) / yB;
-		int screenYB = Rasterizer.centreY + (zB << 9) / yB;
-		int screenXD = Rasterizer.centreX + (xD << 9) / yD;
-		int screenYD = Rasterizer.centreY + (zC << 9) / yD;
-		int screenXC = Rasterizer.centreX + (xC << 9) / yC;
-		int screenYC = Rasterizer.centreY + (zD << 9) / yC;
+		final int screenXA = Rasterizer.centreX + (xA << 9) / yA;
+		final int screenYA = Rasterizer.centreY + (zA << 9) / yA;
+		final int screenXB = Rasterizer.centreX + (xB << 9) / yB;
+		final int screenYB = Rasterizer.centreY + (zB << 9) / yB;
+		final int screenXD = Rasterizer.centreX + (xD << 9) / yD;
+		final int screenYD = Rasterizer.centreY + (zC << 9) / yD;
+		final int screenXC = Rasterizer.centreX + (xC << 9) / yC;
+		final int screenYC = Rasterizer.centreY + (zD << 9) / yC;
 		Rasterizer.alpha = 0;
 		if ((screenXD - screenXC) * (screenYB - screenYC) - (screenYD - screenYC) * (screenXB - screenXC) > 0) {
 			Rasterizer.restrictEdges = screenXD < 0 || screenXC < 0 || screenXB < 0 || screenXD > DrawingArea.centerX
@@ -1622,7 +1622,7 @@ public final class WorldController {
 							plainTile.texture);
 				}
 			} else {
-				int rgb = textureRGB[plainTile.texture];
+				final int rgb = textureRGB[plainTile.texture];
 				Rasterizer.drawShadedTriangle(screenYD, screenYC, screenYB, screenXD, screenXC, screenXB,
 						this.mixColours(rgb, plainTile.colourD), this.mixColours(rgb, plainTile.colourC),
 						this.mixColours(rgb, plainTile.colourB));
@@ -1648,7 +1648,7 @@ public final class WorldController {
 							plainTile.texture);
 					return;
 				}
-				int rgb = textureRGB[plainTile.texture];
+				final int rgb = textureRGB[plainTile.texture];
 				Rasterizer.drawShadedTriangle(screenYA, screenYB, screenYC, screenXA, screenXB, screenXC,
 						this.mixColours(rgb, plainTile.colourA), this.mixColours(rgb, plainTile.colourB),
 						this.mixColours(rgb, plainTile.colourC));
@@ -1656,8 +1656,8 @@ public final class WorldController {
 		}
 	}
 
-	private void renderShapedTile(ShapedTile shapedTile, int tileX, int tileY, int sineX, int cosineX, int sineY,
-			int cosineY) {
+	private void renderShapedTile(final ShapedTile shapedTile, final int tileX, final int tileY, final int sineX, final int cosineX, final int sineY,
+								  final int cosineY) {
 		int triangleCount = shapedTile.originalVertexX.length;
 		for (int triangle = 0; triangle < triangleCount; triangle++) {
 			int viewspaceX = shapedTile.originalVertexX[triangle] - cameraPosX;
@@ -1684,15 +1684,15 @@ public final class WorldController {
 		Rasterizer.alpha = 0;
 		triangleCount = shapedTile.triangleA.length;
 		for (int triangle = 0; triangle < triangleCount; triangle++) {
-			int a = shapedTile.triangleA[triangle];
-			int b = shapedTile.triangleB[triangle];
-			int c = shapedTile.triangleC[triangle];
-			int screenXA = ShapedTile.screenX[a];
-			int screenXB = ShapedTile.screenX[b];
-			int screenXC = ShapedTile.screenX[c];
-			int screenYA = ShapedTile.screenY[a];
-			int screenYB = ShapedTile.screenY[b];
-			int screenYC = ShapedTile.screenY[c];
+			final int a = shapedTile.triangleA[triangle];
+			final int b = shapedTile.triangleB[triangle];
+			final int c = shapedTile.triangleC[triangle];
+			final int screenXA = ShapedTile.screenX[a];
+			final int screenXB = ShapedTile.screenX[b];
+			final int screenXC = ShapedTile.screenX[c];
+			final int screenYA = ShapedTile.screenY[a];
+			final int screenYB = ShapedTile.screenY[b];
+			final int screenYC = ShapedTile.screenY[c];
 			if ((screenXA - screenXB) * (screenYC - screenYB) - (screenYA - screenYB) * (screenXC - screenXB) > 0) {
 				Rasterizer.restrictEdges = screenXA < 0 || screenXB < 0 || screenXC < 0
 						|| screenXA > DrawingArea.centerX || screenXB > DrawingArea.centerX
@@ -1725,7 +1725,7 @@ public final class WorldController {
 								ShapedTile.viewspaceZ[c], shapedTile.triangleTexture[triangle]);
 					}
 				} else {
-					int rgb = textureRGB[shapedTile.triangleTexture[triangle]];
+					final int rgb = textureRGB[shapedTile.triangleTexture[triangle]];
 					Rasterizer.drawShadedTriangle(screenYA, screenYB, screenYC, screenXA, screenXB, screenXC,
 							this.mixColours(rgb, shapedTile.triangleHSLA[triangle]),
 							this.mixColours(rgb, shapedTile.triangleHSLB[triangle]),
@@ -1736,7 +1736,7 @@ public final class WorldController {
 
 	}
 
-	private void renderTile(Tile _tile, boolean flag) {
+	private void renderTile(final Tile _tile, boolean flag) {
 		tileList.pushBack(_tile);
 		do {
 			Tile groundTile;
@@ -1746,42 +1746,42 @@ public final class WorldController {
 					return;
 				}
 			} while (!groundTile.aBoolean1323);
-			int x = groundTile.x;
-			int y = groundTile.y;
-			int z = groundTile.z;
-			int l = groundTile.anInt1310;
-			Tile tiles[][] = this.groundArray[z];
+			final int x = groundTile.x;
+			final int y = groundTile.y;
+			final int z = groundTile.z;
+			final int l = groundTile.anInt1310;
+			final Tile[][] tiles = this.groundArray[z];
 			if (groundTile.aBoolean1322) {
 				if (flag) {
 					if (z > 0) {
-						Tile tile = this.groundArray[z - 1][x][y];
+						final Tile tile = this.groundArray[z - 1][x][y];
 						if (tile != null && tile.aBoolean1323) {
 							continue;
 						}
 					}
 					if (x <= cameraPositionTileX && x > currentPositionX) {
-						Tile tile = tiles[x - 1][y];
+						final Tile tile = tiles[x - 1][y];
 						if (tile != null && tile.aBoolean1323
 								&& (tile.aBoolean1322 || (groundTile.interactiveObjectsSizeOR & 1) == 0)) {
 							continue;
 						}
 					}
 					if (x >= cameraPositionTileX && x < mapBoundsX - 1) {
-						Tile tile = tiles[x + 1][y];
+						final Tile tile = tiles[x + 1][y];
 						if (tile != null && tile.aBoolean1323
 								&& (tile.aBoolean1322 || (groundTile.interactiveObjectsSizeOR & 4) == 0)) {
 							continue;
 						}
 					}
 					if (y <= cameraPositionTileY && y > currentPositionY) {
-						Tile tile = tiles[x][y - 1];
+						final Tile tile = tiles[x][y - 1];
 						if (tile != null && tile.aBoolean1323
 								&& (tile.aBoolean1322 || (groundTile.interactiveObjectsSizeOR & 8) == 0)) {
 							continue;
 						}
 					}
 					if (y >= cameraPositionTileY && y < mapBoundsY - 1) {
-						Tile tile = tiles[x][y + 1];
+						final Tile tile = tiles[x][y + 1];
 						if (tile != null && tile.aBoolean1323
 								&& (tile.aBoolean1322 || (groundTile.interactiveObjectsSizeOR & 2) == 0)) {
 							continue;
@@ -1792,7 +1792,7 @@ public final class WorldController {
 				}
 				groundTile.aBoolean1322 = false;
 				if (groundTile.tileBelow != null) {
-					Tile tile = groundTile.tileBelow;
+					final Tile tile = groundTile.tileBelow;
 					if (tile.plainTile != null) {
 						if (!this.method320(x, y, 0)) {
 							this.renderPlainTile(tile.plainTile, x, y, 0, curveSineX, curveCosineX, curveSineY,
@@ -1801,14 +1801,14 @@ public final class WorldController {
 					} else if (tile.shapedTile != null && !this.method320(x, y, 0)) {
 						this.renderShapedTile(tile.shapedTile, x, y, curveSineX, curveCosineX, curveSineY, curveCosineY);
 					}
-					Wall wallObject = tile.wall;
+					final Wall wallObject = tile.wall;
 					if (wallObject != null) {
 						wallObject.primary.renderAtPoint(0, curveSineY, curveCosineY, curveSineX, curveCosineX,
 								wallObject.x - cameraPosX, wallObject.z - cameraPosZ, wallObject.y - cameraPosY,
 								wallObject.uid);
 					}
 					for (int e = 0; e < tile.entityCount; e++) {
-						InteractiveObject entity = tile.interactiveObjects[e];
+						final InteractiveObject entity = tile.interactiveObjects[e];
 						if (entity != null) {
 							entity.renderable.renderAtPoint(entity.rotation, curveSineY, curveCosineY, curveSineX,
 									curveCosineX, entity.worldX - cameraPosX, entity.worldZ - cameraPosZ,
@@ -1830,8 +1830,8 @@ public final class WorldController {
 				}
 				int j1 = 0;
 				int j2 = 0;
-				Wall wallObject = groundTile.wall;
-				WallDecoration wallDecoration = groundTile.wallDecoration;
+				final Wall wallObject = groundTile.wall;
+				final WallDecoration wallDecoration = groundTile.wallDecoration;
 				if (wallObject != null || wallDecoration != null) {
 					if (cameraPositionTileX == x) {
 						j1++;
@@ -1885,44 +1885,44 @@ public final class WorldController {
 								curveSineX, curveCosineX, wallDecoration.x - cameraPosX, wallDecoration.z - cameraPosZ,
 								wallDecoration.y - cameraPosY, wallDecoration.uid);
 					} else if ((wallDecoration.configBits & 0x300) != 0) {
-						int j4 = wallDecoration.x - cameraPosX;
-						int l5 = wallDecoration.z - cameraPosZ;
-						int k6 = wallDecoration.y - cameraPosY;
-						int i8 = wallDecoration.face;
-						int k9;
+						final int j4 = wallDecoration.x - cameraPosX;
+						final int l5 = wallDecoration.z - cameraPosZ;
+						final int k6 = wallDecoration.y - cameraPosY;
+						final int i8 = wallDecoration.face;
+						final int k9;
 						if (i8 == 1 || i8 == 2) {
 							k9 = -j4;
 						} else {
 							k9 = j4;
 						}
-						int k10;
+						final int k10;
 						if (i8 == 2 || i8 == 3) {
 							k10 = -k6;
 						} else {
 							k10 = k6;
 						}
 						if ((wallDecoration.configBits & 0x100) != 0 && k10 < k9) {
-							int i11 = j4 + faceOffsetX2[i8];
-							int k11 = k6 + faceOffsetY2[i8];
+							final int i11 = j4 + faceOffsetX2[i8];
+							final int k11 = k6 + faceOffsetY2[i8];
 							wallDecoration.renderable.renderAtPoint(i8 * 512 + 256, curveSineY, curveCosineY,
 									curveSineX, curveCosineX, i11, l5, k11, wallDecoration.uid);
 						}
 						if ((wallDecoration.configBits & 0x200) != 0 && k10 > k9) {
-							int j11 = j4 + faceOffsetX3[i8];
-							int l11 = k6 + faceOffsetY3[i8];
+							final int j11 = j4 + faceOffsetX3[i8];
+							final int l11 = k6 + faceOffsetY3[i8];
 							wallDecoration.renderable.renderAtPoint(i8 * 512 + 1280 & 0x7ff, curveSineY, curveCosineY,
 									curveSineX, curveCosineX, j11, l5, l11, wallDecoration.uid);
 						}
 					}
 				}
 				if (flag1) {
-					GroundDecoration groundDecoration = groundTile.groundDecoration;
+					final GroundDecoration groundDecoration = groundTile.groundDecoration;
 					if (groundDecoration != null) {
 						groundDecoration.renderable.renderAtPoint(0, curveSineY, curveCosineY, curveSineX, curveCosineX,
 								groundDecoration.x - cameraPosX, groundDecoration.z - cameraPosZ,
 								groundDecoration.y - cameraPosY, groundDecoration.uid);
 					}
-					GroundItemTile groundItemTile = groundTile.groundItemTile;
+					final GroundItemTile groundItemTile = groundTile.groundItemTile;
 					if (groundItemTile != null && groundItemTile.anInt52 == 0) {
 						if (groundItemTile.secondGroundItem != null) {
 							groundItemTile.secondGroundItem.renderAtPoint(0, curveSineY, curveCosineY, curveSineX,
@@ -1941,28 +1941,28 @@ public final class WorldController {
 						}
 					}
 				}
-				int interactiveObjectsSizeOR = groundTile.interactiveObjectsSizeOR;
+				final int interactiveObjectsSizeOR = groundTile.interactiveObjectsSizeOR;
 				if (interactiveObjectsSizeOR != 0) {
 					if (x < cameraPositionTileX && (interactiveObjectsSizeOR & 4) != 0) {
-						Tile tile = tiles[x + 1][y];
+						final Tile tile = tiles[x + 1][y];
 						if (tile != null && tile.aBoolean1323) {
 							tileList.pushBack(tile);
 						}
 					}
 					if (y < cameraPositionTileY && (interactiveObjectsSizeOR & 2) != 0) {
-						Tile tile = tiles[x][y + 1];
+						final Tile tile = tiles[x][y + 1];
 						if (tile != null && tile.aBoolean1323) {
 							tileList.pushBack(tile);
 						}
 					}
 					if (x > cameraPositionTileX && (interactiveObjectsSizeOR & 1) != 0) {
-						Tile tile = tiles[x - 1][y];
+						final Tile tile = tiles[x - 1][y];
 						if (tile != null && tile.aBoolean1323) {
 							tileList.pushBack(tile);
 						}
 					}
 					if (y > cameraPositionTileY && (interactiveObjectsSizeOR & 8) != 0) {
-						Tile tile = tiles[x][y - 1];
+						final Tile tile = tiles[x][y - 1];
 						if (tile != null && tile.aBoolean1323) {
 							tileList.pushBack(tile);
 						}
@@ -1981,7 +1981,7 @@ public final class WorldController {
 				}
 
 				if (flag2) {
-					Wall wallObject = groundTile.wall;
+					final Wall wallObject = groundTile.wall;
 					if (!this.method321(x, y, l, wallObject.orientation)) {
 						wallObject.primary.renderAtPoint(0, curveSineY, curveCosineY, curveSineX, curveCosineX,
 								wallObject.x - cameraPosX, wallObject.z - cameraPosZ, wallObject.y - cameraPosY,
@@ -1992,17 +1992,17 @@ public final class WorldController {
 			}
 			if (groundTile.aBoolean1324) {
 				try {
-					int entityCount = groundTile.entityCount;
+					final int entityCount = groundTile.entityCount;
 					groundTile.aBoolean1324 = false;
 					int l1 = 0;
 					label0: for (int e = 0; e < entityCount; e++) {
-						InteractiveObject entity = groundTile.interactiveObjects[e];
+						final InteractiveObject entity = groundTile.interactiveObjects[e];
 						if (entity.anInt528 == anInt448) {
 							continue;
 						}
 						for (int _x = entity.tileLeft; _x <= entity.tileRight; _x++) {
 							for (int _y = entity.tileTop; _y <= entity.tileBottom; _y++) {
-								Tile tile = tiles[_x][_y];
+								final Tile tile = tiles[_x][_y];
 								if (tile.aBoolean1322) {
 									groundTile.aBoolean1324 = true;
 								} else {
@@ -2034,12 +2034,12 @@ public final class WorldController {
 
 						interactiveObjects[l1++] = entity;
 						int i5 = cameraPositionTileX - entity.tileLeft;
-						int i6 = entity.tileRight - cameraPositionTileX;
+						final int i6 = entity.tileRight - cameraPositionTileX;
 						if (i6 > i5) {
 							i5 = i6;
 						}
-						int i7 = cameraPositionTileY - entity.tileTop;
-						int j8 = entity.tileBottom - cameraPositionTileY;
+						final int i7 = cameraPositionTileY - entity.tileTop;
+						final int j8 = entity.tileBottom - cameraPositionTileY;
 						if (j8 > i7) {
 							entity.anInt527 = i5 + j8;
 						} else {
@@ -2051,16 +2051,16 @@ public final class WorldController {
 						int i3 = -50;
 						int l3 = -1;
 						for (int j5 = 0; j5 < l1; j5++) {
-							InteractiveObject entity = interactiveObjects[j5];
+							final InteractiveObject entity = interactiveObjects[j5];
 							if (entity.anInt528 != anInt448) {
 								if (entity.anInt527 > i3) {
 									i3 = entity.anInt527;
 									l3 = j5;
 								} else if (entity.anInt527 == i3) {
-									int j7 = entity.worldX - cameraPosX;
-									int k8 = entity.worldY - cameraPosY;
-									int l9 = interactiveObjects[l3].worldX - cameraPosX;
-									int l10 = interactiveObjects[l3].worldY - cameraPosY;
+									final int j7 = entity.worldX - cameraPosX;
+									final int k8 = entity.worldY - cameraPosY;
+									final int l9 = interactiveObjects[l3].worldX - cameraPosX;
+									final int l10 = interactiveObjects[l3].worldY - cameraPosY;
 									if (j7 * j7 + k8 * k8 > l9 * l9 + l10 * l10) {
 										l3 = j5;
 									}
@@ -2071,7 +2071,7 @@ public final class WorldController {
 						if (l3 == -1) {
 							break;
 						}
-						InteractiveObject entity = interactiveObjects[l3];
+						final InteractiveObject entity = interactiveObjects[l3];
 						entity.anInt528 = anInt448;
 
 						if (!this.method323(entity.tileLeft, entity.tileRight, entity.tileTop, entity.tileBottom, l,
@@ -2083,7 +2083,7 @@ public final class WorldController {
 
 						for (int _x = entity.tileLeft; _x <= entity.tileRight; _x++) {
 							for (int _y = entity.tileTop; _y <= entity.tileBottom; _y++) {
-								Tile tile = tiles[_x][_y];
+								final Tile tile = tiles[_x][_y];
 								if (tile.anInt1325 != 0) {
 									tileList.pushBack(tile);
 								} else if ((_x != x || _y != y) && tile.aBoolean1323) {
@@ -2097,7 +2097,7 @@ public final class WorldController {
 					if (groundTile.aBoolean1324) {
 						continue;
 					}
-				} catch (Exception _ex) {
+				} catch (final Exception _ex) {
 					groundTile.aBoolean1324 = false;
 				}
 			}
@@ -2105,32 +2105,32 @@ public final class WorldController {
 				continue;
 			}
 			if (x <= cameraPositionTileX && x > currentPositionX) {
-				Tile tile = tiles[x - 1][y];
+				final Tile tile = tiles[x - 1][y];
 				if (tile != null && tile.aBoolean1323) {
 					continue;
 				}
 			}
 			if (x >= cameraPositionTileX && x < mapBoundsX - 1) {
-				Tile tile = tiles[x + 1][y];
+				final Tile tile = tiles[x + 1][y];
 				if (tile != null && tile.aBoolean1323) {
 					continue;
 				}
 			}
 			if (y <= cameraPositionTileY && y > currentPositionY) {
-				Tile tile = tiles[x][y - 1];
+				final Tile tile = tiles[x][y - 1];
 				if (tile != null && tile.aBoolean1323) {
 					continue;
 				}
 			}
 			if (y >= cameraPositionTileY && y < mapBoundsY - 1) {
-				Tile tile = tiles[x][y + 1];
+				final Tile tile = tiles[x][y + 1];
 				if (tile != null && tile.aBoolean1323) {
 					continue;
 				}
 			}
 			groundTile.aBoolean1323 = false;
 			anInt446--;
-			GroundItemTile groundItemTile = groundTile.groundItemTile;
+			final GroundItemTile groundItemTile = groundTile.groundItemTile;
 			if (groundItemTile != null && groundItemTile.anInt52 != 0) {
 				if (groundItemTile.secondGroundItem != null) {
 					groundItemTile.secondGroundItem.renderAtPoint(0, curveSineY, curveCosineY, curveSineX, curveCosineX,
@@ -2149,44 +2149,44 @@ public final class WorldController {
 				}
 			}
 			if (groundTile.anInt1328 != 0) {
-				WallDecoration wallDecoration = groundTile.wallDecoration;
+				final WallDecoration wallDecoration = groundTile.wallDecoration;
 				if (wallDecoration != null && !this.method322(l, x, y, wallDecoration.renderable.modelHeight)) {
 					if ((wallDecoration.configBits & groundTile.anInt1328) != 0) {
 						wallDecoration.renderable.renderAtPoint(wallDecoration.face, curveSineY, curveCosineY,
 								curveSineX, curveCosineX, wallDecoration.x - cameraPosX, wallDecoration.z - cameraPosZ,
 								wallDecoration.y - cameraPosY, wallDecoration.uid);
 					} else if ((wallDecoration.configBits & 0x300) != 0) {
-						int l2 = wallDecoration.x - cameraPosX;
-						int j3 = wallDecoration.z - cameraPosZ;
-						int i4 = wallDecoration.y - cameraPosY;
-						int face = wallDecoration.face;
-						int j6;
+						final int l2 = wallDecoration.x - cameraPosX;
+						final int j3 = wallDecoration.z - cameraPosZ;
+						final int i4 = wallDecoration.y - cameraPosY;
+						final int face = wallDecoration.face;
+						final int j6;
 						if (face == 1 || face == 2) {
 							j6 = -l2;
 						} else {
 							j6 = l2;
 						}
-						int l7;
+						final int l7;
 						if (face == 2 || face == 3) {
 							l7 = -i4;
 						} else {
 							l7 = i4;
 						}
 						if ((wallDecoration.configBits & 0x100) != 0 && l7 >= j6) {
-							int i9 = l2 + faceOffsetX2[face];
-							int i10 = i4 + faceOffsetY2[face];
+							final int i9 = l2 + faceOffsetX2[face];
+							final int i10 = i4 + faceOffsetY2[face];
 							wallDecoration.renderable.renderAtPoint(face * 512 + 256, curveSineY, curveCosineY,
 									curveSineX, curveCosineX, i9, j3, i10, wallDecoration.uid);
 						}
 						if ((wallDecoration.configBits & 0x200) != 0 && l7 <= j6) {
-							int j9 = l2 + faceOffsetX3[face];
-							int j10 = i4 + faceOffsetY3[face];
+							final int j9 = l2 + faceOffsetX3[face];
+							final int j10 = i4 + faceOffsetY3[face];
 							wallDecoration.renderable.renderAtPoint(face * 512 + 1280 & 0x7ff, curveSineY, curveCosineY,
 									curveSineX, curveCosineX, j9, j3, j10, wallDecoration.uid);
 						}
 					}
 				}
-				Wall wallObject = groundTile.wall;
+				final Wall wallObject = groundTile.wall;
 				if (wallObject != null) {
 					if ((wallObject.orientation2 & groundTile.anInt1328) != 0
 							&& !this.method321(x, y, l, wallObject.orientation2)) {
@@ -2203,31 +2203,31 @@ public final class WorldController {
 				}
 			}
 			if (z < this.mapSizeZ - 1) {
-				Tile tile = this.groundArray[z + 1][x][y];
+				final Tile tile = this.groundArray[z + 1][x][y];
 				if (tile != null && tile.aBoolean1323) {
 					tileList.pushBack(tile);
 				}
 			}
 			if (x < cameraPositionTileX) {
-				Tile tile = tiles[x + 1][y];
+				final Tile tile = tiles[x + 1][y];
 				if (tile != null && tile.aBoolean1323) {
 					tileList.pushBack(tile);
 				}
 			}
 			if (y < cameraPositionTileY) {
-				Tile tile = tiles[x][y + 1];
+				final Tile tile = tiles[x][y + 1];
 				if (tile != null && tile.aBoolean1323) {
 					tileList.pushBack(tile);
 				}
 			}
 			if (x > cameraPositionTileX) {
-				Tile tile = tiles[x - 1][y];
+				final Tile tile = tiles[x - 1][y];
 				if (tile != null && tile.aBoolean1323) {
 					tileList.pushBack(tile);
 				}
 			}
 			if (y > cameraPositionTileY) {
-				Tile tile = tiles[x][y - 1];
+				final Tile tile = tiles[x][y - 1];
 				if (tile != null && tile.aBoolean1323) {
 					tileList.pushBack(tile);
 				}
@@ -2235,11 +2235,11 @@ public final class WorldController {
 		} while (true);
 	}
 
-	public void renderTile(int plane, int x, int y, int clippingPath, int clippingPathRotation, int textureId,
-			int vertexHeightSW, int vertexHeightSE, int vertexHeightNE, int vertexHeightNW, int k2, int l2, int i3,
-			int j3, int k3, int l3, int i4, int j4, int k4, int l4) {
+	public void renderTile(final int plane, final int x, final int y, final int clippingPath, final int clippingPathRotation, final int textureId,
+						   final int vertexHeightSW, final int vertexHeightSE, final int vertexHeightNE, final int vertexHeightNW, final int k2, final int l2, final int i3,
+						   final int j3, final int k3, final int l3, final int i4, final int j4, final int k4, final int l4) {
 		if (clippingPath == 0) {
-			PlainTile tile = new PlainTile(k2, l2, j3, i3, k4, -1, false);
+			final PlainTile tile = new PlainTile(k2, l2, j3, i3, k4, -1, false);
 			for (int _z = plane; _z >= 0; _z--) {
 				if (this.groundArray[_z][x][y] == null) {
 					this.groundArray[_z][x][y] = new Tile(_z, x, y);
@@ -2250,7 +2250,7 @@ public final class WorldController {
 			return;
 		}
 		if (clippingPath == 1) {
-			PlainTile tile = new PlainTile(k3, l3, j4, i4, l4, textureId, vertexHeightSW == vertexHeightSE
+			final PlainTile tile = new PlainTile(k3, l3, j4, i4, l4, textureId, vertexHeightSW == vertexHeightSE
 					&& vertexHeightSW == vertexHeightNE && vertexHeightSW == vertexHeightNW);
 			for (int _z = plane; _z >= 0; _z--) {
 				if (this.groundArray[_z][x][y] == null) {
@@ -2261,7 +2261,7 @@ public final class WorldController {
 			this.groundArray[plane][x][y].plainTile = tile;
 			return;
 		}
-		ShapedTile tile = new ShapedTile(x, vertexHeightSW, vertexHeightSE, vertexHeightNW, vertexHeightNE, y,
+		final ShapedTile tile = new ShapedTile(x, vertexHeightSW, vertexHeightSE, vertexHeightNW, vertexHeightNE, y,
 				clippingPathRotation, textureId, clippingPath, k2, k3, l2, l3, j3, j4, i3, i4, l4, k4);
 		for (int _z = plane; _z >= 0; _z--) {
 			if (this.groundArray[_z][x][y] == null) {
@@ -2272,7 +2272,7 @@ public final class WorldController {
 		this.groundArray[plane][x][y].shapedTile = tile;
 	}
 
-	public void request2DTrace(int x, int y) {
+	public void request2DTrace(final int x, final int y) {
 		clicked = true;
 		clickX = x;
 		clickY = y;
@@ -2280,7 +2280,7 @@ public final class WorldController {
 		clickedTileY = -1;
 	}
 
-	public void setHeightLevel(int z) {
+	public void setHeightLevel(final int z) {
 		this.currentPositionZ = z;
 		for (int x = 0; x < this.mapSizeX; x++) {
 			for (int y = 0; y < this.mapSizeY; y++) {
@@ -2293,24 +2293,24 @@ public final class WorldController {
 
 	}
 
-	public void setTileLogicHeight(int x, int y, int z, int logicHeight) {
-		Tile tile = this.groundArray[z][x][y];
+	public void setTileLogicHeight(final int x, final int y, final int z, final int logicHeight) {
+		final Tile tile = this.groundArray[z][x][y];
 		if (tile != null) {
 			this.groundArray[z][x][y].logicHeight = logicHeight;
 		}
 	}
 
-	public void shadeModels(int y, int x, int z) {
-		int lightness = 64;// was parameter
-		int magnitudeMultiplier = 768;// was parameter
-		int distanceFromOrigin = (int) Math.sqrt(x * x + y * y + z * z);
-		int magnitude = magnitudeMultiplier * distanceFromOrigin >> 8;
+	public void shadeModels(final int y, final int x, final int z) {
+		final int lightness = 64;// was parameter
+		final int magnitudeMultiplier = 768;// was parameter
+		final int distanceFromOrigin = (int) Math.sqrt(x * x + y * y + z * z);
+		final int magnitude = magnitudeMultiplier * distanceFromOrigin >> 8;
 		for (int _z = 0; _z < this.mapSizeZ; _z++) {
 			for (int _x = 0; _x < this.mapSizeX; _x++) {
 				for (int _y = 0; _y < this.mapSizeY; _y++) {
-					Tile tile = this.groundArray[_z][_x][_y];
+					final Tile tile = this.groundArray[_z][_x][_y];
 					if (tile != null) {
-						Wall wallObject = tile.wall;
+						final Wall wallObject = tile.wall;
 						if (wallObject != null && wallObject.primary != null
 								&& wallObject.primary.vertexNormals != null) {
 							this.method307(_z, 1, 1, _x, _y, (Model) wallObject.primary);
@@ -2323,7 +2323,7 @@ public final class WorldController {
 							((Model) wallObject.primary).handleShading(lightness, magnitude, x, y, z);
 						}
 						for (int e = 0; e < tile.entityCount; e++) {
-							InteractiveObject entity = tile.interactiveObjects[e];
+							final InteractiveObject entity = tile.interactiveObjects[e];
 							if (entity != null && entity.renderable != null
 									&& entity.renderable.vertexNormals != null) {
 								this.method307(_z, (entity.tileRight - entity.tileLeft) + 1,
@@ -2332,7 +2332,7 @@ public final class WorldController {
 							}
 						}
 
-						GroundDecoration groundDecoration = tile.groundDecoration;
+						final GroundDecoration groundDecoration = tile.groundDecoration;
 						if (groundDecoration != null && groundDecoration.renderable.vertexNormals != null) {
 							this.method306((Model) groundDecoration.renderable, _x, _y, _z);
 							((Model) groundDecoration.renderable).handleShading(lightness, magnitude, x, y, z);

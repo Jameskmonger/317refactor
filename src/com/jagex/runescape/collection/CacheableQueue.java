@@ -21,7 +21,7 @@ public final class CacheableQueue {
 		return count;
 	}
 
-	public void push(Cacheable item) {
+	public void push(final Cacheable item) {
 		if (item.previousCacheable != null) {
 			item.unlinkCacheable();
 		}
@@ -33,7 +33,7 @@ public final class CacheableQueue {
 	}
 
 	public Cacheable pop() {
-		Cacheable next = this.head.nextCacheable;
+		final Cacheable next = this.head.nextCacheable;
 
 		if (next == this.head) {
 			return null;
@@ -44,7 +44,7 @@ public final class CacheableQueue {
 	}
 
 	public Cacheable peek() {
-		Cacheable next = this.head.nextCacheable;
+		final Cacheable next = this.head.nextCacheable;
 
 		if (next == this.head) {
             this.current = null;
@@ -56,7 +56,7 @@ public final class CacheableQueue {
 	}
 
 	public Cacheable getNext() {
-		Cacheable current = this.current;
+		final Cacheable current = this.current;
 		
 		if (current == this.head) {
 			this.current = null;

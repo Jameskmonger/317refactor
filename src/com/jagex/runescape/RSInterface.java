@@ -5,8 +5,8 @@ import com.jagex.runescape.definition.*;
 
 public final class RSInterface {
 
-	private static Sprite getImage(int spriteId, Archive streamLoader, String spriteName) {
-		long spriteHash = (TextClass.spriteNameToHash(spriteName) << 8) + spriteId;
+	private static Sprite getImage(final int spriteId, final Archive streamLoader, final String spriteName) {
+		final long spriteHash = (TextClass.spriteNameToHash(spriteName) << 8) + spriteId;
 		Sprite sprite = (Sprite) spriteCache.get(spriteHash);
 		if (sprite != null) {
             return sprite;
@@ -14,26 +14,26 @@ public final class RSInterface {
 		try {
 			sprite = new Sprite(streamLoader, spriteName, spriteId);
 			spriteCache.put(sprite, spriteHash);
-		} catch (Exception _ex) {
+		} catch (final Exception _ex) {
 			return null;
 		}
 		return sprite;
 	}
 
-	public static void setModel(Model model) {
-		int modelId = 0;// was parameter
-		int modelType = 5;// was parameter
+	public static void setModel(final Model model) {
+		final int modelId = 0;// was parameter
+		final int modelType = 5;// was parameter
 		modelCache.clear();
 		if (model != null && modelType != 4) {
             modelCache.put(model, (modelType << 16) + modelId);
         }
 	}
 
-	public static void unpack(Archive streamLoader, GameFont fonts[], Archive mediaArchive) {
+	public static void unpack(final Archive streamLoader, final GameFont[] fonts, final Archive mediaArchive) {
 		spriteCache = new Cache(50000);
-		Buffer stream = new Buffer(streamLoader.decompressFile("data"));
+		final Buffer stream = new Buffer(streamLoader.decompressFile("data"));
 		int parentId = -1;
-		int interfaceCount = stream.getUnsignedLEShort();
+		final int interfaceCount = stream.getUnsignedLEShort();
 		cache = new RSInterface[interfaceCount];
 		while (stream.position < stream.buffer.length) {
 			int id = stream.getUnsignedLEShort();
@@ -41,7 +41,7 @@ public final class RSInterface {
 				parentId = stream.getUnsignedLEShort();
 				id = stream.getUnsignedLEShort();
 			}
-			RSInterface rsInterface = cache[id] = new RSInterface();
+			final RSInterface rsInterface = cache[id] = new RSInterface();
 			rsInterface.id = id;
 			rsInterface.parentID = parentId;
 			rsInterface.type = stream.getUnsignedByte();
@@ -56,7 +56,7 @@ public final class RSInterface {
             } else {
                 rsInterface.hoveredPopup = -1;
             }
-			int conditionCount = stream.getUnsignedByte();
+			final int conditionCount = stream.getUnsignedByte();
 			if (conditionCount > 0) {
 				rsInterface.conditionType = new int[conditionCount];
 				rsInterface.conditionValue = new int[conditionCount];
@@ -66,11 +66,11 @@ public final class RSInterface {
 				}
 
 			}
-			int opcodeCount = stream.getUnsignedByte();
+			final int opcodeCount = stream.getUnsignedByte();
 			if (opcodeCount > 0) {
 				rsInterface.opcodes = new int[opcodeCount][];
 				for (int c = 0; c < opcodeCount; c++) {
-					int subOpcodeCount = stream.getUnsignedLEShort();
+					final int subOpcodeCount = stream.getUnsignedLEShort();
 					rsInterface.opcodes[c] = new int[subOpcodeCount];
 					for (int s = 0; s < subOpcodeCount; s++) {
                         rsInterface.opcodes[c][s] = stream.getUnsignedLEShort();
@@ -82,7 +82,7 @@ public final class RSInterface {
 			if (rsInterface.type == 0) {
 				rsInterface.scrollMax = stream.getUnsignedLEShort();
 				rsInterface.hoverOnly = stream.getUnsignedByte() == 1;
-				int childCount = stream.getUnsignedLEShort();
+				final int childCount = stream.getUnsignedLEShort();
 				rsInterface.children = new int[childCount];
 				rsInterface.childX = new int[childCount];
 				rsInterface.childY = new int[childCount];
@@ -110,13 +110,13 @@ public final class RSInterface {
 				rsInterface.spritesY = new int[20];
 				rsInterface.sprites = new Sprite[20];
 				for (int sprite = 0; sprite < 20; sprite++) {
-					int spriteExists = stream.getUnsignedByte();
+					final int spriteExists = stream.getUnsignedByte();
 					if (spriteExists == 1) {
 						rsInterface.spritesX[sprite] = stream.getShort();
 						rsInterface.spritesY[sprite] = stream.getShort();
-						String name = stream.getString();
+						final String name = stream.getString();
 						if (mediaArchive != null && name.length() > 0) {
-							int spriteId = name.lastIndexOf(",");
+							final int spriteId = name.lastIndexOf(",");
 							rsInterface.sprites[sprite] = getImage(Integer.parseInt(name.substring(spriteId + 1)),
 									mediaArchive, name.substring(0, spriteId));
 						}
@@ -137,7 +137,7 @@ public final class RSInterface {
             }
 			if (rsInterface.type == 4 || rsInterface.type == 1) {
 				rsInterface.textCentred = stream.getUnsignedByte() == 1;
-				int font = stream.getUnsignedByte();
+				final int font = stream.getUnsignedByte();
 				if (fonts != null) {
                     rsInterface.textDrawingAreas = fonts[font];
                 }
@@ -158,13 +158,13 @@ public final class RSInterface {
 			if (rsInterface.type == 5) {
 				String spriteName = stream.getString();
 				if (mediaArchive != null && spriteName.length() > 0) {
-					int spriteId = spriteName.lastIndexOf(",");
+					final int spriteId = spriteName.lastIndexOf(",");
 					rsInterface.spriteDefault = getImage(Integer.parseInt(spriteName.substring(spriteId + 1)),
 							mediaArchive, spriteName.substring(0, spriteId));
 				}
 				spriteName = stream.getString();
 				if (mediaArchive != null && spriteName.length() > 0) {
-					int spriteId = spriteName.lastIndexOf(",");
+					final int spriteId = spriteName.lastIndexOf(",");
 					rsInterface.spriteActive = getImage(Integer.parseInt(spriteName.substring(spriteId + 1)),
 							mediaArchive, spriteName.substring(0, spriteId));
 				}
@@ -200,7 +200,7 @@ public final class RSInterface {
 				rsInterface.inventoryItemId = new int[rsInterface.width * rsInterface.height];
 				rsInterface.inventoryStackSize = new int[rsInterface.width * rsInterface.height];
 				rsInterface.textCentred = stream.getUnsignedByte() == 1;
-				int font = stream.getUnsignedByte();
+				final int font = stream.getUnsignedByte();
 				if (fonts != null) {
                     rsInterface.textDrawingAreas = fonts[font];
                 }
@@ -320,8 +320,8 @@ public final class RSInterface {
 	public RSInterface() {
 	}
 
-	public Model getAnimatedModel(int frame1Id, int frame2Id, boolean active) {
-		Model model;
+	public Model getAnimatedModel(final int frame1Id, final int frame2Id, final boolean active) {
+		final Model model;
 		if (active) {
             model = this.getModel(this.modelTypeActive, this.modelIdActive);
         } else {
@@ -334,7 +334,7 @@ public final class RSInterface {
             return model;
         }
 
-		Model animatedModel = new Model(true, Animation.isNullFrame(frame2Id) & Animation.isNullFrame(frame1Id), false,
+		final Model animatedModel = new Model(true, Animation.isNullFrame(frame2Id) & Animation.isNullFrame(frame1Id), false,
 				model);
 		if (frame2Id != -1 || frame1Id != -1) {
             animatedModel.createBones();
@@ -349,7 +349,7 @@ public final class RSInterface {
 		return animatedModel;
 	}
 
-	private Model getModel(int modelType, int modelId) {
+	private Model getModel(final int modelType, final int modelId) {
 		Model model = (Model) modelCache.get((modelType << 16) + modelId);
 		if (model != null) {
             return model;
@@ -375,7 +375,7 @@ public final class RSInterface {
 		return model;
 	}
 
-	public void swapInventoryItems(int originalSlot, int newSlot) {
+	public void swapInventoryItems(final int originalSlot, final int newSlot) {
 		int originalItem = this.inventoryItemId[originalSlot];
         this.inventoryItemId[originalSlot] = this.inventoryItemId[newSlot];
         this.inventoryItemId[newSlot] = originalItem;

@@ -5,20 +5,20 @@ public class LinkableHashMap {
 	private final int size;
 	private final Linkable[] entries;
 
-	public LinkableHashMap(int size) {
+	public LinkableHashMap(final int size) {
 		this.size = size;
 		this.entries = new Linkable[size];
 		
 		for (int i = 0; i < size; i++) {
-			Linkable entry = new Linkable();
+			final Linkable entry = new Linkable();
 			entry.next = entry;
 			entry.previous = entry;
             this.entries[i] = entry;
 		}
 	}
 
-	public Linkable get(long key) {
-		Linkable start = this.entries[(int) (key & this.size - 1)];
+	public Linkable get(final long key) {
+		final Linkable start = this.entries[(int) (key & this.size - 1)];
 
 		for (Linkable next = start.next; next != start; next = next.next) {
 			if (next.id == key) {
@@ -29,12 +29,12 @@ public class LinkableHashMap {
 		return null;
 	}
 
-	public void put(long key, Linkable item) {
+	public void put(final long key, final Linkable item) {
 		if (item.previous != null) {
 			item.unlink();
 		}
 		
-		Linkable current = this.entries[(int) (key & this.size - 1)];
+		final Linkable current = this.entries[(int) (key & this.size - 1)];
 		item.previous = current.previous;
 		item.next = current;
 		item.previous.next = item;

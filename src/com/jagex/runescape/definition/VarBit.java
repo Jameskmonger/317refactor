@@ -10,9 +10,9 @@ public final class VarBit {
 	public int leastSignificantBit;
 	public int mostSignificantBit;
 
-	public static void load(Archive archive) {
-		Buffer buffer = new Buffer(archive.decompressFile("varbit.dat"));
-		int count = buffer.getUnsignedLEShort();
+	public static void load(final Archive archive) {
+		final Buffer buffer = new Buffer(archive.decompressFile("varbit.dat"));
+		final int count = buffer.getUnsignedLEShort();
 
 		if (values == null) {
 			values = new VarBit[count];
@@ -31,9 +31,9 @@ public final class VarBit {
 		}
 	}
 
-	private void load(Buffer buffer) {
+	private void load(final Buffer buffer) {
 		do {
-			int opcode = buffer.getUnsignedByte();
+			final int opcode = buffer.getUnsignedByte();
 			if (opcode == 0) {
                 return;
             }

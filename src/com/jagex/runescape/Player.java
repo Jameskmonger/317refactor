@@ -55,7 +55,7 @@ public final class Player extends Entity {
             } else if (super.queuedAnimationId >= 0) {
                 frameId = AnimationSequence.animations[super.queuedAnimationId].primaryFrames[super.queuedAnimationFrame];
             }
-			Model model = this.npcAppearance.getChildModel(-1, frameId, null);
+			final Model model = this.npcAppearance.getChildModel(-1, frameId, null);
 			return model;
 		}
 		long l = this.appearanceOffset;
@@ -64,7 +64,7 @@ public final class Player extends Entity {
 		int j1 = -1;
 		int k1 = -1;
 		if (super.animation >= 0 && super.animationDelay == 0) {
-			AnimationSequence animation = AnimationSequence.animations[super.animation];
+			final AnimationSequence animation = AnimationSequence.animations[super.animation];
 			k = animation.primaryFrames[super.currentAnimationFrame];
 			if (super.queuedAnimationId >= 0 && super.queuedAnimationId != super.standAnimationId) {
                 i1 = AnimationSequence.animations[super.queuedAnimationId].primaryFrames[super.queuedAnimationFrame];
@@ -109,7 +109,7 @@ public final class Player extends Entity {
 			}
 		}
 		if (model_1 == null) {
-			Model models[] = new Model[12];
+			final Model[] models = new Model[12];
 			int j2 = 0;
 			for (int l2 = 0; l2 < 12; l2++) {
 				int i3 = this.appearance[l2];
@@ -120,13 +120,13 @@ public final class Player extends Entity {
                     i3 = j1;
                 }
 				if (i3 >= 256 && i3 < 512) {
-					Model model_3 = IdentityKit.cache[i3 - 256].getBodyModel();
+					final Model model_3 = IdentityKit.cache[i3 - 256].getBodyModel();
 					if (model_3 != null) {
                         models[j2++] = model_3;
                     }
 				}
 				if (i3 >= 512) {
-					Model model_4 = ItemDefinition.getDefinition(i3 - 512).getEquippedModel(this.gender);
+					final Model model_4 = ItemDefinition.getDefinition(i3 - 512).getEquippedModel(this.gender);
 					if (model_4 != null) {
                         models[j2++] = model_4;
                     }
@@ -152,7 +152,7 @@ public final class Player extends Entity {
 		if (this.preventRotation) {
             return model_1;
         }
-		Model model_2 = Model.aModel_1621;
+		final Model model_2 = Model.aModel_1621;
 		model_2.replaceWithModel(model_1, Animation.isNullFrame(k) & Animation.isNullFrame(i1));
 		if (k != -1 && i1 != -1) {
             model_2.mixAnimationFrames(AnimationSequence.animations[super.animation].flowControl, i1, k);
@@ -174,7 +174,7 @@ public final class Player extends Entity {
         }
 		boolean flag = false;
 		for (int i = 0; i < 12; i++) {
-			int j = this.appearance[i];
+			final int j = this.appearance[i];
 			if (j >= 256 && j < 512 && !IdentityKit.cache[j - 256].headModelCached()) {
                 flag = true;
             }
@@ -186,25 +186,25 @@ public final class Player extends Entity {
 		if (flag) {
             return null;
         }
-		Model models[] = new Model[12];
+		final Model[] models = new Model[12];
 		int k = 0;
 		for (int l = 0; l < 12; l++) {
-			int i1 = this.appearance[l];
+			final int i1 = this.appearance[l];
 			if (i1 >= 256 && i1 < 512) {
-				Model model_1 = IdentityKit.cache[i1 - 256].getHeadModel();
+				final Model model_1 = IdentityKit.cache[i1 - 256].getHeadModel();
 				if (model_1 != null) {
                     models[k++] = model_1;
                 }
 			}
 			if (i1 >= 512) {
-				Model model_2 = ItemDefinition.getDefinition(i1 - 512).getDialogueModel(this.gender);
+				final Model model_2 = ItemDefinition.getDefinition(i1 - 512).getDialogueModel(this.gender);
 				if (model_2 != null) {
                     models[k++] = model_2;
                 }
 			}
 		}
 
-		Model model = new Model(k, models);
+		final Model model = new Model(k, models);
 		for (int j1 = 0; j1 < 5; j1++) {
             if (this.bodyPartColour[j1] != 0) {
                 model.recolour(Client.APPEARANCE_COLOURS[j1][0], Client.APPEARANCE_COLOURS[j1][this.bodyPartColour[j1]]);
@@ -232,10 +232,10 @@ public final class Player extends Entity {
             return appearanceModel;
         }
 		if (super.graphicId != -1 && super.currentAnimationId != -1) {
-			SpotAnimation animation = SpotAnimation.cache[super.graphicId];
-			Model graphicModel = animation.getModel();
+			final SpotAnimation animation = SpotAnimation.cache[super.graphicId];
+			final Model graphicModel = animation.getModel();
 			if (graphicModel != null) {
-				Model model = new Model(true, Animation.isNullFrame(super.currentAnimationId), false, graphicModel);
+				final Model model = new Model(true, Animation.isNullFrame(super.currentAnimationId), false, graphicModel);
 				model.translate(0, -super.graphicHeight, 0);
 				model.createBones();
 				model.applyTransformation(animation.sequences.primaryFrames[super.currentAnimationId]);
@@ -246,7 +246,7 @@ public final class Player extends Entity {
                 }
 				model.applyLighting(64 + animation.modelLightFalloff, 850 + animation.modelLightAmbient, -30, -50, -30,
 						true);
-				Model models[] = { appearanceModel, model };
+				final Model[] models = { appearanceModel, model };
 				appearanceModel = new Model(models);
 			}
 		}
@@ -255,7 +255,7 @@ public final class Player extends Entity {
                 this.playerModel = null;
             }
 			if (Client.tick >= this.modifiedAppearanceStartTime && Client.tick < this.modifiedAppearanceEndTime) {
-				Model model = this.playerModel;
+				final Model model = this.playerModel;
 				model.translate(this.anInt1711 - super.x, this.drawHeight - this.drawHeight2, this.anInt1713 - super.y);
 				if (super.turnDirection == 512) {
 					model.rotate90Degrees();
@@ -267,7 +267,7 @@ public final class Player extends Entity {
 				} else if (super.turnDirection == 1536) {
                     model.rotate90Degrees();
                 }
-				Model models[] = { appearanceModel, model };
+				final Model[] models = { appearanceModel, model };
 				appearanceModel = new Model(models);
 				if (super.turnDirection == 512) {
                     model.rotate90Degrees();
@@ -291,26 +291,26 @@ public final class Player extends Entity {
 		return this.visible;
 	}
 
-	public void updatePlayerAppearance(Buffer stream) {
+	public void updatePlayerAppearance(final Buffer stream) {
 		stream.position = 0;
         this.gender = stream.getUnsignedByte();
         this.headIcon = stream.getUnsignedByte();
         this.npcAppearance = null;
 		this.team = 0;
 		for (int slot = 0; slot < 12; slot++) {
-			int itemId1 = stream.getUnsignedByte();
+			final int itemId1 = stream.getUnsignedByte();
 			if (itemId1 == 0) {
                 this.appearance[slot] = 0;
 				continue;
 			}
-			int itemId2 = stream.getUnsignedByte();
+			final int itemId2 = stream.getUnsignedByte();
             this.appearance[slot] = (itemId1 << 8) + itemId2;
 			if (slot == 0 && this.appearance[0] == 65535) {
                 this.npcAppearance = EntityDefinition.getDefinition(stream.getUnsignedLEShort());
 				break;
 			}
 			if (this.appearance[slot] >= 512 && this.appearance[slot] - 512 < ItemDefinition.itemCount) {
-				int team = ItemDefinition.getDefinition(this.appearance[slot] - 512).teamId;
+				final int team = ItemDefinition.getDefinition(this.appearance[slot] - 512).teamId;
 				if (team != 0) {
                     this.team = team;
                 }

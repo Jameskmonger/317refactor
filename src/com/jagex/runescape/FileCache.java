@@ -14,13 +14,13 @@ final class FileCache {
 	private final RandomAccessFile indexFile;
 	private final int storeId;
 
-	public FileCache(RandomAccessFile data, RandomAccessFile index, int storeId) {
+	public FileCache(final RandomAccessFile data, final RandomAccessFile index, final int storeId) {
 		this.storeId = storeId;
 		this.dataFile = data;
 		this.indexFile = index;
 	}
 
-	public synchronized byte[] decompress(int index) {
+	public synchronized byte[] decompress(final int index) {
 		try {
 			this.seek(this.indexFile, index * 6);
 			int in;
@@ -31,7 +31,7 @@ final class FileCache {
                 }
 			}
 
-			int size = ((buffer[0] & 0xff) << 16) + ((buffer[1] & 0xff) << 8) + (buffer[2] & 0xff);
+			final int size = ((buffer[0] & 0xff) << 16) + ((buffer[1] & 0xff) << 8) + (buffer[2] & 0xff);
 			int sector = ((buffer[3] & 0xff) << 16) + ((buffer[4] & 0xff) << 8) + (buffer[5] & 0xff);
 
 			if (size < 0 || size > 0x7a120) {
@@ -42,7 +42,7 @@ final class FileCache {
                 return null;
             }
 
-			byte decompressed[] = new byte[size];
+			final byte[] decompressed = new byte[size];
 			int read = 0;
 			for (int part = 0; read < size; part++) {
 				if (sector == 0) {
@@ -62,10 +62,10 @@ final class FileCache {
                     }
 				}
 
-				int decompressedIndex = ((buffer[0] & 0xff) << 8) + (buffer[1] & 0xff);
-				int decompressedPart = ((buffer[2] & 0xff) << 8) + (buffer[3] & 0xff);
-				int decompressedSector = ((buffer[4] & 0xff) << 16) + ((buffer[5] & 0xff) << 8) + (buffer[6] & 0xff);
-				int decompressedStoreId = buffer[7] & 0xff;
+				final int decompressedIndex = ((buffer[0] & 0xff) << 8) + (buffer[1] & 0xff);
+				final int decompressedPart = ((buffer[2] & 0xff) << 8) + (buffer[3] & 0xff);
+				final int decompressedSector = ((buffer[4] & 0xff) << 16) + ((buffer[5] & 0xff) << 8) + (buffer[6] & 0xff);
+				final int decompressedStoreId = buffer[7] & 0xff;
 
 				if (decompressedIndex != index || decompressedPart != part || decompressedStoreId != this.storeId) {
                     return null;
@@ -83,12 +83,12 @@ final class FileCache {
 			}
 
 			return decompressed;
-		} catch (IOException _ex) {
+		} catch (final IOException _ex) {
 			return null;
 		}
 	}
 
-	public synchronized boolean put(int size, byte data[], int index) {
+	public synchronized boolean put(final int size, final byte[] data, final int index) {
 		boolean exists = this.put(true, index, size, data);
 		if (!exists) {
             exists = this.put(false, index, size, data);
@@ -96,7 +96,7 @@ final class FileCache {
 		return exists;
 	}
 
-	private synchronized boolean put(boolean exists, int index, int size, byte data[]) {
+	private synchronized boolean put(boolean exists, final int index, final int size, final byte[] data) {
 		try {
 			int sector;
 			if (exists) {
@@ -142,11 +142,11 @@ final class FileCache {
 					}
 
 					if (read == 8) {
-						int decompressedIndex = ((buffer[0] & 0xff) << 8) + (buffer[1] & 0xff);
-						int decompressedPart = ((buffer[2] & 0xff) << 8) + (buffer[3] & 0xff);
+						final int decompressedIndex = ((buffer[0] & 0xff) << 8) + (buffer[1] & 0xff);
+						final int decompressedPart = ((buffer[2] & 0xff) << 8) + (buffer[3] & 0xff);
 						decompressedSector = ((buffer[4] & 0xff) << 16) + ((buffer[5] & 0xff) << 8)
 								+ (buffer[6] & 0xff);
-						int decompressedStoreId = buffer[7] & 0xff;
+						final int decompressedStoreId = buffer[7] & 0xff;
 						if (decompressedIndex != index || decompressedPart != part || decompressedStoreId != this.storeId) {
                             return false;
                         }
@@ -191,18 +191,18 @@ final class FileCache {
 				sector = decompressedSector;
 			}
 			return true;
-		} catch (IOException _ex) {
+		} catch (final IOException _ex) {
 			return false;
 		}
 	}
 
-	private synchronized void seek(RandomAccessFile file, int position) throws IOException {
+	private synchronized void seek(final RandomAccessFile file, int position) throws IOException {
 		if (position < 0 || position > 0x3c00000) {
 			System.out.println("Badseek - pos:" + position + " len:" + file.length());
 			position = 0x3c00000;
 			try {
 				Thread.sleep(1000L);
-			} catch (Exception _ex) {
+			} catch (final Exception _ex) {
 			}
 		}
 		file.seek(position);

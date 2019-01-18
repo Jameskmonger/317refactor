@@ -14,8 +14,8 @@ public class Animable extends Cacheable {
 		return null;
 	}
 
-	public void renderAtPoint(int i, int j, int k, int l, int i1, int j1, int k1, int l1, int i2) {
-		Model model = this.getRotatedModel();
+	public void renderAtPoint(final int i, final int j, final int k, final int l, final int i1, final int j1, final int k1, final int l1, final int i2) {
+		final Model model = this.getRotatedModel();
 		if (model != null) {
             this.modelHeight = model.modelHeight;
 			model.renderAtPoint(i, j, k, l, i1, j1, k1, l1, i2);

@@ -17,8 +17,8 @@ final class StationaryGraphic extends Animable {
 	private int elapsedFrames;
 	private int duration;
 
-	public StationaryGraphic(int x, int y, int z, int drawHeight, int animationIndex, int loopCycle,
-			int loopCycleOffset) {
+	public StationaryGraphic(final int x, final int y, final int z, final int drawHeight, final int animationIndex, final int loopCycle,
+                             final int loopCycleOffset) {
         this.transformationCompleted = false;
         this.animation = SpotAnimation.cache[animationIndex];
 		this.z = z;
@@ -29,7 +29,7 @@ final class StationaryGraphic extends Animable {
         this.transformationCompleted = false;
 	}
 
-	public void animationStep(int i) {
+	public void animationStep(final int i) {
 		for (this.duration += i; this.duration > this.animation.sequences.getFrameLength(this.elapsedFrames);) {
             this.duration -= this.animation.sequences.getFrameLength(this.elapsedFrames) + 1;
             this.elapsedFrames++;
@@ -44,12 +44,12 @@ final class StationaryGraphic extends Animable {
 
 	@Override
 	public Model getRotatedModel() {
-		Model model = this.animation.getModel();
+		final Model model = this.animation.getModel();
 		if (model == null) {
             return null;
         }
-		int frame = this.animation.sequences.primaryFrames[this.elapsedFrames];
-		Model animatedModel = new Model(true, Animation.isNullFrame(frame), false, model);
+		final int frame = this.animation.sequences.primaryFrames[this.elapsedFrames];
+		final Model animatedModel = new Model(true, Animation.isNullFrame(frame), false, model);
 		if (!this.transformationCompleted) {
 			animatedModel.createBones();
 			animatedModel.applyTransformation(frame);

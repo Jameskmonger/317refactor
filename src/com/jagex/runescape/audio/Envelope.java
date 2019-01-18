@@ -25,14 +25,14 @@ final class Envelope {
 	private int amplitude;
 	private int ticks;
 	
-	public void decode(Buffer stream) {
+	public void decode(final Buffer stream) {
         this.form = stream.getUnsignedByte();
         this.start = stream.getInt();
         this.end = stream.getInt();
 		this.decodeShape(stream);
 	}
 
-	public void decodeShape(Buffer stream) {
+	public void decodeShape(final Buffer stream) {
         this.phaseCount = stream.getUnsignedByte();
         this.phaseDuration = new int[this.phaseCount];
         this.phasePeak = new int[this.phaseCount];
@@ -51,7 +51,7 @@ final class Envelope {
         this.ticks = 0;
 	}
 
-	int step(int period) {
+	int step(final int period) {
 		if (this.ticks >= this.critical) {
             this.amplitude = this.phasePeak[this.phaseId++] << 15;
 			if (this.phaseId >= this.phaseCount) {

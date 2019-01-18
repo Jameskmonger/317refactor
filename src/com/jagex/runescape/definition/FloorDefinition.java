@@ -5,9 +5,9 @@ import com.jagex.runescape.Buffer;
 
 public final class FloorDefinition {
 
-	public static void load(Archive archive) {
-		Buffer stream = new Buffer(archive.decompressFile("flo.dat"));
-		int cacheSize = stream.getUnsignedLEShort();
+	public static void load(final Archive archive) {
+		final Buffer stream = new Buffer(archive.decompressFile("flo.dat"));
+		final int cacheSize = stream.getUnsignedLEShort();
 		if (cache == null) {
             cache = new FloorDefinition[cacheSize];
         }
@@ -41,9 +41,9 @@ public final class FloorDefinition {
         this.occlude = true;
 	}
 
-	private void loadDefinition(Buffer stream) {
+	private void loadDefinition(final Buffer stream) {
 		do {
-			int opcode = stream.getUnsignedByte();
+			final int opcode = stream.getUnsignedByte();
 			if (opcode == 0) {
                 return;
             } else if (opcode == 1) {
@@ -58,11 +58,11 @@ public final class FloorDefinition {
             } else if (opcode == 6) {
                 this.name = stream.getString();
             } else if (opcode == 7) {
-				int oldHue2 = this.hue2;
-				int oldSat = this.saturation;
-				int oldLight = this.lightness;
-				int oldHue = this.hue;
-				int rgb = stream.get3Bytes();
+				final int oldHue2 = this.hue2;
+				final int oldSat = this.saturation;
+				final int oldLight = this.lightness;
+				final int oldHue = this.hue;
+				final int rgb = stream.get3Bytes();
 				this.rgbToHls(rgb);
                 this.hue2 = oldHue2;
                 this.saturation = oldSat;
@@ -76,7 +76,7 @@ public final class FloorDefinition {
 		} while (true);
 	}
 
-	private int packHSL(int h, int s, int l) {
+	private int packHSL(final int h, int s, final int l) {
 		if (l > 179) {
             s /= 2;
         }
@@ -92,10 +92,10 @@ public final class FloorDefinition {
 		return (h / 4 << 10) + (s / 32 << 7) + l / 2;
 	}
 
-	private void rgbToHls(int rgb) {
-		double red = (rgb >> 16 & 0xff) / 256D;
-		double green = (rgb >> 8 & 0xff) / 256D;
-		double blue = (rgb & 0xff) / 256D;
+	private void rgbToHls(final int rgb) {
+		final double red = (rgb >> 16 & 0xff) / 256D;
+		final double green = (rgb >> 8 & 0xff) / 256D;
+		final double blue = (rgb & 0xff) / 256D;
 		double minC = red;
 		if (green < minC) {
             minC = green;
@@ -112,7 +112,7 @@ public final class FloorDefinition {
         }
 		double h = 0.0D;
 		double s = 0.0D;
-		double l = (minC + maxC) / 2D;
+		final double l = (minC + maxC) / 2D;
 		if (minC != maxC) {
 			if (l < 0.5D) {
                 s = (maxC - minC) / (maxC + minC);

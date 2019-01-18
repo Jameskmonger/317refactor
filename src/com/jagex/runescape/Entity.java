@@ -100,7 +100,7 @@ public class Entity extends Animable {
 		return false;
 	}
 
-	public final void move(boolean flag, int direction) {
+	public final void move(final boolean flag, final int direction) {
 		int x = this.waypointX[0];
 		int y = this.waypointY[0];
 		if (direction == 0) {
@@ -152,13 +152,13 @@ public class Entity extends Animable {
         this.stepsRemaining = 0;
 	}
 
-	public final void setPos(int x, int y, boolean teleported) {
+	public final void setPos(final int x, final int y, final boolean teleported) {
 		if (this.animation != -1 && AnimationSequence.animations[this.animation].precedenceWalking == 1) {
             this.animation = -1;
         }
 		if (!teleported) {
-			int distanceX = x - this.waypointX[0];
-			int distanceY = y - this.waypointY[0];
+			final int distanceX = x - this.waypointX[0];
+			final int distanceY = y - this.waypointY[0];
 			if (distanceX >= -8 && distanceX <= 8 && distanceY >= -8 && distanceY <= 8) {
 				if (this.waypointCount < 9) {
                     this.waypointCount++;
@@ -184,7 +184,7 @@ public class Entity extends Animable {
 		this.y = this.waypointY[0] * 128 + this.boundaryDimension * 64;
 	}
 
-	public final void updateHitData(int type, int damage, int currentTime) {
+	public final void updateHitData(final int type, final int damage, final int currentTime) {
 		for (int hit = 0; hit < 4; hit++) {
             if (this.hitsLoopCycle[hit] <= currentTime) {
                 this.hitArray[hit] = damage;

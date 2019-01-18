@@ -27,7 +27,7 @@ public final class CollisionMap {
         this.clippingData[x][y] |= 0x200000;
 	}
 
-	public void markSolidOccupant(int x, int y, int width, int height, int orientation, boolean impenetrable) {
+	public void markSolidOccupant(int x, int y, int width, int height, final int orientation, final boolean impenetrable) {
 		int occupied = 256;
 		if (impenetrable) {
             occupied += 0x20000;
@@ -35,7 +35,7 @@ public final class CollisionMap {
 		x -= this.insetX;
 		y -= this.insetY;
 		if (orientation == 1 || orientation == 3) {
-			int temp = width;
+			final int temp = width;
 			width = height;
 			height = temp;
 		}
@@ -52,7 +52,7 @@ public final class CollisionMap {
 
 	}
 
-	public void markWall(int y, int orientation, int x, int position, boolean impenetrable) {
+	public void markWall(int y, final int orientation, int x, final int position, final boolean impenetrable) {
 		x -= this.insetX;
 		y -= this.insetY;
 
@@ -176,10 +176,10 @@ public final class CollisionMap {
 		}
 	}
 
-	public boolean reachedFacingObject(int startX, int startY, int endX, int endY, int endDistanceX, int endDistanceY,
-			int surroundings) {
-		int endX2 = (endX + endDistanceX) - 1;
-		int endY2 = (endY + endDistanceY) - 1;
+	public boolean reachedFacingObject(final int startX, final int startY, final int endX, final int endY, final int endDistanceX, final int endDistanceY,
+                                       final int surroundings) {
+		final int endX2 = (endX + endDistanceX) - 1;
+		final int endY2 = (endY + endDistanceY) - 1;
 		if (startX >= endX && startX <= endX2 && startY >= endY && startY <= endY2) {
             return true;
         }
@@ -197,7 +197,7 @@ public final class CollisionMap {
 						&& (this.clippingData[startX - this.insetX][startY - this.insetY] & 0x20) == 0 && (surroundings & 1) == 0;
 	}
 
-	public boolean reachedWall(int startX, int startY, int endX, int endY, int endPosition, int endOrientation) {
+	public boolean reachedWall(int startX, int startY, int endX, int endY, final int endPosition, final int endOrientation) {
 		if (startX == endX && startY == endY) {
             return true;
         }
@@ -320,8 +320,8 @@ public final class CollisionMap {
 		return false;
 	}
 
-	public boolean reachedWallDecoration(int startX, int startY, int endX, int endY, int endPosition,
-			int endOrientation) {
+	public boolean reachedWallDecoration(int startX, int startY, int endX, int endY, final int endPosition,
+                                         int endOrientation) {
 		if (startX == endX && startY == endY) {
             return true;
         }
@@ -394,7 +394,7 @@ public final class CollisionMap {
 
 	}
 
-	private void set(int x, int y, int flag) {
+	private void set(final int x, final int y, final int flag) {
         this.clippingData[x][y] |= flag;
 	}
 
@@ -404,7 +404,7 @@ public final class CollisionMap {
         this.clippingData[x][y] &= 0xdfffff;
 	}
 
-	public void unmarkSolidOccupant(int x, int y, int width, int height, int orientation, boolean impenetrable) {
+	public void unmarkSolidOccupant(int x, int y, int width, int height, final int orientation, final boolean impenetrable) {
 		int occupied = 256;
 		if (impenetrable) {
             occupied += 0x20000;
@@ -412,7 +412,7 @@ public final class CollisionMap {
 		x -= this.insetX;
 		y -= this.insetY;
 		if (orientation == 1 || orientation == 3) {
-			int temp = width;
+			final int temp = width;
 			width = height;
 			height = temp;
 		}
@@ -429,7 +429,7 @@ public final class CollisionMap {
 
 	}
 
-	public void unmarkWall(int x, int y, int position, int orientation, boolean impenetrable) {
+	public void unmarkWall(int x, int y, final int position, final int orientation, final boolean impenetrable) {
 		x -= this.insetX;
 		y -= this.insetY;
 		if (position == 0) {
@@ -552,7 +552,7 @@ public final class CollisionMap {
 		}
 	}
 
-	private void unset(int x, int y, int flag) {
+	private void unset(final int x, final int y, final int flag) {
         this.clippingData[x][y] &= 0xffffff - flag;
 	}
 }

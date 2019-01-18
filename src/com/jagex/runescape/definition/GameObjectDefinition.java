@@ -10,7 +10,7 @@ import com.jagex.runescape.collection.Cache;
 
 public final class GameObjectDefinition {
 
-	public static GameObjectDefinition getDefinition(int objectId) {
+	public static GameObjectDefinition getDefinition(final int objectId) {
 		for (int c = 0; c < 20; c++) {
             if (cache[c].id == objectId) {
                 return cache[c];
@@ -18,7 +18,7 @@ public final class GameObjectDefinition {
         }
 
 		cacheIndex = (cacheIndex + 1) % 20;
-		GameObjectDefinition definition = cache[cacheIndex];
+		final GameObjectDefinition definition = cache[cacheIndex];
 		stream.position = streamOffsets[objectId];
 		definition.id = objectId;
 		definition.setDefaults();
@@ -26,10 +26,10 @@ public final class GameObjectDefinition {
 		return definition;
 	}
 
-	public static void load(Archive archive) {
+	public static void load(final Archive archive) {
 		stream = new Buffer(archive.decompressFile("loc.dat"));
-		Buffer stream = new Buffer(archive.decompressFile("loc.idx"));
-		int objectCount = stream.getUnsignedLEShort();
+		final Buffer stream = new Buffer(archive.decompressFile("loc.idx"));
+		final int objectCount = stream.getUnsignedLEShort();
 		streamOffsets = new int[objectCount];
 		int offset = 2;
 		for (int index = 0; index < objectCount; index++) {
@@ -112,23 +112,23 @@ public final class GameObjectDefinition {
         this.id = -1;
 	}
 
-	private Model getAnimatedModel(int type, int animationId, int face) {
+	private Model getAnimatedModel(final int type, final int animationId, int face) {
 		Model subModel = null;
-		long hash;
+		final long hash;
 		if (this.modelTypes == null) {
 			if (type != 10) {
                 return null;
             }
 			hash = (this.id << 6) + face + ((long) (animationId + 1) << 32);
-			Model cachedModel = (Model) animatedModelCache.get(hash);
+			final Model cachedModel = (Model) animatedModelCache.get(hash);
 			if (cachedModel != null) {
                 return cachedModel;
             }
 			if (this.modelIds == null) {
                 return null;
             }
-			boolean mirror = this.rotated ^ (face > 3);
-			int modelCount = this.modelIds.length;
+			final boolean mirror = this.rotated ^ (face > 3);
+			final int modelCount = this.modelIds.length;
 			for (int m = 0; m < modelCount; m++) {
 				int subModelId = this.modelIds[m];
 				if (mirror) {
@@ -167,12 +167,12 @@ public final class GameObjectDefinition {
                 return null;
             }
 			hash = (this.id << 6) + (modelType << 3) + face + ((long) (animationId + 1) << 32);
-			Model model = (Model) animatedModelCache.get(hash);
+			final Model model = (Model) animatedModelCache.get(hash);
 			if (model != null) {
                 return model;
             }
 			int modelId = this.modelIds[modelType];
-			boolean mirror = this.rotated ^ (face > 3);
+			final boolean mirror = this.rotated ^ (face > 3);
 			if (mirror) {
                 modelId += 0x10000;
             }
@@ -188,11 +188,11 @@ public final class GameObjectDefinition {
 				modelCache.put(subModel, modelId);
 			}
 		}
-		boolean scale;
+		final boolean scale;
 		scale = this.scaleX != 128 || this.scaleY != 128 || this.scaleZ != 128;
-		boolean translate;
+		final boolean translate;
 		translate = this.translateX != 0 || this.translateY != 0 || this.translateZ != 0;
-		Model animatedModel = new Model(this.modifiedModelColors == null, Animation.isNullFrame(animationId),
+		final Model animatedModel = new Model(this.modifiedModelColors == null, Animation.isNullFrame(animationId),
 				face == 0 && animationId == -1 && !scale && !translate, subModel);
 		if (animationId != -1) {
 			animatedModel.createBones();
@@ -226,11 +226,11 @@ public final class GameObjectDefinition {
 	public GameObjectDefinition getChildDefinition() {
 		int child = -1;
 		if (this.varBitId != -1) {
-			VarBit varBit = VarBit.values[this.varBitId];
-			int configId = varBit.configId;
-			int lsb = varBit.leastSignificantBit;
-			int msb = varBit.mostSignificantBit;
-			int bit = Client.BITFIELD_MAX_VALUE[msb - lsb];
+			final VarBit varBit = VarBit.values[this.varBitId];
+			final int configId = varBit.configId;
+			final int lsb = varBit.leastSignificantBit;
+			final int msb = varBit.mostSignificantBit;
+			final int bit = Client.BITFIELD_MAX_VALUE[msb - lsb];
 			child = clientInstance.interfaceSettings[configId] >> lsb & bit;
 		} else if (this.configIds != -1) {
             child = clientInstance.interfaceSettings[this.configIds];
@@ -242,7 +242,7 @@ public final class GameObjectDefinition {
         }
 	}
 
-	public Model getModelAt(int i, int j, int k, int l, int i1, int j1, int k1) {
+	public Model getModelAt(final int i, final int j, final int k, final int l, final int i1, final int j1, final int k1) {
 		Model model = this.getAnimatedModel(i, k1, j);
 		if (model == null) {
             return null;
@@ -251,13 +251,13 @@ public final class GameObjectDefinition {
             model = new Model(this.adjustToTerrain, this.delayShading, model);
         }
 		if (this.adjustToTerrain) {
-			int l1 = (k + l + i1 + j1) / 4;
+			final int l1 = (k + l + i1 + j1) / 4;
 			for (int v = 0; v < model.vertexCount; v++) {
-				int x = model.verticesX[v];
-				int z = model.verticesZ[v];
-				int l2 = k + ((l - k) * (x + 64)) / 128;
-				int i3 = j1 + ((i1 - j1) * (x + 64)) / 128;
-				int j3 = l2 + ((i3 - l2) * (z + 64)) / 128;
+				final int x = model.verticesX[v];
+				final int z = model.verticesZ[v];
+				final int l2 = k + ((l - k) * (x + 64)) / 128;
+				final int i3 = j1 + ((i1 - j1) * (x + 64)) / 128;
+				final int j3 = l2 + ((i3 - l2) * (z + 64)) / 128;
 				model.verticesY[v] += j3 - l1;
 			}
 
@@ -266,7 +266,7 @@ public final class GameObjectDefinition {
 		return model;
 	}
 
-	private void loadDefinition(Buffer stream) {
+	private void loadDefinition(final Buffer stream) {
 		int _actions = -1;
 		label0: do {
 			int opcode;
@@ -276,7 +276,7 @@ public final class GameObjectDefinition {
                     break label0;
                 }
 				if (opcode == 1) {
-					int modelCount = stream.getUnsignedByte();
+					final int modelCount = stream.getUnsignedByte();
 					if (modelCount > 0) {
                         if (this.modelIds == null || lowMemory) {
                             this.modelTypes = new int[modelCount];
@@ -295,7 +295,7 @@ public final class GameObjectDefinition {
                 } else if (opcode == 3) {
                     this.description = stream.readBytes();
                 } else if (opcode == 5) {
-					int modelCount = stream.getUnsignedByte();
+					final int modelCount = stream.getUnsignedByte();
 					if (modelCount > 0) {
                         if (this.modelIds == null || lowMemory) {
                             this.modelTypes = null;
@@ -347,7 +347,7 @@ public final class GameObjectDefinition {
                         this.actions[opcode - 30] = null;
                     }
 				} else if (opcode == 40) {
-					int colourCount = stream.getUnsignedByte();
+					final int colourCount = stream.getUnsignedByte();
                     this.modifiedModelColors = new int[colourCount];
                     this.originalModelColors = new int[colourCount];
 					for (int c = 0; c < colourCount; c++) {
@@ -397,7 +397,7 @@ public final class GameObjectDefinition {
 			if (this.configIds == 65535) {
                 this.configIds = -1;
             }
-			int childCount = stream.getUnsignedByte();
+			final int childCount = stream.getUnsignedByte();
             this.childIds = new int[childCount + 1];
 			for (int c = 0; c <= childCount; c++) {
                 this.childIds[c] = stream.getUnsignedLEShort();
@@ -433,7 +433,7 @@ public final class GameObjectDefinition {
 		return cached;
 	}
 
-	public boolean modelTypeCached(int modelType) {
+	public boolean modelTypeCached(final int modelType) {
 		if (this.modelTypes == null) {
 			if (this.modelIds == null) {
                 return true;
@@ -457,7 +457,7 @@ public final class GameObjectDefinition {
 		return true;
 	}
 
-	public void passivelyRequestModels(OnDemandFetcher requester) {
+	public void passivelyRequestModels(final OnDemandFetcher requester) {
 		if (this.modelIds == null) {
             return;
         }

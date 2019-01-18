@@ -9,7 +9,7 @@ import com.jagex.runescape.Model;
 
 public final class EntityDefinition {
 
-	public static EntityDefinition getDefinition(int id) {
+	public static EntityDefinition getDefinition(final int id) {
 		for (int c = 0; c < 20; c++) {
             if (EntityDefinition.cache[c].id == id) {
                 return EntityDefinition.cache[c];
@@ -17,17 +17,17 @@ public final class EntityDefinition {
         }
 
 		EntityDefinition.bufferIndex = (EntityDefinition.bufferIndex + 1) % 20;
-		EntityDefinition definition = EntityDefinition.cache[EntityDefinition.bufferIndex] = new EntityDefinition();
+		final EntityDefinition definition = EntityDefinition.cache[EntityDefinition.bufferIndex] = new EntityDefinition();
 		EntityDefinition.stream.position = EntityDefinition.streamOffsets[id];
 		definition.id = id;
 		definition.loadDefinition(EntityDefinition.stream);
 		return definition;
 	}
 
-	public static void load(Archive streamLoader) {
+	public static void load(final Archive streamLoader) {
 		EntityDefinition.stream = new Buffer(streamLoader.decompressFile("npc.dat"));
-		Buffer stream = new Buffer(streamLoader.decompressFile("npc.idx"));
-		int size = stream.getUnsignedLEShort();
+		final Buffer stream = new Buffer(streamLoader.decompressFile("npc.idx"));
+		final int size = stream.getUnsignedLEShort();
 		EntityDefinition.streamOffsets = new int[size];
 		int offset = 2;
 		for (int n = 0; n < size; n++) {
@@ -111,11 +111,11 @@ public final class EntityDefinition {
 	public EntityDefinition getChildDefinition() {
 		int childId = -1;
 		if (this.varBitId != -1) {
-			VarBit varBit = VarBit.values[this.varBitId];
-			int configId = varBit.configId;
-			int lsb = varBit.leastSignificantBit;
-			int msb = varBit.mostSignificantBit;
-			int bit = Client.BITFIELD_MAX_VALUE[msb - lsb];
+			final VarBit varBit = VarBit.values[this.varBitId];
+			final int configId = varBit.configId;
+			final int lsb = varBit.leastSignificantBit;
+			final int msb = varBit.mostSignificantBit;
+			final int bit = Client.BITFIELD_MAX_VALUE[msb - lsb];
 			childId = clientInstance.interfaceSettings[configId] >> lsb & bit;
 		} else if (this.settingId != -1) {
             childId = clientInstance.interfaceSettings[this.settingId];
@@ -127,9 +127,9 @@ public final class EntityDefinition {
         }
 	}
 
-	public Model getChildModel(int frameId2, int frameId1, int framesFrom2[]) {
+	public Model getChildModel(final int frameId2, final int frameId1, final int[] framesFrom2) {
 		if (this.childrenIDs != null) {
-			EntityDefinition childDefinition = this.getChildDefinition();
+			final EntityDefinition childDefinition = this.getChildDefinition();
 			if (childDefinition == null) {
                 return null;
             } else {
@@ -148,7 +148,7 @@ public final class EntityDefinition {
 			if (notCached) {
                 return null;
             }
-			Model childModels[] = new Model[this.modelIds.length];
+			final Model[] childModels = new Model[this.modelIds.length];
 			for (int m = 0; m < this.modelIds.length; m++) {
                 childModels[m] = Model.getModel(this.modelIds[m]);
             }
@@ -168,7 +168,7 @@ public final class EntityDefinition {
 			model.applyLighting(64 + this.brightness, 850 + this.contrast, -30, -50, -30, true);
 			modelCache.put(model, this.id);
 		}
-		Model childModel = Model.aModel_1621;
+		final Model childModel = Model.aModel_1621;
 		childModel.replaceWithModel(model, Animation.isNullFrame(frameId1) & Animation.isNullFrame(frameId2));
 		if (frameId1 != -1 && frameId2 != -1) {
             childModel.mixAnimationFrames(framesFrom2, frameId2, frameId1);
@@ -189,7 +189,7 @@ public final class EntityDefinition {
 
 	public Model getHeadModel() {
 		if (this.childrenIDs != null) {
-			EntityDefinition definition = this.getChildDefinition();
+			final EntityDefinition definition = this.getChildDefinition();
 			if (definition == null) {
                 return null;
             } else {
@@ -209,12 +209,12 @@ public final class EntityDefinition {
 		if (someModelsNotCached) {
             return null;
         }
-		Model headModels[] = new Model[this.headModelIds.length];
+		final Model[] headModels = new Model[this.headModelIds.length];
 		for (int j = 0; j < this.headModelIds.length; j++) {
             headModels[j] = Model.getModel(this.headModelIds[j]);
         }
 
-		Model headModel;
+		final Model headModel;
 		if (headModels.length == 1) {
             headModel = headModels[0];
         } else {
@@ -229,14 +229,14 @@ public final class EntityDefinition {
 		return headModel;
 	}
 
-	private void loadDefinition(Buffer stream) {
+	private void loadDefinition(final Buffer stream) {
 		do {
-			int opcode = stream.getUnsignedByte();
+			final int opcode = stream.getUnsignedByte();
 			if (opcode == 0) {
                 return;
             }
 			if (opcode == 1) {
-				int modelCount = stream.getUnsignedByte();
+				final int modelCount = stream.getUnsignedByte();
                 this.modelIds = new int[modelCount];
 				for (int m = 0; m < modelCount; m++) {
                     this.modelIds[m] = stream.getUnsignedLEShort();
@@ -266,7 +266,7 @@ public final class EntityDefinition {
                     this.actions[opcode - 30] = null;
                 }
 			} else if (opcode == 40) {
-				int colourCount = stream.getUnsignedByte();
+				final int colourCount = stream.getUnsignedByte();
                 this.modifiedModelColours = new int[colourCount];
                 this.originalModelColours = new int[colourCount];
 				for (int c = 0; c < colourCount; c++) {
@@ -275,7 +275,7 @@ public final class EntityDefinition {
 				}
 
 			} else if (opcode == 60) {
-				int additionalModelCount = stream.getUnsignedByte();
+				final int additionalModelCount = stream.getUnsignedByte();
                 this.headModelIds = new int[additionalModelCount];
 				for (int m = 0; m < additionalModelCount; m++) {
                     this.headModelIds[m] = stream.getUnsignedLEShort();
@@ -314,7 +314,7 @@ public final class EntityDefinition {
 				if (this.settingId == 65535) {
                     this.settingId = -1;
                 }
-				int childCount = stream.getUnsignedByte();
+				final int childCount = stream.getUnsignedByte();
                 this.childrenIDs = new int[childCount + 1];
 				for (int c = 0; c <= childCount; c++) {
                     this.childrenIDs[c] = stream.getUnsignedLEShort();

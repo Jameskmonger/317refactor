@@ -11,7 +11,7 @@ public final class PlainTile {
 	public boolean flat;
 	public final int colourRGB;
 
-	public PlainTile(int colourA, int colourB, int colourC, int colourD, int colourRGB, int texture, boolean flat) {
+	public PlainTile(final int colourA, final int colourB, final int colourC, final int colourD, final int colourRGB, final int texture, final boolean flat) {
 		this.flat = true;
 		this.colourA = colourA;
 		this.colourB = colourB;

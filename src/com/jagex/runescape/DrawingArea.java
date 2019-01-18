@@ -5,7 +5,7 @@ import com.jagex.runescape.collection.Cacheable;
 public class DrawingArea extends Cacheable {
 
 	public static void clear() {
-		int i = width * height;
+		final int i = width * height;
 		for (int j = 0; j < i; j++) {
             pixels[j] = 0;
         }
@@ -21,7 +21,7 @@ public class DrawingArea extends Cacheable {
 		viewportCentreX = bottomX / 2;
 	}
 
-	public static void drawFilledRectangle(int x, int y, int width, int height, int colour) {
+	public static void drawFilledRectangle(int x, int y, int width, int height, final int colour) {
 		if (x < topX) {
 			width -= topX - x;
 			x = topX;
@@ -36,7 +36,7 @@ public class DrawingArea extends Cacheable {
 		if (y + height > bottomY) {
             height = bottomY - y;
         }
-		int increment = DrawingArea.width - width;
+		final int increment = DrawingArea.width - width;
 		int pointer = x + y * DrawingArea.width;
 		for (int row = -height; row < 0; row++) {
 			for (int column = -width; column < 0; column++) {
@@ -47,7 +47,7 @@ public class DrawingArea extends Cacheable {
 		}
 	}
 
-	public static void drawFilledCircle(int x, int y, int radius, int colour) {
+	public static void drawFilledCircle(final int x, final int y, final int radius, final int colour) {
 		for (int _y = -radius; _y <= radius; _y++) {
             for (int _x = -radius; _x <= radius; _x++) {
                 if (_x * _x + _y * _y <= radius * radius) {
@@ -57,7 +57,7 @@ public class DrawingArea extends Cacheable {
         }
 	}
 
-	public static void drawFilledCircleAlpha(int x, int y, int radius, int colour, int alpha) {
+	public static void drawFilledCircleAlpha(final int x, final int y, final int radius, final int colour, final int alpha) {
 		for (int _y = -radius; _y <= radius; _y++) {
             for (int _x = -radius; _x <= radius; _x++) {
                 if (_x * _x + _y * _y <= radius * radius) {
@@ -67,7 +67,7 @@ public class DrawingArea extends Cacheable {
         }
 	}
 
-	public static void drawFilledRectangleAlpha(int colour, int y, int width, int height, int alpha, int x) {
+	public static void drawFilledRectangleAlpha(final int colour, int y, int width, int height, final int alpha, int x) {
 		if (x < topX) {
 			width -= topX - x;
 			x = topX;
@@ -82,18 +82,18 @@ public class DrawingArea extends Cacheable {
 		if (y + height > bottomY) {
             height = bottomY - y;
         }
-		int l1 = 256 - alpha;
-		int i2 = (colour >> 16 & 0xff) * alpha;
-		int j2 = (colour >> 8 & 0xff) * alpha;
-		int k2 = (colour & 0xff) * alpha;
-		int k3 = DrawingArea.width - width;
+		final int l1 = 256 - alpha;
+		final int i2 = (colour >> 16 & 0xff) * alpha;
+		final int j2 = (colour >> 8 & 0xff) * alpha;
+		final int k2 = (colour & 0xff) * alpha;
+		final int k3 = DrawingArea.width - width;
 		int l3 = x + y * DrawingArea.width;
 		for (int i4 = 0; i4 < height; i4++) {
 			for (int j4 = -width; j4 < 0; j4++) {
-				int l2 = (pixels[l3] >> 16 & 0xff) * l1;
-				int i3 = (pixels[l3] >> 8 & 0xff) * l1;
-				int j3 = (pixels[l3] & 0xff) * l1;
-				int packedRGB = ((i2 + l2 >> 8) << 16) + ((j2 + i3 >> 8) << 8) + (k2 + j3 >> 8);
+				final int l2 = (pixels[l3] >> 16 & 0xff) * l1;
+				final int i3 = (pixels[l3] >> 8 & 0xff) * l1;
+				final int j3 = (pixels[l3] & 0xff) * l1;
+				final int packedRGB = ((i2 + l2 >> 8) << 16) + ((j2 + i3 >> 8) << 8) + (k2 + j3 >> 8);
 				pixels[l3++] = packedRGB;
 			}
 
@@ -101,7 +101,7 @@ public class DrawingArea extends Cacheable {
 		}
 	}
 
-	public static void drawHorizontalLine(int x, int y, int width, int colour) {
+	public static void drawHorizontalLine(final int x, int y, int width, final int colour) {
 		if (x < topY || x >= bottomY) {
             return;
         }
@@ -112,13 +112,13 @@ public class DrawingArea extends Cacheable {
 		if (y + width > bottomX) {
             width = bottomX - y;
         }
-		int pointer = y + x * DrawingArea.width;
+		final int pointer = y + x * DrawingArea.width;
 		for (int column = 0; column < width; column++) {
             pixels[pointer + column] = colour;
         }
 	}
 
-	public static void drawHorizontalLineAlpha(int x, int y, int width, int colour, int alpha) {
+	public static void drawHorizontalLineAlpha(final int x, int y, int width, final int colour, final int alpha) {
 		if (x < topY || x >= bottomY) {
             return;
         }
@@ -129,28 +129,28 @@ public class DrawingArea extends Cacheable {
 		if (y + width > bottomX) {
             width = bottomX - y;
         }
-		int opacity = 256 - alpha;
-		int r = (colour >> 16 & 0xff) * alpha;
-		int g = (colour >> 8 & 0xff) * alpha;
-		int b = (colour & 0xff) * alpha;
-		int pointer = y + x * DrawingArea.width;
+		final int opacity = 256 - alpha;
+		final int r = (colour >> 16 & 0xff) * alpha;
+		final int g = (colour >> 8 & 0xff) * alpha;
+		final int b = (colour & 0xff) * alpha;
+		final int pointer = y + x * DrawingArea.width;
 		for (int column = 0; column < width; column++) {
-			int rAlpha = (pixels[pointer + column] >> 16 & 0xff) * opacity;
-			int gAlpha = (pixels[pointer + column] >> 8 & 0xff) * opacity;
-			int bAlpha = (pixels[pointer + column] & 0xff) * opacity;
-			int packedRGB = ((r + rAlpha >> 8) << 16) + ((g + gAlpha >> 8) << 8) + (b + bAlpha >> 8);
+			final int rAlpha = (pixels[pointer + column] >> 16 & 0xff) * opacity;
+			final int gAlpha = (pixels[pointer + column] >> 8 & 0xff) * opacity;
+			final int bAlpha = (pixels[pointer + column] & 0xff) * opacity;
+			final int packedRGB = ((r + rAlpha >> 8) << 16) + ((g + gAlpha >> 8) << 8) + (b + bAlpha >> 8);
 			pixels[pointer + column] = packedRGB;
 		}
 	}
 
-	public static void drawUnfilledRectangle(int i, int j, int k, int l, int i1) {
+	public static void drawUnfilledRectangle(final int i, final int j, final int k, final int l, final int i1) {
 		drawHorizontalLine(i1, i, j, l);
 		drawHorizontalLine((i1 + k) - 1, i, j, l);
 		drawVerticalLine(i, i1, k, l);
 		drawVerticalLine((i + j) - 1, i1, k, l);
 	}
 
-	public static void drawUnfilledRectangleAlpha(int i, int j, int k, int l, int i1, int j1) {
+	public static void drawUnfilledRectangleAlpha(final int i, final int j, final int k, final int l, final int i1, final int j1) {
 		method340(l, i1, i, k, j1);
 		method340(l, i1, (i + j) - 1, k, j1);
 		if (j >= 3) {
@@ -159,7 +159,7 @@ public class DrawingArea extends Cacheable {
 		}
 	}
 
-	public static void drawVerticalLine(int x, int y, int height, int colour) {
+	public static void drawVerticalLine(final int x, int y, int height, final int colour) {
 		if (x < topX || x >= bottomX) {
             return;
         }
@@ -170,21 +170,21 @@ public class DrawingArea extends Cacheable {
 		if (y + height > bottomY) {
             height = bottomY - y;
         }
-		int pointer = x + y * DrawingArea.width;
+		final int pointer = x + y * DrawingArea.width;
 		for (int row = 0; row < height; row++) {
             pixels[pointer + row * DrawingArea.width] = colour;
         }
 
 	}
 
-	public static void initDrawingArea(int height, int width, int pixels[]) {
+	public static void initDrawingArea(final int height, final int width, final int[] pixels) {
 		DrawingArea.pixels = pixels;
 		DrawingArea.width = width;
 		DrawingArea.height = height;
 		setDrawingArea(height, 0, width, 0);
 	}
 
-	private static void method340(int i, int j, int k, int l, int i1) {
+	private static void method340(final int i, int j, final int k, final int l, int i1) {
 		if (k < topY || k >= bottomY) {
             return;
         }
@@ -195,22 +195,22 @@ public class DrawingArea extends Cacheable {
 		if (i1 + j > bottomX) {
             j = bottomX - i1;
         }
-		int j1 = 256 - l;
-		int k1 = (i >> 16 & 0xff) * l;
-		int l1 = (i >> 8 & 0xff) * l;
-		int i2 = (i & 0xff) * l;
+		final int j1 = 256 - l;
+		final int k1 = (i >> 16 & 0xff) * l;
+		final int l1 = (i >> 8 & 0xff) * l;
+		final int i2 = (i & 0xff) * l;
 		int i3 = i1 + k * width;
 		for (int j3 = 0; j3 < j; j3++) {
-			int j2 = (pixels[i3] >> 16 & 0xff) * j1;
-			int k2 = (pixels[i3] >> 8 & 0xff) * j1;
-			int l2 = (pixels[i3] & 0xff) * j1;
-			int k3 = ((k1 + j2 >> 8) << 16) + ((l1 + k2 >> 8) << 8) + (i2 + l2 >> 8);
+			final int j2 = (pixels[i3] >> 16 & 0xff) * j1;
+			final int k2 = (pixels[i3] >> 8 & 0xff) * j1;
+			final int l2 = (pixels[i3] & 0xff) * j1;
+			final int k3 = ((k1 + j2 >> 8) << 16) + ((l1 + k2 >> 8) << 8) + (i2 + l2 >> 8);
 			pixels[i3++] = k3;
 		}
 
 	}
 
-	private static void method342(int i, int j, int k, int l, int i1) {
+	private static void method342(final int i, final int j, final int k, int l, int i1) {
 		if (j < topX || j >= bottomX) {
             return;
         }
@@ -221,16 +221,16 @@ public class DrawingArea extends Cacheable {
 		if (l + i1 > bottomY) {
             i1 = bottomY - l;
         }
-		int j1 = 256 - k;
-		int k1 = (i >> 16 & 0xff) * k;
-		int l1 = (i >> 8 & 0xff) * k;
-		int i2 = (i & 0xff) * k;
+		final int j1 = 256 - k;
+		final int k1 = (i >> 16 & 0xff) * k;
+		final int l1 = (i >> 8 & 0xff) * k;
+		final int i2 = (i & 0xff) * k;
 		int i3 = j + l * width;
 		for (int j3 = 0; j3 < i1; j3++) {
-			int j2 = (pixels[i3] >> 16 & 0xff) * j1;
-			int k2 = (pixels[i3] >> 8 & 0xff) * j1;
-			int l2 = (pixels[i3] & 0xff) * j1;
-			int k3 = ((k1 + j2 >> 8) << 16) + ((l1 + k2 >> 8) << 8) + (i2 + l2 >> 8);
+			final int j2 = (pixels[i3] >> 16 & 0xff) * j1;
+			final int k2 = (pixels[i3] >> 8 & 0xff) * j1;
+			final int l2 = (pixels[i3] & 0xff) * j1;
+			final int k3 = ((k1 + j2 >> 8) << 16) + ((l1 + k2 >> 8) << 8) + (i2 + l2 >> 8);
 			pixels[i3] = k3;
 			i3 += width;
 		}
