@@ -6,7 +6,7 @@ import java.net.*;
 
 public final class signlink implements Runnable {
 
-	public static synchronized void dnslookup(String s) {
+	public static synchronized void dnslookup(final String s) {
 		dns = s;
 		dnsreq = s;
 	}
@@ -16,52 +16,57 @@ public final class signlink implements Runnable {
 	}
 
 	public static String findcachedirORIG() {
-		String as[] = { "c:/windows/", "c:/winnt/", "d:/windows/", "d:/winnt/", "e:/windows/", "e:/winnt/",
-				"f:/windows/", "f:/winnt/", "c:/", "~/", "/tmp/", "", "c:/rscache", "/rscache" };
-		if (storeid < 32 || storeid > 34)
-			storeid = 32;
-		String s = ".file_store_" + storeid;
-		for (int i = 0; i < as.length; i++)
-			try {
-				String s1 = as[i];
-				if (s1.length() > 0) {
-					File file = new File(s1);
-					if (!file.exists())
-						continue;
-				}
-				File file1 = new File(s1 + s);
-				if (file1.exists() || file1.mkdir())
-					return s1 + s + "/";
-			} catch (Exception _ex) {
-			}
+		final String[] as = {"c:/windows/", "c:/winnt/", "d:/windows/", "d:/winnt/", "e:/windows/", "e:/winnt/",
+				"f:/windows/", "f:/winnt/", "c:/", "~/", "/tmp/", "", "c:/rscache", "/rscache"};
+		if (storeid < 32 || storeid > 34) {
+            storeid = 32;
+        }
+		final String s = ".file_store_" + storeid;
+		for (int i = 0; i < as.length; i++) {
+            try {
+                final String s1 = as[i];
+                if (s1.length() > 0) {
+                    final File file = new File(s1);
+                    if (!file.exists()) {
+                        continue;
+                    }
+                }
+                final File file1 = new File(s1 + s);
+                if (file1.exists() || file1.mkdir()) {
+                    return s1 + s + "/";
+                }
+            } catch (final Exception _ex) {
+            }
+        }
 
 		return null;
 
 	}
 
-	private static int getuid(String s) {
+	private static int getuid(final String s) {
 		try {
-			File file = new File(s + "uid.dat");
+			final File file = new File(s + "uid.dat");
 			if (!file.exists() || file.length() < 4L) {
-				DataOutputStream dataoutputstream = new DataOutputStream(new FileOutputStream(s + "uid.dat"));
+				final DataOutputStream dataoutputstream = new DataOutputStream(new FileOutputStream(s + "uid.dat"));
 				dataoutputstream.writeInt((int) (Math.random() * 99999999D));
 				dataoutputstream.close();
 			}
-		} catch (Exception _ex) {
+		} catch (final Exception _ex) {
 		}
 		try {
-			DataInputStream datainputstream = new DataInputStream(new FileInputStream(s + "uid.dat"));
-			int i = datainputstream.readInt();
+			final DataInputStream datainputstream = new DataInputStream(new FileInputStream(s + "uid.dat"));
+			final int i = datainputstream.readInt();
 			datainputstream.close();
 			return i + 1;
-		} catch (Exception _ex) {
+		} catch (final Exception _ex) {
 			return 0;
 		}
 	}
 
-	public static synchronized void midisave(byte abyte0[], int i) {
-		if (i > 0x1e8480)
-			return;
+	public static synchronized void midisave(final byte[] abyte0, final int i) {
+		if (i > 0x1e8480) {
+            return;
+        }
 		if (savereq != null) {
 		} else {
 			midipos = (midipos + 1) % 5;
@@ -72,42 +77,46 @@ public final class signlink implements Runnable {
 		}
 	}
 
-	public static synchronized Socket openSocket(int port) throws IOException {
-		for (socketreq = port; socketreq != 0;)
-			try {
-				Thread.sleep(50L);
-			} catch (Exception _ex) {
-			}
+	public static synchronized Socket openSocket(final int port) throws IOException {
+		for (socketreq = port; socketreq != 0;) {
+            try {
+                Thread.sleep(50L);
+            } catch (final Exception _ex) {
+            }
+        }
 
-		if (socket == null)
-			throw new IOException("could not open socket");
-		else
-			return socket;
+		if (socket == null) {
+            throw new IOException("could not open socket");
+        } else {
+            return socket;
+        }
 	}
 
-	public static synchronized DataInputStream openurl(String s) throws IOException {
-		for (urlreq = s; urlreq != null;)
-			try {
-				Thread.sleep(50L);
-			} catch (Exception _ex) {
-			}
+	public static synchronized DataInputStream openurl(final String s) throws IOException {
+		for (urlreq = s; urlreq != null;) {
+            try {
+                Thread.sleep(50L);
+            } catch (final Exception _ex) {
+            }
+        }
 
-		if (urlstream == null)
-			throw new IOException("could not open: " + s);
-		else
-			return urlstream;
+		if (urlstream == null) {
+            throw new IOException("could not open: " + s);
+        } else {
+            return urlstream;
+        }
 	}
 
-	public static void reporterror(String s) {
+	public static void reporterror(final String s) {
 		System.out.println("Error: " + s);
 	}
 
-	public static void startpriv(InetAddress inetaddress) {
+	public static void startpriv(final InetAddress inetaddress) {
 		threadliveid = (int) (Math.random() * 99999999D);
 		if (active) {
 			try {
 				Thread.sleep(500L);
-			} catch (Exception _ex) {
+			} catch (final Exception _ex) {
 			}
 			active = false;
 		}
@@ -117,17 +126,18 @@ public final class signlink implements Runnable {
 		savereq = null;
 		urlreq = null;
 		socketip = inetaddress;
-		Thread thread = new Thread(new signlink());
+		final Thread thread = new Thread(new signlink());
 		thread.setDaemon(true);
 		thread.start();
-		while (!active)
-			try {
-				Thread.sleep(50L);
-			} catch (Exception _ex) {
-			}
+		while (!active) {
+            try {
+                Thread.sleep(50L);
+            } catch (final Exception _ex) {
+            }
+        }
 	}
 
-	public static synchronized void startThread(Runnable runnable, int priority) {
+	public static synchronized void startThread(final Runnable runnable, final int priority) {
 		threadreqpri = priority;
 		threadreq = runnable;
 	}
@@ -143,9 +153,10 @@ public final class signlink implements Runnable {
 		}
 	}
 
-	public static synchronized boolean wavesave(byte abyte0[], int i) {
-		if (i > 0x1e8480)
-			return false;
+	public static synchronized boolean wavesave(final byte[] abyte0, final int i) {
+		if (i > 0x1e8480) {
+            return false;
+        }
 		if (savereq != null) {
 			return false;
 		} else {
@@ -198,29 +209,31 @@ public final class signlink implements Runnable {
 	@Override
 	public void run() {
 		active = true;
-		String s = findcachedir();
+		final String s = findcachedir();
 		uid = getuid(s);
 		try {
-			File file = new File(s + "main_file_cache.dat");
-			if (file.exists() && file.length() > 0x3200000L)
-				file.delete();
+			final File file = new File(s + "main_file_cache.dat");
+			if (file.exists() && file.length() > 0x3200000L) {
+                file.delete();
+            }
 			cache_dat = new RandomAccessFile(s + "main_file_cache.dat", "rw");
-			for (int j = 0; j < 5; j++)
-				cache_idx[j] = new RandomAccessFile(s + "main_file_cache.idx" + j, "rw");
+			for (int j = 0; j < 5; j++) {
+                cache_idx[j] = new RandomAccessFile(s + "main_file_cache.idx" + j, "rw");
+            }
 
-		} catch (Exception exception) {
+		} catch (final Exception exception) {
 			exception.printStackTrace();
 		}
-		for (int i = threadliveid; threadliveid == i;) {
+		for (final int i = threadliveid; threadliveid == i;) {
 			if (socketreq != 0) {
 				try {
 					socket = new Socket(socketip, socketreq);
-				} catch (Exception _ex) {
+				} catch (final Exception _ex) {
 					socket = null;
 				}
 				socketreq = 0;
 			} else if (threadreq != null) {
-				Thread thread = new Thread(threadreq);
+				final Thread thread = new Thread(threadreq);
 				thread.setDaemon(true);
 				thread.start();
 				thread.setPriority(threadreqpri);
@@ -228,18 +241,19 @@ public final class signlink implements Runnable {
 			} else if (dnsreq != null) {
 				try {
 					dns = InetAddress.getByName(dnsreq).getHostName();
-				} catch (Exception _ex) {
+				} catch (final Exception _ex) {
 					dns = "unknown";
 				}
 				dnsreq = null;
 			} else if (savereq != null) {
-				if (savebuf != null)
-					try {
-						FileOutputStream fileoutputstream = new FileOutputStream(s + savereq);
-						fileoutputstream.write(savebuf, 0, savelen);
-						fileoutputstream.close();
-					} catch (Exception _ex) {
-					}
+				if (savebuf != null) {
+                    try {
+                        final FileOutputStream fileoutputstream = new FileOutputStream(s + savereq);
+                        fileoutputstream.write(savebuf, 0, savelen);
+                        fileoutputstream.close();
+                    } catch (final Exception _ex) {
+                    }
+                }
 				if (waveplay) {
 					waveplay = false;
 				}
@@ -254,14 +268,14 @@ public final class signlink implements Runnable {
 				try {
 					System.out.println("urlstream");
 					urlstream = new DataInputStream((new URL(applet.getCodeBase(), urlreq)).openStream());
-				} catch (Exception _ex) {
+				} catch (final Exception _ex) {
 					urlstream = null;
 				}
 				urlreq = null;
 			}
 			try {
 				Thread.sleep(50L);
-			} catch (Exception _ex) {
+			} catch (final Exception _ex) {
 			}
 		}
 

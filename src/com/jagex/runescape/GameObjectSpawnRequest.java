@@ -19,6 +19,6 @@ final class GameObjectSpawnRequest extends Linkable {
 	public int delayUntilSpawn;
 
 	GameObjectSpawnRequest() {
-		delayUntilRespawn = -1;
+        this.delayUntilRespawn = -1;
 	}
 }

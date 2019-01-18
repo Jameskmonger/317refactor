@@ -50,27 +50,27 @@ public final class GameFont extends DrawingArea {
 	 * 
 	 * @param monospace Is the font monospace?
 	 */
-	public GameFont(String name, Archive archive, boolean monospace) {
-		glyphPixels = new byte[256][];
-		glyphWidth = new int[256];
-		glyphHeight = new int[256];
-		horizontalKerning = new int[256];
-		verticalKerning = new int[256];
-		glyphDisplayWidth = new int[256];
-		random = new Random();
-		strikethrough = false;
+	public GameFont(final String name, final Archive archive, final boolean monospace) {
+        this.glyphPixels = new byte[256][];
+        this.glyphWidth = new int[256];
+        this.glyphHeight = new int[256];
+        this.horizontalKerning = new int[256];
+        this.verticalKerning = new int[256];
+        this.glyphDisplayWidth = new int[256];
+        this.random = new Random();
+        this.strikethrough = false;
 
 		/*
 		 * The buffer containing data about this specific font. The position of the font
 		 * within the parent archive (index.dat) and the pixel data for the glyph.
 		 */
-		Buffer glyphData = new Buffer(archive.decompressFile(name + ".dat"));
+		final Buffer glyphData = new Buffer(archive.decompressFile(name + ".dat"));
 
 		/*
 		 * Stores the information about the glyphs, such as the kerning and the
 		 * dimensons.
 		 */
-		Buffer glyphInformation = new Buffer(archive.decompressFile("index.dat"));
+		final Buffer glyphInformation = new Buffer(archive.decompressFile("index.dat"));
 
 		/*
 		 * Find the glyph information within the parent archive.
@@ -80,45 +80,46 @@ public final class GameFont extends DrawingArea {
 		/*
 		 * Find the glyph data for this font within the parent archive.
 		 */
-		int startPosition = glyphInformation.getUnsignedByte();
-		if (startPosition > 0)
-			glyphInformation.position += 3 * (startPosition - 1);
+		final int startPosition = glyphInformation.getUnsignedByte();
+		if (startPosition > 0) {
+            glyphInformation.position += 3 * (startPosition - 1);
+        }
 
 		/*
 		 * Get the data for each glyph.
 		 */
 		for (int g = 0; g < 256; g++) {
-			horizontalKerning[g] = glyphInformation.getUnsignedByte();
-			verticalKerning[g] = glyphInformation.getUnsignedByte();
-			int width = glyphWidth[g] = glyphInformation.getUnsignedLEShort();
-			int height = glyphHeight[g] = glyphInformation.getUnsignedLEShort();
+            this.horizontalKerning[g] = glyphInformation.getUnsignedByte();
+            this.verticalKerning[g] = glyphInformation.getUnsignedByte();
+			final int width = this.glyphWidth[g] = glyphInformation.getUnsignedLEShort();
+			final int height = this.glyphHeight[g] = glyphInformation.getUnsignedLEShort();
 
 			/*
 			 * Is the glyph rectangular?
 			 */
-			int rectangular = glyphInformation.getUnsignedByte();
+			final int rectangular = glyphInformation.getUnsignedByte();
 
 			/*
 			 * Get the area of the glyph.
 			 */
-			int area = width * height;
+			final int area = width * height;
 
 			/*
 			 * Initialise the pixels for this glyph.
 			 */
-			glyphPixels[g] = new byte[area];
+            this.glyphPixels[g] = new byte[area];
 
 			/*
 			 * Set the pixels for the glyph based on whether it is square or rectangular.
 			 */
 			if (rectangular == 0) {
 				for (int p = 0; p < area; p++) {
-					glyphPixels[g][p] = glyphData.get();
+                    this.glyphPixels[g][p] = glyphData.get();
 				}
 			} else if (rectangular == 1) {
 				for (int w = 0; w < width; w++) {
 					for (int h = 0; h < height; h++) {
-						glyphPixels[g][w + h * width] = glyphData.get();
+                        this.glyphPixels[g][w + h * width] = glyphData.get();
 					}
 				}
 			}
@@ -130,27 +131,31 @@ public final class GameFont extends DrawingArea {
 			 * 126 is the last visible character used in this client (~). No support for
 			 * accented characters!
 			 */
-			if (height > fontHeight && g < 128)
-				fontHeight = height;
+			if (height > this.fontHeight && g < 128) {
+                this.fontHeight = height;
+            }
 
-			horizontalKerning[g] = 1;
-			glyphDisplayWidth[g] = width + 2;
+            this.horizontalKerning[g] = 1;
+            this.glyphDisplayWidth[g] = width + 2;
 
 			int activePixels = 0;
-			for (int h = height / 7; h < height; h++)
-				activePixels += glyphPixels[g][h * width];
+			for (int h = height / 7; h < height; h++) {
+                activePixels += this.glyphPixels[g][h * width];
+            }
 
 			if (activePixels <= height / 7) {
-				glyphDisplayWidth[g]--;
-				horizontalKerning[g] = 0;
+                this.glyphDisplayWidth[g]--;
+                this.horizontalKerning[g] = 0;
 			}
 
 			activePixels = 0;
-			for (int h = height / 7; h < height; h++)
-				activePixels += glyphPixels[g][(width - 1) + h * width];
+			for (int h = height / 7; h < height; h++) {
+                activePixels += this.glyphPixels[g][(width - 1) + h * width];
+            }
 
-			if (activePixels <= height / 7)
-				glyphDisplayWidth[g]--;
+			if (activePixels <= height / 7) {
+                this.glyphDisplayWidth[g]--;
+            }
 		}
 
 		/*
@@ -158,9 +163,9 @@ public final class GameFont extends DrawingArea {
 		 * lowercase i.
 		 */
 		if (monospace) {
-			glyphDisplayWidth[32] = glyphDisplayWidth[73];
+            this.glyphDisplayWidth[32] = this.glyphDisplayWidth[73];
 		} else {
-			glyphDisplayWidth[32] = glyphDisplayWidth[105];
+            this.glyphDisplayWidth[32] = this.glyphDisplayWidth[105];
 		}
 	}
 
@@ -187,9 +192,9 @@ public final class GameFont extends DrawingArea {
 	 * 
 	 * @param colour         The colour to draw the pixels in.
 	 */
-	private void render(byte input[], int inputPosition, int inputWidth, int output[], int outputPosition,
-			int outputWidth, int width, int height, int colour) {
-		int _width = -(width >> 2);
+	private void render(final byte[] input, int inputPosition, final int inputWidth, final int[] output, int outputPosition,
+                        final int outputWidth, int width, final int height, final int colour) {
+		final int _width = -(width >> 2);
 		width = -(width & 3);
 
 		/*
@@ -202,29 +207,35 @@ public final class GameFont extends DrawingArea {
 				 * not, simply leave a space.
 				 */
 
-				if (input[inputPosition++] != 0)
-					output[outputPosition++] = colour;
-				else
-					outputPosition++;
-				if (input[inputPosition++] != 0)
-					output[outputPosition++] = colour;
-				else
-					outputPosition++;
-				if (input[inputPosition++] != 0)
-					output[outputPosition++] = colour;
-				else
-					outputPosition++;
-				if (input[inputPosition++] != 0)
-					output[outputPosition++] = colour;
-				else
-					outputPosition++;
+				if (input[inputPosition++] != 0) {
+                    output[outputPosition++] = colour;
+                } else {
+                    outputPosition++;
+                }
+				if (input[inputPosition++] != 0) {
+                    output[outputPosition++] = colour;
+                } else {
+                    outputPosition++;
+                }
+				if (input[inputPosition++] != 0) {
+                    output[outputPosition++] = colour;
+                } else {
+                    outputPosition++;
+                }
+				if (input[inputPosition++] != 0) {
+                    output[outputPosition++] = colour;
+                } else {
+                    outputPosition++;
+                }
 			}
 
-			for (int i = width; i < 0; i++)
-				if (input[inputPosition++] != 0)
-					output[outputPosition++] = colour;
-				else
-					outputPosition++;
+			for (int i = width; i < 0; i++) {
+                if (input[inputPosition++] != 0) {
+                    output[outputPosition++] = colour;
+                } else {
+                    outputPosition++;
+                }
+            }
 
 			outputPosition += outputWidth;
 			inputPosition += inputWidth;
@@ -256,8 +267,8 @@ public final class GameFont extends DrawingArea {
 	 * 
 	 * @param alpha          The alpha value for the pixels.
 	 */
-	private void renderAlpha(byte input[], int inputPosition, int inputWidth, int output[], int outputPosition,
-			int outputWidth, int width, int height, int colour, int alpha) {
+	private void renderAlpha(final byte[] input, int inputPosition, final int inputWidth, final int[] output, int outputPosition,
+                             final int outputWidth, final int width, final int height, int colour, int alpha) {
 		/*
 		 * Calculate the colour and the alpha values.
 		 */
@@ -273,7 +284,7 @@ public final class GameFont extends DrawingArea {
 				 * If the pixel is set then draw it, if not simply leave a space.
 				 */
 				if (input[inputPosition++] != 0) {
-					int outputColour = output[outputPosition];
+					final int outputColour = output[outputPosition];
 					output[outputPosition++] = (((outputColour & 0xff00ff) * alpha & 0xff00ff00)
 							+ ((outputColour & 0xff00) * alpha & 0xff0000) >> 8) + colour;
 				} else {
@@ -300,7 +311,7 @@ public final class GameFont extends DrawingArea {
 	 * 
 	 * @param colour      The colour of the glyph.
 	 */
-	private void drawGlyph(byte glyphPixels[], int x, int y, int width, int height, int colour) {
+	private void drawGlyph(final byte[] glyphPixels, int x, int y, int width, int height, final int colour) {
 		int outputPosition = x + y * DrawingArea.width;
 		int outputWidth = DrawingArea.width - width;
 		int inputWidth = 0;
@@ -310,7 +321,7 @@ public final class GameFont extends DrawingArea {
 		 * Calculate the height of the glyph.
 		 */
 		if (y < DrawingArea.topY) {
-			int size = DrawingArea.topY - y;
+			final int size = DrawingArea.topY - y;
 			height -= size;
 			y = DrawingArea.topY;
 			inputPosition += size * width;
@@ -324,7 +335,7 @@ public final class GameFont extends DrawingArea {
 		 * Calculate the width of the glyph.
 		 */
 		if (x < DrawingArea.topX) {
-			int size = DrawingArea.topX - x;
+			final int size = DrawingArea.topX - x;
 			width -= size;
 			x = DrawingArea.topX;
 			inputPosition += size;
@@ -333,7 +344,7 @@ public final class GameFont extends DrawingArea {
 			outputWidth += size;
 		}
 		if (x + width >= DrawingArea.bottomX) {
-			int size = ((x + width) - DrawingArea.bottomX) + 1;
+			final int size = ((x + width) - DrawingArea.bottomX) + 1;
 			width -= size;
 			inputWidth += size;
 			outputWidth += size;
@@ -343,12 +354,12 @@ public final class GameFont extends DrawingArea {
 		 * If the glyph is a valid size then render it.
 		 */
 		if (width > 0 && height > 0) {
-			render(glyphPixels, inputPosition, inputWidth, DrawingArea.pixels, outputPosition, outputWidth, width,
+			this.render(glyphPixels, inputPosition, inputWidth, DrawingArea.pixels, outputPosition, outputWidth, width,
 					height, colour);
 		}
 	}
 
-	private void drawGlyphAlpha(byte glyphPixels[], int x, int y, int width, int height, int colour, int alpha) {
+	private void drawGlyphAlpha(final byte[] glyphPixels, int x, int y, int width, int height, final int colour, final int alpha) {
 		int outputPosition = x + y * DrawingArea.width;
 		int outputWidth = DrawingArea.width - width;
 		int inputWidth = 0;
@@ -358,20 +369,21 @@ public final class GameFont extends DrawingArea {
 		 * Calculate the height of the glyph.
 		 */
 		if (y < DrawingArea.topY) {
-			int size = DrawingArea.topY - y;
+			final int size = DrawingArea.topY - y;
 			height -= size;
 			y = DrawingArea.topY;
 			inputPosition += size * width;
 			outputPosition += size * DrawingArea.width;
 		}
-		if (y + height >= DrawingArea.bottomY)
-			height -= ((y + height) - DrawingArea.bottomY) + 1;
+		if (y + height >= DrawingArea.bottomY) {
+            height -= ((y + height) - DrawingArea.bottomY) + 1;
+        }
 
 		/*
 		 * Calculate the width of the glyph.
 		 */
 		if (x < DrawingArea.topX) {
-			int size = DrawingArea.topX - x;
+			final int size = DrawingArea.topX - x;
 			width -= size;
 			x = DrawingArea.topX;
 			inputPosition += size;
@@ -380,7 +392,7 @@ public final class GameFont extends DrawingArea {
 			outputWidth += size;
 		}
 		if (x + width >= DrawingArea.bottomX) {
-			int size = ((x + width) - DrawingArea.bottomX) + 1;
+			final int size = ((x + width) - DrawingArea.bottomX) + 1;
 			width -= size;
 			inputWidth += size;
 			outputWidth += size;
@@ -389,9 +401,10 @@ public final class GameFont extends DrawingArea {
 		/*
 		 * If the glyph is valid then render it!
 		 */
-		if (width > 0 && height > 0)
-			renderAlpha(glyphPixels, inputPosition, inputWidth, DrawingArea.pixels, outputPosition, outputWidth, width,
-					height, colour, alpha);
+		if (width > 0 && height > 0) {
+			this.renderAlpha(glyphPixels, inputPosition, inputWidth, DrawingArea.pixels, outputPosition, outputWidth, width,
+                    height, colour, alpha);
+        }
 	}
 
 	/**
@@ -410,16 +423,17 @@ public final class GameFont extends DrawingArea {
 	 * 
 	 * @param shadowed      Whether the text is shadowed or not.
 	 */
-	public void drawTextWithPotentialShadow(String text, int x, int y, int currentColour, boolean shadowed) {
-		strikethrough = false;
-		int originalX = x;
-		if (text == null)
-			return;
+	public void drawTextWithPotentialShadow(final String text, int x, int y, int currentColour, final boolean shadowed) {
+        this.strikethrough = false;
+		final int originalX = x;
+		if (text == null) {
+            return;
+        }
 
 		/*
 		 * Draw from the top-left rather than the bottom.
 		 */
-		y -= fontHeight;
+		y -= this.fontHeight;
 
 		/*
 		 * Iterate through every character in the text.
@@ -430,12 +444,13 @@ public final class GameFont extends DrawingArea {
 			 * example)
 			 */
 			if (text.charAt(c) == '@' && c + 4 < text.length() && text.charAt(c + 4) == '@') {
-				int colour = handleEmbeddedEffect(text.substring(c + 1, c + 4));
-				if (colour != -1)
-					currentColour = colour;
+				final int colour = this.handleEmbeddedEffect(text.substring(c + 1, c + 4));
+				if (colour != -1) {
+                    currentColour = colour;
+                }
 				c += 4;
 			} else {
-				char character = text.charAt(c);
+				final char character = text.charAt(c);
 
 				/*
 				 * If the character is a space, we don't need to draw it (but we do still offset
@@ -447,13 +462,13 @@ public final class GameFont extends DrawingArea {
 					 * the normal coloured text on top of it.
 					 */
 					if (shadowed) {
-						drawGlyph(glyphPixels[character], x + horizontalKerning[character] + 1,
-								y + verticalKerning[character] + 1, glyphWidth[character], glyphHeight[character], 0);
+						this.drawGlyph(this.glyphPixels[character], x + this.horizontalKerning[character] + 1,
+								y + this.verticalKerning[character] + 1, this.glyphWidth[character], this.glyphHeight[character], 0);
 					}
-					drawGlyph(glyphPixels[character], x + horizontalKerning[character], y + verticalKerning[character],
-							glyphWidth[character], glyphHeight[character], currentColour);
+					this.drawGlyph(this.glyphPixels[character], x + this.horizontalKerning[character], y + this.verticalKerning[character],
+                            this.glyphWidth[character], this.glyphHeight[character], currentColour);
 				}
-				x += glyphDisplayWidth[character];
+				x += this.glyphDisplayWidth[character];
 			}
 		}
 
@@ -461,8 +476,8 @@ public final class GameFont extends DrawingArea {
 		 * If the current piece of text has a strikethrough applied, draw a horizontal
 		 * line from the start of the text to the current position.
 		 */
-		if (strikethrough) {
-			DrawingArea.drawHorizontalLine(y + (int) (fontHeight * 0.7D), originalX, x - originalX, 0x800000);
+		if (this.strikethrough) {
+			DrawingArea.drawHorizontalLine(y + (int) (this.fontHeight * 0.7D), originalX, x - originalX, 0x800000);
 		}
 	}
 
@@ -479,8 +494,8 @@ public final class GameFont extends DrawingArea {
 	 * 
 	 * @param shadow Whether or not a shadow should be drawn.
 	 */
-	public void drawCentredTextWithPotentialShadow(String text, int x, int y, int colour, boolean shadow) {
-		drawTextWithPotentialShadow(text, x - getTextDisplayedWidth(text) / 2, y, colour, shadow);
+	public void drawCentredTextWithPotentialShadow(final String text, final int x, final int y, final int colour, final boolean shadow) {
+		this.drawTextWithPotentialShadow(text, x - this.getTextDisplayedWidth(text) / 2, y, colour, shadow);
 	}
 
 	/**
@@ -496,25 +511,26 @@ public final class GameFont extends DrawingArea {
 	 * 
 	 * @param seed          The seed for the random number generator.
 	 */
-	public void drawAlphaTextWithShadow(String text, int x, int y, int currentColour, int seed) {
-		if (text == null)
-			return;
+	public void drawAlphaTextWithShadow(final String text, int x, int y, int currentColour, final int seed) {
+		if (text == null) {
+            return;
+        }
 
 		/*
 		 * Set the seet for the RNG.
 		 */
-		random.setSeed(seed);
+        this.random.setSeed(seed);
 
 		/*
 		 * Generate a random alpha value that is more opaque than the shadow (192 is the
 		 * alpha value for the shadow).
 		 */
-		int alpha = 192 + (random.nextInt() & 0x1f);
+		final int alpha = 192 + (this.random.nextInt() & 0x1f);
 
 		/*
 		 * Draw from the top-left instead of the bottom.
 		 */
-		y -= fontHeight;
+		y -= this.fontHeight;
 
 		/*
 		 * Iterate through all the characters in the text.
@@ -525,33 +541,35 @@ public final class GameFont extends DrawingArea {
 			 * example)
 			 */
 			if (text.charAt(c) == '@' && c + 4 < text.length() && text.charAt(c + 4) == '@') {
-				int colour = handleEmbeddedEffect(text.substring(c + 1, c + 4));
-				if (colour != -1)
-					currentColour = colour;
+				final int colour = this.handleEmbeddedEffect(text.substring(c + 1, c + 4));
+				if (colour != -1) {
+                    currentColour = colour;
+                }
 				c += 4;
 			} else {
-				char character = text.charAt(c);
+				final char character = text.charAt(c);
 
 				/*
 				 * If the character is a space, we don't draw it - we just add the width of the
 				 * space to the current x position.
 				 */
 				if (character != ' ') {
-					drawGlyphAlpha(glyphPixels[character], x + horizontalKerning[character] + 1,
-							y + verticalKerning[character] + 1, glyphWidth[character], glyphHeight[character], 0, 192);
-					drawGlyphAlpha(glyphPixels[character], x + horizontalKerning[character],
-							y + verticalKerning[character], glyphWidth[character], glyphHeight[character],
+					this.drawGlyphAlpha(this.glyphPixels[character], x + this.horizontalKerning[character] + 1,
+							y + this.verticalKerning[character] + 1, this.glyphWidth[character], this.glyphHeight[character], 0, 192);
+					this.drawGlyphAlpha(this.glyphPixels[character], x + this.horizontalKerning[character],
+							y + this.verticalKerning[character], this.glyphWidth[character], this.glyphHeight[character],
 							currentColour, alpha);
 				}
-				x += glyphDisplayWidth[character];
+				x += this.glyphDisplayWidth[character];
 
 				/*
 				 * Apply a slight offset to the text occasionally.
 				 * 
 				 * Not sure why.
 				 */
-				if ((random.nextInt() & 3) == 0)
-					x++;
+				if ((this.random.nextInt() & 3) == 0) {
+                    x++;
+                }
 			}
 		}
 	}
@@ -567,30 +585,31 @@ public final class GameFont extends DrawingArea {
 	 * 
 	 * @param colour The colour of the text.
 	 */
-	public void drawText(String text, int x, int y, int colour) {
-		if (text == null)
-			return;
+	public void drawText(final String text, int x, int y, final int colour) {
+		if (text == null) {
+            return;
+        }
 
 		/*
 		 * Draw from the top-left, not the bottom.
 		 */
-		y -= fontHeight;
+		y -= this.fontHeight;
 
 		/*
 		 * Iterate through every character in the text.
 		 */
 		for (int c = 0; c < text.length(); c++) {
-			char character = text.charAt(c);
+			final char character = text.charAt(c);
 
 			/*
 			 * If the character is a space, we don't draw it - we just add the width of the
 			 * space to the current x position.
 			 */
 			if (character != ' ') {
-				drawGlyph(glyphPixels[character], x + horizontalKerning[character], y + verticalKerning[character],
-						glyphWidth[character], glyphHeight[character], colour);
+				this.drawGlyph(this.glyphPixels[character], x + this.horizontalKerning[character], y + this.verticalKerning[character],
+                        this.glyphWidth[character], this.glyphHeight[character], colour);
 			}
-			x += glyphDisplayWidth[character];
+			x += this.glyphDisplayWidth[character];
 		}
 	}
 
@@ -605,12 +624,12 @@ public final class GameFont extends DrawingArea {
 	 * 
 	 * @param colour The colour of the text.
 	 */
-	public void drawCentredText(String text, int x, int y, int colour) {
+	public void drawCentredText(final String text, final int x, final int y, final int colour) {
 		/*
 		 * Draw the text with half of it to the left of the anchor, and half of it to
 		 * the right of the anchor.
 		 */
-		drawText(text, x - getTextWidth(text) / 2, y, colour);
+		this.drawText(text, x - this.getTextWidth(text) / 2, y, colour);
 	}
 
 	/**
@@ -624,11 +643,11 @@ public final class GameFont extends DrawingArea {
 	 * 
 	 * @param colour The colour to draw the text in.
 	 */
-	public void drawTextLeft(String text, int x, int y, int colour) {
+	public void drawTextLeft(final String text, final int x, final int y, final int colour) {
 		/*
 		 * Draw text with all of the text to the left of an anchor point.
 		 */
-		drawText(text, x - getTextWidth(text), y, colour);
+		this.drawText(text, x - this.getTextWidth(text), y, colour);
 	}
 
 	/**
@@ -645,26 +664,27 @@ public final class GameFont extends DrawingArea {
 	 * 
 	 * @param tick   The current tick (used to make the text wave).
 	 */
-	public void drawVerticalSineWaveText(String text, int x, int y, int colour, int tick) {
-		if (text == null)
-			return;
+	public void drawVerticalSineWaveText(final String text, int x, int y, final int colour, final int tick) {
+		if (text == null) {
+            return;
+        }
 
 		/*
 		 * Place half the text to the left of the anchor point and half the text to the
 		 * right. This centres the text horizontally.
 		 */
-		x -= getTextWidth(text) / 2;
+		x -= this.getTextWidth(text) / 2;
 
 		/*
 		 * Draw text from the top-left instead of the bottom.
 		 */
-		y -= fontHeight;
+		y -= this.fontHeight;
 
 		/*
 		 * Iterate through the characters in the text.
 		 */
 		for (int c = 0; c < text.length(); c++) {
-			char character = text.charAt(c);
+			final char character = text.charAt(c);
 			/*
 			 * If the character is a space we do not draw it, but we still move the x
 			 * position by the width of the space.
@@ -673,11 +693,11 @@ public final class GameFont extends DrawingArea {
 				/*
 				 * The y position of the text is determined using a sine wave.
 				 */
-				drawGlyph(glyphPixels[character], x + horizontalKerning[character],
-						y + verticalKerning[character] + (int) (Math.sin(c / 2D + tick / 5D) * 5D),
-						glyphWidth[character], glyphHeight[character], colour);
+				this.drawGlyph(this.glyphPixels[character], x + this.horizontalKerning[character],
+						y + this.verticalKerning[character] + (int) (Math.sin(c / 2D + tick / 5D) * 5D),
+                        this.glyphWidth[character], this.glyphHeight[character], colour);
 			}
-			x += glyphDisplayWidth[character];
+			x += this.glyphDisplayWidth[character];
 		}
 	}
 
@@ -697,34 +717,36 @@ public final class GameFont extends DrawingArea {
 	 * 
 	 * @param tick    The current tick (used to make the text wave).
 	 */
-	public void drawShakingText(String text, int x, int y, int colour, int elapsed, int tick) {
-		if (text == null)
-			return;
+	public void drawShakingText(final String text, int x, int y, final int colour, final int elapsed, final int tick) {
+		if (text == null) {
+            return;
+        }
 
 		/*
 		 * Calculate the current amplitude of the shake based on how long the text has
 		 * been shaking for.
 		 */
 		double amplitude = 7D - elapsed / 8D;
-		if (amplitude < 0.0D)
-			amplitude = 0.0D;
+		if (amplitude < 0.0D) {
+            amplitude = 0.0D;
+        }
 
 		/*
 		 * Place half the text to the left of the anchor point and half the text to the
 		 * right. This centres the text horizontally.
 		 */
-		x -= getTextWidth(text) / 2;
+		x -= this.getTextWidth(text) / 2;
 
 		/*
 		 * Draw text from the top-left instead of the bottom.
 		 */
-		y -= fontHeight;
+		y -= this.fontHeight;
 
 		/*
 		 * Iterate through the characters in the text.
 		 */
 		for (int c = 0; c < text.length(); c++) {
-			char character = text.charAt(c);
+			final char character = text.charAt(c);
 
 			/*
 			 * If the character is a space we do not draw it, but we still move the x
@@ -736,11 +758,11 @@ public final class GameFont extends DrawingArea {
 				 * into account the current time and the amount of time the text has been
 				 * shaking for.
 				 */
-				drawGlyph(glyphPixels[character], x + horizontalKerning[character],
-						y + verticalKerning[character] + (int) (Math.sin(c / 1.5D + tick) * amplitude),
-						glyphWidth[character], glyphHeight[character], colour);
+				this.drawGlyph(this.glyphPixels[character], x + this.horizontalKerning[character],
+						y + this.verticalKerning[character] + (int) (Math.sin(c / 1.5D + tick) * amplitude),
+                        this.glyphWidth[character], this.glyphHeight[character], colour);
 			}
-			x += glyphDisplayWidth[character];
+			x += this.glyphDisplayWidth[character];
 		}
 	}
 
@@ -759,26 +781,27 @@ public final class GameFont extends DrawingArea {
 	 * 
 	 * @param tick   The current tick (used to make the text wave).
 	 */
-	public void drawVerticalHorizontalSineWaveText(String text, int x, int y, int colour, int tick) {
-		if (text == null)
-			return;
+	public void drawVerticalHorizontalSineWaveText(final String text, int x, int y, final int colour, final int tick) {
+		if (text == null) {
+            return;
+        }
 
 		/*
 		 * Place half the text to the left of the anchor point and half the text to the
 		 * right. This centres the text horizontally.
 		 */
-		x -= getTextWidth(text) / 2;
+		x -= this.getTextWidth(text) / 2;
 
 		/*
 		 * Draw text from the top-left instead of the bottom.
 		 */
-		y -= fontHeight;
+		y -= this.fontHeight;
 
 		/*
 		 * Iterate through the characters in the text.
 		 */
 		for (int c = 0; c < text.length(); c++) {
-			char character = text.charAt(c);
+			final char character = text.charAt(c);
 			/*
 			 * If the character is a space we do not draw it, but we still move the x
 			 * position by the width of the space.
@@ -787,12 +810,12 @@ public final class GameFont extends DrawingArea {
 				/*
 				 * The x and y positions of the text are determined using sine waves.
 				 */
-				drawGlyph(glyphPixels[character],
-						x + horizontalKerning[character] + (int) (Math.sin(c / 5D + tick / 5D) * 5D),
-						y + verticalKerning[character] + (int) (Math.sin(c / 3D + tick / 5D) * 5D),
-						glyphWidth[character], glyphHeight[character], colour);
+				this.drawGlyph(this.glyphPixels[character],
+						x + this.horizontalKerning[character] + (int) (Math.sin(c / 5D + tick / 5D) * 5D),
+						y + this.verticalKerning[character] + (int) (Math.sin(c / 3D + tick / 5D) * 5D),
+                        this.glyphWidth[character], this.glyphHeight[character], colour);
 			}
-			x += glyphDisplayWidth[character];
+			x += this.glyphDisplayWidth[character];
 		}
 	}
 
@@ -805,45 +828,64 @@ public final class GameFont extends DrawingArea {
 	 * @return The numeric representation of the colour, or -1 if the colour does
 	 *         not exist.
 	 */
-	private int handleEmbeddedEffect(String name) {
-		if (name.equals("red"))
-			return 0xff0000;
-		if (name.equals("gre"))
-			return 65280;
-		if (name.equals("blu"))
-			return 255;
-		if (name.equals("yel"))
-			return 0xffff00;
-		if (name.equals("cya"))
-			return 65535;
-		if (name.equals("mag"))
-			return 0xff00ff;
-		if (name.equals("whi"))
-			return 0xffffff;
-		if (name.equals("bla"))
-			return 0;
-		if (name.equals("lre"))
-			return 0xff9040;
-		if (name.equals("dre"))
-			return 0x800000;
-		if (name.equals("dbl"))
-			return 128;
-		if (name.equals("or1"))
-			return 0xffb000;
-		if (name.equals("or2"))
-			return 0xff7000;
-		if (name.equals("or3"))
-			return 0xff3000;
-		if (name.equals("gr1"))
-			return 0xc0ff00;
-		if (name.equals("gr2"))
-			return 0x80ff00;
-		if (name.equals("gr3"))
-			return 0x40ff00;
-		if (name.equals("str"))
-			strikethrough = true;
-		if (name.equals("end"))
-			strikethrough = false;
+	private int handleEmbeddedEffect(final String name) {
+		if (name.equals("red")) {
+            return 0xff0000;
+        }
+		if (name.equals("gre")) {
+            return 65280;
+        }
+		if (name.equals("blu")) {
+            return 255;
+        }
+		if (name.equals("yel")) {
+            return 0xffff00;
+        }
+		if (name.equals("cya")) {
+            return 65535;
+        }
+		if (name.equals("mag")) {
+            return 0xff00ff;
+        }
+		if (name.equals("whi")) {
+            return 0xffffff;
+        }
+		if (name.equals("bla")) {
+            return 0;
+        }
+		if (name.equals("lre")) {
+            return 0xff9040;
+        }
+		if (name.equals("dre")) {
+            return 0x800000;
+        }
+		if (name.equals("dbl")) {
+            return 128;
+        }
+		if (name.equals("or1")) {
+            return 0xffb000;
+        }
+		if (name.equals("or2")) {
+            return 0xff7000;
+        }
+		if (name.equals("or3")) {
+            return 0xff3000;
+        }
+		if (name.equals("gr1")) {
+            return 0xc0ff00;
+        }
+		if (name.equals("gr2")) {
+            return 0x80ff00;
+        }
+		if (name.equals("gr3")) {
+            return 0x40ff00;
+        }
+		if (name.equals("str")) {
+            this.strikethrough = true;
+        }
+		if (name.equals("end")) {
+            this.strikethrough = false;
+        }
 		return -1;
 	}
 
@@ -854,9 +896,10 @@ public final class GameFont extends DrawingArea {
 	 * 
 	 * @return The width of the string after the embedded elements are removed.
 	 */
-	public int getTextDisplayedWidth(String text) {
-		if (text == null)
-			return 0;
+	public int getTextDisplayedWidth(final String text) {
+		if (text == null) {
+            return 0;
+        }
 		int width = 0;
 
 		/*
@@ -874,7 +917,7 @@ public final class GameFont extends DrawingArea {
 				 * Add the displayed width of the current character's glyph to the total width
 				 * of the text.
 				 */
-				width += glyphDisplayWidth[text.charAt(c)];
+				width += this.glyphDisplayWidth[text.charAt(c)];
 			}
 		}
 
@@ -888,9 +931,10 @@ public final class GameFont extends DrawingArea {
 	 * 
 	 * @return The width of the text.
 	 */
-	public int getTextWidth(String text) {
-		if (text == null)
-			return 0;
+	public int getTextWidth(final String text) {
+		if (text == null) {
+            return 0;
+        }
 		int width = 0;
 
 		/*
@@ -898,7 +942,7 @@ public final class GameFont extends DrawingArea {
 		 * that character's glyph to the total width of the text.
 		 */
 		for (int c = 0; c < text.length(); c++) {
-			width += glyphDisplayWidth[text.charAt(c)];
+			width += this.glyphDisplayWidth[text.charAt(c)];
 		}
 
 		return width;

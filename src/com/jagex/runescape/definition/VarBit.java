@@ -5,14 +5,14 @@ import com.jagex.runescape.Buffer;
 
 public final class VarBit {
 
-	public static VarBit values[];
+	public static VarBit[] values;
 	public int configId;
 	public int leastSignificantBit;
 	public int mostSignificantBit;
 
-	public static void load(Archive archive) {
-		Buffer buffer = new Buffer(archive.decompressFile("varbit.dat"));
-		int count = buffer.getUnsignedLEShort();
+	public static void load(final Archive archive) {
+		final Buffer buffer = new Buffer(archive.decompressFile("varbit.dat"));
+		final int count = buffer.getUnsignedLEShort();
 
 		if (values == null) {
 			values = new VarBit[count];
@@ -31,25 +31,27 @@ public final class VarBit {
 		}
 	}
 
-	private void load(Buffer buffer) {
+	private void load(final Buffer buffer) {
 		do {
-			int opcode = buffer.getUnsignedByte();
-			if (opcode == 0)
-				return;
+			final int opcode = buffer.getUnsignedByte();
+			if (opcode == 0) {
+                return;
+            }
 			if (opcode == 1) {
-				configId = buffer.getUnsignedLEShort();
-				leastSignificantBit = buffer.getUnsignedByte();
-				mostSignificantBit = buffer.getUnsignedByte();
-			} else if (opcode == 10)
-				buffer.getString();
-			else if (opcode == 2) {
+                this.configId = buffer.getUnsignedLEShort();
+                this.leastSignificantBit = buffer.getUnsignedByte();
+                this.mostSignificantBit = buffer.getUnsignedByte();
+			} else if (opcode == 10) {
+                buffer.getString();
+            } else if (opcode == 2) {
 			} // dummy
-			else if (opcode == 3)
-				buffer.getInt();
-			else if (opcode == 4)
-				buffer.getInt();
-			else
-				System.out.println("Error unrecognised config code: " + opcode);
+			else if (opcode == 3) {
+                buffer.getInt();
+            } else if (opcode == 4) {
+                buffer.getInt();
+            } else {
+                System.out.println("Error unrecognised config code: " + opcode);
+            }
 		} while (true);
 	}
 }

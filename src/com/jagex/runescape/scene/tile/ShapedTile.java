@@ -12,7 +12,7 @@ public final class ShapedTile {
 	public final int[] triangleA;
 	public final int[] triangleB;
 	public final int[] triangleC;
-	public int triangleTexture[];
+	public int[] triangleTexture;
 	public final boolean flat;
 	public final int shape;
 	public final int rotation;
@@ -36,39 +36,42 @@ public final class ShapedTile {
 			{ 1, 0, 1, 5, 1, 1, 4, 5, 1, 1, 2, 4, 0, 0, 5, 3, 0, 5, 4, 3, 0, 4, 2, 3 },
 			{ 1, 0, 5, 4, 1, 0, 1, 5, 0, 0, 4, 3, 0, 4, 5, 3, 0, 5, 2, 3, 0, 1, 2, 5 } };
 
-	public ShapedTile(int tileX, int yA, int yB, int yC, int yD, int tileZ, int rotation, int texture, int shape, int cA,
-			int cAA, int cB, int cBA, int cC, int cCA, int cD, int cDA, int overlayRGB, int underlayRGB) {
-		flat = !(yA != yB || yA != yD || yA != yC);
+	public ShapedTile(final int tileX, final int yA, final int yB, final int yC, final int yD, final int tileZ, final int rotation, final int texture, final int shape, final int cA,
+                      final int cAA, final int cB, final int cBA, final int cC, final int cCA, final int cD, final int cDA, final int overlayRGB, final int underlayRGB) {
+        this.flat = !(yA != yB || yA != yD || yA != yC);
 		this.shape = shape;
 		this.rotation = rotation;
 		this.underlayRGB = underlayRGB;
 		this.overlayRGB = overlayRGB;
-		char const512 = '\200';
-		int const256 = const512 / 2;
-		int const128 = const512 / 4;
-		int const384 = (const512 * 3) / 4;
-		int shapedTileMesh[] = shapedTilePointData[shape];
-		int shapedTileMeshLength = shapedTileMesh.length;
-		originalVertexX = new int[shapedTileMeshLength];
-		originalVertexY = new int[shapedTileMeshLength];
-		originalVertexZ = new int[shapedTileMeshLength];
-		int vertexColourOverlay[] = new int[shapedTileMeshLength];
-		int vertexColourUnderlay[] = new int[shapedTileMeshLength];
-		int x512 = tileX * const512;
-		int z512 = tileZ * const512;
+		final char const512 = '\200';
+		final int const256 = const512 / 2;
+		final int const128 = const512 / 4;
+		final int const384 = (const512 * 3) / 4;
+		final int[] shapedTileMesh = shapedTilePointData[shape];
+		final int shapedTileMeshLength = shapedTileMesh.length;
+        this.originalVertexX = new int[shapedTileMeshLength];
+        this.originalVertexY = new int[shapedTileMeshLength];
+        this.originalVertexZ = new int[shapedTileMeshLength];
+		final int[] vertexColourOverlay = new int[shapedTileMeshLength];
+		final int[] vertexColourUnderlay = new int[shapedTileMeshLength];
+		final int x512 = tileX * const512;
+		final int z512 = tileZ * const512;
 		for (int vertex = 0; vertex < shapedTileMeshLength; vertex++) {
 			int vertexType = shapedTileMesh[vertex];
-			if ((vertexType & 1) == 0 && vertexType <= 8)
-				vertexType = (vertexType - rotation - rotation - 1 & 7) + 1;
-			if (vertexType > 8 && vertexType <= 12)
-				vertexType = (vertexType - 9 - rotation & 3) + 9;
-			if (vertexType > 12 && vertexType <= 16)
-				vertexType = (vertexType - 13 - rotation & 3) + 13;
-			int vertexX;
-			int vertexZ;
-			int vertexY;
-			int vertexCOverlay;
-			int vertexCUnderlay;
+			if ((vertexType & 1) == 0 && vertexType <= 8) {
+                vertexType = (vertexType - rotation - rotation - 1 & 7) + 1;
+            }
+			if (vertexType > 8 && vertexType <= 12) {
+                vertexType = (vertexType - 9 - rotation & 3) + 9;
+            }
+			if (vertexType > 12 && vertexType <= 16) {
+                vertexType = (vertexType - 13 - rotation & 3) + 13;
+            }
+			final int vertexX;
+			final int vertexZ;
+			final int vertexY;
+			final int vertexCOverlay;
+			final int vertexCUnderlay;
 			if (vertexType == 1) {
 				vertexX = x512;
 				vertexZ = z512;
@@ -166,68 +169,80 @@ public final class ShapedTile {
 				vertexCOverlay = cC;
 				vertexCUnderlay = cCA;
 			}
-			originalVertexX[vertex] = vertexX;
-			originalVertexY[vertex] = vertexY;
-			originalVertexZ[vertex] = vertexZ;
+            this.originalVertexX[vertex] = vertexX;
+            this.originalVertexY[vertex] = vertexY;
+            this.originalVertexZ[vertex] = vertexZ;
 			vertexColourOverlay[vertex] = vertexCOverlay;
 			vertexColourUnderlay[vertex] = vertexCUnderlay;
 		}
 
-		int shapedTileElements[] = shapedTileElementData[shape];
-		int vertexCount = shapedTileElements.length / 4;
-		triangleA = new int[vertexCount];
-		triangleB = new int[vertexCount];
-		triangleC = new int[vertexCount];
-		triangleHSLA = new int[vertexCount];
-		triangleHSLB = new int[vertexCount];
-		triangleHSLC = new int[vertexCount];
-		if (texture != -1)
-			triangleTexture = new int[vertexCount];
+		final int[] shapedTileElements = shapedTileElementData[shape];
+		final int vertexCount = shapedTileElements.length / 4;
+        this.triangleA = new int[vertexCount];
+        this.triangleB = new int[vertexCount];
+        this.triangleC = new int[vertexCount];
+        this.triangleHSLA = new int[vertexCount];
+        this.triangleHSLB = new int[vertexCount];
+        this.triangleHSLC = new int[vertexCount];
+		if (texture != -1) {
+            this.triangleTexture = new int[vertexCount];
+        }
 		int offset = 0;
 		for (int vertex = 0; vertex < vertexCount; vertex++) {
-			int overlayOrUnderlay = shapedTileElements[offset];
+			final int overlayOrUnderlay = shapedTileElements[offset];
 			int idxA = shapedTileElements[offset + 1];
 			int idxB = shapedTileElements[offset + 2];
 			int idxC = shapedTileElements[offset + 3];
 			offset += 4;
-			if (idxA < 4)
-				idxA = idxA - rotation & 3;
-			if (idxB < 4)
-				idxB = idxB - rotation & 3;
-			if (idxC < 4)
-				idxC = idxC - rotation & 3;
-			triangleA[vertex] = idxA;
-			triangleB[vertex] = idxB;
-			triangleC[vertex] = idxC;
+			if (idxA < 4) {
+                idxA = idxA - rotation & 3;
+            }
+			if (idxB < 4) {
+                idxB = idxB - rotation & 3;
+            }
+			if (idxC < 4) {
+                idxC = idxC - rotation & 3;
+            }
+            this.triangleA[vertex] = idxA;
+            this.triangleB[vertex] = idxB;
+            this.triangleC[vertex] = idxC;
 			if (overlayOrUnderlay == 0) {
-				triangleHSLA[vertex] = vertexColourOverlay[idxA];
-				triangleHSLB[vertex] = vertexColourOverlay[idxB];
-				triangleHSLC[vertex] = vertexColourOverlay[idxC];
-				if (triangleTexture != null)
-					triangleTexture[vertex] = -1;
+                this.triangleHSLA[vertex] = vertexColourOverlay[idxA];
+                this.triangleHSLB[vertex] = vertexColourOverlay[idxB];
+                this.triangleHSLC[vertex] = vertexColourOverlay[idxC];
+				if (this.triangleTexture != null) {
+                    this.triangleTexture[vertex] = -1;
+                }
 			} else {
-				triangleHSLA[vertex] = vertexColourUnderlay[idxA];
-				triangleHSLB[vertex] = vertexColourUnderlay[idxB];
-				triangleHSLC[vertex] = vertexColourUnderlay[idxC];
-				if (triangleTexture != null)
-					triangleTexture[vertex] = texture;
+                this.triangleHSLA[vertex] = vertexColourUnderlay[idxA];
+                this.triangleHSLB[vertex] = vertexColourUnderlay[idxB];
+                this.triangleHSLC[vertex] = vertexColourUnderlay[idxC];
+				if (this.triangleTexture != null) {
+                    this.triangleTexture[vertex] = texture;
+                }
 			}
 		}
 
 		int i9 = yA;
 		int l9 = yB;
-		if (yB < i9)
-			i9 = yB;
-		if (yB > l9)
-			l9 = yB;
-		if (yD < i9)
-			i9 = yD;
-		if (yD > l9)
-			l9 = yD;
-		if (yC < i9)
-			i9 = yC;
-		if (yC > l9)
-			l9 = yC;
+		if (yB < i9) {
+            i9 = yB;
+        }
+		if (yB > l9) {
+            l9 = yB;
+        }
+		if (yD < i9) {
+            i9 = yD;
+        }
+		if (yD > l9) {
+            l9 = yD;
+        }
+		if (yC < i9) {
+            i9 = yC;
+        }
+		if (yC > l9) {
+            l9 = yC;
+        }
 		i9 /= 14;
 		l9 /= 14;
 	}

@@ -6,44 +6,44 @@ package com.jagex.runescape;
  * https://www.rune-server.ee/runescape-development/rs2-client/snippets/578391-censor-java.html
  */
 
-public class Censor {
+class Censor {
 
-	private static int fragments[];
-	private static char bads[][];
-	private static byte badCombinations[][][];
-	private static char domains[][];
-	private static char tlds[][];
-	private static int tldTypes[];
+	private static int[] fragments;
+	private static char[][] bads;
+	private static byte[][][] badCombinations;
+	private static char[][] domains;
+	private static char[][] tlds;
+	private static int[] tldTypes;
 
-	private static final String WHITELISTED_WORDS[] = { "cook", "cook's", "cooks", "seeks", "sheet", "woop", "woops", "faq", "noob", "noobs" };
+	private static final String[] WHITELISTED_WORDS = {"cook", "cook's", "cooks", "seeks", "sheet", "woop", "woops", "faq", "noob", "noobs"};
 	private static final char[] SPELLED_AT_SYMBOL = { '(', 'a', ')' };
 	private static final char[] SPELLED_DOT = { 'd', 'o', 't' };
 	private static final char[] SPELLED_SLASH = { 's', 'l', 'a', 's', 'h' };
 
-	public static void load(Archive archive) {
-		Buffer fragmentsenc = new Buffer(archive.decompressFile("fragmentsenc.txt"));
-		Buffer badenc = new Buffer(archive.decompressFile("badenc.txt"));
-		Buffer domainenc = new Buffer(archive.decompressFile("domainenc.txt"));
-		Buffer tldlist = new Buffer(archive.decompressFile("tldlist.txt"));
+	public static void load(final Archive archive) {
+		final Buffer fragmentsenc = new Buffer(archive.decompressFile("fragmentsenc.txt"));
+		final Buffer badenc = new Buffer(archive.decompressFile("badenc.txt"));
+		final Buffer domainenc = new Buffer(archive.decompressFile("domainenc.txt"));
+		final Buffer tldlist = new Buffer(archive.decompressFile("tldlist.txt"));
 		load(fragmentsenc, badenc, domainenc, tldlist);
 	}
 
-	private static void load(Buffer fragmentsenc, Buffer badenc, Buffer domainenc, Buffer tldlist) {
+	private static void load(final Buffer fragmentsenc, final Buffer badenc, final Buffer domainenc, final Buffer tldlist) {
 		loadBadEnc(badenc);
 		loadDomainEnc(domainenc);
 		loadFragmentsEnc(fragmentsenc);
 		loadTldList(tldlist);
 	}
 
-	private static void loadTldList(Buffer buffer) {
-		int length = buffer.getInt();
+	private static void loadTldList(final Buffer buffer) {
+		final int length = buffer.getInt();
 		tlds = new char[length][];
 		tldTypes = new int[length];
 
 		for (int n = 0; n < length; n++) {
 			tldTypes[n] = buffer.getUnsignedByte();
 
-			char[] string = new char[buffer.getUnsignedByte()];
+			final char[] string = new char[buffer.getUnsignedByte()];
 			for (int k = 0; k < string.length; k++) {
 				string[k] = (char) buffer.getUnsignedByte();
 			}
@@ -52,35 +52,35 @@ public class Censor {
 		}
 	}
 
-	private static void loadBadEnc(Buffer buffer) {
-		int length = buffer.getInt();
+	private static void loadBadEnc(final Buffer buffer) {
+		final int length = buffer.getInt();
 		bads = new char[length][];
 		badCombinations = new byte[length][][];
 		loadBadEnc(buffer, badCombinations, bads);
 	}
 
-	private static void loadDomainEnc(Buffer buffer) {
-		int i = buffer.getInt();
+	private static void loadDomainEnc(final Buffer buffer) {
+		final int i = buffer.getInt();
 		domains = new char[i][];
 		loadDomainEnc(buffer, domains);
 	}
 
-	private static void loadFragmentsEnc(Buffer buffer) {
+	private static void loadFragmentsEnc(final Buffer buffer) {
 		fragments = new int[buffer.getInt()];
 		for (int i = 0; i < fragments.length; i++) {
 			fragments[i] = buffer.getUnsignedShort();
 		}
 	}
 
-	private static void loadBadEnc(Buffer buffer, byte badCombinations[][][], char bads[][]) {
+	private static void loadBadEnc(final Buffer buffer, final byte[][][] badCombinations, final char[][] bads) {
 		for (int n = 0; n < bads.length; n++) {
-			char[] chars = new char[buffer.getUnsignedByte()];
+			final char[] chars = new char[buffer.getUnsignedByte()];
 			for (int i = 0; i < chars.length; i++) {
 				chars[i] = (char) buffer.getUnsignedByte();
 			}
 			bads[n] = chars;
 
-			byte combo[][] = new byte[buffer.getUnsignedByte()][2];
+			final byte[][] combo = new byte[buffer.getUnsignedByte()][2];
 
 			for (int l = 0; l < combo.length; l++) {
 				combo[l][0] = (byte) buffer.getUnsignedByte();
@@ -94,9 +94,9 @@ public class Censor {
 
 	}
 
-	private static void loadDomainEnc(Buffer b, char domains[][]) {
+	private static void loadDomainEnc(final Buffer b, final char[][] domains) {
 		for (int n = 0; n < domains.length; n++) {
-			char[] string = new char[b.getUnsignedByte()];
+			final char[] string = new char[b.getUnsignedByte()];
 			for (int k = 0; k < string.length; k++) {
 				string[k] = (char) b.getUnsignedByte();
 			}
@@ -105,7 +105,7 @@ public class Censor {
 
 	}
 
-	private static void trimWhitespaces(char[] chars) {
+	private static void trimWhitespaces(final char[] chars) {
 		int off = 0;
 
 		for (int n = 0; n < chars.length; n++) {
@@ -131,15 +131,15 @@ public class Censor {
 		}
 	}
 
-	private static boolean isValid(char c) {
+	private static boolean isValid(final char c) {
 		return c >= ' ' && c <= 127 || c == ' ' || c == '\n' || c == '\t' || c == '\243' || c == '\u20AC';
 	}
 
-	public static String censor(String s) {
+	public static String censor(final String s) {
 		char[] chars = s.toCharArray();
 		trimWhitespaces(chars);
 
-		String trimmed = new String(chars).trim();
+		final String trimmed = new String(chars).trim();
 		chars = trimmed.toLowerCase().toCharArray();
 
 		filterTlds(chars);
@@ -147,14 +147,12 @@ public class Censor {
 		filterDomains(chars);
 		filterNumFragments(chars);
 
-		String lowercase = trimmed.toLowerCase();
+		final String lowercase = trimmed.toLowerCase();
 
 		for (int n = 0; n < WHITELISTED_WORDS.length; n++) {
 			for (int index = -1; (index = lowercase.indexOf(WHITELISTED_WORDS[n], index + 1)) != -1;) {
-				char wchars[] = WHITELISTED_WORDS[n].toCharArray();
-				for (int i = 0; i < wchars.length; i++) {
-					chars[i + index] = wchars[i];
-				}
+				final char[] wchars = WHITELISTED_WORDS[n].toCharArray();
+				System.arraycopy(wchars, 0, chars, 0 + index, wchars.length);
 			}
 		}
 
@@ -163,7 +161,7 @@ public class Censor {
 		return new String(chars).trim();
 	}
 
-	private static void replaceUppercases(char[] from, char[] to) {
+	private static void replaceUppercases(final char[] from, final char[] to) {
 		for (int i = 0; i < from.length; i++) {
 			if (to[i] != '*' && isUppercaseAlpha(from[i])) {
 				to[i] = from[i];
@@ -171,10 +169,10 @@ public class Censor {
 		}
 	}
 
-	private static void formatUppercases(char[] chars) {
+	private static void formatUppercases(final char[] chars) {
 		boolean flag = true;
 		for (int n = 0; n < chars.length; n++) {
-			char c = chars[n];
+			final char c = chars[n];
 
 			if (isAlpha(c)) {
 				if (flag) {
@@ -190,7 +188,7 @@ public class Censor {
 		}
 	}
 
-	private static void filterBad(char[] chars) {
+	private static void filterBad(final char[] chars) {
 		for (int iterations = 0; iterations < 2; iterations++) {
 			for (int n = bads.length - 1; n >= 0; n--) {
 				filterBad(chars, bads[n], badCombinations[n]);
@@ -198,11 +196,11 @@ public class Censor {
 		}
 	}
 
-	private static void filterDomains(char[] chars) {
-		char filteredAts[] = (char[]) chars.clone();
+	private static void filterDomains(final char[] chars) {
+		final char[] filteredAts = chars.clone();
 		filterBad(filteredAts, SPELLED_AT_SYMBOL, null);
 
-		char filteredDots[] = (char[]) chars.clone();
+		final char[] filteredDots = chars.clone();
 		filterBad(filteredDots, SPELLED_DOT, null);
 
 		for (int i = domains.length - 1; i >= 0; i--) {
@@ -210,7 +208,7 @@ public class Censor {
 		}
 	}
 
-	private static void filterDomain(char[] chars, char[] domain, char[] filteredDots, char[] filteredAts) {
+	private static void filterDomain(final char[] chars, final char[] domain, final char[] filteredDots, final char[] filteredAts) {
 		if (domain.length > chars.length) {
 			return;
 		}
@@ -222,7 +220,7 @@ public class Censor {
 			stride = 1;
 			while (end < chars.length) {
 				int charLen = 0;
-				char b = chars[end];
+				final char b = chars[end];
 				char c = '\0';
 
 				if (end + 1 < chars.length) {
@@ -254,8 +252,8 @@ public class Censor {
 
 			if (off >= domain.length) {
 				boolean bad = false;
-				int status0 = getDomainAtFilterStatus(start, chars, filteredAts);
-				int status1 = getDomainDotFilterStatus(end - 1, chars, filteredDots);
+				final int status0 = getDomainAtFilterStatus(start, chars, filteredAts);
+				final int status1 = getDomainDotFilterStatus(end - 1, chars, filteredDots);
 
 				if (status0 > 2 || status1 > 2) {
 					bad = true;
@@ -271,7 +269,7 @@ public class Censor {
 
 	}
 
-	private static int getDomainAtFilterStatus(int end, char a[], char b[]) {
+	private static int getDomainAtFilterStatus(final int end, final char[] a, final char[] b) {
 		// i aint got no type
 		if (end == 0) {
 			return 2;
@@ -308,7 +306,7 @@ public class Censor {
 		return !isSymbol(a[end - 1]) ? 0 : 1;
 	}
 
-	private static int getDomainDotFilterStatus(int start, char a[], char b[]) {
+	private static int getDomainDotFilterStatus(final int start, final char[] a, final char[] b) {
 		// out of bounds, no type
 		if (start + 1 == a.length) {
 			return 2;
@@ -345,11 +343,11 @@ public class Censor {
 		return !isSymbol(a[start + 1]) ? 0 : 1;
 	}
 
-	private static void filterTlds(char[] chars) {
-		char filteredDot[] = (char[]) chars.clone();
+	private static void filterTlds(final char[] chars) {
+		final char[] filteredDot = chars.clone();
 		filterBad(filteredDot, SPELLED_DOT, null);
 
-		char filteredSlash[] = (char[]) chars.clone();
+		final char[] filteredSlash = chars.clone();
 		filterBad(filteredSlash, SPELLED_SLASH, null);
 
 		for (int n = 0; n < tlds.length; n++) {
@@ -357,7 +355,7 @@ public class Censor {
 		}
 	}
 
-	private static void filterTld(char chars[], char tld[], int type, char filteredDot[], char filteredSlash[]) {
+	private static void filterTld(final char[] chars, final char[] tld, final int type, final char[] filteredDot, final char[] filteredSlash) {
 		if (tld.length > chars.length) {
 			return;
 		}
@@ -370,7 +368,7 @@ public class Censor {
 
 			while (end < chars.length) {
 				int charLen = 0;
-				char b = chars[end];
+				final char b = chars[end];
 				char c = '\0';
 
 				if (end + 1 < chars.length) {
@@ -404,8 +402,8 @@ public class Censor {
 
 			if (off >= tld.length) {
 				boolean bad = false;
-				int status0 = getTldDotFilterStatus(chars, start, filteredDot);
-				int status1 = getTldSlashFilterStatus(chars, end - 1, filteredSlash);
+				final int status0 = getTldDotFilterStatus(chars, start, filteredDot);
+				final int status1 = getTldSlashFilterStatus(chars, end - 1, filteredSlash);
 
 				// status0 number meanings
 				// 0 = found no symbols
@@ -509,7 +507,7 @@ public class Censor {
 		}
 	}
 
-	private static int getTldDotFilterStatus(char chars[], int start, char filteredDot[]) {
+	private static int getTldDotFilterStatus(final char[] chars, final int start, final char[] filteredDot) {
 		if (start == 0) {
 			return 2;
 		}
@@ -540,7 +538,7 @@ public class Censor {
 		return !isSymbol(chars[start - 1]) ? 0 : 1;
 	}
 
-	private static int getTldSlashFilterStatus(char chars[], int end, char filteredSlash[]) {
+	private static int getTldSlashFilterStatus(final char[] chars, final int end, final char[] filteredSlash) {
 		if (end + 1 == chars.length) {
 			return 2;
 		}
@@ -570,7 +568,7 @@ public class Censor {
 		return !isSymbol(chars[end + 1]) ? 0 : 1;
 	}
 
-	private static void filterBad(char[] chars, char[] fragment, byte badCombinations[][]) {
+	private static void filterBad(final char[] chars, final char[] fragment, final byte[][] badCombinations) {
 		if (fragment.length > chars.length) {
 			return;
 		}
@@ -588,7 +586,7 @@ public class Censor {
 
 			while (end < chars.length && (!isEmulated || !isNumeral)) {
 				int charLen = 0;
-				char b = chars[end];
+				final char b = chars[end];
 				char c = '\0';
 
 				if (end + 1 < chars.length) {
@@ -683,34 +681,35 @@ public class Censor {
 							cur = start;
 						}
 
-						for (; !good && cur < end; cur++)
-							if (cur >= 0 && (!isSymbol(chars[cur]) || chars[cur] == '\'')) {
-								char[] frag = new char[3];
-								int off;
-								for (off = 0; off < 3; off++) {
-									if (cur + off >= chars.length || isSymbol(chars[cur + off]) && chars[cur + off] != '\'') {
-										break;
-									}
-									frag[off] = chars[cur + off];
-								}
+						for (; !good && cur < end; cur++) {
+                            if (cur >= 0 && (!isSymbol(chars[cur]) || chars[cur] == '\'')) {
+                                final char[] frag = new char[3];
+                                int off;
+                                for (off = 0; off < 3; off++) {
+                                    if (cur + off >= chars.length || isSymbol(chars[cur + off]) && chars[cur + off] != '\'') {
+                                        break;
+                                    }
+                                    frag[off] = chars[cur + off];
+                                }
 
-								boolean valid = true;
+                                boolean valid = true;
 
-								// if we read zero chars
-								if (off == 0) {
-									valid = false;
-								}
+                                // if we read zero chars
+                                if (off == 0) {
+                                    valid = false;
+                                }
 
-								// if we read less than 3 chars, our cur is
-								// within bounds, and isn't a symbol
-								if (off < 3 && cur - 1 >= 0 && (!isSymbol(chars[cur - 1]) || chars[cur - 1] == '\'')) {
-									valid = false;
-								}
+                                // if we read less than 3 chars, our cur is
+                                // within bounds, and isn't a symbol
+                                if (off < 3 && cur - 1 >= 0 && (!isSymbol(chars[cur - 1]) || chars[cur - 1] == '\'')) {
+                                    valid = false;
+                                }
 
-								if (valid && !isBadFragment(frag)) {
-									good = true;
-								}
-							}
+                                if (valid && !isBadFragment(frag)) {
+                                    good = true;
+                                }
+                            }
+                        }
 
 						if (!good) {
 							bad = false;
@@ -749,7 +748,7 @@ public class Censor {
 
 	}
 
-	private static boolean comboMatches(byte a, byte b, byte combos[][]) {
+	private static boolean comboMatches(final byte a, final byte b, final byte[][] combos) {
 		int first = 0;
 		if (combos[first][0] == a && combos[first][1] == b) {
 			return true;
@@ -761,7 +760,7 @@ public class Censor {
 		}
 
 		do {
-			int middle = (first + last) / 2;
+			final int middle = (first + last) / 2;
 
 			if (combos[middle][0] == a && combos[middle][1] == b) {
 				return true;
@@ -788,21 +787,28 @@ public class Censor {
 	 *            the third char
 	 * @return the length
 	 */
-	private static int getEmulatedDomainCharLen(char a, char b, char c) {
-		if (a == b)
-			return 1;
-		if (a == 'o' && b == '0')
-			return 1;
-		if (a == 'o' && b == '(' && c == ')')
-			return 2;
-		if (a == 'c' && (b == '(' || b == '<' || b == '['))
-			return 1;
-		if (a == 'e' && b == '\u20AC')
-			return 1;
-		if (a == 's' && b == '$')
-			return 1;
-		if (a == 'l' && b == 'i')
-			return 1;
+	private static int getEmulatedDomainCharLen(final char a, final char b, final char c) {
+		if (a == b) {
+            return 1;
+        }
+		if (a == 'o' && b == '0') {
+            return 1;
+        }
+		if (a == 'o' && b == '(' && c == ')') {
+            return 2;
+        }
+		if (a == 'c' && (b == '(' || b == '<' || b == '[')) {
+            return 1;
+        }
+		if (a == 'e' && b == '\u20AC') {
+            return 1;
+        }
+		if (a == 's' && b == '$') {
+            return 1;
+        }
+		if (a == 'l' && b == 'i') {
+            return 1;
+        }
 		return 0;
 	}
 
@@ -818,7 +824,7 @@ public class Censor {
 	 *            the third char
 	 * @return the length
 	 */
-	private static int getEmulatedBadCharLen(char a, char b, char c) {
+	private static int getEmulatedBadCharLen(final char a, final char b, final char c) {
 		if (a == b) {
 			return 1;
 		}
@@ -977,7 +983,7 @@ public class Censor {
 
 	// [a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s,
 	// t, u, v, w, x, y, z, null?, ', 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-	private static byte getIndex(char c) {
+	private static byte getIndex(final char c) {
 		if (c >= 'a' && c <= 'z') {
 			return (byte) ((c - 'a') + 1);
 		} else if (c == '\'') {
@@ -988,7 +994,7 @@ public class Censor {
 		return 27;
 	}
 
-	private static void filterNumFragments(char[] chars) {
+	private static void filterNumFragments(final char[] chars) {
 		int index = 0;
 		int end = 0;
 		int count = 0;
@@ -1041,7 +1047,7 @@ public class Censor {
 		}
 	}
 
-	private static int indexOfNumber(char[] chars, int off) {
+	private static int indexOfNumber(final char[] chars, final int off) {
 		for (int i = off; i < chars.length && i >= 0; i++) {
 			if (chars[i] >= '0' && chars[i] <= '9') {
 				return i;
@@ -1050,7 +1056,7 @@ public class Censor {
 		return -1;
 	}
 
-	private static int indexOfNonNumber(char[] chars, int off) {
+	private static int indexOfNonNumber(final char[] chars, final int off) {
 		for (int i = off; i < chars.length && i >= 0; i++) {
 			if (chars[i] < '0' || chars[i] > '9') {
 				return i;
@@ -1059,34 +1065,34 @@ public class Censor {
 		return chars.length;
 	}
 
-	private static boolean isSymbol(char c) {
+	private static boolean isSymbol(final char c) {
 		return !isAlpha(c) && !isNumeral(c);
 	}
 
-	private static boolean isNotLowercaseAlpha(char c) {
+	private static boolean isNotLowercaseAlpha(final char c) {
 		if (c < 'a' || c > 'z') {
 			return true;
 		}
 		return c == 'v' || c == 'x' || c == 'j' || c == 'q' || c == 'z';
 	}
 
-	private static boolean isAlpha(char c) {
+	private static boolean isAlpha(final char c) {
 		return c >= 'a' && c <= 'z' || c >= 'A' && c <= 'Z';
 	}
 
-	private static boolean isNumeral(char c) {
+	private static boolean isNumeral(final char c) {
 		return c >= '0' && c <= '9';
 	}
 
-	private static boolean isLowercaseAlpha(char c) {
+	private static boolean isLowercaseAlpha(final char c) {
 		return c >= 'a' && c <= 'z';
 	}
 
-	private static boolean isUppercaseAlpha(char c) {
+	private static boolean isUppercaseAlpha(final char c) {
 		return c >= 'A' && c <= 'Z';
 	}
 
-	private static boolean isBadFragment(char[] chars) {
+	private static boolean isBadFragment(final char[] chars) {
 		boolean skip = true;
 
 		for (int i = 0; i < chars.length; i++) {
@@ -1101,7 +1107,7 @@ public class Censor {
 			return true;
 		}
 
-		int i = hash(chars);
+		final int i = hash(chars);
 		int start = 0;
 		int end = fragments.length - 1;
 
@@ -1110,7 +1116,7 @@ public class Censor {
 		}
 
 		do {
-			int middle = (start + end) / 2;
+			final int middle = (start + end) / 2;
 
 			if (i == fragments[middle]) {
 				return true;
@@ -1125,7 +1131,7 @@ public class Censor {
 		return false;
 	}
 
-	private static int hash(char[] chars) {
+	private static int hash(final char[] chars) {
 		if (chars.length > 6) {
 			return 0;
 		}
@@ -1133,7 +1139,7 @@ public class Censor {
 		int k = 0;
 		for (int n = 0; n < chars.length; n++) {
 			// read backwards
-			char c = chars[chars.length - n - 1];
+			final char c = chars[chars.length - n - 1];
 
 			if (c >= 'a' && c <= 'z') {
 				k = (k * 38) + ((c - 'a') + 1);

@@ -71,118 +71,127 @@ public class Entity extends Animable {
 	int turnLeftAnimationId;
 
 	Entity() {
-		waypointX = new int[10];
-		waypointY = new int[10];
-		interactingEntity = -1;
-		degreesToTurn = 32;
-		runAnimationId = -1;
-		height = 200;
-		standAnimationId = -1;
-		standTurnAnimationId = -1;
-		hitArray = new int[4];
-		hitMarkTypes = new int[4];
-		hitsLoopCycle = new int[4];
-		queuedAnimationId = -1;
-		graphicId = -1;
-		animation = -1;
-		loopCycleStatus = -1000;
-		textCycle = 100;
-		boundaryDimension = 1;
-		dynamic = false;
-		waypointRan = new boolean[10];
-		walkAnimationId = -1;
-		turnAboutAnimationId = -1;
-		turnRightAnimationId = -1;
-		turnLeftAnimationId = -1;
+        this.waypointX = new int[10];
+        this.waypointY = new int[10];
+        this.interactingEntity = -1;
+        this.degreesToTurn = 32;
+        this.runAnimationId = -1;
+        this.height = 200;
+        this.standAnimationId = -1;
+        this.standTurnAnimationId = -1;
+        this.hitArray = new int[4];
+        this.hitMarkTypes = new int[4];
+        this.hitsLoopCycle = new int[4];
+        this.queuedAnimationId = -1;
+        this.graphicId = -1;
+        this.animation = -1;
+        this.loopCycleStatus = -1000;
+        this.textCycle = 100;
+        this.boundaryDimension = 1;
+        this.dynamic = false;
+        this.waypointRan = new boolean[10];
+        this.walkAnimationId = -1;
+        this.turnAboutAnimationId = -1;
+        this.turnRightAnimationId = -1;
+        this.turnLeftAnimationId = -1;
 	}
 
 	public boolean isVisible() {
 		return false;
 	}
 
-	public final void move(boolean flag, int direction) {
-		int x = waypointX[0];
-		int y = waypointY[0];
+	public final void move(final boolean flag, final int direction) {
+		int x = this.waypointX[0];
+		int y = this.waypointY[0];
 		if (direction == 0) {
 			x--;
 			y++;
 		}
-		if (direction == 1)
-			y++;
+		if (direction == 1) {
+            y++;
+        }
 		if (direction == 2) {
 			x++;
 			y++;
 		}
-		if (direction == 3)
-			x--;
-		if (direction == 4)
-			x++;
+		if (direction == 3) {
+            x--;
+        }
+		if (direction == 4) {
+            x++;
+        }
 		if (direction == 5) {
 			x--;
 			y--;
 		}
-		if (direction == 6)
-			y--;
+		if (direction == 6) {
+            y--;
+        }
 		if (direction == 7) {
 			x++;
 			y--;
 		}
-		if (animation != -1 && AnimationSequence.animations[animation].precedenceWalking == 1)
-			animation = -1;
-		if (waypointCount < 9)
-			waypointCount++;
-		for (int l = waypointCount; l > 0; l--) {
-			waypointX[l] = waypointX[l - 1];
-			waypointY[l] = waypointY[l - 1];
-			waypointRan[l] = waypointRan[l - 1];
+		if (this.animation != -1 && AnimationSequence.animations[this.animation].precedenceWalking == 1) {
+            this.animation = -1;
+        }
+		if (this.waypointCount < 9) {
+            this.waypointCount++;
+        }
+		for (int l = this.waypointCount; l > 0; l--) {
+            this.waypointX[l] = this.waypointX[l - 1];
+            this.waypointY[l] = this.waypointY[l - 1];
+            this.waypointRan[l] = this.waypointRan[l - 1];
 		}
-		waypointX[0] = x;
-		waypointY[0] = y;
-		waypointRan[0] = flag;
+        this.waypointX[0] = x;
+        this.waypointY[0] = y;
+        this.waypointRan[0] = flag;
 	}
 
 	public final void resetPath() {
-		waypointCount = 0;
-		stepsRemaining = 0;
+        this.waypointCount = 0;
+        this.stepsRemaining = 0;
 	}
 
-	public final void setPos(int x, int y, boolean teleported) {
-		if (animation != -1 && AnimationSequence.animations[animation].precedenceWalking == 1)
-			animation = -1;
+	public final void setPos(final int x, final int y, final boolean teleported) {
+		if (this.animation != -1 && AnimationSequence.animations[this.animation].precedenceWalking == 1) {
+            this.animation = -1;
+        }
 		if (!teleported) {
-			int distanceX = x - waypointX[0];
-			int distanceY = y - waypointY[0];
+			final int distanceX = x - this.waypointX[0];
+			final int distanceY = y - this.waypointY[0];
 			if (distanceX >= -8 && distanceX <= 8 && distanceY >= -8 && distanceY <= 8) {
-				if (waypointCount < 9)
-					waypointCount++;
-				for (int waypoint = waypointCount; waypoint > 0; waypoint--) {
-					waypointX[waypoint] = waypointX[waypoint - 1];
-					waypointY[waypoint] = waypointY[waypoint - 1];
-					waypointRan[waypoint] = waypointRan[waypoint - 1];
+				if (this.waypointCount < 9) {
+                    this.waypointCount++;
+                }
+				for (int waypoint = this.waypointCount; waypoint > 0; waypoint--) {
+                    this.waypointX[waypoint] = this.waypointX[waypoint - 1];
+                    this.waypointY[waypoint] = this.waypointY[waypoint - 1];
+                    this.waypointRan[waypoint] = this.waypointRan[waypoint - 1];
 				}
 
-				waypointX[0] = x;
-				waypointY[0] = y;
-				waypointRan[0] = false;
+                this.waypointX[0] = x;
+                this.waypointY[0] = y;
+                this.waypointRan[0] = false;
 				return;
 			}
 		}
-		waypointCount = 0;
-		stepsRemaining = 0;
-		stepsDelayed = 0;
-		waypointX[0] = x;
-		waypointY[0] = y;
-		this.x = waypointX[0] * 128 + boundaryDimension * 64;
-		this.y = waypointY[0] * 128 + boundaryDimension * 64;
+        this.waypointCount = 0;
+        this.stepsRemaining = 0;
+        this.stepsDelayed = 0;
+        this.waypointX[0] = x;
+        this.waypointY[0] = y;
+		this.x = this.waypointX[0] * 128 + this.boundaryDimension * 64;
+		this.y = this.waypointY[0] * 128 + this.boundaryDimension * 64;
 	}
 
-	public final void updateHitData(int type, int damage, int currentTime) {
-		for (int hit = 0; hit < 4; hit++)
-			if (hitsLoopCycle[hit] <= currentTime) {
-				hitArray[hit] = damage;
-				hitMarkTypes[hit] = type;
-				hitsLoopCycle[hit] = currentTime + 70;
-				return;
-			}
+	public final void updateHitData(final int type, final int damage, final int currentTime) {
+		for (int hit = 0; hit < 4; hit++) {
+            if (this.hitsLoopCycle[hit] <= currentTime) {
+                this.hitArray[hit] = damage;
+                this.hitMarkTypes[hit] = type;
+                this.hitsLoopCycle[hit] = currentTime + 70;
+                return;
+            }
+        }
 	}
 }
