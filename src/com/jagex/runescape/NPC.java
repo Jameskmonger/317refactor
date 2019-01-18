@@ -15,24 +15,28 @@ public final class NPC extends Entity {
 		if (super.animation >= 0 && super.animationDelay == 0) {
 			int frameId2 = AnimationSequence.animations[super.animation].primaryFrames[super.currentAnimationFrame];
 			int frameId1 = -1;
-			if (super.queuedAnimationId >= 0 && super.queuedAnimationId != super.standAnimationId)
-				frameId1 = AnimationSequence.animations[super.queuedAnimationId].primaryFrames[super.queuedAnimationFrame];
+			if (super.queuedAnimationId >= 0 && super.queuedAnimationId != super.standAnimationId) {
+                frameId1 = AnimationSequence.animations[super.queuedAnimationId].primaryFrames[super.queuedAnimationFrame];
+            }
 			return npcDefinition.getChildModel(frameId1, frameId2,
 					AnimationSequence.animations[super.animation].flowControl);
 		}
 		int frameId2 = -1;
-		if (super.queuedAnimationId >= 0)
-			frameId2 = AnimationSequence.animations[super.queuedAnimationId].primaryFrames[super.queuedAnimationFrame];
+		if (super.queuedAnimationId >= 0) {
+            frameId2 = AnimationSequence.animations[super.queuedAnimationId].primaryFrames[super.queuedAnimationFrame];
+        }
 		return npcDefinition.getChildModel(-1, frameId2, null);
 	}
 
 	@Override
 	public Model getRotatedModel() {
-		if (npcDefinition == null)
-			return null;
+		if (npcDefinition == null) {
+            return null;
+        }
 		Model rotatedModel = getChildModel();
-		if (rotatedModel == null)
-			return null;
+		if (rotatedModel == null) {
+            return null;
+        }
 		super.height = rotatedModel.modelHeight;
 		if (super.graphicId != -1 && super.currentAnimationId != -1) {
 			SpotAnimation spotAnimation = SpotAnimation.cache[super.graphicId];
@@ -45,16 +49,18 @@ public final class NPC extends Entity {
 				animatedModel.applyTransformation(frameId);
 				animatedModel.triangleSkin = null;
 				animatedModel.vertexSkin = null;
-				if (spotAnimation.scaleXY != 128 || spotAnimation.scaleZ != 128)
-					animatedModel.scaleT(spotAnimation.scaleXY, spotAnimation.scaleXY, spotAnimation.scaleZ);
+				if (spotAnimation.scaleXY != 128 || spotAnimation.scaleZ != 128) {
+                    animatedModel.scaleT(spotAnimation.scaleXY, spotAnimation.scaleXY, spotAnimation.scaleZ);
+                }
 				animatedModel.applyLighting(64 + spotAnimation.modelLightFalloff, 850 + spotAnimation.modelLightAmbient,
 						-30, -50, -30, true);
 				Model models[] = { rotatedModel, animatedModel };
 				rotatedModel = new Model(models);
 			}
 		}
-		if (npcDefinition.boundaryDimension == 1)
-			rotatedModel.singleTile = true;
+		if (npcDefinition.boundaryDimension == 1) {
+            rotatedModel.singleTile = true;
+        }
 		return rotatedModel;
 	}
 

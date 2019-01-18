@@ -54,20 +54,22 @@ public final class Archive {
 	public byte[] decompressFile(String name) {
 		int hash = 0;
 		name = name.toUpperCase();
-		for (int c = 0; c < name.length(); c++)
-			hash = (hash * 61 + name.charAt(c)) - 32;
+		for (int c = 0; c < name.length(); c++) {
+            hash = (hash * 61 + name.charAt(c)) - 32;
+        }
 
-		for (int file = 0; file < fileCount; file++)
-			if (hashes[file] == hash) {
-				byte[] output = new byte[decompressedSizes[file]];
-				if (!decompressed) {
-					Bzip2Decompressor.decompress(output, decompressedSizes[file], outputData, compressedSizes[file],
-							initialOffsets[file]);
-				} else {
-					System.arraycopy(outputData, initialOffsets[file], output, 0, decompressedSizes[file]);
-				}
-				return output;
-			}
+		for (int file = 0; file < fileCount; file++) {
+            if (hashes[file] == hash) {
+                byte[] output = new byte[decompressedSizes[file]];
+                if (!decompressed) {
+                    Bzip2Decompressor.decompress(output, decompressedSizes[file], outputData, compressedSizes[file],
+                            initialOffsets[file]);
+                } else {
+                    System.arraycopy(outputData, initialOffsets[file], output, 0, decompressedSizes[file]);
+                }
+                return output;
+            }
+        }
 		return null;
 	}
 }

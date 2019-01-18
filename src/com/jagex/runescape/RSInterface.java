@@ -8,8 +8,9 @@ public final class RSInterface {
 	private static Sprite getImage(int spriteId, Archive streamLoader, String spriteName) {
 		long spriteHash = (TextClass.spriteNameToHash(spriteName) << 8) + spriteId;
 		Sprite sprite = (Sprite) spriteCache.get(spriteHash);
-		if (sprite != null)
-			return sprite;
+		if (sprite != null) {
+            return sprite;
+        }
 		try {
 			sprite = new Sprite(streamLoader, spriteName, spriteId);
 			spriteCache.put(sprite, spriteHash);
@@ -23,8 +24,9 @@ public final class RSInterface {
 		int modelId = 0;// was parameter
 		int modelType = 5;// was parameter
 		modelCache.clear();
-		if (model != null && modelType != 4)
-			modelCache.put(model, (modelType << 16) + modelId);
+		if (model != null && modelType != 4) {
+            modelCache.put(model, (modelType << 16) + modelId);
+        }
 	}
 
 	public static void unpack(Archive streamLoader, GameFont fonts[], Archive mediaArchive) {
@@ -49,10 +51,11 @@ public final class RSInterface {
 			rsInterface.height = stream.getUnsignedLEShort();
 			rsInterface.alpha = (byte) stream.getUnsignedByte();
 			rsInterface.hoveredPopup = stream.getUnsignedByte();
-			if (rsInterface.hoveredPopup != 0)
-				rsInterface.hoveredPopup = (rsInterface.hoveredPopup - 1 << 8) + stream.getUnsignedByte();
-			else
-				rsInterface.hoveredPopup = -1;
+			if (rsInterface.hoveredPopup != 0) {
+                rsInterface.hoveredPopup = (rsInterface.hoveredPopup - 1 << 8) + stream.getUnsignedByte();
+            } else {
+                rsInterface.hoveredPopup = -1;
+            }
 			int conditionCount = stream.getUnsignedByte();
 			if (conditionCount > 0) {
 				rsInterface.conditionType = new int[conditionCount];
@@ -69,8 +72,9 @@ public final class RSInterface {
 				for (int c = 0; c < opcodeCount; c++) {
 					int subOpcodeCount = stream.getUnsignedLEShort();
 					rsInterface.opcodes[c] = new int[subOpcodeCount];
-					for (int s = 0; s < subOpcodeCount; s++)
-						rsInterface.opcodes[c][s] = stream.getUnsignedLEShort();
+					for (int s = 0; s < subOpcodeCount; s++) {
+                        rsInterface.opcodes[c][s] = stream.getUnsignedLEShort();
+                    }
 
 				}
 
@@ -122,26 +126,30 @@ public final class RSInterface {
 				rsInterface.actions = new String[5];
 				for (int action = 0; action < 5; action++) {
 					rsInterface.actions[action] = stream.getString();
-					if (rsInterface.actions[action].length() == 0)
-						rsInterface.actions[action] = null;
+					if (rsInterface.actions[action].length() == 0) {
+                        rsInterface.actions[action] = null;
+                    }
 				}
 
 			}
-			if (rsInterface.type == 3)
-				rsInterface.filled = stream.getUnsignedByte() == 1;
+			if (rsInterface.type == 3) {
+                rsInterface.filled = stream.getUnsignedByte() == 1;
+            }
 			if (rsInterface.type == 4 || rsInterface.type == 1) {
 				rsInterface.textCentred = stream.getUnsignedByte() == 1;
 				int font = stream.getUnsignedByte();
-				if (fonts != null)
-					rsInterface.textDrawingAreas = fonts[font];
+				if (fonts != null) {
+                    rsInterface.textDrawingAreas = fonts[font];
+                }
 				rsInterface.textShadowed = stream.getUnsignedByte() == 1;
 			}
 			if (rsInterface.type == 4) {
 				rsInterface.textDefault = stream.getString();
 				rsInterface.textActive = stream.getString();
 			}
-			if (rsInterface.type == 1 || rsInterface.type == 3 || rsInterface.type == 4)
-				rsInterface.colourDefault = stream.getInt();
+			if (rsInterface.type == 1 || rsInterface.type == 3 || rsInterface.type == 4) {
+                rsInterface.colourDefault = stream.getInt();
+            }
 			if (rsInterface.type == 3 || rsInterface.type == 4) {
 				rsInterface.colourActive = stream.getInt();
 				rsInterface.colourDefaultHover = stream.getInt();
@@ -173,15 +181,17 @@ public final class RSInterface {
 					rsInterface.modelIdActive = (interfaceId - 1 << 8) + stream.getUnsignedByte();
 				}
 				interfaceId = stream.getUnsignedByte();
-				if (interfaceId != 0)
-					rsInterface.animationIdDefault = (interfaceId - 1 << 8) + stream.getUnsignedByte();
-				else
-					rsInterface.animationIdDefault = -1;
+				if (interfaceId != 0) {
+                    rsInterface.animationIdDefault = (interfaceId - 1 << 8) + stream.getUnsignedByte();
+                } else {
+                    rsInterface.animationIdDefault = -1;
+                }
 				interfaceId = stream.getUnsignedByte();
-				if (interfaceId != 0)
-					rsInterface.animationIdActive = (interfaceId - 1 << 8) + stream.getUnsignedByte();
-				else
-					rsInterface.animationIdActive = -1;
+				if (interfaceId != 0) {
+                    rsInterface.animationIdActive = (interfaceId - 1 << 8) + stream.getUnsignedByte();
+                } else {
+                    rsInterface.animationIdActive = -1;
+                }
 				rsInterface.modelZoom = stream.getUnsignedLEShort();
 				rsInterface.modelRotationX = stream.getUnsignedLEShort();
 				rsInterface.modelRotationY = stream.getUnsignedLEShort();
@@ -191,8 +201,9 @@ public final class RSInterface {
 				rsInterface.inventoryStackSize = new int[rsInterface.width * rsInterface.height];
 				rsInterface.textCentred = stream.getUnsignedByte() == 1;
 				int font = stream.getUnsignedByte();
-				if (fonts != null)
-					rsInterface.textDrawingAreas = fonts[font];
+				if (fonts != null) {
+                    rsInterface.textDrawingAreas = fonts[font];
+                }
 				rsInterface.textShadowed = stream.getUnsignedByte() == 1;
 				rsInterface.colourDefault = stream.getInt();
 				rsInterface.inventorySpritePaddingColumn = stream.getShort();
@@ -201,8 +212,9 @@ public final class RSInterface {
 				rsInterface.actions = new String[5];
 				for (int active = 0; active < 5; active++) {
 					rsInterface.actions[active] = stream.getString();
-					if (rsInterface.actions[active].length() == 0)
-						rsInterface.actions[active] = null;
+					if (rsInterface.actions[active].length() == 0) {
+                        rsInterface.actions[active] = null;
+                    }
 				}
 
 			}
@@ -212,21 +224,26 @@ public final class RSInterface {
 				rsInterface.spellUsableOn = stream.getUnsignedLEShort();
 			}
 
-			if (rsInterface.type == 8)
-				rsInterface.textDefault = stream.getString();
+			if (rsInterface.type == 8) {
+                rsInterface.textDefault = stream.getString();
+            }
 
 			if (rsInterface.actionType == 1 || rsInterface.actionType == 4 || rsInterface.actionType == 5
 					|| rsInterface.actionType == 6) {
 				rsInterface.tooltip = stream.getString();
 				if (rsInterface.tooltip.length() == 0) {
-					if (rsInterface.actionType == 1)
-						rsInterface.tooltip = "Ok";
-					if (rsInterface.actionType == 4)
-						rsInterface.tooltip = "Select";
-					if (rsInterface.actionType == 5)
-						rsInterface.tooltip = "Select";
-					if (rsInterface.actionType == 6)
-						rsInterface.tooltip = "Continue";
+					if (rsInterface.actionType == 1) {
+                        rsInterface.tooltip = "Ok";
+                    }
+					if (rsInterface.actionType == 4) {
+                        rsInterface.tooltip = "Select";
+                    }
+					if (rsInterface.actionType == 5) {
+                        rsInterface.tooltip = "Select";
+                    }
+					if (rsInterface.actionType == 6) {
+                        rsInterface.tooltip = "Continue";
+                    }
 				}
 			}
 		}
@@ -305,43 +322,56 @@ public final class RSInterface {
 
 	public Model getAnimatedModel(int frame1Id, int frame2Id, boolean active) {
 		Model model;
-		if (active)
-			model = getModel(modelTypeActive, modelIdActive);
-		else
-			model = getModel(modelTypeDefault, modelIdDefault);
-		if (model == null)
-			return null;
-		if (frame2Id == -1 && frame1Id == -1 && model.triangleColours == null)
-			return model;
+		if (active) {
+            model = getModel(modelTypeActive, modelIdActive);
+        } else {
+            model = getModel(modelTypeDefault, modelIdDefault);
+        }
+		if (model == null) {
+            return null;
+        }
+		if (frame2Id == -1 && frame1Id == -1 && model.triangleColours == null) {
+            return model;
+        }
 
 		Model animatedModel = new Model(true, Animation.isNullFrame(frame2Id) & Animation.isNullFrame(frame1Id), false,
 				model);
-		if (frame2Id != -1 || frame1Id != -1)
-			animatedModel.createBones();
-		if (frame2Id != -1)
-			animatedModel.applyTransformation(frame2Id);
-		if (frame1Id != -1)
-			animatedModel.applyTransformation(frame1Id);
+		if (frame2Id != -1 || frame1Id != -1) {
+            animatedModel.createBones();
+        }
+		if (frame2Id != -1) {
+            animatedModel.applyTransformation(frame2Id);
+        }
+		if (frame1Id != -1) {
+            animatedModel.applyTransformation(frame1Id);
+        }
 		animatedModel.applyLighting(64, 768, -50, -10, -50, true);
 		return animatedModel;
 	}
 
 	private Model getModel(int modelType, int modelId) {
 		Model model = (Model) modelCache.get((modelType << 16) + modelId);
-		if (model != null)
-			return model;
-		if (modelType == 1)
-			model = Model.getModel(modelId);
-		if (modelType == 2)
-			model = EntityDefinition.getDefinition(modelId).getHeadModel();
-		if (modelType == 3)
-			model = Client.localPlayer.getHeadModel();
-		if (modelType == 4)
-			model = ItemDefinition.getDefinition(modelId).getInventoryModel(50);
-		if (modelType == 5)
-			model = null;
-		if (model != null)
-			modelCache.put(model, (modelType << 16) + modelId);
+		if (model != null) {
+            return model;
+        }
+		if (modelType == 1) {
+            model = Model.getModel(modelId);
+        }
+		if (modelType == 2) {
+            model = EntityDefinition.getDefinition(modelId).getHeadModel();
+        }
+		if (modelType == 3) {
+            model = Client.localPlayer.getHeadModel();
+        }
+		if (modelType == 4) {
+            model = ItemDefinition.getDefinition(modelId).getInventoryModel(50);
+        }
+		if (modelType == 5) {
+            model = null;
+        }
+		if (model != null) {
+            modelCache.put(model, (modelType << 16) + modelId);
+        }
 		return model;
 	}
 

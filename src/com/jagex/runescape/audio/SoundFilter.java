@@ -56,8 +56,9 @@ final class SoundFilter {
 			_invUnity = (float) Math.pow(0.10000000000000001D, f1 / 20F);
 			invUnity = (int) (_invUnity * 65536F);
 		}
-		if (pairCount[direction] == 0)
-			return 0;
+		if (pairCount[direction] == 0) {
+            return 0;
+        }
 		float _mag = adaptMagnitude(direction, 0, f);
 		_coefficient[direction][0] = -2F * _mag * (float) Math.cos(adaptPhase(f, 0, direction));
 		_coefficient[direction][1] = _mag * _mag;
@@ -68,21 +69,24 @@ final class SoundFilter {
 			_coefficient[direction][pair * 2 + 1] = _coefficient[direction][pair * 2 - 1] * coeff;
 			_coefficient[direction][pair * 2] = _coefficient[direction][pair * 2 - 1] * phase
 					+ _coefficient[direction][pair * 2 - 2] * coeff;
-			for (int j1 = pair * 2 - 1; j1 >= 2; j1--)
-				_coefficient[direction][j1] += _coefficient[direction][j1 - 1] * phase
-						+ _coefficient[direction][j1 - 2] * coeff;
+			for (int j1 = pair * 2 - 1; j1 >= 2; j1--) {
+                _coefficient[direction][j1] += _coefficient[direction][j1 - 1] * phase
+                        + _coefficient[direction][j1 - 2] * coeff;
+            }
 
 			_coefficient[direction][1] += _coefficient[direction][0] * phase + coeff;
 			_coefficient[direction][0] += phase;
 		}
 
 		if (direction == 0) {
-			for (int pair = 0; pair < pairCount[0] * 2; pair++)
-				_coefficient[0][pair] *= _invUnity;
+			for (int pair = 0; pair < pairCount[0] * 2; pair++) {
+                _coefficient[0][pair] *= _invUnity;
+            }
 
 		}
-		for (int pair = 0; pair < pairCount[direction] * 2; pair++)
-			coefficient[direction][pair] = (int) (_coefficient[direction][pair] * 65536F);
+		for (int pair = 0; pair < pairCount[direction] * 2; pair++) {
+            coefficient[direction][pair] = (int) (_coefficient[direction][pair] * 65536F);
+        }
 
 		return pairCount[direction] * 2;
 	}
@@ -104,19 +108,21 @@ final class SoundFilter {
 			}
 
 			for (int direction = 0; direction < 2; direction++) {
-				for (int pair = 0; pair < pairCount[direction]; pair++)
-					if ((migrated & 1 << direction * 4 << pair) != 0) {
-						pairPhase[direction][1][pair] = stream.getUnsignedLEShort();
-						pairMagnitude[direction][1][pair] = stream.getUnsignedLEShort();
-					} else {
-						pairPhase[direction][1][pair] = pairPhase[direction][0][pair];
-						pairMagnitude[direction][1][pair] = pairMagnitude[direction][0][pair];
-					}
+				for (int pair = 0; pair < pairCount[direction]; pair++) {
+                    if ((migrated & 1 << direction * 4 << pair) != 0) {
+                        pairPhase[direction][1][pair] = stream.getUnsignedLEShort();
+                        pairMagnitude[direction][1][pair] = stream.getUnsignedLEShort();
+                    } else {
+                        pairPhase[direction][1][pair] = pairPhase[direction][0][pair];
+                        pairMagnitude[direction][1][pair] = pairMagnitude[direction][0][pair];
+                    }
+                }
 
 			}
 
-			if (migrated != 0 || unity[1] != unity[0])
-				envelope.decodeShape(stream);
+			if (migrated != 0 || unity[1] != unity[0]) {
+                envelope.decodeShape(stream);
+            }
 		} else {
 			unity[0] = unity[1] = 0;
 		}

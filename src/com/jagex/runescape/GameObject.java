@@ -55,12 +55,14 @@ final class GameObject extends Animable {
 			int msb = varBit.mostSignificantBit;
 			int bit = Client.BITFIELD_MAX_VALUE[msb - lsb];
 			child = clientInstance.interfaceSettings[configId] >> lsb & bit;
-		} else if (configId != -1)
-			child = clientInstance.interfaceSettings[configId];
-		if (child < 0 || child >= childrenIds.length || childrenIds[child] == -1)
-			return null;
-		else
-			return GameObjectDefinition.getDefinition(childrenIds[child]);
+		} else if (configId != -1) {
+            child = clientInstance.interfaceSettings[configId];
+        }
+		if (child < 0 || child >= childrenIds.length || childrenIds[child] == -1) {
+            return null;
+        } else {
+            return GameObjectDefinition.getDefinition(childrenIds[child]);
+        }
 	}
 
 	@Override
@@ -68,28 +70,33 @@ final class GameObject extends Animable {
 		int animationId = -1;
 		if (animation != null) {
 			int step = Client.tick - nextFrameTime;
-			if (step > 100 && animation.frameStep > 0)
-				step = 100;
+			if (step > 100 && animation.frameStep > 0) {
+                step = 100;
+            }
 			while (step > animation.getFrameLength(frame)) {
 				step -= animation.getFrameLength(frame);
 				frame++;
-				if (frame < animation.frameCount)
-					continue;
+				if (frame < animation.frameCount) {
+                    continue;
+                }
 				frame -= animation.frameStep;
-				if (frame >= 0 && frame < animation.frameCount)
-					continue;
+				if (frame >= 0 && frame < animation.frameCount) {
+                    continue;
+                }
 				animation = null;
 				break;
 			}
 			nextFrameTime = Client.tick - step;
-			if (animation != null)
-				animationId = animation.primaryFrames[frame];
+			if (animation != null) {
+                animationId = animation.primaryFrames[frame];
+            }
 		}
 		GameObjectDefinition definition;
-		if (childrenIds != null)
-			definition = getChildDefinition();
-		else
-			definition = GameObjectDefinition.getDefinition(objectId);
+		if (childrenIds != null) {
+            definition = getChildDefinition();
+        } else {
+            definition = GameObjectDefinition.getDefinition(objectId);
+        }
 		if (definition == null) {
 			return null;
 		} else {

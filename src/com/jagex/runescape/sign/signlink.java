@@ -18,22 +18,26 @@ public final class signlink implements Runnable {
 	public static String findcachedirORIG() {
 		String as[] = { "c:/windows/", "c:/winnt/", "d:/windows/", "d:/winnt/", "e:/windows/", "e:/winnt/",
 				"f:/windows/", "f:/winnt/", "c:/", "~/", "/tmp/", "", "c:/rscache", "/rscache" };
-		if (storeid < 32 || storeid > 34)
-			storeid = 32;
+		if (storeid < 32 || storeid > 34) {
+            storeid = 32;
+        }
 		String s = ".file_store_" + storeid;
-		for (int i = 0; i < as.length; i++)
-			try {
-				String s1 = as[i];
-				if (s1.length() > 0) {
-					File file = new File(s1);
-					if (!file.exists())
-						continue;
-				}
-				File file1 = new File(s1 + s);
-				if (file1.exists() || file1.mkdir())
-					return s1 + s + "/";
-			} catch (Exception _ex) {
-			}
+		for (int i = 0; i < as.length; i++) {
+            try {
+                String s1 = as[i];
+                if (s1.length() > 0) {
+                    File file = new File(s1);
+                    if (!file.exists()) {
+                        continue;
+                    }
+                }
+                File file1 = new File(s1 + s);
+                if (file1.exists() || file1.mkdir()) {
+                    return s1 + s + "/";
+                }
+            } catch (Exception _ex) {
+            }
+        }
 
 		return null;
 
@@ -60,8 +64,9 @@ public final class signlink implements Runnable {
 	}
 
 	public static synchronized void midisave(byte abyte0[], int i) {
-		if (i > 0x1e8480)
-			return;
+		if (i > 0x1e8480) {
+            return;
+        }
 		if (savereq != null) {
 		} else {
 			midipos = (midipos + 1) % 5;
@@ -73,29 +78,33 @@ public final class signlink implements Runnable {
 	}
 
 	public static synchronized Socket openSocket(int port) throws IOException {
-		for (socketreq = port; socketreq != 0;)
-			try {
-				Thread.sleep(50L);
-			} catch (Exception _ex) {
-			}
+		for (socketreq = port; socketreq != 0;) {
+            try {
+                Thread.sleep(50L);
+            } catch (Exception _ex) {
+            }
+        }
 
-		if (socket == null)
-			throw new IOException("could not open socket");
-		else
-			return socket;
+		if (socket == null) {
+            throw new IOException("could not open socket");
+        } else {
+            return socket;
+        }
 	}
 
 	public static synchronized DataInputStream openurl(String s) throws IOException {
-		for (urlreq = s; urlreq != null;)
-			try {
-				Thread.sleep(50L);
-			} catch (Exception _ex) {
-			}
+		for (urlreq = s; urlreq != null;) {
+            try {
+                Thread.sleep(50L);
+            } catch (Exception _ex) {
+            }
+        }
 
-		if (urlstream == null)
-			throw new IOException("could not open: " + s);
-		else
-			return urlstream;
+		if (urlstream == null) {
+            throw new IOException("could not open: " + s);
+        } else {
+            return urlstream;
+        }
 	}
 
 	public static void reporterror(String s) {
@@ -120,11 +129,12 @@ public final class signlink implements Runnable {
 		Thread thread = new Thread(new signlink());
 		thread.setDaemon(true);
 		thread.start();
-		while (!active)
-			try {
-				Thread.sleep(50L);
-			} catch (Exception _ex) {
-			}
+		while (!active) {
+            try {
+                Thread.sleep(50L);
+            } catch (Exception _ex) {
+            }
+        }
 	}
 
 	public static synchronized void startThread(Runnable runnable, int priority) {
@@ -144,8 +154,9 @@ public final class signlink implements Runnable {
 	}
 
 	public static synchronized boolean wavesave(byte abyte0[], int i) {
-		if (i > 0x1e8480)
-			return false;
+		if (i > 0x1e8480) {
+            return false;
+        }
 		if (savereq != null) {
 			return false;
 		} else {
@@ -202,11 +213,13 @@ public final class signlink implements Runnable {
 		uid = getuid(s);
 		try {
 			File file = new File(s + "main_file_cache.dat");
-			if (file.exists() && file.length() > 0x3200000L)
-				file.delete();
+			if (file.exists() && file.length() > 0x3200000L) {
+                file.delete();
+            }
 			cache_dat = new RandomAccessFile(s + "main_file_cache.dat", "rw");
-			for (int j = 0; j < 5; j++)
-				cache_idx[j] = new RandomAccessFile(s + "main_file_cache.idx" + j, "rw");
+			for (int j = 0; j < 5; j++) {
+                cache_idx[j] = new RandomAccessFile(s + "main_file_cache.idx" + j, "rw");
+            }
 
 		} catch (Exception exception) {
 			exception.printStackTrace();
@@ -233,13 +246,14 @@ public final class signlink implements Runnable {
 				}
 				dnsreq = null;
 			} else if (savereq != null) {
-				if (savebuf != null)
-					try {
-						FileOutputStream fileoutputstream = new FileOutputStream(s + savereq);
-						fileoutputstream.write(savebuf, 0, savelen);
-						fileoutputstream.close();
-					} catch (Exception _ex) {
-					}
+				if (savebuf != null) {
+                    try {
+                        FileOutputStream fileoutputstream = new FileOutputStream(s + savereq);
+                        fileoutputstream.write(savebuf, 0, savelen);
+                        fileoutputstream.close();
+                    } catch (Exception _ex) {
+                    }
+                }
 				if (waveplay) {
 					waveplay = false;
 				}

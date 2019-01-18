@@ -29,8 +29,9 @@ public final class Sprite extends DrawingArea {
 		int pixels[] = new int[length];
 		for (int p = 0; p < length - 1; p++) {
 			pixels[p + 1] = indexStream.get3Bytes();
-			if (pixels[p + 1] == 0)
-				pixels[p + 1] = 1;
+			if (pixels[p + 1] == 0) {
+                pixels[p + 1] = 1;
+            }
 		}
 
 		for (int i = 0; i < archiveId; i++) {
@@ -47,15 +48,17 @@ public final class Sprite extends DrawingArea {
 		int pixelCount = width * height;
 		this.pixels = new int[pixelCount];
 		if (type == 0) {
-			for (int p = 0; p < pixelCount; p++)
-				this.pixels[p] = pixels[dataStream.getUnsignedByte()];
+			for (int p = 0; p < pixelCount; p++) {
+                this.pixels[p] = pixels[dataStream.getUnsignedByte()];
+            }
 
 			return;
 		}
 		if (type == 1) {
 			for (int x = 0; x < width; x++) {
-				for (int y = 0; y < height; y++)
-					this.pixels[x + y * width] = pixels[dataStream.getUnsignedByte()];
+				for (int y = 0; y < height; y++) {
+                    this.pixels[x + y * width] = pixels[dataStream.getUnsignedByte()];
+                }
 
 			}
 
@@ -97,22 +100,25 @@ public final class Sprite extends DrawingArea {
 			if (originalColour != 0) {
 				int red = originalColour >> 16 & 0xff;
 				red += adjustmentR;
-				if (red < 1)
-					red = 1;
-				else if (red > 255)
-					red = 255;
+				if (red < 1) {
+                    red = 1;
+                } else if (red > 255) {
+                    red = 255;
+                }
 				int green = originalColour >> 8 & 0xff;
 				green += adjustmentG;
-				if (green < 1)
-					green = 1;
-				else if (green > 255)
-					green = 255;
+				if (green < 1) {
+                    green = 1;
+                } else if (green > 255) {
+                    green = 255;
+                }
 				int blue = originalColour & 0xff;
 				blue += adjustmentB;
-				if (blue < 1)
-					blue = 1;
-				else if (blue > 255)
-					blue = 255;
+				if (blue < 1) {
+                    blue = 1;
+                } else if (blue > 255) {
+                    blue = 255;
+                }
 				pixels[pixel] = (red << 16) + (green << 8) + blue;
 			}
 		}
@@ -131,8 +137,9 @@ public final class Sprite extends DrawingArea {
 				destination[destinationPointer++] = source[sourcePointer++];
 			}
 
-			for (int ptr = copyLength; ptr < 0; ptr++)
-				destination[destinationPointer++] = source[sourcePointer++];
+			for (int ptr = copyLength; ptr < 0; ptr++) {
+                destination[destinationPointer++] = source[sourcePointer++];
+            }
 
 			destinationPointer += destinationBlockLength;
 			sourcePointer += sourceBlockLength;
@@ -170,33 +177,38 @@ public final class Sprite extends DrawingArea {
 		for (int i2 = -i1; i2 < 0; i2++) {
 			for (int ptr = blockCount; ptr < 0; ptr++) {
 				value = source[sourcePointer++];
-				if (value != 0)
-					destination[destinationPointer++] = value;
-				else
-					destinationPointer++;
+				if (value != 0) {
+                    destination[destinationPointer++] = value;
+                } else {
+                    destinationPointer++;
+                }
 				value = source[sourcePointer++];
-				if (value != 0)
-					destination[destinationPointer++] = value;
-				else
-					destinationPointer++;
+				if (value != 0) {
+                    destination[destinationPointer++] = value;
+                } else {
+                    destinationPointer++;
+                }
 				value = source[sourcePointer++];
-				if (value != 0)
-					destination[destinationPointer++] = value;
-				else
-					destinationPointer++;
+				if (value != 0) {
+                    destination[destinationPointer++] = value;
+                } else {
+                    destinationPointer++;
+                }
 				value = source[sourcePointer++];
-				if (value != 0)
-					destination[destinationPointer++] = value;
-				else
-					destinationPointer++;
+				if (value != 0) {
+                    destination[destinationPointer++] = value;
+                } else {
+                    destinationPointer++;
+                }
 			}
 
 			for (int ptr = copyLength; ptr < 0; ptr++) {
 				value = source[sourcePointer++];
-				if (value != 0)
-					destination[destinationPointer++] = value;
-				else
-					destinationPointer++;
+				if (value != 0) {
+                    destination[destinationPointer++] = value;
+                } else {
+                    destinationPointer++;
+                }
 			}
 
 			destinationPointer += destinationBlockLength;
@@ -221,8 +233,9 @@ public final class Sprite extends DrawingArea {
 			sourceOffset += clipHeight * columnCount;
 			destinationOffset += clipHeight * DrawingArea.width;
 		}
-		if (y + rowCount > DrawingArea.bottomY)
-			rowCount -= (y + rowCount) - DrawingArea.bottomY;
+		if (y + rowCount > DrawingArea.bottomY) {
+            rowCount -= (y + rowCount) - DrawingArea.bottomY;
+        }
 		if (x < DrawingArea.topX) {
 			int clipWidth = DrawingArea.topX - x;
 			columnCount -= clipWidth;
@@ -261,8 +274,9 @@ public final class Sprite extends DrawingArea {
 			j1 += k2 * l1;
 			i1 += k2 * DrawingArea.width;
 		}
-		if (j + k1 > DrawingArea.bottomY)
-			k1 -= (j + k1) - DrawingArea.bottomY;
+		if (j + k1 > DrawingArea.bottomY) {
+            k1 -= (j + k1) - DrawingArea.bottomY;
+        }
 		if (i < DrawingArea.topX) {
 			int l2 = DrawingArea.topX - i;
 			l1 -= l2;
@@ -299,8 +313,9 @@ public final class Sprite extends DrawingArea {
 			i1 += j2 * k1;
 			l += j2 * DrawingArea.width;
 		}
-		if (j + j1 > DrawingArea.bottomY)
-			j1 -= (j + j1) - DrawingArea.bottomY;
+		if (j + j1 > DrawingArea.bottomY) {
+            j1 -= (j + j1) - DrawingArea.bottomY;
+        }
 		if (i < DrawingArea.topX) {
 			int k2 = DrawingArea.topX - i;
 			k1 -= k2;
@@ -342,8 +357,9 @@ public final class Sprite extends DrawingArea {
 			l += i2 * j1;
 			k += i2 * DrawingArea.width;
 		}
-		if (x + i1 > DrawingArea.bottomY)
-			i1 -= (x + i1) - DrawingArea.bottomY;
+		if (x + i1 > DrawingArea.bottomY) {
+            i1 -= (x + i1) - DrawingArea.bottomY;
+        }
 		if (y < DrawingArea.topX) {
 			int j2 = DrawingArea.topX - y;
 			j1 -= j2;
@@ -370,33 +386,38 @@ public final class Sprite extends DrawingArea {
 		for (int j2 = -j; j2 < 0; j2++) {
 			for (int k2 = l1; k2 < 0; k2++) {
 				k = ai[k1++];
-				if (k != 0 && abyte0[i1] == 0)
-					ai1[i1++] = k;
-				else
-					i1++;
+				if (k != 0 && abyte0[i1] == 0) {
+                    ai1[i1++] = k;
+                } else {
+                    i1++;
+                }
 				k = ai[k1++];
-				if (k != 0 && abyte0[i1] == 0)
-					ai1[i1++] = k;
-				else
-					i1++;
+				if (k != 0 && abyte0[i1] == 0) {
+                    ai1[i1++] = k;
+                } else {
+                    i1++;
+                }
 				k = ai[k1++];
-				if (k != 0 && abyte0[i1] == 0)
-					ai1[i1++] = k;
-				else
-					i1++;
+				if (k != 0 && abyte0[i1] == 0) {
+                    ai1[i1++] = k;
+                } else {
+                    i1++;
+                }
 				k = ai[k1++];
-				if (k != 0 && abyte0[i1] == 0)
-					ai1[i1++] = k;
-				else
-					i1++;
+				if (k != 0 && abyte0[i1] == 0) {
+                    ai1[i1++] = k;
+                } else {
+                    i1++;
+                }
 			}
 
 			for (int l2 = i; l2 < 0; l2++) {
 				k = ai[k1++];
-				if (k != 0 && abyte0[i1] == 0)
-					ai1[i1++] = k;
-				else
-					i1++;
+				if (k != 0 && abyte0[i1] == 0) {
+                    ai1[i1++] = k;
+                } else {
+                    i1++;
+                }
 			}
 
 			i1 += l;
@@ -429,10 +450,11 @@ public final class Sprite extends DrawingArea {
 				int j4 = j3;
 				for (x = -width; x < 0; x++) {
 					int k4 = pixels[(i4 >> 16) + (j4 >> 16) * this.width];
-					if (k4 != 0)
-						DrawingArea.pixels[l3++] = k4;
-					else
-						l3++;
+					if (k4 != 0) {
+                        DrawingArea.pixels[l3++] = k4;
+                    } else {
+                        l3++;
+                    }
 					i4 += l2;
 					j4 -= k2;
 				}

@@ -3,17 +3,19 @@ package com.jagex.runescape;
 public final class Animation {
 
 	public static Animation forFrameId(int frameId) {
-		if (animations == null)
-			return null;
-		else
-			return animations[frameId];
+		if (animations == null) {
+            return null;
+        } else {
+            return animations[frameId];
+        }
 	}
 
 	public static void init(int size) {
 		animations = new Animation[size + 1];
 		opaque = new boolean[size + 1];
-		for (int i = 0; i < size + 1; i++)
-			opaque[i] = true;
+		for (int i = 0; i < size + 1; i++) {
+            opaque[i] = true;
+        }
 
 	}
 
@@ -75,8 +77,9 @@ public final class Animation {
 				if (attribute > 0) {
 					if (base.opcodes[index] != 0) {
 						for (int next = index - 1; next > highestIndex; next--) {
-							if (base.opcodes[next] != 0)
-								continue;
+							if (base.opcodes[next] != 0) {
+                                continue;
+                            }
 							transformationIndices[transformation] = next;
 							transformX[transformation] = 0;
 							transformY[transformation] = 0;
@@ -90,27 +93,31 @@ public final class Animation {
 
 					int standard = base.opcodes[index] == 3 ? 128 : 0;
 
-					if ((attribute & 1) != 0)
-						transformX[transformation] = transformationBuffer.getSmartA();
-					else
-						transformX[transformation] = standard;
+					if ((attribute & 1) != 0) {
+                        transformX[transformation] = transformationBuffer.getSmartA();
+                    } else {
+                        transformX[transformation] = standard;
+                    }
 
-					if ((attribute & 2) != 0)
-						transformY[transformation] = transformationBuffer.getSmartA();
-					else
-						transformY[transformation] = standard;
+					if ((attribute & 2) != 0) {
+                        transformY[transformation] = transformationBuffer.getSmartA();
+                    } else {
+                        transformY[transformation] = standard;
+                    }
 
-					if ((attribute & 4) != 0)
-						transformZ[transformation] = transformationBuffer.getSmartA();
-					else
-						transformZ[transformation] = standard;
+					if ((attribute & 4) != 0) {
+                        transformZ[transformation] = transformationBuffer.getSmartA();
+                    } else {
+                        transformZ[transformation] = standard;
+                    }
 
 					highestIndex = index;
 
 					transformation++;
 
-					if (base.opcodes[index] == 5)
-						opaque[id] = false;
+					if (base.opcodes[index] == 5) {
+                        opaque[id] = false;
+                    }
 				}
 			}
 

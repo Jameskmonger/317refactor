@@ -96,8 +96,9 @@ public class RSApplet extends Applet
 			Thread.sleep(5000L);
 		} catch (Exception _ex) {
 		}
-		if (gameState == -1)
-			exit();
+		if (gameState == -1) {
+            exit();
+        }
 	}
 
 	void drawLoadingText(int percentage, String s) {
@@ -158,16 +159,18 @@ public class RSApplet extends Applet
 	@Override
 	public final void focusLost(FocusEvent focusevent) {
 		awtFocus = false;
-		for (int key = 0; key < 128; key++)
-			keyStatus[key] = 0;
+		for (int key = 0; key < 128; key++) {
+            keyStatus[key] = 0;
+        }
 
 	}
 
 	Component getGameComponent() {
-		if (gameFrame != null)
-			return gameFrame;
-		else
-			return this;
+		if (gameFrame != null) {
+            return gameFrame;
+        } else {
+            return this;
+        }
 	}
 
 	final void initClientFrame(int width, int height) {
@@ -184,38 +187,68 @@ public class RSApplet extends Applet
 		int keyCode = keyevent.getKeyCode();
 		int keyChar = keyevent.getKeyChar();
 
-		if (keyChar < 30)
-			keyChar = 0;
+		if (keyChar < 30) {
+            keyChar = 0;
+        }
 		if (keyCode == 37) // Left
-			keyChar = 1;
+        {
+            keyChar = 1;
+        }
 		if (keyCode == 39) // Right
-			keyChar = 2;
+        {
+            keyChar = 2;
+        }
 		if (keyCode == 38) // Up
-			keyChar = 3;
+        {
+            keyChar = 3;
+        }
 		if (keyCode == 40) // Down
-			keyChar = 4;
+        {
+            keyChar = 4;
+        }
 		if (keyCode == 17) // CTRL
-			keyChar = 5;
+        {
+            keyChar = 5;
+        }
 		if (keyCode == 8) // Backspace
-			keyChar = 8;
+        {
+            keyChar = 8;
+        }
 		if (keyCode == 127) // Delete
-			keyChar = 8;
+        {
+            keyChar = 8;
+        }
 		if (keyCode == 9) // Meant to be tab but doesn't work
-			keyChar = 9;
+        {
+            keyChar = 9;
+        }
 		if (keyCode == 10) // Enter / return
-			keyChar = 10;
+        {
+            keyChar = 10;
+        }
 		if (keyCode >= 112 && keyCode <= 123) // F keys
-			keyChar = (1008 + keyCode) - 112;
+        {
+            keyChar = (1008 + keyCode) - 112;
+        }
 		if (keyCode == 36) // Home
-			keyChar = 1000;
+        {
+            keyChar = 1000;
+        }
 		if (keyCode == 35) // End
-			keyChar = 1001;
+        {
+            keyChar = 1001;
+        }
 		if (keyCode == 33) // Page up
-			keyChar = 1002;
+        {
+            keyChar = 1002;
+        }
 		if (keyCode == 34) // Page down
-			keyChar = 1003;
-		if (keyChar > 0 && keyChar < 128)
-			keyStatus[keyChar] = 1;
+        {
+            keyChar = 1003;
+        }
+		if (keyChar > 0 && keyChar < 128) {
+            keyStatus[keyChar] = 1;
+        }
 		if (keyChar > 4) {
 			inputBuffer[writeIndex] = keyChar;
 			writeIndex = writeIndex + 1 & 0x7f;
@@ -227,28 +260,39 @@ public class RSApplet extends Applet
 		idleTime = 0;
 		int keyCode = keyevent.getKeyCode();
 		char keyChar = keyevent.getKeyChar();
-		if (keyChar < '\036')
-			keyChar = '\0';
-		if (keyCode == 37)
-			keyChar = '\001';
-		if (keyCode == 39)
-			keyChar = '\002';
-		if (keyCode == 38)
-			keyChar = '\003';
-		if (keyCode == 40)
-			keyChar = '\004';
-		if (keyCode == 17)
-			keyChar = '\005';
-		if (keyCode == 8)
-			keyChar = '\b';
-		if (keyCode == 127)
-			keyChar = '\b';
-		if (keyCode == 9)
-			keyChar = '\t';
-		if (keyCode == 10)
-			keyChar = '\n';
-		if (keyChar > 0 && keyChar < '\200')
-			keyStatus[keyChar] = 0;
+		if (keyChar < '\036') {
+            keyChar = '\0';
+        }
+		if (keyCode == 37) {
+            keyChar = '\001';
+        }
+		if (keyCode == 39) {
+            keyChar = '\002';
+        }
+		if (keyCode == 38) {
+            keyChar = '\003';
+        }
+		if (keyCode == 40) {
+            keyChar = '\004';
+        }
+		if (keyCode == 17) {
+            keyChar = '\005';
+        }
+		if (keyCode == 8) {
+            keyChar = '\b';
+        }
+		if (keyCode == 127) {
+            keyChar = '\b';
+        }
+		if (keyCode == 9) {
+            keyChar = '\t';
+        }
+		if (keyCode == 10) {
+            keyChar = '\n';
+        }
+		if (keyChar > 0 && keyChar < '\200') {
+            keyStatus[keyChar] = 0;
+        }
 	}
 
 	@Override
@@ -325,8 +369,9 @@ public class RSApplet extends Applet
 
 	@Override
 	public final void paint(Graphics g) {
-		if (gameGraphics == null)
-			gameGraphics = g;
+		if (gameGraphics == null) {
+            gameGraphics = g;
+        }
 		clearScreen = true;
 		redraw();
 	}
@@ -355,8 +400,9 @@ public class RSApplet extends Applet
 		getGameComponent().addMouseMotionListener(this);
 		getGameComponent().addKeyListener(this);
 		getGameComponent().addFocusListener(this);
-		if (gameFrame != null)
-			gameFrame.addWindowListener(this);
+		if (gameFrame != null) {
+            gameFrame.addWindowListener(this);
+        }
 		drawLoadingText(0, "Loading...");
 		startUp();
 		int opos = 0;
@@ -364,8 +410,9 @@ public class RSApplet extends Applet
 		int delay = 1;
 		int count = 0;
 		int intex = 0;
-		for (int otim = 0; otim < 10; otim++)
-			otims[otim] = System.currentTimeMillis();
+		for (int otim = 0; otim < 10; otim++) {
+            otims[otim] = System.currentTimeMillis();
+        }
 
 		while (gameState >= 0) {
 			if (gameState > 0) {
@@ -383,26 +430,32 @@ public class RSApplet extends Applet
 			if (otims[opos] == 0L) {
 				ratio = i2;
 				delay = j2;
-			} else if (currentTime > otims[opos])
-				ratio = (int) (2560 * delayTime / (currentTime - otims[opos]));
-			if (ratio < 25)
-				ratio = 25;
+			} else if (currentTime > otims[opos]) {
+                ratio = (int) (2560 * delayTime / (currentTime - otims[opos]));
+            }
+			if (ratio < 25) {
+                ratio = 25;
+            }
 			if (ratio > 256) {
 				ratio = 256;
 				delay = (int) (delayTime - (currentTime - otims[opos]) / 10L);
 			}
-			if (delay > delayTime)
-				delay = delayTime;
+			if (delay > delayTime) {
+                delay = delayTime;
+            }
 			otims[opos] = currentTime;
 			opos = (opos + 1) % 10;
 			if (delay > 1) {
-				for (int otim = 0; otim < 10; otim++)
-					if (otims[otim] != 0L)
-						otims[otim] += delay;
+				for (int otim = 0; otim < 10; otim++) {
+                    if (otims[otim] != 0L) {
+                        otims[otim] += delay;
+                    }
+                }
 
 			}
-			if (delay < minDelay)
-				delay = minDelay;
+			if (delay < minDelay) {
+                delay = minDelay;
+            }
 			try {
 				Thread.sleep(delay);
 			} catch (InterruptedException _ex) {
@@ -419,8 +472,9 @@ public class RSApplet extends Applet
 			}
 
 			count &= 0xff;
-			if (delayTime > 0)
-				fps = (1000 * ratio) / (delayTime * 256);
+			if (delayTime > 0) {
+                fps = (1000 * ratio) / (delayTime * 256);
+            }
 			processDrawing();
 			if (debugRequested) {
 				System.out.println("ntime:" + currentTime);
@@ -436,8 +490,9 @@ public class RSApplet extends Applet
 				intex = 0;
 			}
 		}
-		if (gameState == -1)
-			exit();
+		if (gameState == -1) {
+            exit();
+        }
 	}
 
 	final void setFrameRate(int frameRate) {
@@ -446,8 +501,9 @@ public class RSApplet extends Applet
 
 	@Override
 	public final void start() {
-		if (gameState >= 0)
-			gameState = 0;
+		if (gameState >= 0) {
+            gameState = 0;
+        }
 	}
 
 	public void startRunnable(Runnable runnable, int priority) {
@@ -461,14 +517,16 @@ public class RSApplet extends Applet
 
 	@Override
 	public final void stop() {
-		if (gameState >= 0)
-			gameState = 4000 / delayTime;
+		if (gameState >= 0) {
+            gameState = 4000 / delayTime;
+        }
 	}
 
 	@Override
 	public final void update(Graphics g) {
-		if (gameGraphics == null)
-			gameGraphics = g;
+		if (gameGraphics == null) {
+            gameGraphics = g;
+        }
 		clearScreen = true;
 		redraw();
 	}

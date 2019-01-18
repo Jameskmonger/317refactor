@@ -28,96 +28,113 @@ public final class Rasterizer extends DrawingArea {
 				double b = d3;
 				if (d2 != 0.0D) {
 					double d7;
-					if (d3 < 0.5D)
-						d7 = d3 * (1.0D + d2);
-					else
-						d7 = (d3 + d2) - d3 * d2;
+					if (d3 < 0.5D) {
+                        d7 = d3 * (1.0D + d2);
+                    } else {
+                        d7 = (d3 + d2) - d3 * d2;
+                    }
 					double d8 = 2D * d3 - d7;
 					double d9 = d1 + 0.33333333333333331D;
-					if (d9 > 1.0D)
-						d9--;
+					if (d9 > 1.0D) {
+                        d9--;
+                    }
 					double d10 = d1;
 					double d11 = d1 - 0.33333333333333331D;
-					if (d11 < 0.0D)
-						d11++;
-					if (6D * d9 < 1.0D)
-						r = d8 + (d7 - d8) * 6D * d9;
-					else if (2D * d9 < 1.0D)
-						r = d7;
-					else if (3D * d9 < 2D)
-						r = d8 + (d7 - d8) * (0.66666666666666663D - d9) * 6D;
-					else
-						r = d8;
-					if (6D * d10 < 1.0D)
-						g = d8 + (d7 - d8) * 6D * d10;
-					else if (2D * d10 < 1.0D)
-						g = d7;
-					else if (3D * d10 < 2D)
-						g = d8 + (d7 - d8) * (0.66666666666666663D - d10) * 6D;
-					else
-						g = d8;
-					if (6D * d11 < 1.0D)
-						b = d8 + (d7 - d8) * 6D * d11;
-					else if (2D * d11 < 1.0D)
-						b = d7;
-					else if (3D * d11 < 2D)
-						b = d8 + (d7 - d8) * (0.66666666666666663D - d11) * 6D;
-					else
-						b = d8;
+					if (d11 < 0.0D) {
+                        d11++;
+                    }
+					if (6D * d9 < 1.0D) {
+                        r = d8 + (d7 - d8) * 6D * d9;
+                    } else if (2D * d9 < 1.0D) {
+                        r = d7;
+                    } else if (3D * d9 < 2D) {
+                        r = d8 + (d7 - d8) * (0.66666666666666663D - d9) * 6D;
+                    } else {
+                        r = d8;
+                    }
+					if (6D * d10 < 1.0D) {
+                        g = d8 + (d7 - d8) * 6D * d10;
+                    } else if (2D * d10 < 1.0D) {
+                        g = d7;
+                    } else if (3D * d10 < 2D) {
+                        g = d8 + (d7 - d8) * (0.66666666666666663D - d10) * 6D;
+                    } else {
+                        g = d8;
+                    }
+					if (6D * d11 < 1.0D) {
+                        b = d8 + (d7 - d8) * 6D * d11;
+                    } else if (2D * d11 < 1.0D) {
+                        b = d7;
+                    } else if (3D * d11 < 2D) {
+                        b = d8 + (d7 - d8) * (0.66666666666666663D - d11) * 6D;
+                    } else {
+                        b = d8;
+                    }
 				}
 				int byteR = (int) (r * 256D);
 				int byteG = (int) (g * 256D);
 				int byteB = (int) (b * 256D);
 				int rgb = (byteR << 16) + (byteG << 8) + byteB;
 				rgb = adjustBrightness(rgb, brightness);
-				if (rgb == 0)
-					rgb = 1;
+				if (rgb == 0) {
+                    rgb = 1;
+                }
 				HSL_TO_RGB[hsl++] = rgb;
 			}
 
 		}
 
-		for (int textureId = 0; textureId < 50; textureId++)
-			if (textureImages[textureId] != null) {
-				int palette[] = textureImages[textureId].palette;
-				texturePalettes[textureId] = new int[palette.length];
-				for (int colour = 0; colour < palette.length; colour++) {
-					texturePalettes[textureId][colour] = adjustBrightness(palette[colour], brightness);
-					if ((texturePalettes[textureId][colour] & 0xf8f8ff) == 0 && colour != 0)
-						texturePalettes[textureId][colour] = 1;
-				}
+		for (int textureId = 0; textureId < 50; textureId++) {
+            if (textureImages[textureId] != null) {
+                int palette[] = textureImages[textureId].palette;
+                texturePalettes[textureId] = new int[palette.length];
+                for (int colour = 0; colour < palette.length; colour++) {
+                    texturePalettes[textureId][colour] = adjustBrightness(palette[colour], brightness);
+                    if ((texturePalettes[textureId][colour] & 0xf8f8ff) == 0 && colour != 0) {
+                        texturePalettes[textureId][colour] = 1;
+                    }
+                }
 
-			}
+            }
+        }
 
-		for (int textureId = 0; textureId < 50; textureId++)
-			resetTexture(textureId);
+		for (int textureId = 0; textureId < 50; textureId++) {
+            resetTexture(textureId);
+        }
 
 	}
 
 	public static void clearTextureCache() {
 		texelArrayPool = null;
-		for (int i = 0; i < 50; i++)
-			texelCache[i] = null;
+		for (int i = 0; i < 50; i++) {
+            texelCache[i] = null;
+        }
 
 	}
 
 	public static void drawFlatTriangle(int i, int j, int k, int l, int i1, int j1, int k1) {
 		int l1 = 0;
-		if (j != i)
-			l1 = (i1 - l << 16) / (j - i);
+		if (j != i) {
+            l1 = (i1 - l << 16) / (j - i);
+        }
 		int i2 = 0;
-		if (k != j)
-			i2 = (j1 - i1 << 16) / (k - j);
+		if (k != j) {
+            i2 = (j1 - i1 << 16) / (k - j);
+        }
 		int j2 = 0;
-		if (k != i)
-			j2 = (l - j1 << 16) / (i - k);
+		if (k != i) {
+            j2 = (l - j1 << 16) / (i - k);
+        }
 		if (i <= j && i <= k) {
-			if (i >= DrawingArea.bottomY)
-				return;
-			if (j > DrawingArea.bottomY)
-				j = DrawingArea.bottomY;
-			if (k > DrawingArea.bottomY)
-				k = DrawingArea.bottomY;
+			if (i >= DrawingArea.bottomY) {
+                return;
+            }
+			if (j > DrawingArea.bottomY) {
+                j = DrawingArea.bottomY;
+            }
+			if (k > DrawingArea.bottomY) {
+                k = DrawingArea.bottomY;
+            }
 			if (j < k) {
 				j1 = l <<= 16;
 				if (i < 0) {
@@ -208,12 +225,15 @@ public final class Rasterizer extends DrawingArea {
 			return;
 		}
 		if (j <= k) {
-			if (j >= DrawingArea.bottomY)
-				return;
-			if (k > DrawingArea.bottomY)
-				k = DrawingArea.bottomY;
-			if (i > DrawingArea.bottomY)
-				i = DrawingArea.bottomY;
+			if (j >= DrawingArea.bottomY) {
+                return;
+            }
+			if (k > DrawingArea.bottomY) {
+                k = DrawingArea.bottomY;
+            }
+			if (i > DrawingArea.bottomY) {
+                i = DrawingArea.bottomY;
+            }
 			if (k < i) {
 				l = i1 <<= 16;
 				if (j < 0) {
@@ -303,12 +323,15 @@ public final class Rasterizer extends DrawingArea {
 			}
 			return;
 		}
-		if (k >= DrawingArea.bottomY)
-			return;
-		if (i > DrawingArea.bottomY)
-			i = DrawingArea.bottomY;
-		if (j > DrawingArea.bottomY)
-			j = DrawingArea.bottomY;
+		if (k >= DrawingArea.bottomY) {
+            return;
+        }
+		if (i > DrawingArea.bottomY) {
+            i = DrawingArea.bottomY;
+        }
+		if (j > DrawingArea.bottomY) {
+            j = DrawingArea.bottomY;
+        }
 		if (i < j) {
 			i1 = j1 <<= 16;
 			if (k < 0) {
@@ -418,12 +441,15 @@ public final class Rasterizer extends DrawingArea {
 			k3 = (zA - zC << 15) / (yA - yC);
 		}
 		if (yA <= yB && yA <= yC) {
-			if (yA >= DrawingArea.bottomY)
-				return;
-			if (yB > DrawingArea.bottomY)
-				yB = DrawingArea.bottomY;
-			if (yC > DrawingArea.bottomY)
-				yC = DrawingArea.bottomY;
+			if (yA >= DrawingArea.bottomY) {
+                return;
+            }
+			if (yB > DrawingArea.bottomY) {
+                yB = DrawingArea.bottomY;
+            }
+			if (yC > DrawingArea.bottomY) {
+                yC = DrawingArea.bottomY;
+            }
 			if (yB < yC) {
 				xC = xA <<= 16;
 				zC = zA <<= 15;
@@ -540,12 +566,15 @@ public final class Rasterizer extends DrawingArea {
 			return;
 		}
 		if (yB <= yC) {
-			if (yB >= DrawingArea.bottomY)
-				return;
-			if (yC > DrawingArea.bottomY)
-				yC = DrawingArea.bottomY;
-			if (yA > DrawingArea.bottomY)
-				yA = DrawingArea.bottomY;
+			if (yB >= DrawingArea.bottomY) {
+                return;
+            }
+			if (yC > DrawingArea.bottomY) {
+                yC = DrawingArea.bottomY;
+            }
+			if (yA > DrawingArea.bottomY) {
+                yA = DrawingArea.bottomY;
+            }
 			if (yC < yA) {
 				xA = xB <<= 16;
 				zA = zB <<= 15;
@@ -661,12 +690,15 @@ public final class Rasterizer extends DrawingArea {
 			}
 			return;
 		}
-		if (yC >= DrawingArea.bottomY)
-			return;
-		if (yA > DrawingArea.bottomY)
-			yA = DrawingArea.bottomY;
-		if (yB > DrawingArea.bottomY)
-			yB = DrawingArea.bottomY;
+		if (yC >= DrawingArea.bottomY) {
+            return;
+        }
+		if (yA > DrawingArea.bottomY) {
+            yA = DrawingArea.bottomY;
+        }
+		if (yB > DrawingArea.bottomY) {
+            yB = DrawingArea.bottomY;
+        }
 		if (yA < yB) {
 			xB = xC <<= 16;
 			zB = zC <<= 15;
@@ -820,12 +852,15 @@ public final class Rasterizer extends DrawingArea {
 			j8 = (zA - zC << 16) / (yA - yC);
 		}
 		if (yA <= yB && yA <= yC) {
-			if (yA >= DrawingArea.bottomY)
-				return;
-			if (yB > DrawingArea.bottomY)
-				yB = DrawingArea.bottomY;
-			if (yC > DrawingArea.bottomY)
-				yC = DrawingArea.bottomY;
+			if (yA >= DrawingArea.bottomY) {
+                return;
+            }
+			if (yB > DrawingArea.bottomY) {
+                yB = DrawingArea.bottomY;
+            }
+			if (yC > DrawingArea.bottomY) {
+                yC = DrawingArea.bottomY;
+            }
 			if (yB < yC) {
 				xC = xA <<= 16;
 				zC = zA <<= 16;
@@ -986,12 +1021,15 @@ public final class Rasterizer extends DrawingArea {
 			return;
 		}
 		if (yB <= yC) {
-			if (yB >= DrawingArea.bottomY)
-				return;
-			if (yC > DrawingArea.bottomY)
-				yC = DrawingArea.bottomY;
-			if (yA > DrawingArea.bottomY)
-				yA = DrawingArea.bottomY;
+			if (yB >= DrawingArea.bottomY) {
+                return;
+            }
+			if (yC > DrawingArea.bottomY) {
+                yC = DrawingArea.bottomY;
+            }
+			if (yA > DrawingArea.bottomY) {
+                yA = DrawingArea.bottomY;
+            }
 			if (yC < yA) {
 				xA = xB <<= 16;
 				zA = zB <<= 16;
@@ -1151,12 +1189,15 @@ public final class Rasterizer extends DrawingArea {
 			}
 			return;
 		}
-		if (yC >= DrawingArea.bottomY)
-			return;
-		if (yA > DrawingArea.bottomY)
-			yA = DrawingArea.bottomY;
-		if (yB > DrawingArea.bottomY)
-			yB = DrawingArea.bottomY;
+		if (yC >= DrawingArea.bottomY) {
+            return;
+        }
+		if (yA > DrawingArea.bottomY) {
+            yA = DrawingArea.bottomY;
+        }
+		if (yB > DrawingArea.bottomY) {
+            yB = DrawingArea.bottomY;
+        }
 		if (yA < yB) {
 			xB = xC <<= 16;
 			zB = zC <<= 16;
@@ -1315,8 +1356,9 @@ public final class Rasterizer extends DrawingArea {
 	}
 
 	public static int getAverageTextureColour(int textureId) {
-		if (averageTextureColour[textureId] != 0)
-			return averageTextureColour[textureId];
+		if (averageTextureColour[textureId] != 0) {
+            return averageTextureColour[textureId];
+        }
 		int red = 0;
 		int green = 0;
 		int blue = 0;
@@ -1329,16 +1371,18 @@ public final class Rasterizer extends DrawingArea {
 
 		int rgb = (red / colourCount << 16) + (green / colourCount << 8) + blue / colourCount;
 		rgb = adjustBrightness(rgb, 1.3999999999999999D);
-		if (rgb == 0)
-			rgb = 1;
+		if (rgb == 0) {
+            rgb = 1;
+        }
 		averageTextureColour[textureId] = rgb;
 		return rgb;
 	}
 
 	private static int[] getTexturePixels(int textureId) {
 		textureLastUsed[textureId] = textureGetCount++;
-		if (texelCache[textureId] != null)
-			return texelCache[textureId];
+		if (texelCache[textureId] != null) {
+            return texelCache[textureId];
+        }
 		int texels[];
 		if (texelPoolPointer > 0) {
 			texels = texelArrayPool[--texelPoolPointer];
@@ -1346,11 +1390,12 @@ public final class Rasterizer extends DrawingArea {
 		} else {
 			int lastUsed = 0;
 			int target = -1;
-			for (int t = 0; t < loadedTextureCount; t++)
-				if (texelCache[t] != null && (textureLastUsed[t] < lastUsed || target == -1)) {
-					lastUsed = textureLastUsed[t];
-					target = t;
-				}
+			for (int t = 0; t < loadedTextureCount; t++) {
+                if (texelCache[t] != null && (textureLastUsed[t] < lastUsed || target == -1)) {
+                    lastUsed = textureLastUsed[t];
+                    target = t;
+                }
+            }
 
 			texels = texelCache[target];
 			texelCache[target] = null;
@@ -1362,8 +1407,9 @@ public final class Rasterizer extends DrawingArea {
 			transparent[textureId] = false;
 			for (int texelPointer = 0; texelPointer < 4096; texelPointer++) {
 				int texel = texels[texelPointer] = texturePalette[background.pixels[texelPointer]] & 0xf8f8ff;
-				if (texel == 0)
-					transparent[textureId] = true;
+				if (texel == 0) {
+                    transparent[textureId] = true;
+                }
 				texels[4096 + texelPointer] = texel - (texel >>> 3) & 0xf8f8ff;
 				texels[8192 + texelPointer] = texel - (texel >>> 2) & 0xf8f8ff;
 				texels[12288 + texelPointer] = texel - (texel >>> 2) - (texel >>> 3) & 0xf8f8ff;
@@ -1372,22 +1418,25 @@ public final class Rasterizer extends DrawingArea {
 		} else {
 			if (background.width == 64) {
 				for (int y = 0; y < 128; y++) {
-					for (int x = 0; x < 128; x++)
-						texels[x + (y << 7)] = texturePalette[background.pixels[(x >> 1) + ((y >> 1) << 6)]];
+					for (int x = 0; x < 128; x++) {
+                        texels[x + (y << 7)] = texturePalette[background.pixels[(x >> 1) + ((y >> 1) << 6)]];
+                    }
 
 				}
 
 			} else {
-				for (int texelPointer = 0; texelPointer < 16384; texelPointer++)
-					texels[texelPointer] = texturePalette[background.pixels[texelPointer]];
+				for (int texelPointer = 0; texelPointer < 16384; texelPointer++) {
+                    texels[texelPointer] = texturePalette[background.pixels[texelPointer]];
+                }
 
 			}
 			transparent[textureId] = false;
 			for (int texelPointer = 0; texelPointer < 16384; texelPointer++) {
 				texels[texelPointer] &= 0xf8f8ff;
 				int texel = texels[texelPointer];
-				if (texel == 0)
-					transparent[textureId] = true;
+				if (texel == 0) {
+                    transparent[textureId] = true;
+                }
 				texels[16384 + texelPointer] = texel - (texel >>> 3) & 0xf8f8ff;
 				texels[32768 + texelPointer] = texel - (texel >>> 2) & 0xf8f8ff;
 				texels[49152 + texelPointer] = texel - (texel >>> 2) - (texel >>> 3) & 0xf8f8ff;
@@ -1403,30 +1452,35 @@ public final class Rasterizer extends DrawingArea {
 		if (textured) {
 			int l1;
 			if (restrictEdges) {
-				if (i1 - l > 3)
-					l1 = (k1 - j1) / (i1 - l);
-				else
-					l1 = 0;
-				if (i1 > DrawingArea.centerX)
-					i1 = DrawingArea.centerX;
+				if (i1 - l > 3) {
+                    l1 = (k1 - j1) / (i1 - l);
+                } else {
+                    l1 = 0;
+                }
+				if (i1 > DrawingArea.centerX) {
+                    i1 = DrawingArea.centerX;
+                }
 				if (l < 0) {
 					j1 -= l * l1;
 					l = 0;
 				}
-				if (l >= i1)
-					return;
+				if (l >= i1) {
+                    return;
+                }
 				i += l;
 				k = i1 - l >> 2;
 				l1 <<= 2;
 			} else {
-				if (l >= i1)
-					return;
+				if (l >= i1) {
+                    return;
+                }
 				i += l;
 				k = i1 - l >> 2;
-				if (k > 0)
-					l1 = (k1 - j1) * anIntArray1468[k] >> 15;
-				else
-					l1 = 0;
+				if (k > 0) {
+                    l1 = (k1 - j1) * anIntArray1468[k] >> 15;
+                } else {
+                    l1 = 0;
+                }
 			}
 			if (alpha == 0) {
 				while (--k >= 0) {
@@ -1440,8 +1494,9 @@ public final class Rasterizer extends DrawingArea {
 				k = i1 - l & 3;
 				if (k > 0) {
 					j = HSL_TO_RGB[j1 >> 8];
-					do
-						ai[i++] = j;
+					do {
+                        ai[i++] = j;
+                    }
 					while (--k > 0);
 					return;
 				}
@@ -1461,25 +1516,29 @@ public final class Rasterizer extends DrawingArea {
 				if (k > 0) {
 					j = HSL_TO_RGB[j1 >> 8];
 					j = ((j & 0xff00ff) * l2 >> 8 & 0xff00ff) + ((j & 0xff00) * l2 >> 8 & 0xff00);
-					do
-						ai[i++] = j + ((ai[i] & 0xff00ff) * j2 >> 8 & 0xff00ff) + ((ai[i] & 0xff00) * j2 >> 8 & 0xff00);
+					do {
+                        ai[i++] = j + ((ai[i] & 0xff00ff) * j2 >> 8 & 0xff00ff) + ((ai[i] & 0xff00) * j2 >> 8 & 0xff00);
+                    }
 					while (--k > 0);
 				}
 			}
 			return;
 		}
-		if (l >= i1)
-			return;
+		if (l >= i1) {
+            return;
+        }
 		int i2 = (k1 - j1) / (i1 - l);
 		if (restrictEdges) {
-			if (i1 > DrawingArea.centerX)
-				i1 = DrawingArea.centerX;
+			if (i1 > DrawingArea.centerX) {
+                i1 = DrawingArea.centerX;
+            }
 			if (l < 0) {
 				j1 -= l * i2;
 				l = 0;
 			}
-			if (l >= i1)
-				return;
+			if (l >= i1) {
+                return;
+            }
 		}
 		i += l;
 		k = i1 - l;
@@ -1503,13 +1562,16 @@ public final class Rasterizer extends DrawingArea {
 	private static void method377(int ai[], int i, int j, int l, int i1) {
 		int k;// was parameter
 		if (restrictEdges) {
-			if (i1 > DrawingArea.centerX)
-				i1 = DrawingArea.centerX;
-			if (l < 0)
-				l = 0;
+			if (i1 > DrawingArea.centerX) {
+                i1 = DrawingArea.centerX;
+            }
+			if (l < 0) {
+                l = 0;
+            }
 		}
-		if (l >= i1)
-			return;
+		if (l >= i1) {
+            return;
+        }
 		i += l;
 		k = i1 - l >> 2;
 		if (alpha == 0) {
@@ -1519,8 +1581,9 @@ public final class Rasterizer extends DrawingArea {
 				ai[i++] = j;
 				ai[i++] = j;
 			}
-			for (k = i1 - l & 3; --k >= 0;)
-				ai[i++] = j;
+			for (k = i1 - l & 3; --k >= 0;) {
+                ai[i++] = j;
+            }
 
 			return;
 		}
@@ -1533,8 +1596,9 @@ public final class Rasterizer extends DrawingArea {
 			ai[i++] = j + ((ai[i] & 0xff00ff) * j1 >> 8 & 0xff00ff) + ((ai[i] & 0xff00) * j1 >> 8 & 0xff00);
 			ai[i++] = j + ((ai[i] & 0xff00ff) * j1 >> 8 & 0xff00ff) + ((ai[i] & 0xff00) * j1 >> 8 & 0xff00);
 		}
-		for (k = i1 - l & 3; --k >= 0;)
-			ai[i++] = j + ((ai[i] & 0xff00ff) * j1 >> 8 & 0xff00ff) + ((ai[i] & 0xff00) * j1 >> 8 & 0xff00);
+		for (k = i1 - l & 3; --k >= 0;) {
+            ai[i++] = j + ((ai[i] & 0xff00ff) * j1 >> 8 & 0xff00ff) + ((ai[i] & 0xff00) * j1 >> 8 & 0xff00);
+        }
 
 	}
 
@@ -1542,20 +1606,23 @@ public final class Rasterizer extends DrawingArea {
 			int k2, int l2, int i3) {
 		int i = 0;// was parameter
 		int j = 0;// was parameter
-		if (l >= i1)
-			return;
+		if (l >= i1) {
+            return;
+        }
 		int j3;
 		int k3;
 		if (restrictEdges) {
 			j3 = (k1 - j1) / (i1 - l);
-			if (i1 > DrawingArea.centerX)
-				i1 = DrawingArea.centerX;
+			if (i1 > DrawingArea.centerX) {
+                i1 = DrawingArea.centerX;
+            }
 			if (l < 0) {
 				j1 -= l * j3;
 				l = 0;
 			}
-			if (l >= i1)
-				return;
+			if (l >= i1) {
+                return;
+            }
 			k3 = i1 - l >> 3;
 			j3 <<= 12;
 			j1 <<= 9;
@@ -1581,10 +1648,11 @@ public final class Rasterizer extends DrawingArea {
 			if (i5 != 0) {
 				i = l1 / i5;
 				j = i2 / i5;
-				if (i < 0)
-					i = 0;
-				else if (i > 4032)
-					i = 4032;
+				if (i < 0) {
+                    i = 0;
+                } else if (i > 4032) {
+                    i = 4032;
+                }
 			}
 			l1 += k2;
 			i2 += l2;
@@ -1593,10 +1661,11 @@ public final class Rasterizer extends DrawingArea {
 			if (i5 != 0) {
 				i4 = l1 / i5;
 				k4 = i2 / i5;
-				if (i4 < 7)
-					i4 = 7;
-				else if (i4 > 4032)
-					i4 = 4032;
+				if (i4 < 7) {
+                    i4 = 7;
+                } else if (i4 > 4032) {
+                    i4 = 4032;
+                }
 			}
 			int i7 = i4 - i >> 3;
 			int k7 = k4 - j >> 3;
@@ -1635,10 +1704,11 @@ public final class Rasterizer extends DrawingArea {
 					if (j5 != 0) {
 						i4 = l1 / j5;
 						k4 = i2 / j5;
-						if (i4 < 7)
-							i4 = 7;
-						else if (i4 > 4032)
-							i4 = 4032;
+						if (i4 < 7) {
+                            i4 = 7;
+                        } else if (i4 > 4032) {
+                            i4 = 4032;
+                        }
 					}
 					i7 = i4 - i >> 3;
 					k7 = k4 - j >> 3;
@@ -1656,43 +1726,51 @@ public final class Rasterizer extends DrawingArea {
 			}
 			while (k3-- > 0) {
 				int k8;
-				if ((k8 = ai1[(j & 0xfc0) + (i >> 6)] >>> i8) != 0)
-					ai[k] = k8;
+				if ((k8 = ai1[(j & 0xfc0) + (i >> 6)] >>> i8) != 0) {
+                    ai[k] = k8;
+                }
 				k++;
 				i += i7;
 				j += k7;
-				if ((k8 = ai1[(j & 0xfc0) + (i >> 6)] >>> i8) != 0)
-					ai[k] = k8;
+				if ((k8 = ai1[(j & 0xfc0) + (i >> 6)] >>> i8) != 0) {
+                    ai[k] = k8;
+                }
 				k++;
 				i += i7;
 				j += k7;
-				if ((k8 = ai1[(j & 0xfc0) + (i >> 6)] >>> i8) != 0)
-					ai[k] = k8;
+				if ((k8 = ai1[(j & 0xfc0) + (i >> 6)] >>> i8) != 0) {
+                    ai[k] = k8;
+                }
 				k++;
 				i += i7;
 				j += k7;
-				if ((k8 = ai1[(j & 0xfc0) + (i >> 6)] >>> i8) != 0)
-					ai[k] = k8;
+				if ((k8 = ai1[(j & 0xfc0) + (i >> 6)] >>> i8) != 0) {
+                    ai[k] = k8;
+                }
 				k++;
 				i += i7;
 				j += k7;
-				if ((k8 = ai1[(j & 0xfc0) + (i >> 6)] >>> i8) != 0)
-					ai[k] = k8;
+				if ((k8 = ai1[(j & 0xfc0) + (i >> 6)] >>> i8) != 0) {
+                    ai[k] = k8;
+                }
 				k++;
 				i += i7;
 				j += k7;
-				if ((k8 = ai1[(j & 0xfc0) + (i >> 6)] >>> i8) != 0)
-					ai[k] = k8;
+				if ((k8 = ai1[(j & 0xfc0) + (i >> 6)] >>> i8) != 0) {
+                    ai[k] = k8;
+                }
 				k++;
 				i += i7;
 				j += k7;
-				if ((k8 = ai1[(j & 0xfc0) + (i >> 6)] >>> i8) != 0)
-					ai[k] = k8;
+				if ((k8 = ai1[(j & 0xfc0) + (i >> 6)] >>> i8) != 0) {
+                    ai[k] = k8;
+                }
 				k++;
 				i += i7;
 				j += k7;
-				if ((k8 = ai1[(j & 0xfc0) + (i >> 6)] >>> i8) != 0)
-					ai[k] = k8;
+				if ((k8 = ai1[(j & 0xfc0) + (i >> 6)] >>> i8) != 0) {
+                    ai[k] = k8;
+                }
 				k++;
 				i = i4;
 				j = k4;
@@ -1703,10 +1781,11 @@ public final class Rasterizer extends DrawingArea {
 				if (k5 != 0) {
 					i4 = l1 / k5;
 					k4 = i2 / k5;
-					if (i4 < 7)
-						i4 = 7;
-					else if (i4 > 4032)
-						i4 = 4032;
+					if (i4 < 7) {
+                        i4 = 7;
+                    } else if (i4 > 4032) {
+                        i4 = 4032;
+                    }
 				}
 				i7 = i4 - i >> 3;
 				k7 = k4 - j >> 3;
@@ -1716,8 +1795,9 @@ public final class Rasterizer extends DrawingArea {
 			}
 			for (k3 = i1 - l & 7; k3-- > 0;) {
 				int l8;
-				if ((l8 = ai1[(j & 0xfc0) + (i >> 6)] >>> i8) != 0)
-					ai[k] = l8;
+				if ((l8 = ai1[(j & 0xfc0) + (i >> 6)] >>> i8) != 0) {
+                    ai[k] = l8;
+                }
 				k++;
 				i += i7;
 				j += k7;
@@ -1735,10 +1815,11 @@ public final class Rasterizer extends DrawingArea {
 		if (l5 != 0) {
 			i = l1 / l5;
 			j = i2 / l5;
-			if (i < 0)
-				i = 0;
-			else if (i > 16256)
-				i = 16256;
+			if (i < 0) {
+                i = 0;
+            } else if (i > 16256) {
+                i = 16256;
+            }
 		}
 		l1 += k2;
 		i2 += l2;
@@ -1747,10 +1828,11 @@ public final class Rasterizer extends DrawingArea {
 		if (l5 != 0) {
 			j4 = l1 / l5;
 			l4 = i2 / l5;
-			if (j4 < 7)
-				j4 = 7;
-			else if (j4 > 16256)
-				j4 = 16256;
+			if (j4 < 7) {
+                j4 = 7;
+            } else if (j4 > 16256) {
+                j4 = 16256;
+            }
 		}
 		int j7 = j4 - i >> 3;
 		int l7 = l4 - j >> 3;
@@ -1789,10 +1871,11 @@ public final class Rasterizer extends DrawingArea {
 				if (i6 != 0) {
 					j4 = l1 / i6;
 					l4 = i2 / i6;
-					if (j4 < 7)
-						j4 = 7;
-					else if (j4 > 16256)
-						j4 = 16256;
+					if (j4 < 7) {
+                        j4 = 7;
+                    } else if (j4 > 16256) {
+                        j4 = 16256;
+                    }
 				}
 				j7 = j4 - i >> 3;
 				l7 = l4 - j >> 3;
@@ -1810,43 +1893,51 @@ public final class Rasterizer extends DrawingArea {
 		}
 		while (k3-- > 0) {
 			int i9;
-			if ((i9 = ai1[(j & 0x3f80) + (i >> 7)] >>> j8) != 0)
-				ai[k] = i9;
+			if ((i9 = ai1[(j & 0x3f80) + (i >> 7)] >>> j8) != 0) {
+                ai[k] = i9;
+            }
 			k++;
 			i += j7;
 			j += l7;
-			if ((i9 = ai1[(j & 0x3f80) + (i >> 7)] >>> j8) != 0)
-				ai[k] = i9;
+			if ((i9 = ai1[(j & 0x3f80) + (i >> 7)] >>> j8) != 0) {
+                ai[k] = i9;
+            }
 			k++;
 			i += j7;
 			j += l7;
-			if ((i9 = ai1[(j & 0x3f80) + (i >> 7)] >>> j8) != 0)
-				ai[k] = i9;
+			if ((i9 = ai1[(j & 0x3f80) + (i >> 7)] >>> j8) != 0) {
+                ai[k] = i9;
+            }
 			k++;
 			i += j7;
 			j += l7;
-			if ((i9 = ai1[(j & 0x3f80) + (i >> 7)] >>> j8) != 0)
-				ai[k] = i9;
+			if ((i9 = ai1[(j & 0x3f80) + (i >> 7)] >>> j8) != 0) {
+                ai[k] = i9;
+            }
 			k++;
 			i += j7;
 			j += l7;
-			if ((i9 = ai1[(j & 0x3f80) + (i >> 7)] >>> j8) != 0)
-				ai[k] = i9;
+			if ((i9 = ai1[(j & 0x3f80) + (i >> 7)] >>> j8) != 0) {
+                ai[k] = i9;
+            }
 			k++;
 			i += j7;
 			j += l7;
-			if ((i9 = ai1[(j & 0x3f80) + (i >> 7)] >>> j8) != 0)
-				ai[k] = i9;
+			if ((i9 = ai1[(j & 0x3f80) + (i >> 7)] >>> j8) != 0) {
+                ai[k] = i9;
+            }
 			k++;
 			i += j7;
 			j += l7;
-			if ((i9 = ai1[(j & 0x3f80) + (i >> 7)] >>> j8) != 0)
-				ai[k] = i9;
+			if ((i9 = ai1[(j & 0x3f80) + (i >> 7)] >>> j8) != 0) {
+                ai[k] = i9;
+            }
 			k++;
 			i += j7;
 			j += l7;
-			if ((i9 = ai1[(j & 0x3f80) + (i >> 7)] >>> j8) != 0)
-				ai[k] = i9;
+			if ((i9 = ai1[(j & 0x3f80) + (i >> 7)] >>> j8) != 0) {
+                ai[k] = i9;
+            }
 			k++;
 			i = j4;
 			j = l4;
@@ -1857,10 +1948,11 @@ public final class Rasterizer extends DrawingArea {
 			if (j6 != 0) {
 				j4 = l1 / j6;
 				l4 = i2 / j6;
-				if (j4 < 7)
-					j4 = 7;
-				else if (j4 > 16256)
-					j4 = 16256;
+				if (j4 < 7) {
+                    j4 = 7;
+                } else if (j4 > 16256) {
+                    j4 = 16256;
+                }
 			}
 			j7 = j4 - i >> 3;
 			l7 = l4 - j >> 3;
@@ -1870,8 +1962,9 @@ public final class Rasterizer extends DrawingArea {
 		}
 		for (int l3 = i1 - l & 7; l3-- > 0;) {
 			int j9;
-			if ((j9 = ai1[(j & 0x3f80) + (i >> 7)] >>> j8) != 0)
-				ai[k] = j9;
+			if ((j9 = ai1[(j & 0x3f80) + (i >> 7)] >>> j8) != 0) {
+                ai[k] = j9;
+            }
 			k++;
 			i += j7;
 			j += l7;
@@ -1896,8 +1989,9 @@ public final class Rasterizer extends DrawingArea {
 	}
 
 	public static void resetTexture(int textureId) {
-		if (texelCache[textureId] == null)
-			return;
+		if (texelCache[textureId] == null) {
+            return;
+        }
 		texelArrayPool[texelPoolPointer++] = texelCache[textureId];
 		texelCache[textureId] = null;
 	}
@@ -1905,20 +1999,23 @@ public final class Rasterizer extends DrawingArea {
 	public static void resetTextures() {
 		if (texelArrayPool == null) {
 			texelPoolPointer = 20;
-			if (lowMemory)
-				texelArrayPool = new int[texelPoolPointer][16384];
-			else
-				texelArrayPool = new int[texelPoolPointer][0x10000];
-			for (int i = 0; i < 50; i++)
-				texelCache[i] = null;
+			if (lowMemory) {
+                texelArrayPool = new int[texelPoolPointer][16384];
+            } else {
+                texelArrayPool = new int[texelPoolPointer][0x10000];
+            }
+			for (int i = 0; i < 50; i++) {
+                texelCache[i] = null;
+            }
 
 		}
 	}
 
 	public static void setBounds(int width, int height) {
 		lineOffsets = new int[height];
-		for (int y = 0; y < height; y++)
-			lineOffsets[y] = width * y;
+		for (int y = 0; y < height; y++) {
+            lineOffsets[y] = width * y;
+        }
 
 		centreX = width / 2;
 		centreY = height / 2;
@@ -1926,8 +2023,9 @@ public final class Rasterizer extends DrawingArea {
 
 	public static void setDefaultBounds() {
 		lineOffsets = new int[DrawingArea.height];
-		for (int y = 0; y < DrawingArea.height; y++)
-			lineOffsets[y] = DrawingArea.width * y;
+		for (int y = 0; y < DrawingArea.height; y++) {
+            lineOffsets[y] = DrawingArea.width * y;
+        }
 
 		centreX = DrawingArea.width / 2;
 		centreY = DrawingArea.height / 2;
@@ -1935,16 +2033,18 @@ public final class Rasterizer extends DrawingArea {
 
 	public static void unpackTextures(Archive archive) {
 		loadedTextureCount = 0;
-		for (int i = 0; i < 50; i++)
-			try {
-				textureImages[i] = new IndexedImage(archive, String.valueOf(i), 0);
-				if (lowMemory && textureImages[i].resizeWidth == 128)
-					textureImages[i].resizeToHalf();
-				else
-					textureImages[i].resize();
-				loadedTextureCount++;
-			} catch (Exception _ex) {
-			}
+		for (int i = 0; i < 50; i++) {
+            try {
+                textureImages[i] = new IndexedImage(archive, String.valueOf(i), 0);
+                if (lowMemory && textureImages[i].resizeWidth == 128) {
+                    textureImages[i].resizeToHalf();
+                } else {
+                    textureImages[i].resize();
+                }
+                loadedTextureCount++;
+            } catch (Exception _ex) {
+            }
+        }
 
 	}
 
@@ -1978,11 +2078,13 @@ public final class Rasterizer extends DrawingArea {
 		anIntArray1469 = new int[2048];
 		SINE = new int[2048];
 		COSINE = new int[2048];
-		for (int i = 1; i < 512; i++)
-			anIntArray1468[i] = 32768 / i;
+		for (int i = 1; i < 512; i++) {
+            anIntArray1468[i] = 32768 / i;
+        }
 
-		for (int j = 1; j < 2048; j++)
-			anIntArray1469[j] = 0x10000 / j;
+		for (int j = 1; j < 2048; j++) {
+            anIntArray1469[j] = 0x10000 / j;
+        }
 
 		for (int k = 0; k < 2048; k++) {
 			SINE[k] = (int) (65536D * Math.sin(k * 0.0030679614999999999D));

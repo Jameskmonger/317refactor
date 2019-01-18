@@ -6,8 +6,9 @@ public final class TextClass {
 
 	public static String asterisksForString(String string) {
 		StringBuffer asterisks = new StringBuffer();
-		for (int c = 0; c < string.length(); c++)
-			asterisks.append("*");
+		for (int c = 0; c < string.length(); c++) {
+            asterisks.append("*");
+        }
 		return asterisks.toString();
 	}
 
@@ -19,15 +20,18 @@ public final class TextClass {
 	public static String formatName(String name) {
 		if (name.length() > 0) {
 			char characters[] = name.toCharArray();
-			for (int c = 0; c < characters.length; c++)
-				if (characters[c] == '_') {
-					characters[c] = ' ';
-					if (c + 1 < characters.length && characters[c + 1] >= 'a' && characters[c + 1] <= 'z')
-						characters[c + 1] = (char) ((characters[c + 1] + 65) - 97);
-				}
+			for (int c = 0; c < characters.length; c++) {
+                if (characters[c] == '_') {
+                    characters[c] = ' ';
+                    if (c + 1 < characters.length && characters[c + 1] >= 'a' && characters[c + 1] <= 'z') {
+                        characters[c + 1] = (char) ((characters[c + 1] + 65) - 97);
+                    }
+                }
+            }
 
-			if (characters[0] >= 'a' && characters[0] <= 'z')
-				characters[0] = (char) ((characters[0] + 65) - 97);
+			if (characters[0] >= 'a' && characters[0] <= 'z') {
+                characters[0] = (char) ((characters[0] + 65) - 97);
+            }
 			return new String(characters);
 		} else {
 			return name;
@@ -36,10 +40,12 @@ public final class TextClass {
 
 	public static String longToName(long longName) {
 		try {
-			if (longName <= 0L || longName >= 0x5b5b57f8a98a5dd1L)
-				return "invalid_name";
-			if (longName % 37L == 0L)
-				return "invalid_name";
+			if (longName <= 0L || longName >= 0x5b5b57f8a98a5dd1L) {
+                return "invalid_name";
+            }
+			if (longName % 37L == 0L) {
+                return "invalid_name";
+            }
 			int i = 0;
 			char name[] = new char[12];
 			while (longName != 0L) {
@@ -59,16 +65,18 @@ public final class TextClass {
 		for (int c = 0; c < name.length() && c < 12; c++) {
 			char character = name.charAt(c);
 			longName *= 37L;
-			if (character >= 'A' && character <= 'Z')
-				longName += (1 + character) - 65;
-			else if (character >= 'a' && character <= 'z')
-				longName += (1 + character) - 97;
-			else if (character >= '0' && character <= '9')
-				longName += (27 + character) - 48;
+			if (character >= 'A' && character <= 'Z') {
+                longName += (1 + character) - 65;
+            } else if (character >= 'a' && character <= 'z') {
+                longName += (1 + character) - 97;
+            } else if (character >= '0' && character <= '9') {
+                longName += (27 + character) - 48;
+            }
 		}
 
-		for (; longName % 37L == 0L && longName != 0L; longName /= 37L)
-			;
+		for (; longName % 37L == 0L && longName != 0L; longName /= 37L) {
+            ;
+        }
 		return longName;
 	}
 

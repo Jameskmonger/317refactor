@@ -54,11 +54,13 @@ final class Envelope {
 	int step(int period) {
 		if (ticks >= critical) {
 			amplitude = phasePeak[phaseId++] << 15;
-			if (phaseId >= phaseCount)
-				phaseId = phaseCount - 1;
+			if (phaseId >= phaseCount) {
+                phaseId = phaseCount - 1;
+            }
 			critical = (int) ((phaseDuration[phaseId] / 65536D) * period);
-			if (critical > ticks)
-				step = ((phasePeak[phaseId] << 15) - amplitude) / (critical - ticks);
+			if (critical > ticks) {
+                step = ((phasePeak[phaseId] << 15) - amplitude) / (critical - ticks);
+            }
 		}
 		amplitude += step;
 		ticks++;

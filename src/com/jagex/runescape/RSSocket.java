@@ -37,21 +37,25 @@ final class RSSocket implements Runnable {
 	}
 
 	public int available() throws IOException {
-		if (closed)
-			return 0;
-		else
-			return inputStream.available();
+		if (closed) {
+            return 0;
+        } else {
+            return inputStream.available();
+        }
 	}
 
 	public void close() {
 		closed = true;
 		try {
-			if (inputStream != null)
-				inputStream.close();
-			if (outputStream != null)
-				outputStream.close();
-			if (socket != null)
-				socket.close();
+			if (inputStream != null) {
+                inputStream.close();
+            }
+			if (outputStream != null) {
+                outputStream.close();
+            }
+			if (socket != null) {
+                socket.close();
+            }
 		} catch (IOException _ex) {
 			System.out.println("Error closing stream");
 		}
@@ -75,21 +79,24 @@ final class RSSocket implements Runnable {
 	}
 
 	public int read() throws IOException {
-		if (closed)
-			return 0;
-		else
-			return inputStream.read();
+		if (closed) {
+            return 0;
+        } else {
+            return inputStream.read();
+        }
 	}
 
 	public void read(byte abyte0[], int j) throws IOException {
 		int i = 0;// was parameter
-		if (closed)
-			return;
+		if (closed) {
+            return;
+        }
 		int k;
 		for (; j > 0; j -= k) {
 			k = inputStream.read(abyte0, i, j);
-			if (k <= 0)
-				throw new IOException("EOF");
+			if (k <= 0) {
+                throw new IOException("EOF");
+            }
 			i += k;
 		}
 
@@ -101,18 +108,21 @@ final class RSSocket implements Runnable {
 			int i;
 			int j;
 			synchronized (this) {
-				if (buffIndex == writeIndex)
-					try {
-						wait();
-					} catch (InterruptedException _ex) {
-					}
-				if (!isWriter)
-					return;
+				if (buffIndex == writeIndex) {
+                    try {
+                        wait();
+                    } catch (InterruptedException _ex) {
+                    }
+                }
+				if (!isWriter) {
+                    return;
+                }
 				j = writeIndex;
-				if (buffIndex >= writeIndex)
-					i = buffIndex - writeIndex;
-				else
-					i = 5000 - writeIndex;
+				if (buffIndex >= writeIndex) {
+                    i = buffIndex - writeIndex;
+                } else {
+                    i = 5000 - writeIndex;
+                }
 			}
 			if (i > 0) {
 				try {
@@ -122,8 +132,9 @@ final class RSSocket implements Runnable {
 				}
 				writeIndex = (writeIndex + i) % 5000;
 				try {
-					if (buffIndex == writeIndex)
-						outputStream.flush();
+					if (buffIndex == writeIndex) {
+                        outputStream.flush();
+                    }
 				} catch (IOException _ex) {
 					hasIOError = true;
 				}
@@ -132,20 +143,23 @@ final class RSSocket implements Runnable {
 	}
 
 	public void write(int i, byte abyte0[]) throws IOException {
-		if (closed)
-			return;
+		if (closed) {
+            return;
+        }
 		if (hasIOError) {
 			hasIOError = false;
 			throw new IOException("Error in writer thread");
 		}
-		if (buffer == null)
-			buffer = new byte[5000];
+		if (buffer == null) {
+            buffer = new byte[5000];
+        }
 		synchronized (this) {
 			for (int l = 0; l < i; l++) {
 				buffer[buffIndex] = abyte0[l];
 				buffIndex = (buffIndex + 1) % 5000;
-				if (buffIndex == (writeIndex + 4900) % 5000)
-					throw new IOException("buffer overflow");
+				if (buffIndex == (writeIndex + 4900) % 5000) {
+                    throw new IOException("buffer overflow");
+                }
 			}
 
 			if (!isWriter) {

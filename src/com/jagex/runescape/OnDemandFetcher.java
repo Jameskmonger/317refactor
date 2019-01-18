@@ -101,11 +101,13 @@ public final class OnDemandFetcher implements Runnable {
 		while (request != null) {
 			waiting = true;
 			byte data[] = null;
-			if (clientInstance.caches[0] != null)
-				data = clientInstance.caches[request.dataType + 1].decompress(request.id);
+			if (clientInstance.caches[0] != null) {
+                data = clientInstance.caches[request.dataType + 1].decompress(request.id);
+            }
 			if (!crcMatches(versions[request.dataType][request.id],
-					crcs[request.dataType][request.id], data))
-				data = null;
+					crcs[request.dataType][request.id], data)) {
+                data = null;
+            }
 			synchronized (mandatoryRequests) {
 				if (data == null) {
 					unrequested.pushBack(request);
@@ -130,27 +132,30 @@ public final class OnDemandFetcher implements Runnable {
 		try {
 			if (socket == null) {
 				long currentTime = System.currentTimeMillis();
-				if (currentTime - lastRequestTime < 4000L)
-					return;
+				if (currentTime - lastRequestTime < 4000L) {
+                    return;
+                }
 				lastRequestTime = currentTime;
 				socket = clientInstance.openSocket(43594 + Client.portOffset);
 				inputStream = socket.getInputStream();
 				outputStream = socket.getOutputStream();
 				outputStream.write(15);
-				for (int j = 0; j < 8; j++)
-					inputStream.read();
+				for (int j = 0; j < 8; j++) {
+                    inputStream.read();
+                }
 
 				loopCycle = 0;
 			}
 			payload[0] = (byte) request.dataType;
 			payload[1] = (byte) (request.id >> 8);
 			payload[2] = (byte) request.id;
-			if (request.incomplete)
-				payload[3] = 2;
-			else if (!clientInstance.loggedIn)
-				payload[3] = 1;
-			else
-				payload[3] = 0;
+			if (request.incomplete) {
+                payload[3] = 2;
+            } else if (!clientInstance.loggedIn) {
+                payload[3] = 1;
+            } else {
+                payload[3] = 0;
+            }
 			outputStream.write(payload, 0, 4);
 			writeLoopCycle = 0;
 			failedRequests = -10000;
@@ -169,8 +174,9 @@ public final class OnDemandFetcher implements Runnable {
 	}
 
 	private boolean crcMatches(int cacheVersion, int cacheChecksum, byte data[]) {
-		if (data == null || data.length < 2)
-			return false;
+		if (data == null || data.length < 2) {
+            return false;
+        }
 
 		int length = data.length - 2;
 		int version = ((data[length] & 0xff) << 8) + (data[length + 1] & 0xff);
@@ -194,12 +200,15 @@ public final class OnDemandFetcher implements Runnable {
 
 	public int getMapId(int type, int mapX, int mapY) {
 		int coordinates = (mapX << 8) + mapY;
-		for (int pointer = 0; pointer < mapIndices1.length; pointer++)
-			if (mapIndices1[pointer] == coordinates)
-				if (type == 0)
-					return mapIndices2[pointer];
-				else
-					return mapIndices3[pointer];
+		for (int pointer = 0; pointer < mapIndices1.length; pointer++) {
+            if (mapIndices1[pointer] == coordinates) {
+                if (type == 0) {
+                    return mapIndices2[pointer];
+                } else {
+                    return mapIndices3[pointer];
+                }
+            }
+        }
 		return -1;
 	}
 
@@ -212,22 +221,26 @@ public final class OnDemandFetcher implements Runnable {
 		synchronized (complete) {
 			onDemandData = (OnDemandData) complete.popFront();
 		}
-		if (onDemandData == null)
-			return null;
+		if (onDemandData == null) {
+            return null;
+        }
 		synchronized (nodeSubList) {
 			onDemandData.unlinkCacheable();
 		}
-		if (onDemandData.buffer == null)
-			return onDemandData;
+		if (onDemandData.buffer == null) {
+            return onDemandData;
+        }
 		int i = 0;
 		try {
 			GZIPInputStream gzipinputstream = new GZIPInputStream(new ByteArrayInputStream(onDemandData.buffer));
 			do {
-				if (i == gzipInputBuffer.length)
-					throw new RuntimeException("buffer overflow!");
+				if (i == gzipInputBuffer.length) {
+                    throw new RuntimeException("buffer overflow!");
+                }
 				int k = gzipinputstream.read(gzipInputBuffer, i, gzipInputBuffer.length - i);
-				if (k == -1)
-					break;
+				if (k == -1) {
+                    break;
+                }
 				i += k;
 			} while (true);
 		} catch (IOException _ex) {
@@ -243,18 +256,22 @@ public final class OnDemandFetcher implements Runnable {
 		uncompletedCount = 0;
 		completedCount = 0;
 		for (OnDemandData onDemandData = (OnDemandData) requested
-				.peekFront(); onDemandData != null; onDemandData = (OnDemandData) requested.getPrevious())
-			if (onDemandData.incomplete)
-				uncompletedCount++;
-			else
-				completedCount++;
+				.peekFront(); onDemandData != null; onDemandData = (OnDemandData) requested.getPrevious()) {
+            if (onDemandData.incomplete) {
+                uncompletedCount++;
+            } else {
+                completedCount++;
+            }
+        }
 
 		while (uncompletedCount < 10) {
 			OnDemandData onDemandData_1 = (OnDemandData) unrequested.popFront();
-			if (onDemandData_1 == null)
-				break;
-			if (filePriorities[onDemandData_1.dataType][onDemandData_1.id] != 0)
-				filesLoaded++;
+			if (onDemandData_1 == null) {
+                break;
+            }
+			if (filePriorities[onDemandData_1.dataType][onDemandData_1.id] != 0) {
+                filesLoaded++;
+            }
 			filePriorities[onDemandData_1.dataType][onDemandData_1.id] = 0;
 			requested.pushBack(onDemandData_1);
 			uncompletedCount++;
@@ -270,16 +287,19 @@ public final class OnDemandFetcher implements Runnable {
 	}
 
 	public boolean method564(int i) {
-		for (int k = 0; k < mapIndices1.length; k++)
-			if (mapIndices3[k] == i)
-				return true;
+		for (int k = 0; k < mapIndices1.length; k++) {
+            if (mapIndices3[k] == i) {
+                return true;
+            }
+        }
 		return false;
 	}
 
 	private void method568() {
 		while (uncompletedCount == 0 && completedCount < 10) {
-			if (highestPriority == 0)
-				break;
+			if (highestPriority == 0) {
+                break;
+            }
 			OnDemandData onDemandData;
 			synchronized (passiveRequests) {
 				onDemandData = (OnDemandData) passiveRequests.popFront();
@@ -290,12 +310,14 @@ public final class OnDemandFetcher implements Runnable {
 					requested.pushBack(onDemandData);
 					closeRequest(onDemandData);
 					waiting = true;
-					if (filesLoaded < totalFiles)
-						filesLoaded++;
+					if (filesLoaded < totalFiles) {
+                        filesLoaded++;
+                    }
 					statusString = "Loading extra files - " + (filesLoaded * 100) / totalFiles + "%";
 					completedCount++;
-					if (completedCount == 10)
-						return;
+					if (completedCount == 10) {
+                        return;
+                    }
 				}
 				synchronized (passiveRequests) {
 					onDemandData = (OnDemandData) passiveRequests.popFront();
@@ -304,23 +326,26 @@ public final class OnDemandFetcher implements Runnable {
 			for (int j = 0; j < 4; j++) {
 				byte abyte0[] = filePriorities[j];
 				int k = abyte0.length;
-				for (int l = 0; l < k; l++)
-					if (abyte0[l] == highestPriority) {
-						abyte0[l] = 0;
-						OnDemandData onDemandData_1 = new OnDemandData();
-						onDemandData_1.dataType = j;
-						onDemandData_1.id = l;
-						onDemandData_1.incomplete = false;
-						requested.pushBack(onDemandData_1);
-						closeRequest(onDemandData_1);
-						waiting = true;
-						if (filesLoaded < totalFiles)
-							filesLoaded++;
-						statusString = "Loading extra files - " + (filesLoaded * 100) / totalFiles + "%";
-						completedCount++;
-						if (completedCount == 10)
-							return;
-					}
+				for (int l = 0; l < k; l++) {
+                    if (abyte0[l] == highestPriority) {
+                        abyte0[l] = 0;
+                        OnDemandData onDemandData_1 = new OnDemandData();
+                        onDemandData_1.dataType = j;
+                        onDemandData_1.id = l;
+                        onDemandData_1.incomplete = false;
+                        requested.pushBack(onDemandData_1);
+                        closeRequest(onDemandData_1);
+                        waiting = true;
+                        if (filesLoaded < totalFiles) {
+                            filesLoaded++;
+                        }
+                        statusString = "Loading extra files - " + (filesLoaded * 100) / totalFiles + "%";
+                        completedCount++;
+                        if (completedCount == 10) {
+                            return;
+                        }
+                    }
+                }
 
 			}
 
@@ -333,14 +358,18 @@ public final class OnDemandFetcher implements Runnable {
 	}
 
 	public void passiveRequest(int id, int type) {
-		if (clientInstance.caches[0] == null)
-			return;
-		if (versions[type][id] == 0)
-			return;
-		if (filePriorities[type][id] == 0)
-			return;
-		if (highestPriority == 0)
-			return;
+		if (clientInstance.caches[0] == null) {
+            return;
+        }
+		if (versions[type][id] == 0) {
+            return;
+        }
+		if (filePriorities[type][id] == 0) {
+            return;
+        }
+		if (highestPriority == 0) {
+            return;
+        }
 		OnDemandData onDemandData = new OnDemandData();
 		onDemandData.dataType = type;
 		onDemandData.id = id;
@@ -352,11 +381,12 @@ public final class OnDemandFetcher implements Runnable {
 
 	public void preloadRegions(boolean flag) {
 		int j = mapIndices1.length;
-		for (int k = 0; k < j; k++)
-			if (flag || mapIndices4[k] != 0) {
-				setPriority((byte) 2, 3, mapIndices3[k]);
-				setPriority((byte) 2, 3, mapIndices2[k]);
-			}
+		for (int k = 0; k < j; k++) {
+            if (flag || mapIndices4[k] != 0) {
+                setPriority((byte) 2, 3, mapIndices3[k]);
+                setPriority((byte) 2, 3, mapIndices2[k]);
+            }
+        }
 
 	}
 
@@ -365,8 +395,9 @@ public final class OnDemandFetcher implements Runnable {
 			int j = inputStream.available();
 			if (expectedSize == 0 && j >= 6) {
 				waiting = true;
-				for (int k = 0; k < 6; k += inputStream.read(payload, k, 6 - k))
-					;
+				for (int k = 0; k < 6; k += inputStream.read(payload, k, 6 - k)) {
+                    ;
+                }
 				int l = payload[0] & 0xff;
 				int j1 = ((payload[1] & 0xff) << 8) + (payload[2] & 0xff);
 				int l1 = ((payload[3] & 0xff) << 8) + (payload[4] & 0xff);
@@ -374,10 +405,12 @@ public final class OnDemandFetcher implements Runnable {
 				current = null;
 				for (OnDemandData onDemandData = (OnDemandData) requested
 						.peekFront(); onDemandData != null; onDemandData = (OnDemandData) requested.getPrevious()) {
-					if (onDemandData.dataType == l && onDemandData.id == j1)
-						current = onDemandData;
-					if (current != null)
-						onDemandData.loopCycle = 0;
+					if (onDemandData.dataType == l && onDemandData.id == j1) {
+                        current = onDemandData;
+                    }
+					if (current != null) {
+                        onDemandData.loopCycle = 0;
+                    }
 				}
 
 				if (current != null) {
@@ -385,24 +418,28 @@ public final class OnDemandFetcher implements Runnable {
 					if (l1 == 0) {
 						signlink.reporterror("Rej: " + l + "," + j1);
 						current.buffer = null;
-						if (current.incomplete)
-							synchronized (complete) {
-								complete.pushBack(current);
-							}
-						else
-							current.unlink();
+						if (current.incomplete) {
+                            synchronized (complete) {
+                                complete.pushBack(current);
+                            }
+                        } else {
+                            current.unlink();
+                        }
 						current = null;
 					} else {
-						if (current.buffer == null && i2 == 0)
-							current.buffer = new byte[l1];
-						if (current.buffer == null && i2 != 0)
-							throw new IOException("missing start of file");
+						if (current.buffer == null && i2 == 0) {
+                            current.buffer = new byte[l1];
+                        }
+						if (current.buffer == null && i2 != 0) {
+                            throw new IOException("missing start of file");
+                        }
 					}
 				}
 				completedSize = i2 * 500;
 				expectedSize = 500;
-				if (expectedSize > l1 - i2 * 500)
-					expectedSize = l1 - i2 * 500;
+				if (expectedSize > l1 - i2 * 500) {
+                    expectedSize = l1 - i2 * 500;
+                }
 			}
 			if (expectedSize > 0 && j >= expectedSize) {
 				waiting = true;
@@ -412,21 +449,24 @@ public final class OnDemandFetcher implements Runnable {
 					abyte0 = current.buffer;
 					i1 = completedSize;
 				}
-				for (int k1 = 0; k1 < expectedSize; k1 += inputStream.read(abyte0, k1 + i1, expectedSize - k1))
-					;
+				for (int k1 = 0; k1 < expectedSize; k1 += inputStream.read(abyte0, k1 + i1, expectedSize - k1)) {
+                    ;
+                }
 				if (expectedSize + completedSize >= abyte0.length && current != null) {
-					if (clientInstance.caches[0] != null)
-						clientInstance.caches[current.dataType + 1].put(abyte0.length, abyte0, current.id);
+					if (clientInstance.caches[0] != null) {
+                        clientInstance.caches[current.dataType + 1].put(abyte0.length, abyte0, current.id);
+                    }
 					if (!current.incomplete && current.dataType == 3) {
 						current.incomplete = true;
 						current.dataType = 93;
 					}
-					if (current.incomplete)
-						synchronized (complete) {
-							complete.pushBack(current);
-						}
-					else
-						current.unlink();
+					if (current.incomplete) {
+                        synchronized (complete) {
+                            complete.pushBack(current);
+                        }
+                    } else {
+                        current.unlink();
+                    }
 				}
 				expectedSize = 0;
 			}
@@ -447,16 +487,20 @@ public final class OnDemandFetcher implements Runnable {
 	}
 
 	public void request(int i, int j) {
-		if (i < 0 || i > versions.length || j < 0 || j > versions[i].length)
-			return;
-		if (versions[i][j] == 0)
-			return;
+		if (i < 0 || i > versions.length || j < 0 || j > versions[i].length) {
+            return;
+        }
+		if (versions[i][j] == 0) {
+            return;
+        }
 		synchronized (nodeSubList) {
 			for (OnDemandData onDemandData = (OnDemandData) nodeSubList
 					.peek(); onDemandData != null; onDemandData = (OnDemandData) nodeSubList
-							.getNext())
-				if (onDemandData.dataType == i && onDemandData.id == j)
-					return;
+							.getNext()) {
+                if (onDemandData.dataType == i && onDemandData.id == j) {
+                    return;
+                }
+            }
 
 			OnDemandData onDemandData_1 = new OnDemandData();
 			onDemandData_1.dataType = i;
@@ -475,37 +519,42 @@ public final class OnDemandFetcher implements Runnable {
 			while (running) {
 				onDemandCycle++;
 				int i = 20;
-				if (highestPriority == 0 && clientInstance.caches[0] != null)
-					i = 50;
+				if (highestPriority == 0 && clientInstance.caches[0] != null) {
+                    i = 50;
+                }
 				try {
 					Thread.sleep(i);
 				} catch (Exception _ex) {
 				}
 				waiting = true;
 				for (int j = 0; j < 100; j++) {
-					if (!waiting)
-						break;
+					if (!waiting) {
+                        break;
+                    }
 					waiting = false;
 					checkReceived();
 					handleFailed();
-					if (uncompletedCount == 0 && j >= 5)
-						break;
+					if (uncompletedCount == 0 && j >= 5) {
+                        break;
+                    }
 					method568();
-					if (inputStream != null)
-						readData();
+					if (inputStream != null) {
+                        readData();
+                    }
 				}
 
 				boolean flag = false;
 				for (OnDemandData onDemandData = (OnDemandData) requested
-						.peekFront(); onDemandData != null; onDemandData = (OnDemandData) requested.getPrevious())
-					if (onDemandData.incomplete) {
-						flag = true;
-						onDemandData.loopCycle++;
-						if (onDemandData.loopCycle > 50) {
-							onDemandData.loopCycle = 0;
-							closeRequest(onDemandData);
-						}
-					}
+						.peekFront(); onDemandData != null; onDemandData = (OnDemandData) requested.getPrevious()) {
+                    if (onDemandData.incomplete) {
+                        flag = true;
+                        onDemandData.loopCycle++;
+                        if (onDemandData.loopCycle > 50) {
+                            onDemandData.loopCycle = 0;
+                            closeRequest(onDemandData);
+                        }
+                    }
+                }
 
 				if (!flag) {
 					for (OnDemandData onDemandData_1 = (OnDemandData) requested
@@ -559,16 +608,20 @@ public final class OnDemandFetcher implements Runnable {
 	}
 
 	public void setPriority(byte byte0, int i, int j) {
-		if (clientInstance.caches[0] == null)
-			return;
-		if (versions[i][j] == 0)
-			return;
+		if (clientInstance.caches[0] == null) {
+            return;
+        }
+		if (versions[i][j] == 0) {
+            return;
+        }
 		byte abyte0[] = clientInstance.caches[i + 1].decompress(j);
-		if (crcMatches(versions[i][j], crcs[i][j], abyte0))
-			return;
+		if (crcMatches(versions[i][j], crcs[i][j], abyte0)) {
+            return;
+        }
 		filePriorities[i][j] = byte0;
-		if (byte0 > highestPriority)
-			highestPriority = byte0;
+		if (byte0 > highestPriority) {
+            highestPriority = byte0;
+        }
 		totalFiles++;
 	}
 
@@ -580,8 +633,9 @@ public final class OnDemandFetcher implements Runnable {
 			Buffer stream = new Buffer(abyte0);
 			versions[i] = new int[j];
 			filePriorities[i] = new byte[j];
-			for (int l = 0; l < j; l++)
-				versions[i][l] = stream.getUnsignedLEShort();
+			for (int l = 0; l < j; l++) {
+                versions[i][l] = stream.getUnsignedLEShort();
+            }
 
 		}
 
@@ -591,19 +645,22 @@ public final class OnDemandFetcher implements Runnable {
 			int i1 = abyte1.length / 4;
 			Buffer stream_1 = new Buffer(abyte1);
 			crcs[k] = new int[i1];
-			for (int l1 = 0; l1 < i1; l1++)
-				crcs[k][l1] = stream_1.getInt();
+			for (int l1 = 0; l1 < i1; l1++) {
+                crcs[k][l1] = stream_1.getInt();
+            }
 
 		}
 
 		byte abyte2[] = streamLoader.decompressFile("model_index");
 		int j1 = versions[0].length;
 		modelIndices = new byte[j1];
-		for (int k1 = 0; k1 < j1; k1++)
-			if (k1 < abyte2.length)
-				modelIndices[k1] = abyte2[k1];
-			else
-				modelIndices[k1] = 0;
+		for (int k1 = 0; k1 < j1; k1++) {
+            if (k1 < abyte2.length) {
+                modelIndices[k1] = abyte2[k1];
+            } else {
+                modelIndices[k1] = 0;
+            }
+        }
 
 		abyte2 = streamLoader.decompressFile("map_index");
 		Buffer stream2 = new Buffer(abyte2);
@@ -623,15 +680,17 @@ public final class OnDemandFetcher implements Runnable {
 		stream2 = new Buffer(abyte2);
 		j1 = abyte2.length / 2;
 		frames = new int[j1];
-		for (int j2 = 0; j2 < j1; j2++)
-			frames[j2] = stream2.getUnsignedLEShort();
+		for (int j2 = 0; j2 < j1; j2++) {
+            frames[j2] = stream2.getUnsignedLEShort();
+        }
 
 		abyte2 = streamLoader.decompressFile("midi_index");
 		stream2 = new Buffer(abyte2);
 		j1 = abyte2.length;
 		musicPriorities = new int[j1];
-		for (int k2 = 0; k2 < j1; k2++)
-			musicPriorities[k2] = stream2.getUnsignedByte();
+		for (int k2 = 0; k2 < j1; k2++) {
+            musicPriorities[k2] = stream2.getUnsignedByte();
+        }
 
 		clientInstance = client1;
 		running = true;

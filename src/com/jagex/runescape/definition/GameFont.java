@@ -81,8 +81,9 @@ public final class GameFont extends DrawingArea {
 		 * Find the glyph data for this font within the parent archive.
 		 */
 		int startPosition = glyphInformation.getUnsignedByte();
-		if (startPosition > 0)
-			glyphInformation.position += 3 * (startPosition - 1);
+		if (startPosition > 0) {
+            glyphInformation.position += 3 * (startPosition - 1);
+        }
 
 		/*
 		 * Get the data for each glyph.
@@ -130,15 +131,17 @@ public final class GameFont extends DrawingArea {
 			 * 126 is the last visible character used in this client (~). No support for
 			 * accented characters!
 			 */
-			if (height > fontHeight && g < 128)
-				fontHeight = height;
+			if (height > fontHeight && g < 128) {
+                fontHeight = height;
+            }
 
 			horizontalKerning[g] = 1;
 			glyphDisplayWidth[g] = width + 2;
 
 			int activePixels = 0;
-			for (int h = height / 7; h < height; h++)
-				activePixels += glyphPixels[g][h * width];
+			for (int h = height / 7; h < height; h++) {
+                activePixels += glyphPixels[g][h * width];
+            }
 
 			if (activePixels <= height / 7) {
 				glyphDisplayWidth[g]--;
@@ -146,11 +149,13 @@ public final class GameFont extends DrawingArea {
 			}
 
 			activePixels = 0;
-			for (int h = height / 7; h < height; h++)
-				activePixels += glyphPixels[g][(width - 1) + h * width];
+			for (int h = height / 7; h < height; h++) {
+                activePixels += glyphPixels[g][(width - 1) + h * width];
+            }
 
-			if (activePixels <= height / 7)
-				glyphDisplayWidth[g]--;
+			if (activePixels <= height / 7) {
+                glyphDisplayWidth[g]--;
+            }
 		}
 
 		/*
@@ -202,29 +207,35 @@ public final class GameFont extends DrawingArea {
 				 * not, simply leave a space.
 				 */
 
-				if (input[inputPosition++] != 0)
-					output[outputPosition++] = colour;
-				else
-					outputPosition++;
-				if (input[inputPosition++] != 0)
-					output[outputPosition++] = colour;
-				else
-					outputPosition++;
-				if (input[inputPosition++] != 0)
-					output[outputPosition++] = colour;
-				else
-					outputPosition++;
-				if (input[inputPosition++] != 0)
-					output[outputPosition++] = colour;
-				else
-					outputPosition++;
+				if (input[inputPosition++] != 0) {
+                    output[outputPosition++] = colour;
+                } else {
+                    outputPosition++;
+                }
+				if (input[inputPosition++] != 0) {
+                    output[outputPosition++] = colour;
+                } else {
+                    outputPosition++;
+                }
+				if (input[inputPosition++] != 0) {
+                    output[outputPosition++] = colour;
+                } else {
+                    outputPosition++;
+                }
+				if (input[inputPosition++] != 0) {
+                    output[outputPosition++] = colour;
+                } else {
+                    outputPosition++;
+                }
 			}
 
-			for (int i = width; i < 0; i++)
-				if (input[inputPosition++] != 0)
-					output[outputPosition++] = colour;
-				else
-					outputPosition++;
+			for (int i = width; i < 0; i++) {
+                if (input[inputPosition++] != 0) {
+                    output[outputPosition++] = colour;
+                } else {
+                    outputPosition++;
+                }
+            }
 
 			outputPosition += outputWidth;
 			inputPosition += inputWidth;
@@ -364,8 +375,9 @@ public final class GameFont extends DrawingArea {
 			inputPosition += size * width;
 			outputPosition += size * DrawingArea.width;
 		}
-		if (y + height >= DrawingArea.bottomY)
-			height -= ((y + height) - DrawingArea.bottomY) + 1;
+		if (y + height >= DrawingArea.bottomY) {
+            height -= ((y + height) - DrawingArea.bottomY) + 1;
+        }
 
 		/*
 		 * Calculate the width of the glyph.
@@ -389,9 +401,10 @@ public final class GameFont extends DrawingArea {
 		/*
 		 * If the glyph is valid then render it!
 		 */
-		if (width > 0 && height > 0)
-			renderAlpha(glyphPixels, inputPosition, inputWidth, DrawingArea.pixels, outputPosition, outputWidth, width,
-					height, colour, alpha);
+		if (width > 0 && height > 0) {
+            renderAlpha(glyphPixels, inputPosition, inputWidth, DrawingArea.pixels, outputPosition, outputWidth, width,
+                    height, colour, alpha);
+        }
 	}
 
 	/**
@@ -413,8 +426,9 @@ public final class GameFont extends DrawingArea {
 	public void drawTextWithPotentialShadow(String text, int x, int y, int currentColour, boolean shadowed) {
 		strikethrough = false;
 		int originalX = x;
-		if (text == null)
-			return;
+		if (text == null) {
+            return;
+        }
 
 		/*
 		 * Draw from the top-left rather than the bottom.
@@ -431,8 +445,9 @@ public final class GameFont extends DrawingArea {
 			 */
 			if (text.charAt(c) == '@' && c + 4 < text.length() && text.charAt(c + 4) == '@') {
 				int colour = handleEmbeddedEffect(text.substring(c + 1, c + 4));
-				if (colour != -1)
-					currentColour = colour;
+				if (colour != -1) {
+                    currentColour = colour;
+                }
 				c += 4;
 			} else {
 				char character = text.charAt(c);
@@ -497,8 +512,9 @@ public final class GameFont extends DrawingArea {
 	 * @param seed          The seed for the random number generator.
 	 */
 	public void drawAlphaTextWithShadow(String text, int x, int y, int currentColour, int seed) {
-		if (text == null)
-			return;
+		if (text == null) {
+            return;
+        }
 
 		/*
 		 * Set the seet for the RNG.
@@ -526,8 +542,9 @@ public final class GameFont extends DrawingArea {
 			 */
 			if (text.charAt(c) == '@' && c + 4 < text.length() && text.charAt(c + 4) == '@') {
 				int colour = handleEmbeddedEffect(text.substring(c + 1, c + 4));
-				if (colour != -1)
-					currentColour = colour;
+				if (colour != -1) {
+                    currentColour = colour;
+                }
 				c += 4;
 			} else {
 				char character = text.charAt(c);
@@ -550,8 +567,9 @@ public final class GameFont extends DrawingArea {
 				 * 
 				 * Not sure why.
 				 */
-				if ((random.nextInt() & 3) == 0)
-					x++;
+				if ((random.nextInt() & 3) == 0) {
+                    x++;
+                }
 			}
 		}
 	}
@@ -568,8 +586,9 @@ public final class GameFont extends DrawingArea {
 	 * @param colour The colour of the text.
 	 */
 	public void drawText(String text, int x, int y, int colour) {
-		if (text == null)
-			return;
+		if (text == null) {
+            return;
+        }
 
 		/*
 		 * Draw from the top-left, not the bottom.
@@ -646,8 +665,9 @@ public final class GameFont extends DrawingArea {
 	 * @param tick   The current tick (used to make the text wave).
 	 */
 	public void drawVerticalSineWaveText(String text, int x, int y, int colour, int tick) {
-		if (text == null)
-			return;
+		if (text == null) {
+            return;
+        }
 
 		/*
 		 * Place half the text to the left of the anchor point and half the text to the
@@ -698,16 +718,18 @@ public final class GameFont extends DrawingArea {
 	 * @param tick    The current tick (used to make the text wave).
 	 */
 	public void drawShakingText(String text, int x, int y, int colour, int elapsed, int tick) {
-		if (text == null)
-			return;
+		if (text == null) {
+            return;
+        }
 
 		/*
 		 * Calculate the current amplitude of the shake based on how long the text has
 		 * been shaking for.
 		 */
 		double amplitude = 7D - elapsed / 8D;
-		if (amplitude < 0.0D)
-			amplitude = 0.0D;
+		if (amplitude < 0.0D) {
+            amplitude = 0.0D;
+        }
 
 		/*
 		 * Place half the text to the left of the anchor point and half the text to the
@@ -760,8 +782,9 @@ public final class GameFont extends DrawingArea {
 	 * @param tick   The current tick (used to make the text wave).
 	 */
 	public void drawVerticalHorizontalSineWaveText(String text, int x, int y, int colour, int tick) {
-		if (text == null)
-			return;
+		if (text == null) {
+            return;
+        }
 
 		/*
 		 * Place half the text to the left of the anchor point and half the text to the
@@ -806,44 +829,63 @@ public final class GameFont extends DrawingArea {
 	 *         not exist.
 	 */
 	private int handleEmbeddedEffect(String name) {
-		if (name.equals("red"))
-			return 0xff0000;
-		if (name.equals("gre"))
-			return 65280;
-		if (name.equals("blu"))
-			return 255;
-		if (name.equals("yel"))
-			return 0xffff00;
-		if (name.equals("cya"))
-			return 65535;
-		if (name.equals("mag"))
-			return 0xff00ff;
-		if (name.equals("whi"))
-			return 0xffffff;
-		if (name.equals("bla"))
-			return 0;
-		if (name.equals("lre"))
-			return 0xff9040;
-		if (name.equals("dre"))
-			return 0x800000;
-		if (name.equals("dbl"))
-			return 128;
-		if (name.equals("or1"))
-			return 0xffb000;
-		if (name.equals("or2"))
-			return 0xff7000;
-		if (name.equals("or3"))
-			return 0xff3000;
-		if (name.equals("gr1"))
-			return 0xc0ff00;
-		if (name.equals("gr2"))
-			return 0x80ff00;
-		if (name.equals("gr3"))
-			return 0x40ff00;
-		if (name.equals("str"))
-			strikethrough = true;
-		if (name.equals("end"))
-			strikethrough = false;
+		if (name.equals("red")) {
+            return 0xff0000;
+        }
+		if (name.equals("gre")) {
+            return 65280;
+        }
+		if (name.equals("blu")) {
+            return 255;
+        }
+		if (name.equals("yel")) {
+            return 0xffff00;
+        }
+		if (name.equals("cya")) {
+            return 65535;
+        }
+		if (name.equals("mag")) {
+            return 0xff00ff;
+        }
+		if (name.equals("whi")) {
+            return 0xffffff;
+        }
+		if (name.equals("bla")) {
+            return 0;
+        }
+		if (name.equals("lre")) {
+            return 0xff9040;
+        }
+		if (name.equals("dre")) {
+            return 0x800000;
+        }
+		if (name.equals("dbl")) {
+            return 128;
+        }
+		if (name.equals("or1")) {
+            return 0xffb000;
+        }
+		if (name.equals("or2")) {
+            return 0xff7000;
+        }
+		if (name.equals("or3")) {
+            return 0xff3000;
+        }
+		if (name.equals("gr1")) {
+            return 0xc0ff00;
+        }
+		if (name.equals("gr2")) {
+            return 0x80ff00;
+        }
+		if (name.equals("gr3")) {
+            return 0x40ff00;
+        }
+		if (name.equals("str")) {
+            strikethrough = true;
+        }
+		if (name.equals("end")) {
+            strikethrough = false;
+        }
 		return -1;
 	}
 
@@ -855,8 +897,9 @@ public final class GameFont extends DrawingArea {
 	 * @return The width of the string after the embedded elements are removed.
 	 */
 	public int getTextDisplayedWidth(String text) {
-		if (text == null)
-			return 0;
+		if (text == null) {
+            return 0;
+        }
 		int width = 0;
 
 		/*
@@ -889,8 +932,9 @@ public final class GameFont extends DrawingArea {
 	 * @return The width of the text.
 	 */
 	public int getTextWidth(String text) {
-		if (text == null)
-			return 0;
+		if (text == null) {
+            return 0;
+        }
 		int width = 0;
 
 		/*

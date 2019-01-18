@@ -10,11 +10,13 @@ public final class SpotAnimation {
 	public static void load(Archive archive) {
 		Buffer buffer = new Buffer(archive.decompressFile("spotanim.dat"));
 		int count = buffer.getUnsignedLEShort();
-		if (cache == null)
-			cache = new SpotAnimation[count];
+		if (cache == null) {
+            cache = new SpotAnimation[count];
+        }
 		for (int anim = 0; anim < count; anim++) {
-			if (cache[anim] == null)
-				cache[anim] = new SpotAnimation();
+			if (cache[anim] == null) {
+                cache[anim] = new SpotAnimation();
+            }
 			cache[anim].id = anim;
 			cache[anim].read(buffer);
 		}
@@ -48,14 +50,18 @@ public final class SpotAnimation {
 
 	public Model getModel() {
 		Model model = (Model) modelCache.get(id);
-		if (model != null)
-			return model;
+		if (model != null) {
+            return model;
+        }
 		model = Model.getModel(modelId);
-		if (model == null)
-			return null;
-		for (int colour = 0; colour < 6; colour++)
-			if (originalModelColours[0] != 0)
-				model.recolour(originalModelColours[colour], modifiedModelColours[colour]);
+		if (model == null) {
+            return null;
+        }
+		for (int colour = 0; colour < 6; colour++) {
+            if (originalModelColours[0] != 0) {
+                model.recolour(originalModelColours[colour], modifiedModelColours[colour]);
+            }
+        }
 
 		modelCache.put(model, id);
 		return model;
@@ -64,30 +70,33 @@ public final class SpotAnimation {
 	private void read(Buffer stream) {
 		do {
 			int opcode = stream.getUnsignedByte();
-			if (opcode == 0)
-				return;
-			if (opcode == 1)
-				modelId = stream.getUnsignedLEShort();
-			else if (opcode == 2) {
+			if (opcode == 0) {
+                return;
+            }
+			if (opcode == 1) {
+                modelId = stream.getUnsignedLEShort();
+            } else if (opcode == 2) {
 				animationId = stream.getUnsignedLEShort();
-				if (AnimationSequence.animations != null)
-					sequences = AnimationSequence.animations[animationId];
-			} else if (opcode == 4)
-				scaleXY = stream.getUnsignedLEShort();
-			else if (opcode == 5)
-				scaleZ = stream.getUnsignedLEShort();
-			else if (opcode == 6)
-				rotation = stream.getUnsignedLEShort();
-			else if (opcode == 7)
-				modelLightFalloff = stream.getUnsignedByte();
-			else if (opcode == 8)
-				modelLightAmbient = stream.getUnsignedByte();
-			else if (opcode >= 40 && opcode < 50)
-				originalModelColours[opcode - 40] = stream.getUnsignedLEShort();
-			else if (opcode >= 50 && opcode < 60)
-				modifiedModelColours[opcode - 50] = stream.getUnsignedLEShort();
-			else
-				System.out.println("Error unrecognised spotanim config code: " + opcode);
+				if (AnimationSequence.animations != null) {
+                    sequences = AnimationSequence.animations[animationId];
+                }
+			} else if (opcode == 4) {
+                scaleXY = stream.getUnsignedLEShort();
+            } else if (opcode == 5) {
+                scaleZ = stream.getUnsignedLEShort();
+            } else if (opcode == 6) {
+                rotation = stream.getUnsignedLEShort();
+            } else if (opcode == 7) {
+                modelLightFalloff = stream.getUnsignedByte();
+            } else if (opcode == 8) {
+                modelLightAmbient = stream.getUnsignedByte();
+            } else if (opcode >= 40 && opcode < 50) {
+                originalModelColours[opcode - 40] = stream.getUnsignedLEShort();
+            } else if (opcode >= 50 && opcode < 60) {
+                modifiedModelColours[opcode - 50] = stream.getUnsignedLEShort();
+            } else {
+                System.out.println("Error unrecognised spotanim config code: " + opcode);
+            }
 		} while (true);
 	}
 }

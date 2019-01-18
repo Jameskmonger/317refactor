@@ -683,34 +683,35 @@ public class Censor {
 							cur = start;
 						}
 
-						for (; !good && cur < end; cur++)
-							if (cur >= 0 && (!isSymbol(chars[cur]) || chars[cur] == '\'')) {
-								char[] frag = new char[3];
-								int off;
-								for (off = 0; off < 3; off++) {
-									if (cur + off >= chars.length || isSymbol(chars[cur + off]) && chars[cur + off] != '\'') {
-										break;
-									}
-									frag[off] = chars[cur + off];
-								}
+						for (; !good && cur < end; cur++) {
+                            if (cur >= 0 && (!isSymbol(chars[cur]) || chars[cur] == '\'')) {
+                                char[] frag = new char[3];
+                                int off;
+                                for (off = 0; off < 3; off++) {
+                                    if (cur + off >= chars.length || isSymbol(chars[cur + off]) && chars[cur + off] != '\'') {
+                                        break;
+                                    }
+                                    frag[off] = chars[cur + off];
+                                }
 
-								boolean valid = true;
+                                boolean valid = true;
 
-								// if we read zero chars
-								if (off == 0) {
-									valid = false;
-								}
+                                // if we read zero chars
+                                if (off == 0) {
+                                    valid = false;
+                                }
 
-								// if we read less than 3 chars, our cur is
-								// within bounds, and isn't a symbol
-								if (off < 3 && cur - 1 >= 0 && (!isSymbol(chars[cur - 1]) || chars[cur - 1] == '\'')) {
-									valid = false;
-								}
+                                // if we read less than 3 chars, our cur is
+                                // within bounds, and isn't a symbol
+                                if (off < 3 && cur - 1 >= 0 && (!isSymbol(chars[cur - 1]) || chars[cur - 1] == '\'')) {
+                                    valid = false;
+                                }
 
-								if (valid && !isBadFragment(frag)) {
-									good = true;
-								}
-							}
+                                if (valid && !isBadFragment(frag)) {
+                                    good = true;
+                                }
+                            }
+                        }
 
 						if (!good) {
 							bad = false;
@@ -789,20 +790,27 @@ public class Censor {
 	 * @return the length
 	 */
 	private static int getEmulatedDomainCharLen(char a, char b, char c) {
-		if (a == b)
-			return 1;
-		if (a == 'o' && b == '0')
-			return 1;
-		if (a == 'o' && b == '(' && c == ')')
-			return 2;
-		if (a == 'c' && (b == '(' || b == '<' || b == '['))
-			return 1;
-		if (a == 'e' && b == '\u20AC')
-			return 1;
-		if (a == 's' && b == '$')
-			return 1;
-		if (a == 'l' && b == 'i')
-			return 1;
+		if (a == b) {
+            return 1;
+        }
+		if (a == 'o' && b == '0') {
+            return 1;
+        }
+		if (a == 'o' && b == '(' && c == ')') {
+            return 2;
+        }
+		if (a == 'c' && (b == '(' || b == '<' || b == '[')) {
+            return 1;
+        }
+		if (a == 'e' && b == '\u20AC') {
+            return 1;
+        }
+		if (a == 's' && b == '$') {
+            return 1;
+        }
+		if (a == 'l' && b == 'i') {
+            return 1;
+        }
 		return 0;
 	}
 

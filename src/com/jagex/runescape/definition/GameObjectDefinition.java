@@ -11,9 +11,11 @@ import com.jagex.runescape.collection.Cache;
 public final class GameObjectDefinition {
 
 	public static GameObjectDefinition getDefinition(int objectId) {
-		for (int c = 0; c < 20; c++)
-			if (cache[c].id == objectId)
-				return cache[c];
+		for (int c = 0; c < 20; c++) {
+            if (cache[c].id == objectId) {
+                return cache[c];
+            }
+        }
 
 		cacheIndex = (cacheIndex + 1) % 20;
 		GameObjectDefinition definition = cache[cacheIndex];
@@ -36,8 +38,9 @@ public final class GameObjectDefinition {
 		}
 
 		cache = new GameObjectDefinition[20];
-		for (int c = 0; c < 20; c++)
-			cache[c] = new GameObjectDefinition();
+		for (int c = 0; c < 20; c++) {
+            cache[c] = new GameObjectDefinition();
+        }
 
 	}
 
@@ -113,61 +116,75 @@ public final class GameObjectDefinition {
 		Model subModel = null;
 		long hash;
 		if (modelTypes == null) {
-			if (type != 10)
-				return null;
+			if (type != 10) {
+                return null;
+            }
 			hash = (id << 6) + face + ((long) (animationId + 1) << 32);
 			Model cachedModel = (Model) animatedModelCache.get(hash);
-			if (cachedModel != null)
-				return cachedModel;
-			if (modelIds == null)
-				return null;
+			if (cachedModel != null) {
+                return cachedModel;
+            }
+			if (modelIds == null) {
+                return null;
+            }
 			boolean mirror = rotated ^ (face > 3);
 			int modelCount = modelIds.length;
 			for (int m = 0; m < modelCount; m++) {
 				int subModelId = modelIds[m];
-				if (mirror)
-					subModelId += 0x10000;
+				if (mirror) {
+                    subModelId += 0x10000;
+                }
 				subModel = (Model) modelCache.get(subModelId);
 				if (subModel == null) {
 					subModel = Model.getModel(subModelId & 0xffff);
-					if (subModel == null)
-						return null;
-					if (mirror)
-						subModel.mirror();
+					if (subModel == null) {
+                        return null;
+                    }
+					if (mirror) {
+                        subModel.mirror();
+                    }
 					modelCache.put(subModel, subModelId);
 				}
-				if (modelCount > 1)
-					models[m] = subModel;
+				if (modelCount > 1) {
+                    models[m] = subModel;
+                }
 			}
 
-			if (modelCount > 1)
-				subModel = new Model(modelCount, models);
+			if (modelCount > 1) {
+                subModel = new Model(modelCount, models);
+            }
 		} else {
 			int modelType = -1;
 			for (int t = 0; t < modelTypes.length; t++) {
-				if (modelTypes[t] != type)
-					continue;
+				if (modelTypes[t] != type) {
+                    continue;
+                }
 				modelType = t;
 				break;
 			}
 
-			if (modelType == -1)
-				return null;
+			if (modelType == -1) {
+                return null;
+            }
 			hash = (id << 6) + (modelType << 3) + face + ((long) (animationId + 1) << 32);
 			Model model = (Model) animatedModelCache.get(hash);
-			if (model != null)
-				return model;
+			if (model != null) {
+                return model;
+            }
 			int modelId = modelIds[modelType];
 			boolean mirror = rotated ^ (face > 3);
-			if (mirror)
-				modelId += 0x10000;
+			if (mirror) {
+                modelId += 0x10000;
+            }
 			subModel = (Model) modelCache.get(modelId);
 			if (subModel == null) {
 				subModel = Model.getModel(modelId & 0xffff);
-				if (subModel == null)
-					return null;
-				if (mirror)
-					subModel.mirror();
+				if (subModel == null) {
+                    return null;
+                }
+				if (mirror) {
+                    subModel.mirror();
+                }
 				modelCache.put(subModel, modelId);
 			}
 		}
@@ -183,20 +200,25 @@ public final class GameObjectDefinition {
 			animatedModel.triangleSkin = null;
 			animatedModel.vertexSkin = null;
 		}
-		while (face-- > 0)
-			animatedModel.rotate90Degrees();
+		while (face-- > 0) {
+            animatedModel.rotate90Degrees();
+        }
 		if (modifiedModelColors != null) {
-			for (int c = 0; c < modifiedModelColors.length; c++)
-				animatedModel.recolour(modifiedModelColors[c], originalModelColors[c]);
+			for (int c = 0; c < modifiedModelColors.length; c++) {
+                animatedModel.recolour(modifiedModelColors[c], originalModelColors[c]);
+            }
 
 		}
-		if (scale)
-			animatedModel.scaleT(scaleX, scaleZ, scaleY);
-		if (translate)
-			animatedModel.translate(translateX, translateY, translateZ);
+		if (scale) {
+            animatedModel.scaleT(scaleX, scaleZ, scaleY);
+        }
+		if (translate) {
+            animatedModel.translate(translateX, translateY, translateZ);
+        }
 		animatedModel.applyLighting(64 + ambient, 768 + diffuse * 5, -50, -10, -50, !delayShading);
-		if (_solid == 1)
-			animatedModel.anInt1654 = animatedModel.modelHeight;
+		if (_solid == 1) {
+            animatedModel.anInt1654 = animatedModel.modelHeight;
+        }
 		animatedModelCache.put(animatedModel, hash);
 		return animatedModel;
 	}
@@ -210,20 +232,24 @@ public final class GameObjectDefinition {
 			int msb = varBit.mostSignificantBit;
 			int bit = Client.BITFIELD_MAX_VALUE[msb - lsb];
 			child = clientInstance.interfaceSettings[configId] >> lsb & bit;
-		} else if (configIds != -1)
-			child = clientInstance.interfaceSettings[configIds];
-		if (child < 0 || child >= childIds.length || childIds[child] == -1)
-			return null;
-		else
-			return getDefinition(childIds[child]);
+		} else if (configIds != -1) {
+            child = clientInstance.interfaceSettings[configIds];
+        }
+		if (child < 0 || child >= childIds.length || childIds[child] == -1) {
+            return null;
+        } else {
+            return getDefinition(childIds[child]);
+        }
 	}
 
 	public Model getModelAt(int i, int j, int k, int l, int i1, int j1, int k1) {
 		Model model = getAnimatedModel(i, k1, j);
-		if (model == null)
-			return null;
-		if (adjustToTerrain || delayShading)
-			model = new Model(adjustToTerrain, delayShading, model);
+		if (model == null) {
+            return null;
+        }
+		if (adjustToTerrain || delayShading) {
+            model = new Model(adjustToTerrain, delayShading, model);
+        }
 		if (adjustToTerrain) {
 			int l1 = (k + l + i1 + j1) / 4;
 			for (int v = 0; v < model.vertexCount; v++) {
@@ -246,72 +272,80 @@ public final class GameObjectDefinition {
 			int opcode;
 			do {
 				opcode = stream.getUnsignedByte();
-				if (opcode == 0)
-					break label0;
+				if (opcode == 0) {
+                    break label0;
+                }
 				if (opcode == 1) {
 					int modelCount = stream.getUnsignedByte();
-					if (modelCount > 0)
-						if (modelIds == null || lowMemory) {
-							modelTypes = new int[modelCount];
-							modelIds = new int[modelCount];
-							for (int m = 0; m < modelCount; m++) {
-								modelIds[m] = stream.getUnsignedLEShort();
-								modelTypes[m] = stream.getUnsignedByte();
-							}
+					if (modelCount > 0) {
+                        if (modelIds == null || lowMemory) {
+                            modelTypes = new int[modelCount];
+                            modelIds = new int[modelCount];
+                            for (int m = 0; m < modelCount; m++) {
+                                modelIds[m] = stream.getUnsignedLEShort();
+                                modelTypes[m] = stream.getUnsignedByte();
+                            }
 
-						} else {
-							stream.position += modelCount * 3;
-						}
-				} else if (opcode == 2)
-					name = stream.getString();
-				else if (opcode == 3)
-					description = stream.readBytes();
-				else if (opcode == 5) {
+                        } else {
+                            stream.position += modelCount * 3;
+                        }
+                    }
+				} else if (opcode == 2) {
+                    name = stream.getString();
+                } else if (opcode == 3) {
+                    description = stream.readBytes();
+                } else if (opcode == 5) {
 					int modelCount = stream.getUnsignedByte();
-					if (modelCount > 0)
-						if (modelIds == null || lowMemory) {
-							modelTypes = null;
-							modelIds = new int[modelCount];
-							for (int m = 0; m < modelCount; m++)
-								modelIds[m] = stream.getUnsignedLEShort();
+					if (modelCount > 0) {
+                        if (modelIds == null || lowMemory) {
+                            modelTypes = null;
+                            modelIds = new int[modelCount];
+                            for (int m = 0; m < modelCount; m++) {
+                                modelIds[m] = stream.getUnsignedLEShort();
+                            }
 
-						} else {
-							stream.position += modelCount * 2;
-						}
-				} else if (opcode == 14)
-					sizeX = stream.getUnsignedByte();
-				else if (opcode == 15)
-					sizeY = stream.getUnsignedByte();
-				else if (opcode == 17)
-					solid = false;
-				else if (opcode == 18)
-					walkable = false;
-				else if (opcode == 19) {
+                        } else {
+                            stream.position += modelCount * 2;
+                        }
+                    }
+				} else if (opcode == 14) {
+                    sizeX = stream.getUnsignedByte();
+                } else if (opcode == 15) {
+                    sizeY = stream.getUnsignedByte();
+                } else if (opcode == 17) {
+                    solid = false;
+                } else if (opcode == 18) {
+                    walkable = false;
+                } else if (opcode == 19) {
 					_actions = stream.getUnsignedByte();
-					if (_actions == 1)
-						hasActions = true;
-				} else if (opcode == 21)
-					adjustToTerrain = true;
-				else if (opcode == 22)
-					delayShading = true;
-				else if (opcode == 23)
-					wall = true;
-				else if (opcode == 24) {
+					if (_actions == 1) {
+                        hasActions = true;
+                    }
+				} else if (opcode == 21) {
+                    adjustToTerrain = true;
+                } else if (opcode == 22) {
+                    delayShading = true;
+                } else if (opcode == 23) {
+                    wall = true;
+                } else if (opcode == 24) {
 					animationId = stream.getUnsignedLEShort();
-					if (animationId == 65535)
-						animationId = -1;
-				} else if (opcode == 28)
-					offsetAmplifier = stream.getUnsignedByte();
-				else if (opcode == 29)
-					ambient = stream.get();
-				else if (opcode == 39)
-					diffuse = stream.get();
-				else if (opcode >= 30 && opcode < 39) {
-					if (actions == null)
-						actions = new String[5];
+					if (animationId == 65535) {
+                        animationId = -1;
+                    }
+				} else if (opcode == 28) {
+                    offsetAmplifier = stream.getUnsignedByte();
+                } else if (opcode == 29) {
+                    ambient = stream.get();
+                } else if (opcode == 39) {
+                    diffuse = stream.get();
+                } else if (opcode >= 30 && opcode < 39) {
+					if (actions == null) {
+                        actions = new String[5];
+                    }
 					actions[opcode - 30] = stream.getString();
-					if (actions[opcode - 30].equalsIgnoreCase("hidden"))
-						actions[opcode - 30] = null;
+					if (actions[opcode - 30].equalsIgnoreCase("hidden")) {
+                        actions[opcode - 30] = null;
+                    }
 				} else if (opcode == 40) {
 					int colourCount = stream.getUnsignedByte();
 					modifiedModelColors = new int[colourCount];
@@ -321,100 +355,115 @@ public final class GameObjectDefinition {
 						originalModelColors[c] = stream.getUnsignedLEShort();
 					}
 
-				} else if (opcode == 60)
-					icon = stream.getUnsignedLEShort();
-				else if (opcode == 62)
-					rotated = true;
-				else if (opcode == 64)
-					castsShadow = false;
-				else if (opcode == 65)
-					scaleX = stream.getUnsignedLEShort();
-				else if (opcode == 66)
-					scaleY = stream.getUnsignedLEShort();
-				else if (opcode == 67)
-					scaleZ = stream.getUnsignedLEShort();
-				else if (opcode == 68)
-					mapScene = stream.getUnsignedLEShort();
-				else if (opcode == 69)
-					face = stream.getUnsignedByte();
-				else if (opcode == 70)
-					translateX = stream.getShort();
-				else if (opcode == 71)
-					translateY = stream.getShort();
-				else if (opcode == 72)
-					translateZ = stream.getShort();
-				else if (opcode == 73)
-					unknownAttribute = true;
-				else if (opcode == 74) {
+				} else if (opcode == 60) {
+                    icon = stream.getUnsignedLEShort();
+                } else if (opcode == 62) {
+                    rotated = true;
+                } else if (opcode == 64) {
+                    castsShadow = false;
+                } else if (opcode == 65) {
+                    scaleX = stream.getUnsignedLEShort();
+                } else if (opcode == 66) {
+                    scaleY = stream.getUnsignedLEShort();
+                } else if (opcode == 67) {
+                    scaleZ = stream.getUnsignedLEShort();
+                } else if (opcode == 68) {
+                    mapScene = stream.getUnsignedLEShort();
+                } else if (opcode == 69) {
+                    face = stream.getUnsignedByte();
+                } else if (opcode == 70) {
+                    translateX = stream.getShort();
+                } else if (opcode == 71) {
+                    translateY = stream.getShort();
+                } else if (opcode == 72) {
+                    translateZ = stream.getShort();
+                } else if (opcode == 73) {
+                    unknownAttribute = true;
+                } else if (opcode == 74) {
 					unwalkableSolid = true;
 				} else {
-					if (opcode != 75)
-						continue;
+					if (opcode != 75) {
+                        continue;
+                    }
 					_solid = stream.getUnsignedByte();
 				}
 				continue label0;
 			} while (opcode != 77);
 			varBitId = stream.getUnsignedLEShort();
-			if (varBitId == 65535)
-				varBitId = -1;
+			if (varBitId == 65535) {
+                varBitId = -1;
+            }
 			configIds = stream.getUnsignedLEShort();
-			if (configIds == 65535)
-				configIds = -1;
+			if (configIds == 65535) {
+                configIds = -1;
+            }
 			int childCount = stream.getUnsignedByte();
 			childIds = new int[childCount + 1];
 			for (int c = 0; c <= childCount; c++) {
 				childIds[c] = stream.getUnsignedLEShort();
-				if (childIds[c] == 65535)
-					childIds[c] = -1;
+				if (childIds[c] == 65535) {
+                    childIds[c] = -1;
+                }
 			}
 
 		} while (true);
 		if (_actions == -1) {
 			hasActions = modelIds != null && (modelTypes == null || modelTypes[0] == 10);
-			if (actions != null)
-				hasActions = true;
+			if (actions != null) {
+                hasActions = true;
+            }
 		}
 		if (unwalkableSolid) {
 			solid = false;
 			walkable = false;
 		}
-		if (_solid == -1)
-			_solid = solid ? 1 : 0;
+		if (_solid == -1) {
+            _solid = solid ? 1 : 0;
+        }
 	}
 
 	public boolean modelCached() {
-		if (modelIds == null)
-			return true;
+		if (modelIds == null) {
+            return true;
+        }
 		boolean cached = true;
-		for (int m = 0; m < modelIds.length; m++)
-			cached &= Model.isCached(modelIds[m] & 0xffff);
+		for (int m = 0; m < modelIds.length; m++) {
+            cached &= Model.isCached(modelIds[m] & 0xffff);
+        }
 		return cached;
 	}
 
 	public boolean modelTypeCached(int modelType) {
 		if (modelTypes == null) {
-			if (modelIds == null)
-				return true;
-			if (modelType != 10)
-				return true;
+			if (modelIds == null) {
+                return true;
+            }
+			if (modelType != 10) {
+                return true;
+            }
 			boolean cached = true;
-			for (int id = 0; id < modelIds.length; id++)
-				cached &= Model.isCached(modelIds[id] & 0xffff);
+			for (int id = 0; id < modelIds.length; id++) {
+                cached &= Model.isCached(modelIds[id] & 0xffff);
+            }
 
 			return cached;
 		}
-		for (int type = 0; type < modelTypes.length; type++)
-			if (modelTypes[type] == modelType)
-				return Model.isCached(modelIds[type] & 0xffff);
+		for (int type = 0; type < modelTypes.length; type++) {
+            if (modelTypes[type] == modelType) {
+                return Model.isCached(modelIds[type] & 0xffff);
+            }
+        }
 
 		return true;
 	}
 
 	public void passivelyRequestModels(OnDemandFetcher requester) {
-		if (modelIds == null)
-			return;
-		for (int modelId = 0; modelId < modelIds.length; modelId++)
-			requester.passiveRequest(modelIds[modelId] & 0xffff, 0);
+		if (modelIds == null) {
+            return;
+        }
+		for (int modelId = 0; modelId < modelIds.length; modelId++) {
+            requester.passiveRequest(modelIds[modelId] & 0xffff, 0);
+        }
 	}
 
 	private void setDefaults() {

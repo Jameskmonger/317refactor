@@ -10,9 +10,11 @@ import com.jagex.runescape.Model;
 public final class EntityDefinition {
 
 	public static EntityDefinition getDefinition(int id) {
-		for (int c = 0; c < 20; c++)
-			if (EntityDefinition.cache[c].id == id)
-				return EntityDefinition.cache[c];
+		for (int c = 0; c < 20; c++) {
+            if (EntityDefinition.cache[c].id == id) {
+                return EntityDefinition.cache[c];
+            }
+        }
 
 		EntityDefinition.bufferIndex = (EntityDefinition.bufferIndex + 1) % 20;
 		EntityDefinition definition = EntityDefinition.cache[EntityDefinition.bufferIndex] = new EntityDefinition();
@@ -34,8 +36,9 @@ public final class EntityDefinition {
 		}
 
 		EntityDefinition.cache = new EntityDefinition[20];
-		for (int c = 0; c < 20; c++)
-			EntityDefinition.cache[c] = new EntityDefinition();
+		for (int c = 0; c < 20; c++) {
+            EntityDefinition.cache[c] = new EntityDefinition();
+        }
 
 	}
 
@@ -114,42 +117,51 @@ public final class EntityDefinition {
 			int msb = varBit.mostSignificantBit;
 			int bit = Client.BITFIELD_MAX_VALUE[msb - lsb];
 			childId = clientInstance.interfaceSettings[configId] >> lsb & bit;
-		} else if (settingId != -1)
-			childId = clientInstance.interfaceSettings[settingId];
-		if (childId < 0 || childId >= childrenIDs.length || childrenIDs[childId] == -1)
-			return null;
-		else
-			return getDefinition(childrenIDs[childId]);
+		} else if (settingId != -1) {
+            childId = clientInstance.interfaceSettings[settingId];
+        }
+		if (childId < 0 || childId >= childrenIDs.length || childrenIDs[childId] == -1) {
+            return null;
+        } else {
+            return getDefinition(childrenIDs[childId]);
+        }
 	}
 
 	public Model getChildModel(int frameId2, int frameId1, int framesFrom2[]) {
 		if (childrenIDs != null) {
 			EntityDefinition childDefinition = getChildDefinition();
-			if (childDefinition == null)
-				return null;
-			else
-				return childDefinition.getChildModel(frameId2, frameId1, framesFrom2);
+			if (childDefinition == null) {
+                return null;
+            } else {
+                return childDefinition.getChildModel(frameId2, frameId1, framesFrom2);
+            }
 		}
 		Model model = (Model) modelCache.get(id);
 		if (model == null) {
 			boolean notCached = false;
-			for (int m = 0; m < modelIds.length; m++)
-				if (!Model.isCached(modelIds[m]))
-					notCached = true;
+			for (int m = 0; m < modelIds.length; m++) {
+                if (!Model.isCached(modelIds[m])) {
+                    notCached = true;
+                }
+            }
 
-			if (notCached)
-				return null;
+			if (notCached) {
+                return null;
+            }
 			Model childModels[] = new Model[modelIds.length];
-			for (int m = 0; m < modelIds.length; m++)
-				childModels[m] = Model.getModel(modelIds[m]);
+			for (int m = 0; m < modelIds.length; m++) {
+                childModels[m] = Model.getModel(modelIds[m]);
+            }
 
-			if (childModels.length == 1)
-				model = childModels[0];
-			else
-				model = new Model(childModels.length, childModels);
+			if (childModels.length == 1) {
+                model = childModels[0];
+            } else {
+                model = new Model(childModels.length, childModels);
+            }
 			if (modifiedModelColours != null) {
-				for (int c = 0; c < modifiedModelColours.length; c++)
-					model.recolour(modifiedModelColours[c], originalModelColours[c]);
+				for (int c = 0; c < modifiedModelColours.length; c++) {
+                    model.recolour(modifiedModelColours[c], originalModelColours[c]);
+                }
 
 			}
 			model.createBones();
@@ -158,49 +170,60 @@ public final class EntityDefinition {
 		}
 		Model childModel = Model.aModel_1621;
 		childModel.replaceWithModel(model, Animation.isNullFrame(frameId1) & Animation.isNullFrame(frameId2));
-		if (frameId1 != -1 && frameId2 != -1)
-			childModel.mixAnimationFrames(framesFrom2, frameId2, frameId1);
-		else if (frameId1 != -1)
-			childModel.applyTransformation(frameId1);
-		if (scaleXY != 128 || scaleZ != 128)
-			childModel.scaleT(scaleXY, scaleXY, scaleZ);
+		if (frameId1 != -1 && frameId2 != -1) {
+            childModel.mixAnimationFrames(framesFrom2, frameId2, frameId1);
+        } else if (frameId1 != -1) {
+            childModel.applyTransformation(frameId1);
+        }
+		if (scaleXY != 128 || scaleZ != 128) {
+            childModel.scaleT(scaleXY, scaleXY, scaleZ);
+        }
 		childModel.calculateDiagonals();
 		childModel.triangleSkin = null;
 		childModel.vertexSkin = null;
-		if (boundaryDimension == 1)
-			childModel.singleTile = true;
+		if (boundaryDimension == 1) {
+            childModel.singleTile = true;
+        }
 		return childModel;
 	}
 
 	public Model getHeadModel() {
 		if (childrenIDs != null) {
 			EntityDefinition definition = getChildDefinition();
-			if (definition == null)
-				return null;
-			else
-				return definition.getHeadModel();
+			if (definition == null) {
+                return null;
+            } else {
+                return definition.getHeadModel();
+            }
 		}
-		if (headModelIds == null)
-			return null;
+		if (headModelIds == null) {
+            return null;
+        }
 		boolean someModelsNotCached = false;
-		for (int i = 0; i < headModelIds.length; i++)
-			if (!Model.isCached(headModelIds[i]))
-				someModelsNotCached = true;
+		for (int i = 0; i < headModelIds.length; i++) {
+            if (!Model.isCached(headModelIds[i])) {
+                someModelsNotCached = true;
+            }
+        }
 
-		if (someModelsNotCached)
-			return null;
+		if (someModelsNotCached) {
+            return null;
+        }
 		Model headModels[] = new Model[headModelIds.length];
-		for (int j = 0; j < headModelIds.length; j++)
-			headModels[j] = Model.getModel(headModelIds[j]);
+		for (int j = 0; j < headModelIds.length; j++) {
+            headModels[j] = Model.getModel(headModelIds[j]);
+        }
 
 		Model headModel;
-		if (headModels.length == 1)
-			headModel = headModels[0];
-		else
-			headModel = new Model(headModels.length, headModels);
+		if (headModels.length == 1) {
+            headModel = headModels[0];
+        } else {
+            headModel = new Model(headModels.length, headModels);
+        }
 		if (modifiedModelColours != null) {
-			for (int c = 0; c < modifiedModelColours.length; c++)
-				headModel.recolour(modifiedModelColours[c], originalModelColours[c]);
+			for (int c = 0; c < modifiedModelColours.length; c++) {
+                headModel.recolour(modifiedModelColours[c], originalModelColours[c]);
+            }
 
 		}
 		return headModel;
@@ -209,35 +232,39 @@ public final class EntityDefinition {
 	private void loadDefinition(Buffer stream) {
 		do {
 			int opcode = stream.getUnsignedByte();
-			if (opcode == 0)
-				return;
+			if (opcode == 0) {
+                return;
+            }
 			if (opcode == 1) {
 				int modelCount = stream.getUnsignedByte();
 				modelIds = new int[modelCount];
-				for (int m = 0; m < modelCount; m++)
-					modelIds[m] = stream.getUnsignedLEShort();
+				for (int m = 0; m < modelCount; m++) {
+                    modelIds[m] = stream.getUnsignedLEShort();
+                }
 
-			} else if (opcode == 2)
-				name = stream.getString();
-			else if (opcode == 3)
-				description = stream.readBytes();
-			else if (opcode == 12)
-				boundaryDimension = stream.get();
-			else if (opcode == 13)
-				standAnimationId = stream.getUnsignedLEShort();
-			else if (opcode == 14)
-				walkAnimationId = stream.getUnsignedLEShort();
-			else if (opcode == 17) {
+			} else if (opcode == 2) {
+                name = stream.getString();
+            } else if (opcode == 3) {
+                description = stream.readBytes();
+            } else if (opcode == 12) {
+                boundaryDimension = stream.get();
+            } else if (opcode == 13) {
+                standAnimationId = stream.getUnsignedLEShort();
+            } else if (opcode == 14) {
+                walkAnimationId = stream.getUnsignedLEShort();
+            } else if (opcode == 17) {
 				walkAnimationId = stream.getUnsignedLEShort();
 				turnAboutAnimationId = stream.getUnsignedLEShort();
 				turnRightAnimationId = stream.getUnsignedLEShort();
 				turnLeftAnimationId = stream.getUnsignedLEShort();
 			} else if (opcode >= 30 && opcode < 40) {
-				if (actions == null)
-					actions = new String[5];
+				if (actions == null) {
+                    actions = new String[5];
+                }
 				actions[opcode - 30] = stream.getString();
-				if (actions[opcode - 30].equalsIgnoreCase("hidden"))
-					actions[opcode - 30] = null;
+				if (actions[opcode - 30].equalsIgnoreCase("hidden")) {
+                    actions[opcode - 30] = null;
+                }
 			} else if (opcode == 40) {
 				int colourCount = stream.getUnsignedByte();
 				modifiedModelColours = new int[colourCount];
@@ -250,50 +277,55 @@ public final class EntityDefinition {
 			} else if (opcode == 60) {
 				int additionalModelCount = stream.getUnsignedByte();
 				headModelIds = new int[additionalModelCount];
-				for (int m = 0; m < additionalModelCount; m++)
-					headModelIds[m] = stream.getUnsignedLEShort();
+				for (int m = 0; m < additionalModelCount; m++) {
+                    headModelIds[m] = stream.getUnsignedLEShort();
+                }
 
-			} else if (opcode == 90)
-				stream.getUnsignedLEShort();
-			else if (opcode == 91)
-				stream.getUnsignedLEShort();
-			else if (opcode == 92)
-				stream.getUnsignedLEShort();
-			else if (opcode == 93)
-				visibleMinimap = false;
-			else if (opcode == 95)
-				combatLevel = stream.getUnsignedLEShort();
-			else if (opcode == 97)
-				scaleXY = stream.getUnsignedLEShort();
-			else if (opcode == 98)
-				scaleZ = stream.getUnsignedLEShort();
-			else if (opcode == 99)
-				visible = true;
-			else if (opcode == 100)
-				brightness = stream.get();
-			else if (opcode == 101)
-				contrast = stream.get() * 5;
-			else if (opcode == 102)
-				headIcon = stream.getUnsignedLEShort();
-			else if (opcode == 103)
-				degreesToTurn = stream.getUnsignedLEShort();
-			else if (opcode == 106) {
+			} else if (opcode == 90) {
+                stream.getUnsignedLEShort();
+            } else if (opcode == 91) {
+                stream.getUnsignedLEShort();
+            } else if (opcode == 92) {
+                stream.getUnsignedLEShort();
+            } else if (opcode == 93) {
+                visibleMinimap = false;
+            } else if (opcode == 95) {
+                combatLevel = stream.getUnsignedLEShort();
+            } else if (opcode == 97) {
+                scaleXY = stream.getUnsignedLEShort();
+            } else if (opcode == 98) {
+                scaleZ = stream.getUnsignedLEShort();
+            } else if (opcode == 99) {
+                visible = true;
+            } else if (opcode == 100) {
+                brightness = stream.get();
+            } else if (opcode == 101) {
+                contrast = stream.get() * 5;
+            } else if (opcode == 102) {
+                headIcon = stream.getUnsignedLEShort();
+            } else if (opcode == 103) {
+                degreesToTurn = stream.getUnsignedLEShort();
+            } else if (opcode == 106) {
 				varBitId = stream.getUnsignedLEShort();
-				if (varBitId == 65535)
-					varBitId = -1;
+				if (varBitId == 65535) {
+                    varBitId = -1;
+                }
 				settingId = stream.getUnsignedLEShort();
-				if (settingId == 65535)
-					settingId = -1;
+				if (settingId == 65535) {
+                    settingId = -1;
+                }
 				int childCount = stream.getUnsignedByte();
 				childrenIDs = new int[childCount + 1];
 				for (int c = 0; c <= childCount; c++) {
 					childrenIDs[c] = stream.getUnsignedLEShort();
-					if (childrenIDs[c] == 65535)
-						childrenIDs[c] = -1;
+					if (childrenIDs[c] == 65535) {
+                        childrenIDs[c] = -1;
+                    }
 				}
 
-			} else if (opcode == 107)
-				clickable = false;
+			} else if (opcode == 107) {
+                clickable = false;
+            }
 		} while (true);
 	}
 

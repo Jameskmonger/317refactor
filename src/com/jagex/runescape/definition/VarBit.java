@@ -34,22 +34,24 @@ public final class VarBit {
 	private void load(Buffer buffer) {
 		do {
 			int opcode = buffer.getUnsignedByte();
-			if (opcode == 0)
-				return;
+			if (opcode == 0) {
+                return;
+            }
 			if (opcode == 1) {
 				configId = buffer.getUnsignedLEShort();
 				leastSignificantBit = buffer.getUnsignedByte();
 				mostSignificantBit = buffer.getUnsignedByte();
-			} else if (opcode == 10)
-				buffer.getString();
-			else if (opcode == 2) {
+			} else if (opcode == 10) {
+                buffer.getString();
+            } else if (opcode == 2) {
 			} // dummy
-			else if (opcode == 3)
-				buffer.getInt();
-			else if (opcode == 4)
-				buffer.getInt();
-			else
-				System.out.println("Error unrecognised config code: " + opcode);
+			else if (opcode == 3) {
+                buffer.getInt();
+            } else if (opcode == 4) {
+                buffer.getInt();
+            } else {
+                System.out.println("Error unrecognised config code: " + opcode);
+            }
 		} while (true);
 	}
 }

@@ -14,8 +14,9 @@ public final class CacheableQueue {
 	public int getSize() {
 		int count = 0;
 
-		for (Cacheable next = head.nextCacheable; next != head; next = next.nextCacheable)
-			count++;
+		for (Cacheable next = head.nextCacheable; next != head; next = next.nextCacheable) {
+            count++;
+        }
 
 		return count;
 	}

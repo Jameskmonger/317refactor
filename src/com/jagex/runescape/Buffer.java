@@ -84,8 +84,9 @@ public final class Buffer extends Cacheable {
     }
 
     public void getBytes(int startPos, int endPos, byte buf[]) {
-        for (int k = (endPos + startPos) - 1; k >= endPos; k--)
+        for (int k = (endPos + startPos) - 1; k >= endPos; k--) {
             buf[k] = buffer[position++];
+        }
     }
 
     public byte getByteS() {
@@ -95,16 +96,18 @@ public final class Buffer extends Cacheable {
     public int getSignedLEShort() {
         position += 2;
         int j = ((buffer[position - 1] & 0xff) << 8) + (buffer[position - 2] & 0xff);
-        if (j > 32767)
+        if (j > 32767) {
             j -= 0x10000;
+        }
         return j;
     }
 
     public int getSignedLEShortA() {
         position += 2;
         int j = ((buffer[position - 1] & 0xff) << 8) + (buffer[position - 2] - 128 & 0xff);
-        if (j > 32767)
+        if (j > 32767) {
             j -= 0x10000;
+        }
         return j;
     }
 
@@ -135,31 +138,35 @@ public final class Buffer extends Cacheable {
     public int getShort() {
         position += 2;
         int i = ((buffer[position - 2] & 0xff) << 8) + (buffer[position - 1] & 0xff);
-        if (i > 32767)
+        if (i > 32767) {
             i -= 0x10000;
+        }
         return i;
     }
 
     public int getSmartA() {
         int i = buffer[position] & 0xff;
-        if (i < 128)
+        if (i < 128) {
             return getUnsignedByte() - 64;
-        else
+        } else {
             return getUnsignedLEShort() - 49152;
+        }
     }
 
     public int getSmartB() {
         int i = buffer[position] & 0xff;
-        if (i < 128)
+        if (i < 128) {
             return getUnsignedByte();
-        else
+        } else {
             return getUnsignedLEShort() - 32768;
+        }
     }
 
     public String getString() {
         int i = position;
-        while (buffer[position++] != 10)
+        while (buffer[position++] != 10) {
             ;
+        }
         return new String(buffer, i, position - i - 1);
     }
 
@@ -218,8 +225,9 @@ public final class Buffer extends Cacheable {
     }
 
     public void putBytes(byte buf[], int length, int startPosition) {
-        for (int k = startPosition; k < startPosition + length; k++)
+        for (int k = startPosition; k < startPosition + length; k++) {
             buffer[position++] = buf[k];
+        }
 
     }
 
@@ -228,8 +236,9 @@ public final class Buffer extends Cacheable {
     }
 
     public void putBytesA(int i, byte buf[], int j) {
-        for (int k = (i + j) - 1; k >= i; k--)
+        for (int k = (i + j) - 1; k >= i; k--) {
             buffer[position++] = (byte) (buf[k] + 128);
+        }
 
     }
 
@@ -307,25 +316,28 @@ public final class Buffer extends Cacheable {
             val += (buffer[k++] & BIT_MASKS[l]) << i - l;
             i -= l;
         }
-        if (i == l)
+        if (i == l) {
             val += buffer[k] & BIT_MASKS[l];
-        else
+        } else {
             val += buffer[k] >> l - i & BIT_MASKS[i];
+        }
         return val;
     }
 
     public byte[] readBytes() {
         int tmpPos = position;
-        while (buffer[position++] != 10)
+        while (buffer[position++] != 10) {
             ;
+        }
         byte buf[] = new byte[position - tmpPos - 1];
         System.arraycopy(buffer, tmpPos, buf, tmpPos - tmpPos, position - 1 - tmpPos);
         return buf;
     }
 
     public void readBytes(int length, int startPosition, byte dest[]) {
-        for (int i = startPosition; i < startPosition + length; i++)
+        for (int i = startPosition; i < startPosition + length; i++) {
             dest[i] = buffer[position++];
+        }
     }
 
     // removed useless static initializer

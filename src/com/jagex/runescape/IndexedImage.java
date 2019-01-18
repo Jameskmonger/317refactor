@@ -28,8 +28,9 @@ public final class IndexedImage extends DrawingArea {
 		
 		int colourCount = metadataBuffer.getUnsignedByte();
 		palette = new int[colourCount];
-		for (int c = 0; c < colourCount - 1; c++)
-			palette[c + 1] = metadataBuffer.get3Bytes();
+		for (int c = 0; c < colourCount - 1; c++) {
+            palette[c + 1] = metadataBuffer.get3Bytes();
+        }
 
 		for (int i = 0; i < id; i++) {
 			metadataBuffer.position += 2;
@@ -77,8 +78,9 @@ public final class IndexedImage extends DrawingArea {
 			i1 += j2 * width;
 			l += j2 * DrawingArea.width;
 		}
-		if (y + height > DrawingArea.bottomY)
-			height -= (y + height) - DrawingArea.bottomY;
+		if (y + height > DrawingArea.bottomY) {
+            height -= (y + height) - DrawingArea.bottomY;
+        }
 		if (x < DrawingArea.topX) {
 			int k2 = DrawingArea.topX - x;
 			width -= k2;
@@ -119,8 +121,9 @@ public final class IndexedImage extends DrawingArea {
 	}
 
 	public void resize() {
-		if (width == resizeWidth && height == resizeHeight)
-			return;
+		if (width == resizeWidth && height == resizeHeight) {
+            return;
+        }
 
 		byte pixels[] = new byte[resizeWidth * resizeHeight];
 		int i = 0;
@@ -169,33 +172,38 @@ public final class IndexedImage extends DrawingArea {
 		for (int l1 = -i; l1 < 0; l1++) {
 			for (int i2 = k1; i2 < 0; i2++) {
 				byte pixel = image[i1++];
-				if (pixel != 0)
-					pixels[k++] = palette[pixel & 0xff];
-				else
-					k++;
+				if (pixel != 0) {
+                    pixels[k++] = palette[pixel & 0xff];
+                } else {
+                    k++;
+                }
 				pixel = image[i1++];
-				if (pixel != 0)
-					pixels[k++] = palette[pixel & 0xff];
-				else
-					k++;
+				if (pixel != 0) {
+                    pixels[k++] = palette[pixel & 0xff];
+                } else {
+                    k++;
+                }
 				pixel = image[i1++];
-				if (pixel != 0)
-					pixels[k++] = palette[pixel & 0xff];
-				else
-					k++;
+				if (pixel != 0) {
+                    pixels[k++] = palette[pixel & 0xff];
+                } else {
+                    k++;
+                }
 				pixel = image[i1++];
-				if (pixel != 0)
-					pixels[k++] = palette[pixel & 0xff];
-				else
-					k++;
+				if (pixel != 0) {
+                    pixels[k++] = palette[pixel & 0xff];
+                } else {
+                    k++;
+                }
 			}
 
 			for (int j2 = l; j2 < 0; j2++) {
 				byte pixel = image[i1++];
-				if (pixel != 0)
-					pixels[k++] = palette[pixel & 0xff];
-				else
-					k++;
+				if (pixel != 0) {
+                    pixels[k++] = palette[pixel & 0xff];
+                } else {
+                    k++;
+                }
 			}
 
 			k += j;
@@ -208,22 +216,25 @@ public final class IndexedImage extends DrawingArea {
 		for (int i = 0; i < palette.length; i++) {
 			int r = palette[i] >> 16 & 0xff;
 			r += red;
-			if (r < 0)
-				r = 0;
-			else if (r > 255)
-				r = 255;
+			if (r < 0) {
+                r = 0;
+            } else if (r > 255) {
+                r = 255;
+            }
 			int g = palette[i] >> 8 & 0xff;
 			g += green;
-			if (g < 0)
-				g = 0;
-			else if (g > 255)
-				g = 255;
+			if (g < 0) {
+                g = 0;
+            } else if (g > 255) {
+                g = 255;
+            }
 			int b = palette[i] & 0xff;
 			b += blue;
-			if (b < 0)
-				b = 0;
-			else if (b > 255)
-				b = 255;
+			if (b < 0) {
+                b = 0;
+            } else if (b > 255) {
+                b = 255;
+            }
 			palette[i] = (r << 16) + (g << 8) + b;
 		}
 	}

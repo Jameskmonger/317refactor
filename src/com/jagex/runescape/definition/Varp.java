@@ -32,34 +32,36 @@ public final class Varp {
 	private void load(Buffer buffer) {
 		do {
 			int opcode = buffer.getUnsignedByte();
-			if (opcode == 0)
-				return;
-			if (opcode == 1)
-				buffer.getUnsignedByte();
-			else if (opcode == 2)
-				buffer.getUnsignedByte();
-			else if (opcode == 3) {
+			if (opcode == 0) {
+                return;
+            }
+			if (opcode == 1) {
+                buffer.getUnsignedByte();
+            } else if (opcode == 2) {
+                buffer.getUnsignedByte();
+            } else if (opcode == 3) {
 			} // dummy
 			else if (opcode == 4) {
 			} // dummy
-			else if (opcode == 5)
-				type = buffer.getUnsignedLEShort();
-			else if (opcode == 6) {
+			else if (opcode == 5) {
+                type = buffer.getUnsignedLEShort();
+            } else if (opcode == 6) {
 			} // dummy
-			else if (opcode == 7)
-				buffer.getInt();
-			else if (opcode == 8){
+			else if (opcode == 7) {
+                buffer.getInt();
+            } else if (opcode == 8){
 			} // dummy
-			else if (opcode == 10)
-				buffer.getString();
-			else if (opcode == 11) {
+			else if (opcode == 10) {
+                buffer.getString();
+            } else if (opcode == 11) {
 			} // dummy
-			else if (opcode == 12)
-				buffer.getInt();
-			else if (opcode == 13) {
+			else if (opcode == 12) {
+                buffer.getInt();
+            } else if (opcode == 13) {
 			} // dummy
-			else
-				System.out.println("Error unrecognised config code: " + opcode);
+			else {
+                System.out.println("Error unrecognised config code: " + opcode);
+            }
 		} while (true);
 	}
 

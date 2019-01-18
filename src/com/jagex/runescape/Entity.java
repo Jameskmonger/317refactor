@@ -107,30 +107,36 @@ public class Entity extends Animable {
 			x--;
 			y++;
 		}
-		if (direction == 1)
-			y++;
+		if (direction == 1) {
+            y++;
+        }
 		if (direction == 2) {
 			x++;
 			y++;
 		}
-		if (direction == 3)
-			x--;
-		if (direction == 4)
-			x++;
+		if (direction == 3) {
+            x--;
+        }
+		if (direction == 4) {
+            x++;
+        }
 		if (direction == 5) {
 			x--;
 			y--;
 		}
-		if (direction == 6)
-			y--;
+		if (direction == 6) {
+            y--;
+        }
 		if (direction == 7) {
 			x++;
 			y--;
 		}
-		if (animation != -1 && AnimationSequence.animations[animation].precedenceWalking == 1)
-			animation = -1;
-		if (waypointCount < 9)
-			waypointCount++;
+		if (animation != -1 && AnimationSequence.animations[animation].precedenceWalking == 1) {
+            animation = -1;
+        }
+		if (waypointCount < 9) {
+            waypointCount++;
+        }
 		for (int l = waypointCount; l > 0; l--) {
 			waypointX[l] = waypointX[l - 1];
 			waypointY[l] = waypointY[l - 1];
@@ -147,14 +153,16 @@ public class Entity extends Animable {
 	}
 
 	public final void setPos(int x, int y, boolean teleported) {
-		if (animation != -1 && AnimationSequence.animations[animation].precedenceWalking == 1)
-			animation = -1;
+		if (animation != -1 && AnimationSequence.animations[animation].precedenceWalking == 1) {
+            animation = -1;
+        }
 		if (!teleported) {
 			int distanceX = x - waypointX[0];
 			int distanceY = y - waypointY[0];
 			if (distanceX >= -8 && distanceX <= 8 && distanceY >= -8 && distanceY <= 8) {
-				if (waypointCount < 9)
-					waypointCount++;
+				if (waypointCount < 9) {
+                    waypointCount++;
+                }
 				for (int waypoint = waypointCount; waypoint > 0; waypoint--) {
 					waypointX[waypoint] = waypointX[waypoint - 1];
 					waypointY[waypoint] = waypointY[waypoint - 1];
@@ -177,12 +185,13 @@ public class Entity extends Animable {
 	}
 
 	public final void updateHitData(int type, int damage, int currentTime) {
-		for (int hit = 0; hit < 4; hit++)
-			if (hitsLoopCycle[hit] <= currentTime) {
-				hitArray[hit] = damage;
-				hitMarkTypes[hit] = type;
-				hitsLoopCycle[hit] = currentTime + 70;
-				return;
-			}
+		for (int hit = 0; hit < 4; hit++) {
+            if (hitsLoopCycle[hit] <= currentTime) {
+                hitArray[hit] = damage;
+                hitMarkTypes[hit] = type;
+                hitsLoopCycle[hit] = currentTime + 70;
+                return;
+            }
+        }
 	}
 }

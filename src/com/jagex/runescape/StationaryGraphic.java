@@ -45,8 +45,9 @@ final class StationaryGraphic extends Animable {
 	@Override
 	public Model getRotatedModel() {
 		Model model = animation.getModel();
-		if (model == null)
-			return null;
+		if (model == null) {
+            return null;
+        }
 		int frame = animation.sequences.primaryFrames[elapsedFrames];
 		Model animatedModel = new Model(true, Animation.isNullFrame(frame), false, model);
 		if (!transformationCompleted) {
@@ -55,11 +56,13 @@ final class StationaryGraphic extends Animable {
 			animatedModel.triangleSkin = null;
 			animatedModel.vertexSkin = null;
 		}
-		if (animation.scaleXY != 128 || animation.scaleZ != 128)
-			animatedModel.scaleT(animation.scaleXY, animation.scaleXY, animation.scaleZ);
+		if (animation.scaleXY != 128 || animation.scaleZ != 128) {
+            animatedModel.scaleT(animation.scaleXY, animation.scaleXY, animation.scaleZ);
+        }
 		if (animation.rotation != 0) {
-			if (animation.rotation == 90)
-				animatedModel.rotate90Degrees();
+			if (animation.rotation == 90) {
+                animatedModel.rotate90Degrees();
+            }
 			if (animation.rotation == 180) {
 				animatedModel.rotate90Degrees();
 				animatedModel.rotate90Degrees();

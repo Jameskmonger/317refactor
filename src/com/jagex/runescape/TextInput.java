@@ -18,20 +18,22 @@ final class TextInput {
 			int encodedLetter = stream.getUnsignedByte();
 			int letter = encodedLetter >> 4 & 0xf;
 			if (l == -1) {
-				if (letter < 13)
-					characterList[pointer++] = validChars[letter];
-				else
-					l = letter;
+				if (letter < 13) {
+                    characterList[pointer++] = validChars[letter];
+                } else {
+                    l = letter;
+                }
 			} else {
 				characterList[pointer++] = validChars[((l << 4) + letter) - 195];
 				l = -1;
 			}
 			letter = encodedLetter & 0xf;
 			if (l == -1) {
-				if (letter < 13)
-					characterList[pointer++] = validChars[letter];
-				else
-					l = letter;
+				if (letter < 13) {
+                    characterList[pointer++] = validChars[letter];
+                } else {
+                    l = letter;
+                }
 			} else {
 				characterList[pointer++] = validChars[((l << 4) + letter) - 195];
 				l = -1;
@@ -45,34 +47,39 @@ final class TextInput {
 				characterList[c] += '\uFFE0';
 				endOfSentence = false;
 			}
-			if (character == '.' || character == '!' || character == '?')
-				endOfSentence = true;
+			if (character == '.' || character == '!' || character == '?') {
+                endOfSentence = true;
+            }
 		}
 		return new String(characterList, 0, pointer);
 	}
 
 	public static void writeToStream(String text, Buffer stream) {
-		if (text.length() > 80)
-			text = text.substring(0, 80);
+		if (text.length() > 80) {
+            text = text.substring(0, 80);
+        }
 		text = text.toLowerCase();
 		int i = -1;
 		for (int c = 0; c < text.length(); c++) {
 			char character = text.charAt(c);
 			int characterCode = 0;
 			for (int l = 0; l < validChars.length; l++) {
-				if (character != validChars[l])
-					continue;
+				if (character != validChars[l]) {
+                    continue;
+                }
 				characterCode = l;
 				break;
 			}
 
-			if (characterCode > 12)
-				characterCode += 195;
+			if (characterCode > 12) {
+                characterCode += 195;
+            }
 			if (i == -1) {
-				if (characterCode < 13)
-					i = characterCode;
-				else
-					stream.put(characterCode);
+				if (characterCode < 13) {
+                    i = characterCode;
+                } else {
+                    stream.put(characterCode);
+                }
 			} else if (characterCode < 13) {
 				stream.put((i << 4) + characterCode);
 				i = -1;
@@ -81,8 +88,9 @@ final class TextInput {
 				i = characterCode & 0xf;
 			}
 		}
-		if (i != -1)
-			stream.put(i << 4);
+		if (i != -1) {
+            stream.put(i << 4);
+        }
 	}
 
 	private static final char[] characterList = new char[100];

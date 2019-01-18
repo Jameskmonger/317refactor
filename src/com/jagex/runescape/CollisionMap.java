@@ -29,8 +29,9 @@ public final class CollisionMap {
 
 	public void markSolidOccupant(int x, int y, int width, int height, int orientation, boolean impenetrable) {
 		int occupied = 256;
-		if (impenetrable)
-			occupied += 0x20000;
+		if (impenetrable) {
+            occupied += 0x20000;
+        }
 		x -= insetX;
 		y -= insetY;
 		if (orientation == 1 || orientation == 3) {
@@ -38,13 +39,16 @@ public final class CollisionMap {
 			width = height;
 			height = temp;
 		}
-		for (int _x = x; _x < x + width; _x++)
-			if (_x >= 0 && _x < this.width) {
-				for (int _y = y; _y < y + height; _y++)
-					if (_y >= 0 && _y < this.height)
-						set(_x, _y, occupied);
+		for (int _x = x; _x < x + width; _x++) {
+            if (_x >= 0 && _x < this.width) {
+                for (int _y = y; _y < y + height; _y++) {
+                    if (_y >= 0 && _y < this.height) {
+                        set(_x, _y, occupied);
+                    }
+                }
 
-			}
+            }
+        }
 
 	}
 
@@ -176,14 +180,17 @@ public final class CollisionMap {
 			int surroundings) {
 		int endX2 = (endX + endDistanceX) - 1;
 		int endY2 = (endY + endDistanceY) - 1;
-		if (startX >= endX && startX <= endX2 && startY >= endY && startY <= endY2)
-			return true;
+		if (startX >= endX && startX <= endX2 && startY >= endY && startY <= endY2) {
+            return true;
+        }
 		if (startX == endX - 1 && startY >= endY && startY <= endY2
-				&& (clippingData[startX - insetX][startY - insetY] & 8) == 0 && (surroundings & 8) == 0)
-			return true;
+				&& (clippingData[startX - insetX][startY - insetY] & 8) == 0 && (surroundings & 8) == 0) {
+            return true;
+        }
 		if (startX == endX2 + 1 && startY >= endY && startY <= endY2
-				&& (clippingData[startX - insetX][startY - insetY] & 0x80) == 0 && (surroundings & 2) == 0)
-			return true;
+				&& (clippingData[startX - insetX][startY - insetY] & 0x80) == 0 && (surroundings & 2) == 0) {
+            return true;
+        }
 		return startY == endY - 1 && startX >= endX && startX <= endX2
 				&& (clippingData[startX - insetX][startY - insetY] & 2) == 0 && (surroundings & 4) == 0
 				|| startY == endY2 + 1 && startX >= endX && startX <= endX2
@@ -191,146 +198,197 @@ public final class CollisionMap {
 	}
 
 	public boolean reachedWall(int startX, int startY, int endX, int endY, int endPosition, int endOrientation) {
-		if (startX == endX && startY == endY)
-			return true;
+		if (startX == endX && startY == endY) {
+            return true;
+        }
 		startX -= insetX;
 		startY -= insetY;
 		endX -= insetX;
 		endY -= insetY;
-		if (endPosition == 0)
-			if (endOrientation == 0) {
-				if (startX == endX - 1 && startY == endY)
-					return true;
-				if (startX == endX && startY == endY + 1 && (clippingData[startX][startY] & 0x1280120) == 0)
-					return true;
-				if (startX == endX && startY == endY - 1 && (clippingData[startX][startY] & 0x1280102) == 0)
-					return true;
-			} else if (endOrientation == 1) {
-				if (startX == endX && startY == endY + 1)
-					return true;
-				if (startX == endX - 1 && startY == endY && (clippingData[startX][startY] & 0x1280108) == 0)
-					return true;
-				if (startX == endX + 1 && startY == endY && (clippingData[startX][startY] & 0x1280180) == 0)
-					return true;
-			} else if (endOrientation == 2) {
-				if (startX == endX + 1 && startY == endY)
-					return true;
-				if (startX == endX && startY == endY + 1 && (clippingData[startX][startY] & 0x1280120) == 0)
-					return true;
-				if (startX == endX && startY == endY - 1 && (clippingData[startX][startY] & 0x1280102) == 0)
-					return true;
-			} else if (endOrientation == 3) {
-				if (startX == endX && startY == endY - 1)
-					return true;
-				if (startX == endX - 1 && startY == endY && (clippingData[startX][startY] & 0x1280108) == 0)
-					return true;
-				if (startX == endX + 1 && startY == endY && (clippingData[startX][startY] & 0x1280180) == 0)
-					return true;
-			}
-		if (endPosition == 2)
-			if (endOrientation == 0) {
-				if (startX == endX - 1 && startY == endY)
-					return true;
-				if (startX == endX && startY == endY + 1)
-					return true;
-				if (startX == endX + 1 && startY == endY && (clippingData[startX][startY] & 0x1280180) == 0)
-					return true;
-				if (startX == endX && startY == endY - 1 && (clippingData[startX][startY] & 0x1280102) == 0)
-					return true;
-			} else if (endOrientation == 1) {
-				if (startX == endX - 1 && startY == endY && (clippingData[startX][startY] & 0x1280108) == 0)
-					return true;
-				if (startX == endX && startY == endY + 1)
-					return true;
-				if (startX == endX + 1 && startY == endY)
-					return true;
-				if (startX == endX && startY == endY - 1 && (clippingData[startX][startY] & 0x1280102) == 0)
-					return true;
-			} else if (endOrientation == 2) {
-				if (startX == endX - 1 && startY == endY && (clippingData[startX][startY] & 0x1280108) == 0)
-					return true;
-				if (startX == endX && startY == endY + 1 && (clippingData[startX][startY] & 0x1280120) == 0)
-					return true;
-				if (startX == endX + 1 && startY == endY)
-					return true;
-				if (startX == endX && startY == endY - 1)
-					return true;
-			} else if (endOrientation == 3) {
-				if (startX == endX - 1 && startY == endY)
-					return true;
-				if (startX == endX && startY == endY + 1 && (clippingData[startX][startY] & 0x1280120) == 0)
-					return true;
-				if (startX == endX + 1 && startY == endY && (clippingData[startX][startY] & 0x1280180) == 0)
-					return true;
-				if (startX == endX && startY == endY - 1)
-					return true;
-			}
+		if (endPosition == 0) {
+            if (endOrientation == 0) {
+                if (startX == endX - 1 && startY == endY) {
+                    return true;
+                }
+                if (startX == endX && startY == endY + 1 && (clippingData[startX][startY] & 0x1280120) == 0) {
+                    return true;
+                }
+                if (startX == endX && startY == endY - 1 && (clippingData[startX][startY] & 0x1280102) == 0) {
+                    return true;
+                }
+            } else if (endOrientation == 1) {
+                if (startX == endX && startY == endY + 1) {
+                    return true;
+                }
+                if (startX == endX - 1 && startY == endY && (clippingData[startX][startY] & 0x1280108) == 0) {
+                    return true;
+                }
+                if (startX == endX + 1 && startY == endY && (clippingData[startX][startY] & 0x1280180) == 0) {
+                    return true;
+                }
+            } else if (endOrientation == 2) {
+                if (startX == endX + 1 && startY == endY) {
+                    return true;
+                }
+                if (startX == endX && startY == endY + 1 && (clippingData[startX][startY] & 0x1280120) == 0) {
+                    return true;
+                }
+                if (startX == endX && startY == endY - 1 && (clippingData[startX][startY] & 0x1280102) == 0) {
+                    return true;
+                }
+            } else if (endOrientation == 3) {
+                if (startX == endX && startY == endY - 1) {
+                    return true;
+                }
+                if (startX == endX - 1 && startY == endY && (clippingData[startX][startY] & 0x1280108) == 0) {
+                    return true;
+                }
+                if (startX == endX + 1 && startY == endY && (clippingData[startX][startY] & 0x1280180) == 0) {
+                    return true;
+                }
+            }
+        }
+		if (endPosition == 2) {
+            if (endOrientation == 0) {
+                if (startX == endX - 1 && startY == endY) {
+                    return true;
+                }
+                if (startX == endX && startY == endY + 1) {
+                    return true;
+                }
+                if (startX == endX + 1 && startY == endY && (clippingData[startX][startY] & 0x1280180) == 0) {
+                    return true;
+                }
+                if (startX == endX && startY == endY - 1 && (clippingData[startX][startY] & 0x1280102) == 0) {
+                    return true;
+                }
+            } else if (endOrientation == 1) {
+                if (startX == endX - 1 && startY == endY && (clippingData[startX][startY] & 0x1280108) == 0) {
+                    return true;
+                }
+                if (startX == endX && startY == endY + 1) {
+                    return true;
+                }
+                if (startX == endX + 1 && startY == endY) {
+                    return true;
+                }
+                if (startX == endX && startY == endY - 1 && (clippingData[startX][startY] & 0x1280102) == 0) {
+                    return true;
+                }
+            } else if (endOrientation == 2) {
+                if (startX == endX - 1 && startY == endY && (clippingData[startX][startY] & 0x1280108) == 0) {
+                    return true;
+                }
+                if (startX == endX && startY == endY + 1 && (clippingData[startX][startY] & 0x1280120) == 0) {
+                    return true;
+                }
+                if (startX == endX + 1 && startY == endY) {
+                    return true;
+                }
+                if (startX == endX && startY == endY - 1) {
+                    return true;
+                }
+            } else if (endOrientation == 3) {
+                if (startX == endX - 1 && startY == endY) {
+                    return true;
+                }
+                if (startX == endX && startY == endY + 1 && (clippingData[startX][startY] & 0x1280120) == 0) {
+                    return true;
+                }
+                if (startX == endX + 1 && startY == endY && (clippingData[startX][startY] & 0x1280180) == 0) {
+                    return true;
+                }
+                if (startX == endX && startY == endY - 1) {
+                    return true;
+                }
+            }
+        }
 		if (endPosition == 9) {
-			if (startX == endX && startY == endY + 1 && (clippingData[startX][startY] & 0x20) == 0)
-				return true;
-			if (startX == endX && startY == endY - 1 && (clippingData[startX][startY] & 2) == 0)
-				return true;
-			if (startX == endX - 1 && startY == endY && (clippingData[startX][startY] & 8) == 0)
-				return true;
-			if (startX == endX + 1 && startY == endY && (clippingData[startX][startY] & 0x80) == 0)
-				return true;
+			if (startX == endX && startY == endY + 1 && (clippingData[startX][startY] & 0x20) == 0) {
+                return true;
+            }
+			if (startX == endX && startY == endY - 1 && (clippingData[startX][startY] & 2) == 0) {
+                return true;
+            }
+			if (startX == endX - 1 && startY == endY && (clippingData[startX][startY] & 8) == 0) {
+                return true;
+            }
+			if (startX == endX + 1 && startY == endY && (clippingData[startX][startY] & 0x80) == 0) {
+                return true;
+            }
 		}
 		return false;
 	}
 
 	public boolean reachedWallDecoration(int startX, int startY, int endX, int endY, int endPosition,
 			int endOrientation) {
-		if (startX == endX && startY == endY)
-			return true;
+		if (startX == endX && startY == endY) {
+            return true;
+        }
 		startX -= insetX;
 		startY -= insetY;
 		endX -= insetX;
 		endY -= insetY;
 		if (endPosition == 6 || endPosition == 7) {
-			if (endPosition == 7)
-				endOrientation = endOrientation + 2 & 3;
+			if (endPosition == 7) {
+                endOrientation = endOrientation + 2 & 3;
+            }
 			if (endOrientation == 0) {
-				if (startX == endX + 1 && startY == endY && (clippingData[startX][startY] & 0x80) == 0)
-					return true;
-				if (startX == endX && startY == endY - 1 && (clippingData[startX][startY] & 2) == 0)
-					return true;
+				if (startX == endX + 1 && startY == endY && (clippingData[startX][startY] & 0x80) == 0) {
+                    return true;
+                }
+				if (startX == endX && startY == endY - 1 && (clippingData[startX][startY] & 2) == 0) {
+                    return true;
+                }
 			} else if (endOrientation == 1) {
-				if (startX == endX - 1 && startY == endY && (clippingData[startX][startY] & 8) == 0)
-					return true;
-				if (startX == endX && startY == endY - 1 && (clippingData[startX][startY] & 2) == 0)
-					return true;
+				if (startX == endX - 1 && startY == endY && (clippingData[startX][startY] & 8) == 0) {
+                    return true;
+                }
+				if (startX == endX && startY == endY - 1 && (clippingData[startX][startY] & 2) == 0) {
+                    return true;
+                }
 			} else if (endOrientation == 2) {
-				if (startX == endX - 1 && startY == endY && (clippingData[startX][startY] & 8) == 0)
-					return true;
-				if (startX == endX && startY == endY + 1 && (clippingData[startX][startY] & 0x20) == 0)
-					return true;
+				if (startX == endX - 1 && startY == endY && (clippingData[startX][startY] & 8) == 0) {
+                    return true;
+                }
+				if (startX == endX && startY == endY + 1 && (clippingData[startX][startY] & 0x20) == 0) {
+                    return true;
+                }
 			} else if (endOrientation == 3) {
-				if (startX == endX + 1 && startY == endY && (clippingData[startX][startY] & 0x80) == 0)
-					return true;
-				if (startX == endX && startY == endY + 1 && (clippingData[startX][startY] & 0x20) == 0)
-					return true;
+				if (startX == endX + 1 && startY == endY && (clippingData[startX][startY] & 0x80) == 0) {
+                    return true;
+                }
+				if (startX == endX && startY == endY + 1 && (clippingData[startX][startY] & 0x20) == 0) {
+                    return true;
+                }
 			}
 		}
 		if (endPosition == 8) {
-			if (startX == endX && startY == endY + 1 && (clippingData[startX][startY] & 0x20) == 0)
-				return true;
-			if (startX == endX && startY == endY - 1 && (clippingData[startX][startY] & 2) == 0)
-				return true;
-			if (startX == endX - 1 && startY == endY && (clippingData[startX][startY] & 8) == 0)
-				return true;
-			if (startX == endX + 1 && startY == endY && (clippingData[startX][startY] & 0x80) == 0)
-				return true;
+			if (startX == endX && startY == endY + 1 && (clippingData[startX][startY] & 0x20) == 0) {
+                return true;
+            }
+			if (startX == endX && startY == endY - 1 && (clippingData[startX][startY] & 2) == 0) {
+                return true;
+            }
+			if (startX == endX - 1 && startY == endY && (clippingData[startX][startY] & 8) == 0) {
+                return true;
+            }
+			if (startX == endX + 1 && startY == endY && (clippingData[startX][startY] & 0x80) == 0) {
+                return true;
+            }
 		}
 		return false;
 	}
 
 	public void reset() {
 		for (int x = 0; x < width; x++) {
-			for (int y = 0; y < height; y++)
-				if (x == 0 || y == 0 || x == width - 1 || y == height - 1)
-					clippingData[x][y] = 0xffffff;
-				else
-					clippingData[x][y] = 0x1000000;
+			for (int y = 0; y < height; y++) {
+                if (x == 0 || y == 0 || x == width - 1 || y == height - 1) {
+                    clippingData[x][y] = 0xffffff;
+                } else {
+                    clippingData[x][y] = 0x1000000;
+                }
+            }
 
 		}
 
@@ -348,8 +406,9 @@ public final class CollisionMap {
 
 	public void unmarkSolidOccupant(int x, int y, int width, int height, int orientation, boolean impenetrable) {
 		int occupied = 256;
-		if (impenetrable)
-			occupied += 0x20000;
+		if (impenetrable) {
+            occupied += 0x20000;
+        }
 		x -= insetX;
 		y -= insetY;
 		if (orientation == 1 || orientation == 3) {
@@ -357,13 +416,16 @@ public final class CollisionMap {
 			width = height;
 			height = temp;
 		}
-		for (int _x = x; _x < x + width; _x++)
-			if (_x >= 0 && _x < this.width) {
-				for (int _y = y; _y < y + height; _y++)
-					if (_y >= 0 && _y < this.height)
-						unset(_x, _y, occupied);
+		for (int _x = x; _x < x + width; _x++) {
+            if (_x >= 0 && _x < this.width) {
+                for (int _y = y; _y < y + height; _y++) {
+                    if (_y >= 0 && _y < this.height) {
+                        unset(_x, _y, occupied);
+                    }
+                }
 
-			}
+            }
+        }
 
 	}
 

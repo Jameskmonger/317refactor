@@ -58,12 +58,15 @@ public final class ShapedTile {
 		int z512 = tileZ * const512;
 		for (int vertex = 0; vertex < shapedTileMeshLength; vertex++) {
 			int vertexType = shapedTileMesh[vertex];
-			if ((vertexType & 1) == 0 && vertexType <= 8)
-				vertexType = (vertexType - rotation - rotation - 1 & 7) + 1;
-			if (vertexType > 8 && vertexType <= 12)
-				vertexType = (vertexType - 9 - rotation & 3) + 9;
-			if (vertexType > 12 && vertexType <= 16)
-				vertexType = (vertexType - 13 - rotation & 3) + 13;
+			if ((vertexType & 1) == 0 && vertexType <= 8) {
+                vertexType = (vertexType - rotation - rotation - 1 & 7) + 1;
+            }
+			if (vertexType > 8 && vertexType <= 12) {
+                vertexType = (vertexType - 9 - rotation & 3) + 9;
+            }
+			if (vertexType > 12 && vertexType <= 16) {
+                vertexType = (vertexType - 13 - rotation & 3) + 13;
+            }
 			int vertexX;
 			int vertexZ;
 			int vertexY;
@@ -181,8 +184,9 @@ public final class ShapedTile {
 		triangleHSLA = new int[vertexCount];
 		triangleHSLB = new int[vertexCount];
 		triangleHSLC = new int[vertexCount];
-		if (texture != -1)
-			triangleTexture = new int[vertexCount];
+		if (texture != -1) {
+            triangleTexture = new int[vertexCount];
+        }
 		int offset = 0;
 		for (int vertex = 0; vertex < vertexCount; vertex++) {
 			int overlayOrUnderlay = shapedTileElements[offset];
@@ -190,12 +194,15 @@ public final class ShapedTile {
 			int idxB = shapedTileElements[offset + 2];
 			int idxC = shapedTileElements[offset + 3];
 			offset += 4;
-			if (idxA < 4)
-				idxA = idxA - rotation & 3;
-			if (idxB < 4)
-				idxB = idxB - rotation & 3;
-			if (idxC < 4)
-				idxC = idxC - rotation & 3;
+			if (idxA < 4) {
+                idxA = idxA - rotation & 3;
+            }
+			if (idxB < 4) {
+                idxB = idxB - rotation & 3;
+            }
+			if (idxC < 4) {
+                idxC = idxC - rotation & 3;
+            }
 			triangleA[vertex] = idxA;
 			triangleB[vertex] = idxB;
 			triangleC[vertex] = idxC;
@@ -203,31 +210,39 @@ public final class ShapedTile {
 				triangleHSLA[vertex] = vertexColourOverlay[idxA];
 				triangleHSLB[vertex] = vertexColourOverlay[idxB];
 				triangleHSLC[vertex] = vertexColourOverlay[idxC];
-				if (triangleTexture != null)
-					triangleTexture[vertex] = -1;
+				if (triangleTexture != null) {
+                    triangleTexture[vertex] = -1;
+                }
 			} else {
 				triangleHSLA[vertex] = vertexColourUnderlay[idxA];
 				triangleHSLB[vertex] = vertexColourUnderlay[idxB];
 				triangleHSLC[vertex] = vertexColourUnderlay[idxC];
-				if (triangleTexture != null)
-					triangleTexture[vertex] = texture;
+				if (triangleTexture != null) {
+                    triangleTexture[vertex] = texture;
+                }
 			}
 		}
 
 		int i9 = yA;
 		int l9 = yB;
-		if (yB < i9)
-			i9 = yB;
-		if (yB > l9)
-			l9 = yB;
-		if (yD < i9)
-			i9 = yD;
-		if (yD > l9)
-			l9 = yD;
-		if (yC < i9)
-			i9 = yC;
-		if (yC > l9)
-			l9 = yC;
+		if (yB < i9) {
+            i9 = yB;
+        }
+		if (yB > l9) {
+            l9 = yB;
+        }
+		if (yD < i9) {
+            i9 = yD;
+        }
+		if (yD > l9) {
+            l9 = yD;
+        }
+		if (yC < i9) {
+            i9 = yC;
+        }
+		if (yC > l9) {
+            l9 = yC;
+        }
 		i9 /= 14;
 		l9 /= 14;
 	}

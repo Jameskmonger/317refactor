@@ -6,8 +6,9 @@ public class DrawingArea extends Cacheable {
 
 	public static void clear() {
 		int i = width * height;
-		for (int j = 0; j < i; j++)
-			pixels[j] = 0;
+		for (int j = 0; j < i; j++) {
+            pixels[j] = 0;
+        }
 
 	}
 
@@ -29,32 +30,41 @@ public class DrawingArea extends Cacheable {
 			height -= topY - y;
 			y = topY;
 		}
-		if (x + width > bottomX)
-			width = bottomX - x;
-		if (y + height > bottomY)
-			height = bottomY - y;
+		if (x + width > bottomX) {
+            width = bottomX - x;
+        }
+		if (y + height > bottomY) {
+            height = bottomY - y;
+        }
 		int increment = DrawingArea.width - width;
 		int pointer = x + y * DrawingArea.width;
 		for (int row = -height; row < 0; row++) {
-			for (int column = -width; column < 0; column++)
-				pixels[pointer++] = colour;
+			for (int column = -width; column < 0; column++) {
+                pixels[pointer++] = colour;
+            }
 
 			pointer += increment;
 		}
 	}
 
 	public static void drawFilledCircle(int x, int y, int radius, int colour) {
-		for (int _y = -radius; _y <= radius; _y++)
-			for (int _x = -radius; _x <= radius; _x++)
-				if (_x * _x + _y * _y <= radius * radius)
-					drawHorizontalLine(_x + x, _y + y, 1, colour);
+		for (int _y = -radius; _y <= radius; _y++) {
+            for (int _x = -radius; _x <= radius; _x++) {
+                if (_x * _x + _y * _y <= radius * radius) {
+                    drawHorizontalLine(_x + x, _y + y, 1, colour);
+                }
+            }
+        }
 	}
 
 	public static void drawFilledCircleAlpha(int x, int y, int radius, int colour, int alpha) {
-		for (int _y = -radius; _y <= radius; _y++)
-			for (int _x = -radius; _x <= radius; _x++)
-				if (_x * _x + _y * _y <= radius * radius)
-					drawHorizontalLineAlpha(_x + x, _y + y, 1, colour, alpha);
+		for (int _y = -radius; _y <= radius; _y++) {
+            for (int _x = -radius; _x <= radius; _x++) {
+                if (_x * _x + _y * _y <= radius * radius) {
+                    drawHorizontalLineAlpha(_x + x, _y + y, 1, colour, alpha);
+                }
+            }
+        }
 	}
 
 	public static void drawFilledRectangleAlpha(int colour, int y, int width, int height, int alpha, int x) {
@@ -66,10 +76,12 @@ public class DrawingArea extends Cacheable {
 			height -= topY - y;
 			y = topY;
 		}
-		if (x + width > bottomX)
-			width = bottomX - x;
-		if (y + height > bottomY)
-			height = bottomY - y;
+		if (x + width > bottomX) {
+            width = bottomX - x;
+        }
+		if (y + height > bottomY) {
+            height = bottomY - y;
+        }
 		int l1 = 256 - alpha;
 		int i2 = (colour >> 16 & 0xff) * alpha;
 		int j2 = (colour >> 8 & 0xff) * alpha;
@@ -90,28 +102,33 @@ public class DrawingArea extends Cacheable {
 	}
 
 	public static void drawHorizontalLine(int x, int y, int width, int colour) {
-		if (x < topY || x >= bottomY)
-			return;
+		if (x < topY || x >= bottomY) {
+            return;
+        }
 		if (y < topX) {
 			width -= topX - y;
 			y = topX;
 		}
-		if (y + width > bottomX)
-			width = bottomX - y;
+		if (y + width > bottomX) {
+            width = bottomX - y;
+        }
 		int pointer = y + x * DrawingArea.width;
-		for (int column = 0; column < width; column++)
-			pixels[pointer + column] = colour;
+		for (int column = 0; column < width; column++) {
+            pixels[pointer + column] = colour;
+        }
 	}
 
 	public static void drawHorizontalLineAlpha(int x, int y, int width, int colour, int alpha) {
-		if (x < topY || x >= bottomY)
-			return;
+		if (x < topY || x >= bottomY) {
+            return;
+        }
 		if (y < topX) {
 			width -= topX - y;
 			y = topX;
 		}
-		if (y + width > bottomX)
-			width = bottomX - y;
+		if (y + width > bottomX) {
+            width = bottomX - y;
+        }
 		int opacity = 256 - alpha;
 		int r = (colour >> 16 & 0xff) * alpha;
 		int g = (colour >> 8 & 0xff) * alpha;
@@ -143,17 +160,20 @@ public class DrawingArea extends Cacheable {
 	}
 
 	public static void drawVerticalLine(int x, int y, int height, int colour) {
-		if (x < topX || x >= bottomX)
-			return;
+		if (x < topX || x >= bottomX) {
+            return;
+        }
 		if (y < topY) {
 			height -= topY - y;
 			y = topY;
 		}
-		if (y + height > bottomY)
-			height = bottomY - y;
+		if (y + height > bottomY) {
+            height = bottomY - y;
+        }
 		int pointer = x + y * DrawingArea.width;
-		for (int row = 0; row < height; row++)
-			pixels[pointer + row * DrawingArea.width] = colour;
+		for (int row = 0; row < height; row++) {
+            pixels[pointer + row * DrawingArea.width] = colour;
+        }
 
 	}
 
@@ -165,14 +185,16 @@ public class DrawingArea extends Cacheable {
 	}
 
 	private static void method340(int i, int j, int k, int l, int i1) {
-		if (k < topY || k >= bottomY)
-			return;
+		if (k < topY || k >= bottomY) {
+            return;
+        }
 		if (i1 < topX) {
 			j -= topX - i1;
 			i1 = topX;
 		}
-		if (i1 + j > bottomX)
-			j = bottomX - i1;
+		if (i1 + j > bottomX) {
+            j = bottomX - i1;
+        }
 		int j1 = 256 - l;
 		int k1 = (i >> 16 & 0xff) * l;
 		int l1 = (i >> 8 & 0xff) * l;
@@ -189,14 +211,16 @@ public class DrawingArea extends Cacheable {
 	}
 
 	private static void method342(int i, int j, int k, int l, int i1) {
-		if (j < topX || j >= bottomX)
-			return;
+		if (j < topX || j >= bottomX) {
+            return;
+        }
 		if (l < topY) {
 			i1 -= topY - l;
 			l = topY;
 		}
-		if (l + i1 > bottomY)
-			i1 = bottomY - l;
+		if (l + i1 > bottomY) {
+            i1 = bottomY - l;
+        }
 		int j1 = 256 - k;
 		int k1 = (i >> 16 & 0xff) * k;
 		int l1 = (i >> 8 & 0xff) * k;
@@ -214,14 +238,18 @@ public class DrawingArea extends Cacheable {
 	}
 
 	public static void setDrawingArea(int h, int j, int w, int l) {
-		if (j < 0)
-			j = 0;
-		if (l < 0)
-			l = 0;
-		if (w > width)
-			w = width;
-		if (h > height)
-			h = height;
+		if (j < 0) {
+            j = 0;
+        }
+		if (l < 0) {
+            l = 0;
+        }
+		if (w > width) {
+            w = width;
+        }
+		if (h > height) {
+            h = height;
+        }
 		topX = j;
 		topY = l;
 		bottomX = w;

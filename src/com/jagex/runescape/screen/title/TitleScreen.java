@@ -56,8 +56,9 @@ public class TitleScreen {
         titleButtonImage = new IndexedImage(archive, "titlebutton", 0);
         titleFlameRuneImages = new IndexedImage[12];
 
-        for (int r = 0; r < 12; r++)
+        for (int r = 0; r < 12; r++) {
             titleFlameRuneImages[r] = new IndexedImage(archive, "runes", r);
+        }
 
         flameLeftBackground2 = new Sprite(128, 265);
         flameRightBackground2 = new Sprite(128, 265);
@@ -171,8 +172,9 @@ public class TitleScreen {
             }
 
             int j2 = 22 + l1;
-            if (j2 < 0)
+            if (j2 < 0) {
                 j2 = 0;
+            }
             i1 += j2;
             for (int l2 = j2; l2 < 128; l2++) {
                 int strength = flameStrengths[i1++];
@@ -250,8 +252,9 @@ public class TitleScreen {
 
         int modifiedPixels[] = new int[sprite.width];
         for (int row = 0; row < sprite.height; row++) {
-            for (int column = 0; column < sprite.width; column++)
+            for (int column = 0; column < sprite.width; column++) {
                 modifiedPixels[column] = sprite.pixels[(sprite.width - column - 1) + sprite.width * row];
+            }
 
             System.arraycopy(modifiedPixels, 0, sprite.pixels, sprite.width * row, sprite.width);
 
@@ -299,8 +302,9 @@ public class TitleScreen {
 
         for (int j = 10; j < 117; j++) {
             int k = (int) (Math.random() * 100D);
-            if (k < 50)
+            if (k < 50) {
                 flameStrengths[j + (c - 2 << 7)] = 255;
+            }
         }
 
         for (int i = 0; i < 100; i++) {
@@ -330,8 +334,9 @@ public class TitleScreen {
                 int pos = y + (x << 7);
                 int i4 = anIntArray829[pos + 128] - titleFlames[pos + flameShapeIndex & titleFlames.length - 1] / 5;
 
-                if (i4 < 0)
+                if (i4 < 0) {
                     i4 = 0;
+                }
 
                 flameStrengths[pos] = i4;
             }
@@ -356,8 +361,9 @@ public class TitleScreen {
                     long currentTime = System.currentTimeMillis();
                     int difference = (int) (currentTime - startTime) / 10 - interval;
                     interval = 40 - difference;
-                    if (interval < 5)
+                    if (interval < 5) {
                         interval = 5;
+                    }
                     currentLoop = 0;
                     startTime = currentTime;
                 }

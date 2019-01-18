@@ -26,34 +26,40 @@ final class FileCache {
 			int in;
 			for (int r = 0; r < 6; r += in) {
 				in = indexFile.read(buffer, r, 6 - r);
-				if (in == -1)
-					return null;
+				if (in == -1) {
+                    return null;
+                }
 			}
 
 			int size = ((buffer[0] & 0xff) << 16) + ((buffer[1] & 0xff) << 8) + (buffer[2] & 0xff);
 			int sector = ((buffer[3] & 0xff) << 16) + ((buffer[4] & 0xff) << 8) + (buffer[5] & 0xff);
 
-			if (size < 0 || size > 0x7a120)
-				return null;
+			if (size < 0 || size > 0x7a120) {
+                return null;
+            }
 
-			if (sector <= 0 || sector > dataFile.length() / 520L)
-				return null;
+			if (sector <= 0 || sector > dataFile.length() / 520L) {
+                return null;
+            }
 
 			byte decompressed[] = new byte[size];
 			int read = 0;
 			for (int part = 0; read < size; part++) {
-				if (sector == 0)
-					return null;
+				if (sector == 0) {
+                    return null;
+                }
 				seek(dataFile, sector * 520);
 				int r = 0;
 				int unread = size - read;
-				if (unread > 512)
-					unread = 512;
+				if (unread > 512) {
+                    unread = 512;
+                }
 				int in_;
 				for (; r < unread + 8; r += in_) {
 					in_ = dataFile.read(buffer, r, (unread + 8) - r);
-					if (in_ == -1)
-						return null;
+					if (in_ == -1) {
+                        return null;
+                    }
 				}
 
 				int decompressedIndex = ((buffer[0] & 0xff) << 8) + (buffer[1] & 0xff);
@@ -61,14 +67,17 @@ final class FileCache {
 				int decompressedSector = ((buffer[4] & 0xff) << 16) + ((buffer[5] & 0xff) << 8) + (buffer[6] & 0xff);
 				int decompressedStoreId = buffer[7] & 0xff;
 
-				if (decompressedIndex != index || decompressedPart != part || decompressedStoreId != storeId)
-					return null;
+				if (decompressedIndex != index || decompressedPart != part || decompressedStoreId != storeId) {
+                    return null;
+                }
 
-				if (decompressedSector < 0 || decompressedSector > dataFile.length() / 520L)
-					return null;
+				if (decompressedSector < 0 || decompressedSector > dataFile.length() / 520L) {
+                    return null;
+                }
 
-				for (int i = 0; i < unread; i++)
-					decompressed[read++] = buffer[i + 8];
+				for (int i = 0; i < unread; i++) {
+                    decompressed[read++] = buffer[i + 8];
+                }
 
 				sector = decompressedSector;
 			}
@@ -81,8 +90,9 @@ final class FileCache {
 
 	public synchronized boolean put(int size, byte data[], int index) {
 		boolean exists = put(true, index, size, data);
-		if (!exists)
-			exists = put(false, index, size, data);
+		if (!exists) {
+            exists = put(false, index, size, data);
+        }
 		return exists;
 	}
 
@@ -94,17 +104,20 @@ final class FileCache {
 				int in;
 				for (int r = 0; r < 6; r += in) {
 					in = indexFile.read(buffer, r, 6 - r);
-					if (in == -1)
-						return false;
+					if (in == -1) {
+                        return false;
+                    }
 				}
 
 				sector = ((buffer[3] & 0xff) << 16) + ((buffer[4] & 0xff) << 8) + (buffer[5] & 0xff);
-				if (sector <= 0 || sector > dataFile.length() / 520L)
-					return false;
+				if (sector <= 0 || sector > dataFile.length() / 520L) {
+                    return false;
+                }
 			} else {
 				sector = (int) ((dataFile.length() + 519L) / 520L);
-				if (sector == 0)
-					sector = 1;
+				if (sector == 0) {
+                    sector = 1;
+                }
 			}
 			buffer[0] = (byte) (size >> 16);
 			buffer[1] = (byte) (size >> 8);
@@ -123,8 +136,9 @@ final class FileCache {
 					int in;
 					for (read = 0; read < 8; read += in) {
 						in = dataFile.read(buffer, read, 8 - read);
-						if (in == -1)
-							break;
+						if (in == -1) {
+                            break;
+                        }
 					}
 
 					if (read == 8) {
@@ -133,24 +147,29 @@ final class FileCache {
 						decompressedSector = ((buffer[4] & 0xff) << 16) + ((buffer[5] & 0xff) << 8)
 								+ (buffer[6] & 0xff);
 						int decompressedStoreId = buffer[7] & 0xff;
-						if (decompressedIndex != index || decompressedPart != part || decompressedStoreId != storeId)
-							return false;
-						if (decompressedSector < 0 || decompressedSector > dataFile.length() / 520L)
-							return false;
+						if (decompressedIndex != index || decompressedPart != part || decompressedStoreId != storeId) {
+                            return false;
+                        }
+						if (decompressedSector < 0 || decompressedSector > dataFile.length() / 520L) {
+                            return false;
+                        }
 					}
 				}
 
 				if (decompressedSector == 0) {
 					exists = false;
 					decompressedSector = (int) ((dataFile.length() + 519L) / 520L);
-					if (decompressedSector == 0)
-						decompressedSector++;
-					if (decompressedSector == sector)
-						decompressedSector++;
+					if (decompressedSector == 0) {
+                        decompressedSector++;
+                    }
+					if (decompressedSector == sector) {
+                        decompressedSector++;
+                    }
 				}
 
-				if (size - written <= 512)
-					decompressedSector = 0;
+				if (size - written <= 512) {
+                    decompressedSector = 0;
+                }
 
 				buffer[0] = (byte) (index >> 8);
 				buffer[1] = (byte) index;
@@ -164,8 +183,9 @@ final class FileCache {
 				dataFile.write(buffer, 0, 8);
 
 				int unwritten = size - written;
-				if (unwritten > 512)
-					unwritten = 512;
+				if (unwritten > 512) {
+                    unwritten = 512;
+                }
 				dataFile.write(data, written, unwritten);
 				written += unwritten;
 				sector = decompressedSector;

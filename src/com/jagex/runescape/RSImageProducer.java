@@ -69,8 +69,9 @@ public final class RSImageProducer implements ImageProducer, ImageObserver {
 
 	@Override
 	public synchronized void removeConsumer(ImageConsumer imageconsumer) {
-		if (imageConsumer == imageconsumer)
-			imageConsumer = null;
+		if (imageConsumer == imageconsumer) {
+            imageConsumer = null;
+        }
 	}
 
 	@Override

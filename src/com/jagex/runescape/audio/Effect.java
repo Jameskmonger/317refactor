@@ -23,8 +23,9 @@ public final class Effect {
 		Instrument.initialise();
 		do {
 			int effect = stream.getUnsignedLEShort();
-			if (effect == 65535)
-				return;
+			if (effect == 65535) {
+                return;
+            }
 			effects[effect] = new Effect();
 			effects[effect].decode(stream);
 			effectDelays[effect] = effects[effect].getDelay();
@@ -83,17 +84,23 @@ public final class Effect {
 
 	private int getDelay() {
 		int delay = 0x98967f;
-		for (int instrument = 0; instrument < 10; instrument++)
-			if (instruments[instrument] != null && instruments[instrument].begin / 20 < delay)
-				delay = instruments[instrument].begin / 20;
+		for (int instrument = 0; instrument < 10; instrument++) {
+            if (instruments[instrument] != null && instruments[instrument].begin / 20 < delay) {
+                delay = instruments[instrument].begin / 20;
+            }
+        }
 
-		if (loopStart < loopEnd && loopStart / 20 < delay)
-			delay = loopStart / 20;
-		if (delay == 0x98967f || delay == 0)
-			return 0;
-		for (int instrument = 0; instrument < 10; instrument++)
-			if (instruments[instrument] != null)
-				instruments[instrument].begin -= delay * 20;
+		if (loopStart < loopEnd && loopStart / 20 < delay) {
+            delay = loopStart / 20;
+        }
+		if (delay == 0x98967f || delay == 0) {
+            return 0;
+        }
+		for (int instrument = 0; instrument < 10; instrument++) {
+            if (instruments[instrument] != null) {
+                instruments[instrument].begin -= delay * 20;
+            }
+        }
 
 		if (loopStart < loopEnd) {
 			loopStart -= delay * 20;
@@ -104,39 +111,47 @@ public final class Effect {
 
 	private int mix(int loopCount) {
 		int _duration = 0;
-		for (int instrument = 0; instrument < 10; instrument++)
-			if (instruments[instrument] != null
-					&& instruments[instrument].duration + instruments[instrument].begin > _duration)
-				_duration = instruments[instrument].duration + instruments[instrument].begin;
+		for (int instrument = 0; instrument < 10; instrument++) {
+            if (instruments[instrument] != null
+                    && instruments[instrument].duration + instruments[instrument].begin > _duration) {
+                _duration = instruments[instrument].duration + instruments[instrument].begin;
+            }
+        }
 
-		if (_duration == 0)
-			return 0;
+		if (_duration == 0) {
+            return 0;
+        }
 		int stepCount = (22050 * _duration) / 1000;
 		int loopStart = (22050 * this.loopStart) / 1000;
 		int loopEnd = (22050 * this.loopEnd) / 1000;
-		if (loopStart < 0 || loopStart > stepCount || loopEnd < 0 || loopEnd > stepCount || loopStart >= loopEnd)
-			loopCount = 0;
+		if (loopStart < 0 || loopStart > stepCount || loopEnd < 0 || loopEnd > stepCount || loopStart >= loopEnd) {
+            loopCount = 0;
+        }
 		int length = stepCount + (loopEnd - loopStart) * (loopCount - 1);
-		for (int offset = 44; offset < length + 44; offset++)
-			_output[offset] = -128;
+		for (int offset = 44; offset < length + 44; offset++) {
+            _output[offset] = -128;
+        }
 
-		for (int instrument = 0; instrument < 10; instrument++)
-			if (instruments[instrument] != null) {
-				int duration = (instruments[instrument].duration * 22050) / 1000;
-				int offset = (instruments[instrument].begin * 22050) / 1000;
-				int samples[] = instruments[instrument].synthesise(duration, instruments[instrument].duration);
-				for (int sample = 0; sample < duration; sample++)
-					_output[sample + offset + 44] += (byte) (samples[sample] >> 8);
+		for (int instrument = 0; instrument < 10; instrument++) {
+            if (instruments[instrument] != null) {
+                int duration = (instruments[instrument].duration * 22050) / 1000;
+                int offset = (instruments[instrument].begin * 22050) / 1000;
+                int samples[] = instruments[instrument].synthesise(duration, instruments[instrument].duration);
+                for (int sample = 0; sample < duration; sample++) {
+                    _output[sample + offset + 44] += (byte) (samples[sample] >> 8);
+                }
 
-			}
+            }
+        }
 
 		if (loopCount > 1) {
 			loopStart += 44;
 			loopEnd += 44;
 			stepCount += 44;
 			int offset = (length += 44) - stepCount;
-			for (int step = stepCount - 1; step >= loopEnd; step--)
-				_output[step + offset] = _output[step];
+			for (int step = stepCount - 1; step >= loopEnd; step--) {
+                _output[step + offset] = _output[step];
+            }
 
 			for (int loop = 1; loop < loopCount; loop++) {
 				int _offset = (loopEnd - loopStart) * loop;
