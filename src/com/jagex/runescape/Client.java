@@ -8,6 +8,7 @@ import java.net.*;
 import com.jagex.runescape.audio.Effect;
 import com.jagex.runescape.collection.*;
 import com.jagex.runescape.definition.*;
+import com.jagex.runescape.screen.game.Minimap;
 import com.jagex.runescape.screen.title.TitleScreen;
 import com.jagex.runescape.sign.signlink;
 import com.jagex.runescape.isaac.ISAACRandomGenerator;
@@ -20,6 +21,7 @@ import com.jagex.runescape.scene.object.WallDecoration;
 public final class Client extends RSApplet {
 
 	private final TitleScreen titleScreen;
+	private final Minimap minimap;
 
 	private static String formatAmount(int amount) {
 		String formattedAmount = String.valueOf(amount);
@@ -677,6 +679,7 @@ public final class Client extends RSApplet {
 		currentTrackLoop = -1;
 
 		titleScreen = new TitleScreen();
+		minimap = new Minimap();
 	}
 
 	private void addFriend(long targetHash) {
@@ -949,7 +952,7 @@ public final class Client extends RSApplet {
 
 	private void build3dScreenMenu() {
 		if (itemSelected == false && spellSelected == false) {
-			menuActionName[menuActionRow] = "Walk here " + GlobalConfig.WalkHereTest;
+			menuActionName[menuActionRow] = "Walk here";
 			menuActionId[menuActionRow] = 516;
 			menuActionData2[menuActionRow] = super.mouseX;
 			menuActionData3[menuActionRow] = super.mouseY;

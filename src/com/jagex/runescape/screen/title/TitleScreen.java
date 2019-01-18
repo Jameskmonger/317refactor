@@ -6,6 +6,11 @@ import com.jagex.runescape.definition.GameFont;
 import java.awt.*;
 
 public class TitleScreen {
+    private final int[] anIntArray969;
+    public RSImageProducer loginBoxLeftBackgroundTile;
+    public boolean welcomeScreenRaised;
+    public volatile boolean drawingFlames;
+    public volatile boolean currentlyDrawingFlames;
     private IndexedImage titleBoxImage;
     private IndexedImage titleButtonImage;
     private IndexedImage[] titleFlameRuneImages;
@@ -17,26 +22,17 @@ public class TitleScreen {
     private int[] titleFlamesTemp;
     private RSImageProducer topCentreBackgroundTile;
     private RSImageProducer bottomCentreBackgroundTile;
-    public RSImageProducer loginBoxLeftBackgroundTile;
     private RSImageProducer bottomLeftBackgroundTile;
     private RSImageProducer bottomRightBackgroundTile;
     private RSImageProducer middleLeftBackgroundTile;
     private RSImageProducer middleRightBackgroundTile;
-    public boolean welcomeScreenRaised;
-    private int anInt1040;
-    private int anInt1041;
-    private int anInt1275;
-
+    private int flameShapeIndex;
     private Archive archive;
     private GameFont fontSmall;
     private GameFont fontPlain;
     private GameFont fontBold;
-    private final int[] anIntArray969;
-    private int[] anIntArray828;
+    private int[] flameStrengths;
     private int[] anIntArray829;
-    public volatile boolean drawingFlames;
-    public volatile boolean currentlyDrawingFlames;
-
     private FlameColours flameColours;
 
     public TitleScreen() {
@@ -72,10 +68,10 @@ public class TitleScreen {
         titleFlames = new int[32768];
         titleFlamesTemp = new int[32768];
 
-        anIntArray828 = new int[32768];
+        flameStrengths = new int[32768];
         anIntArray829 = new int[32768];
 
-        updateTitleFlames(null);
+        updateFlameShape(null);
     }
 
     public void drawLoadingText(Graphics gameGraphics, int percentage, String text) {
@@ -152,7 +148,7 @@ public class TitleScreen {
         flameLeftBackground2 = null;
         flameRightBackground2 = null;
 
-        anIntArray828 = null;
+        flameStrengths = null;
         anIntArray829 = null;
 
         this.clearImageProducers();
@@ -161,33 +157,38 @@ public class TitleScreen {
     private void doFlamesDrawing(Graphics gameGraphics) {
         char c = '\u0100';
 
-        flameColours.changeColours(anInt1040, anInt1041);
+        flameColours.changeColours();
 
         System.arraycopy(flameLeftBackground2.pixels, 0, flameLeftBackground.pixels, 0, 33920);
 
         int i1 = 0;
-        int j1 = 1152;
+        int pos = 1152;
         for (int k1 = 1; k1 < c - 1; k1++) {
             int l1 = (anIntArray969[k1] * (c - k1)) / c;
+
+            if (l1 != 0) {
+                System.out.println(l1);
+            }
+
             int j2 = 22 + l1;
             if (j2 < 0)
                 j2 = 0;
             i1 += j2;
             for (int l2 = j2; l2 < 128; l2++) {
-                int j3 = anIntArray828[i1++];
-                if (j3 != 0) {
-                    int l3 = j3;
-                    int j4 = 256 - j3;
-                    j3 = flameColours.getCurrentColour(j3);
-                    int l4 = flameLeftBackground.pixels[j1];
-                    flameLeftBackground.pixels[j1++] = ((j3 & 0xFF00ff) * l3 + (l4 & 0xFF00FF) * j4 & 0xFF00FF00)
-                            + ((j3 & 0xFF00) * l3 + (l4 & 0xFF00) * j4 & 0xFF0000) >> 8;
+                int strength = flameStrengths[i1++];
+                if (strength != 0) {
+                    int on = strength;
+                    int off = 256 - strength;
+                    int colour = flameColours.getCurrentColour(strength);
+                    int bg = flameLeftBackground.pixels[pos];
+                    flameLeftBackground.pixels[pos++] = ((colour & 0xFF00ff) * on + (bg & 0xFF00FF) * off & 0xFF00FF00)
+                            + ((colour & 0xFF00) * on + (bg & 0xFF00) * off & 0xFF0000) >> 8;
                 } else {
-                    j1++;
+                    pos++;
                 }
             }
 
-            j1 += j2;
+            pos += j2;
         }
 
         flameLeftBackground.drawGraphics(0, gameGraphics, 0);
@@ -195,27 +196,30 @@ public class TitleScreen {
         System.arraycopy(flameRightBackground2.pixels, 0, flameRightBackground.pixels, 0, 33920);
 
         i1 = 0;
-        j1 = 1176;
+        pos = 1176;
         for (int k2 = 1; k2 < c - 1; k2++) {
             int i3 = (anIntArray969[k2] * (c - k2)) / c;
+            if (i3 != 0) {
+                System.out.println(i3);
+            }
             int k3 = 103 - i3;
-            j1 += i3;
+            pos += i3;
             for (int i4 = 0; i4 < k3; i4++) {
-                int k4 = anIntArray828[i1++];
-                if (k4 != 0) {
-                    int i5 = k4;
-                    int j5 = 256 - k4;
-                    k4 = flameColours.getCurrentColour(k4);
-                    int k5 = flameRightBackground.pixels[j1];
-                    flameRightBackground.pixels[j1++] = ((k4 & 0xFF00FF) * i5 + (k5 & 0xFF00FF) * j5 & 0xFF00FF00)
-                            + ((k4 & 0xFF00) * i5 + (k5 & 0xFF00) * j5 & 0xFF0000) >> 8;
+                int strength = flameStrengths[i1++];
+                if (strength != 0) {
+                    int on = strength;
+                    int off = 256 - strength;
+                    int colour = flameColours.getCurrentColour(strength);
+                    int bg = flameRightBackground.pixels[pos];
+                    flameRightBackground.pixels[pos++] = ((colour & 0xFF00FF) * on + (bg & 0xFF00FF) * off & 0xFF00FF00)
+                            + ((colour & 0xFF00) * on + (bg & 0xFF00) * off & 0xFF0000) >> 8;
                 } else {
-                    j1++;
+                    pos++;
                 }
             }
 
             i1 += 128 - k3;
-            j1 += 128 - k3 - i3;
+            pos += 128 - k3 - i3;
         }
 
         flameRightBackground.drawGraphics(0, gameGraphics, 637);
@@ -290,61 +294,52 @@ public class TitleScreen {
         middleRightBackgroundTile.drawGraphics(171, gameGraphics, 562);
     }
 
-    private void calcFlamesPosition(int tick) {
+    private void updateFlameStrength(int tick) {
         char c = '\u0100';
+
         for (int j = 10; j < 117; j++) {
             int k = (int) (Math.random() * 100D);
             if (k < 50)
-                anIntArray828[j + (c - 2 << 7)] = 255;
+                flameStrengths[j + (c - 2 << 7)] = 255;
         }
+
         for (int i = 0; i < 100; i++) {
-            int a = (int) (Math.random() * 124D) + 2;
-            int b = (int) (Math.random() * 128D) + 128;
-            int index = a + (b << 7);
-            anIntArray828[index] = 192;
+            int y = (int) (Math.random() * 124D) + 2;
+            int x = (int) (Math.random() * 128D) + 128;
+            int pos = y + (x << 7);
+            flameStrengths[pos] = 192;
         }
 
-        for (int j1 = 1; j1 < c - 1; j1++) {
-            for (int l1 = 1; l1 < 127; l1++) {
-                int l2 = l1 + (j1 << 7);
-                anIntArray829[l2] = (anIntArray828[l2 - 1] + anIntArray828[l2 + 1] + anIntArray828[l2 - 128]
-                        + anIntArray828[l2 + 128]) / 4;
+        for (int x = 1; x < c - 1; x++) {
+            for (int y = 1; y < 127; y++) {
+                int pos = y + (x << 7);
+                anIntArray829[pos] = (flameStrengths[pos - 1] + flameStrengths[pos + 1] + flameStrengths[pos - 128] + flameStrengths[pos + 128]) / 4;
             }
-
         }
 
-        anInt1275 += 128;
-        if (anInt1275 > titleFlames.length) {
-            anInt1275 -= titleFlames.length;
+        flameShapeIndex += 128;
+        if (flameShapeIndex > titleFlames.length) {
+            flameShapeIndex -= titleFlames.length;
+
             int image = (int) (Math.random() * 12D);
-            updateTitleFlames(titleFlameRuneImages[image]);
+            updateFlameShape(titleFlameRuneImages[image]);
         }
-        for (int j2 = 1; j2 < c - 1; j2++) {
-            for (int i3 = 1; i3 < 127; i3++) {
-                int k3 = i3 + (j2 << 7);
-                int i4 = anIntArray829[k3 + 128] - titleFlames[k3 + anInt1275 & titleFlames.length - 1] / 5;
+
+        for (int x = 1; x < c - 1; x++) {
+            for (int y = 1; y < 127; y++) {
+                int pos = y + (x << 7);
+                int i4 = anIntArray829[pos + 128] - titleFlames[pos + flameShapeIndex & titleFlames.length - 1] / 5;
+
                 if (i4 < 0)
                     i4 = 0;
-                anIntArray828[k3] = i4;
-            }
 
+                flameStrengths[pos] = i4;
+            }
         }
 
         System.arraycopy(anIntArray969, 1, anIntArray969, 0, c - 1);
 
-        anIntArray969[c
-                - 1] = (int) (Math.sin(tick / 14D) * 16D + Math.sin(tick / 15D) * 14D + Math.sin(tick / 16D) * 12D);
-        if (anInt1040 > 0)
-            anInt1040 -= 4;
-        if (anInt1041 > 0)
-            anInt1041 -= 4;
-        if (anInt1040 == 0 && anInt1041 == 0) {
-            int rand = (int) (Math.random() * 2000D);
-            if (rand == 0)
-                anInt1040 = 1024;
-            if (rand == 1)
-                anInt1041 = 1024;
-        }
+        anIntArray969[c - 1] = (int) (Math.sin(tick / 14D) * 16D + Math.sin(tick / 15D) * 14D + Math.sin(tick / 16D) * 12D);
     }
 
     public void drawFlames2(Graphics gameGraphics, int tick) {
@@ -354,8 +349,8 @@ public class TitleScreen {
             int currentLoop = 0;
             int interval = 20;
             while (currentlyDrawingFlames) {
-                calcFlamesPosition(tick);
-                calcFlamesPosition(tick);
+                updateFlameStrength(tick);
+                updateFlameStrength(tick);
                 doFlamesDrawing(gameGraphics);
                 if (++currentLoop > 10) {
                     long currentTime = System.currentTimeMillis();
@@ -376,44 +371,47 @@ public class TitleScreen {
         drawingFlames = false;
     }
 
-    private void updateTitleFlames(IndexedImage background) {
+    private void updateFlameShape(IndexedImage runeImage) {
         int j = 256;
-        for (int k = 0; k < titleFlames.length; k++)
-            titleFlames[k] = 0;
-
-        for (int l = 0; l < 5000; l++) {
-            int i1 = (int) (Math.random() * 128D * j);
-            titleFlames[i1] = (int) (Math.random() * 256D);
+        for (int pos = 0; pos < titleFlames.length; pos++) {
+            titleFlames[pos] = 0;
         }
 
-        for (int j1 = 0; j1 < 20; j1++) {
-            for (int k1 = 1; k1 < j - 1; k1++) {
-                for (int i2 = 1; i2 < 127; i2++) {
-                    int k2 = i2 + (k1 << 7);
-                    titleFlamesTemp[k2] = (titleFlames[k2 - 1] + titleFlames[k2 + 1] + titleFlames[k2 - 128]
-                            + titleFlames[k2 + 128]) / 4;
+        for (int i = 0; i < 5000; i++) {
+            int pos = (int) (Math.random() * 128D * j);
+            titleFlames[pos] = (int) (Math.random() * 256D);
+        }
+
+        for (int i = 0; i < 20; i++) {
+            for (int x = 1; x < j - 1; x++) {
+                for (int y = 1; y < 127; y++) {
+                    int pos = y + (x << 7);
+                    titleFlamesTemp[pos] = (
+                            titleFlames[pos - 1]
+                                    + titleFlames[pos + 1]
+                                    + titleFlames[pos - 128]
+                                    + titleFlames[pos + 128]
+                    ) / 4;
                 }
-
             }
 
-            int ai[] = titleFlames;
+            int temp[] = titleFlames;
             titleFlames = titleFlamesTemp;
-            titleFlamesTemp = ai;
+            titleFlamesTemp = temp;
         }
 
-        if (background != null) {
-            int l1 = 0;
-            for (int row = 0; row < background.height; row++) {
-                for (int column = 0; column < background.width; column++)
-                    if (background.pixels[l1++] != 0) {
-                        int i3 = column + 16 + background.drawOffsetX;
-                        int j3 = row + 16 + background.drawOffsetY;
-                        int k3 = i3 + (j3 << 7);
-                        titleFlames[k3] = 0;
+        if (runeImage != null) {
+            int imagePos = 0;
+            for (int x = 0; x < runeImage.height; x++) {
+                for (int y = 0; y < runeImage.width; y++) {
+                    if (runeImage.pixels[imagePos++] != 0) {
+                        int _y = y + 16 + runeImage.drawOffsetX;
+                        int _x = x + 16 + runeImage.drawOffsetY;
+                        int pos = _y + (_x << 7);
+                        titleFlames[pos] = 0;
                     }
-
+                }
             }
-
         }
     }
 

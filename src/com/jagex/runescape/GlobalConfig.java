@@ -9,14 +9,16 @@ import java.beans.PropertyChangeEvent;
 import java.util.Objects;
 
 public class GlobalConfig {
-	public static String WalkHereTest = "Foo";
+	public static int FlameFoo = 0;
+	public static int FlameBar = 0;
 
 	public static void openFrame() {
 		JFrame frame = new JFrame("HelloWorldSwing");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		JLabel jLabel1 = new JLabel("Walk Here Text");
-		JTextField entry = new JTextField();
+		JLabel jLabel1 = new JLabel("Flame Foo");
+		SpinnerNumberModel model = new SpinnerNumberModel(0, 0, 255, 10);
+		JSpinner entry = new JSpinner(model);
 
 		Container pane = frame.getContentPane();
 
@@ -24,16 +26,27 @@ public class GlobalConfig {
 		pane.add(jLabel1);
 		pane.add(entry);
 
-		addChangeListener(entry, e -> GlobalConfig.WalkHereTest = entry.getText());
+		entry.addChangeListener(e -> {
+			GlobalConfig.FlameFoo = model.getNumber().intValue();
+		});
+
+		JLabel jLabel2 = new JLabel("Flame Bar");
+		SpinnerNumberModel model2 = new SpinnerNumberModel(0, 0, 255, 10);
+		JSpinner entry2 = new JSpinner(model2);
+
+		pane.add(jLabel2);
+		pane.add(entry2);
+
+		entry2.addChangeListener(e -> {
+			GlobalConfig.FlameBar = model2.getNumber().intValue();
+		});
 
 		//Display the window.
 		frame.pack();
 		frame.setVisible(true);
 	}
 
-	public static void addChangeListener(JTextComponent text, ChangeListener changeListener) {
-		Objects.requireNonNull(text);
-		Objects.requireNonNull(changeListener);
+	public static void addTextChangeListener(JTextComponent text, ChangeListener changeListener) {
 		DocumentListener dl = new DocumentListener() {
 			private int lastChange = 0, lastNotifiedChange = 0;
 

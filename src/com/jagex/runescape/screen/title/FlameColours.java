@@ -6,6 +6,9 @@ public class FlameColours {
     private int[] greenFlameColours;
     private int[] blueFlameColours;
 
+    private int random1;
+    private int random2;
+
     public FlameColours() {
         redFlameColours = new int[256];
         for (int c = 0; c < 64; c++)
@@ -49,31 +52,50 @@ public class FlameColours {
         currentFlameColours = new int[256];
     }
 
-    public int getCurrentColour(int position) {
-        return currentFlameColours[position];
+    public int getCurrentColour(int strength) {
+        return currentFlameColours[strength];
     }
 
-    public void changeColours(int random1, int random2) {
+    public void changeColours() {
+        incrementRandoms();
+        incrementRandoms();
+
         if (random1 > 0) {
-            for (int i = 0; i < 256; i++)
-                if (random1 > 768)
-                    currentFlameColours[i] = rotateFlameColour(redFlameColours[i], greenFlameColours[i], 1024 - random1);
-                else if (random1 > 256)
-                    currentFlameColours[i] = greenFlameColours[i];
-                else
-                    currentFlameColours[i] = rotateFlameColour(greenFlameColours[i], redFlameColours[i], 256 - random1);
-
+            for (int strength = 0; strength < 256; strength++) {
+                if (random1 > 768) {
+                    currentFlameColours[strength] = rotateFlameColour(redFlameColours[strength], greenFlameColours[strength], 1024 - random1);
+                } else if (random1 > 256) {
+                    currentFlameColours[strength] = greenFlameColours[strength];
+                } else {
+                    currentFlameColours[strength] = rotateFlameColour(greenFlameColours[strength], redFlameColours[strength], 256 - random1);
+                }
+            }
         } else if (random2 > 0) {
-            for (int j = 0; j < 256; j++)
-                if (random2 > 768)
-                    currentFlameColours[j] = rotateFlameColour(redFlameColours[j], blueFlameColours[j], 1024 - random2);
-                else if (random2 > 256)
-                    currentFlameColours[j] = blueFlameColours[j];
-                else
-                    currentFlameColours[j] = rotateFlameColour(blueFlameColours[j], redFlameColours[j], 256 - random2);
-
+            for (int strength = 0; strength < 256; strength++) {
+                if (random2 > 768) {
+                    currentFlameColours[strength] = rotateFlameColour(redFlameColours[strength], blueFlameColours[strength], 1024 - random2);
+                } else if (random2 > 256) {
+                    currentFlameColours[strength] = blueFlameColours[strength];
+                } else {
+                    currentFlameColours[strength] = rotateFlameColour(blueFlameColours[strength], redFlameColours[strength], 256 - random2);
+                }
+            }
         } else {
             System.arraycopy(redFlameColours, 0, currentFlameColours, 0, 256);
+        }
+    }
+
+    private void incrementRandoms() {
+        if (random1 > 0)
+            random1 -= 4;
+        if (random2 > 0)
+            random2 -= 4;
+        if (random1 == 0 && random2 == 0) {
+            int rand = (int) (Math.random() * 2000D);
+            if (rand == 0)
+                random1 = 1024;
+            if (rand == 1)
+                random2 = 1024;
         }
     }
 
