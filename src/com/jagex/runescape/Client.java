@@ -8,6 +8,8 @@ import java.net.*;
 import com.jagex.runescape.audio.Effect;
 import com.jagex.runescape.collection.*;
 import com.jagex.runescape.definition.*;
+import com.jagex.runescape.screen.game.Minimap;
+import com.jagex.runescape.screen.title.TitleScreen;
 import com.jagex.runescape.sign.signlink;
 import com.jagex.runescape.isaac.ISAACRandomGenerator;
 import com.jagex.runescape.scene.WorldController;
@@ -17,6 +19,9 @@ import com.jagex.runescape.scene.object.WallDecoration;
 
 @SuppressWarnings("serial")
 public final class Client extends RSApplet {
+
+	private final TitleScreen titleScreen;
+	private final Minimap minimap;
 
 	private static String formatAmount(int amount) {
 		String formattedAmount = String.valueOf(amount);
@@ -101,6 +106,8 @@ public final class Client extends RSApplet {
 			signlink.startpriv(InetAddress.getLocalHost());
 			Client client1 = new Client();
 			client1.createClientFrame(765, 503);
+
+			GlobalConfig.openFrame();
 		} catch (Exception exception) {
 			exception.printStackTrace();
 		}
@@ -127,9 +134,6 @@ public final class Client extends RSApplet {
 	private int[][] distanceValues;
 	private int[] friendsWorldIds;
 	private DoubleEndedQueue[][][] groundArray;
-	private int[] anIntArray828;
-	private int[] anIntArray829;
-	private volatile boolean currentlyDrawingFlames;
 	private Socket jaggrabSocket;
 	private int loginScreenState;
 	private Buffer textStream;
@@ -145,10 +149,6 @@ public final class Client extends RSApplet {
 	private int privateChatMode;
 	private Buffer loginStream;
 	private boolean effectsEnabled;
-	private int[] currentFlameColours;
-	private int[] flameColour1;
-	private int[] flameColour2;
-	private int[] flameColour3;
 	private int hintIconType;
 	private int openInterfaceId;
 	private int cameraPositionX;
@@ -163,8 +163,6 @@ public final class Client extends RSApplet {
 	private IndexedImage redStone3_2;
 	private IndexedImage redStone1_4;
 	private IndexedImage redStone2_4;
-	private Sprite mapFlag;
-	private Sprite mapMarker;
 	private boolean aBoolean872;
 	private final int[] cameraJitter;
 	private int currentTrackId;
@@ -240,14 +238,10 @@ public final class Client extends RSApplet {
 	static int portOffset;
 	private static boolean membersWorld = true;
 	private static boolean lowMemory;
-	private volatile boolean drawingFlames;
 	private int spriteDrawX;
 	private int spriteDrawY;
 	private final int[] SPOKEN_TEXT_COLOURS = { 0xFFFF00, 0xFF0000, 0x00FF00, 0x00FFFF, 0xFF00FF, 0xFFFFFF };
-	private IndexedImage titleBoxImage;
-	private IndexedImage titleButtonImage;
-	private final int[] compassHingeSize;
-	private final int[] anIntArray969;
+
 	final FileCache[] caches;
 	public int interfaceSettings[];
 	private boolean aBoolean972;
@@ -273,7 +267,6 @@ public final class Client extends RSApplet {
 	private int anInt998;
 	private int anInt999;
 	private ISAACRandomGenerator encryption;
-	private Sprite minimapEdgeImage;
 	private final int SCROLLBAR_TRACK_COLOUR;
 	static final int[][] APPEARANCE_COLOURS = {
 			{ 6798, 107, 10283, 16, 4797, 7744, 5799, 4634, 33697, 22433, 2983, 54193 },
@@ -294,7 +287,6 @@ public final class Client extends RSApplet {
 	private boolean cameraMovedWrite;
 	private int walkableInterfaceId;
 	private static final int[] EXPERIENCE_TABLE;
-	private int minimapState;
 	private int sameClickPositionCounter;
 	private int loadingStage;
 	private IndexedImage scrollBarUp;
@@ -305,15 +297,12 @@ public final class Client extends RSApplet {
 	private IndexedImage backHmid1Image;
 	private final int[] unknownCameraVariable;
 	private boolean characterModelChanged;
-	private Sprite[] mapFunctionImage;
 	private int baseX;
 	private int baseY;
 	private int anInt1036;
 	private int anInt1037;
 	private int loginFailures;
 	private int anInt1039;
-	private int anInt1040;
-	private int anInt1041;
 	private int dialogID;
 	private final int[] skillMaxLevel;
 	private final int[] defaultSettings;
@@ -322,14 +311,11 @@ public final class Client extends RSApplet {
 	private int anInt1048;
 	private String loadingBarText;
 	private static int loadedRegions;
-	private final int[] minimapLeft;
 	private Archive archiveTitle;
 	private int flashingSidebar;
 	private boolean multiCombatZone;
 	private DoubleEndedQueue stationaryGraphicQueue;
-	private final int[] compassWidthMap;
 	private final RSInterface chatboxInterface;
-	private IndexedImage[] mapSceneImage;
 	private static int drawCycle;
 	private int trackCount;
 	private final int SCROLLBAR_GRIP_FOREGROUND;
@@ -340,14 +326,6 @@ public final class Client extends RSApplet {
 	private OnDemandFetcher onDemandFetcher;
 	private int regionX;
 	private int regionY;
-	private int minimapHintCount;
-	private int[] minimapHintX;
-	private int[] minimapHintY;
-	private Sprite mapDotItem;
-	private Sprite mapDotNPC;
-	private Sprite mapDotPlayer;
-	private Sprite mapDotFriend;
-	private Sprite mapDotTeam;
 	private int loadingBarPercentage;
 	private boolean loadingMap;
 	private String[] friendsList;
@@ -371,19 +349,9 @@ public final class Client extends RSApplet {
 	private int anInt1102;
 	private boolean drawTabIcons;
 	private int systemUpdateTime;
-	private RSImageProducer topCentreBackgroundTile;
-	private RSImageProducer bottomCentreBackgroundTile;
-	private RSImageProducer loginBoxLeftBackgroundTile;
-	private RSImageProducer flameLeftBackground;
-	private RSImageProducer flameRightBackground;
-	private RSImageProducer bottomLeftBackgroundTile;
-	private RSImageProducer bottomRightBackgroundTile;
-	private RSImageProducer middleLeftBackgroundTile;
-	private RSImageProducer middleRightBackgroundTile;
 	private static int mouseClickCounter;
 	private int membership;
 	private String chatboxInputNeededString;
-	private Sprite minimapCompassImage;
 	private RSImageProducer chatSettingImageProducer;
 	private RSImageProducer bottomSideIconImageProducer;
 	private RSImageProducer topSideIconImageProducer;
@@ -399,7 +367,6 @@ public final class Client extends RSApplet {
 	private int selectedSpellId;
 	private int spellUsableOn;
 	private String spellTooltip;
-	private Sprite[] minimapHint;
 	private boolean inTutorialIsland;
 	private IndexedImage redStone1;
 	private IndexedImage redStone2;
@@ -410,7 +377,7 @@ public final class Client extends RSApplet {
 	private boolean continuedDialogue;
 	private Sprite[] crosses;
 	private boolean musicEnabled;
-	private IndexedImage[] flameRuneImage;
+
 	private boolean redrawTab;
 	private int unreadMessages;
 	private static boolean displayFpsAndMemory;
@@ -421,13 +388,11 @@ public final class Client extends RSApplet {
 	static int tick;
 	private static final String validUserPassChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!\"\243$%^&*()-_=+[{]};:'@#~,<.>/?\\| ";
 	private RSImageProducer tabImageProducer;
-	private RSImageProducer minimapImageProducer;
 	private RSImageProducer gameScreenImageProducer;
 	private RSImageProducer chatboxImageProducer;
 	private int daysSinceRecoveryChange;
 	private RSSocket socket;
 	private int privateMessagePointer;
-	private int minimapZoom;
 	private int randomisationMinimapZoom;
 	private long songStartTime;
 	private String enteredUsername;
@@ -440,29 +405,22 @@ public final class Client extends RSApplet {
 	private int[] sidebarOffsets;
 	private int[] viewportOffsets;
 	private byte[][] terrainData;
-	private int cameraVertical;
-	private int cameraHorizontal;
+	public static int cameraVertical;
+	public static int cameraHorizontal;
 	private int cameraModificationH;
 	private int cameraModificationV;
 	private int inventoryOverlayInterfaceID;
-	private int[] anIntArray1190;
-	private int[] anIntArray1191;
 	private Buffer stream;
 	private int lastAddress;
 	private int splitPrivateChat;
 	private IndexedImage inventoryBackgroundImage;
-	private IndexedImage minimapBackgroundImage;
 	private IndexedImage chatBackgroundImage;
 	private String[] menuActionName;
-	private Sprite flameLeftBackground2;
-	private Sprite flameRightBackground2;
 	private final int[] cameraAmplitude;
 	static final int[] BEARD_COLOURS = { 9104, 10275, 7595, 3610, 7975, 8526, 918, 38802, 24466, 10145, 58654, 5027,
 			1457, 16565, 34991, 25486 };
 	private static boolean flagged;
 	private final int[] trackIds;
-	private int flameCycle;
-	private int minimapRotation;
 	private int randomisationMinimapRotation;
 	private int chatboxScrollMax;
 	private String promptInput;
@@ -478,7 +436,6 @@ public final class Client extends RSApplet {
 	private int inputDialogState;
 	private int nextSong;
 	private boolean songChanging;
-	private final int[] minimapLineWidth;
 	private CollisionMap[] currentCollisionMap;
 	public static int BITFIELD_MAX_VALUE[];
 	private boolean updateChatSettings;
@@ -503,14 +460,12 @@ public final class Client extends RSApplet {
 	private final boolean rsAlreadyLoaded;
 	private int oneMouseButton;
 	private int minimapRandomisationCounter;
-	private boolean welcomeScreenRaised;
 	private boolean messagePromptRaised;
 	private int songStartOffset;
 	private byte[][][] tileFlags;
 	private int prevSong;
 	private int destinationX;
 	private int destinationY;
-	private Sprite minimapImage;
 	private int arbitraryDestination;
 	private int renderCount;
 	private String loginMessage1;
@@ -520,7 +475,6 @@ public final class Client extends RSApplet {
 	private GameFont fontSmall;
 	private GameFont fontPlain;
 	private GameFont fontBold;
-	private int anInt1275;
 	private int chatboxInterfaceId;
 	private int cameraRandomisationH;
 	private int nextCameraRandomisationH;
@@ -558,7 +512,6 @@ public final class Client extends RSApplet {
 		distanceValues = new int[104][104];
 		friendsWorldIds = new int[200];
 		groundArray = new DoubleEndedQueue[4][104][104];
-		currentlyDrawingFlames = false;
 		textStream = new Buffer(new byte[5000]);
 		npcs = new NPC[16384];
 		npcIds = new int[16384];
@@ -599,11 +552,8 @@ public final class Client extends RSApplet {
 		windowFocused = true;
 		friendsListAsLongs = new long[200];
 		currentSong = -1;
-		drawingFlames = false;
 		spriteDrawX = -1;
 		spriteDrawY = -1;
-		compassHingeSize = new int[33];
-		anIntArray969 = new int[256];
 		caches = new FileCache[5];
 		interfaceSettings = new int[2000];
 		aBoolean972 = false;
@@ -626,21 +576,15 @@ public final class Client extends RSApplet {
 		walkableInterfaceId = -1;
 		unknownCameraVariable = new int[5];
 		characterModelChanged = false;
-		mapFunctionImage = new Sprite[100];
 		dialogID = -1;
 		skillMaxLevel = new int[Skills.skillsCount];
 		defaultSettings = new int[2000];
 		characterEditChangeGender = true;
-		minimapLeft = new int[151];
 		flashingSidebar = -1;
 		stationaryGraphicQueue = new DoubleEndedQueue();
-		compassWidthMap = new int[33];
 		chatboxInterface = new RSInterface();
-		mapSceneImage = new IndexedImage[100];
 		SCROLLBAR_GRIP_FOREGROUND = 0x4d4233;
 		characterEditIdentityKits = new int[7];
-		minimapHintX = new int[1000];
-		minimapHintY = new int[1000];
 		loadingMap = false;
 		friendsList = new String[200];
 		inStream = Buffer.create();
@@ -656,7 +600,6 @@ public final class Client extends RSApplet {
 		playerActionUnpinned = new boolean[5];
 		constructMapTiles = new int[4][13][13];
 		nextCameraRandomisationV = 2;
-		minimapHint = new Sprite[1000];
 		inTutorialIsland = false;
 		continuedDialogue = false;
 		crosses = new Sprite[8];
@@ -685,7 +628,6 @@ public final class Client extends RSApplet {
 		currentTabId = 3;
 		redrawChatbox = false;
 		songChanging = true;
-		minimapLineWidth = new int[151];
 		currentCollisionMap = new CollisionMap[4];
 		updateChatSettings = false;
 		privateMessages = new int[100];
@@ -693,7 +635,6 @@ public final class Client extends RSApplet {
 		lastItemDragged = false;
 		trackDelay = new int[50];
 		rsAlreadyLoaded = false;
-		welcomeScreenRaised = false;
 		messagePromptRaised = false;
 		loginMessage1 = "";
 		loginMessage2 = "";
@@ -702,6 +643,9 @@ public final class Client extends RSApplet {
 		walkingQueueX = new int[4000];
 		walkingQueueY = new int[4000];
 		currentTrackLoop = -1;
+
+		titleScreen = new TitleScreen();
+		minimap = new Minimap();
 	}
 
 	private void addFriend(long targetHash) {
@@ -974,7 +918,7 @@ public final class Client extends RSApplet {
 
 	private void build3dScreenMenu() {
 		if (itemSelected == false && spellSelected == false) {
-			menuActionName[menuActionRow] = "Walk here " + GlobalConfig.WalkHereTest;
+			menuActionName[menuActionRow] = "Walk here";
 			menuActionId[menuActionRow] = 516;
 			menuActionData2[menuActionRow] = super.mouseX;
 			menuActionData3[menuActionRow] = super.mouseY;
@@ -1658,62 +1602,7 @@ public final class Client extends RSApplet {
 
 	}
 
-	private void calcFlamesPosition() {
-		char c = '\u0100';
-		for (int j = 10; j < 117; j++) {
-			int k = (int) (Math.random() * 100D);
-			if (k < 50)
-				anIntArray828[j + (c - 2 << 7)] = 255;
-		}
-		for (int i = 0; i < 100; i++) {
-			int a = (int) (Math.random() * 124D) + 2;
-			int b = (int) (Math.random() * 128D) + 128;
-			int index = a + (b << 7);
-			anIntArray828[index] = 192;
-		}
 
-		for (int j1 = 1; j1 < c - 1; j1++) {
-			for (int l1 = 1; l1 < 127; l1++) {
-				int l2 = l1 + (j1 << 7);
-				anIntArray829[l2] = (anIntArray828[l2 - 1] + anIntArray828[l2 + 1] + anIntArray828[l2 - 128]
-						+ anIntArray828[l2 + 128]) / 4;
-			}
-
-		}
-
-		anInt1275 += 128;
-		if (anInt1275 > anIntArray1190.length) {
-			anInt1275 -= anIntArray1190.length;
-			int i2 = (int) (Math.random() * 12D);
-			randomizeBackground(flameRuneImage[i2]);
-		}
-		for (int j2 = 1; j2 < c - 1; j2++) {
-			for (int i3 = 1; i3 < 127; i3++) {
-				int k3 = i3 + (j2 << 7);
-				int i4 = anIntArray829[k3 + 128] - anIntArray1190[k3 + anInt1275 & anIntArray1190.length - 1] / 5;
-				if (i4 < 0)
-					i4 = 0;
-				anIntArray828[k3] = i4;
-			}
-
-		}
-
-		System.arraycopy(anIntArray969, 1, anIntArray969, 0, c - 1);
-
-		anIntArray969[c
-				- 1] = (int) (Math.sin(tick / 14D) * 16D + Math.sin(tick / 15D) * 14D + Math.sin(tick / 16D) * 12D);
-		if (anInt1040 > 0)
-			anInt1040 -= 4;
-		if (anInt1041 > 0)
-			anInt1041 -= 4;
-		if (anInt1040 == 0 && anInt1041 == 0) {
-			int rand = (int) (Math.random() * 2000D);
-			if (rand == 0)
-				anInt1040 = 1024;
-			if (rand == 1)
-				anInt1041 = 1024;
-		}
-	}
 
 	private void calculateEntityScreenPosition(Entity entity, int height) {
 		calculateScreenPosition(entity.x, height, entity.y);
@@ -1813,7 +1702,6 @@ public final class Client extends RSApplet {
 		walkingQueueY = null;
 		animatedPixels = null;
 		tabImageProducer = null;
-		minimapImageProducer = null;
 		gameScreenImageProducer = null;
 		chatboxImageProducer = null;
 		chatSettingImageProducer = null;
@@ -1829,7 +1717,6 @@ public final class Client extends RSApplet {
 		backVmidIP3 = null;
 		backVmidIP2_2 = null;
 		inventoryBackgroundImage = null;
-		minimapBackgroundImage = null;
 		chatBackgroundImage = null;
 		backBase1Image = null;
 		backBase2Image = null;
@@ -1845,17 +1732,9 @@ public final class Client extends RSApplet {
 		redStone3_2 = null;
 		redStone1_4 = null;
 		redStone2_4 = null;
-		minimapCompassImage = null;
 		hitMarkImage = null;
 		headIcons = null;
 		crosses = null;
-		mapDotItem = null;
-		mapDotNPC = null;
-		mapDotPlayer = null;
-		mapDotFriend = null;
-		mapDotTeam = null;
-		mapSceneImage = null;
-		mapFunctionImage = null;
 		tileRenderCount = null;
 		players = null;
 		localPlayers = null;
@@ -1874,22 +1753,12 @@ public final class Client extends RSApplet {
 		menuActionData1 = null;
 		menuActionName = null;
 		interfaceSettings = null;
-		minimapHintX = null;
-		minimapHintY = null;
-		minimapHint = null;
-		minimapImage = null;
 		friendsList = null;
 		friendsListAsLongs = null;
 		friendsWorldIds = null;
-		flameLeftBackground = null;
-		flameRightBackground = null;
-		topCentreBackgroundTile = null;
-		bottomCentreBackgroundTile = null;
-		loginBoxLeftBackgroundTile = null;
-		bottomLeftBackgroundTile = null;
-		bottomRightBackgroundTile = null;
-		middleLeftBackgroundTile = null;
-		middleRightBackgroundTile = null;
+
+		titleScreen.nullLoader();
+
 		nullLoader();
 		GameObjectDefinition.nullLoader();
 		EntityDefinition.nullLoader();
@@ -2930,87 +2799,6 @@ public final class Client extends RSApplet {
 		redrawTab = true;
 	}
 
-	private void doFlamesDrawing() {
-		char c = '\u0100';
-		if (anInt1040 > 0) {
-			for (int i = 0; i < 256; i++)
-				if (anInt1040 > 768)
-					currentFlameColours[i] = rotateFlameColour(flameColour1[i], flameColour2[i], 1024 - anInt1040);
-				else if (anInt1040 > 256)
-					currentFlameColours[i] = flameColour2[i];
-				else
-					currentFlameColours[i] = rotateFlameColour(flameColour2[i], flameColour1[i], 256 - anInt1040);
-
-		} else if (anInt1041 > 0) {
-			for (int j = 0; j < 256; j++)
-				if (anInt1041 > 768)
-					currentFlameColours[j] = rotateFlameColour(flameColour1[j], flameColour3[j], 1024 - anInt1041);
-				else if (anInt1041 > 256)
-					currentFlameColours[j] = flameColour3[j];
-				else
-					currentFlameColours[j] = rotateFlameColour(flameColour3[j], flameColour1[j], 256 - anInt1041);
-
-		} else {
-			System.arraycopy(flameColour1, 0, currentFlameColours, 0, 256);
-
-		}
-		System.arraycopy(flameLeftBackground2.pixels, 0, flameLeftBackground.pixels, 0, 33920);
-
-		int i1 = 0;
-		int j1 = 1152;
-		for (int k1 = 1; k1 < c - 1; k1++) {
-			int l1 = (anIntArray969[k1] * (c - k1)) / c;
-			int j2 = 22 + l1;
-			if (j2 < 0)
-				j2 = 0;
-			i1 += j2;
-			for (int l2 = j2; l2 < 128; l2++) {
-				int j3 = anIntArray828[i1++];
-				if (j3 != 0) {
-					int l3 = j3;
-					int j4 = 256 - j3;
-					j3 = currentFlameColours[j3];
-					int l4 = flameLeftBackground.pixels[j1];
-					flameLeftBackground.pixels[j1++] = ((j3 & 0xFF00ff) * l3 + (l4 & 0xFF00FF) * j4 & 0xFF00FF00)
-							+ ((j3 & 0xFF00) * l3 + (l4 & 0xFF00) * j4 & 0xFF0000) >> 8;
-				} else {
-					j1++;
-				}
-			}
-
-			j1 += j2;
-		}
-
-		flameLeftBackground.drawGraphics(0, super.gameGraphics, 0);
-		System.arraycopy(flameRightBackground2.pixels, 0, flameRightBackground.pixels, 0, 33920);
-
-		i1 = 0;
-		j1 = 1176;
-		for (int k2 = 1; k2 < c - 1; k2++) {
-			int i3 = (anIntArray969[k2] * (c - k2)) / c;
-			int k3 = 103 - i3;
-			j1 += i3;
-			for (int i4 = 0; i4 < k3; i4++) {
-				int k4 = anIntArray828[i1++];
-				if (k4 != 0) {
-					int i5 = k4;
-					int j5 = 256 - k4;
-					k4 = currentFlameColours[k4];
-					int k5 = flameRightBackground.pixels[j1];
-					flameRightBackground.pixels[j1++] = ((k4 & 0xFF00FF) * i5 + (k5 & 0xFF00FF) * j5 & 0xFF00FF00)
-							+ ((k4 & 0xFF00) * i5 + (k5 & 0xFF00) * j5 & 0xFF0000) >> 8;
-				} else {
-					j1++;
-				}
-			}
-
-			i1 += 128 - k3;
-			j1 += 128 - k3 - i3;
-		}
-
-		flameRightBackground.drawGraphics(0, super.gameGraphics, 637);
-	}
-
 	private boolean doWalkTo(int clickType, int objectRotation, int objectSizeY, int objectType, int startY,
 			int objectSizeX, int targetSurroundings, int endY, int startX, boolean flag, int endX) {
 		byte mapSizeX = 104;
@@ -3398,36 +3186,6 @@ public final class Client extends RSApplet {
 		Rasterizer.lineOffsets = viewportOffsets;
 	}
 
-	private void drawFlames() {
-		drawingFlames = true;
-		try {
-			long startTime = System.currentTimeMillis();
-			int currentLoop = 0;
-			int interval = 20;
-			while (currentlyDrawingFlames) {
-				flameCycle++;
-				calcFlamesPosition();
-				calcFlamesPosition();
-				doFlamesDrawing();
-				if (++currentLoop > 10) {
-					long currentTime = System.currentTimeMillis();
-					int difference = (int) (currentTime - startTime) / 10 - interval;
-					interval = 40 - difference;
-					if (interval < 5)
-						interval = 5;
-					currentLoop = 0;
-					startTime = currentTime;
-				}
-				try {
-					Thread.sleep(interval);
-				} catch (Exception _ex) {
-				}
-			}
-		} catch (Exception _ex) {
-		}
-		drawingFlames = false;
-	}
-
 	private void drawFriendsListOrWelcomeScreen(RSInterface rsInterface) {
 		int type = rsInterface.contentType;
 		if (type >= 1 && type <= 100 || type >= 701 && type <= 800) {
@@ -3682,8 +3440,8 @@ public final class Client extends RSApplet {
 	}
 
 	private void drawGameScreen() {
-		if (welcomeScreenRaised) {
-			welcomeScreenRaised = false;
+		if (titleScreen.welcomeScreenRaised) {
+			titleScreen.welcomeScreenRaised = false;
 			backLeftIP1.drawGraphics(4, super.gameGraphics, 0);
 			backLeftIP2.drawGraphics(357, super.gameGraphics, 0);
 			backRightIP1.drawGraphics(4, super.gameGraphics, 722);
@@ -3699,7 +3457,7 @@ public final class Client extends RSApplet {
 			updateChatSettings = true;
 			if (loadingStage != 2) {
 				gameScreenImageProducer.drawGraphics(4, super.gameGraphics, 4);
-				minimapImageProducer.drawGraphics(4, super.gameGraphics, 550);
+				minimap.draw(super.gameGraphics);
 			}
 		}
 		if (loadingStage == 2)
@@ -3752,8 +3510,17 @@ public final class Client extends RSApplet {
 			redrawChatbox = false;
 		}
 		if (loadingStage == 2) {
-			drawMinimap();
-			minimapImageProducer.drawGraphics(4, super.gameGraphics, 550);
+			minimap.updateImageProducer(
+					baseX, baseY,
+					localPlayerCount, players, localPlayers,
+					friendsCount, friendsListAsLongs, friendsWorldIds,
+					groundArray[plane],
+					npcCount, npcs, npcIds,
+					hintIconType, hintIconNpcId, hintIconPlayerId, hintIconX, hintIconY,
+					destinationX, destinationY, tick
+			);
+			minimap.draw(super.gameGraphics);
+			gameScreenImageProducer.initDrawingArea();
 		}
 		if (flashingSidebar != -1)
 			drawTabIcons = true;
@@ -4179,172 +3946,8 @@ public final class Client extends RSApplet {
 			super.drawLoadingText(percentage, text);
 			return;
 		}
-		loginBoxLeftBackgroundTile.initDrawingArea();
 
-		int horizontalOffset = 360;
-		int verticalOffset1 = 200;
-		int verticalOffset2 = 20;
-		fontBold.drawCentredText("RuneScape is loading - please wait...", horizontalOffset / 2,
-				verticalOffset1 / 2 - 26 - verticalOffset2, 0xFFFFFF);
-		int loadingBarHeight = verticalOffset1 / 2 - 18 - verticalOffset2;
-
-		DrawingArea.drawUnfilledRectangle(horizontalOffset / 2 - 152, 304, 34, 0x8C1111, loadingBarHeight);
-		DrawingArea.drawUnfilledRectangle(horizontalOffset / 2 - 151, 302, 32, 0, loadingBarHeight + 1);
-		DrawingArea.drawFilledRectangle(horizontalOffset / 2 - 150, loadingBarHeight + 2, percentage * 3, 30, 0x8C1111);
-		DrawingArea.drawFilledRectangle((horizontalOffset / 2 - 150) + percentage * 3, loadingBarHeight + 2,
-				300 - percentage * 3, 30, 0);
-		fontBold.drawCentredText(text, horizontalOffset / 2, (verticalOffset1 / 2 + 5) - verticalOffset2, 0xFFFFFF);
-		loginBoxLeftBackgroundTile.drawGraphics(171, super.gameGraphics, 202);
-		if (welcomeScreenRaised) {
-			welcomeScreenRaised = false;
-			if (!currentlyDrawingFlames) {
-				flameLeftBackground.drawGraphics(0, super.gameGraphics, 0);
-				flameRightBackground.drawGraphics(0, super.gameGraphics, 637);
-			}
-			topCentreBackgroundTile.drawGraphics(0, super.gameGraphics, 128);
-			bottomCentreBackgroundTile.drawGraphics(371, super.gameGraphics, 202);
-			bottomLeftBackgroundTile.drawGraphics(265, super.gameGraphics, 0);
-			bottomRightBackgroundTile.drawGraphics(265, super.gameGraphics, 562);
-			middleLeftBackgroundTile.drawGraphics(171, super.gameGraphics, 128);
-			middleRightBackgroundTile.drawGraphics(171, super.gameGraphics, 562);
-		}
-	}
-
-	private void drawLoginScreen(boolean originalLoginScreen) {
-		setupLoginScreen();
-		loginBoxLeftBackgroundTile.initDrawingArea();
-		titleBoxImage.draw(0, 0);
-		int x = 360;
-		int y = 200;
-		if (loginScreenState == 0) {
-			int _y = y / 2 + 80;
-			fontSmall.drawCentredTextWithPotentialShadow(onDemandFetcher.statusString, x / 2, _y, 0x75A9A9, true);
-			_y = y / 2 - 20;
-			fontBold.drawCentredTextWithPotentialShadow("Welcome to RuneScape", x / 2, _y, 0xFFFF00, true);
-			_y += 30;
-			int _x = x / 2 - 80;
-			int __y = y / 2 + 20;
-			titleButtonImage.draw(_x - 73, __y - 20);
-			fontBold.drawCentredTextWithPotentialShadow("New User", _x, __y + 5, 0xFFFFFF, true);
-			_x = x / 2 + 80;
-			titleButtonImage.draw(_x - 73, __y - 20);
-			fontBold.drawCentredTextWithPotentialShadow("Existing User", _x, __y + 5, 0xFFFFFF, true);
-		}
-		if (loginScreenState == 2) {
-			int _y = y / 2 - 40;
-			if (loginMessage1.length() > 0) {
-				fontBold.drawCentredTextWithPotentialShadow(loginMessage1, x / 2, _y - 15, 0xFFFF00, true);
-				fontBold.drawCentredTextWithPotentialShadow(loginMessage2, x / 2, _y, 0xFFFF00, true);
-				_y += 30;
-			} else {
-				fontBold.drawCentredTextWithPotentialShadow(loginMessage2, x / 2, _y - 7, 0xFFFF00, true);
-				_y += 30;
-			}
-			fontBold.drawTextWithPotentialShadow(
-					"Username: " + enteredUsername + ((loginScreenFocus == 0) & (tick % 40 < 20) ? "@yel@|" : ""),
-					x / 2 - 90, _y, 0xFFFFFF, true);
-			_y += 15;
-			fontBold.drawTextWithPotentialShadow(
-					"Password: " + TextClass.asterisksForString(enteredPassword)
-							+ ((loginScreenFocus == 1) & (tick % 40 < 20) ? "@yel@|" : ""),
-					x / 2 - 88, _y, 0xFFFFFF, true);
-			_y += 15;
-			if (!originalLoginScreen) {
-				int _x = x / 2 - 80;
-				int __y = y / 2 + 50;
-				titleButtonImage.draw(_x - 73, __y - 20);
-				fontBold.drawCentredTextWithPotentialShadow("Login", _x, __y + 5, 0xFFFFFF, true);
-				_x = x / 2 + 80;
-				titleButtonImage.draw(_x - 73, __y - 20);
-				fontBold.drawCentredTextWithPotentialShadow("Cancel", _x, __y + 5, 0xFFFFFF, true);
-			}
-		}
-		if (loginScreenState == 3) {
-			fontBold.drawCentredTextWithPotentialShadow("Create a free account", x / 2, y / 2 - 60, 0xFFFF00, true);
-			int _y = y / 2 - 35;
-			fontBold.drawCentredTextWithPotentialShadow("To create a new account you need to", x / 2, _y, 0xFFFFFF,
-					true);
-			_y += 15;
-			fontBold.drawCentredTextWithPotentialShadow("go back to the main RuneScape webpage", x / 2, _y, 0xFFFFFF,
-					true);
-			_y += 15;
-			fontBold.drawCentredTextWithPotentialShadow("and choose the red 'create account'", x / 2, _y, 0xFFFFFF,
-					true);
-			_y += 15;
-			fontBold.drawCentredTextWithPotentialShadow("button at the top right of that page.", x / 2, _y, 0xFFFFFF,
-					true);
-			_y += 15;
-			int _x = x / 2;
-			int __y = y / 2 + 50;
-			titleButtonImage.draw(_x - 73, __y - 20);
-			fontBold.drawCentredTextWithPotentialShadow("Cancel", _x, __y + 5, 0xFFFFFF, true);
-		}
-		loginBoxLeftBackgroundTile.drawGraphics(171, super.gameGraphics, 202);
-		if (welcomeScreenRaised) {
-			welcomeScreenRaised = false;
-			topCentreBackgroundTile.drawGraphics(0, super.gameGraphics, 128);
-			bottomCentreBackgroundTile.drawGraphics(371, super.gameGraphics, 202);
-			bottomLeftBackgroundTile.drawGraphics(265, super.gameGraphics, 0);
-			bottomRightBackgroundTile.drawGraphics(265, super.gameGraphics, 562);
-			middleLeftBackgroundTile.drawGraphics(171, super.gameGraphics, 128);
-			middleRightBackgroundTile.drawGraphics(171, super.gameGraphics, 562);
-		}
-	}
-
-	private void drawLogo() {
-		byte titleData[] = archiveTitle.decompressFile("title.dat");
-		Sprite sprite = new Sprite(titleData, this);
-		flameLeftBackground.initDrawingArea();
-		sprite.drawInverse(0, 0);
-		flameRightBackground.initDrawingArea();
-		sprite.drawInverse(-637, 0);
-		topCentreBackgroundTile.initDrawingArea();
-		sprite.drawInverse(-128, 0);
-		bottomCentreBackgroundTile.initDrawingArea();
-		sprite.drawInverse(-202, -371);
-		loginBoxLeftBackgroundTile.initDrawingArea();
-		sprite.drawInverse(-202, -171);
-		bottomLeftBackgroundTile.initDrawingArea();
-		sprite.drawInverse(0, -265);
-		bottomRightBackgroundTile.initDrawingArea();
-		sprite.drawInverse(-562, -265);
-		middleLeftBackgroundTile.initDrawingArea();
-		sprite.drawInverse(-128, -171);
-		middleRightBackgroundTile.initDrawingArea();
-		sprite.drawInverse(-562, -171);
-		int modifiedPixels[] = new int[sprite.width];
-		for (int row = 0; row < sprite.height; row++) {
-			for (int column = 0; column < sprite.width; column++)
-				modifiedPixels[column] = sprite.pixels[(sprite.width - column - 1) + sprite.width * row];
-
-			System.arraycopy(modifiedPixels, 0, sprite.pixels, sprite.width * row, sprite.width);
-
-		}
-
-		flameLeftBackground.initDrawingArea();
-		sprite.drawInverse(382, 0);
-		flameRightBackground.initDrawingArea();
-		sprite.drawInverse(-255, 0);
-		topCentreBackgroundTile.initDrawingArea();
-		sprite.drawInverse(254, 0);
-		bottomCentreBackgroundTile.initDrawingArea();
-		sprite.drawInverse(180, -371);
-		loginBoxLeftBackgroundTile.initDrawingArea();
-		sprite.drawInverse(180, -171);
-		bottomLeftBackgroundTile.initDrawingArea();
-		sprite.drawInverse(382, -265);
-		bottomRightBackgroundTile.initDrawingArea();
-		sprite.drawInverse(-180, -265);
-		middleLeftBackgroundTile.initDrawingArea();
-		sprite.drawInverse(254, -171);
-		middleRightBackgroundTile.initDrawingArea();
-		sprite.drawInverse(-180, -171);
-		sprite = new Sprite(archiveTitle, "logo", 0);
-		topCentreBackgroundTile.initDrawingArea();
-		sprite.drawImage(382 - sprite.width / 2 - 128, 18);
-		sprite = null;
-		System.gc();
-
+		titleScreen.drawLoadingText(super.gameGraphics, percentage, text);
 	}
 
 	private void drawMenu() {
@@ -4379,263 +3982,6 @@ public final class Client extends RSApplet {
 			fontBold.drawTextWithPotentialShadow(menuActionName[action], offsetX + 3, actionY, actionColour, true);
 		}
 
-	}
-
-	private void drawMinimap() {
-		minimapImageProducer.initDrawingArea();
-		if (minimapState == 2) {
-			byte backgroundPixels[] = minimapBackgroundImage.pixels;
-			int rasterPixels[] = DrawingArea.pixels;
-			int pixelCount = backgroundPixels.length;
-			for (int p = 0; p < pixelCount; p++)
-				if (backgroundPixels[p] == 0)
-					rasterPixels[p] = 0;
-
-			minimapCompassImage.rotate(33, cameraHorizontal, compassWidthMap, 256, compassHingeSize, 25, 0, 0, 33, 25);
-			gameScreenImageProducer.initDrawingArea();
-			return;
-		}
-		int angle = cameraHorizontal + minimapRotation & 0x7FF;
-		int centreX = 48 + localPlayer.x / 32;
-		int centreY = 464 - localPlayer.y / 32;
-		minimapImage.rotate(151, angle, minimapLineWidth, 256 + minimapZoom, minimapLeft, centreY, 5, 25, 146, centreX);
-		minimapCompassImage.rotate(33, cameraHorizontal, compassWidthMap, 256, compassHingeSize, 25, 0, 0, 33, 25);
-		for (int icon = 0; icon < minimapHintCount; icon++) {
-			int mapX = (minimapHintX[icon] * 4 + 2) - localPlayer.x / 32;
-			int mapY = (minimapHintY[icon] * 4 + 2) - localPlayer.y / 32;
-			markMinimap(minimapHint[icon], mapX, mapY);
-		}
-
-		for (int x = 0; x < 104; x++) {
-			for (int y = 0; y < 104; y++) {
-				DoubleEndedQueue itemStack = groundArray[plane][x][y];
-				if (itemStack != null) {
-					int mapX = (x * 4 + 2) - localPlayer.x / 32;
-					int mapY = (y * 4 + 2) - localPlayer.y / 32;
-					markMinimap(mapDotItem, mapX, mapY);
-				}
-			}
-		}
-
-		for (int n = 0; n < npcCount; n++) {
-			NPC npc = npcs[npcIds[n]];
-			if (npc != null && npc.isVisible()) {
-				EntityDefinition definition = npc.npcDefinition;
-				if (definition.childrenIDs != null)
-					definition = definition.getChildDefinition();
-				if (definition != null && definition.visibleMinimap && definition.clickable) {
-					int mapX = npc.x / 32 - localPlayer.x / 32;
-					int mapY = npc.y / 32 - localPlayer.y / 32;
-					markMinimap(mapDotNPC, mapX, mapY);
-				}
-			}
-		}
-
-		for (int p = 0; p < localPlayerCount; p++) {
-			Player player = players[localPlayers[p]];
-			if (player != null && player.isVisible()) {
-				int mapX = player.x / 32 - localPlayer.x / 32;
-				int mapY = player.y / 32 - localPlayer.y / 32;
-				boolean friend = false;
-				long nameHash = TextClass.nameToLong(player.name);
-				for (int f = 0; f < friendsCount; f++) {
-					if (nameHash != friendsListAsLongs[f] || friendsWorldIds[f] == 0)
-						continue;
-					friend = true;
-					break;
-				}
-
-				boolean team = false;
-				if (localPlayer.team != 0 && player.team != 0 && localPlayer.team == player.team)
-					team = true;
-				if (friend)
-					markMinimap(mapDotFriend, mapX, mapY);
-				else if (team)
-					markMinimap(mapDotTeam, mapX, mapY);
-				else
-					markMinimap(mapDotPlayer, mapX, mapY);
-			}
-		}
-
-		if (hintIconType != 0 && tick % 20 < 10) {
-			if (hintIconType == 1 && hintIconNpcId >= 0 && hintIconNpcId < npcs.length) {
-				NPC npc = npcs[hintIconNpcId];
-				if (npc != null) {
-					int mapX = npc.x / 32 - localPlayer.x / 32;
-					int mapY = npc.y / 32 - localPlayer.y / 32;
-					drawMinimapTarget(mapMarker, mapY, mapX);
-				}
-			}
-			if (hintIconType == 2) {
-				int mapX = ((hintIconX - baseX) * 4 + 2) - localPlayer.x / 32;
-				int mapY = ((hintIconY - baseY) * 4 + 2) - localPlayer.y / 32;
-				drawMinimapTarget(mapMarker, mapY, mapX);
-			}
-			if (hintIconType == 10 && hintIconPlayerId >= 0 && hintIconPlayerId < players.length) {
-				Player player = players[hintIconPlayerId];
-				if (player != null) {
-					int mapX = player.x / 32 - localPlayer.x / 32;
-					int mapY = player.y / 32 - localPlayer.y / 32;
-					drawMinimapTarget(mapMarker, mapY, mapX);
-				}
-			}
-		}
-		if (destinationX != 0) {
-			int mapX = (destinationX * 4 + 2) - localPlayer.x / 32;
-			int mapY = (destinationY * 4 + 2) - localPlayer.y / 32;
-			markMinimap(mapFlag, mapX, mapY);
-		}
-		DrawingArea.drawFilledRectangle(97, 78, 3, 3, 0xFFFFFF);
-		gameScreenImageProducer.initDrawingArea();
-	}
-
-	private void drawMinimapScene(int y, int lineColour, int x, int interfactiveColour, int z) {
-		int uid = worldController.getWallObjectHash(x, y, z);
-		if (uid != 0) {
-			// Walls
-
-			int config = worldController.getConfig(uid, x, y, z);
-			int direction = config >> 6 & 3;
-			int type = config & 0x1F;
-			int colour = lineColour;
-			if (uid > 0)
-				colour = interfactiveColour;
-			int pixels[] = minimapImage.pixels;
-			int pixel = 24624 + x * 4 + (103 - y) * 512 * 4;
-			int objectId = uid >> 14 & 0x7FFF;
-			GameObjectDefinition definition = GameObjectDefinition.getDefinition(objectId);
-			if (definition.mapScene != -1) {
-				IndexedImage background = mapSceneImage[definition.mapScene];
-				if (background != null) {
-					int _x = (definition.sizeX * 4 - background.width) / 2;
-					int _y = (definition.sizeY * 4 - background.height) / 2;
-					background.draw(48 + x * 4 + _x, 48 + (104 - y - definition.sizeY) * 4 + _y);
-				}
-			} else {
-				if (type == 0 || type == 2)
-					if (direction == 0) {
-						pixels[pixel] = colour;
-						pixels[pixel + 512] = colour;
-						pixels[pixel + 1024] = colour;
-						pixels[pixel + 1536] = colour;
-					} else if (direction == 1) {
-						pixels[pixel] = colour;
-						pixels[pixel + 1] = colour;
-						pixels[pixel + 2] = colour;
-						pixels[pixel + 3] = colour;
-					} else if (direction == 2) {
-						pixels[pixel + 3] = colour;
-						pixels[pixel + 3 + 512] = colour;
-						pixels[pixel + 3 + 1024] = colour;
-						pixels[pixel + 3 + 1536] = colour;
-					} else if (direction == 3) {
-						pixels[pixel + 1536] = colour;
-						pixels[pixel + 1536 + 1] = colour;
-						pixels[pixel + 1536 + 2] = colour;
-						pixels[pixel + 1536 + 3] = colour;
-					}
-				if (type == 3)
-					if (direction == 0)
-						pixels[pixel] = colour;
-					else if (direction == 1)
-						pixels[pixel + 3] = colour;
-					else if (direction == 2)
-						pixels[pixel + 3 + 1536] = colour;
-					else if (direction == 3)
-						pixels[pixel + 1536] = colour;
-				if (type == 2)
-					if (direction == 3) {
-						pixels[pixel] = colour;
-						pixels[pixel + 512] = colour;
-						pixels[pixel + 1024] = colour;
-						pixels[pixel + 1536] = colour;
-					} else if (direction == 0) {
-						pixels[pixel] = colour;
-						pixels[pixel + 1] = colour;
-						pixels[pixel + 2] = colour;
-						pixels[pixel + 3] = colour;
-					} else if (direction == 1) {
-						pixels[pixel + 3] = colour;
-						pixels[pixel + 3 + 512] = colour;
-						pixels[pixel + 3 + 1024] = colour;
-						pixels[pixel + 3 + 1536] = colour;
-					} else if (direction == 2) {
-						pixels[pixel + 1536] = colour;
-						pixels[pixel + 1536 + 1] = colour;
-						pixels[pixel + 1536 + 2] = colour;
-						pixels[pixel + 1536 + 3] = colour;
-					}
-			}
-		}
-
-		uid = worldController.getInteractibleObjectHash(x, y, z);
-		if (uid != 0) {
-			int config = worldController.getConfig(uid, x, y, z);
-			int direction = config >> 6 & 3;
-			int type = config & 0x1F;
-			int objectId = uid >> 14 & 0x7FFF;
-			GameObjectDefinition definition = GameObjectDefinition.getDefinition(objectId);
-			if (definition.mapScene != -1) {
-				IndexedImage background = mapSceneImage[definition.mapScene];
-				if (background != null) {
-					int _x = (definition.sizeX * 4 - background.width) / 2;
-					int _y = (definition.sizeY * 4 - background.height) / 2;
-					background.draw(48 + x * 4 + _x, 48 + (104 - y - definition.sizeY) * 4 + _y);
-				}
-			} else if (type == 9) {
-				// Diagonal walls and doors
-
-				int colour = 0xEEEEEE;
-				if (uid > 0)
-					colour = 0xEE0000;
-				int pixels[] = minimapImage.pixels;
-				int pixel = 24624 + x * 4 + (103 - y) * 512 * 4;
-				if (direction == 0 || direction == 2) {
-					pixels[pixel + 1536] = colour;
-					pixels[pixel + 1024 + 1] = colour;
-					pixels[pixel + 512 + 2] = colour;
-					pixels[pixel + 3] = colour;
-				} else {
-					pixels[pixel] = colour;
-					pixels[pixel + 512 + 1] = colour;
-					pixels[pixel + 1024 + 2] = colour;
-					pixels[pixel + 1536 + 3] = colour;
-				}
-			}
-		}
-
-		uid = worldController.getGroundDecorationHash(x, y, z);
-		if (uid != 0) {
-			int objectId = uid >> 14 & 0x7FFF;
-			GameObjectDefinition definition = GameObjectDefinition.getDefinition(objectId);
-			if (definition.mapScene != -1) {
-				IndexedImage background = mapSceneImage[definition.mapScene];
-				if (background != null) {
-					int _x = (definition.sizeX * 4 - background.width) / 2;
-					int _y = (definition.sizeY * 4 - background.height) / 2;
-					background.draw(48 + x * 4 + _x, 48 + (104 - y - definition.sizeY) * 4 + _y);
-				}
-			}
-		}
-	}
-
-	private void drawMinimapTarget(Sprite sprite, int y, int x) {
-		int l = x * x + y * y;
-		if (l > 4225 && l < 0x15F90) {
-			int angle = cameraHorizontal + minimapRotation & 0x7FF;
-			int sine = Model.SINE[angle];
-			int cosine = Model.COSINE[angle];
-			sine = (sine * 256) / (minimapZoom + 256);
-			cosine = (cosine * 256) / (minimapZoom + 256);
-			int l1 = y * sine + x * cosine >> 16;
-			int i2 = y * cosine - x * sine >> 16;
-			double d = Math.atan2(l1, i2);
-			int randomX = (int) (Math.sin(d) * 63D);
-			int randomY = (int) (Math.cos(d) * 57D);
-			minimapEdgeImage.rotate(88 + randomX, 63 - randomY, d);
-		} else {
-			markMinimap(sprite, x, y);
-		}
 	}
 
 	private void drawSplitPrivateChat() {
@@ -4736,7 +4082,7 @@ public final class Client extends RSApplet {
 		fontPlain.drawCentredText("Please wait - attempting to reestablish", 257, 159, 0);
 		fontPlain.drawCentredText("Please wait - attempting to reestablish", 256, 158, 0xFFFFFF);
 		gameScreenImageProducer.drawGraphics(4, super.gameGraphics, 4);
-		minimapState = 0;
+		minimap.state = 0;
 		destinationX = 0;
 		RSSocket rsSocket = socket;
 		loggedIn = false;
@@ -5312,7 +4658,7 @@ public final class Client extends RSApplet {
 				return true;
 			}
 			if (packetOpcode == 99) {
-				minimapState = inStream.getUnsignedByte();
+				minimap.state = inStream.getUnsignedByte();
 				packetOpcode = -1;
 				return true;
 			}
@@ -5989,7 +5335,7 @@ public final class Client extends RSApplet {
 			if (setting == 4)
 				Rasterizer.calculatePalette(0.59999999999999998D);
 			ItemDefinition.spriteCache.clear();
-			welcomeScreenRaised = true;
+			titleScreen.welcomeScreenRaised = true;
 		}
 		if (opcode == 3) {
 			// Music volume
@@ -6230,7 +5576,9 @@ public final class Client extends RSApplet {
 		}
 		if (loadingStage == 2 && plane != lastRegionId) {
 			lastRegionId = plane;
-			renderMinimap(plane);
+			minimap.render(worldController, plane, tileFlags, currentCollisionMap);
+
+			gameScreenImageProducer.initDrawingArea();
 		}
 	}
 
@@ -6432,78 +5780,10 @@ public final class Client extends RSApplet {
 	}
 
 	private void loadTitleScreen() {
-		titleBoxImage = new IndexedImage(archiveTitle, "titlebox", 0);
-		titleButtonImage = new IndexedImage(archiveTitle, "titlebutton", 0);
-		flameRuneImage = new IndexedImage[12];
-		int icon = 0;
-		try {
-			icon = Integer.parseInt(getParameter("fl_icon"));
-		} catch (Exception _ex) {
-		}
-		if (icon == 0) {
-			for (int r = 0; r < 12; r++)
-				flameRuneImage[r] = new IndexedImage(archiveTitle, "runes", r);
-
-		} else {
-			for (int r = 0; r < 12; r++)
-				flameRuneImage[r] = new IndexedImage(archiveTitle, "runes", 12 + (r & 3));
-
-		}
-		flameLeftBackground2 = new Sprite(128, 265);
-		flameRightBackground2 = new Sprite(128, 265);
-		System.arraycopy(flameLeftBackground.pixels, 0, flameLeftBackground2.pixels, 0, 33920);
-
-		System.arraycopy(flameRightBackground.pixels, 0, flameRightBackground2.pixels, 0, 33920);
-
-		flameColour1 = new int[256];
-		for (int c = 0; c < 64; c++)
-			flameColour1[c] = c * 0x40000;
-
-		for (int c = 0; c < 64; c++)
-			flameColour1[c + 64] = 0xFF0000 + 1024 * c;
-
-		for (int c = 0; c < 64; c++)
-			flameColour1[c + 128] = 0xFFFF00 + 4 * c;
-
-		for (int c = 0; c < 64; c++)
-			flameColour1[c + 192] = 0xFFFFFF;
-
-		flameColour2 = new int[256];
-		for (int c = 0; c < 64; c++)
-			flameColour2[c] = c * 1024;
-
-		for (int c = 0; c < 64; c++)
-			flameColour2[c + 64] = 0x00FF00 + 4 * c;
-
-		for (int c = 0; c < 64; c++)
-			flameColour2[c + 128] = 0x00FFFF + 0x40000 * c;
-
-		for (int c = 0; c < 64; c++)
-			flameColour2[c + 192] = 0xFFFFFF;
-
-		flameColour3 = new int[256];
-		for (int c = 0; c < 64; c++)
-			flameColour3[c] = c * 4;
-
-		for (int c = 0; c < 64; c++)
-			flameColour3[c + 64] = 255 + 0x40000 * c;
-
-		for (int c = 0; c < 64; c++)
-			flameColour3[c + 128] = 0xFF00ff + 1024 * c;
-
-		for (int c = 0; c < 64; c++)
-			flameColour3[c + 192] = 0xFFFFFF;
-
-		currentFlameColours = new int[256];
-		anIntArray1190 = new int[32768];
-		anIntArray1191 = new int[32768];
-		randomizeBackground(null);
-		anIntArray828 = new int[32768];
-		anIntArray829 = new int[32768];
 		drawLoadingText(10, "Connecting to fileserver");
-		if (!currentlyDrawingFlames) {
+		if (!titleScreen.currentlyDrawingFlames) {
 			drawFlames = true;
-			currentlyDrawingFlames = true;
+			titleScreen.currentlyDrawingFlames = true;
 			startRunnable(this, 2);
 		}
 	}
@@ -6514,7 +5794,8 @@ public final class Client extends RSApplet {
 			if (!recoveredConnection) {
 				loginMessage1 = "";
 				loginMessage2 = "Connecting to server...";
-				drawLoginScreen(true);
+				setupLoginScreen();
+				titleScreen.drawLoginScreen(super.gameGraphics, true, loginScreenState, onDemandFetcher.statusString, loginMessage1, loginMessage2, enteredUsername, enteredPassword, tick, loginScreenFocus);
 			}
 			socket = new RSSocket(this, openSocket(43594 + portOffset));
 			long nameLong = TextClass.nameToLong(playerUsername);
@@ -6609,10 +5890,10 @@ public final class Client extends RSApplet {
 				cameraRandomisationH = (int) (Math.random() * 100D) - 50;
 				cameraRandomisationV = (int) (Math.random() * 110D) - 55;
 				cameraRandomisationA = (int) (Math.random() * 80D) - 40;
-				minimapRotation = (int) (Math.random() * 120D) - 60;
-				minimapZoom = (int) (Math.random() * 30D) - 20;
+				minimap.rotation = (int) (Math.random() * 120D) - 60;
+				minimap.zoom = (int) (Math.random() * 30D) - 20;
 				cameraHorizontal = (int) (Math.random() * 20D) - 10 & 0x7FF;
-				minimapState = 0;
+				minimap.state = 0;
 				lastRegionId = -1;
 				destinationX = 0;
 				destinationY = 0;
@@ -6762,7 +6043,8 @@ public final class Client extends RSApplet {
 				for (int s = socket.read(); s >= 0; s--) {
 					loginMessage1 = "You have only just left another world";
 					loginMessage2 = "Your profile will be transferred in: " + s + " seconds";
-					drawLoginScreen(true);
+					setupLoginScreen();
+					titleScreen.drawLoginScreen(super.gameGraphics, true, loginScreenState, onDemandFetcher.statusString, loginMessage1, loginMessage2, enteredUsername, enteredPassword, tick, loginScreenFocus);
 					try {
 						Thread.sleep(1000L);
 					} catch (Exception _ex) {
@@ -7099,17 +6381,17 @@ public final class Client extends RSApplet {
 			minimapRandomisationCounter = 0;
 			int type = (int) (Math.random() * 8D);
 			if ((type & 1) == 1)
-				minimapRotation += randomisationMinimapRotation;
+				minimap.rotation += randomisationMinimapRotation;
 			if ((type & 2) == 2)
-				minimapZoom += randomisationMinimapZoom;
+				minimap.zoom += randomisationMinimapZoom;
 		}
-		if (minimapRotation < -60)
+		if (minimap.rotation < -60)
 			randomisationMinimapRotation = 2;
-		if (minimapRotation > 60)
+		if (minimap.rotation > 60)
 			randomisationMinimapRotation = -2;
-		if (minimapZoom < -20)
+		if (minimap.zoom < -20)
 			randomisationMinimapZoom = 1;
-		if (minimapZoom > 10)
+		if (minimap.zoom > 10)
 			randomisationMinimapZoom = -1;
 		idleCounter++;
 		if (idleCounter > 50)
@@ -7362,28 +6644,6 @@ public final class Client extends RSApplet {
 		} while (true);
 	}
 
-	private void markMinimap(Sprite sprite, int x, int y) {
-		int angle = cameraHorizontal + minimapRotation & 0x7FF;
-		int l = x * x + y * y;
-		if (l > 6400)
-			return;
-		int sineAngle = Model.SINE[angle];
-		int cosineAngle = Model.COSINE[angle];
-		sineAngle = (sineAngle * 256) / (minimapZoom + 256);
-		cosineAngle = (cosineAngle * 256) / (minimapZoom + 256);
-		int spriteOffsetX = y * sineAngle + x * cosineAngle >> 16;
-		int spriteOffsetY = y * cosineAngle - x * sineAngle >> 16;
-		if (l > 2500) {
-			sprite.method354(minimapBackgroundImage, 83 - spriteOffsetY - sprite.maxHeight / 2 - 4,
-					((94 + spriteOffsetX) - sprite.maxWidth / 2) + 4);
-		} else {
-			sprite.drawImage(((94 + spriteOffsetX) - sprite.maxWidth / 2) + 4,
-					83 - spriteOffsetY - sprite.maxHeight / 2 - 4);
-		}
-
-		minimapImageProducer.initDrawingArea();
-	}
-
 	private boolean menuRowIsAddFriend(int row) {
 		if (row < 0)
 			return false;
@@ -7394,27 +6654,14 @@ public final class Client extends RSApplet {
 	}
 
 	private void nullLoader() {
-		currentlyDrawingFlames = false;
-		while (drawingFlames) {
-			currentlyDrawingFlames = false;
+		titleScreen.currentlyDrawingFlames = false;
+		while (titleScreen.drawingFlames) {
+			titleScreen.currentlyDrawingFlames = false;
 			try {
 				Thread.sleep(50L);
 			} catch (Exception _ex) {
 			}
 		}
-		titleBoxImage = null;
-		titleButtonImage = null;
-		flameRuneImage = null;
-		currentFlameColours = null;
-		flameColour1 = null;
-		flameColour2 = null;
-		flameColour3 = null;
-		anIntArray1190 = null;
-		anIntArray1191 = null;
-		anIntArray828 = null;
-		anIntArray829 = null;
-		flameLeftBackground2 = null;
-		flameRightBackground2 = null;
 	}
 
 	private DataInputStream openJagGrabInputStream(String s) throws IOException {
@@ -7842,7 +7089,6 @@ public final class Client extends RSApplet {
 
 	private void printDebug() {
 		System.out.println("============");
-		System.out.println("flame-cycle:" + flameCycle);
 		if (onDemandFetcher != null)
 			System.out.println("Od-cycle:" + onDemandFetcher.onDemandCycle);
 		System.out.println("loop-cycle:" + tick);
@@ -7909,9 +7155,10 @@ public final class Client extends RSApplet {
 			return;
 		}
 		drawCycle++;
-		if (!loggedIn)
-			drawLoginScreen(false);
-		else
+		if (!loggedIn) {
+			setupLoginScreen();
+			titleScreen.drawLoginScreen(super.gameGraphics, false, loginScreenState, onDemandFetcher.statusString, loginMessage1, loginMessage2, enteredUsername, enteredPassword, tick, loginScreenFocus);
+		} else
 			drawGameScreen();
 		anInt1213 = 0;
 	}
@@ -8185,7 +7432,7 @@ public final class Client extends RSApplet {
 	}
 
 	private void processMinimapClick() {
-		if (minimapState != 0)
+		if (minimap.state != 0)
 			return;
 		if (super.clickType == 1) {
 			int i = super.clickX - 25 - 550;
@@ -8193,11 +7440,11 @@ public final class Client extends RSApplet {
 			if (i >= 0 && j >= 0 && i < 146 && j < 151) {
 				i -= 73;
 				j -= 75;
-				int k = cameraHorizontal + minimapRotation & 0x7FF;
+				int k = cameraHorizontal + minimap.rotation & 0x7FF;
 				int sine = Rasterizer.SINE[k];
 				int cosine = Rasterizer.COSINE[k];
-				sine = sine * (minimapZoom + 256) >> 8;
-				cosine = cosine * (minimapZoom + 256) >> 8;
+				sine = sine * (minimap.zoom + 256) >> 8;
+				cosine = cosine * (minimap.zoom + 256) >> 8;
 				int k1 = j * sine + i * cosine >> 11;
 				int l1 = j * cosine - i * sine >> 11;
 				int i2 = localPlayer.x + k1 >> 7;
@@ -8209,8 +7456,8 @@ public final class Client extends RSApplet {
 					stream.put(j);
 					stream.putShort(cameraHorizontal);
 					stream.put(57);
-					stream.put(minimapRotation);
-					stream.put(minimapZoom);
+					stream.put(minimap.rotation);
+					stream.put(minimap.zoom);
 					stream.put(89);
 					stream.putShort(localPlayer.x);
 					stream.putShort(localPlayer.y);
@@ -8652,50 +7899,9 @@ public final class Client extends RSApplet {
 		chatMessages[0] = message;
 	}
 
-	private void randomizeBackground(IndexedImage background) {
-		int j = 256;
-		for (int k = 0; k < anIntArray1190.length; k++)
-			anIntArray1190[k] = 0;
-
-		for (int l = 0; l < 5000; l++) {
-			int i1 = (int) (Math.random() * 128D * j);
-			anIntArray1190[i1] = (int) (Math.random() * 256D);
-		}
-
-		for (int j1 = 0; j1 < 20; j1++) {
-			for (int k1 = 1; k1 < j - 1; k1++) {
-				for (int i2 = 1; i2 < 127; i2++) {
-					int k2 = i2 + (k1 << 7);
-					anIntArray1191[k2] = (anIntArray1190[k2 - 1] + anIntArray1190[k2 + 1] + anIntArray1190[k2 - 128]
-							+ anIntArray1190[k2 + 128]) / 4;
-				}
-
-			}
-
-			int ai[] = anIntArray1190;
-			anIntArray1190 = anIntArray1191;
-			anIntArray1191 = ai;
-		}
-
-		if (background != null) {
-			int l1 = 0;
-			for (int row = 0; row < background.height; row++) {
-				for (int column = 0; column < background.width; column++)
-					if (background.pixels[l1++] != 0) {
-						int i3 = column + 16 + background.drawOffsetX;
-						int j3 = row + 16 + background.drawOffsetY;
-						int k3 = i3 + (j3 << 7);
-						anIntArray1190[k3] = 0;
-					}
-
-			}
-
-		}
-	}
-
 	@Override
 	public void redraw() {
-		welcomeScreenRaised = true;
+		titleScreen.welcomeScreenRaised = true;
 	}
 
 	private void renderChatInterface(int x, int y, int height, int scrollPosition, int scrollMaximum) {
@@ -8785,86 +7991,6 @@ public final class Client extends RSApplet {
 		cameraPositionY = z;
 		cameraVerticalRotation = curveY;
 		cameraHorizontalRotation = curveZ;
-	}
-
-	private void renderMinimap(int z) {
-		int pixels[] = minimapImage.pixels;
-		int pixelCount = pixels.length;
-		for (int pixel = 0; pixel < pixelCount; pixel++)
-			pixels[pixel] = 0;
-
-		for (int y = 1; y < 103; y++) {
-			int pixel = 24628 + (103 - y) * 512 * 4;
-			for (int x = 1; x < 103; x++) {
-				if ((tileFlags[z][x][y] & 0x18) == 0)
-					worldController.drawMinimapTile(x, y, z, pixels, pixel);
-				if (z < 3 && (tileFlags[z + 1][x][y] & 8) != 0)
-					worldController.drawMinimapTile(x, y, z + 1, pixels, pixel);
-				pixel += 4;
-			}
-
-		}
-
-		int primaryColour = ((238 + (int) (Math.random() * 20D)) - 10 << 16)
-				+ ((238 + (int) (Math.random() * 20D)) - 10 << 8) + ((238 + (int) (Math.random() * 20D)) - 10);
-		int secondaryColour = (238 + (int) (Math.random() * 20D)) - 10 << 16;
-		minimapImage.initDrawingArea();
-		for (int y = 1; y < 103; y++) {
-			for (int x = 1; x < 103; x++) {
-				if ((tileFlags[z][x][y] & 0x18) == 0)
-					drawMinimapScene(y, primaryColour, x, secondaryColour, z);
-				if (z < 3 && (tileFlags[z + 1][x][y] & 8) != 0)
-					drawMinimapScene(y, primaryColour, x, secondaryColour, z + 1);
-			}
-
-		}
-
-		gameScreenImageProducer.initDrawingArea();
-		minimapHintCount = 0;
-		for (int x = 0; x < 104; x++) {
-			for (int y = 0; y < 104; y++) {
-				int hash = worldController.getGroundDecorationHash(x, y, plane);
-				if (hash != 0) {
-					hash = hash >> 14 & 0x7FFF;
-					int icon = GameObjectDefinition.getDefinition(hash).icon;
-
-					if (icon >= 0) {
-						int drawPointX = x;
-						int drawPointY = y;
-
-						// All the shop icons, it seems
-						if (icon != 22 && icon != 29 && icon != 34 && icon != 36 && icon != 46 && icon != 47
-								&& icon != 48) {
-							byte regionWidth = 104;
-							byte regionHeight = 104;
-							int clippingFlags[][] = currentCollisionMap[plane].clippingData;
-							for (int off = 0; off < 10; off++) {
-								int randomDirection = (int) (Math.random() * 4D);
-								if (randomDirection == 0 && drawPointX > 0 && drawPointX > x - 3
-										&& (clippingFlags[drawPointX - 1][drawPointY] & 0x1280108) == 0)
-									drawPointX--;
-								if (randomDirection == 1 && drawPointX < regionWidth - 1 && drawPointX < x + 3
-										&& (clippingFlags[drawPointX + 1][drawPointY] & 0x1280180) == 0)
-									drawPointX++;
-								if (randomDirection == 2 && drawPointY > 0 && drawPointY > y - 3
-										&& (clippingFlags[drawPointX][drawPointY - 1] & 0x1280102) == 0)
-									drawPointY--;
-								if (randomDirection == 3 && drawPointY < regionHeight - 1 && drawPointY < y + 3
-										&& (clippingFlags[drawPointX][drawPointY + 1] & 0x1280120) == 0)
-									drawPointY++;
-							}
-
-						}
-						minimapHint[minimapHintCount] = mapFunctionImage[icon];
-						minimapHintX[minimapHintCount] = drawPointX;
-						minimapHintY[minimapHintCount] = drawPointY;
-						minimapHintCount++;
-					}
-				}
-			}
-
-		}
-
 	}
 
 	private void renderNPCs(boolean flag) {
@@ -9092,39 +8218,22 @@ public final class Client extends RSApplet {
 	}
 
 	private void setupLoginScreen() {
-		if (topCentreBackgroundTile != null)
+		if (titleScreen.imageProducersInitialised())
 			return;
 		super.fullGameScreen = null;
 		chatboxImageProducer = null;
-		minimapImageProducer = null;
 		tabImageProducer = null;
 		gameScreenImageProducer = null;
 		chatSettingImageProducer = null;
 		bottomSideIconImageProducer = null;
 		topSideIconImageProducer = null;
-		flameLeftBackground = new RSImageProducer(128, 265, getGameComponent());
-		DrawingArea.clear();
-		flameRightBackground = new RSImageProducer(128, 265, getGameComponent());
-		DrawingArea.clear();
-		topCentreBackgroundTile = new RSImageProducer(509, 171, getGameComponent());
-		DrawingArea.clear();
-		bottomCentreBackgroundTile = new RSImageProducer(360, 132, getGameComponent());
-		DrawingArea.clear();
-		loginBoxLeftBackgroundTile = new RSImageProducer(360, 200, getGameComponent());
-		DrawingArea.clear();
-		bottomLeftBackgroundTile = new RSImageProducer(202, 238, getGameComponent());
-		DrawingArea.clear();
-		bottomRightBackgroundTile = new RSImageProducer(203, 238, getGameComponent());
-		DrawingArea.clear();
-		middleLeftBackgroundTile = new RSImageProducer(74, 94, getGameComponent());
-		DrawingArea.clear();
-		middleRightBackgroundTile = new RSImageProducer(75, 94, getGameComponent());
-		DrawingArea.clear();
+
+		titleScreen.setupImageProducers(getGameComponent());
+
 		if (archiveTitle != null) {
-			drawLogo();
 			loadTitleScreen();
 		}
-		welcomeScreenRaised = true;
+		titleScreen.welcomeScreenRaised = true;
 	}
 
 	private void setupGameplayScreen() {
@@ -9132,26 +8241,16 @@ public final class Client extends RSApplet {
 			return;
 		nullLoader();
 		super.fullGameScreen = null;
-		topCentreBackgroundTile = null;
-		bottomCentreBackgroundTile = null;
-		loginBoxLeftBackgroundTile = null;
-		flameLeftBackground = null;
-		flameRightBackground = null;
-		bottomLeftBackgroundTile = null;
-		bottomRightBackgroundTile = null;
-		middleLeftBackgroundTile = null;
-		middleRightBackgroundTile = null;
+		titleScreen.clearImageProducers();
 		chatboxImageProducer = new RSImageProducer(479, 96, getGameComponent());
-		minimapImageProducer = new RSImageProducer(172, 156, getGameComponent());
-		DrawingArea.clear();
-		minimapBackgroundImage.draw(0, 0);
+		minimap.setupImageProducer(getGameComponent());
 		tabImageProducer = new RSImageProducer(190, 261, getGameComponent());
 		gameScreenImageProducer = new RSImageProducer(512, 334, getGameComponent());
 		DrawingArea.clear();
 		chatSettingImageProducer = new RSImageProducer(496, 50, getGameComponent());
 		bottomSideIconImageProducer = new RSImageProducer(269, 37, getGameComponent());
 		topSideIconImageProducer = new RSImageProducer(249, 45, getGameComponent());
-		welcomeScreenRaised = true;
+		titleScreen.welcomeScreenRaised = true;
 	}
 
 	private void resetModelCaches() {
@@ -9164,16 +8263,10 @@ public final class Client extends RSApplet {
 		SpotAnimation.modelCache.clear();
 	}
 
-	private int rotateFlameColour(int r, int g, int b) {
-		int alpha = 256 - b;
-		return ((r & 0xFF00ff) * alpha + (g & 0xFF00ff) * b & 0xFF00FF00)
-				+ ((r & 0xFF00) * alpha + (g & 0xFF00) * b & 0xFF0000) >> 8;
-	}
-
 	@Override
 	public void run() {
 		if (drawFlames) {
-			drawFlames();
+			titleScreen.drawFlames2(super.gameGraphics, tick);
 		} else {
 			super.run();
 		}
@@ -9403,7 +8496,7 @@ public final class Client extends RSApplet {
 		g.fillRect(0, 0, 765, 503);
 		setFrameRate(1);
 		if (loadingError) {
-			currentlyDrawingFlames = false;
+			titleScreen.currentlyDrawingFlames = false;
 			g.setFont(new Font("Helvetica", 1, 16));
 			g.setColor(Color.yellow);
 			int currentPositionY = 35;
@@ -9425,7 +8518,7 @@ public final class Client extends RSApplet {
 			g.drawString("5: Try selecting a different version of Java from the play-game menu", 30, currentPositionY);
 		}
 		if (genericLoadingError) {
-			currentlyDrawingFlames = false;
+			titleScreen.currentlyDrawingFlames = false;
 			g.setFont(new Font("Helvetica", 1, 20));
 			g.setColor(Color.white);
 			g.drawString("Error - unable to load game!", 50, 50);
@@ -9433,7 +8526,7 @@ public final class Client extends RSApplet {
 			g.drawString("http://www.runescape.com", 50, 150);
 		}
 		if (rsAlreadyLoaded) {
-			currentlyDrawingFlames = false;
+			titleScreen.currentlyDrawingFlames = false;
 			g.setColor(Color.yellow);
 			int currentPositionY = 35;
 			g.drawString("Error a copy of RuneScape already appears to be loaded", 30, currentPositionY);
@@ -9575,7 +8668,9 @@ public final class Client extends RSApplet {
 			fontPlain = new GameFont("p12_full", archiveTitle, false);
 			fontBold = new GameFont("b12_full", archiveTitle, false);
 			GameFont fontFancy = new GameFont("q8_full", archiveTitle, true);
-			drawLogo();
+
+			titleScreen.load(this, archiveTitle, fontSmall, fontPlain, fontBold);
+
 			loadTitleScreen();
 			Archive archiveConfig = requestArchive(2, "config", "config", expectedCRCs[2], 30);
 			Archive archiveInterface = requestArchive(3, "interface", "interface", expectedCRCs[3], 35);
@@ -9589,7 +8684,6 @@ public final class Client extends RSApplet {
 			for (int z = 0; z < 4; z++)
 				currentCollisionMap[z] = new CollisionMap();
 
-			minimapImage = new Sprite(512, 512);
 			Archive archiveVersions = requestArchive(5, "update list", "versionlist", expectedCRCs[5], 60);
 			drawLoadingText(60, "Connecting to update server");
 			onDemandFetcher = new OnDemandFetcher();
@@ -9715,28 +8809,15 @@ public final class Client extends RSApplet {
 			drawLoadingText(80, "Unpacking media");
 			inventoryBackgroundImage = new IndexedImage(archiveMedia, "invback", 0);
 			chatBackgroundImage = new IndexedImage(archiveMedia, "chatback", 0);
-			minimapBackgroundImage = new IndexedImage(archiveMedia, "mapback", 0);
+
+			minimap.load(archiveMedia);
+
 			backBase1Image = new IndexedImage(archiveMedia, "backbase1", 0);
 			backBase2Image = new IndexedImage(archiveMedia, "backbase2", 0);
 			backHmid1Image = new IndexedImage(archiveMedia, "backhmid1", 0);
 			for (int icon = 0; icon < 13; icon++)
 				sideIconImage[icon] = new IndexedImage(archiveMedia, "sideicons", icon);
 
-			minimapCompassImage = new Sprite(archiveMedia, "compass", 0);
-			minimapEdgeImage = new Sprite(archiveMedia, "mapedge", 0);
-			minimapEdgeImage.trim();
-			try {
-				for (int i = 0; i < 100; i++)
-					mapSceneImage[i] = new IndexedImage(archiveMedia, "mapscene", i);
-
-			} catch (Exception _ex) {
-			}
-			try {
-				for (int i = 0; i < 100; i++)
-					mapFunctionImage[i] = new Sprite(archiveMedia, "mapfunction", i);
-
-			} catch (Exception _ex) {
-			}
 			try {
 				for (int i = 0; i < 20; i++) {
 					hitMarkImage[i] = new Sprite(archiveMedia, "hitmarks", i);
@@ -9751,16 +8832,9 @@ public final class Client extends RSApplet {
 			} catch (Exception _ex) {
 				_ex.printStackTrace();
 			}
-			mapFlag = new Sprite(archiveMedia, "mapmarker", 0);
-			mapMarker = new Sprite(archiveMedia, "mapmarker", 1);
 			for (int i = 0; i < 8; i++)
 				crosses[i] = new Sprite(archiveMedia, "cross", i);
 
-			mapDotItem = new Sprite(archiveMedia, "mapdots", 0);
-			mapDotNPC = new Sprite(archiveMedia, "mapdots", 1);
-			mapDotPlayer = new Sprite(archiveMedia, "mapdots", 2);
-			mapDotFriend = new Sprite(archiveMedia, "mapdots", 3);
-			mapDotTeam = new Sprite(archiveMedia, "mapdots", 4);
 			scrollBarUp = new IndexedImage(archiveMedia, "scrollbar", 0);
 			scrollBarDown = new IndexedImage(archiveMedia, "scrollbar", 1);
 			redStone1 = new IndexedImage(archiveMedia, "redstone1", 0);
@@ -9812,18 +8886,6 @@ public final class Client extends RSApplet {
 			sprite = new Sprite(archiveMedia, "backhmid2", 0);
 			backVmidIP2_2 = new RSImageProducer(sprite.width, sprite.height, getGameComponent());
 			sprite.drawInverse(0, 0);
-			int randomRed = (int) (Math.random() * 21D) - 10;
-			int randomGreen = (int) (Math.random() * 21D) - 10;
-			int randomBlue = (int) (Math.random() * 21D) - 10;
-			int randomColour = (int) (Math.random() * 41D) - 20;
-			for (int i = 0; i < 100; i++) {
-				if (mapFunctionImage[i] != null)
-					mapFunctionImage[i].adjustRGB(randomRed + randomColour, randomGreen + randomColour,
-							randomBlue + randomColour);
-				if (mapSceneImage[i] != null)
-					mapSceneImage[i].mixPalette(randomRed + randomColour, randomGreen + randomColour,
-							randomBlue + randomColour);
-			}
 
 			drawLoadingText(83, "Unpacking textures");
 			Rasterizer.unpackTextures(archiveTextures);
@@ -9850,44 +8912,6 @@ public final class Client extends RSApplet {
 			GameFont fonts[] = { fontSmall, fontPlain, fontBold, fontFancy };
 			RSInterface.unpack(archiveInterface, fonts, archiveMedia);
 			drawLoadingText(100, "Preparing game engine");
-			for (int _y = 0; _y < 33; _y++) {
-				int firstXOfLine = 999;
-				int lastXOfLine = 0;
-				for (int _x = 0; _x < 34; _x++) {
-					if (minimapBackgroundImage.pixels[_x + _y * minimapBackgroundImage.width] == 0) {
-						if (firstXOfLine == 999)
-							firstXOfLine = _x;
-						continue;
-					}
-					if (firstXOfLine == 999)
-						continue;
-					lastXOfLine = _x;
-					break;
-				}
-
-				compassHingeSize[_y] = firstXOfLine;
-				compassWidthMap[_y] = lastXOfLine - firstXOfLine;
-			}
-
-			for (int _y = 5; _y < 156; _y++) {
-				int min = 999;
-				int max = 0;
-				for (int _x = 25; _x < 172; _x++) {
-					if (minimapBackgroundImage.pixels[_x + _y * minimapBackgroundImage.width] == 0
-							&& (_x > 34 || _y > 34)) {
-						if (min == 999)
-							min = _x;
-						continue;
-					}
-					if (min == 999)
-						continue;
-					max = _x;
-					break;
-				}
-
-				minimapLeft[_y - 5] = min - 25;
-				minimapLineWidth[_y - 5] = max - min;
-			}
 
 			Rasterizer.setBounds(479, 96);
 			chatboxLineOffsets = Rasterizer.lineOffsets;

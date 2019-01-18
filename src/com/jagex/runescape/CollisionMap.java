@@ -1,6 +1,6 @@
 package com.jagex.runescape;
 
-final class CollisionMap {
+public final class CollisionMap {
 
 	private final int insetX;
 
