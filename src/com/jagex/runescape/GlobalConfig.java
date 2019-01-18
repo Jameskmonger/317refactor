@@ -1,16 +1,14 @@
 package com.jagex.runescape;
 
 import javax.swing.*;
-import javax.swing.GroupLayout.*;
 import javax.swing.event.*;
 import javax.swing.text.*;
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
-import java.util.Objects;
 
-public class GlobalConfig {
-	public static int FlameFoo = 0;
-	public static int FlameBar = 0;
+class GlobalConfig {
+	private static int FlameFoo = 0;
+	private static int FlameBar = 0;
 
 	public static void openFrame() {
 		final JFrame frame = new JFrame("HelloWorldSwing");
@@ -26,9 +24,7 @@ public class GlobalConfig {
 		pane.add(jLabel1);
 		pane.add(entry);
 
-		entry.addChangeListener(e -> {
-			GlobalConfig.FlameFoo = model.getNumber().intValue();
-		});
+		entry.addChangeListener(e -> GlobalConfig.FlameFoo = model.getNumber().intValue());
 
 		final JLabel jLabel2 = new JLabel("Flame Bar");
 		final SpinnerNumberModel model2 = new SpinnerNumberModel(0, 0, 255, 10);
@@ -37,9 +33,7 @@ public class GlobalConfig {
 		pane.add(jLabel2);
 		pane.add(entry2);
 
-		entry2.addChangeListener(e -> {
-			GlobalConfig.FlameBar = model2.getNumber().intValue();
-		});
+		entry2.addChangeListener(e -> GlobalConfig.FlameBar = model2.getNumber().intValue());
 
 		//Display the window.
 		frame.pack();

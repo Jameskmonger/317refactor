@@ -7,9 +7,9 @@ public final class RSImageProducer implements ImageProducer, ImageObserver {
 
 	public final int[] pixels;
 
-	public final int width;
+	private final int width;
 
-	public final int height;
+	private final int height;
 
 	private final ColorModel colourModel;
 

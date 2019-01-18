@@ -5,7 +5,7 @@ import com.jagex.runescape.Buffer;
 
 public final class Varp {
 
-	public static Varp values[];
+	public static Varp[] values;
 	public int type;
 
 	public static void load(final Archive archive) {

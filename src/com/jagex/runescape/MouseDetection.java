@@ -2,7 +2,7 @@ package com.jagex.runescape;
 
 final class MouseDetection implements Runnable {
 
-	private Client clientInstance;
+	private final Client clientInstance;
 
 	public final Object syncObject;
 

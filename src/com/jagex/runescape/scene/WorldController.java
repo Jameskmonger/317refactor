@@ -1539,8 +1539,8 @@ public final class WorldController {
 		clicked = false;
 	}
 
-	void renderPlainTile(final PlainTile plainTile, final int tileX, final int tileY, final int tileZ, final int sinX, final int cosineX, final int sinY,
-						 final int cosineY) {
+	private void renderPlainTile(final PlainTile plainTile, final int tileX, final int tileY, final int tileZ, final int sinX, final int cosineX, final int sinY,
+								 final int cosineY) {
 		int xC;
 		int xA = xC = (tileX << 7) - cameraPosX;
 		int yB;

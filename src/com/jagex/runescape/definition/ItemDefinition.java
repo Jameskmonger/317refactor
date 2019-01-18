@@ -225,7 +225,7 @@ public final class ItemDefinition {
 	private int maleEquipModelIdPrimary;
 	private int maleDialogueHatModelId;
 	private int modelScaleX;
-	public String groundActions[];
+	public String[] groundActions;
 	private int modelOffset1;
 	public String name;
 	private static ItemDefinition[] cache;
@@ -233,7 +233,7 @@ public final class ItemDefinition {
 	private int modelId;
 	private int maleDialogueModelId;
 	public boolean stackable;
-	public byte description[];
+	public byte[] description;
 	private int noteId;
 	private static int cacheIndex;
 	public int modelZoom;
@@ -242,7 +242,7 @@ public final class ItemDefinition {
 	private int shadowModifier;
 	private int maleEquipModelIdEmblem;
 	private int maleEquipModelIdSecondary;
-	public String actions[];
+	public String[] actions;
 	public int modelRotationX;
 	private int modelScaleZ;
 	private int modelScaleY;
@@ -337,7 +337,7 @@ public final class ItemDefinition {
 		Model dialogueModel = Model.getModel(dialogueModelId);
 		if (dialogueHatModelId != -1) {
 			final Model dialogueHatModel = Model.getModel(dialogueHatModelId);
-			final Model[] dialogueModels = { dialogueModel, dialogueHatModel };
+			final Model[] dialogueModels = {dialogueModel, dialogueHatModel};
 			dialogueModel = new Model(2, dialogueModels);
 		}
 		if (this.modifiedModelColors != null) {
@@ -366,11 +366,11 @@ public final class ItemDefinition {
             if (equipModelIdEmblem != -1) {
                 final Model modelSecondary = Model.getModel(equipModelIdSecondary);
                 final Model modelEmblem = Model.getModel(equipModelIdEmblem);
-                final Model[] models = { modelPrimary, modelSecondary, modelEmblem };
+				final Model[] models = {modelPrimary, modelSecondary, modelEmblem};
                 modelPrimary = new Model(3, models);
             } else {
                 final Model modelSecondary = Model.getModel(equipModelIdSecondary);
-                final Model[] models = { modelPrimary, modelSecondary };
+				final Model[] models = {modelPrimary, modelSecondary};
                 modelPrimary = new Model(2, models);
             }
         }

@@ -3,7 +3,7 @@ package com.jagex.runescape;
 import com.jagex.runescape.collection.Cacheable;
 
 public class Animable extends Cacheable {
-	public VertexNormal vertexNormals[];
+	public VertexNormal[] vertexNormals;
 	public int modelHeight;
 
 	Animable() {

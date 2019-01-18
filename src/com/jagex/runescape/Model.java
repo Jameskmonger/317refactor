@@ -164,19 +164,19 @@ public final class Model extends Animable {
 
 	public int vertexCount;
 
-	public int verticesX[];
+	public int[] verticesX;
 
-	public int verticesY[];
+	public int[] verticesY;
 
-	public int verticesZ[];
+	public int[] verticesZ;
 
 	public int triangleCount;
 
-	public int triangleX[];
+	public int[] triangleX;
 
-	public int triangleY[];
+	public int[] triangleY;
 
-	public int triangleZ[];
+	public int[] triangleZ;
 
 	private int[] triangleHSLA;
 
@@ -184,13 +184,13 @@ public final class Model extends Animable {
 
 	private int[] triangleHSLC;
 
-	public int triangleDrawType[];
+	public int[] triangleDrawType;
 
 	private int[] trianglePriorities;
 
 	private int[] triangleAlpha;
 
-	public int triangleColours[];
+	public int[] triangleColours;
 
 	private int trianglePriority;
 
@@ -211,16 +211,16 @@ public final class Model extends Animable {
 	public int minZ;
 
 	public int diagonal2DAboveOrigin;
-	public int minX;
+	private int minX;
 	private int diagonal3D;
 	private int diagonal3DAboveOrigin;
 	public int anInt1654;
 	private int[] vertexSkins;
 	private int[] triangleSkins;
-	public int vertexSkin[][];
-	public int triangleSkin[][];
+	public int[][] vertexSkin;
+	public int[][] triangleSkin;
 	public boolean singleTile;
-	public VertexNormal vertexNormalOffset[];
+	public VertexNormal[] vertexNormalOffset;
 	private static ModelHeader[] modelHeaders;
 	private static OnDemandFetcher requester;
 	private static boolean[] restrictEdges = new boolean[4096];
@@ -249,8 +249,8 @@ public final class Model extends Animable {
 	public static int cursorY;
 	public static int resourceCount;
 	public static final int[] resourceId = new int[1000];
-	public static int SINE[];
-	public static int COSINE[];
+	public static int[] SINE;
+	public static int[] COSINE;
 	private static int[] HSLtoRGB;
 	private static int[] modelIntArray4;
 	static {
@@ -1174,8 +1174,8 @@ public final class Model extends Animable {
         }
 		int i6 = 0;
 		int k6 = anIntArray1673[10];
-		int ai2[] = anIntArrayArray1674[10];
-		int ai3[] = anIntArray1675;
+		int[] ai2 = anIntArrayArray1674[10];
+		int[] ai3 = anIntArray1675;
 		if (i6 == k6) {
 			i6 = 0;
 			k6 = anIntArray1673[11];
@@ -1475,8 +1475,7 @@ public final class Model extends Animable {
 		for (int frame = 0; frame < animationFrame1.frameCount; frame++) {
 			final int skin;
 			for (skin = animationFrame1.opcodeTable[frame]; skin > frameCount; frameCount = framesFrom2[counter++]) {
-                ;
-            }
+			}
 			if (skin != frameCount || skins.opcodes[skin] == 0) {
 				this.transformFrame(skins.opcodes[skin], skins.skinList[skin], animationFrame1.transformationX[frame],
                         animationFrame1.transformationY[frame], animationFrame1.transformationZ[frame]);
@@ -1491,8 +1490,7 @@ public final class Model extends Animable {
 		for (int frame = 0; frame < animationFrame2.frameCount; frame++) {
 			final int skin;
 			for (skin = animationFrame2.opcodeTable[frame]; skin > frameCount; frameCount = framesFrom2[counter++]) {
-                ;
-            }
+			}
 			if (skin == frameCount || skins.opcodes[skin] == 0) {
 				this.transformFrame(skins.opcodes[skin], skins.skinList[skin], animationFrame2.transformationX[frame],
                         animationFrame2.transformationY[frame], animationFrame2.transformationZ[frame]);

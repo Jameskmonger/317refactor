@@ -54,7 +54,7 @@ public final class NPC extends Entity {
                 }
 				animatedModel.applyLighting(64 + spotAnimation.modelLightFalloff, 850 + spotAnimation.modelLightAmbient,
 						-30, -50, -30, true);
-				final Model[] models = { rotatedModel, animatedModel };
+				final Model[] models = {rotatedModel, animatedModel};
 				rotatedModel = new Model(models);
 			}
 		}

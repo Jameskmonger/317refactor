@@ -100,7 +100,7 @@ public final class OnDemandFetcher implements Runnable {
 		}
 		while (request != null) {
             this.waiting = true;
-			byte data[] = null;
+			byte[] data = null;
 			if (this.clientInstance.caches[0] != null) {
                 data = this.clientInstance.caches[request.dataType + 1].decompress(request.id);
             }
@@ -396,8 +396,7 @@ public final class OnDemandFetcher implements Runnable {
 			if (this.expectedSize == 0 && j >= 6) {
                 this.waiting = true;
 				for (int k = 0; k < 6; k += this.inputStream.read(this.payload, k, 6 - k)) {
-                    ;
-                }
+				}
 				final int l = this.payload[0] & 0xff;
 				final int j1 = ((this.payload[1] & 0xff) << 8) + (this.payload[2] & 0xff);
 				final int l1 = ((this.payload[3] & 0xff) << 8) + (this.payload[4] & 0xff);
@@ -443,15 +442,14 @@ public final class OnDemandFetcher implements Runnable {
 			}
 			if (this.expectedSize > 0 && j >= this.expectedSize) {
                 this.waiting = true;
-				byte abyte0[] = this.payload;
+				byte[] abyte0 = this.payload;
 				int i1 = 0;
 				if (this.current != null) {
 					abyte0 = this.current.buffer;
 					i1 = this.completedSize;
 				}
 				for (int k1 = 0; k1 < this.expectedSize; k1 += this.inputStream.read(abyte0, k1 + i1, this.expectedSize - k1)) {
-                    ;
-                }
+				}
 				if (this.expectedSize + this.completedSize >= abyte0.length && this.current != null) {
 					if (this.clientInstance.caches[0] != null) {
                         this.clientInstance.caches[this.current.dataType + 1].put(abyte0.length, abyte0, this.current.id);
@@ -626,7 +624,7 @@ public final class OnDemandFetcher implements Runnable {
 	}
 
 	public void start(final Archive streamLoader, final Client client1) {
-		final String[] as = { "model_version", "anim_version", "midi_version", "map_version" };
+		final String[] as = {"model_version", "anim_version", "midi_version", "map_version"};
 		for (int i = 0; i < 4; i++) {
 			final byte[] abyte0 = streamLoader.decompressFile(as[i]);
 			final int j = abyte0.length / 2;
@@ -639,7 +637,7 @@ public final class OnDemandFetcher implements Runnable {
 
 		}
 
-		final String[] as1 = { "model_crc", "anim_crc", "midi_crc", "map_crc" };
+		final String[] as1 = {"model_crc", "anim_crc", "midi_crc", "map_crc"};
 		for (int k = 0; k < 4; k++) {
 			final byte[] abyte1 = streamLoader.decompressFile(as1[k]);
 			final int i1 = abyte1.length / 4;
@@ -651,7 +649,7 @@ public final class OnDemandFetcher implements Runnable {
 
 		}
 
-		byte abyte2[] = streamLoader.decompressFile("model_index");
+		byte[] abyte2 = streamLoader.decompressFile("model_index");
 		int j1 = this.versions[0].length;
         this.modelIndices = new byte[j1];
 		for (int k1 = 0; k1 < j1; k1++) {

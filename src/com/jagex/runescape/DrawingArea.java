@@ -118,7 +118,7 @@ public class DrawingArea extends Cacheable {
         }
 	}
 
-	public static void drawHorizontalLineAlpha(final int x, int y, int width, final int colour, final int alpha) {
+	private static void drawHorizontalLineAlpha(final int x, int y, int width, final int colour, final int alpha) {
 		if (x < topY || x >= bottomY) {
             return;
         }
@@ -259,7 +259,7 @@ public class DrawingArea extends Cacheable {
 		viewportCentreY = bottomY / 2;
 	}
 
-	public static int pixels[];
+	public static int[] pixels;
 
 	public static int width;
 	public static int height;

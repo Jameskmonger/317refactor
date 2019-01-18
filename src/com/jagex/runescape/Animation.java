@@ -144,9 +144,9 @@ public final class Animation {
 	public int displayLength;
 	public Skins animationSkins;
 	public int frameCount;
-	public int opcodeTable[];
-	public int transformationX[];
-	public int transformationY[];
-	public int transformationZ[];
+	public int[] opcodeTable;
+	public int[] transformationX;
+	public int[] transformationY;
+	public int[] transformationZ;
 	private static boolean[] opaque;
 }

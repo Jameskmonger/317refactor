@@ -47,7 +47,6 @@ public class Cache {
 
         this.hashmap.put(key, item);
         this.retrievedItems.push(item);
-		return;
 	}
 
 	public void clear() {

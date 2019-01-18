@@ -55,8 +55,7 @@ public final class Player extends Entity {
             } else if (super.queuedAnimationId >= 0) {
                 frameId = AnimationSequence.animations[super.queuedAnimationId].primaryFrames[super.queuedAnimationFrame];
             }
-			final Model model = this.npcAppearance.getChildModel(-1, frameId, null);
-			return model;
+			return this.npcAppearance.getChildModel(-1, frameId, null);
 		}
 		long l = this.appearanceOffset;
 		int k = -1;
@@ -246,7 +245,7 @@ public final class Player extends Entity {
                 }
 				model.applyLighting(64 + animation.modelLightFalloff, 850 + animation.modelLightAmbient, -30, -50, -30,
 						true);
-				final Model[] models = { appearanceModel, model };
+				final Model[] models = {appearanceModel, model};
 				appearanceModel = new Model(models);
 			}
 		}
@@ -267,7 +266,7 @@ public final class Player extends Entity {
 				} else if (super.turnDirection == 1536) {
                     model.rotate90Degrees();
                 }
-				final Model[] models = { appearanceModel, model };
+				final Model[] models = {appearanceModel, model};
 				appearanceModel = new Model(models);
 				if (super.turnDirection == 512) {
                     model.rotate90Degrees();

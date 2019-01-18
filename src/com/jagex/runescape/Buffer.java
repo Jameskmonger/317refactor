@@ -28,7 +28,7 @@ public final class Buffer extends Cacheable {
         return stream_1;
     }
 
-    public byte buffer[];
+    public byte[] buffer;
 
     public int position;
 
@@ -165,7 +165,6 @@ public final class Buffer extends Cacheable {
     public String getString() {
         final int i = this.position;
         while (this.buffer[this.position++] != 10) {
-            ;
         }
         return new String(this.buffer, i, this.position - i - 1);
     }
@@ -327,10 +326,9 @@ public final class Buffer extends Cacheable {
     public byte[] readBytes() {
         final int tmpPos = this.position;
         while (this.buffer[this.position++] != 10) {
-            ;
         }
         final byte[] buf = new byte[this.position - tmpPos - 1];
-        System.arraycopy(this.buffer, tmpPos, buf, tmpPos - tmpPos, this.position - 1 - tmpPos);
+        System.arraycopy(this.buffer, tmpPos, buf, 0, this.position - 1 - tmpPos);
         return buf;
     }
 

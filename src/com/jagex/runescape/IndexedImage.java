@@ -2,7 +2,7 @@ package com.jagex.runescape;
 
 public final class IndexedImage extends DrawingArea {
 
-	public byte pixels[];
+	public byte[] pixels;
 
 	public final int[] palette;
 

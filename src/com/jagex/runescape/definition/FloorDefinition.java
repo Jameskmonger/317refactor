@@ -20,7 +20,7 @@ public final class FloorDefinition {
 
 	}
 
-	public static FloorDefinition cache[];
+	public static FloorDefinition[] cache;
 
 	public int rgbColour;
 
@@ -34,7 +34,7 @@ public final class FloorDefinition {
 	public int hue;
 	public int hueDivisor;
 	public int hsl;
-	public String name;
+	private String name;
 
 	private FloorDefinition() {
         this.textureId = -1;

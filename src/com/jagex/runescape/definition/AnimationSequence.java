@@ -20,16 +20,16 @@ public final class AnimationSequence {
 		}
 	}
 
-	public static AnimationSequence animations[];
+    public static AnimationSequence[] animations;
 
 	public int frameCount;
 
-	public int primaryFrames[];
+    public int[] primaryFrames;
 
-	public int secondaryFrames[];
+    public int[] secondaryFrames;
 	private int[] frameLengths;
 	public int frameStep;
-	public int flowControl[];
+    public int[] flowControl;
 	public boolean dynamic;
 	public int priority;
 	public int playerReplacementShield;

@@ -255,7 +255,7 @@ public final class Client extends RSApplet {
 	private final int[] SPOKEN_TEXT_COLOURS = { 0xFFFF00, 0xFF0000, 0x00FF00, 0x00FFFF, 0xFF00FF, 0xFFFFFF };
 
 	final FileCache[] caches;
-	public int interfaceSettings[];
+	public int[] interfaceSettings;
 	private boolean aBoolean972;
 	private final int overheadMessageCount;
 	private final int[] overheadTextDrawX;
@@ -417,7 +417,7 @@ public final class Client extends RSApplet {
 	private int[] sidebarOffsets;
 	private int[] viewportOffsets;
 	private byte[][] terrainData;
-	public static int cameraVertical;
+	private static int cameraVertical;
 	public static int cameraHorizontal;
 	private int cameraModificationH;
 	private int cameraModificationV;
@@ -449,14 +449,13 @@ public final class Client extends RSApplet {
 	private int nextSong;
 	private boolean songChanging;
 	private CollisionMap[] currentCollisionMap;
-	public static int BITFIELD_MAX_VALUE[];
+	public static final int[] BITFIELD_MAX_VALUE;
 	private boolean updateChatSettings;
 	private int[] mapCoordinates;
 	private int[] terrainDataIds;
 	private int[] objectDataIds;
 	private int lastClickX;
 	private int lastClickY;
-	public final int anInt1239 = 100;
 	private final int[] privateMessages;
 	private final int[] trackLoop;
 	private boolean lastItemDragged;
@@ -1301,7 +1300,7 @@ public final class Client extends RSApplet {
 				if (childInterface.actionType == 2 && this.spellSelected == false && k >= i2 && i1 >= j2
 						&& k < i2 + childInterface.width && i1 < j2 + childInterface.height) {
 					String actionName = childInterface.selectedActionName;
-					if (actionName.indexOf(" ") != -1) {
+					if (actionName.contains(" ")) {
                         actionName = actionName.substring(0, actionName.indexOf(" "));
                     }
 					this.menuActionName[this.menuActionRow] = actionName + " @gre@" + childInterface.spellName;
@@ -2501,11 +2500,11 @@ public final class Client extends RSApplet {
 			this.itemSelected = false;
 			this.redrawTab = true;
 			String namePartOne = rsInterface.selectedActionName;
-			if (namePartOne.indexOf(" ") != -1) {
+			if (namePartOne.contains(" ")) {
                 namePartOne = namePartOne.substring(0, namePartOne.indexOf(" "));
             }
 			String namePartTwo = rsInterface.selectedActionName;
-			if (namePartTwo.indexOf(" ") != -1) {
+			if (namePartTwo.contains(" ")) {
                 namePartTwo = namePartTwo.substring(namePartTwo.indexOf(" ") + 1);
             }
 			this.spellTooltip = namePartOne + " " + rsInterface.spellName + " " + namePartTwo;
@@ -4146,7 +4145,7 @@ public final class Client extends RSApplet {
                     }
                     for (int __y = _y + textDrawingArea.fontHeight; text
                             .length() > 0; __y += textDrawingArea.fontHeight) {
-                        if (text.indexOf("%") != -1) {
+                        if (text.contains("%")) {
                             do {
                                 final int placeholder = text.indexOf("%1");
                                 if (placeholder == -1) {
@@ -5619,8 +5618,7 @@ public final class Client extends RSApplet {
 				return true;
 			}
 			if (this.packetOpcode == 218) {
-				final int interfaceId = this.inStream.getSignedLEShortA();
-				this.dialogID = interfaceId;
+				this.dialogID = this.inStream.getSignedLEShortA();
 				this.redrawChatbox = true;
 				this.packetOpcode = -1;
 				return true;
@@ -5745,14 +5743,14 @@ public final class Client extends RSApplet {
 		} catch (final IOException _ex) {
 			this.dropClient();
 		} catch (final Exception exception) {
-			String s2 = "T2 - " + this.packetOpcode + "," + this.secondMostRecentOpcode + "," + this.thirdMostRecentOpcode + " - "
+			StringBuilder s2 = new StringBuilder("T2 - " + this.packetOpcode + "," + this.secondMostRecentOpcode + "," + this.thirdMostRecentOpcode + " - "
 					+ this.packetSize + "," + (this.baseX + localPlayer.waypointX[0]) + "," + (this.baseY + localPlayer.waypointY[0])
-					+ " - ";
+					+ " - ");
 			for (int j15 = 0; j15 < this.packetSize && j15 < 50; j15++) {
-                s2 = s2 + this.inStream.buffer[j15] + ",";
+                s2.append(this.inStream.buffer[j15]).append(",");
             }
 
-			signlink.reporterror(s2);
+			signlink.reporterror(s2.toString());
 			this.logout();
 		}
 		return true;
@@ -8812,7 +8810,7 @@ public final class Client extends RSApplet {
 	}
 
 	private Archive requestArchive(final int i, final String s, final String s1, final int j, final int k) {
-		byte abyte0[] = null;
+		byte[] abyte0 = null;
 		int l = 5;
 		try {
 			if (this.caches[0] != null) {
@@ -8827,8 +8825,7 @@ public final class Client extends RSApplet {
 			// if(i1 != j)
 		}
 		if (abyte0 != null) {
-			final Archive streamLoader = new Archive(abyte0);
-			return streamLoader;
+			return new Archive(abyte0);
 		}
 		final int j1 = 0;
 		while (abyte0 == null) {
@@ -8923,8 +8920,7 @@ public final class Client extends RSApplet {
 
 		}
 
-		final Archive streamLoader_1 = new Archive(abyte0);
-		return streamLoader_1;
+		return new Archive(abyte0);
 	}
 
 	private void setupLoginScreen() {
@@ -9237,7 +9233,7 @@ public final class Client extends RSApplet {
 		this.setFrameRate(1);
 		if (this.loadingError) {
 			this.titleScreen.currentlyDrawingFlames = false;
-			g.setFont(new Font("Helvetica", 1, 16));
+			g.setFont(new Font("Helvetica", Font.BOLD, 16));
 			g.setColor(Color.yellow);
 			int currentPositionY = 35;
 			g.drawString("Sorry, an error has occured whilst loading RuneScape", 30, currentPositionY);
@@ -9246,7 +9242,7 @@ public final class Client extends RSApplet {
 			g.drawString("To fix this try the following (in order):", 30, currentPositionY);
 			currentPositionY += 50;
 			g.setColor(Color.white);
-			g.setFont(new Font("Helvetica", 1, 12));
+			g.setFont(new Font("Helvetica", Font.BOLD, 12));
 			g.drawString("1: Try closing ALL open web-browser windows, and reloading", 30, currentPositionY);
 			currentPositionY += 30;
 			g.drawString("2: Try clearing your web-browsers cache from tools->internet options", 30, currentPositionY);
@@ -9259,7 +9255,7 @@ public final class Client extends RSApplet {
 		}
 		if (this.genericLoadingError) {
 			this.titleScreen.currentlyDrawingFlames = false;
-			g.setFont(new Font("Helvetica", 1, 20));
+			g.setFont(new Font("Helvetica", Font.BOLD, 20));
 			g.setColor(Color.white);
 			g.drawString("Error - unable to load game!", 50, 50);
 			g.drawString("To play RuneScape make sure you play from", 50, 100);
@@ -9275,7 +9271,7 @@ public final class Client extends RSApplet {
 			g.drawString("To fix this try the following (in order):", 30, currentPositionY);
 			currentPositionY += 50;
 			g.setColor(Color.white);
-			g.setFont(new Font("Helvetica", 1, 12));
+			g.setFont(new Font("Helvetica", Font.BOLD, 12));
 			g.drawString("1: Try closing ALL open web-browser windows, and reloading", 30, currentPositionY);
 			currentPositionY += 30;
 			g.drawString("2: Try rebooting your computer, and reloading", 30, currentPositionY);
@@ -9680,7 +9676,7 @@ public final class Client extends RSApplet {
 				Effect.load(stream);
 			}
 			this.drawLoadingText(95, "Unpacking interfaces");
-			final GameFont[] fonts = {this.fontSmall, this.fontPlain, this.fontBold, fontFancy };
+			final GameFont[] fonts = {this.fontSmall, this.fontPlain, this.fontBold, fontFancy};
 			RSInterface.unpack(archiveInterface, fonts, archiveMedia);
 			this.drawLoadingText(100, "Preparing game engine");
 

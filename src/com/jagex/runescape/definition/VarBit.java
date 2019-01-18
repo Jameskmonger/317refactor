@@ -5,7 +5,7 @@ import com.jagex.runescape.Buffer;
 
 public final class VarBit {
 
-	public static VarBit values[];
+	public static VarBit[] values;
 	public int configId;
 	public int leastSignificantBit;
 	public int mostSignificantBit;

@@ -81,7 +81,7 @@ public final class GameObjectDefinition {
 	private static int[] streamOffsets;
 	public boolean walkable;
 	public int mapScene;
-	public int childIds[];
+	public int[] childIds;
 	private int _solid;
 	public int sizeY;
 	public boolean adjustToTerrain;
@@ -97,7 +97,7 @@ public final class GameObjectDefinition {
 	public int varBitId;
 	public int offsetAmplifier;
 	private int[] modelTypes;
-	public byte description[];
+	public byte[] description;
 	public boolean hasActions;
 	public boolean castsShadow;
 	public static Cache animatedModelCache = new Cache(30);
@@ -106,7 +106,7 @@ public final class GameObjectDefinition {
 	private int translateZ;
 	private int[] modifiedModelColors;
 	public static Cache modelCache = new Cache(500);
-	public String actions[];
+	public String[] actions;
 
 	private GameObjectDefinition() {
         this.id = -1;

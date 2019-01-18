@@ -10,14 +10,14 @@ package com.jagex.runescape.bzip2;
  */
 public final class Bzip2Decompressor {
 
-	private static BZip2DecompressionState state = new BZip2DecompressionState();
+	private static final BZip2DecompressionState state = new BZip2DecompressionState();
 
 	/*
 	 * http://svn.apache.org/repos/asf/labs/axmake/trunk/src/libuc++/srclib/bzip2
 	 * /huffman.c
 	 */
 	private static void createDecodeTables(final int[] limit, final int[] base, final int[] perm,
-                                           final byte[] len, final int minLen, final int maxLen, final int alphaSize) {
+										   final byte[] len, final int minLen, final int maxLen, final int alphaSize) {
 		int pp = 0;
 		for (int i = minLen; i <= maxLen; i++) {
 			for (int j = 0; j < alphaSize; j++) {
@@ -105,11 +105,7 @@ public final class Bzip2Decompressor {
 			uc = getUChar(block);
 			uc = getUChar(block);
 			uc = getBit(block);
-			if (uc != 0) {
-				block.blockRandomised = true;
-			} else {
-				block.blockRandomised = false;
-			}
+			block.blockRandomised = uc != 0;
 			if (block.blockRandomised) {
 				System.out.println("PANIC! RANDOMISED BLOCK!");
 			}
@@ -125,11 +121,7 @@ public final class Bzip2Decompressor {
 
 			for (int i = 0; i < 16; i++) {
 				final byte bit = getBit(block);
-				if (bit == 1) {
-					block.inUse16[i] = true;
-				} else {
-					block.inUse16[i] = false;
-				}
+				block.inUse16[i] = bit == 1;
 			}
 
 			for (int i = 0; i < 256; i++) {
@@ -408,9 +400,7 @@ public final class Bzip2Decompressor {
 			block.stateOutCh = 0;
 			/*-- Set up cftab to facilitate generation of T^(-1) --*/
 			block.cftab[0] = 0;
-			for (int i = 1; i <= 256; i++) {
-				block.cftab[i] = block.unzftab[i - 1];
-			}
+			System.arraycopy(block.unzftab, 0, block.cftab, 1, 256);
 
 			for (int i = 1; i <= 256; i++) {
 				block.cftab[i] += block.cftab[i - 1];
@@ -431,11 +421,7 @@ public final class Bzip2Decompressor {
 			block.nBlockUsed++;
 			block.nBlock = nblock;
 			method226(block);
-			if (block.nBlockUsed == block.nBlock + 1 && block.stateOutLen == 0) {
-				flag19 = true;
-			} else {
-				flag19 = false;
-			}
+			flag19 = block.nBlockUsed == block.nBlock + 1 && block.stateOutLen == 0;
 		}
 	}
 

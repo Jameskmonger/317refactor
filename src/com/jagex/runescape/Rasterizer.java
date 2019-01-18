@@ -38,7 +38,6 @@ public final class Rasterizer extends DrawingArea {
 					if (d9 > 1.0D) {
                         d9--;
                     }
-					final double d10 = d1;
 					double d11 = d1 - 0.33333333333333331D;
 					if (d11 < 0.0D) {
                         d11++;
@@ -52,12 +51,12 @@ public final class Rasterizer extends DrawingArea {
                     } else {
                         r = d8;
                     }
-					if (6D * d10 < 1.0D) {
-                        g = d8 + (d7 - d8) * 6D * d10;
-                    } else if (2D * d10 < 1.0D) {
+					if (6D * d1 < 1.0D) {
+                        g = d8 + (d7 - d8) * 6D * d1;
+                    } else if (2D * d1 < 1.0D) {
                         g = d7;
-                    } else if (3D * d10 < 2D) {
-                        g = d8 + (d7 - d8) * (0.66666666666666663D - d10) * 6D;
+                    } else if (3D * d1 < 2D) {
+                        g = d8 + (d7 - d8) * (0.66666666666666663D - d1) * 6D;
                     } else {
                         g = d8;
                     }
@@ -86,7 +85,7 @@ public final class Rasterizer extends DrawingArea {
 
 		for (int textureId = 0; textureId < 50; textureId++) {
             if (textureImages[textureId] != null) {
-                final int[] palette = textureImages[textureId].palette;
+				final int[] palette = textureImages[textureId].palette;
                 texturePalettes[textureId] = new int[palette.length];
                 for (int colour = 0; colour < palette.length; colour++) {
                     texturePalettes[textureId][colour] = adjustBrightness(palette[colour], brightness);
@@ -2058,19 +2057,19 @@ public final class Rasterizer extends DrawingArea {
 	public static int centreY;
 	private static int[] anIntArray1468;
 	public static final int[] anIntArray1469;
-	public static int SINE[];
-	public static int COSINE[];
-	public static int lineOffsets[];
+	public static int[] SINE;
+	public static int[] COSINE;
+	public static int[] lineOffsets;
 	private static int loadedTextureCount;
-	public static IndexedImage textureImages[] = new IndexedImage[50];
+	public static IndexedImage[] textureImages = new IndexedImage[50];
 	private static boolean[] transparent = new boolean[50];
 	private static int[] averageTextureColour = new int[50];
 	private static int texelPoolPointer;
 	private static int[][] texelArrayPool;
 	private static int[][] texelCache = new int[50][];
-	public static int textureLastUsed[] = new int[50];
+	public static int[] textureLastUsed = new int[50];
 	public static int textureGetCount;
-	public static int HSL_TO_RGB[] = new int[0x10000];
+	public static int[] HSL_TO_RGB = new int[0x10000];
 	private static int[][] texturePalettes = new int[50][];
 
 	static {

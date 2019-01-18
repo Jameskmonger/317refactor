@@ -5,7 +5,6 @@ import com.jagex.runescape.collection.DoubleEndedQueue;
 import com.jagex.runescape.definition.EntityDefinition;
 import com.jagex.runescape.definition.GameObjectDefinition;
 import com.jagex.runescape.scene.WorldController;
-import jdk.nashorn.internal.objects.Global;
 
 import java.awt.*;
 
@@ -18,7 +17,7 @@ public class Minimap {
     private IndexedImage minimapBackgroundImage;
     private Sprite minimapCompassImage;
     private Sprite minimapEdgeImage;
-    public Sprite minimapImage;
+    private Sprite minimapImage;
 
     private Sprite mapFlag;
     private Sprite mapMarker;
@@ -28,18 +27,18 @@ public class Minimap {
     private Sprite mapDotFriend;
     private Sprite mapDotTeam;
 
-    public int minimapHintCount;
-    public int[] minimapHintX;
-    public int[] minimapHintY;
-    public Sprite[] minimapHint;
+    private int minimapHintCount;
+    private final int[] minimapHintX;
+    private final int[] minimapHintY;
+    private final Sprite[] minimapHint;
 
-    private int[] compassHingeSize;
-    private int[] compassWidthMap;
-    private int[] minimapLeft;
-    private int[] minimapLineWidth;
+    private final int[] compassHingeSize;
+    private final int[] compassWidthMap;
+    private final int[] minimapLeft;
+    private final int[] minimapLineWidth;
 
-    private IndexedImage[] mapSceneImage;
-    private Sprite[] mapFunctionImage;
+    private final IndexedImage[] mapSceneImage;
+    private final Sprite[] mapFunctionImage;
 
     public Minimap() {
         this.minimapHint = new Sprite[1000];
@@ -334,7 +333,7 @@ public class Minimap {
                 }
 
                 boolean team = false;
-                if (Client.localPlayer.team != 0 && player.team != 0 && Client.localPlayer.team == player.team) {
+                if (player.team != 0 && Client.localPlayer.team == player.team) {
                     team = true;
                 }
                 if (friend) {

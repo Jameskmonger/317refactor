@@ -5,7 +5,7 @@ import java.awt.image.PixelGrabber;
 
 public final class Sprite extends DrawingArea {
 
-	public int pixels[];
+	public int[] pixels;
 
 	public int width;
 

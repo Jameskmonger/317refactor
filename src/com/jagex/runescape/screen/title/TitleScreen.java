@@ -7,7 +7,7 @@ import java.awt.*;
 
 public class TitleScreen {
     private final int[] anIntArray969;
-    public RSImageProducer loginBoxLeftBackgroundTile;
+    private RSImageProducer loginBoxLeftBackgroundTile;
     public boolean welcomeScreenRaised;
     public volatile boolean drawingFlames;
     public volatile boolean currentlyDrawingFlames;
@@ -27,13 +27,11 @@ public class TitleScreen {
     private RSImageProducer middleLeftBackgroundTile;
     private RSImageProducer middleRightBackgroundTile;
     private int flameShapeIndex;
-    private Archive archive;
     private GameFont fontSmall;
-    private GameFont fontPlain;
     private GameFont fontBold;
     private int[] flameStrengths;
     private int[] anIntArray829;
-    private FlameColours flameColours;
+    private final FlameColours flameColours;
 
     public TitleScreen() {
         this.anIntArray969 = new int[256];
@@ -45,9 +43,9 @@ public class TitleScreen {
     }
 
     public void load(final Component component, final Archive archive, final GameFont fontSmall, final GameFont fontPlain, final GameFont fontBold) {
-        this.archive = archive;
+        Archive archive1 = archive;
         this.fontSmall = fontSmall;
-        this.fontPlain = fontPlain;
+        GameFont fontPlain1 = fontPlain;
         this.fontBold = fontBold;
 
         this.setupSprites(component, archive);
@@ -179,12 +177,11 @@ public class TitleScreen {
             for (int l2 = j2; l2 < 128; l2++) {
                 final int strength = this.flameStrengths[i1++];
                 if (strength != 0) {
-                    final int on = strength;
                     final int off = 256 - strength;
                     final int colour = this.flameColours.getCurrentColour(strength);
                     final int bg = this.flameLeftBackground.pixels[pos];
-                    this.flameLeftBackground.pixels[pos++] = ((colour & 0xFF00ff) * on + (bg & 0xFF00FF) * off & 0xFF00FF00)
-                            + ((colour & 0xFF00) * on + (bg & 0xFF00) * off & 0xFF0000) >> 8;
+                    this.flameLeftBackground.pixels[pos++] = ((colour & 0xFF00ff) * strength + (bg & 0xFF00FF) * off & 0xFF00FF00)
+                            + ((colour & 0xFF00) * strength + (bg & 0xFF00) * off & 0xFF0000) >> 8;
                 } else {
                     pos++;
                 }
@@ -209,12 +206,11 @@ public class TitleScreen {
             for (int i4 = 0; i4 < k3; i4++) {
                 final int strength = this.flameStrengths[i1++];
                 if (strength != 0) {
-                    final int on = strength;
                     final int off = 256 - strength;
                     final int colour = this.flameColours.getCurrentColour(strength);
                     final int bg = this.flameRightBackground.pixels[pos];
-                    this.flameRightBackground.pixels[pos++] = ((colour & 0xFF00FF) * on + (bg & 0xFF00FF) * off & 0xFF00FF00)
-                            + ((colour & 0xFF00) * on + (bg & 0xFF00) * off & 0xFF0000) >> 8;
+                    this.flameRightBackground.pixels[pos++] = ((colour & 0xFF00FF) * strength + (bg & 0xFF00FF) * off & 0xFF00FF00)
+                            + ((colour & 0xFF00) * strength + (bg & 0xFF00) * off & 0xFF0000) >> 8;
                 } else {
                     pos++;
                 }
@@ -283,12 +279,12 @@ public class TitleScreen {
         sprite.drawImage(382 - sprite.width / 2 - 128, 18);
     }
 
-    public void drawFlames(final Graphics gameGraphics) {
+    private void drawFlames(final Graphics gameGraphics) {
         this.flameLeftBackground.drawGraphics(0, gameGraphics, 0);
         this.flameRightBackground.drawGraphics(0, gameGraphics, 637);
     }
 
-    public void drawTiles(final Graphics gameGraphics) {
+    private void drawTiles(final Graphics gameGraphics) {
         this.topCentreBackgroundTile.drawGraphics(0, gameGraphics, 128);
         this.bottomCentreBackgroundTile.drawGraphics(371, gameGraphics, 202);
         this.bottomLeftBackgroundTile.drawGraphics(265, gameGraphics, 0);

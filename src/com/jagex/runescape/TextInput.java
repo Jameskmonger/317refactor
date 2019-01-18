@@ -7,8 +7,7 @@ final class TextInput {
 		writeToStream(s, stream);
 		final int offset = stream.position;
 		stream.position = 0;
-		final String text = readFromStream(offset, stream);
-		return text;
+        return readFromStream(offset, stream);
 	}
 
 	public static String readFromStream(final int length, final Buffer stream) {

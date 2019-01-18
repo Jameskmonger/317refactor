@@ -12,7 +12,7 @@ public final class ShapedTile {
 	public final int[] triangleA;
 	public final int[] triangleB;
 	public final int[] triangleC;
-	public int triangleTexture[];
+	public int[] triangleTexture;
 	public final boolean flat;
 	public final int shape;
 	public final int rotation;

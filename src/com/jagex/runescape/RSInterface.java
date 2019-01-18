@@ -254,13 +254,13 @@ public final class RSInterface {
 
 	public int animationDuration;
 
-	public Sprite sprites[];
+	public Sprite[] sprites;
 
-	public static RSInterface cache[];
+	public static RSInterface[] cache;
 
-	public int conditionValue[];
+	public int[] conditionValue;
 	public int contentType;
-	public int spritesX[];
+	public int[] spritesX;
 	public int colourDefaultHover;
 	public int actionType;
 	public String spellName;
@@ -270,8 +270,8 @@ public final class RSInterface {
 	public String selectedActionName;
 	public boolean textCentred;
 	public int scrollPosition;
-	public String actions[];
-	public int opcodes[][];
+	public String[] actions;
+	public int[][] opcodes;
 	public boolean filled;
 	public String textActive;
 	public int hoveredPopup;
@@ -284,19 +284,19 @@ public final class RSInterface {
 	public int spellUsableOn;
 	private static Cache spriteCache;
 	public int colourActiveHover;
-	public int children[];
-	public int childX[];
+	public int[] children;
+	public int[] childX;
 	public boolean usableItemInterface;
 	public GameFont textDrawingAreas;
 	public int inventorySpritePaddingRow;
-	public int conditionType[];
+	public int[] conditionType;
 	public int animationFrame;
-	public int spritesY[];
+	public int[] spritesY;
 	public String textDefault;
 	public boolean inventory;
 	public int id;
-	public int inventoryStackSize[];
-	public int inventoryItemId[];
+	public int[] inventoryStackSize;
+	public int[] inventoryItemId;
 	public byte alpha;
 	private int modelTypeActive;
 	private int modelIdActive;
@@ -315,7 +315,7 @@ public final class RSInterface {
 	public int modelZoom;
 	public int modelRotationX;
 	public int modelRotationY;
-	public int childY[];
+	public int[] childY;
 
 	public RSInterface() {
 	}

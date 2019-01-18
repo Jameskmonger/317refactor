@@ -22,7 +22,7 @@ public final class IdentityKit {
 
 	public static int count;
 
-	public static IdentityKit cache[];
+	public static IdentityKit[] cache;
 
 	public int partId;
 

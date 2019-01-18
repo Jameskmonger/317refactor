@@ -9,9 +9,7 @@ package com.jagex.runescape.bzip2;
  * A Java implementation of the DState struct (structure holding all the
  * decompression-side stuff).
  * 
- * @see http 
- *      ://svn.apache.org/repos/asf/labs/axmake/trunk/src/libuc++/srclib/bzip2
- *      /bzlib_private.h
+ * @see "http://svn.apache.org/repos/asf/labs/axmake/trunk/src/libuc++/srclib/bzip2/bzlib_private.h"
  */
 class BZip2DecompressionState {
 
@@ -35,9 +33,9 @@ class BZip2DecompressionState {
 
 	/* map of bytes used in block */
 	int nInUse;
-	boolean[] inUse;
-	boolean[] inUse16;
-	byte[] seqToUnseq;
+	final boolean[] inUse;
+	final boolean[] inUse16;
+	final byte[] seqToUnseq;
 
 	byte[] stream;
 	byte[] buf; // out
@@ -60,20 +58,20 @@ class BZip2DecompressionState {
 	int tPos;
 	int k0;
 	int nBlockUsed;
-	int[] unzftab;
-	int[] cftab;
+	final int[] unzftab;
+	final int[] cftab;
 
 	/* for decoding the MTF values */
-	byte[] mtfa;
-	int[] mtfbase;
-	byte[] selector;
-	byte[] selectorMtf;
-	byte[][] len;
+    final byte[] mtfa;
+	final int[] mtfbase;
+	final byte[] selector;
+	final byte[] selectorMtf;
+	final byte[][] len;
 
-	int[] minLens;
-	int[][] limit;
-	int[][] base;
-	int[][] perm;
+	final int[] minLens;
+	final int[][] limit;
+	final int[][] base;
+	final int[][] perm;
 
 	int nBlock;
 	int nextIn;

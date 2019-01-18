@@ -5,7 +5,7 @@ import com.jagex.runescape.sign.signlink;
 public final class TextClass {
 
 	public static String asterisksForString(final String string) {
-		final StringBuffer asterisks = new StringBuffer();
+		final StringBuilder asterisks = new StringBuilder();
 		for (int c = 0; c < string.length(); c++) {
             asterisks.append("*");
         }
@@ -75,8 +75,7 @@ public final class TextClass {
 		}
 
 		for (; longName % 37L == 0L && longName != 0L; longName /= 37L) {
-            ;
-        }
+		}
 		return longName;
 	}
 

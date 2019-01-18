@@ -12,17 +12,17 @@ public final class ISAACRandomGenerator {
 	/**
 	 * log of size of results[] and memory[]
 	 */
-	final static int SIZEL = 8;
+	private final static int SIZEL = 8;
 
 	/**
 	 * size of results[] and memory[]
 	 */
-	final static int SIZE = 1 << SIZEL;
+	private final static int SIZE = 1 << SIZEL;
 
 	/**
 	 * for pseudorandom lookup
 	 */
-	final static int MASK = (SIZE - 1) << 2;
+	private final static int MASK = (SIZE - 1) << 2;
 
 	private int count;
 	private final int[] results;
@@ -169,7 +169,7 @@ public final class ISAACRandomGenerator {
 	/**
 	 * Generate 256 random results.
 	 */
-	public final void isaac() {
+    private void isaac() {
 		int a, b, x, y;
 
         this.lastResult += ++this.counter;

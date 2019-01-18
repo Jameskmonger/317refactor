@@ -16,8 +16,8 @@ public final class signlink implements Runnable {
 	}
 
 	public static String findcachedirORIG() {
-		final String[] as = { "c:/windows/", "c:/winnt/", "d:/windows/", "d:/winnt/", "e:/windows/", "e:/winnt/",
-				"f:/windows/", "f:/winnt/", "c:/", "~/", "/tmp/", "", "c:/rscache", "/rscache" };
+		final String[] as = {"c:/windows/", "c:/winnt/", "d:/windows/", "d:/winnt/", "e:/windows/", "e:/winnt/",
+				"f:/windows/", "f:/winnt/", "c:/", "~/", "/tmp/", "", "c:/rscache", "/rscache"};
 		if (storeid < 32 || storeid > 34) {
             storeid = 32;
         }

@@ -1,10 +1,10 @@
 package com.jagex.runescape.screen.title;
 
-public class FlameColours {
-    private int[] currentFlameColours;
-    private int[] redFlameColours;
-    private int[] greenFlameColours;
-    private int[] blueFlameColours;
+class FlameColours {
+    private final int[] currentFlameColours;
+    private final int[] redFlameColours;
+    private final int[] greenFlameColours;
+    private final int[] blueFlameColours;
 
     private int random1;
     private int random2;

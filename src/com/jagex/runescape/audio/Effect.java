@@ -136,7 +136,7 @@ public final class Effect {
             if (this.instruments[instrument] != null) {
                 final int duration = (this.instruments[instrument].duration * 22050) / 1000;
                 final int offset = (this.instruments[instrument].begin * 22050) / 1000;
-                final int[] samples = this.instruments[instrument].synthesise(duration, this.instruments[instrument].duration);
+				final int[] samples = this.instruments[instrument].synthesise(duration, this.instruments[instrument].duration);
                 for (int sample = 0; sample < duration; sample++) {
                     _output[sample + offset + 44] += (byte) (samples[sample] >> 8);
                 }
@@ -149,9 +149,8 @@ public final class Effect {
 			loopEnd += 44;
 			stepCount += 44;
 			final int offset = (length += 44) - stepCount;
-			for (int step = stepCount - 1; step >= loopEnd; step--) {
-                _output[step + offset] = _output[step];
-            }
+            if (stepCount - loopEnd >= 0)
+                System.arraycopy(_output, loopEnd, _output, loopEnd + offset, stepCount - loopEnd);
 
 			for (int loop = 1; loop < loopCount; loop++) {
 				final int _offset = (loopEnd - loopStart) * loop;

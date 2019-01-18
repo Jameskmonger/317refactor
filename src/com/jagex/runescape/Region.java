@@ -416,18 +416,18 @@ final class Region {
 	private final int[][][] tileCullingBitsets;
 
 	private final byte[][][] overlayClippingPaths;
-	private static final int FACE_OFFSET_X[] = { 1, 0, -1, 0 };
+	private static final int[] FACE_OFFSET_X = {1, 0, -1, 0};
 	private final int[][] tileLightIntensity;
-	private static final int WALL_CORNER_ORIENTATION[] = { 16, 32, 64, 128 };
+	private static final int[] WALL_CORNER_ORIENTATION = {16, 32, 64, 128};
 	private final byte[][][] underlayFloorIds;
-	private static final int FACE_OFFSET_Y[] = { 0, -1, 0, 1 };
+	private static final int[] FACE_OFFSET_Y = {0, -1, 0, 1};
 	static int lowestPlane = 99;
 	private final int regionSizeX;
 	private final int regionSizeY;
 	private final byte[][][] overlayOrientations;
 	private final byte[][][] renderRuleFlags;
 	static boolean lowMemory = true;
-	private static final int POWERS_OF_TWO[] = { 1, 2, 4, 8 };
+	private static final int[] POWERS_OF_TWO = {1, 2, 4, 8};
 
 	public Region(final byte[][][] renderRuleFlags, final int[][][] vertexHeights) {
 		lowestPlane = 99;
@@ -702,12 +702,10 @@ final class Region {
 							int highestOcclusionPlane = _plane;
 							for (; lowestOcclusionY > 0 && (this.tileCullingBitsets[_plane][x][lowestOcclusionY - 1]
 									& renderRule1) != 0; lowestOcclusionY--) {
-								;
 							}
 							for (; highestOcclusionY < this.regionSizeY
 									&& (this.tileCullingBitsets[_plane][x][highestOcclusionY + 1]
 											& renderRule1) != 0; highestOcclusionY++) {
-								;
 							}
 							findLowestOcclusionPlane: for (; lowestOcclusionPlane > 0; lowestOcclusionPlane--) {
 								for (int occludedY = lowestOcclusionY; occludedY <= highestOcclusionY; occludedY++) {
@@ -754,12 +752,10 @@ final class Region {
 							int highestocclusionPlane = plane;
 							for (; lowestOcclusionX > 0 && (this.tileCullingBitsets[plane][lowestOcclusionX - 1][y]
 									& renderRule2) != 0; lowestOcclusionX--) {
-								;
 							}
 							for (; highestOcclusionX < this.regionSizeX
 									&& (this.tileCullingBitsets[plane][highestOcclusionX + 1][y]
 											& renderRule2) != 0; highestOcclusionX++) {
-								;
 							}
 							findLowestocclusionPlane: for (; lowestocclusionPlane > 0; lowestocclusionPlane--) {
 								for (int occludedX = lowestOcclusionX; occludedX <= highestOcclusionX; occludedX++) {
@@ -804,12 +800,10 @@ final class Region {
 							int highestOcclusionY = y;
 							for (; lowestOcclusionY > 0 && (this.tileCullingBitsets[plane][x][lowestOcclusionY - 1]
 									& renderRule3) != 0; lowestOcclusionY--) {
-								;
 							}
 							for (; highestOcclusionY < this.regionSizeY
 									&& (this.tileCullingBitsets[plane][x][highestOcclusionY + 1]
 											& renderRule3) != 0; highestOcclusionY++) {
-								;
 							}
 							findLowestOcclusionX: for (; lowestOcclusionX > 0; lowestOcclusionX--) {
 								for (int occludedY = lowestOcclusionY; occludedY <= highestOcclusionY; occludedY++) {

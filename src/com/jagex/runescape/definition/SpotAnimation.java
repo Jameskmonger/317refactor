@@ -23,7 +23,7 @@ public final class SpotAnimation {
 
 	}
 
-	public static SpotAnimation cache[];
+	public static SpotAnimation[] cache;
 
 	private int id;
 

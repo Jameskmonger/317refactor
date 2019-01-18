@@ -113,9 +113,9 @@ public class RSApplet extends Applet
 			} catch (final Exception _ex) {
 			}
 		}
-		final Font helveticaBold = new Font("Helvetica", 1, 13);
+		final Font helveticaBold = new Font("Helvetica", Font.BOLD, 13);
 		final FontMetrics fontmetrics = this.getGameComponent().getFontMetrics(helveticaBold);
-		final Font helvetica = new Font("Helvetica", 0, 13);
+		final Font helvetica = new Font("Helvetica", Font.PLAIN, 13);
 		this.getGameComponent().getFontMetrics(helvetica);
 		if (this.clearScreen) {
             this.gameGraphics.setColor(Color.black);

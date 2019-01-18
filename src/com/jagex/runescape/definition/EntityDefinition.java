@@ -62,7 +62,7 @@ public final class EntityDefinition {
 	private static Buffer stream;
 	public int combatLevel;
 	public String name;
-	public String actions[];
+	public String[] actions;
 	public int walkAnimationId;
 	public byte boundaryDimension;
 	private int[] originalModelColours;
@@ -80,8 +80,8 @@ public final class EntityDefinition {
 	private int brightness;
 	private int scaleZ;
 	public boolean visibleMinimap;
-	public int childrenIDs[];
-	public byte description[];
+	public int[] childrenIDs;
+	public byte[] description;
 	private int scaleXY;
 	private int contrast;
 	public boolean visible;

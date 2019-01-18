@@ -6,16 +6,16 @@ package com.jagex.runescape;
  * https://www.rune-server.ee/runescape-development/rs2-client/snippets/578391-censor-java.html
  */
 
-public class Censor {
+class Censor {
 
-	private static int fragments[];
-	private static char bads[][];
-	private static byte badCombinations[][][];
-	private static char domains[][];
-	private static char tlds[][];
-	private static int tldTypes[];
+	private static int[] fragments;
+	private static char[][] bads;
+	private static byte[][][] badCombinations;
+	private static char[][] domains;
+	private static char[][] tlds;
+	private static int[] tldTypes;
 
-	private static final String WHITELISTED_WORDS[] = { "cook", "cook's", "cooks", "seeks", "sheet", "woop", "woops", "faq", "noob", "noobs" };
+	private static final String[] WHITELISTED_WORDS = {"cook", "cook's", "cooks", "seeks", "sheet", "woop", "woops", "faq", "noob", "noobs"};
 	private static final char[] SPELLED_AT_SYMBOL = { '(', 'a', ')' };
 	private static final char[] SPELLED_DOT = { 'd', 'o', 't' };
 	private static final char[] SPELLED_SLASH = { 's', 'l', 'a', 's', 'h' };
@@ -152,9 +152,7 @@ public class Censor {
 		for (int n = 0; n < WHITELISTED_WORDS.length; n++) {
 			for (int index = -1; (index = lowercase.indexOf(WHITELISTED_WORDS[n], index + 1)) != -1;) {
 				final char[] wchars = WHITELISTED_WORDS[n].toCharArray();
-				for (int i = 0; i < wchars.length; i++) {
-					chars[i + index] = wchars[i];
-				}
+				System.arraycopy(wchars, 0, chars, 0 + index, wchars.length);
 			}
 		}
 
@@ -199,10 +197,10 @@ public class Censor {
 	}
 
 	private static void filterDomains(final char[] chars) {
-		final char[] filteredAts = (char[]) chars.clone();
+		final char[] filteredAts = chars.clone();
 		filterBad(filteredAts, SPELLED_AT_SYMBOL, null);
 
-		final char[] filteredDots = (char[]) chars.clone();
+		final char[] filteredDots = chars.clone();
 		filterBad(filteredDots, SPELLED_DOT, null);
 
 		for (int i = domains.length - 1; i >= 0; i--) {
@@ -346,10 +344,10 @@ public class Censor {
 	}
 
 	private static void filterTlds(final char[] chars) {
-		final char[] filteredDot = (char[]) chars.clone();
+		final char[] filteredDot = chars.clone();
 		filterBad(filteredDot, SPELLED_DOT, null);
 
-		final char[] filteredSlash = (char[]) chars.clone();
+		final char[] filteredSlash = chars.clone();
 		filterBad(filteredSlash, SPELLED_SLASH, null);
 
 		for (int n = 0; n < tlds.length; n++) {

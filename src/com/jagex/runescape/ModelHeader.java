@@ -2,7 +2,7 @@ package com.jagex.runescape;
 
 final class ModelHeader {
 
-	public byte modelData[];
+    public byte[] modelData;
 
 	public int vertexCount;
 	public int triangleCount;
