@@ -9,22 +9,37 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="DockManager">
+    <window id="2">
+      <content type="file-editors">
+        <state>
+          <leaf>
+            <file pinned="false" current-in-tab="true">
+              <entry file="file://$PROJECT_DIR$/src/com/jagex/runescape/Client.java">
+                <provider selected="true" editor-type-id="text-editor">
+                  <state relative-caret-position="620">
+                    <caret line="4037" column="58" lean-forward="true" selection-start-line="4037" selection-start-column="58" selection-end-line="4037" selection-end-column="58" />
+                  </state>
+                </provider>
+              </entry>
+            </file>
+          </leaf>
+        </state>
+      </content>
+    </window>
+  </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/com/jagex/runescape/Client.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="259">
-              <caret line="681" column="32" selection-start-line="681" selection-start-column="32" selection-end-line="681" selection-end-column="32" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/jagex/runescape/screen/game/Minimap.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="51">
-              <caret line="3" column="21" selection-start-line="3" selection-start-column="21" selection-end-line="3" selection-end-column="21" />
+            <state relative-caret-position="425">
+              <caret line="54" column="46" selection-start-line="54" selection-start-column="46" selection-end-line="54" selection-end-column="46" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#1547#1548#0" expanded="true" />
+                <element signature="e#1613#1614#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -40,41 +55,42 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>middleRightBackgroundTile</find>
-      <find>setupLoginScreen</find>
-      <find>Starting up</find>
-      <find>archiveTitle =</find>
-      <find>Connecting to fileserver</find>
-      <find>loadTitleScreen</find>
-      <find>drawFlames</find>
-      <find>flameColour1</find>
-      <find>currentFlameColours</find>
-      <find>doFlamesDrawing</find>
-      <find>drawFlames2</find>
-      <find>flameLeftBackground2</find>
-      <find>flameLeftBackground</find>
-      <find>drawLogodrawLogo</find>
-      <find>drawLogo</find>
-      <find>flame</find>
-      <find>void run()</find>
-      <find>flameColour2</find>
-      <find>tick++</find>
-      <find>anInt1040</find>
-      <find>titleFlames</find>
-      <find>&lt;&lt; 7</find>
-      <find>anIntArray828</find>
-      <find>anIntArray969</find>
-      <find>calcFlamesPosition</find>
-      <find>update</find>
-      <find>drawTiles</find>
+      <find>groundarray</find>
+      <find>minimapHintCount</find>
+      <find>minimapHintX</find>
+      <find>minimapImage =</find>
+      <find>npcs</find>
+      <find>NPC[]</find>
+      <find>localplayer</find>
+      <find>localPlayer</find>
+      <find>cameraHorizontal =</find>
+      <find>hintIconType</find>
+      <find>local</find>
+      <find>players</find>
+      <find>minimapRotation</find>
+      <find>minimaprotati</find>
+      <find>minimapzoom</find>
+      <find>zoom</find>
+      <find>plane</find>
+      <find>friendslistas</find>
+      <find>worldids</find>
+      <find>minimapEdgeImage</find>
+      <find>minimapImage</find>
+      <find>minimapimage =</find>
+      <find>compassHingeSize</find>
+      <find>minimapHintY</find>
+      <find>compassWidthMap</find>
+      <find>minimapLeft</find>
+      <find>minimapLineWidth</find>
+      <find>cameraHorizontal</find>
       <find>minimap</find>
-      <find>titlescreen</find>
-      <find>titlescreen</find>
+      <find>updateImageProdu</find>
     </findStrings>
     <replaceStrings>
       <replace>titleFlamesTemp</replace>
       <replace>titleFlames</replace>
       <replace>gameComponent</replace>
+      <replace>Client.localPlayer</replace>
     </replaceStrings>
     <dirStrings>
       <dir>C:\Code\personal\317refactor\src</dir>
@@ -143,7 +159,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1547836283339" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1547837783441" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../venomite/venomite-server/venomite-server" />
     <property name="settings.editor.selected.configurable" value="preferences.editor" />
   </component>
@@ -201,7 +217,7 @@
     <frame x="1912" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.12953092" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.12953092" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -210,13 +226,13 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" sideWeight="0.4989339" weight="0.32502708" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49626866" visible="true" weight="0.22860238" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49573562" visible="true" weight="0.22860238" />
       <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.4978678" weight="0.39869988" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.3286119" />
       <window_info anchor="bottom" id="Terminal" order="7" weight="0.3286119" />
-      <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.50373137" side_tool="true" visible="true" weight="0.22860238" />
+      <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.5042644" side_tool="true" visible="true" weight="0.22860238" />
       <window_info anchor="bottom" id="Version Control" order="9" />
       <window_info anchor="bottom" id="Messages" order="10" sideWeight="0.4989339" weight="0.32936078" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -395,15 +411,20 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/jagex/runescape/screen/game/Minimap.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="3" column="21" selection-start-line="3" selection-start-column="21" selection-end-line="3" selection-end-column="21" />
+        <state relative-caret-position="425">
+          <caret line="54" column="46" selection-start-line="54" selection-start-column="46" selection-end-line="54" selection-end-column="46" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1547#1548#0" expanded="true" />
+            <element signature="e#1613#1614#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/jagex/runescape/Client.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="259">
-          <caret line="681" column="32" selection-start-line="681" selection-start-column="32" selection-end-line="681" selection-end-column="32" />
+        <state relative-caret-position="620">
+          <caret line="4037" column="58" lean-forward="true" selection-start-line="4037" selection-start-column="58" selection-end-line="4037" selection-end-column="58" />
         </state>
       </provider>
     </entry>

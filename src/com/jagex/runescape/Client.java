@@ -163,8 +163,6 @@ public final class Client extends RSApplet {
 	private IndexedImage redStone3_2;
 	private IndexedImage redStone1_4;
 	private IndexedImage redStone2_4;
-	private Sprite mapFlag;
-	private Sprite mapMarker;
 	private boolean aBoolean872;
 	private final int[] cameraJitter;
 	private int currentTrackId;
@@ -244,7 +242,6 @@ public final class Client extends RSApplet {
 	private int spriteDrawY;
 	private final int[] SPOKEN_TEXT_COLOURS = { 0xFFFF00, 0xFF0000, 0x00FF00, 0x00FFFF, 0xFF00FF, 0xFFFFFF };
 
-	private final int[] compassHingeSize;
 	final FileCache[] caches;
 	public int interfaceSettings[];
 	private boolean aBoolean972;
@@ -270,7 +267,6 @@ public final class Client extends RSApplet {
 	private int anInt998;
 	private int anInt999;
 	private ISAACRandomGenerator encryption;
-	private Sprite minimapEdgeImage;
 	private final int SCROLLBAR_TRACK_COLOUR;
 	static final int[][] APPEARANCE_COLOURS = {
 			{ 6798, 107, 10283, 16, 4797, 7744, 5799, 4634, 33697, 22433, 2983, 54193 },
@@ -291,7 +287,6 @@ public final class Client extends RSApplet {
 	private boolean cameraMovedWrite;
 	private int walkableInterfaceId;
 	private static final int[] EXPERIENCE_TABLE;
-	private int minimapState;
 	private int sameClickPositionCounter;
 	private int loadingStage;
 	private IndexedImage scrollBarUp;
@@ -317,12 +312,10 @@ public final class Client extends RSApplet {
 	private int anInt1048;
 	private String loadingBarText;
 	private static int loadedRegions;
-	private final int[] minimapLeft;
 	private Archive archiveTitle;
 	private int flashingSidebar;
 	private boolean multiCombatZone;
 	private DoubleEndedQueue stationaryGraphicQueue;
-	private final int[] compassWidthMap;
 	private final RSInterface chatboxInterface;
 	private IndexedImage[] mapSceneImage;
 	private static int drawCycle;
@@ -335,14 +328,6 @@ public final class Client extends RSApplet {
 	private OnDemandFetcher onDemandFetcher;
 	private int regionX;
 	private int regionY;
-	private int minimapHintCount;
-	private int[] minimapHintX;
-	private int[] minimapHintY;
-	private Sprite mapDotItem;
-	private Sprite mapDotNPC;
-	private Sprite mapDotPlayer;
-	private Sprite mapDotFriend;
-	private Sprite mapDotTeam;
 	private int loadingBarPercentage;
 	private boolean loadingMap;
 	private String[] friendsList;
@@ -369,7 +354,6 @@ public final class Client extends RSApplet {
 	private static int mouseClickCounter;
 	private int membership;
 	private String chatboxInputNeededString;
-	private Sprite minimapCompassImage;
 	private RSImageProducer chatSettingImageProducer;
 	private RSImageProducer bottomSideIconImageProducer;
 	private RSImageProducer topSideIconImageProducer;
@@ -385,7 +369,6 @@ public final class Client extends RSApplet {
 	private int selectedSpellId;
 	private int spellUsableOn;
 	private String spellTooltip;
-	private Sprite[] minimapHint;
 	private boolean inTutorialIsland;
 	private IndexedImage redStone1;
 	private IndexedImage redStone2;
@@ -407,13 +390,11 @@ public final class Client extends RSApplet {
 	static int tick;
 	private static final String validUserPassChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!\"\243$%^&*()-_=+[{]};:'@#~,<.>/?\\| ";
 	private RSImageProducer tabImageProducer;
-	private RSImageProducer minimapImageProducer;
 	private RSImageProducer gameScreenImageProducer;
 	private RSImageProducer chatboxImageProducer;
 	private int daysSinceRecoveryChange;
 	private RSSocket socket;
 	private int privateMessagePointer;
-	private int minimapZoom;
 	private int randomisationMinimapZoom;
 	private long songStartTime;
 	private String enteredUsername;
@@ -426,8 +407,8 @@ public final class Client extends RSApplet {
 	private int[] sidebarOffsets;
 	private int[] viewportOffsets;
 	private byte[][] terrainData;
-	private int cameraVertical;
-	private int cameraHorizontal;
+	public static int cameraVertical;
+	public static int cameraHorizontal;
 	private int cameraModificationH;
 	private int cameraModificationV;
 	private int inventoryOverlayInterfaceID;
@@ -435,7 +416,6 @@ public final class Client extends RSApplet {
 	private int lastAddress;
 	private int splitPrivateChat;
 	private IndexedImage inventoryBackgroundImage;
-	private IndexedImage minimapBackgroundImage;
 	private IndexedImage chatBackgroundImage;
 	private String[] menuActionName;
 	private final int[] cameraAmplitude;
@@ -443,7 +423,6 @@ public final class Client extends RSApplet {
 			1457, 16565, 34991, 25486 };
 	private static boolean flagged;
 	private final int[] trackIds;
-	private int minimapRotation;
 	private int randomisationMinimapRotation;
 	private int chatboxScrollMax;
 	private String promptInput;
@@ -459,7 +438,6 @@ public final class Client extends RSApplet {
 	private int inputDialogState;
 	private int nextSong;
 	private boolean songChanging;
-	private final int[] minimapLineWidth;
 	private CollisionMap[] currentCollisionMap;
 	public static int BITFIELD_MAX_VALUE[];
 	private boolean updateChatSettings;
@@ -490,7 +468,6 @@ public final class Client extends RSApplet {
 	private int prevSong;
 	private int destinationX;
 	private int destinationY;
-	private Sprite minimapImage;
 	private int arbitraryDestination;
 	private int renderCount;
 	private String loginMessage1;
@@ -579,7 +556,6 @@ public final class Client extends RSApplet {
 		currentSong = -1;
 		spriteDrawX = -1;
 		spriteDrawY = -1;
-		compassHingeSize = new int[33];
 		caches = new FileCache[5];
 		interfaceSettings = new int[2000];
 		aBoolean972 = false;
@@ -607,16 +583,12 @@ public final class Client extends RSApplet {
 		skillMaxLevel = new int[Skills.skillsCount];
 		defaultSettings = new int[2000];
 		characterEditChangeGender = true;
-		minimapLeft = new int[151];
 		flashingSidebar = -1;
 		stationaryGraphicQueue = new DoubleEndedQueue();
-		compassWidthMap = new int[33];
 		chatboxInterface = new RSInterface();
 		mapSceneImage = new IndexedImage[100];
 		SCROLLBAR_GRIP_FOREGROUND = 0x4d4233;
 		characterEditIdentityKits = new int[7];
-		minimapHintX = new int[1000];
-		minimapHintY = new int[1000];
 		loadingMap = false;
 		friendsList = new String[200];
 		inStream = Buffer.create();
@@ -632,7 +604,6 @@ public final class Client extends RSApplet {
 		playerActionUnpinned = new boolean[5];
 		constructMapTiles = new int[4][13][13];
 		nextCameraRandomisationV = 2;
-		minimapHint = new Sprite[1000];
 		inTutorialIsland = false;
 		continuedDialogue = false;
 		crosses = new Sprite[8];
@@ -661,7 +632,6 @@ public final class Client extends RSApplet {
 		currentTabId = 3;
 		redrawChatbox = false;
 		songChanging = true;
-		minimapLineWidth = new int[151];
 		currentCollisionMap = new CollisionMap[4];
 		updateChatSettings = false;
 		privateMessages = new int[100];
@@ -1736,7 +1706,6 @@ public final class Client extends RSApplet {
 		walkingQueueY = null;
 		animatedPixels = null;
 		tabImageProducer = null;
-		minimapImageProducer = null;
 		gameScreenImageProducer = null;
 		chatboxImageProducer = null;
 		chatSettingImageProducer = null;
@@ -1752,7 +1721,6 @@ public final class Client extends RSApplet {
 		backVmidIP3 = null;
 		backVmidIP2_2 = null;
 		inventoryBackgroundImage = null;
-		minimapBackgroundImage = null;
 		chatBackgroundImage = null;
 		backBase1Image = null;
 		backBase2Image = null;
@@ -1768,15 +1736,9 @@ public final class Client extends RSApplet {
 		redStone3_2 = null;
 		redStone1_4 = null;
 		redStone2_4 = null;
-		minimapCompassImage = null;
 		hitMarkImage = null;
 		headIcons = null;
 		crosses = null;
-		mapDotItem = null;
-		mapDotNPC = null;
-		mapDotPlayer = null;
-		mapDotFriend = null;
-		mapDotTeam = null;
 		mapSceneImage = null;
 		mapFunctionImage = null;
 		tileRenderCount = null;
@@ -1797,10 +1759,6 @@ public final class Client extends RSApplet {
 		menuActionData1 = null;
 		menuActionName = null;
 		interfaceSettings = null;
-		minimapHintX = null;
-		minimapHintY = null;
-		minimapHint = null;
-		minimapImage = null;
 		friendsList = null;
 		friendsListAsLongs = null;
 		friendsWorldIds = null;
@@ -3505,7 +3463,7 @@ public final class Client extends RSApplet {
 			updateChatSettings = true;
 			if (loadingStage != 2) {
 				gameScreenImageProducer.drawGraphics(4, super.gameGraphics, 4);
-				minimapImageProducer.drawGraphics(4, super.gameGraphics, 550);
+				minimap.draw(super.gameGraphics);
 			}
 		}
 		if (loadingStage == 2)
@@ -3559,7 +3517,7 @@ public final class Client extends RSApplet {
 		}
 		if (loadingStage == 2) {
 			drawMinimap();
-			minimapImageProducer.drawGraphics(4, super.gameGraphics, 550);
+			minimap.draw(super.gameGraphics);
 		}
 		if (flashingSidebar != -1)
 			drawTabIcons = true;
@@ -4024,110 +3982,15 @@ public final class Client extends RSApplet {
 	}
 
 	private void drawMinimap() {
-		minimapImageProducer.initDrawingArea();
-		if (minimapState == 2) {
-			byte backgroundPixels[] = minimapBackgroundImage.pixels;
-			int rasterPixels[] = DrawingArea.pixels;
-			int pixelCount = backgroundPixels.length;
-			for (int p = 0; p < pixelCount; p++)
-				if (backgroundPixels[p] == 0)
-					rasterPixels[p] = 0;
-
-			minimapCompassImage.rotate(33, cameraHorizontal, compassWidthMap, 256, compassHingeSize, 25, 0, 0, 33, 25);
-			gameScreenImageProducer.initDrawingArea();
-			return;
-		}
-		int angle = cameraHorizontal + minimapRotation & 0x7FF;
-		int centreX = 48 + localPlayer.x / 32;
-		int centreY = 464 - localPlayer.y / 32;
-		minimapImage.rotate(151, angle, minimapLineWidth, 256 + minimapZoom, minimapLeft, centreY, 5, 25, 146, centreX);
-		minimapCompassImage.rotate(33, cameraHorizontal, compassWidthMap, 256, compassHingeSize, 25, 0, 0, 33, 25);
-		for (int icon = 0; icon < minimapHintCount; icon++) {
-			int mapX = (minimapHintX[icon] * 4 + 2) - localPlayer.x / 32;
-			int mapY = (minimapHintY[icon] * 4 + 2) - localPlayer.y / 32;
-			markMinimap(minimapHint[icon], mapX, mapY);
-		}
-
-		for (int x = 0; x < 104; x++) {
-			for (int y = 0; y < 104; y++) {
-				DoubleEndedQueue itemStack = groundArray[plane][x][y];
-				if (itemStack != null) {
-					int mapX = (x * 4 + 2) - localPlayer.x / 32;
-					int mapY = (y * 4 + 2) - localPlayer.y / 32;
-					markMinimap(mapDotItem, mapX, mapY);
-				}
-			}
-		}
-
-		for (int n = 0; n < npcCount; n++) {
-			NPC npc = npcs[npcIds[n]];
-			if (npc != null && npc.isVisible()) {
-				EntityDefinition definition = npc.npcDefinition;
-				if (definition.childrenIDs != null)
-					definition = definition.getChildDefinition();
-				if (definition != null && definition.visibleMinimap && definition.clickable) {
-					int mapX = npc.x / 32 - localPlayer.x / 32;
-					int mapY = npc.y / 32 - localPlayer.y / 32;
-					markMinimap(mapDotNPC, mapX, mapY);
-				}
-			}
-		}
-
-		for (int p = 0; p < localPlayerCount; p++) {
-			Player player = players[localPlayers[p]];
-			if (player != null && player.isVisible()) {
-				int mapX = player.x / 32 - localPlayer.x / 32;
-				int mapY = player.y / 32 - localPlayer.y / 32;
-				boolean friend = false;
-				long nameHash = TextClass.nameToLong(player.name);
-				for (int f = 0; f < friendsCount; f++) {
-					if (nameHash != friendsListAsLongs[f] || friendsWorldIds[f] == 0)
-						continue;
-					friend = true;
-					break;
-				}
-
-				boolean team = false;
-				if (localPlayer.team != 0 && player.team != 0 && localPlayer.team == player.team)
-					team = true;
-				if (friend)
-					markMinimap(mapDotFriend, mapX, mapY);
-				else if (team)
-					markMinimap(mapDotTeam, mapX, mapY);
-				else
-					markMinimap(mapDotPlayer, mapX, mapY);
-			}
-		}
-
-		if (hintIconType != 0 && tick % 20 < 10) {
-			if (hintIconType == 1 && hintIconNpcId >= 0 && hintIconNpcId < npcs.length) {
-				NPC npc = npcs[hintIconNpcId];
-				if (npc != null) {
-					int mapX = npc.x / 32 - localPlayer.x / 32;
-					int mapY = npc.y / 32 - localPlayer.y / 32;
-					drawMinimapTarget(mapMarker, mapY, mapX);
-				}
-			}
-			if (hintIconType == 2) {
-				int mapX = ((hintIconX - baseX) * 4 + 2) - localPlayer.x / 32;
-				int mapY = ((hintIconY - baseY) * 4 + 2) - localPlayer.y / 32;
-				drawMinimapTarget(mapMarker, mapY, mapX);
-			}
-			if (hintIconType == 10 && hintIconPlayerId >= 0 && hintIconPlayerId < players.length) {
-				Player player = players[hintIconPlayerId];
-				if (player != null) {
-					int mapX = player.x / 32 - localPlayer.x / 32;
-					int mapY = player.y / 32 - localPlayer.y / 32;
-					drawMinimapTarget(mapMarker, mapY, mapX);
-				}
-			}
-		}
-		if (destinationX != 0) {
-			int mapX = (destinationX * 4 + 2) - localPlayer.x / 32;
-			int mapY = (destinationY * 4 + 2) - localPlayer.y / 32;
-			markMinimap(mapFlag, mapX, mapY);
-		}
-		DrawingArea.drawFilledRectangle(97, 78, 3, 3, 0xFFFFFF);
+		minimap.updateImageProducer(
+				baseX, baseY,
+				localPlayerCount, players, localPlayers,
+				friendsCount, friendsListAsLongs, friendsWorldIds,
+				groundArray[plane],
+				npcCount, npcs, npcIds,
+				hintIconType, hintIconNpcId, hintIconPlayerId, hintIconX, hintIconY,
+				destinationX, destinationY, tick
+		);
 		gameScreenImageProducer.initDrawingArea();
 	}
 
@@ -4142,7 +4005,7 @@ public final class Client extends RSApplet {
 			int colour = lineColour;
 			if (uid > 0)
 				colour = interfactiveColour;
-			int pixels[] = minimapImage.pixels;
+			int pixels[] = minimap.minimapImage.pixels;
 			int pixel = 24624 + x * 4 + (103 - y) * 512 * 4;
 			int objectId = uid >> 14 & 0x7FFF;
 			GameObjectDefinition definition = GameObjectDefinition.getDefinition(objectId);
@@ -4230,7 +4093,7 @@ public final class Client extends RSApplet {
 				int colour = 0xEEEEEE;
 				if (uid > 0)
 					colour = 0xEE0000;
-				int pixels[] = minimapImage.pixels;
+				int pixels[] = minimap.minimapImage.pixels;
 				int pixel = 24624 + x * 4 + (103 - y) * 512 * 4;
 				if (direction == 0 || direction == 2) {
 					pixels[pixel + 1536] = colour;
@@ -4258,25 +4121,6 @@ public final class Client extends RSApplet {
 					background.draw(48 + x * 4 + _x, 48 + (104 - y - definition.sizeY) * 4 + _y);
 				}
 			}
-		}
-	}
-
-	private void drawMinimapTarget(Sprite sprite, int y, int x) {
-		int l = x * x + y * y;
-		if (l > 4225 && l < 0x15F90) {
-			int angle = cameraHorizontal + minimapRotation & 0x7FF;
-			int sine = Model.SINE[angle];
-			int cosine = Model.COSINE[angle];
-			sine = (sine * 256) / (minimapZoom + 256);
-			cosine = (cosine * 256) / (minimapZoom + 256);
-			int l1 = y * sine + x * cosine >> 16;
-			int i2 = y * cosine - x * sine >> 16;
-			double d = Math.atan2(l1, i2);
-			int randomX = (int) (Math.sin(d) * 63D);
-			int randomY = (int) (Math.cos(d) * 57D);
-			minimapEdgeImage.rotate(88 + randomX, 63 - randomY, d);
-		} else {
-			markMinimap(sprite, x, y);
 		}
 	}
 
@@ -4378,7 +4222,7 @@ public final class Client extends RSApplet {
 		fontPlain.drawCentredText("Please wait - attempting to reestablish", 257, 159, 0);
 		fontPlain.drawCentredText("Please wait - attempting to reestablish", 256, 158, 0xFFFFFF);
 		gameScreenImageProducer.drawGraphics(4, super.gameGraphics, 4);
-		minimapState = 0;
+		minimap.state = 0;
 		destinationX = 0;
 		RSSocket rsSocket = socket;
 		loggedIn = false;
@@ -4954,7 +4798,7 @@ public final class Client extends RSApplet {
 				return true;
 			}
 			if (packetOpcode == 99) {
-				minimapState = inStream.getUnsignedByte();
+				minimap.state = inStream.getUnsignedByte();
 				packetOpcode = -1;
 				return true;
 			}
@@ -6184,10 +6028,10 @@ public final class Client extends RSApplet {
 				cameraRandomisationH = (int) (Math.random() * 100D) - 50;
 				cameraRandomisationV = (int) (Math.random() * 110D) - 55;
 				cameraRandomisationA = (int) (Math.random() * 80D) - 40;
-				minimapRotation = (int) (Math.random() * 120D) - 60;
-				minimapZoom = (int) (Math.random() * 30D) - 20;
+				minimap.rotation = (int) (Math.random() * 120D) - 60;
+				minimap.zoom = (int) (Math.random() * 30D) - 20;
 				cameraHorizontal = (int) (Math.random() * 20D) - 10 & 0x7FF;
-				minimapState = 0;
+				minimap.state = 0;
 				lastRegionId = -1;
 				destinationX = 0;
 				destinationY = 0;
@@ -6675,17 +6519,17 @@ public final class Client extends RSApplet {
 			minimapRandomisationCounter = 0;
 			int type = (int) (Math.random() * 8D);
 			if ((type & 1) == 1)
-				minimapRotation += randomisationMinimapRotation;
+				minimap.rotation += randomisationMinimapRotation;
 			if ((type & 2) == 2)
-				minimapZoom += randomisationMinimapZoom;
+				minimap.zoom += randomisationMinimapZoom;
 		}
-		if (minimapRotation < -60)
+		if (minimap.rotation < -60)
 			randomisationMinimapRotation = 2;
-		if (minimapRotation > 60)
+		if (minimap.rotation > 60)
 			randomisationMinimapRotation = -2;
-		if (minimapZoom < -20)
+		if (minimap.zoom < -20)
 			randomisationMinimapZoom = 1;
-		if (minimapZoom > 10)
+		if (minimap.zoom > 10)
 			randomisationMinimapZoom = -1;
 		idleCounter++;
 		if (idleCounter > 50)
@@ -6936,28 +6780,6 @@ public final class Client extends RSApplet {
 				}
 			}
 		} while (true);
-	}
-
-	private void markMinimap(Sprite sprite, int x, int y) {
-		int angle = cameraHorizontal + minimapRotation & 0x7FF;
-		int l = x * x + y * y;
-		if (l > 6400)
-			return;
-		int sineAngle = Model.SINE[angle];
-		int cosineAngle = Model.COSINE[angle];
-		sineAngle = (sineAngle * 256) / (minimapZoom + 256);
-		cosineAngle = (cosineAngle * 256) / (minimapZoom + 256);
-		int spriteOffsetX = y * sineAngle + x * cosineAngle >> 16;
-		int spriteOffsetY = y * cosineAngle - x * sineAngle >> 16;
-		if (l > 2500) {
-			sprite.method354(minimapBackgroundImage, 83 - spriteOffsetY - sprite.maxHeight / 2 - 4,
-					((94 + spriteOffsetX) - sprite.maxWidth / 2) + 4);
-		} else {
-			sprite.drawImage(((94 + spriteOffsetX) - sprite.maxWidth / 2) + 4,
-					83 - spriteOffsetY - sprite.maxHeight / 2 - 4);
-		}
-
-		minimapImageProducer.initDrawingArea();
 	}
 
 	private boolean menuRowIsAddFriend(int row) {
@@ -7748,7 +7570,7 @@ public final class Client extends RSApplet {
 	}
 
 	private void processMinimapClick() {
-		if (minimapState != 0)
+		if (minimap.state != 0)
 			return;
 		if (super.clickType == 1) {
 			int i = super.clickX - 25 - 550;
@@ -7756,11 +7578,11 @@ public final class Client extends RSApplet {
 			if (i >= 0 && j >= 0 && i < 146 && j < 151) {
 				i -= 73;
 				j -= 75;
-				int k = cameraHorizontal + minimapRotation & 0x7FF;
+				int k = cameraHorizontal + minimap.rotation & 0x7FF;
 				int sine = Rasterizer.SINE[k];
 				int cosine = Rasterizer.COSINE[k];
-				sine = sine * (minimapZoom + 256) >> 8;
-				cosine = cosine * (minimapZoom + 256) >> 8;
+				sine = sine * (minimap.zoom + 256) >> 8;
+				cosine = cosine * (minimap.zoom + 256) >> 8;
 				int k1 = j * sine + i * cosine >> 11;
 				int l1 = j * cosine - i * sine >> 11;
 				int i2 = localPlayer.x + k1 >> 7;
@@ -7772,8 +7594,8 @@ public final class Client extends RSApplet {
 					stream.put(j);
 					stream.putShort(cameraHorizontal);
 					stream.put(57);
-					stream.put(minimapRotation);
-					stream.put(minimapZoom);
+					stream.put(minimap.rotation);
+					stream.put(minimap.zoom);
 					stream.put(89);
 					stream.putShort(localPlayer.x);
 					stream.putShort(localPlayer.y);
@@ -8310,7 +8132,7 @@ public final class Client extends RSApplet {
 	}
 
 	private void renderMinimap(int z) {
-		int pixels[] = minimapImage.pixels;
+		int pixels[] = minimap.minimapImage.pixels;
 		int pixelCount = pixels.length;
 		for (int pixel = 0; pixel < pixelCount; pixel++)
 			pixels[pixel] = 0;
@@ -8330,7 +8152,7 @@ public final class Client extends RSApplet {
 		int primaryColour = ((238 + (int) (Math.random() * 20D)) - 10 << 16)
 				+ ((238 + (int) (Math.random() * 20D)) - 10 << 8) + ((238 + (int) (Math.random() * 20D)) - 10);
 		int secondaryColour = (238 + (int) (Math.random() * 20D)) - 10 << 16;
-		minimapImage.initDrawingArea();
+		minimap.minimapImage.initDrawingArea();
 		for (int y = 1; y < 103; y++) {
 			for (int x = 1; x < 103; x++) {
 				if ((tileFlags[z][x][y] & 0x18) == 0)
@@ -8342,7 +8164,7 @@ public final class Client extends RSApplet {
 		}
 
 		gameScreenImageProducer.initDrawingArea();
-		minimapHintCount = 0;
+		minimap.minimapHintCount = 0;
 		for (int x = 0; x < 104; x++) {
 			for (int y = 0; y < 104; y++) {
 				int hash = worldController.getGroundDecorationHash(x, y, plane);
@@ -8377,10 +8199,10 @@ public final class Client extends RSApplet {
 							}
 
 						}
-						minimapHint[minimapHintCount] = mapFunctionImage[icon];
-						minimapHintX[minimapHintCount] = drawPointX;
-						minimapHintY[minimapHintCount] = drawPointY;
-						minimapHintCount++;
+						minimap.minimapHint[minimap.minimapHintCount] = mapFunctionImage[icon];
+						minimap.minimapHintX[minimap.minimapHintCount] = drawPointX;
+						minimap.minimapHintY[minimap.minimapHintCount] = drawPointY;
+						minimap.minimapHintCount++;
 					}
 				}
 			}
@@ -8618,7 +8440,6 @@ public final class Client extends RSApplet {
 			return;
 		super.fullGameScreen = null;
 		chatboxImageProducer = null;
-		minimapImageProducer = null;
 		tabImageProducer = null;
 		gameScreenImageProducer = null;
 		chatSettingImageProducer = null;
@@ -8640,9 +8461,7 @@ public final class Client extends RSApplet {
 		super.fullGameScreen = null;
 		titleScreen.clearImageProducers();
 		chatboxImageProducer = new RSImageProducer(479, 96, getGameComponent());
-		minimapImageProducer = new RSImageProducer(172, 156, getGameComponent());
-		DrawingArea.clear();
-		minimapBackgroundImage.draw(0, 0);
+		minimap.setupImageProducer(getGameComponent());
 		tabImageProducer = new RSImageProducer(190, 261, getGameComponent());
 		gameScreenImageProducer = new RSImageProducer(512, 334, getGameComponent());
 		DrawingArea.clear();
@@ -9083,7 +8902,6 @@ public final class Client extends RSApplet {
 			for (int z = 0; z < 4; z++)
 				currentCollisionMap[z] = new CollisionMap();
 
-			minimapImage = new Sprite(512, 512);
 			Archive archiveVersions = requestArchive(5, "update list", "versionlist", expectedCRCs[5], 60);
 			drawLoadingText(60, "Connecting to update server");
 			onDemandFetcher = new OnDemandFetcher();
@@ -9209,16 +9027,15 @@ public final class Client extends RSApplet {
 			drawLoadingText(80, "Unpacking media");
 			inventoryBackgroundImage = new IndexedImage(archiveMedia, "invback", 0);
 			chatBackgroundImage = new IndexedImage(archiveMedia, "chatback", 0);
-			minimapBackgroundImage = new IndexedImage(archiveMedia, "mapback", 0);
+
+			minimap.load(archiveMedia);
+
 			backBase1Image = new IndexedImage(archiveMedia, "backbase1", 0);
 			backBase2Image = new IndexedImage(archiveMedia, "backbase2", 0);
 			backHmid1Image = new IndexedImage(archiveMedia, "backhmid1", 0);
 			for (int icon = 0; icon < 13; icon++)
 				sideIconImage[icon] = new IndexedImage(archiveMedia, "sideicons", icon);
 
-			minimapCompassImage = new Sprite(archiveMedia, "compass", 0);
-			minimapEdgeImage = new Sprite(archiveMedia, "mapedge", 0);
-			minimapEdgeImage.trim();
 			try {
 				for (int i = 0; i < 100; i++)
 					mapSceneImage[i] = new IndexedImage(archiveMedia, "mapscene", i);
@@ -9245,16 +9062,9 @@ public final class Client extends RSApplet {
 			} catch (Exception _ex) {
 				_ex.printStackTrace();
 			}
-			mapFlag = new Sprite(archiveMedia, "mapmarker", 0);
-			mapMarker = new Sprite(archiveMedia, "mapmarker", 1);
 			for (int i = 0; i < 8; i++)
 				crosses[i] = new Sprite(archiveMedia, "cross", i);
 
-			mapDotItem = new Sprite(archiveMedia, "mapdots", 0);
-			mapDotNPC = new Sprite(archiveMedia, "mapdots", 1);
-			mapDotPlayer = new Sprite(archiveMedia, "mapdots", 2);
-			mapDotFriend = new Sprite(archiveMedia, "mapdots", 3);
-			mapDotTeam = new Sprite(archiveMedia, "mapdots", 4);
 			scrollBarUp = new IndexedImage(archiveMedia, "scrollbar", 0);
 			scrollBarDown = new IndexedImage(archiveMedia, "scrollbar", 1);
 			redStone1 = new IndexedImage(archiveMedia, "redstone1", 0);
@@ -9344,44 +9154,8 @@ public final class Client extends RSApplet {
 			GameFont fonts[] = { fontSmall, fontPlain, fontBold, fontFancy };
 			RSInterface.unpack(archiveInterface, fonts, archiveMedia);
 			drawLoadingText(100, "Preparing game engine");
-			for (int _y = 0; _y < 33; _y++) {
-				int firstXOfLine = 999;
-				int lastXOfLine = 0;
-				for (int _x = 0; _x < 34; _x++) {
-					if (minimapBackgroundImage.pixels[_x + _y * minimapBackgroundImage.width] == 0) {
-						if (firstXOfLine == 999)
-							firstXOfLine = _x;
-						continue;
-					}
-					if (firstXOfLine == 999)
-						continue;
-					lastXOfLine = _x;
-					break;
-				}
 
-				compassHingeSize[_y] = firstXOfLine;
-				compassWidthMap[_y] = lastXOfLine - firstXOfLine;
-			}
-
-			for (int _y = 5; _y < 156; _y++) {
-				int min = 999;
-				int max = 0;
-				for (int _x = 25; _x < 172; _x++) {
-					if (minimapBackgroundImage.pixels[_x + _y * minimapBackgroundImage.width] == 0
-							&& (_x > 34 || _y > 34)) {
-						if (min == 999)
-							min = _x;
-						continue;
-					}
-					if (min == 999)
-						continue;
-					max = _x;
-					break;
-				}
-
-				minimapLeft[_y - 5] = min - 25;
-				minimapLineWidth[_y - 5] = max - min;
-			}
+			minimap.calculateSizes();
 
 			Rasterizer.setBounds(479, 96);
 			chatboxLineOffsets = Rasterizer.lineOffsets;
