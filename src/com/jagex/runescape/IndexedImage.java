@@ -129,7 +129,7 @@ public final class IndexedImage extends DrawingArea {
 		int i = 0;
 		for (int y = 0; y < this.height; y++) {
 			for (int x = 0; x < this.width; x++) {
-				pixels[x + this.drawOffsetX + (y + this.drawOffsetY) * this.resizeWidth] = pixels[i++];
+				pixels[x + this.drawOffsetX + (y + this.drawOffsetY) * this.resizeWidth] = this.pixels[i++];
 			}
 		}
 
