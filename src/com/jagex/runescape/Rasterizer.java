@@ -111,312 +111,312 @@ public final class Rasterizer extends DrawingArea {
 
 	}
 
-	public static void drawFlatTriangle(int i, int j, int k, int l, int i1, int j1, final int k1) {
+	public static void drawFlatTriangle(int yA, int yB, int yC, int xA, int xB, int xC, final int colour) {
 		int l1 = 0;
-		if (j != i) {
-            l1 = (i1 - l << 16) / (j - i);
+		if (yB != yA) {
+            l1 = (xB - xA << 16) / (yB - yA);
         }
 		int i2 = 0;
-		if (k != j) {
-            i2 = (j1 - i1 << 16) / (k - j);
+		if (yC != yB) {
+            i2 = (xC - xB << 16) / (yC - yB);
         }
 		int j2 = 0;
-		if (k != i) {
-            j2 = (l - j1 << 16) / (i - k);
+		if (yC != yA) {
+            j2 = (xA - xC << 16) / (yA - yC);
         }
-		if (i <= j && i <= k) {
-			if (i >= DrawingArea.bottomY) {
+		if (yA <= yB && yA <= yC) {
+			if (yA >= DrawingArea.bottomY) {
                 return;
             }
-			if (j > DrawingArea.bottomY) {
-                j = DrawingArea.bottomY;
+			if (yB > DrawingArea.bottomY) {
+                yB = DrawingArea.bottomY;
             }
-			if (k > DrawingArea.bottomY) {
-                k = DrawingArea.bottomY;
+			if (yC > DrawingArea.bottomY) {
+                yC = DrawingArea.bottomY;
             }
-			if (j < k) {
-				j1 = l <<= 16;
-				if (i < 0) {
-					j1 -= j2 * i;
-					l -= l1 * i;
-					i = 0;
+			if (yB < yC) {
+				xC = xA <<= 16;
+				if (yA < 0) {
+					xC -= j2 * yA;
+					xA -= l1 * yA;
+					yA = 0;
 				}
-				i1 <<= 16;
-				if (j < 0) {
-					i1 -= i2 * j;
-					j = 0;
+				xB <<= 16;
+				if (yB < 0) {
+					xB -= i2 * yB;
+					yB = 0;
 				}
-				if (i != j && j2 < l1 || i == j && j2 > i2) {
-					k -= j;
-					j -= i;
-					for (i = lineOffsets[i]; --j >= 0; i += DrawingArea.width) {
-						method377(DrawingArea.pixels, i, k1, j1 >> 16, l >> 16);
-						j1 += j2;
-						l += l1;
+				if (yA != yB && j2 < l1 || yA == yB && j2 > i2) {
+					yC -= yB;
+					yB -= yA;
+					for (yA = lineOffsets[yA]; --yB >= 0; yA += DrawingArea.width) {
+						rasterizeFlat(DrawingArea.pixels, colour, yA, xC >> 16, xA >> 16);
+						xC += j2;
+						xA += l1;
 					}
 
-					while (--k >= 0) {
-						method377(DrawingArea.pixels, i, k1, j1 >> 16, i1 >> 16);
-						j1 += j2;
-						i1 += i2;
-						i += DrawingArea.width;
+					while (--yC >= 0) {
+						rasterizeFlat(DrawingArea.pixels, colour, yA, xC >> 16, xB >> 16);
+						xC += j2;
+						xB += i2;
+						yA += DrawingArea.width;
 					}
 					return;
 				}
-				k -= j;
-				j -= i;
-				for (i = lineOffsets[i]; --j >= 0; i += DrawingArea.width) {
-					method377(DrawingArea.pixels, i, k1, l >> 16, j1 >> 16);
-					j1 += j2;
-					l += l1;
+				yC -= yB;
+				yB -= yA;
+				for (yA = lineOffsets[yA]; --yB >= 0; yA += DrawingArea.width) {
+					rasterizeFlat(DrawingArea.pixels, colour, yA, xA >> 16, xC >> 16);
+					xC += j2;
+					xA += l1;
 				}
 
-				while (--k >= 0) {
-					method377(DrawingArea.pixels, i, k1, i1 >> 16, j1 >> 16);
-					j1 += j2;
-					i1 += i2;
-					i += DrawingArea.width;
+				while (--yC >= 0) {
+					rasterizeFlat(DrawingArea.pixels, colour, yA, xB >> 16, xC >> 16);
+					xC += j2;
+					xB += i2;
+					yA += DrawingArea.width;
 				}
 				return;
 			}
-			i1 = l <<= 16;
-			if (i < 0) {
-				i1 -= j2 * i;
-				l -= l1 * i;
-				i = 0;
+			xB = xA <<= 16;
+			if (yA < 0) {
+				xB -= j2 * yA;
+				xA -= l1 * yA;
+				yA = 0;
 			}
-			j1 <<= 16;
-			if (k < 0) {
-				j1 -= i2 * k;
-				k = 0;
+			xC <<= 16;
+			if (yC < 0) {
+				xC -= i2 * yC;
+				yC = 0;
 			}
-			if (i != k && j2 < l1 || i == k && i2 > l1) {
-				j -= k;
-				k -= i;
-				for (i = lineOffsets[i]; --k >= 0; i += DrawingArea.width) {
-					method377(DrawingArea.pixels, i, k1, i1 >> 16, l >> 16);
-					i1 += j2;
-					l += l1;
+			if (yA != yC && j2 < l1 || yA == yC && i2 > l1) {
+				yB -= yC;
+				yC -= yA;
+				for (yA = lineOffsets[yA]; --yC >= 0; yA += DrawingArea.width) {
+					rasterizeFlat(DrawingArea.pixels, colour, yA, xB >> 16, xA >> 16);
+					xB += j2;
+					xA += l1;
 				}
 
-				while (--j >= 0) {
-					method377(DrawingArea.pixels, i, k1, j1 >> 16, l >> 16);
-					j1 += i2;
-					l += l1;
-					i += DrawingArea.width;
+				while (--yB >= 0) {
+					rasterizeFlat(DrawingArea.pixels, colour, yA, xC >> 16, xA >> 16);
+					xC += i2;
+					xA += l1;
+					yA += DrawingArea.width;
 				}
 				return;
 			}
-			j -= k;
-			k -= i;
-			for (i = lineOffsets[i]; --k >= 0; i += DrawingArea.width) {
-				method377(DrawingArea.pixels, i, k1, l >> 16, i1 >> 16);
-				i1 += j2;
-				l += l1;
+			yB -= yC;
+			yC -= yA;
+			for (yA = lineOffsets[yA]; --yC >= 0; yA += DrawingArea.width) {
+				rasterizeFlat(DrawingArea.pixels, colour, yA, xA >> 16, xB >> 16);
+				xB += j2;
+				xA += l1;
 			}
 
-			while (--j >= 0) {
-				method377(DrawingArea.pixels, i, k1, l >> 16, j1 >> 16);
-				j1 += i2;
-				l += l1;
-				i += DrawingArea.width;
+			while (--yB >= 0) {
+				rasterizeFlat(DrawingArea.pixels, colour, yA, xA >> 16, xC >> 16);
+				xC += i2;
+				xA += l1;
+				yA += DrawingArea.width;
 			}
 			return;
 		}
-		if (j <= k) {
-			if (j >= DrawingArea.bottomY) {
+		if (yB <= yC) {
+			if (yB >= DrawingArea.bottomY) {
                 return;
             }
-			if (k > DrawingArea.bottomY) {
-                k = DrawingArea.bottomY;
+			if (yC > DrawingArea.bottomY) {
+                yC = DrawingArea.bottomY;
             }
-			if (i > DrawingArea.bottomY) {
-                i = DrawingArea.bottomY;
+			if (yA > DrawingArea.bottomY) {
+                yA = DrawingArea.bottomY;
             }
-			if (k < i) {
-				l = i1 <<= 16;
-				if (j < 0) {
-					l -= l1 * j;
-					i1 -= i2 * j;
-					j = 0;
+			if (yC < yA) {
+				xA = xB <<= 16;
+				if (yB < 0) {
+					xA -= l1 * yB;
+					xB -= i2 * yB;
+					yB = 0;
 				}
-				j1 <<= 16;
-				if (k < 0) {
-					j1 -= j2 * k;
-					k = 0;
+				xC <<= 16;
+				if (yC < 0) {
+					xC -= j2 * yC;
+					yC = 0;
 				}
-				if (j != k && l1 < i2 || j == k && l1 > j2) {
-					i -= k;
-					k -= j;
-					for (j = lineOffsets[j]; --k >= 0; j += DrawingArea.width) {
-						method377(DrawingArea.pixels, j, k1, l >> 16, i1 >> 16);
-						l += l1;
-						i1 += i2;
+				if (yB != yC && l1 < i2 || yB == yC && l1 > j2) {
+					yA -= yC;
+					yC -= yB;
+					for (yB = lineOffsets[yB]; --yC >= 0; yB += DrawingArea.width) {
+						rasterizeFlat(DrawingArea.pixels, colour, yB, xA >> 16, xB >> 16);
+						xA += l1;
+						xB += i2;
 					}
 
-					while (--i >= 0) {
-						method377(DrawingArea.pixels, j, k1, l >> 16, j1 >> 16);
-						l += l1;
-						j1 += j2;
-						j += DrawingArea.width;
+					while (--yA >= 0) {
+						rasterizeFlat(DrawingArea.pixels, colour, yB, xA >> 16, xC >> 16);
+						xA += l1;
+						xC += j2;
+						yB += DrawingArea.width;
 					}
 					return;
 				}
-				i -= k;
-				k -= j;
-				for (j = lineOffsets[j]; --k >= 0; j += DrawingArea.width) {
-					method377(DrawingArea.pixels, j, k1, i1 >> 16, l >> 16);
-					l += l1;
-					i1 += i2;
+				yA -= yC;
+				yC -= yB;
+				for (yB = lineOffsets[yB]; --yC >= 0; yB += DrawingArea.width) {
+					rasterizeFlat(DrawingArea.pixels, colour, yB, xB >> 16, xA >> 16);
+					xA += l1;
+					xB += i2;
 				}
 
-				while (--i >= 0) {
-					method377(DrawingArea.pixels, j, k1, j1 >> 16, l >> 16);
-					l += l1;
-					j1 += j2;
-					j += DrawingArea.width;
+				while (--yA >= 0) {
+					rasterizeFlat(DrawingArea.pixels, colour, yB, xC >> 16, xA >> 16);
+					xA += l1;
+					xC += j2;
+					yB += DrawingArea.width;
 				}
 				return;
 			}
-			j1 = i1 <<= 16;
-			if (j < 0) {
-				j1 -= l1 * j;
-				i1 -= i2 * j;
-				j = 0;
+			xC = xB <<= 16;
+			if (yB < 0) {
+				xC -= l1 * yB;
+				xB -= i2 * yB;
+				yB = 0;
 			}
-			l <<= 16;
-			if (i < 0) {
-				l -= j2 * i;
-				i = 0;
+			xA <<= 16;
+			if (yA < 0) {
+				xA -= j2 * yA;
+				yA = 0;
 			}
 			if (l1 < i2) {
-				k -= i;
-				i -= j;
-				for (j = lineOffsets[j]; --i >= 0; j += DrawingArea.width) {
-					method377(DrawingArea.pixels, j, k1, j1 >> 16, i1 >> 16);
-					j1 += l1;
-					i1 += i2;
+				yC -= yA;
+				yA -= yB;
+				for (yB = lineOffsets[yB]; --yA >= 0; yB += DrawingArea.width) {
+					rasterizeFlat(DrawingArea.pixels, colour, yB, xC >> 16, xB >> 16);
+					xC += l1;
+					xB += i2;
 				}
 
-				while (--k >= 0) {
-					method377(DrawingArea.pixels, j, k1, l >> 16, i1 >> 16);
-					l += j2;
-					i1 += i2;
-					j += DrawingArea.width;
+				while (--yC >= 0) {
+					rasterizeFlat(DrawingArea.pixels, colour, yB, xA >> 16, xB >> 16);
+					xA += j2;
+					xB += i2;
+					yB += DrawingArea.width;
 				}
 				return;
 			}
-			k -= i;
-			i -= j;
-			for (j = lineOffsets[j]; --i >= 0; j += DrawingArea.width) {
-				method377(DrawingArea.pixels, j, k1, i1 >> 16, j1 >> 16);
-				j1 += l1;
-				i1 += i2;
+			yC -= yA;
+			yA -= yB;
+			for (yB = lineOffsets[yB]; --yA >= 0; yB += DrawingArea.width) {
+				rasterizeFlat(DrawingArea.pixels, colour, yB, xB >> 16, xC >> 16);
+				xC += l1;
+				xB += i2;
 			}
 
-			while (--k >= 0) {
-				method377(DrawingArea.pixels, j, k1, i1 >> 16, l >> 16);
-				l += j2;
-				i1 += i2;
-				j += DrawingArea.width;
+			while (--yC >= 0) {
+				rasterizeFlat(DrawingArea.pixels, colour, yB, xB >> 16, xA >> 16);
+				xA += j2;
+				xB += i2;
+				yB += DrawingArea.width;
 			}
 			return;
 		}
-		if (k >= DrawingArea.bottomY) {
+		if (yC >= DrawingArea.bottomY) {
             return;
         }
-		if (i > DrawingArea.bottomY) {
-            i = DrawingArea.bottomY;
+		if (yA > DrawingArea.bottomY) {
+            yA = DrawingArea.bottomY;
         }
-		if (j > DrawingArea.bottomY) {
-            j = DrawingArea.bottomY;
+		if (yB > DrawingArea.bottomY) {
+            yB = DrawingArea.bottomY;
         }
-		if (i < j) {
-			i1 = j1 <<= 16;
-			if (k < 0) {
-				i1 -= i2 * k;
-				j1 -= j2 * k;
-				k = 0;
+		if (yA < yB) {
+			xB = xC <<= 16;
+			if (yC < 0) {
+				xB -= i2 * yC;
+				xC -= j2 * yC;
+				yC = 0;
 			}
-			l <<= 16;
-			if (i < 0) {
-				l -= l1 * i;
-				i = 0;
+			xA <<= 16;
+			if (yA < 0) {
+				xA -= l1 * yA;
+				yA = 0;
 			}
 			if (i2 < j2) {
-				j -= i;
-				i -= k;
-				for (k = lineOffsets[k]; --i >= 0; k += DrawingArea.width) {
-					method377(DrawingArea.pixels, k, k1, i1 >> 16, j1 >> 16);
-					i1 += i2;
-					j1 += j2;
+				yB -= yA;
+				yA -= yC;
+				for (yC = lineOffsets[yC]; --yA >= 0; yC += DrawingArea.width) {
+					rasterizeFlat(DrawingArea.pixels, colour, yC, xB >> 16, xC >> 16);
+					xB += i2;
+					xC += j2;
 				}
 
-				while (--j >= 0) {
-					method377(DrawingArea.pixels, k, k1, i1 >> 16, l >> 16);
-					i1 += i2;
-					l += l1;
-					k += DrawingArea.width;
+				while (--yB >= 0) {
+					rasterizeFlat(DrawingArea.pixels, colour, yC, xB >> 16, xA >> 16);
+					xB += i2;
+					xA += l1;
+					yC += DrawingArea.width;
 				}
 				return;
 			}
-			j -= i;
-			i -= k;
-			for (k = lineOffsets[k]; --i >= 0; k += DrawingArea.width) {
-				method377(DrawingArea.pixels, k, k1, j1 >> 16, i1 >> 16);
-				i1 += i2;
-				j1 += j2;
+			yB -= yA;
+			yA -= yC;
+			for (yC = lineOffsets[yC]; --yA >= 0; yC += DrawingArea.width) {
+				rasterizeFlat(DrawingArea.pixels, colour, yC, xC >> 16, xB >> 16);
+				xB += i2;
+				xC += j2;
 			}
 
-			while (--j >= 0) {
-				method377(DrawingArea.pixels, k, k1, l >> 16, i1 >> 16);
-				i1 += i2;
-				l += l1;
-				k += DrawingArea.width;
+			while (--yB >= 0) {
+				rasterizeFlat(DrawingArea.pixels, colour, yC, xA >> 16, xB >> 16);
+				xB += i2;
+				xA += l1;
+				yC += DrawingArea.width;
 			}
 			return;
 		}
-		l = j1 <<= 16;
-		if (k < 0) {
-			l -= i2 * k;
-			j1 -= j2 * k;
-			k = 0;
+		xA = xC <<= 16;
+		if (yC < 0) {
+			xA -= i2 * yC;
+			xC -= j2 * yC;
+			yC = 0;
 		}
-		i1 <<= 16;
-		if (j < 0) {
-			i1 -= l1 * j;
-			j = 0;
+		xB <<= 16;
+		if (yB < 0) {
+			xB -= l1 * yB;
+			yB = 0;
 		}
 		if (i2 < j2) {
-			i -= j;
-			j -= k;
-			for (k = lineOffsets[k]; --j >= 0; k += DrawingArea.width) {
-				method377(DrawingArea.pixels, k, k1, l >> 16, j1 >> 16);
-				l += i2;
-				j1 += j2;
+			yA -= yB;
+			yB -= yC;
+			for (yC = lineOffsets[yC]; --yB >= 0; yC += DrawingArea.width) {
+				rasterizeFlat(DrawingArea.pixels, colour, yC, xA >> 16, xC >> 16);
+				xA += i2;
+				xC += j2;
 			}
 
-			while (--i >= 0) {
-				method377(DrawingArea.pixels, k, k1, i1 >> 16, j1 >> 16);
-				i1 += l1;
-				j1 += j2;
-				k += DrawingArea.width;
+			while (--yA >= 0) {
+				rasterizeFlat(DrawingArea.pixels, colour, yC, xB >> 16, xC >> 16);
+				xB += l1;
+				xC += j2;
+				yC += DrawingArea.width;
 			}
 			return;
 		}
-		i -= j;
-		j -= k;
-		for (k = lineOffsets[k]; --j >= 0; k += DrawingArea.width) {
-			method377(DrawingArea.pixels, k, k1, j1 >> 16, l >> 16);
-			l += i2;
-			j1 += j2;
+		yA -= yB;
+		yB -= yC;
+		for (yC = lineOffsets[yC]; --yB >= 0; yC += DrawingArea.width) {
+			rasterizeFlat(DrawingArea.pixels, colour, yC, xC >> 16, xA >> 16);
+			xA += i2;
+			xC += j2;
 		}
 
-		while (--i >= 0) {
-			method377(DrawingArea.pixels, k, k1, j1 >> 16, i1 >> 16);
-			i1 += l1;
-			j1 += j2;
-			k += DrawingArea.width;
+		while (--yA >= 0) {
+			rasterizeFlat(DrawingArea.pixels, colour, yC, xC >> 16, xB >> 16);
+			xB += l1;
+			xC += j2;
+			yC += DrawingArea.width;
 		}
 	}
 
@@ -470,7 +470,7 @@ public final class Rasterizer extends DrawingArea {
 					yC -= yB;
 					yB -= yA;
 					for (yA = lineOffsets[yA]; --yB >= 0; yA += DrawingArea.width) {
-						method375(DrawingArea.pixels, yA, xC >> 16, xA >> 16, zC >> 7, zA >> 7);
+						rasterizeShaded(DrawingArea.pixels, yA, xC >> 16, xA >> 16, zC >> 7, zA >> 7);
 						xC += j3;
 						xA += j2;
 						zC += k3;
@@ -478,7 +478,7 @@ public final class Rasterizer extends DrawingArea {
 					}
 
 					while (--yC >= 0) {
-						method375(DrawingArea.pixels, yA, xC >> 16, xB >> 16, zC >> 7, zB >> 7);
+						rasterizeShaded(DrawingArea.pixels, yA, xC >> 16, xB >> 16, zC >> 7, zB >> 7);
 						xC += j3;
 						xB += l2;
 						zC += k3;
@@ -490,7 +490,7 @@ public final class Rasterizer extends DrawingArea {
 				yC -= yB;
 				yB -= yA;
 				for (yA = lineOffsets[yA]; --yB >= 0; yA += DrawingArea.width) {
-					method375(DrawingArea.pixels, yA, xA >> 16, xC >> 16, zA >> 7, zC >> 7);
+					rasterizeShaded(DrawingArea.pixels, yA, xA >> 16, xC >> 16, zA >> 7, zC >> 7);
 					xC += j3;
 					xA += j2;
 					zC += k3;
@@ -498,7 +498,7 @@ public final class Rasterizer extends DrawingArea {
 				}
 
 				while (--yC >= 0) {
-					method375(DrawingArea.pixels, yA, xB >> 16, xC >> 16, zB >> 7, zC >> 7);
+					rasterizeShaded(DrawingArea.pixels, yA, xB >> 16, xC >> 16, zB >> 7, zC >> 7);
 					xC += j3;
 					xB += l2;
 					zC += k3;
@@ -527,7 +527,7 @@ public final class Rasterizer extends DrawingArea {
 				yB -= yC;
 				yC -= yA;
 				for (yA = lineOffsets[yA]; --yC >= 0; yA += DrawingArea.width) {
-					method375(DrawingArea.pixels, yA, xB >> 16, xA >> 16, zB >> 7, zA >> 7);
+					rasterizeShaded(DrawingArea.pixels, yA, xB >> 16, xA >> 16, zB >> 7, zA >> 7);
 					xB += j3;
 					xA += j2;
 					zB += k3;
@@ -535,7 +535,7 @@ public final class Rasterizer extends DrawingArea {
 				}
 
 				while (--yB >= 0) {
-					method375(DrawingArea.pixels, yA, xC >> 16, xA >> 16, zC >> 7, zA >> 7);
+					rasterizeShaded(DrawingArea.pixels, yA, xC >> 16, xA >> 16, zC >> 7, zA >> 7);
 					xC += l2;
 					xA += j2;
 					zC += i3;
@@ -547,7 +547,7 @@ public final class Rasterizer extends DrawingArea {
 			yB -= yC;
 			yC -= yA;
 			for (yA = lineOffsets[yA]; --yC >= 0; yA += DrawingArea.width) {
-				method375(DrawingArea.pixels, yA, xA >> 16, xB >> 16, zA >> 7, zB >> 7);
+				rasterizeShaded(DrawingArea.pixels, yA, xA >> 16, xB >> 16, zA >> 7, zB >> 7);
 				xB += j3;
 				xA += j2;
 				zB += k3;
@@ -555,7 +555,7 @@ public final class Rasterizer extends DrawingArea {
 			}
 
 			while (--yB >= 0) {
-				method375(DrawingArea.pixels, yA, xA >> 16, xC >> 16, zA >> 7, zC >> 7);
+				rasterizeShaded(DrawingArea.pixels, yA, xA >> 16, xC >> 16, zA >> 7, zC >> 7);
 				xC += l2;
 				xA += j2;
 				zC += i3;
@@ -595,7 +595,7 @@ public final class Rasterizer extends DrawingArea {
 					yA -= yC;
 					yC -= yB;
 					for (yB = lineOffsets[yB]; --yC >= 0; yB += DrawingArea.width) {
-						method375(DrawingArea.pixels, yB, xA >> 16, xB >> 16, zA >> 7, zB >> 7);
+						rasterizeShaded(DrawingArea.pixels, yB, xA >> 16, xB >> 16, zA >> 7, zB >> 7);
 						xA += j2;
 						xB += l2;
 						zA += k2;
@@ -603,7 +603,7 @@ public final class Rasterizer extends DrawingArea {
 					}
 
 					while (--yA >= 0) {
-						method375(DrawingArea.pixels, yB, xA >> 16, xC >> 16, zA >> 7, zC >> 7);
+						rasterizeShaded(DrawingArea.pixels, yB, xA >> 16, xC >> 16, zA >> 7, zC >> 7);
 						xA += j2;
 						xC += j3;
 						zA += k2;
@@ -615,7 +615,7 @@ public final class Rasterizer extends DrawingArea {
 				yA -= yC;
 				yC -= yB;
 				for (yB = lineOffsets[yB]; --yC >= 0; yB += DrawingArea.width) {
-					method375(DrawingArea.pixels, yB, xB >> 16, xA >> 16, zB >> 7, zA >> 7);
+					rasterizeShaded(DrawingArea.pixels, yB, xB >> 16, xA >> 16, zB >> 7, zA >> 7);
 					xA += j2;
 					xB += l2;
 					zA += k2;
@@ -623,7 +623,7 @@ public final class Rasterizer extends DrawingArea {
 				}
 
 				while (--yA >= 0) {
-					method375(DrawingArea.pixels, yB, xC >> 16, xA >> 16, zC >> 7, zA >> 7);
+					rasterizeShaded(DrawingArea.pixels, yB, xC >> 16, xA >> 16, zC >> 7, zA >> 7);
 					xA += j2;
 					xC += j3;
 					zA += k2;
@@ -652,7 +652,7 @@ public final class Rasterizer extends DrawingArea {
 				yC -= yA;
 				yA -= yB;
 				for (yB = lineOffsets[yB]; --yA >= 0; yB += DrawingArea.width) {
-					method375(DrawingArea.pixels, yB, xC >> 16, xB >> 16, zC >> 7, zB >> 7);
+					rasterizeShaded(DrawingArea.pixels, yB, xC >> 16, xB >> 16, zC >> 7, zB >> 7);
 					xC += j2;
 					xB += l2;
 					zC += k2;
@@ -660,7 +660,7 @@ public final class Rasterizer extends DrawingArea {
 				}
 
 				while (--yC >= 0) {
-					method375(DrawingArea.pixels, yB, xA >> 16, xB >> 16, zA >> 7, zB >> 7);
+					rasterizeShaded(DrawingArea.pixels, yB, xA >> 16, xB >> 16, zA >> 7, zB >> 7);
 					xA += j3;
 					xB += l2;
 					zA += k3;
@@ -672,7 +672,7 @@ public final class Rasterizer extends DrawingArea {
 			yC -= yA;
 			yA -= yB;
 			for (yB = lineOffsets[yB]; --yA >= 0; yB += DrawingArea.width) {
-				method375(DrawingArea.pixels, yB, xB >> 16, xC >> 16, zB >> 7, zC >> 7);
+				rasterizeShaded(DrawingArea.pixels, yB, xB >> 16, xC >> 16, zB >> 7, zC >> 7);
 				xC += j2;
 				xB += l2;
 				zC += k2;
@@ -680,7 +680,7 @@ public final class Rasterizer extends DrawingArea {
 			}
 
 			while (--yC >= 0) {
-				method375(DrawingArea.pixels, yB, xB >> 16, xA >> 16, zB >> 7, zA >> 7);
+				rasterizeShaded(DrawingArea.pixels, yB, xB >> 16, xA >> 16, zB >> 7, zA >> 7);
 				xA += j3;
 				xB += l2;
 				zA += k3;
@@ -719,7 +719,7 @@ public final class Rasterizer extends DrawingArea {
 				yB -= yA;
 				yA -= yC;
 				for (yC = lineOffsets[yC]; --yA >= 0; yC += DrawingArea.width) {
-					method375(DrawingArea.pixels, yC, xB >> 16, xC >> 16, zB >> 7, zC >> 7);
+					rasterizeShaded(DrawingArea.pixels, yC, xB >> 16, xC >> 16, zB >> 7, zC >> 7);
 					xB += l2;
 					xC += j3;
 					zB += i3;
@@ -727,7 +727,7 @@ public final class Rasterizer extends DrawingArea {
 				}
 
 				while (--yB >= 0) {
-					method375(DrawingArea.pixels, yC, xB >> 16, xA >> 16, zB >> 7, zA >> 7);
+					rasterizeShaded(DrawingArea.pixels, yC, xB >> 16, xA >> 16, zB >> 7, zA >> 7);
 					xB += l2;
 					xA += j2;
 					zB += i3;
@@ -739,7 +739,7 @@ public final class Rasterizer extends DrawingArea {
 			yB -= yA;
 			yA -= yC;
 			for (yC = lineOffsets[yC]; --yA >= 0; yC += DrawingArea.width) {
-				method375(DrawingArea.pixels, yC, xC >> 16, xB >> 16, zC >> 7, zB >> 7);
+				rasterizeShaded(DrawingArea.pixels, yC, xC >> 16, xB >> 16, zC >> 7, zB >> 7);
 				xB += l2;
 				xC += j3;
 				zB += i3;
@@ -747,7 +747,7 @@ public final class Rasterizer extends DrawingArea {
 			}
 
 			while (--yB >= 0) {
-				method375(DrawingArea.pixels, yC, xA >> 16, xB >> 16, zA >> 7, zB >> 7);
+				rasterizeShaded(DrawingArea.pixels, yC, xA >> 16, xB >> 16, zA >> 7, zB >> 7);
 				xB += l2;
 				xA += j2;
 				zB += i3;
@@ -776,7 +776,7 @@ public final class Rasterizer extends DrawingArea {
 			yA -= yB;
 			yB -= yC;
 			for (yC = lineOffsets[yC]; --yB >= 0; yC += DrawingArea.width) {
-				method375(DrawingArea.pixels, yC, xA >> 16, xC >> 16, zA >> 7, zC >> 7);
+				rasterizeShaded(DrawingArea.pixels, yC, xA >> 16, xC >> 16, zA >> 7, zC >> 7);
 				xA += l2;
 				xC += j3;
 				zA += i3;
@@ -784,7 +784,7 @@ public final class Rasterizer extends DrawingArea {
 			}
 
 			while (--yA >= 0) {
-				method375(DrawingArea.pixels, yC, xB >> 16, xC >> 16, zB >> 7, zC >> 7);
+				rasterizeShaded(DrawingArea.pixels, yC, xB >> 16, xC >> 16, zB >> 7, zC >> 7);
 				xB += j2;
 				xC += j3;
 				zB += k2;
@@ -796,7 +796,7 @@ public final class Rasterizer extends DrawingArea {
 		yA -= yB;
 		yB -= yC;
 		for (yC = lineOffsets[yC]; --yB >= 0; yC += DrawingArea.width) {
-			method375(DrawingArea.pixels, yC, xC >> 16, xA >> 16, zC >> 7, zA >> 7);
+			rasterizeShaded(DrawingArea.pixels, yC, xC >> 16, xA >> 16, zC >> 7, zA >> 7);
 			xA += l2;
 			xC += j3;
 			zA += i3;
@@ -804,7 +804,7 @@ public final class Rasterizer extends DrawingArea {
 		}
 
 		while (--yA >= 0) {
-			method375(DrawingArea.pixels, yC, xC >> 16, xB >> 16, zC >> 7, zB >> 7);
+			rasterizeShaded(DrawingArea.pixels, yC, xC >> 16, xB >> 16, zC >> 7, zB >> 7);
 			xB += j2;
 			xC += j3;
 			zB += k2;
@@ -886,7 +886,7 @@ public final class Rasterizer extends DrawingArea {
 					yB -= yA;
 					yA = lineOffsets[yA];
 					while (--yB >= 0) {
-						method379(DrawingArea.pixels, texture, yA, xC >> 16, xA >> 16, zC >> 8, zA >> 8, l4, k5, j6, i5,
+						rasterizeTextured(DrawingArea.pixels, texture, yA, xC >> 16, xA >> 16, zC >> 8, zA >> 8, l4, k5, j6, i5,
 								l5, k6);
 						xC += i8;
 						xA += i7;
@@ -898,7 +898,7 @@ public final class Rasterizer extends DrawingArea {
 						j6 += l6;
 					}
 					while (--yC >= 0) {
-						method379(DrawingArea.pixels, texture, yA, xC >> 16, xB >> 16, zC >> 8, zB >> 8, l4, k5, j6, i5,
+						rasterizeTextured(DrawingArea.pixels, texture, yA, xC >> 16, xB >> 16, zC >> 8, zB >> 8, l4, k5, j6, i5,
 								l5, k6);
 						xC += i8;
 						xB += k7;
@@ -915,7 +915,7 @@ public final class Rasterizer extends DrawingArea {
 				yB -= yA;
 				yA = lineOffsets[yA];
 				while (--yB >= 0) {
-					method379(DrawingArea.pixels, texture, yA, xA >> 16, xC >> 16, zA >> 8, zC >> 8, l4, k5, j6, i5, l5,
+					rasterizeTextured(DrawingArea.pixels, texture, yA, xA >> 16, xC >> 16, zA >> 8, zC >> 8, l4, k5, j6, i5, l5,
 							k6);
 					xC += i8;
 					xA += i7;
@@ -927,7 +927,7 @@ public final class Rasterizer extends DrawingArea {
 					j6 += l6;
 				}
 				while (--yC >= 0) {
-					method379(DrawingArea.pixels, texture, yA, xB >> 16, xC >> 16, zB >> 8, zC >> 8, l4, k5, j6, i5, l5,
+					rasterizeTextured(DrawingArea.pixels, texture, yA, xB >> 16, xC >> 16, zB >> 8, zC >> 8, l4, k5, j6, i5, l5,
 							k6);
 					xC += i8;
 					xB += k7;
@@ -965,7 +965,7 @@ public final class Rasterizer extends DrawingArea {
 				yC -= yA;
 				yA = lineOffsets[yA];
 				while (--yC >= 0) {
-					method379(DrawingArea.pixels, texture, yA, xB >> 16, xA >> 16, zB >> 8, zA >> 8, l4, k5, j6, i5, l5,
+					rasterizeTextured(DrawingArea.pixels, texture, yA, xB >> 16, xA >> 16, zB >> 8, zA >> 8, l4, k5, j6, i5, l5,
 							k6);
 					xB += i8;
 					xA += i7;
@@ -977,7 +977,7 @@ public final class Rasterizer extends DrawingArea {
 					j6 += l6;
 				}
 				while (--yB >= 0) {
-					method379(DrawingArea.pixels, texture, yA, xC >> 16, xA >> 16, zC >> 8, zA >> 8, l4, k5, j6, i5, l5,
+					rasterizeTextured(DrawingArea.pixels, texture, yA, xC >> 16, xA >> 16, zC >> 8, zA >> 8, l4, k5, j6, i5, l5,
 							k6);
 					xC += k7;
 					xA += i7;
@@ -994,7 +994,7 @@ public final class Rasterizer extends DrawingArea {
 			yC -= yA;
 			yA = lineOffsets[yA];
 			while (--yC >= 0) {
-				method379(DrawingArea.pixels, texture, yA, xA >> 16, xB >> 16, zA >> 8, zB >> 8, l4, k5, j6, i5, l5,
+				rasterizeTextured(DrawingArea.pixels, texture, yA, xA >> 16, xB >> 16, zA >> 8, zB >> 8, l4, k5, j6, i5, l5,
 						k6);
 				xB += i8;
 				xA += i7;
@@ -1006,7 +1006,7 @@ public final class Rasterizer extends DrawingArea {
 				j6 += l6;
 			}
 			while (--yB >= 0) {
-				method379(DrawingArea.pixels, texture, yA, xA >> 16, xC >> 16, zA >> 8, zC >> 8, l4, k5, j6, i5, l5,
+				rasterizeTextured(DrawingArea.pixels, texture, yA, xA >> 16, xC >> 16, zA >> 8, zC >> 8, l4, k5, j6, i5, l5,
 						k6);
 				xC += k7;
 				xA += i7;
@@ -1055,7 +1055,7 @@ public final class Rasterizer extends DrawingArea {
 					yC -= yB;
 					yB = lineOffsets[yB];
 					while (--yC >= 0) {
-						method379(DrawingArea.pixels, texture, yB, xA >> 16, xB >> 16, zA >> 8, zB >> 8, l4, k5, j6, i5,
+						rasterizeTextured(DrawingArea.pixels, texture, yB, xA >> 16, xB >> 16, zA >> 8, zB >> 8, l4, k5, j6, i5,
 								l5, k6);
 						xA += i7;
 						xB += k7;
@@ -1067,7 +1067,7 @@ public final class Rasterizer extends DrawingArea {
 						j6 += l6;
 					}
 					while (--yA >= 0) {
-						method379(DrawingArea.pixels, texture, yB, xA >> 16, xC >> 16, zA >> 8, zC >> 8, l4, k5, j6, i5,
+						rasterizeTextured(DrawingArea.pixels, texture, yB, xA >> 16, xC >> 16, zA >> 8, zC >> 8, l4, k5, j6, i5,
 								l5, k6);
 						xA += i7;
 						xC += i8;
@@ -1084,7 +1084,7 @@ public final class Rasterizer extends DrawingArea {
 				yC -= yB;
 				yB = lineOffsets[yB];
 				while (--yC >= 0) {
-					method379(DrawingArea.pixels, texture, yB, xB >> 16, xA >> 16, zB >> 8, zA >> 8, l4, k5, j6, i5, l5,
+					rasterizeTextured(DrawingArea.pixels, texture, yB, xB >> 16, xA >> 16, zB >> 8, zA >> 8, l4, k5, j6, i5, l5,
 							k6);
 					xA += i7;
 					xB += k7;
@@ -1096,7 +1096,7 @@ public final class Rasterizer extends DrawingArea {
 					j6 += l6;
 				}
 				while (--yA >= 0) {
-					method379(DrawingArea.pixels, texture, yB, xC >> 16, xA >> 16, zC >> 8, zA >> 8, l4, k5, j6, i5, l5,
+					rasterizeTextured(DrawingArea.pixels, texture, yB, xC >> 16, xA >> 16, zC >> 8, zA >> 8, l4, k5, j6, i5, l5,
 							k6);
 					xA += i7;
 					xC += i8;
@@ -1134,7 +1134,7 @@ public final class Rasterizer extends DrawingArea {
 				yA -= yB;
 				yB = lineOffsets[yB];
 				while (--yA >= 0) {
-					method379(DrawingArea.pixels, texture, yB, xC >> 16, xB >> 16, zC >> 8, zB >> 8, l4, k5, j6, i5, l5,
+					rasterizeTextured(DrawingArea.pixels, texture, yB, xC >> 16, xB >> 16, zC >> 8, zB >> 8, l4, k5, j6, i5, l5,
 							k6);
 					xC += i7;
 					xB += k7;
@@ -1146,7 +1146,7 @@ public final class Rasterizer extends DrawingArea {
 					j6 += l6;
 				}
 				while (--yC >= 0) {
-					method379(DrawingArea.pixels, texture, yB, xA >> 16, xB >> 16, zA >> 8, zB >> 8, l4, k5, j6, i5, l5,
+					rasterizeTextured(DrawingArea.pixels, texture, yB, xA >> 16, xB >> 16, zA >> 8, zB >> 8, l4, k5, j6, i5, l5,
 							k6);
 					xA += i8;
 					xB += k7;
@@ -1163,7 +1163,7 @@ public final class Rasterizer extends DrawingArea {
 			yA -= yB;
 			yB = lineOffsets[yB];
 			while (--yA >= 0) {
-				method379(DrawingArea.pixels, texture, yB, xB >> 16, xC >> 16, zB >> 8, zC >> 8, l4, k5, j6, i5, l5,
+				rasterizeTextured(DrawingArea.pixels, texture, yB, xB >> 16, xC >> 16, zB >> 8, zC >> 8, l4, k5, j6, i5, l5,
 						k6);
 				xC += i7;
 				xB += k7;
@@ -1175,7 +1175,7 @@ public final class Rasterizer extends DrawingArea {
 				j6 += l6;
 			}
 			while (--yC >= 0) {
-				method379(DrawingArea.pixels, texture, yB, xB >> 16, xA >> 16, zB >> 8, zA >> 8, l4, k5, j6, i5, l5,
+				rasterizeTextured(DrawingArea.pixels, texture, yB, xB >> 16, xA >> 16, zB >> 8, zA >> 8, l4, k5, j6, i5, l5,
 						k6);
 				xA += i8;
 				xB += k7;
@@ -1223,7 +1223,7 @@ public final class Rasterizer extends DrawingArea {
 				yA -= yC;
 				yC = lineOffsets[yC];
 				while (--yA >= 0) {
-					method379(DrawingArea.pixels, texture, yC, xB >> 16, xC >> 16, zB >> 8, zC >> 8, l4, k5, j6, i5, l5,
+					rasterizeTextured(DrawingArea.pixels, texture, yC, xB >> 16, xC >> 16, zB >> 8, zC >> 8, l4, k5, j6, i5, l5,
 							k6);
 					xB += k7;
 					xC += i8;
@@ -1235,7 +1235,7 @@ public final class Rasterizer extends DrawingArea {
 					j6 += l6;
 				}
 				while (--yB >= 0) {
-					method379(DrawingArea.pixels, texture, yC, xB >> 16, xA >> 16, zB >> 8, zA >> 8, l4, k5, j6, i5, l5,
+					rasterizeTextured(DrawingArea.pixels, texture, yC, xB >> 16, xA >> 16, zB >> 8, zA >> 8, l4, k5, j6, i5, l5,
 							k6);
 					xB += k7;
 					xA += i7;
@@ -1252,7 +1252,7 @@ public final class Rasterizer extends DrawingArea {
 			yA -= yC;
 			yC = lineOffsets[yC];
 			while (--yA >= 0) {
-				method379(DrawingArea.pixels, texture, yC, xC >> 16, xB >> 16, zC >> 8, zB >> 8, l4, k5, j6, i5, l5,
+				rasterizeTextured(DrawingArea.pixels, texture, yC, xC >> 16, xB >> 16, zC >> 8, zB >> 8, l4, k5, j6, i5, l5,
 						k6);
 				xB += k7;
 				xC += i8;
@@ -1264,7 +1264,7 @@ public final class Rasterizer extends DrawingArea {
 				j6 += l6;
 			}
 			while (--yB >= 0) {
-				method379(DrawingArea.pixels, texture, yC, xA >> 16, xB >> 16, zA >> 8, zB >> 8, l4, k5, j6, i5, l5,
+				rasterizeTextured(DrawingArea.pixels, texture, yC, xA >> 16, xB >> 16, zA >> 8, zB >> 8, l4, k5, j6, i5, l5,
 						k6);
 				xB += k7;
 				xA += i7;
@@ -1302,7 +1302,7 @@ public final class Rasterizer extends DrawingArea {
 			yB -= yC;
 			yC = lineOffsets[yC];
 			while (--yB >= 0) {
-				method379(DrawingArea.pixels, texture, yC, xA >> 16, xC >> 16, zA >> 8, zC >> 8, l4, k5, j6, i5, l5,
+				rasterizeTextured(DrawingArea.pixels, texture, yC, xA >> 16, xC >> 16, zA >> 8, zC >> 8, l4, k5, j6, i5, l5,
 						k6);
 				xA += k7;
 				xC += i8;
@@ -1314,7 +1314,7 @@ public final class Rasterizer extends DrawingArea {
 				j6 += l6;
 			}
 			while (--yA >= 0) {
-				method379(DrawingArea.pixels, texture, yC, xB >> 16, xC >> 16, zB >> 8, zC >> 8, l4, k5, j6, i5, l5,
+				rasterizeTextured(DrawingArea.pixels, texture, yC, xB >> 16, xC >> 16, zB >> 8, zC >> 8, l4, k5, j6, i5, l5,
 						k6);
 				xB += i7;
 				xC += i8;
@@ -1331,7 +1331,7 @@ public final class Rasterizer extends DrawingArea {
 		yB -= yC;
 		yC = lineOffsets[yC];
 		while (--yB >= 0) {
-			method379(DrawingArea.pixels, texture, yC, xC >> 16, xA >> 16, zC >> 8, zA >> 8, l4, k5, j6, i5, l5, k6);
+			rasterizeTextured(DrawingArea.pixels, texture, yC, xC >> 16, xA >> 16, zC >> 8, zA >> 8, l4, k5, j6, i5, l5, k6);
 			xA += k7;
 			xC += i8;
 			zA += l7;
@@ -1342,7 +1342,7 @@ public final class Rasterizer extends DrawingArea {
 			j6 += l6;
 		}
 		while (--yA >= 0) {
-			method379(DrawingArea.pixels, texture, yC, xC >> 16, xB >> 16, zC >> 8, zB >> 8, l4, k5, j6, i5, l5, k6);
+			rasterizeTextured(DrawingArea.pixels, texture, yC, xC >> 16, xB >> 16, zC >> 8, zB >> 8, l4, k5, j6, i5, l5, k6);
 			xB += i7;
 			xC += i8;
 			zB += j7;
@@ -1445,7 +1445,7 @@ public final class Rasterizer extends DrawingArea {
 		return texels;
 	}
 
-	private static void method375(final int[] ai, int i, int l, int i1, int j1, final int k1) {
+	private static void rasterizeShaded(final int[] pixels, int i, int l, int i1, int j1, final int k1) {
 		int j;// was parameter
 		int k;// was parameter
 		if (textured) {
@@ -1485,16 +1485,16 @@ public final class Rasterizer extends DrawingArea {
 				while (--k >= 0) {
 					j = HSL_TO_RGB[j1 >> 8];
 					j1 += l1;
-					ai[i++] = j;
-					ai[i++] = j;
-					ai[i++] = j;
-					ai[i++] = j;
+					pixels[i++] = j;
+					pixels[i++] = j;
+					pixels[i++] = j;
+					pixels[i++] = j;
 				}
 				k = i1 - l & 3;
 				if (k > 0) {
 					j = HSL_TO_RGB[j1 >> 8];
 					do {
-                        ai[i++] = j;
+                        pixels[i++] = j;
                     }
 					while (--k > 0);
 					return;
@@ -1506,17 +1506,17 @@ public final class Rasterizer extends DrawingArea {
 					j = HSL_TO_RGB[j1 >> 8];
 					j1 += l1;
 					j = ((j & 0xff00ff) * l2 >> 8 & 0xff00ff) + ((j & 0xff00) * l2 >> 8 & 0xff00);
-					ai[i++] = j + ((ai[i] & 0xff00ff) * j2 >> 8 & 0xff00ff) + ((ai[i] & 0xff00) * j2 >> 8 & 0xff00);
-					ai[i++] = j + ((ai[i] & 0xff00ff) * j2 >> 8 & 0xff00ff) + ((ai[i] & 0xff00) * j2 >> 8 & 0xff00);
-					ai[i++] = j + ((ai[i] & 0xff00ff) * j2 >> 8 & 0xff00ff) + ((ai[i] & 0xff00) * j2 >> 8 & 0xff00);
-					ai[i++] = j + ((ai[i] & 0xff00ff) * j2 >> 8 & 0xff00ff) + ((ai[i] & 0xff00) * j2 >> 8 & 0xff00);
+					pixels[i++] = j + ((pixels[i] & 0xff00ff) * j2 >> 8 & 0xff00ff) + ((pixels[i] & 0xff00) * j2 >> 8 & 0xff00);
+					pixels[i++] = j + ((pixels[i] & 0xff00ff) * j2 >> 8 & 0xff00ff) + ((pixels[i] & 0xff00) * j2 >> 8 & 0xff00);
+					pixels[i++] = j + ((pixels[i] & 0xff00ff) * j2 >> 8 & 0xff00ff) + ((pixels[i] & 0xff00) * j2 >> 8 & 0xff00);
+					pixels[i++] = j + ((pixels[i] & 0xff00ff) * j2 >> 8 & 0xff00ff) + ((pixels[i] & 0xff00) * j2 >> 8 & 0xff00);
 				}
 				k = i1 - l & 3;
 				if (k > 0) {
 					j = HSL_TO_RGB[j1 >> 8];
 					j = ((j & 0xff00ff) * l2 >> 8 & 0xff00ff) + ((j & 0xff00) * l2 >> 8 & 0xff00);
 					do {
-                        ai[i++] = j + ((ai[i] & 0xff00ff) * j2 >> 8 & 0xff00ff) + ((ai[i] & 0xff00) * j2 >> 8 & 0xff00);
+                        pixels[i++] = j + ((pixels[i] & 0xff00ff) * j2 >> 8 & 0xff00ff) + ((pixels[i] & 0xff00) * j2 >> 8 & 0xff00);
                     }
 					while (--k > 0);
 				}
@@ -1543,7 +1543,7 @@ public final class Rasterizer extends DrawingArea {
 		k = i1 - l;
 		if (alpha == 0) {
 			do {
-				ai[i++] = HSL_TO_RGB[j1 >> 8];
+				pixels[i++] = HSL_TO_RGB[j1 >> 8];
 				j1 += i2;
 			} while (--k > 0);
 			return;
@@ -1554,11 +1554,11 @@ public final class Rasterizer extends DrawingArea {
 			j = HSL_TO_RGB[j1 >> 8];
 			j1 += i2;
 			j = ((j & 0xff00ff) * i3 >> 8 & 0xff00ff) + ((j & 0xff00) * i3 >> 8 & 0xff00);
-			ai[i++] = j + ((ai[i] & 0xff00ff) * k2 >> 8 & 0xff00ff) + ((ai[i] & 0xff00) * k2 >> 8 & 0xff00);
+			pixels[i++] = j + ((pixels[i] & 0xff00ff) * k2 >> 8 & 0xff00ff) + ((pixels[i] & 0xff00) * k2 >> 8 & 0xff00);
 		} while (--k > 0);
 	}
 
-	private static void method377(final int[] ai, int i, int j, int l, int i1) {
+	private static void rasterizeFlat(final int[] pixels, int colour, int i, int l, int i1) {
 		int k;// was parameter
 		if (restrictEdges) {
 			if (i1 > DrawingArea.centerX) {
@@ -1575,34 +1575,34 @@ public final class Rasterizer extends DrawingArea {
 		k = i1 - l >> 2;
 		if (alpha == 0) {
 			while (--k >= 0) {
-				ai[i++] = j;
-				ai[i++] = j;
-				ai[i++] = j;
-				ai[i++] = j;
+				pixels[i++] = colour;
+				pixels[i++] = colour;
+				pixels[i++] = colour;
+				pixels[i++] = colour;
 			}
 			for (k = i1 - l & 3; --k >= 0;) {
-                ai[i++] = j;
+                pixels[i++] = colour;
             }
 
 			return;
 		}
 		final int j1 = alpha;
 		final int k1 = 256 - alpha;
-		j = ((j & 0xff00ff) * k1 >> 8 & 0xff00ff) + ((j & 0xff00) * k1 >> 8 & 0xff00);
+		colour = ((colour & 0xff00ff) * k1 >> 8 & 0xff00ff) + ((colour & 0xff00) * k1 >> 8 & 0xff00);
 		while (--k >= 0) {
-			ai[i++] = j + ((ai[i] & 0xff00ff) * j1 >> 8 & 0xff00ff) + ((ai[i] & 0xff00) * j1 >> 8 & 0xff00);
-			ai[i++] = j + ((ai[i] & 0xff00ff) * j1 >> 8 & 0xff00ff) + ((ai[i] & 0xff00) * j1 >> 8 & 0xff00);
-			ai[i++] = j + ((ai[i] & 0xff00ff) * j1 >> 8 & 0xff00ff) + ((ai[i] & 0xff00) * j1 >> 8 & 0xff00);
-			ai[i++] = j + ((ai[i] & 0xff00ff) * j1 >> 8 & 0xff00ff) + ((ai[i] & 0xff00) * j1 >> 8 & 0xff00);
+			pixels[i++] = colour + ((pixels[i] & 0xff00ff) * j1 >> 8 & 0xff00ff) + ((pixels[i] & 0xff00) * j1 >> 8 & 0xff00);
+			pixels[i++] = colour + ((pixels[i] & 0xff00ff) * j1 >> 8 & 0xff00ff) + ((pixels[i] & 0xff00) * j1 >> 8 & 0xff00);
+			pixels[i++] = colour + ((pixels[i] & 0xff00ff) * j1 >> 8 & 0xff00ff) + ((pixels[i] & 0xff00) * j1 >> 8 & 0xff00);
+			pixels[i++] = colour + ((pixels[i] & 0xff00ff) * j1 >> 8 & 0xff00ff) + ((pixels[i] & 0xff00) * j1 >> 8 & 0xff00);
 		}
 		for (k = i1 - l & 3; --k >= 0;) {
-            ai[i++] = j + ((ai[i] & 0xff00ff) * j1 >> 8 & 0xff00ff) + ((ai[i] & 0xff00) * j1 >> 8 & 0xff00);
+            pixels[i++] = colour + ((pixels[i] & 0xff00ff) * j1 >> 8 & 0xff00ff) + ((pixels[i] & 0xff00) * j1 >> 8 & 0xff00);
         }
 
 	}
 
-	private static void method379(final int[] ai, final int[] ai1, int k, int l, int i1, int j1, final int k1, int l1, int i2, int j2,
-                                  final int k2, final int l2, final int i3) {
+	private static void rasterizeTextured(final int[] pixels, final int[] texture, int k, int l, int i1, int j1, final int k1, int l1, int i2, int j2,
+										  final int k2, final int l2, final int i3) {
 		int i = 0;// was parameter
 		int j = 0;// was parameter
 		if (l >= i1) {
@@ -1672,28 +1672,28 @@ public final class Rasterizer extends DrawingArea {
 			int i8 = j1 >> 23;
 			if (opaque) {
 				while (k3-- > 0) {
-					ai[k++] = ai1[(j & 0xfc0) + (i >> 6)] >>> i8;
+					pixels[k++] = texture[(j & 0xfc0) + (i >> 6)] >>> i8;
 					i += i7;
 					j += k7;
-					ai[k++] = ai1[(j & 0xfc0) + (i >> 6)] >>> i8;
+					pixels[k++] = texture[(j & 0xfc0) + (i >> 6)] >>> i8;
 					i += i7;
 					j += k7;
-					ai[k++] = ai1[(j & 0xfc0) + (i >> 6)] >>> i8;
+					pixels[k++] = texture[(j & 0xfc0) + (i >> 6)] >>> i8;
 					i += i7;
 					j += k7;
-					ai[k++] = ai1[(j & 0xfc0) + (i >> 6)] >>> i8;
+					pixels[k++] = texture[(j & 0xfc0) + (i >> 6)] >>> i8;
 					i += i7;
 					j += k7;
-					ai[k++] = ai1[(j & 0xfc0) + (i >> 6)] >>> i8;
+					pixels[k++] = texture[(j & 0xfc0) + (i >> 6)] >>> i8;
 					i += i7;
 					j += k7;
-					ai[k++] = ai1[(j & 0xfc0) + (i >> 6)] >>> i8;
+					pixels[k++] = texture[(j & 0xfc0) + (i >> 6)] >>> i8;
 					i += i7;
 					j += k7;
-					ai[k++] = ai1[(j & 0xfc0) + (i >> 6)] >>> i8;
+					pixels[k++] = texture[(j & 0xfc0) + (i >> 6)] >>> i8;
 					i += i7;
 					j += k7;
-					ai[k++] = ai1[(j & 0xfc0) + (i >> 6)] >>> i8;
+					pixels[k++] = texture[(j & 0xfc0) + (i >> 6)] >>> i8;
 					i = i4;
 					j = k4;
 					l1 += k2;
@@ -1716,7 +1716,7 @@ public final class Rasterizer extends DrawingArea {
 					i8 = j1 >> 23;
 				}
 				for (k3 = i1 - l & 7; k3-- > 0;) {
-					ai[k++] = ai1[(j & 0xfc0) + (i >> 6)] >>> i8;
+					pixels[k++] = texture[(j & 0xfc0) + (i >> 6)] >>> i8;
 					i += i7;
 					j += k7;
 				}
@@ -1725,50 +1725,50 @@ public final class Rasterizer extends DrawingArea {
 			}
 			while (k3-- > 0) {
 				int k8;
-				if ((k8 = ai1[(j & 0xfc0) + (i >> 6)] >>> i8) != 0) {
-                    ai[k] = k8;
+				if ((k8 = texture[(j & 0xfc0) + (i >> 6)] >>> i8) != 0) {
+                    pixels[k] = k8;
                 }
 				k++;
 				i += i7;
 				j += k7;
-				if ((k8 = ai1[(j & 0xfc0) + (i >> 6)] >>> i8) != 0) {
-                    ai[k] = k8;
+				if ((k8 = texture[(j & 0xfc0) + (i >> 6)] >>> i8) != 0) {
+                    pixels[k] = k8;
                 }
 				k++;
 				i += i7;
 				j += k7;
-				if ((k8 = ai1[(j & 0xfc0) + (i >> 6)] >>> i8) != 0) {
-                    ai[k] = k8;
+				if ((k8 = texture[(j & 0xfc0) + (i >> 6)] >>> i8) != 0) {
+                    pixels[k] = k8;
                 }
 				k++;
 				i += i7;
 				j += k7;
-				if ((k8 = ai1[(j & 0xfc0) + (i >> 6)] >>> i8) != 0) {
-                    ai[k] = k8;
+				if ((k8 = texture[(j & 0xfc0) + (i >> 6)] >>> i8) != 0) {
+                    pixels[k] = k8;
                 }
 				k++;
 				i += i7;
 				j += k7;
-				if ((k8 = ai1[(j & 0xfc0) + (i >> 6)] >>> i8) != 0) {
-                    ai[k] = k8;
+				if ((k8 = texture[(j & 0xfc0) + (i >> 6)] >>> i8) != 0) {
+                    pixels[k] = k8;
                 }
 				k++;
 				i += i7;
 				j += k7;
-				if ((k8 = ai1[(j & 0xfc0) + (i >> 6)] >>> i8) != 0) {
-                    ai[k] = k8;
+				if ((k8 = texture[(j & 0xfc0) + (i >> 6)] >>> i8) != 0) {
+                    pixels[k] = k8;
                 }
 				k++;
 				i += i7;
 				j += k7;
-				if ((k8 = ai1[(j & 0xfc0) + (i >> 6)] >>> i8) != 0) {
-                    ai[k] = k8;
+				if ((k8 = texture[(j & 0xfc0) + (i >> 6)] >>> i8) != 0) {
+                    pixels[k] = k8;
                 }
 				k++;
 				i += i7;
 				j += k7;
-				if ((k8 = ai1[(j & 0xfc0) + (i >> 6)] >>> i8) != 0) {
-                    ai[k] = k8;
+				if ((k8 = texture[(j & 0xfc0) + (i >> 6)] >>> i8) != 0) {
+                    pixels[k] = k8;
                 }
 				k++;
 				i = i4;
@@ -1794,8 +1794,8 @@ public final class Rasterizer extends DrawingArea {
 			}
 			for (k3 = i1 - l & 7; k3-- > 0;) {
 				final int l8;
-				if ((l8 = ai1[(j & 0xfc0) + (i >> 6)] >>> i8) != 0) {
-                    ai[k] = l8;
+				if ((l8 = texture[(j & 0xfc0) + (i >> 6)] >>> i8) != 0) {
+                    pixels[k] = l8;
                 }
 				k++;
 				i += i7;
@@ -1839,28 +1839,28 @@ public final class Rasterizer extends DrawingArea {
 		int j8 = j1 >> 23;
 		if (opaque) {
 			while (k3-- > 0) {
-				ai[k++] = ai1[(j & 0x3f80) + (i >> 7)] >>> j8;
+				pixels[k++] = texture[(j & 0x3f80) + (i >> 7)] >>> j8;
 				i += j7;
 				j += l7;
-				ai[k++] = ai1[(j & 0x3f80) + (i >> 7)] >>> j8;
+				pixels[k++] = texture[(j & 0x3f80) + (i >> 7)] >>> j8;
 				i += j7;
 				j += l7;
-				ai[k++] = ai1[(j & 0x3f80) + (i >> 7)] >>> j8;
+				pixels[k++] = texture[(j & 0x3f80) + (i >> 7)] >>> j8;
 				i += j7;
 				j += l7;
-				ai[k++] = ai1[(j & 0x3f80) + (i >> 7)] >>> j8;
+				pixels[k++] = texture[(j & 0x3f80) + (i >> 7)] >>> j8;
 				i += j7;
 				j += l7;
-				ai[k++] = ai1[(j & 0x3f80) + (i >> 7)] >>> j8;
+				pixels[k++] = texture[(j & 0x3f80) + (i >> 7)] >>> j8;
 				i += j7;
 				j += l7;
-				ai[k++] = ai1[(j & 0x3f80) + (i >> 7)] >>> j8;
+				pixels[k++] = texture[(j & 0x3f80) + (i >> 7)] >>> j8;
 				i += j7;
 				j += l7;
-				ai[k++] = ai1[(j & 0x3f80) + (i >> 7)] >>> j8;
+				pixels[k++] = texture[(j & 0x3f80) + (i >> 7)] >>> j8;
 				i += j7;
 				j += l7;
-				ai[k++] = ai1[(j & 0x3f80) + (i >> 7)] >>> j8;
+				pixels[k++] = texture[(j & 0x3f80) + (i >> 7)] >>> j8;
 				i = j4;
 				j = l4;
 				l1 += k2;
@@ -1883,7 +1883,7 @@ public final class Rasterizer extends DrawingArea {
 				j8 = j1 >> 23;
 			}
 			for (k3 = i1 - l & 7; k3-- > 0;) {
-				ai[k++] = ai1[(j & 0x3f80) + (i >> 7)] >>> j8;
+				pixels[k++] = texture[(j & 0x3f80) + (i >> 7)] >>> j8;
 				i += j7;
 				j += l7;
 			}
@@ -1892,50 +1892,50 @@ public final class Rasterizer extends DrawingArea {
 		}
 		while (k3-- > 0) {
 			int i9;
-			if ((i9 = ai1[(j & 0x3f80) + (i >> 7)] >>> j8) != 0) {
-                ai[k] = i9;
+			if ((i9 = texture[(j & 0x3f80) + (i >> 7)] >>> j8) != 0) {
+                pixels[k] = i9;
             }
 			k++;
 			i += j7;
 			j += l7;
-			if ((i9 = ai1[(j & 0x3f80) + (i >> 7)] >>> j8) != 0) {
-                ai[k] = i9;
+			if ((i9 = texture[(j & 0x3f80) + (i >> 7)] >>> j8) != 0) {
+                pixels[k] = i9;
             }
 			k++;
 			i += j7;
 			j += l7;
-			if ((i9 = ai1[(j & 0x3f80) + (i >> 7)] >>> j8) != 0) {
-                ai[k] = i9;
+			if ((i9 = texture[(j & 0x3f80) + (i >> 7)] >>> j8) != 0) {
+                pixels[k] = i9;
             }
 			k++;
 			i += j7;
 			j += l7;
-			if ((i9 = ai1[(j & 0x3f80) + (i >> 7)] >>> j8) != 0) {
-                ai[k] = i9;
+			if ((i9 = texture[(j & 0x3f80) + (i >> 7)] >>> j8) != 0) {
+                pixels[k] = i9;
             }
 			k++;
 			i += j7;
 			j += l7;
-			if ((i9 = ai1[(j & 0x3f80) + (i >> 7)] >>> j8) != 0) {
-                ai[k] = i9;
+			if ((i9 = texture[(j & 0x3f80) + (i >> 7)] >>> j8) != 0) {
+                pixels[k] = i9;
             }
 			k++;
 			i += j7;
 			j += l7;
-			if ((i9 = ai1[(j & 0x3f80) + (i >> 7)] >>> j8) != 0) {
-                ai[k] = i9;
+			if ((i9 = texture[(j & 0x3f80) + (i >> 7)] >>> j8) != 0) {
+                pixels[k] = i9;
             }
 			k++;
 			i += j7;
 			j += l7;
-			if ((i9 = ai1[(j & 0x3f80) + (i >> 7)] >>> j8) != 0) {
-                ai[k] = i9;
+			if ((i9 = texture[(j & 0x3f80) + (i >> 7)] >>> j8) != 0) {
+                pixels[k] = i9;
             }
 			k++;
 			i += j7;
 			j += l7;
-			if ((i9 = ai1[(j & 0x3f80) + (i >> 7)] >>> j8) != 0) {
-                ai[k] = i9;
+			if ((i9 = texture[(j & 0x3f80) + (i >> 7)] >>> j8) != 0) {
+                pixels[k] = i9;
             }
 			k++;
 			i = j4;
@@ -1961,8 +1961,8 @@ public final class Rasterizer extends DrawingArea {
 		}
 		for (int l3 = i1 - l & 7; l3-- > 0;) {
 			final int j9;
-			if ((j9 = ai1[(j & 0x3f80) + (i >> 7)] >>> j8) != 0) {
-                ai[k] = j9;
+			if ((j9 = texture[(j & 0x3f80) + (i >> 7)] >>> j8) != 0) {
+                pixels[k] = j9;
             }
 			k++;
 			i += j7;
