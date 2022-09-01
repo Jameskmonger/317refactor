@@ -1583,15 +1583,15 @@ public final class Model extends Animable {
 
 	@Override
 	public void renderAtPoint(final int i, final int yCameraSine, final int yCameraCosine, final int xCameraSine, final int xCameraCosine, final int x,
-                              final int y, final int z, final int i2) {
-		final int j2 = z * xCameraCosine - x * xCameraSine >> 16;
-		final int k2 = y * yCameraSine + j2 * yCameraCosine >> 16;
+                              final int z, final int y, final int uid) {
+		final int j2 = y * xCameraCosine - x * xCameraSine >> 16;
+		final int k2 = z * yCameraSine + j2 * yCameraCosine >> 16;
 		final int l2 = this.diagonal2DAboveOrigin * yCameraCosine >> 16;
 		final int i3 = k2 + l2;
 		if (i3 <= 50 || k2 >= 3500) {
             return;
         }
-		final int j3 = z * xCameraSine + x * xCameraCosine >> 16;
+		final int j3 = y * xCameraSine + x * xCameraCosine >> 16;
 		int k3 = j3 - this.diagonal2DAboveOrigin << 9;
 		if (k3 / i3 >= DrawingArea.viewportCentreX) {
             return;
@@ -1600,7 +1600,7 @@ public final class Model extends Animable {
 		if (l3 / i3 <= -DrawingArea.viewportCentreX) {
             return;
         }
-		final int i4 = y * yCameraCosine - j2 * yCameraSine >> 16;
+		final int i4 = z * yCameraCosine - j2 * yCameraSine >> 16;
 		final int j4 = this.diagonal2DAboveOrigin * yCameraSine >> 16;
 		int k4 = i4 + j4 << 9;
 		if (k4 / i3 <= -DrawingArea.viewportCentreY) {
@@ -1617,7 +1617,7 @@ public final class Model extends Animable {
             flag = true;
         }
 		boolean flag1 = false;
-		if (i2 > 0 && aBoolean1684) {
+		if (uid > 0 && aBoolean1684) {
 			int k5 = k2 - l2;
 			if (k5 <= 50) {
                 k5 = 50;
@@ -1640,7 +1640,7 @@ public final class Model extends Animable {
 			final int k6 = cursorY - Rasterizer.centreY;
 			if (i6 > k3 && i6 < l3 && k6 > i5 && k6 < k4) {
                 if (this.singleTile) {
-                    resourceId[resourceCount++] = i2;
+                    resourceId[resourceCount++] = uid;
                 } else {
                     flag1 = true;
                 }
@@ -1664,8 +1664,8 @@ public final class Model extends Animable {
 				x2 = newX2;
 			}
 			x2 += x;
-			y2 += y;
-			z2 += z;
+			y2 += z;
+			z2 += y;
 			int translation = z2 * xCameraSine + x2 * xCameraCosine >> 16;
 			z2 = z2 * xCameraCosine - x2 * xCameraSine >> 16;
 			x2 = translation;
@@ -1689,7 +1689,7 @@ public final class Model extends Animable {
 		}
 
 		try {
-			this.method483(flag, flag1, i2);
+			this.method483(flag, flag1, uid);
 		} catch (final Exception _ex) {
 		}
 	}
