@@ -105,15 +105,15 @@ public final class IndexedImage extends DrawingArea {
         this.resizeWidth /= 2;
         this.resizeHeight /= 2;
 
-		final byte[] pixels = new byte[this.resizeWidth * this.resizeHeight];
+		final byte[] newPixels = new byte[this.resizeWidth * this.resizeHeight];
 		int i = 0;
 		for (int x = 0; x < this.height; x++) {
 			for (int y = 0; y < this.width; y++) {
-				pixels[(y + this.drawOffsetX >> 1) + (x + this.drawOffsetY >> 1) * this.resizeWidth] = pixels[i++];
+				newPixels[(y + this.drawOffsetX >> 1) + (x + this.drawOffsetY >> 1) * this.resizeWidth] = pixels[i++];
 			}
 		}
 
-		this.pixels = pixels;
+		this.pixels = newPixels;
         this.width = this.resizeWidth;
         this.height = this.resizeHeight;
         this.drawOffsetX = 0;
@@ -125,15 +125,15 @@ public final class IndexedImage extends DrawingArea {
             return;
         }
 
-		final byte[] pixels = new byte[this.resizeWidth * this.resizeHeight];
+		final byte[] newPixels = new byte[this.resizeWidth * this.resizeHeight];
 		int i = 0;
 		for (int y = 0; y < this.height; y++) {
 			for (int x = 0; x < this.width; x++) {
-				pixels[x + this.drawOffsetX + (y + this.drawOffsetY) * this.resizeWidth] = pixels[i++];
+				newPixels[x + this.drawOffsetX + (y + this.drawOffsetY) * this.resizeWidth] = pixels[i++];
 			}
 		}
 
-		this.pixels = pixels;
+		this.pixels = newPixels;
         this.width = this.resizeWidth;
         this.height = this.resizeHeight;
         this.drawOffsetX = 0;
@@ -141,28 +141,28 @@ public final class IndexedImage extends DrawingArea {
 	}
 
 	public void flipHorizontally() {
-		final byte[] pixels = new byte[this.width * this.height];
+		final byte[] newPixels = new byte[this.width * this.height];
 		int i = 0;
 		for (int y = 0; y < this.height; y++) {
 			for (int x = this.width - 1; x >= 0; x--) {
-				pixels[i++] = pixels[x + y * this.width];
+				newPixels[i++] = pixels[x + y * this.width];
 			}
 		}
 
-		this.pixels = pixels;
+		this.pixels = newPixels;
         this.drawOffsetX = this.resizeWidth - this.width - this.drawOffsetX;
 	}
 
 	public void flipVertically() {
-		final byte[] pixels = new byte[this.width * this.height];
+		final byte[] newPixels = new byte[this.width * this.height];
 		int i = 0;
 		for (int y = this.height - 1; y >= 0; y--) {
 			for (int x = 0; x < this.width; x++) {
-				pixels[i++] = pixels[x + y * this.width];
+				newPixels[i++] = pixels[x + y * this.width];
 			}
 		}
 
-		this.pixels = pixels;
+		this.pixels = newPixels;
         this.drawOffsetY = this.resizeHeight - this.height - this.drawOffsetY;
 	}
 
