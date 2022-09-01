@@ -118,8 +118,6 @@ public final class Client extends RSApplet {
 			signlink.startpriv(InetAddress.getLocalHost());
 			final Client client1 = new Client();
 			client1.createClientFrame(765, 503);
-
-			GlobalConfig.openFrame();
 		} catch (final Exception exception) {
 			exception.printStackTrace();
 		}
