@@ -211,7 +211,7 @@ public final class Model extends Animable {
 	public int minZ;
 
 	public int diagonal2DAboveOrigin;
-	private int minX;
+	public int minX;
 	private int diagonal3D;
 	private int diagonal3DAboveOrigin;
 	public int anInt1654;

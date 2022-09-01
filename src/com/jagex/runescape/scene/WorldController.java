@@ -856,7 +856,7 @@ public final class WorldController {
 				final int y = model.verticesY[vertex] - posY;
 				if (y <= secondModel.maxY) {
 					final int x = model.verticesX[vertex] - posX;
-					if (x >= secondModel.maxY && x <= secondModel.maxX) {
+					if (x >= secondModel.minX && x <= secondModel.maxX) {
 						final int z = model.verticesZ[vertex] - posZ;
 						if (z >= secondModel.minZ && z <= secondModel.maxZ) {
 							for (int v = 0; v < vertexCount; v++) {
