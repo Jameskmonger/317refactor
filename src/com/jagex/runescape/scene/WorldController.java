@@ -143,7 +143,7 @@ public final class WorldController {
 
 	private final int mapSizeY;
 
-	private final int[][][] heightMap;
+	private final int[][][] vertexHeights;
 
 	private final Tile[][][] groundArray;
 
@@ -264,7 +264,7 @@ public final class WorldController {
 		cullingClusters = new CullingCluster[anInt472][500];
 	}
 
-	public WorldController(final int[][][] heightMap) {
+	public WorldController(final int[][][] vertexHeights) {
 		final int length = 104;// was parameter
 		final int width = 104;// was parameter
 		final int height = 4;// was parameter
@@ -276,7 +276,7 @@ public final class WorldController {
 		this.mapSizeY = length;
 		this.groundArray = new Tile[height][width][length];
 		this.anIntArrayArrayArray445 = new int[height][width + 1][length + 1];
-		this.heightMap = heightMap;
+		this.vertexHeights = vertexHeights;
 		this.initToNull();
 	}
 
@@ -802,10 +802,10 @@ public final class WorldController {
 									&& (!flag || _x >= position2X || _y >= position2Y || _y < y && _x != x)) {
 								final Tile tile = this.groundArray[_z][_x][_y];
 								if (tile != null) {
-									final int i3 = (this.heightMap[_z][_x][_y] + this.heightMap[_z][_x + 1][_y]
-											+ this.heightMap[_z][_x][_y + 1] + this.heightMap[_z][_x + 1][_y + 1]) / 4
-											- (this.heightMap[z][x][y] + this.heightMap[z][x + 1][y] + this.heightMap[z][x][y + 1]
-											+ this.heightMap[z][x + 1][y + 1]) / 4;
+									final int i3 = (this.vertexHeights[_z][_x][_y] + this.vertexHeights[_z][_x + 1][_y]
+											+ this.vertexHeights[_z][_x][_y + 1] + this.vertexHeights[_z][_x + 1][_y + 1]) / 4
+											- (this.vertexHeights[z][x][y] + this.vertexHeights[z][x + 1][y] + this.vertexHeights[z][x][y + 1]
+											+ this.vertexHeights[z][x + 1][y + 1]) / 4;
 									final Wall wallObject = tile.wall;
 									if (wallObject != null && wallObject.primary != null
 											&& wallObject.primary.vertexNormals != null) {
@@ -916,10 +916,10 @@ public final class WorldController {
 		}
 		final int worldX = x << 7;
 		final int worldY = y << 7;
-		if (this.method324(worldX + 1, worldY + 1, this.heightMap[z][x][y])
-				&& this.method324((worldX + 128) - 1, worldY + 1, this.heightMap[z][x + 1][y])
-				&& this.method324((worldX + 128) - 1, (worldY + 128) - 1, this.heightMap[z][x + 1][y + 1])
-				&& this.method324(worldX + 1, (worldY + 128) - 1, this.heightMap[z][x][y + 1])) {
+		if (this.method324(worldX + 1, worldY + 1, this.vertexHeights[z][x][y])
+				&& this.method324((worldX + 128) - 1, worldY + 1, this.vertexHeights[z][x + 1][y])
+				&& this.method324((worldX + 128) - 1, (worldY + 128) - 1, this.vertexHeights[z][x + 1][y + 1])
+				&& this.method324(worldX + 1, (worldY + 128) - 1, this.vertexHeights[z][x][y + 1])) {
 			this.anIntArrayArrayArray445[z][x][y] = anInt448;
 			return true;
 		} else {
@@ -934,7 +934,7 @@ public final class WorldController {
 		}
 		final int posX = x << 7;
 		final int posY = y << 7;
-		final int posZ = this.heightMap[z][x][y] - 1;
+		final int posZ = this.vertexHeights[z][x][y] - 1;
 		final int z1 = posZ - 120;
 		final int z2 = posZ - 230;
 		final int z3 = posZ - 238;
@@ -1042,10 +1042,10 @@ public final class WorldController {
 		}
 		final int _x = x << 7;
 		final int _y = y << 7;
-		return this.method324(_x + 1, _y + 1, this.heightMap[z][x][y] - offsetZ)
-				&& this.method324((_x + 128) - 1, _y + 1, this.heightMap[z][x + 1][y] - offsetZ)
-				&& this.method324((_x + 128) - 1, (_y + 128) - 1, this.heightMap[z][x + 1][y + 1] - offsetZ)
-				&& this.method324(_x + 1, (_y + 128) - 1, this.heightMap[z][x][y + 1] - offsetZ);
+		return this.method324(_x + 1, _y + 1, this.vertexHeights[z][x][y] - offsetZ)
+				&& this.method324((_x + 128) - 1, _y + 1, this.vertexHeights[z][x + 1][y] - offsetZ)
+				&& this.method324((_x + 128) - 1, (_y + 128) - 1, this.vertexHeights[z][x + 1][y + 1] - offsetZ)
+				&& this.method324(_x + 1, (_y + 128) - 1, this.vertexHeights[z][x][y + 1] - offsetZ);
 	}
 
 	private boolean method323(final int minimumX, final int maximumX, final int minimumY, final int maximumY, final int z, final int offsetZ) {
@@ -1055,10 +1055,10 @@ public final class WorldController {
 			}
 			final int _x = minimumX << 7;
 			final int _y = minimumY << 7;
-			return this.method324(_x + 1, _y + 1, this.heightMap[z][minimumX][minimumY] - offsetZ)
-					&& this.method324((_x + 128) - 1, _y + 1, this.heightMap[z][minimumX + 1][minimumY] - offsetZ)
-					&& this.method324((_x + 128) - 1, (_y + 128) - 1, this.heightMap[z][minimumX + 1][minimumY + 1] - offsetZ)
-					&& this.method324(_x + 1, (_y + 128) - 1, this.heightMap[z][minimumX][minimumY + 1] - offsetZ);
+			return this.method324(_x + 1, _y + 1, this.vertexHeights[z][minimumX][minimumY] - offsetZ)
+					&& this.method324((_x + 128) - 1, _y + 1, this.vertexHeights[z][minimumX + 1][minimumY] - offsetZ)
+					&& this.method324((_x + 128) - 1, (_y + 128) - 1, this.vertexHeights[z][minimumX + 1][minimumY + 1] - offsetZ)
+					&& this.method324(_x + 1, (_y + 128) - 1, this.vertexHeights[z][minimumX][minimumY + 1] - offsetZ);
 		}
 		for (int x = minimumX; x <= maximumX; x++) {
 			for (int y = minimumY; y <= maximumY; y++) {
@@ -1071,7 +1071,7 @@ public final class WorldController {
 
 		final int _x = (minimumX << 7) + 1;
 		final int _y = (minimumY << 7) + 2;
-		final int _z = this.heightMap[z][minimumX][minimumY] - offsetZ;
+		final int _z = this.vertexHeights[z][minimumX][minimumY] - offsetZ;
 		if (!this.method324(_x, _y, _z)) {
 			return false;
 		}
@@ -1423,7 +1423,7 @@ public final class WorldController {
 					if (tile != null) {
 						if (tile.logicHeight > plane
 								|| !TILE_VISIBILITY_MAP[(x - cameraPositionTileX) + 25][(y - cameraPositionTileY) + 25]
-										&& this.heightMap[z][x][y] - cameraPosZ < 2000) {
+										&& this.vertexHeights[z][x][y] - cameraPosZ < 2000) {
 							tile.aBoolean1322 = false;
 							tile.aBoolean1323 = false;
 							tile.anInt1325 = 0;
@@ -1549,10 +1549,10 @@ public final class WorldController {
 		int xB = xD = xA + 128;
 		int yC;
 		int yD = yC = yA + 128;
-		int zA = this.heightMap[tileZ][tileX][tileY] - cameraPosZ;
-		int zB = this.heightMap[tileZ][tileX + 1][tileY] - cameraPosZ;
-		int zC = this.heightMap[tileZ][tileX + 1][tileY + 1] - cameraPosZ;
-		int zD = this.heightMap[tileZ][tileX][tileY + 1] - cameraPosZ;
+		int zA = this.vertexHeights[tileZ][tileX][tileY] - cameraPosZ;
+		int zB = this.vertexHeights[tileZ][tileX + 1][tileY] - cameraPosZ;
+		int zC = this.vertexHeights[tileZ][tileX + 1][tileY + 1] - cameraPosZ;
+		int zD = this.vertexHeights[tileZ][tileX][tileY + 1] - cameraPosZ;
 		int temp = yA * sinX + xA * cosineX >> 16;
 		yA = yA * cosineX - xA * sinX >> 16;
 		xA = temp;

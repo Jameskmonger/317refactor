@@ -619,13 +619,28 @@ final class Region {
 											96)];
 								}
 								if (overlayFloorId == 0) {
-									worldController.renderTile(_plane, x, y, 0, 0, -1, vertexHeightSW, vertexHeightSE,
-											vertexHeightNE, vertexHeightNW,
-											mixLightness(hslBitsetOriginal, lightIntensitySW),
-											mixLightness(hslBitsetOriginal, lightIntensitySE),
-											mixLightness(hslBitsetOriginal, lightIntensityNE),
-											mixLightness(hslBitsetOriginal, lightIntensityNW), 0, 0, 0, 0,
-											underlayMinimapColour, 0);
+									worldController.renderTile(
+										_plane, 
+										x, 
+										y, 
+										0, 
+										0, 
+										-1, 
+										vertexHeightSW, 
+										vertexHeightSE,
+										vertexHeightNE, 
+										vertexHeightNW,
+										mixLightness(hslBitsetOriginal, lightIntensitySW),
+										mixLightness(hslBitsetOriginal, lightIntensitySE),
+										mixLightness(hslBitsetOriginal, lightIntensityNE),
+										mixLightness(hslBitsetOriginal, lightIntensityNW), 
+										0, 
+										0, 
+										0, 
+										0,
+										underlayMinimapColour, 
+										0
+									);
 								} else {
 									final int clippingPath = this.overlayClippingPaths[_plane][x][y] + 1;
 									final byte clippingPathRotation = this.overlayOrientations[_plane][x][y];

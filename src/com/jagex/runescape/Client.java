@@ -435,7 +435,7 @@ public final class Client extends RSApplet {
 	private int chatboxScrollMax;
 	private String promptInput;
 	private int anInt1213;
-	private int[][][] intGroundArray;
+	private int[][][] vertexHeights;
 	private long serverSessionKey;
 	private int loginScreenFocus;
 	private final IndexedImage[] modIcons;
@@ -1815,7 +1815,7 @@ public final class Client extends RSApplet {
 		this.objectData = null;
 		this.terrainDataIds = null;
 		this.objectDataIds = null;
-		this.intGroundArray = null;
+		this.vertexHeights = null;
 		this.tileFlags = null;
 		this.worldController = null;
 		this.currentCollisionMap = null;
@@ -2189,7 +2189,7 @@ public final class Client extends RSApplet {
 				if (height < 3 && (this.tileFlags[1][x][y] & 2) == 2) {
                     height++;
                 }
-				Region.forceRenderObject(this.worldController, face, y, l, height, this.currentCollisionMap[z], this.intGroundArray, x,
+				Region.forceRenderObject(this.worldController, face, y, l, height, this.currentCollisionMap[z], this.vertexHeights, x,
 						objectId, z);
 			}
 		}
@@ -4500,10 +4500,10 @@ public final class Client extends RSApplet {
         }
 		final int _x = x & 0x7F;
 		final int _y = y & 0x7F;
-		final int i2 = this.intGroundArray[groundZ][groundX][groundY] * (128 - _x)
-				+ this.intGroundArray[groundZ][groundX + 1][groundY] * _x >> 7;
-		final int j2 = this.intGroundArray[groundZ][groundX][groundY + 1] * (128 - _x)
-				+ this.intGroundArray[groundZ][groundX + 1][groundY + 1] * _x >> 7;
+		final int i2 = this.vertexHeights[groundZ][groundX][groundY] * (128 - _x)
+				+ this.vertexHeights[groundZ][groundX + 1][groundY] * _x >> 7;
+		final int j2 = this.vertexHeights[groundZ][groundX][groundY + 1] * (128 - _x)
+				+ this.vertexHeights[groundZ][groundX + 1][groundY + 1] * _x >> 7;
 
 		return i2 * (128 - _y) + j2 * _y >> 7;
 	}
@@ -6082,7 +6082,7 @@ public final class Client extends RSApplet {
 
 			}
 
-			final Region objectManager = new Region(this.tileFlags, this.intGroundArray);
+			final Region objectManager = new Region(this.tileFlags, this.vertexHeights);
 			final int dataLength = this.terrainData.length;
 			this.stream.putOpcode(0);
 			if (!this.loadGeneratedMap) {
@@ -7337,10 +7337,10 @@ public final class Client extends RSApplet {
 			final int type = this.objectTypes[objectType];
 			final int animationId = stream.getUnsignedLEShortA();
 			if (x >= 0 && y >= 0 && x < 103 && y < 103) {
-				final int tileHeightX0Y0 = this.intGroundArray[this.plane][x][y];
-				final int tileHeightX1Y0 = this.intGroundArray[this.plane][x + 1][y];
-				final int tileHeightX1Y1 = this.intGroundArray[this.plane][x + 1][y + 1];
-				final int tileHeightX0Y1 = this.intGroundArray[this.plane][x][y + 1];
+				final int tileHeightX0Y0 = this.vertexHeights[this.plane][x][y];
+				final int tileHeightX1Y0 = this.vertexHeights[this.plane][x + 1][y];
+				final int tileHeightX1Y1 = this.vertexHeights[this.plane][x + 1][y + 1];
+				final int tileHeightX0Y1 = this.vertexHeights[this.plane][x][y + 1];
 				if (type == 0) {
 					final Wall wallObject = this.worldController.getWallObject(x, y, this.plane);
 					if (wallObject != null) {
@@ -7408,10 +7408,10 @@ public final class Client extends RSApplet {
             }
 			if (player != null) {
 				final GameObjectDefinition object = GameObjectDefinition.getDefinition(objectId);
-				final int tileHeightX0Y0 = this.intGroundArray[this.plane][x][y];
-				final int tileHeightX1Y0 = this.intGroundArray[this.plane][x + 1][y];
-				final int tileHeightX1Y1 = this.intGroundArray[this.plane][x + 1][y + 1];
-				final int tileHeightX0Y1 = this.intGroundArray[this.plane][x][y + 1];
+				final int tileHeightX0Y0 = this.vertexHeights[this.plane][x][y];
+				final int tileHeightX1Y0 = this.vertexHeights[this.plane][x + 1][y];
+				final int tileHeightX1Y1 = this.vertexHeights[this.plane][x + 1][y + 1];
+				final int tileHeightX0Y1 = this.vertexHeights[this.plane][x][y + 1];
 				final Model model = object.getModelAt(objectType, objectOrientation, tileHeightX0Y0, tileHeightX1Y0,
 						tileHeightX1Y1, tileHeightX0Y1, -1);
 				if (model != null) {
@@ -9192,7 +9192,7 @@ public final class Client extends RSApplet {
 						if (_z < 3 && (this.tileFlags[1][_x][_y] & 2) == 2) {
                             _z++;
                         }
-						final int h = drawHeight - this.intGroundArray[_z][_x][_y];
+						final int h = drawHeight - this.vertexHeights[_z][_x][_y];
 						if (h > maximumDrawHeight) {
                             maximumDrawHeight = h;
                         }
@@ -9430,8 +9430,8 @@ public final class Client extends RSApplet {
 			final Archive archiveWord = this.requestArchive(7, "chat system", "wordenc", this.expectedCRCs[7], 50);
 			final Archive archiveSounds = this.requestArchive(8, "sound effects", "sounds", this.expectedCRCs[8], 55);
 			this.tileFlags = new byte[4][104][104];
-			this.intGroundArray = new int[4][105][105];
-			this.worldController = new WorldController(this.intGroundArray);
+			this.vertexHeights = new int[4][105][105];
+			this.worldController = new WorldController(this.vertexHeights);
 			for (int z = 0; z < 4; z++) {
 				this.currentCollisionMap[z] = new CollisionMap();
             }
