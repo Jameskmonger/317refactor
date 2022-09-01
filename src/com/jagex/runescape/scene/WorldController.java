@@ -145,7 +145,7 @@ public final class WorldController {
 
 	private final int[][][] vertexHeights;
 
-	private final Tile[][][] groundArray;
+	private final Tile[][][] tileArray;
 
 	private int currentPositionZ;
 
@@ -274,7 +274,7 @@ public final class WorldController {
 		this.mapSizeZ = height;
 		this.mapSizeX = width;
 		this.mapSizeY = length;
-		this.groundArray = new Tile[height][width][length];
+		this.tileArray = new Tile[height][width][length];
 		this.anIntArrayArrayArray445 = new int[height][width + 1][length + 1];
 		this.vertexHeights = vertexHeights;
 		this.initToNull();
@@ -339,7 +339,7 @@ public final class WorldController {
 				if (x < 0 || y < 0 || x >= this.mapSizeX || y >= this.mapSizeY) {
 					return false;
 				}
-				final Tile tile = this.groundArray[z][x][y];
+				final Tile tile = this.tileArray[z][x][y];
 				if (tile != null && tile.entityCount >= 5) {
 					return false;
 				}
@@ -377,12 +377,12 @@ public final class WorldController {
 				}
 					
 				for (int _z = z; _z >= 0; _z--) {
-					if (this.groundArray[_z][x][y] == null) {
-						this.groundArray[_z][x][y] = new Tile(_z, x, y);
+					if (this.tileArray[_z][x][y] == null) {
+						this.tileArray[_z][x][y] = new Tile(_z, x, y);
 					}
 				}
 
-				final Tile tile = this.groundArray[z][x][y];
+				final Tile tile = this.tileArray[z][x][y];
 				tile.interactiveObjects[tile.entityCount] = entity;
 				tile.interactiveObjectsSize[tile.entityCount] = size;
 				tile.interactiveObjectsSizeOR |= size;
@@ -408,10 +408,10 @@ public final class WorldController {
 		groundDecoration.z = drawHeight;
 		groundDecoration.uid = uid;
 		groundDecoration.objConf = objConf;
-		if (this.groundArray[z][x][y] == null) {
-			this.groundArray[z][x][y] = new Tile(z, x, y);
+		if (this.tileArray[z][x][y] == null) {
+			this.tileArray[z][x][y] = new Tile(z, x, y);
 		}
-		this.groundArray[z][x][y].groundDecoration = groundDecoration;
+		this.tileArray[z][x][y].groundDecoration = groundDecoration;
 	}
 
 	public void addGroundItemTile(final int x, final int y, final int z, final int drawHeight, final int uid, final Animable firstGroundItem,
@@ -425,7 +425,7 @@ public final class WorldController {
 		groundItemTile.secondGroundItem = secondGroundItem;
 		groundItemTile.thirdGroundItem = thirdGroundItem;
 		int j1 = 0;
-		final Tile tile = this.groundArray[z][x][y];
+		final Tile tile = this.tileArray[z][x][y];
 		if (tile != null) {
 			for (int e = 0; e < tile.entityCount; e++) {
 				if (tile.interactiveObjects[e].renderable instanceof Model) {
@@ -438,10 +438,10 @@ public final class WorldController {
 
 		}
 		groundItemTile.anInt52 = j1;
-		if (this.groundArray[z][x][y] == null) {
-			this.groundArray[z][x][y] = new Tile(z, x, y);
+		if (this.tileArray[z][x][y] == null) {
+			this.tileArray[z][x][y] = new Tile(z, x, y);
 		}
-		this.groundArray[z][x][y].groundItemTile = groundItemTile;
+		this.tileArray[z][x][y].groundItemTile = groundItemTile;
 	}
 
 	public void addWallDecoration(final int x, final int y, final int z, final int drawHeight, final int offsetX, final int offsetY, final int face, final int uid,
@@ -459,12 +459,12 @@ public final class WorldController {
 		wallDecoration.configBits = faceBits;
 		wallDecoration.face = face;
 		for (int _z = z; _z >= 0; _z--) {
-			if (this.groundArray[_z][x][y] == null) {
-				this.groundArray[_z][x][y] = new Tile(_z, x, y);
+			if (this.tileArray[_z][x][y] == null) {
+				this.tileArray[_z][x][y] = new Tile(_z, x, y);
 			}
 		}
 
-		this.groundArray[z][x][y].wallDecoration = wallDecoration;
+		this.tileArray[z][x][y].wallDecoration = wallDecoration;
 	}
 
 	public void addWall(final int x, final int y, final int z, final int drawHeight, final int orientation, final int orientation2, final int uid,
@@ -485,18 +485,18 @@ public final class WorldController {
 		wall.orientation2 = orientation2;
 
 		for (int _z = z; _z >= 0; _z--) {
-			if (this.groundArray[_z][x][y] == null) {
-				this.groundArray[_z][x][y] = new Tile(_z, x, y);
+			if (this.tileArray[_z][x][y] == null) {
+				this.tileArray[_z][x][y] = new Tile(_z, x, y);
 			}
 		}
 
-		this.groundArray[z][x][y].wall = wall;
+		this.tileArray[z][x][y].wall = wall;
 	}
 
 	public void applyBridgeMode(final int x, final int y) {
-		final Tile tile = this.groundArray[0][x][y];
+		final Tile tile = this.tileArray[0][x][y];
 		for (int z = 0; z < 3; z++) {
-			final Tile _tile = this.groundArray[z][x][y] = this.groundArray[z + 1][x][y];
+			final Tile _tile = this.tileArray[z][x][y] = this.tileArray[z + 1][x][y];
 			if (_tile != null) {
 				_tile.z--;
 				for (int e = 0; e < _tile.entityCount; e++) {
@@ -508,11 +508,11 @@ public final class WorldController {
 
 			}
 		}
-		if (this.groundArray[0][x][y] == null) {
-			this.groundArray[0][x][y] = new Tile(0, x, y);
+		if (this.tileArray[0][x][y] == null) {
+			this.tileArray[0][x][y] = new Tile(0, x, y);
 		}
-		this.groundArray[0][x][y].tileBelow = tile;
-		this.groundArray[3][x][y] = null;
+		this.tileArray[0][x][y].tileBelow = tile;
+		this.tileArray[3][x][y] = null;
 	}
 
 	public void clearInteractiveObjectCache() {
@@ -527,7 +527,7 @@ public final class WorldController {
 
 	public void drawMinimapTile(final int x, final int y, final int z, final int[] pixels, int pixelPointer) {
 		final int scanLength = 512;// was parameter
-		final Tile tile = this.groundArray[z][x][y];
+		final Tile tile = this.tileArray[z][x][y];
 		if (tile == null) {
 			return;
 		}
@@ -588,7 +588,7 @@ public final class WorldController {
 	}
 
 	public int getConfig(final int uid, final int x, final int y, final int z) {
-		final Tile tile = this.groundArray[z][x][y];
+		final Tile tile = this.tileArray[z][x][y];
 		if (tile == null) {
 			return -1;
 		}
@@ -611,7 +611,7 @@ public final class WorldController {
 	}
 
 	public GroundDecoration getGroundDecoration(final int x, final int y, final int z) {
-		final Tile tile = this.groundArray[z][x][y];
+		final Tile tile = this.tileArray[z][x][y];
 		if (tile == null || tile.groundDecoration == null) {
 			return null;
 		} else {
@@ -620,7 +620,7 @@ public final class WorldController {
 	}
 
 	public int getGroundDecorationHash(final int x, final int y, final int z) {
-		final Tile tile = this.groundArray[z][x][y];
+		final Tile tile = this.tileArray[z][x][y];
 		if (tile == null || tile.groundDecoration == null) {
 			return 0;
 		} else {
@@ -629,7 +629,7 @@ public final class WorldController {
 	}
 
 	public int getInteractibleObjectHash(final int x, final int y, final int z) {
-		final Tile tile = this.groundArray[z][x][y];
+		final Tile tile = this.tileArray[z][x][y];
 		if (tile == null) {
 			return 0;
 		}
@@ -644,7 +644,7 @@ public final class WorldController {
 	}
 
 	public InteractiveObject getInteractiveObject(final int x, final int y, final int z) {
-		final Tile tile = this.groundArray[z][x][y];
+		final Tile tile = this.tileArray[z][x][y];
 		if (tile == null) {
 			return null;
 		}
@@ -658,7 +658,7 @@ public final class WorldController {
 	}
 
 	public WallDecoration getWallDecoration(final int x, final int y, final int z) {
-		final Tile tile = this.groundArray[z][x][y];
+		final Tile tile = this.tileArray[z][x][y];
 		if (tile == null) {
 			return null;
 		} else {
@@ -667,7 +667,7 @@ public final class WorldController {
 	}
 
 	public int getWallDecorationHash(final int x, final int y, final int z) {
-		final Tile tile = this.groundArray[z][x][y];
+		final Tile tile = this.tileArray[z][x][y];
 		if (tile == null || tile.wallDecoration == null) {
 			return 0;
 		} else {
@@ -676,7 +676,7 @@ public final class WorldController {
 	}
 
 	public Wall getWallObject(final int x, final int y, final int z) {
-		final Tile tile = this.groundArray[z][x][y];
+		final Tile tile = this.tileArray[z][x][y];
 		if (tile == null) {
 			return null;
 		} else {
@@ -685,7 +685,7 @@ public final class WorldController {
 	}
 
 	public int getWallObjectHash(final int x, final int y, final int z) {
-		final Tile tile = this.groundArray[z][x][y];
+		final Tile tile = this.tileArray[z][x][y];
 		if (tile == null || tile.wall == null) {
 			return 0;
 		} else {
@@ -697,7 +697,7 @@ public final class WorldController {
 		for (int z = 0; z < this.mapSizeZ; z++) {
 			for (int x = 0; x < this.mapSizeX; x++) {
 				for (int y = 0; y < this.mapSizeY; y++) {
-					this.groundArray[z][x][y] = null;
+					this.tileArray[z][x][y] = null;
 				}
 
 			}
@@ -744,7 +744,7 @@ public final class WorldController {
 	}
 
 	public void displaceWallDecoration(final int y, final int displacement, final int x, final int z) {
-		final Tile tile = this.groundArray[z][x][y];
+		final Tile tile = this.tileArray[z][x][y];
 		
 		if (tile == null) {
 			return;
@@ -762,25 +762,25 @@ public final class WorldController {
 
 	private void method306(final Model model, final int x, final int y, final int z) {
 		if (x < this.mapSizeX) {
-			final Tile tile = this.groundArray[z][x + 1][y];
+			final Tile tile = this.tileArray[z][x + 1][y];
 			if (tile != null && tile.groundDecoration != null && tile.groundDecoration.renderable.vertexNormals != null) {
 				this.mergeNormals(model, (Model) tile.groundDecoration.renderable, 128, 0, 0, true);
 			}
 		}
 		if (y < this.mapSizeX) {
-			final Tile tile = this.groundArray[z][x][y + 1];
+			final Tile tile = this.tileArray[z][x][y + 1];
 			if (tile != null && tile.groundDecoration != null && tile.groundDecoration.renderable.vertexNormals != null) {
 				this.mergeNormals(model, (Model) tile.groundDecoration.renderable, 0, 0, 128, true);
 			}
 		}
 		if (x < this.mapSizeX && y < this.mapSizeY) {
-			final Tile tile = this.groundArray[z][x + 1][y + 1];
+			final Tile tile = this.tileArray[z][x + 1][y + 1];
 			if (tile != null && tile.groundDecoration != null && tile.groundDecoration.renderable.vertexNormals != null) {
 				this.mergeNormals(model, (Model) tile.groundDecoration.renderable, 128, 0, 128, true);
 			}
 		}
 		if (x < this.mapSizeX && y > 0) {
-			final Tile tile = this.groundArray[z][x + 1][y - 1];
+			final Tile tile = this.tileArray[z][x + 1][y - 1];
 			if (tile != null && tile.groundDecoration != null && tile.groundDecoration.renderable.vertexNormals != null) {
 				this.mergeNormals(model, (Model) tile.groundDecoration.renderable, 128, 0, -128, true);
 			}
@@ -800,7 +800,7 @@ public final class WorldController {
 						for (int _y = positionY; _y <= position2Y; _y++) {
 							if (_y >= 0 && _y < this.mapSizeY
 									&& (!flag || _x >= position2X || _y >= position2Y || _y < y && _x != x)) {
-								final Tile tile = this.groundArray[_z][_x][_y];
+								final Tile tile = this.tileArray[_z][_x][_y];
 								if (tile != null) {
 									final int i3 = (this.vertexHeights[_z][_x][_y] + this.vertexHeights[_z][_x + 1][_y]
 											+ this.vertexHeights[_z][_x][_y + 1] + this.vertexHeights[_z][_x + 1][_y + 1]) / 4
@@ -1304,7 +1304,7 @@ public final class WorldController {
 	private void remove(final InteractiveObject entity) {
 		for (int x = entity.tileLeft; x <= entity.tileRight; x++) {
 			for (int y = entity.tileTop; y <= entity.tileBottom; y++) {
-				final Tile tile = this.groundArray[entity.z][x][y];
+				final Tile tile = this.tileArray[entity.z][x][y];
 				if (tile != null) {
 					for (int e = 0; e < tile.entityCount; e++) {
 						if (tile.interactiveObjects[e] != entity) {
@@ -1331,7 +1331,7 @@ public final class WorldController {
 	}
 
 	public void removeGroundDecoration(final int x, final int y, final int z) {
-		final Tile tile = this.groundArray[z][x][y];
+		final Tile tile = this.tileArray[z][x][y];
 		if (tile == null) {
 			return;
 		}
@@ -1339,14 +1339,14 @@ public final class WorldController {
 	}
 
 	public void removeGroundItemTile(final int x, final int y, final int z) {
-		final Tile tile = this.groundArray[z][x][y];
+		final Tile tile = this.tileArray[z][x][y];
 		if (tile != null) {
 			tile.groundItemTile = null;
 		}
 	}
 
 	public void removeInteractiveObject(final int x, final int y, final int z) {
-		final Tile tile = this.groundArray[z][x][y];
+		final Tile tile = this.tileArray[z][x][y];
 		if (tile == null) {
 			return;
 		}
@@ -1361,14 +1361,14 @@ public final class WorldController {
 	}
 
 	public void removeWallDecoration(final int x, final int y, final int z) {
-		final Tile tile = this.groundArray[z][x][y];
+		final Tile tile = this.tileArray[z][x][y];
 		if (tile != null) {
 			tile.wallDecoration = null;
 		}
 	}
 
 	public void removeWallObject(final int x, final int z, final int y) {
-		final Tile tile = this.groundArray[z][x][y];
+		final Tile tile = this.tileArray[z][x][y];
 		if (tile != null) {
 			tile.wall = null;
 		}
@@ -1416,7 +1416,7 @@ public final class WorldController {
 		this.processCulling();
 		anInt446 = 0;
 		for (int z = this.currentPositionZ; z < this.mapSizeZ; z++) {
-			final Tile[][] tiles = this.groundArray[z];
+			final Tile[][] tiles = this.tileArray[z];
 			for (int x = currentPositionX; x < mapBoundsX; x++) {
 				for (int y = currentPositionY; y < mapBoundsY; y++) {
 					final Tile tile = tiles[x][y];
@@ -1424,13 +1424,13 @@ public final class WorldController {
 						if (tile.logicHeight > plane
 								|| !TILE_VISIBILITY_MAP[(x - cameraPositionTileX) + 25][(y - cameraPositionTileY) + 25]
 										&& this.vertexHeights[z][x][y] - cameraPosZ < 2000) {
-							tile.aBoolean1322 = false;
-							tile.aBoolean1323 = false;
-							tile.anInt1325 = 0;
+							tile.draw = false;
+							tile.visible = false;
+							tile.wallCullDirection = 0;
 						} else {
-							tile.aBoolean1322 = true;
-							tile.aBoolean1323 = true;
-							tile.aBoolean1324 = tile.entityCount > 0;
+							tile.draw = true;
+							tile.visible = true;
+							tile.drawEntities = tile.entityCount > 0;
 							anInt446++;
 						}
 					}
@@ -1441,7 +1441,7 @@ public final class WorldController {
 		}
 
 		for (int z = this.currentPositionZ; z < this.mapSizeZ; z++) {
-			final Tile[][] tiles = this.groundArray[z];
+			final Tile[][] tiles = this.tileArray[z];
 			for (int offsetX = -25; offsetX <= 0; offsetX++) {
 				final int x = cameraPositionTileX + offsetX;
 				final int x2 = cameraPositionTileX - offsetX;
@@ -1452,13 +1452,13 @@ public final class WorldController {
 						if (x >= currentPositionX) {
 							if (y >= currentPositionY) {
 								final Tile tile = tiles[x][y];
-								if (tile != null && tile.aBoolean1322) {
+								if (tile != null && tile.draw) {
 									this.renderTile(tile, true);
 								}
 							}
 							if (y2 < mapBoundsY) {
 								final Tile tile = tiles[x][y2];
-								if (tile != null && tile.aBoolean1322) {
+								if (tile != null && tile.draw) {
 									this.renderTile(tile, true);
 								}
 							}
@@ -1466,13 +1466,13 @@ public final class WorldController {
 						if (x2 < mapBoundsX) {
 							if (y >= currentPositionY) {
 								final Tile tile = tiles[x2][y];
-								if (tile != null && tile.aBoolean1322) {
+								if (tile != null && tile.draw) {
 									this.renderTile(tile, true);
 								}
 							}
 							if (y2 < mapBoundsY) {
 								final Tile tile = tiles[x2][y2];
-								if (tile != null && tile.aBoolean1322) {
+								if (tile != null && tile.draw) {
 									this.renderTile(tile, true);
 								}
 							}
@@ -1489,7 +1489,7 @@ public final class WorldController {
 		}
 
 		for (int z = this.currentPositionZ; z < this.mapSizeZ; z++) {
-			final Tile[][] tiles = this.groundArray[z];
+			final Tile[][] tiles = this.tileArray[z];
 			for (int offsetX = -25; offsetX <= 0; offsetX++) {
 				final int x = cameraPositionTileX + offsetX;
 				final int x2 = cameraPositionTileX - offsetX;
@@ -1500,13 +1500,13 @@ public final class WorldController {
 						if (x >= currentPositionX) {
 							if (y >= currentPositionY) {
 								final Tile tile = tiles[x][y];
-								if (tile != null && tile.aBoolean1322) {
+								if (tile != null && tile.draw) {
 									this.renderTile(tile, false);
 								}
 							}
 							if (y2 < mapBoundsY) {
 								final Tile tile = tiles[x][y2];
-								if (tile != null && tile.aBoolean1322) {
+								if (tile != null && tile.draw) {
 									this.renderTile(tile, false);
 								}
 							}
@@ -1514,13 +1514,13 @@ public final class WorldController {
 						if (x2 < mapBoundsX) {
 							if (y >= currentPositionY) {
 								final Tile tile = tiles[x2][y];
-								if (tile != null && tile.aBoolean1322) {
+								if (tile != null && tile.draw) {
 									this.renderTile(tile, false);
 								}
 							}
 							if (y2 < mapBoundsY) {
 								final Tile tile = tiles[x2][y2];
-								if (tile != null && tile.aBoolean1322) {
+								if (tile != null && tile.draw) {
 									this.renderTile(tile, false);
 								}
 							}
@@ -1658,11 +1658,11 @@ public final class WorldController {
 
 	private void renderShapedTile(final ShapedTile shapedTile, final int tileX, final int tileY, final int sineX, final int cosineX, final int sineY,
 								  final int cosineY) {
-		int triangleCount = shapedTile.originalVertexX.length;
+		int triangleCount = shapedTile.vertexX.length;
 		for (int triangle = 0; triangle < triangleCount; triangle++) {
-			int viewspaceX = shapedTile.originalVertexX[triangle] - cameraPosX;
-			int viewspaceY = shapedTile.originalVertexY[triangle] - cameraPosZ;
-			int viewspaceZ = shapedTile.originalVertexZ[triangle] - cameraPosY;
+			int viewspaceX = shapedTile.vertexX[triangle] - cameraPosX;
+			int viewspaceY = shapedTile.vertexY[triangle] - cameraPosZ;
+			int viewspaceZ = shapedTile.vertexZ[triangle] - cameraPosY;
 			int temp = viewspaceZ * sineX + viewspaceX * cosineX >> 16;
 			viewspaceZ = viewspaceZ * cosineX - viewspaceX * sineX >> 16;
 			viewspaceX = temp;
@@ -1745,52 +1745,52 @@ public final class WorldController {
 				if (groundTile == null) {
 					return;
 				}
-			} while (!groundTile.aBoolean1323);
+			} while (!groundTile.visible);
 			final int x = groundTile.x;
 			final int y = groundTile.y;
 			final int z = groundTile.z;
 			final int l = groundTile.anInt1310;
-			final Tile[][] tiles = this.groundArray[z];
-			if (groundTile.aBoolean1322) {
+			final Tile[][] tiles = this.tileArray[z];
+			if (groundTile.draw) {
 				if (flag) {
 					if (z > 0) {
-						final Tile tile = this.groundArray[z - 1][x][y];
-						if (tile != null && tile.aBoolean1323) {
+						final Tile tile = this.tileArray[z - 1][x][y];
+						if (tile != null && tile.visible) {
 							continue;
 						}
 					}
 					if (x <= cameraPositionTileX && x > currentPositionX) {
 						final Tile tile = tiles[x - 1][y];
-						if (tile != null && tile.aBoolean1323
-								&& (tile.aBoolean1322 || (groundTile.interactiveObjectsSizeOR & 1) == 0)) {
+						if (tile != null && tile.visible
+								&& (tile.draw || (groundTile.interactiveObjectsSizeOR & 1) == 0)) {
 							continue;
 						}
 					}
 					if (x >= cameraPositionTileX && x < mapBoundsX - 1) {
 						final Tile tile = tiles[x + 1][y];
-						if (tile != null && tile.aBoolean1323
-								&& (tile.aBoolean1322 || (groundTile.interactiveObjectsSizeOR & 4) == 0)) {
+						if (tile != null && tile.visible
+								&& (tile.draw || (groundTile.interactiveObjectsSizeOR & 4) == 0)) {
 							continue;
 						}
 					}
 					if (y <= cameraPositionTileY && y > currentPositionY) {
 						final Tile tile = tiles[x][y - 1];
-						if (tile != null && tile.aBoolean1323
-								&& (tile.aBoolean1322 || (groundTile.interactiveObjectsSizeOR & 8) == 0)) {
+						if (tile != null && tile.visible
+								&& (tile.draw || (groundTile.interactiveObjectsSizeOR & 8) == 0)) {
 							continue;
 						}
 					}
 					if (y >= cameraPositionTileY && y < mapBoundsY - 1) {
 						final Tile tile = tiles[x][y + 1];
-						if (tile != null && tile.aBoolean1323
-								&& (tile.aBoolean1322 || (groundTile.interactiveObjectsSizeOR & 2) == 0)) {
+						if (tile != null && tile.visible
+								&& (tile.draw || (groundTile.interactiveObjectsSizeOR & 2) == 0)) {
 							continue;
 						}
 					}
 				} else {
 					flag = true;
 				}
-				groundTile.aBoolean1322 = false;
+				groundTile.draw = false;
 				if (groundTile.tileBelow != null) {
 					final Tile tile = groundTile.tileBelow;
 					if (tile.plainTile != null) {
@@ -1849,24 +1849,24 @@ public final class WorldController {
 				if (wallObject != null) {
 					if ((wallObject.orientation & anIntArray479[j1]) != 0) {
 						if (wallObject.orientation == 16) {
-							groundTile.anInt1325 = 3;
+							groundTile.wallCullDirection = 3;
 							groundTile.anInt1326 = anIntArray481[j1];
 							groundTile.anInt1327 = 3 - groundTile.anInt1326;
 						} else if (wallObject.orientation == 32) {
-							groundTile.anInt1325 = 6;
+							groundTile.wallCullDirection = 6;
 							groundTile.anInt1326 = anIntArray482[j1];
 							groundTile.anInt1327 = 6 - groundTile.anInt1326;
 						} else if (wallObject.orientation == 64) {
-							groundTile.anInt1325 = 12;
+							groundTile.wallCullDirection = 12;
 							groundTile.anInt1326 = anIntArray483[j1];
 							groundTile.anInt1327 = 12 - groundTile.anInt1326;
 						} else {
-							groundTile.anInt1325 = 9;
+							groundTile.wallCullDirection = 9;
 							groundTile.anInt1326 = anIntArray484[j1];
 							groundTile.anInt1327 = 9 - groundTile.anInt1326;
 						}
 					} else {
-						groundTile.anInt1325 = 0;
+						groundTile.wallCullDirection = 0;
 					}
 					if ((wallObject.orientation & j2) != 0 && !this.method321(x, y, l, wallObject.orientation)) {
 						wallObject.primary.renderAtPoint(0, curveSineY, curveCosineY, curveSineX, curveCosineX,
@@ -1945,35 +1945,35 @@ public final class WorldController {
 				if (interactiveObjectsSizeOR != 0) {
 					if (x < cameraPositionTileX && (interactiveObjectsSizeOR & 4) != 0) {
 						final Tile tile = tiles[x + 1][y];
-						if (tile != null && tile.aBoolean1323) {
+						if (tile != null && tile.visible) {
 							tileList.pushBack(tile);
 						}
 					}
 					if (y < cameraPositionTileY && (interactiveObjectsSizeOR & 2) != 0) {
 						final Tile tile = tiles[x][y + 1];
-						if (tile != null && tile.aBoolean1323) {
+						if (tile != null && tile.visible) {
 							tileList.pushBack(tile);
 						}
 					}
 					if (x > cameraPositionTileX && (interactiveObjectsSizeOR & 1) != 0) {
 						final Tile tile = tiles[x - 1][y];
-						if (tile != null && tile.aBoolean1323) {
+						if (tile != null && tile.visible) {
 							tileList.pushBack(tile);
 						}
 					}
 					if (y > cameraPositionTileY && (interactiveObjectsSizeOR & 8) != 0) {
 						final Tile tile = tiles[x][y - 1];
-						if (tile != null && tile.aBoolean1323) {
+						if (tile != null && tile.visible) {
 							tileList.pushBack(tile);
 						}
 					}
 				}
 			}
-			if (groundTile.anInt1325 != 0) {
+			if (groundTile.wallCullDirection != 0) {
 				boolean flag2 = true;
 				for (int e = 0; e < groundTile.entityCount; e++) {
 					if (groundTile.interactiveObjects[e].anInt528 == anInt448
-							|| (groundTile.interactiveObjectsSize[e] & groundTile.anInt1325) != groundTile.anInt1326) {
+							|| (groundTile.interactiveObjectsSize[e] & groundTile.wallCullDirection) != groundTile.anInt1326) {
 						continue;
 					}
 					flag2 = false;
@@ -1987,13 +1987,13 @@ public final class WorldController {
 								wallObject.x - cameraPosX, wallObject.z - cameraPosZ, wallObject.y - cameraPosY,
 								wallObject.uid);
 					}
-					groundTile.anInt1325 = 0;
+					groundTile.wallCullDirection = 0;
 				}
 			}
-			if (groundTile.aBoolean1324) {
+			if (groundTile.drawEntities) {
 				try {
 					final int entityCount = groundTile.entityCount;
-					groundTile.aBoolean1324 = false;
+					groundTile.drawEntities = false;
 					int l1 = 0;
 					label0: for (int e = 0; e < entityCount; e++) {
 						final InteractiveObject entity = groundTile.interactiveObjects[e];
@@ -2003,10 +2003,10 @@ public final class WorldController {
 						for (int _x = entity.tileLeft; _x <= entity.tileRight; _x++) {
 							for (int _y = entity.tileTop; _y <= entity.tileBottom; _y++) {
 								final Tile tile = tiles[_x][_y];
-								if (tile.aBoolean1322) {
-									groundTile.aBoolean1324 = true;
+								if (tile.draw) {
+									groundTile.drawEntities = true;
 								} else {
-									if (tile.anInt1325 == 0) {
+									if (tile.wallCullDirection == 0) {
 										continue;
 									}
 									int l6 = 0;
@@ -2022,10 +2022,10 @@ public final class WorldController {
 									if (_y < entity.tileBottom) {
 										l6 += 2;
 									}
-									if ((l6 & tile.anInt1325) != groundTile.anInt1327) {
+									if ((l6 & tile.wallCullDirection) != groundTile.anInt1327) {
 										continue;
 									}
-									groundTile.aBoolean1324 = true;
+									groundTile.drawEntities = true;
 								}
 								continue label0;
 							}
@@ -2084,9 +2084,9 @@ public final class WorldController {
 						for (int _x = entity.tileLeft; _x <= entity.tileRight; _x++) {
 							for (int _y = entity.tileTop; _y <= entity.tileBottom; _y++) {
 								final Tile tile = tiles[_x][_y];
-								if (tile.anInt1325 != 0) {
+								if (tile.wallCullDirection != 0) {
 									tileList.pushBack(tile);
-								} else if ((_x != x || _y != y) && tile.aBoolean1323) {
+								} else if ((_x != x || _y != y) && tile.visible) {
 									tileList.pushBack(tile);
 								}
 							}
@@ -2094,41 +2094,41 @@ public final class WorldController {
 						}
 
 					}
-					if (groundTile.aBoolean1324) {
+					if (groundTile.drawEntities) {
 						continue;
 					}
 				} catch (final Exception _ex) {
-					groundTile.aBoolean1324 = false;
+					groundTile.drawEntities = false;
 				}
 			}
-			if (!groundTile.aBoolean1323 || groundTile.anInt1325 != 0) {
+			if (!groundTile.visible || groundTile.wallCullDirection != 0) {
 				continue;
 			}
 			if (x <= cameraPositionTileX && x > currentPositionX) {
 				final Tile tile = tiles[x - 1][y];
-				if (tile != null && tile.aBoolean1323) {
+				if (tile != null && tile.visible) {
 					continue;
 				}
 			}
 			if (x >= cameraPositionTileX && x < mapBoundsX - 1) {
 				final Tile tile = tiles[x + 1][y];
-				if (tile != null && tile.aBoolean1323) {
+				if (tile != null && tile.visible) {
 					continue;
 				}
 			}
 			if (y <= cameraPositionTileY && y > currentPositionY) {
 				final Tile tile = tiles[x][y - 1];
-				if (tile != null && tile.aBoolean1323) {
+				if (tile != null && tile.visible) {
 					continue;
 				}
 			}
 			if (y >= cameraPositionTileY && y < mapBoundsY - 1) {
 				final Tile tile = tiles[x][y + 1];
-				if (tile != null && tile.aBoolean1323) {
+				if (tile != null && tile.visible) {
 					continue;
 				}
 			}
-			groundTile.aBoolean1323 = false;
+			groundTile.visible = false;
 			anInt446--;
 			final GroundItemTile groundItemTile = groundTile.groundItemTile;
 			if (groundItemTile != null && groundItemTile.anInt52 != 0) {
@@ -2203,32 +2203,32 @@ public final class WorldController {
 				}
 			}
 			if (z < this.mapSizeZ - 1) {
-				final Tile tile = this.groundArray[z + 1][x][y];
-				if (tile != null && tile.aBoolean1323) {
+				final Tile tile = this.tileArray[z + 1][x][y];
+				if (tile != null && tile.visible) {
 					tileList.pushBack(tile);
 				}
 			}
 			if (x < cameraPositionTileX) {
 				final Tile tile = tiles[x + 1][y];
-				if (tile != null && tile.aBoolean1323) {
+				if (tile != null && tile.visible) {
 					tileList.pushBack(tile);
 				}
 			}
 			if (y < cameraPositionTileY) {
 				final Tile tile = tiles[x][y + 1];
-				if (tile != null && tile.aBoolean1323) {
+				if (tile != null && tile.visible) {
 					tileList.pushBack(tile);
 				}
 			}
 			if (x > cameraPositionTileX) {
 				final Tile tile = tiles[x - 1][y];
-				if (tile != null && tile.aBoolean1323) {
+				if (tile != null && tile.visible) {
 					tileList.pushBack(tile);
 				}
 			}
 			if (y > cameraPositionTileY) {
 				final Tile tile = tiles[x][y - 1];
-				if (tile != null && tile.aBoolean1323) {
+				if (tile != null && tile.visible) {
 					tileList.pushBack(tile);
 				}
 			}
@@ -2236,40 +2236,40 @@ public final class WorldController {
 	}
 
 	public void renderTile(final int plane, final int x, final int y, final int clippingPath, final int clippingPathRotation, final int textureId,
-						   final int vertexHeightSW, final int vertexHeightSE, final int vertexHeightNE, final int vertexHeightNW, final int k2, final int l2, final int i3,
-						   final int j3, final int k3, final int l3, final int i4, final int j4, final int k4, final int l4) {
+						   final int vertexHeightSW, final int vertexHeightSE, final int vertexHeightNE, final int vertexHeightNW, final int colorSW, final int colorSE, final int colorNE,
+						   final int colorNW, final int colorSignedSW_maybe, final int colorSignedSE_maybe, final int colorSignedNE_maybe, final int colorSignedNW_maybe, final int k4, final int l4) {
 		if (clippingPath == 0) {
-			final PlainTile tile = new PlainTile(k2, l2, j3, i3, k4, -1, false);
+			final PlainTile tile = new PlainTile(colorSW, colorSE, colorNW, colorNE, k4, -1, false);
 			for (int _z = plane; _z >= 0; _z--) {
-				if (this.groundArray[_z][x][y] == null) {
-					this.groundArray[_z][x][y] = new Tile(_z, x, y);
+				if (this.tileArray[_z][x][y] == null) {
+					this.tileArray[_z][x][y] = new Tile(_z, x, y);
 				}
 			}
 
-			this.groundArray[plane][x][y].plainTile = tile;
+			this.tileArray[plane][x][y].plainTile = tile;
 			return;
 		}
 		if (clippingPath == 1) {
-			final PlainTile tile = new PlainTile(k3, l3, j4, i4, l4, textureId, vertexHeightSW == vertexHeightSE
+			final PlainTile tile = new PlainTile(colorSignedSW_maybe, colorSignedSE_maybe, colorSignedNW_maybe, colorSignedNE_maybe, l4, textureId, vertexHeightSW == vertexHeightSE
 					&& vertexHeightSW == vertexHeightNE && vertexHeightSW == vertexHeightNW);
 			for (int _z = plane; _z >= 0; _z--) {
-				if (this.groundArray[_z][x][y] == null) {
-					this.groundArray[_z][x][y] = new Tile(_z, x, y);
+				if (this.tileArray[_z][x][y] == null) {
+					this.tileArray[_z][x][y] = new Tile(_z, x, y);
 				}
 			}
 
-			this.groundArray[plane][x][y].plainTile = tile;
+			this.tileArray[plane][x][y].plainTile = tile;
 			return;
 		}
 		final ShapedTile tile = new ShapedTile(x, vertexHeightSW, vertexHeightSE, vertexHeightNW, vertexHeightNE, y,
-				clippingPathRotation, textureId, clippingPath, k2, k3, l2, l3, j3, j4, i3, i4, l4, k4);
+				clippingPathRotation, textureId, clippingPath, colorSW, colorSignedSW_maybe, colorSE, colorSignedSE_maybe, colorNW, colorSignedNW_maybe, colorNE, colorSignedNE_maybe, l4, k4);
 		for (int _z = plane; _z >= 0; _z--) {
-			if (this.groundArray[_z][x][y] == null) {
-				this.groundArray[_z][x][y] = new Tile(_z, x, y);
+			if (this.tileArray[_z][x][y] == null) {
+				this.tileArray[_z][x][y] = new Tile(_z, x, y);
 			}
 		}
 
-		this.groundArray[plane][x][y].shapedTile = tile;
+		this.tileArray[plane][x][y].shapedTile = tile;
 	}
 
 	public void request2DTrace(final int x, final int y) {
@@ -2284,8 +2284,8 @@ public final class WorldController {
 		this.currentPositionZ = z;
 		for (int x = 0; x < this.mapSizeX; x++) {
 			for (int y = 0; y < this.mapSizeY; y++) {
-				if (this.groundArray[z][x][y] == null) {
-					this.groundArray[z][x][y] = new Tile(z, x, y);
+				if (this.tileArray[z][x][y] == null) {
+					this.tileArray[z][x][y] = new Tile(z, x, y);
 				}
 			}
 
@@ -2294,9 +2294,9 @@ public final class WorldController {
 	}
 
 	public void setTileLogicHeight(final int x, final int y, final int z, final int logicHeight) {
-		final Tile tile = this.groundArray[z][x][y];
+		final Tile tile = this.tileArray[z][x][y];
 		if (tile != null) {
-			this.groundArray[z][x][y].logicHeight = logicHeight;
+			this.tileArray[z][x][y].logicHeight = logicHeight;
 		}
 	}
 
@@ -2308,7 +2308,7 @@ public final class WorldController {
 		for (int _z = 0; _z < this.mapSizeZ; _z++) {
 			for (int _x = 0; _x < this.mapSizeX; _x++) {
 				for (int _y = 0; _y < this.mapSizeY; _y++) {
-					final Tile tile = this.groundArray[_z][_x][_y];
+					final Tile tile = this.tileArray[_z][_x][_y];
 					if (tile != null) {
 						final Wall wallObject = tile.wall;
 						if (wallObject != null && wallObject.primary != null

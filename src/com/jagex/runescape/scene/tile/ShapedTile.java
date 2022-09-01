@@ -2,10 +2,9 @@ package com.jagex.runescape.scene.tile;
 
 public final class ShapedTile {
 
-	public final int[] originalVertexX;
-
-	public final int[] originalVertexY;
-	public final int[] originalVertexZ;
+	public final int[] vertexX;
+	public final int[] vertexY;
+	public final int[] vertexZ;
 	public final int[] triangleHSLA;
 	public final int[] triangleHSLB;
 	public final int[] triangleHSLC;
@@ -36,26 +35,26 @@ public final class ShapedTile {
 			{ 1, 0, 1, 5, 1, 1, 4, 5, 1, 1, 2, 4, 0, 0, 5, 3, 0, 5, 4, 3, 0, 4, 2, 3 },
 			{ 1, 0, 5, 4, 1, 0, 1, 5, 0, 0, 4, 3, 0, 4, 5, 3, 0, 5, 2, 3, 0, 1, 2, 5 } };
 
-	public ShapedTile(final int tileX, final int yA, final int yB, final int yC, final int yD, final int tileZ, final int rotation, final int texture, final int shape, final int cA,
-                      final int cAA, final int cB, final int cBA, final int cC, final int cCA, final int cD, final int cDA, final int overlayRGB, final int underlayRGB) {
-        this.flat = !(yA != yB || yA != yD || yA != yC);
+	public ShapedTile(final int tileX, final int heightSW, final int heightSE, final int heightNW, final int heightNE, final int tileZ, final int rotation, final int texture, final int shape, final int overlaySW,
+                      final int underlaySW, final int overlaySE, final int underlaySE, final int overlayNW, final int underlayNW, final int overlayNE, final int underlayNE, final int overlayRGB, final int underlayRGB) {
+        this.flat = !(heightSW != heightSE || heightSW != heightNE || heightSW != heightNW);
 		this.shape = shape;
 		this.rotation = rotation;
 		this.underlayRGB = underlayRGB;
 		this.overlayRGB = overlayRGB;
-		final char const512 = '\200';
-		final int const256 = const512 / 2;
-		final int const128 = const512 / 4;
-		final int const384 = (const512 * 3) / 4;
+		final char TILE_WIDTH = '\200';
+		final int HALF_TILE = TILE_WIDTH / 2;
+		final int QUARTER_TILE = TILE_WIDTH / 4;
+		final int THREE_QUARTER_TILE = (TILE_WIDTH * 3) / 4;
 		final int[] shapedTileMesh = shapedTilePointData[shape];
 		final int shapedTileMeshLength = shapedTileMesh.length;
-        this.originalVertexX = new int[shapedTileMeshLength];
-        this.originalVertexY = new int[shapedTileMeshLength];
-        this.originalVertexZ = new int[shapedTileMeshLength];
+        this.vertexX = new int[shapedTileMeshLength];
+        this.vertexY = new int[shapedTileMeshLength];
+        this.vertexZ = new int[shapedTileMeshLength];
 		final int[] vertexColourOverlay = new int[shapedTileMeshLength];
 		final int[] vertexColourUnderlay = new int[shapedTileMeshLength];
-		final int x512 = tileX * const512;
-		final int z512 = tileZ * const512;
+		final int tilePosX = tileX * TILE_WIDTH;
+		final int tilePosY = tileZ * TILE_WIDTH;
 		for (int vertex = 0; vertex < shapedTileMeshLength; vertex++) {
 			int vertexType = shapedTileMesh[vertex];
 			if ((vertexType & 1) == 0 && vertexType <= 8) {
@@ -73,105 +72,105 @@ public final class ShapedTile {
 			final int vertexCOverlay;
 			final int vertexCUnderlay;
 			if (vertexType == 1) {
-				vertexX = x512;
-				vertexZ = z512;
-				vertexY = yA;
-				vertexCOverlay = cA;
-				vertexCUnderlay = cAA;
+				vertexX = tilePosX;
+				vertexZ = tilePosY;
+				vertexY = heightSW;
+				vertexCOverlay = overlaySW;
+				vertexCUnderlay = underlaySW;
 			} else if (vertexType == 2) {
-				vertexX = x512 + const256;
-				vertexZ = z512;
-				vertexY = yA + yB >> 1;
-				vertexCOverlay = cA + cB >> 1;
-				vertexCUnderlay = cAA + cBA >> 1;
+				vertexX = tilePosX + HALF_TILE;
+				vertexZ = tilePosY;
+				vertexY = heightSW + heightSE >> 1;
+				vertexCOverlay = overlaySW + overlaySE >> 1;
+				vertexCUnderlay = underlaySW + underlaySE >> 1;
 			} else if (vertexType == 3) {
-				vertexX = x512 + const512;
-				vertexZ = z512;
-				vertexY = yB;
-				vertexCOverlay = cB;
-				vertexCUnderlay = cBA;
+				vertexX = tilePosX + TILE_WIDTH;
+				vertexZ = tilePosY;
+				vertexY = heightSE;
+				vertexCOverlay = overlaySE;
+				vertexCUnderlay = underlaySE;
 			} else if (vertexType == 4) {
-				vertexX = x512 + const512;
-				vertexZ = z512 + const256;
-				vertexY = yB + yD >> 1;
-				vertexCOverlay = cB + cD >> 1;
-				vertexCUnderlay = cBA + cDA >> 1;
+				vertexX = tilePosX + TILE_WIDTH;
+				vertexZ = tilePosY + HALF_TILE;
+				vertexY = heightSE + heightNE >> 1;
+				vertexCOverlay = overlaySE + overlayNE >> 1;
+				vertexCUnderlay = underlaySE + underlayNE >> 1;
 			} else if (vertexType == 5) {
-				vertexX = x512 + const512;
-				vertexZ = z512 + const512;
-				vertexY = yD;
-				vertexCOverlay = cD;
-				vertexCUnderlay = cDA;
+				vertexX = tilePosX + TILE_WIDTH;
+				vertexZ = tilePosY + TILE_WIDTH;
+				vertexY = heightNE;
+				vertexCOverlay = overlayNE;
+				vertexCUnderlay = underlayNE;
 			} else if (vertexType == 6) {
-				vertexX = x512 + const256;
-				vertexZ = z512 + const512;
-				vertexY = yD + yC >> 1;
-				vertexCOverlay = cD + cC >> 1;
-				vertexCUnderlay = cDA + cCA >> 1;
+				vertexX = tilePosX + HALF_TILE;
+				vertexZ = tilePosY + TILE_WIDTH;
+				vertexY = heightNE + heightNW >> 1;
+				vertexCOverlay = overlayNE + overlayNW >> 1;
+				vertexCUnderlay = underlayNE + underlayNW >> 1;
 			} else if (vertexType == 7) {
-				vertexX = x512;
-				vertexZ = z512 + const512;
-				vertexY = yC;
-				vertexCOverlay = cC;
-				vertexCUnderlay = cCA;
+				vertexX = tilePosX;
+				vertexZ = tilePosY + TILE_WIDTH;
+				vertexY = heightNW;
+				vertexCOverlay = overlayNW;
+				vertexCUnderlay = underlayNW;
 			} else if (vertexType == 8) {
-				vertexX = x512;
-				vertexZ = z512 + const256;
-				vertexY = yC + yA >> 1;
-				vertexCOverlay = cC + cA >> 1;
-				vertexCUnderlay = cCA + cAA >> 1;
+				vertexX = tilePosX;
+				vertexZ = tilePosY + HALF_TILE;
+				vertexY = heightNW + heightSW >> 1;
+				vertexCOverlay = overlayNW + overlaySW >> 1;
+				vertexCUnderlay = underlayNW + underlaySW >> 1;
 			} else if (vertexType == 9) {
-				vertexX = x512 + const256;
-				vertexZ = z512 + const128;
-				vertexY = yA + yB >> 1;
-				vertexCOverlay = cA + cB >> 1;
-				vertexCUnderlay = cAA + cBA >> 1;
+				vertexX = tilePosX + HALF_TILE;
+				vertexZ = tilePosY + QUARTER_TILE;
+				vertexY = heightSW + heightSE >> 1;
+				vertexCOverlay = overlaySW + overlaySE >> 1;
+				vertexCUnderlay = underlaySW + underlaySE >> 1;
 			} else if (vertexType == 10) {
-				vertexX = x512 + const384;
-				vertexZ = z512 + const256;
-				vertexY = yB + yD >> 1;
-				vertexCOverlay = cB + cD >> 1;
-				vertexCUnderlay = cBA + cDA >> 1;
+				vertexX = tilePosX + THREE_QUARTER_TILE;
+				vertexZ = tilePosY + HALF_TILE;
+				vertexY = heightSE + heightNE >> 1;
+				vertexCOverlay = overlaySE + overlayNE >> 1;
+				vertexCUnderlay = underlaySE + underlayNE >> 1;
 			} else if (vertexType == 11) {
-				vertexX = x512 + const256;
-				vertexZ = z512 + const384;
-				vertexY = yD + yC >> 1;
-				vertexCOverlay = cD + cC >> 1;
-				vertexCUnderlay = cDA + cCA >> 1;
+				vertexX = tilePosX + HALF_TILE;
+				vertexZ = tilePosY + THREE_QUARTER_TILE;
+				vertexY = heightNE + heightNW >> 1;
+				vertexCOverlay = overlayNE + overlayNW >> 1;
+				vertexCUnderlay = underlayNE + underlayNW >> 1;
 			} else if (vertexType == 12) {
-				vertexX = x512 + const128;
-				vertexZ = z512 + const256;
-				vertexY = yC + yA >> 1;
-				vertexCOverlay = cC + cA >> 1;
-				vertexCUnderlay = cCA + cAA >> 1;
+				vertexX = tilePosX + QUARTER_TILE;
+				vertexZ = tilePosY + HALF_TILE;
+				vertexY = heightNW + heightSW >> 1;
+				vertexCOverlay = overlayNW + overlaySW >> 1;
+				vertexCUnderlay = underlayNW + underlaySW >> 1;
 			} else if (vertexType == 13) {
-				vertexX = x512 + const128;
-				vertexZ = z512 + const128;
-				vertexY = yA;
-				vertexCOverlay = cA;
-				vertexCUnderlay = cAA;
+				vertexX = tilePosX + QUARTER_TILE;
+				vertexZ = tilePosY + QUARTER_TILE;
+				vertexY = heightSW;
+				vertexCOverlay = overlaySW;
+				vertexCUnderlay = underlaySW;
 			} else if (vertexType == 14) {
-				vertexX = x512 + const384;
-				vertexZ = z512 + const128;
-				vertexY = yB;
-				vertexCOverlay = cB;
-				vertexCUnderlay = cBA;
+				vertexX = tilePosX + THREE_QUARTER_TILE;
+				vertexZ = tilePosY + QUARTER_TILE;
+				vertexY = heightSE;
+				vertexCOverlay = overlaySE;
+				vertexCUnderlay = underlaySE;
 			} else if (vertexType == 15) {
-				vertexX = x512 + const384;
-				vertexZ = z512 + const384;
-				vertexY = yD;
-				vertexCOverlay = cD;
-				vertexCUnderlay = cDA;
+				vertexX = tilePosX + THREE_QUARTER_TILE;
+				vertexZ = tilePosY + THREE_QUARTER_TILE;
+				vertexY = heightNE;
+				vertexCOverlay = overlayNE;
+				vertexCUnderlay = underlayNE;
 			} else {
-				vertexX = x512 + const128;
-				vertexZ = z512 + const384;
-				vertexY = yC;
-				vertexCOverlay = cC;
-				vertexCUnderlay = cCA;
+				vertexX = tilePosX + QUARTER_TILE;
+				vertexZ = tilePosY + THREE_QUARTER_TILE;
+				vertexY = heightNW;
+				vertexCOverlay = overlayNW;
+				vertexCUnderlay = underlayNW;
 			}
-            this.originalVertexX[vertex] = vertexX;
-            this.originalVertexY[vertex] = vertexY;
-            this.originalVertexZ[vertex] = vertexZ;
+            this.vertexX[vertex] = vertexX;
+            this.vertexY[vertex] = vertexY;
+            this.vertexZ[vertex] = vertexZ;
 			vertexColourOverlay[vertex] = vertexCOverlay;
 			vertexColourUnderlay[vertex] = vertexCUnderlay;
 		}
@@ -223,25 +222,25 @@ public final class ShapedTile {
 			}
 		}
 
-		int i9 = yA;
-		int l9 = yB;
-		if (yB < i9) {
-            i9 = yB;
+		int i9 = heightSW;
+		int l9 = heightSE;
+		if (heightSE < i9) {
+            i9 = heightSE;
         }
-		if (yB > l9) {
-            l9 = yB;
+		if (heightSE > l9) {
+            l9 = heightSE;
         }
-		if (yD < i9) {
-            i9 = yD;
+		if (heightNE < i9) {
+            i9 = heightNE;
         }
-		if (yD > l9) {
-            l9 = yD;
+		if (heightNE > l9) {
+            l9 = heightNE;
         }
-		if (yC < i9) {
-            i9 = yC;
+		if (heightNW < i9) {
+            i9 = heightNW;
         }
-		if (yC > l9) {
-            l9 = yC;
+		if (heightNW > l9) {
+            l9 = heightNW;
         }
 		i9 /= 14;
 		l9 /= 14;

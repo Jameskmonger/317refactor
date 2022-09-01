@@ -22,10 +22,10 @@ public final class Tile extends Linkable {
 	public final int[] interactiveObjectsSize;
 	public int interactiveObjectsSizeOR;
 	public int logicHeight;
-	public boolean aBoolean1322;
-	public boolean aBoolean1323;
-	public boolean aBoolean1324;
-	public int anInt1325;
+	public boolean draw;
+	public boolean visible;
+	public boolean drawEntities;
+	public int wallCullDirection;
 	public int anInt1326;
 	public int anInt1327;
 	public int anInt1328;
