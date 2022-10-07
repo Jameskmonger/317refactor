@@ -9558,7 +9558,7 @@ public final class Client extends RSApplet {
                 }
 			}
 
-			this.onDemandFetcher.preloadRegions(membersWorld);
+			this.onDemandFetcher.preloadMapSquares(membersWorld);
 			if (!lowMemory) {
 				final int count = this.onDemandFetcher.fileCount(2);
 				for (int id = 1; id < count; id++) {

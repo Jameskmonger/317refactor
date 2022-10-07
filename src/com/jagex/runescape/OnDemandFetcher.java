@@ -23,8 +23,6 @@ public final class OnDemandFetcher implements Runnable {
 
 	private long lastRequestTime;
 
-	private int[] mapIndices3;
-
 	private final CRC32 crc32;
 
 	private final byte[] payload;
@@ -45,15 +43,12 @@ public final class OnDemandFetcher implements Runnable {
 
 	public int failedRequests;
 
-	private int[] mapIndices2;
 
 	private int filesLoaded;
 
 	private boolean running;
 
 	private OutputStream outputStream;
-
-	private int[] mapIndices4;
 
 	private boolean waiting;
 
@@ -71,9 +66,28 @@ public final class OnDemandFetcher implements Runnable {
 	private final DoubleEndedQueue unrequested;
 	private OnDemandData current;
 	private final DoubleEndedQueue mandatoryRequests;
-	private int[] mapIndices1;
 	private byte[] modelIndices;
 	private int loopCycle;
+
+	/**
+	 * The ID (coordinates) of the mapsquares.
+	 */
+	private int[] mapSquareIds;
+
+	/**
+	 * If this value is not 0, the mapsquare will be preloaded.
+	 */
+	private int[] shouldPreloadMap;
+
+	/**
+	 * The file containing the objects for a mapsquare.
+	 */
+	private int[] objectMapIndices;
+
+	/**
+	 * The file containing the terrain for a mapsquare.
+	 */
+	private int[] terrainMapIndices;
 
 	public OnDemandFetcher() {
         this.requested = new DoubleEndedQueue();
@@ -200,12 +214,12 @@ public final class OnDemandFetcher implements Runnable {
 
 	public int getMapId(final int type, final int mapX, final int mapY) {
 		final int coordinates = (mapX << 8) + mapY;
-		for (int pointer = 0; pointer < this.mapIndices1.length; pointer++) {
-            if (this.mapIndices1[pointer] == coordinates) {
+		for (int pointer = 0; pointer < this.mapSquareIds.length; pointer++) {
+            if (this.mapSquareIds[pointer] == coordinates) {
                 if (type == 0) {
-                    return this.mapIndices2[pointer];
+                    return this.terrainMapIndices[pointer];
                 } else {
-                    return this.mapIndices3[pointer];
+                    return this.objectMapIndices[pointer];
                 }
             }
         }
@@ -287,8 +301,8 @@ public final class OnDemandFetcher implements Runnable {
 	}
 
 	public boolean method564(final int i) {
-		for (int k = 0; k < this.mapIndices1.length; k++) {
-            if (this.mapIndices3[k] == i) {
+		for (int k = 0; k < this.mapSquareIds.length; k++) {
+            if (this.objectMapIndices[k] == i) {
                 return true;
             }
         }
@@ -379,15 +393,14 @@ public final class OnDemandFetcher implements Runnable {
 		}
 	}
 
-	public void preloadRegions(final boolean flag) {
-		final int j = this.mapIndices1.length;
-		for (int k = 0; k < j; k++) {
-            if (flag || this.mapIndices4[k] != 0) {
-				this.setPriority((byte) 2, 3, this.mapIndices3[k]);
-				this.setPriority((byte) 2, 3, this.mapIndices2[k]);
+	public void preloadMapSquares(final boolean flag) {
+		final int mapSquareCount = this.mapSquareIds.length;
+		for (int mapSquareIndex = 0; mapSquareIndex < mapSquareCount; mapSquareIndex++) {
+            if (flag || this.shouldPreloadMap[mapSquareIndex] != 0) {
+				this.setPriority((byte) 2, 3, this.objectMapIndices[mapSquareIndex]);
+				this.setPriority((byte) 2, 3, this.terrainMapIndices[mapSquareIndex]);
             }
         }
-
 	}
 
 	private void readData() {
@@ -605,20 +618,20 @@ public final class OnDemandFetcher implements Runnable {
 		}
 	}
 
-	public void setPriority(final byte byte0, final int i, final int j) {
+	public void setPriority(final byte priority, final int type, final int index) {
 		if (this.clientInstance.caches[0] == null) {
             return;
         }
-		if (this.versions[i][j] == 0) {
+		if (this.versions[type][index] == 0) {
             return;
         }
-		final byte[] abyte0 = this.clientInstance.caches[i + 1].decompress(j);
-		if (this.crcMatches(this.versions[i][j], this.crcs[i][j], abyte0)) {
+		final byte[] abyte0 = this.clientInstance.caches[type + 1].decompress(index);
+		if (this.crcMatches(this.versions[type][index], this.crcs[type][index], abyte0)) {
             return;
         }
-        this.filePriorities[i][j] = byte0;
-		if (byte0 > this.highestPriority) {
-            this.highestPriority = byte0;
+        this.filePriorities[type][index] = priority;
+		if (priority > this.highestPriority) {
+            this.highestPriority = priority;
         }
         this.totalFiles++;
 	}
@@ -662,16 +675,18 @@ public final class OnDemandFetcher implements Runnable {
 
 		abyte2 = streamLoader.decompressFile("map_index");
 		Buffer stream2 = new Buffer(abyte2);
+
+		// a mapsquare's index file is made up of 7 bytes
 		j1 = abyte2.length / 7;
-        this.mapIndices1 = new int[j1];
-        this.mapIndices2 = new int[j1];
-        this.mapIndices3 = new int[j1];
-        this.mapIndices4 = new int[j1];
-		for (int i2 = 0; i2 < j1; i2++) {
-            this.mapIndices1[i2] = stream2.getUnsignedLEShort();
-            this.mapIndices2[i2] = stream2.getUnsignedLEShort();
-            this.mapIndices3[i2] = stream2.getUnsignedLEShort();
-            this.mapIndices4[i2] = stream2.getUnsignedByte();
+        this.mapSquareIds = new int[j1];
+        this.terrainMapIndices = new int[j1];
+        this.objectMapIndices = new int[j1];
+        this.shouldPreloadMap = new int[j1];
+		for (int i = 0; i < j1; i++) {
+            this.mapSquareIds[i] = stream2.getUnsignedLEShort();
+            this.terrainMapIndices[i] = stream2.getUnsignedLEShort();
+            this.objectMapIndices[i] = stream2.getUnsignedLEShort();
+            this.shouldPreloadMap[i] = stream2.getUnsignedByte();
 		}
 
 		abyte2 = streamLoader.decompressFile("anim_index");
