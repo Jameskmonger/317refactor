@@ -165,10 +165,6 @@ public class TitleScreen {
         for (int k1 = 1; k1 < c - 1; k1++) {
             final int l1 = (this.anIntArray969[k1] * (c - k1)) / c;
 
-            if (l1 != 0) {
-                System.out.println(l1);
-            }
-
             int j2 = 22 + l1;
             if (j2 < 0) {
                 j2 = 0;
@@ -198,9 +194,6 @@ public class TitleScreen {
         pos = 1176;
         for (int k2 = 1; k2 < c - 1; k2++) {
             final int i3 = (this.anIntArray969[k2] * (c - k2)) / c;
-            if (i3 != 0) {
-                System.out.println(i3);
-            }
             final int k3 = 103 - i3;
             pos += i3;
             for (int i4 = 0; i4 < k3; i4++) {
