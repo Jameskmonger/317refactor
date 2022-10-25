@@ -4,14 +4,14 @@ import com.jagex.runescape.collection.Cacheable;
 
 public final class OnDemandData extends Cacheable {
 
-	int dataType;
+    int dataType;
 
     byte[] buffer;
-	int id;
-	boolean incomplete;
-	int loopCycle;
+    int id;
+    boolean incomplete;
+    int loopCycle;
 
-	public OnDemandData() {
+    public OnDemandData() {
         this.incomplete = true;
-	}
+    }
 }

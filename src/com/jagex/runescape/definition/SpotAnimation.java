@@ -7,80 +7,80 @@ import com.jagex.runescape.collection.Cache;
 
 public final class SpotAnimation {
 
-	public static void load(final Archive archive) {
-		final Buffer buffer = new Buffer(archive.decompressFile("spotanim.dat"));
-		final int count = buffer.getUnsignedLEShort();
-		if (cache == null) {
+    public static void load(final Archive archive) {
+        final Buffer buffer = new Buffer(archive.decompressFile("spotanim.dat"));
+        final int count = buffer.getUnsignedLEShort();
+        if (cache == null) {
             cache = new SpotAnimation[count];
         }
-		for (int anim = 0; anim < count; anim++) {
-			if (cache[anim] == null) {
+        for (int anim = 0; anim < count; anim++) {
+            if (cache[anim] == null) {
                 cache[anim] = new SpotAnimation();
             }
-			cache[anim].id = anim;
-			cache[anim].read(buffer);
-		}
+            cache[anim].id = anim;
+            cache[anim].read(buffer);
+        }
 
-	}
+    }
 
-	public static SpotAnimation[] cache;
+    public static SpotAnimation[] cache;
 
-	private int id;
+    private int id;
 
-	private int modelId;
+    private int modelId;
 
-	private int animationId;
-	public AnimationSequence sequences;
-	private final int[] originalModelColours;
-	private final int[] modifiedModelColours;
-	public int scaleXY;
-	public int scaleZ;
-	public int rotation;
-	public int modelLightFalloff;
-	public int modelLightAmbient;
-	public static Cache modelCache = new Cache(30);
+    private int animationId;
+    public AnimationSequence sequences;
+    private final int[] originalModelColours;
+    private final int[] modifiedModelColours;
+    public int scaleXY;
+    public int scaleZ;
+    public int rotation;
+    public int modelLightFalloff;
+    public int modelLightAmbient;
+    public static Cache modelCache = new Cache(30);
 
-	private SpotAnimation() {
+    private SpotAnimation() {
         this.animationId = -1;
         this.originalModelColours = new int[6];
         this.modifiedModelColours = new int[6];
         this.scaleXY = 128;
         this.scaleZ = 128;
-	}
+    }
 
-	public Model getModel() {
-		Model model = (Model) modelCache.get(this.id);
-		if (model != null) {
+    public Model getModel() {
+        Model model = (Model) modelCache.get(this.id);
+        if (model != null) {
             return model;
         }
-		model = Model.getModel(this.modelId);
-		if (model == null) {
+        model = Model.getModel(this.modelId);
+        if (model == null) {
             return null;
         }
-		for (int colour = 0; colour < 6; colour++) {
+        for (int colour = 0; colour < 6; colour++) {
             if (this.originalModelColours[0] != 0) {
                 model.recolour(this.originalModelColours[colour], this.modifiedModelColours[colour]);
             }
         }
 
-		modelCache.put(model, this.id);
-		return model;
-	}
+        modelCache.put(model, this.id);
+        return model;
+    }
 
-	private void read(final Buffer stream) {
-		do {
-			final int opcode = stream.getUnsignedByte();
-			if (opcode == 0) {
+    private void read(final Buffer stream) {
+        do {
+            final int opcode = stream.getUnsignedByte();
+            if (opcode == 0) {
                 return;
             }
-			if (opcode == 1) {
+            if (opcode == 1) {
                 this.modelId = stream.getUnsignedLEShort();
             } else if (opcode == 2) {
                 this.animationId = stream.getUnsignedLEShort();
-				if (AnimationSequence.animations != null) {
+                if (AnimationSequence.animations != null) {
                     this.sequences = AnimationSequence.animations[this.animationId];
                 }
-			} else if (opcode == 4) {
+            } else if (opcode == 4) {
                 this.scaleXY = stream.getUnsignedLEShort();
             } else if (opcode == 5) {
                 this.scaleZ = stream.getUnsignedLEShort();
@@ -97,6 +97,6 @@ public final class SpotAnimation {
             } else {
                 System.out.println("Error unrecognised spotanim config code: " + opcode);
             }
-		} while (true);
-	}
+        } while (true);
+    }
 }

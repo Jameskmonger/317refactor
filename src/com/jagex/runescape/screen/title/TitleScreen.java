@@ -80,14 +80,14 @@ public class TitleScreen {
         final int verticalOffset1 = 200;
         final int verticalOffset2 = 20;
         this.fontBold.drawCentredText("RuneScape is loading - please wait...", horizontalOffset / 2,
-                verticalOffset1 / 2 - 26 - verticalOffset2, 0xFFFFFF);
+            verticalOffset1 / 2 - 26 - verticalOffset2, 0xFFFFFF);
         final int loadingBarHeight = verticalOffset1 / 2 - 18 - verticalOffset2;
 
         DrawingArea.drawUnfilledRectangle(horizontalOffset / 2 - 152, 304, 34, 0x8C1111, loadingBarHeight);
         DrawingArea.drawUnfilledRectangle(horizontalOffset / 2 - 151, 302, 32, 0, loadingBarHeight + 1);
         DrawingArea.drawFilledRectangle(horizontalOffset / 2 - 150, loadingBarHeight + 2, percentage * 3, 30, 0x8C1111);
         DrawingArea.drawFilledRectangle((horizontalOffset / 2 - 150) + percentage * 3, loadingBarHeight + 2,
-                300 - percentage * 3, 30, 0);
+            300 - percentage * 3, 30, 0);
         this.fontBold.drawCentredText(text, horizontalOffset / 2, (verticalOffset1 / 2 + 5) - verticalOffset2, 0xFFFFFF);
         this.loginBoxLeftBackgroundTile.drawGraphics(171, gameGraphics, 202);
 
@@ -177,7 +177,7 @@ public class TitleScreen {
                     final int colour = this.flameColours.getCurrentColour(strength);
                     final int bg = this.flameLeftBackground.pixels[pos];
                     this.flameLeftBackground.pixels[pos++] = ((colour & 0xFF00ff) * strength + (bg & 0xFF00FF) * off & 0xFF00FF00)
-                            + ((colour & 0xFF00) * strength + (bg & 0xFF00) * off & 0xFF0000) >> 8;
+                        + ((colour & 0xFF00) * strength + (bg & 0xFF00) * off & 0xFF0000) >> 8;
                 } else {
                     pos++;
                 }
@@ -203,7 +203,7 @@ public class TitleScreen {
                     final int colour = this.flameColours.getCurrentColour(strength);
                     final int bg = this.flameRightBackground.pixels[pos];
                     this.flameRightBackground.pixels[pos++] = ((colour & 0xFF00FF) * strength + (bg & 0xFF00FF) * off & 0xFF00FF00)
-                            + ((colour & 0xFF00) * strength + (bg & 0xFF00) * off & 0xFF0000) >> 8;
+                        + ((colour & 0xFF00) * strength + (bg & 0xFF00) * off & 0xFF0000) >> 8;
                 } else {
                     pos++;
                 }
@@ -382,10 +382,10 @@ public class TitleScreen {
                 for (int y = 1; y < 127; y++) {
                     final int pos = y + (x << 7);
                     this.titleFlamesTemp[pos] = (
-                            this.titleFlames[pos - 1]
-                                    + this.titleFlames[pos + 1]
-                                    + this.titleFlames[pos - 128]
-                                    + this.titleFlames[pos + 128]
+                        this.titleFlames[pos - 1]
+                            + this.titleFlames[pos + 1]
+                            + this.titleFlames[pos - 128]
+                            + this.titleFlames[pos + 128]
                     ) / 4;
                 }
             }
@@ -411,16 +411,16 @@ public class TitleScreen {
     }
 
     public void drawLoginScreen(
-            final Graphics gameGraphics,
-            final boolean originalLoginScreen,
-            final int loginScreenState,
-            final String statusString,
-            final String message1,
-            final String message2,
-            final String enteredUsername,
-            final String enteredPassword,
-            final int tick,
-            final int focus
+        final Graphics gameGraphics,
+        final boolean originalLoginScreen,
+        final int loginScreenState,
+        final String statusString,
+        final String message1,
+        final String message2,
+        final String enteredUsername,
+        final String enteredPassword,
+        final int tick,
+        final int focus
     ) {
         this.loginBoxLeftBackgroundTile.initDrawingArea();
         this.titleBoxImage.draw(0, 0);
@@ -451,13 +451,13 @@ public class TitleScreen {
                 _y += 30;
             }
             this.fontBold.drawTextWithPotentialShadow(
-                    "Username: " + enteredUsername + ((focus == 0) & (tick % 40 < 20) ? "@yel@|" : ""),
-                    x / 2 - 90, _y, 0xFFFFFF, true);
+                "Username: " + enteredUsername + ((focus == 0) & (tick % 40 < 20) ? "@yel@|" : ""),
+                x / 2 - 90, _y, 0xFFFFFF, true);
             _y += 15;
             this.fontBold.drawTextWithPotentialShadow(
-                    "Password: " + TextClass.asterisksForString(enteredPassword)
-                            + ((focus == 1) & (tick % 40 < 20) ? "@yel@|" : ""),
-                    x / 2 - 88, _y, 0xFFFFFF, true);
+                "Password: " + TextClass.asterisksForString(enteredPassword)
+                    + ((focus == 1) & (tick % 40 < 20) ? "@yel@|" : ""),
+                x / 2 - 88, _y, 0xFFFFFF, true);
             _y += 15;
             if (!originalLoginScreen) {
                 int _x = x / 2 - 80;
@@ -473,16 +473,16 @@ public class TitleScreen {
             this.fontBold.drawCentredTextWithPotentialShadow("Create a free account", x / 2, y / 2 - 60, 0xFFFF00, true);
             int _y = y / 2 - 35;
             this.fontBold.drawCentredTextWithPotentialShadow("To create a new account you need to", x / 2, _y, 0xFFFFFF,
-                    true);
+                true);
             _y += 15;
             this.fontBold.drawCentredTextWithPotentialShadow("go back to the main RuneScape webpage", x / 2, _y, 0xFFFFFF,
-                    true);
+                true);
             _y += 15;
             this.fontBold.drawCentredTextWithPotentialShadow("and choose the red 'create account'", x / 2, _y, 0xFFFFFF,
-                    true);
+                true);
             _y += 15;
             this.fontBold.drawCentredTextWithPotentialShadow("button at the top right of that page.", x / 2, _y, 0xFFFFFF,
-                    true);
+                true);
             _y += 15;
             final int _x = x / 2;
             final int __y = y / 2 + 50;

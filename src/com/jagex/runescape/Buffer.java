@@ -34,9 +34,9 @@ public final class Buffer extends Cacheable {
 
     public int bitPosition;
 
-    private static final int[] BIT_MASKS = { 0, 1, 3, 7, 15, 31, 63, 127, 255, 511, 1023, 2047, 4095, 8191, 16383,
-            32767, 65535, 0x1ffff, 0x3ffff, 0x7ffff, 0xfffff, 0x1fffff, 0x3fffff, 0x7fffff, 0xffffff, 0x1ffffff,
-            0x3ffffff, 0x7ffffff, 0xfffffff, 0x1fffffff, 0x3fffffff, 0x7fffffff, -1 };
+    private static final int[] BIT_MASKS = {0, 1, 3, 7, 15, 31, 63, 127, 255, 511, 1023, 2047, 4095, 8191, 16383,
+        32767, 65535, 0x1ffff, 0x3ffff, 0x7ffff, 0xfffff, 0x1fffff, 0x3fffff, 0x7fffff, 0xffffff, 0x1ffffff,
+        0x3ffffff, 0x7ffffff, 0xfffffff, 0x1fffffff, 0x3fffffff, 0x7fffffff, -1};
 
     public ISAACRandomGenerator encryptor;
 
@@ -76,7 +76,7 @@ public final class Buffer extends Cacheable {
     public int get3Bytes() {
         this.position += 3;
         return ((this.buffer[this.position - 3] & 0xff) << 16) + ((this.buffer[this.position - 2] & 0xff) << 8)
-                + (this.buffer[this.position - 1] & 0xff);
+            + (this.buffer[this.position - 1] & 0xff);
     }
 
     public byte getByteC() {
@@ -114,19 +114,19 @@ public final class Buffer extends Cacheable {
     public int getInt() {
         this.position += 4;
         return ((this.buffer[this.position - 4] & 0xff) << 24) + ((this.buffer[this.position - 3] & 0xff) << 16)
-                + ((this.buffer[this.position - 2] & 0xff) << 8) + (this.buffer[this.position - 1] & 0xff);
+            + ((this.buffer[this.position - 2] & 0xff) << 8) + (this.buffer[this.position - 1] & 0xff);
     }
 
     public int getMEBInt() { // Middle endian big int: C3 D4 A1 B2 (A1 smallest D4 biggest byte)
         this.position += 4;
         return ((this.buffer[this.position - 3] & 0xff) << 24) + ((this.buffer[this.position - 4] & 0xff) << 16)
-                + ((this.buffer[this.position - 1] & 0xff) << 8) + (this.buffer[this.position - 2] & 0xff);
+            + ((this.buffer[this.position - 1] & 0xff) << 8) + (this.buffer[this.position - 2] & 0xff);
     }
 
     public int getMESInt() { // Middle endian small int: B2 A1 D4 C3 (A1 smallest D4 biggest byte)
         this.position += 4;
         return ((this.buffer[this.position - 2] & 0xff) << 24) + ((this.buffer[this.position - 1] & 0xff) << 16)
-                + ((this.buffer[this.position - 4] & 0xff) << 8) + (this.buffer[this.position - 3] & 0xff);
+            + ((this.buffer[this.position - 4] & 0xff) << 8) + (this.buffer[this.position - 3] & 0xff);
     }
 
     public long getLong() {

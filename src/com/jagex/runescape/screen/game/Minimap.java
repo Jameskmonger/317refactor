@@ -97,11 +97,11 @@ public class Minimap {
         for (int i = 0; i < 100; i++) {
             if (this.mapFunctionImage[i] != null) {
                 this.mapFunctionImage[i].adjustRGB(randomRed + randomColour, randomGreen + randomColour,
-                        randomBlue + randomColour);
+                    randomBlue + randomColour);
             }
             if (this.mapSceneImage[i] != null) {
                 this.mapSceneImage[i].mixPalette(randomRed + randomColour, randomGreen + randomColour,
-                        randomBlue + randomColour);
+                    randomBlue + randomColour);
             }
         }
 
@@ -245,26 +245,26 @@ public class Minimap {
     }
 
     public void updateImageProducer(
-            final int baseX,
-            final int baseY,
-            final int localPlayerCount,
-            final Player[] players,
-            final int[] localPlayers,
-            final int friendsCount,
-            final long[] friendsListAsLongs,
-            final int[] friendsWorldIds,
-            final DoubleEndedQueue[][] items,
-            final int npcCount,
-            final NPC[] npcs,
-            final int[] npcIds,
-            final int hintIconType,
-            final int hintIconNpcId,
-            final int hintIconPlayerId,
-            final int hintIconX,
-            final int hintIconY,
-            final int destinationX,
-            final int destinationY,
-            final int tick
+        final int baseX,
+        final int baseY,
+        final int localPlayerCount,
+        final Player[] players,
+        final int[] localPlayers,
+        final int friendsCount,
+        final long[] friendsListAsLongs,
+        final int[] friendsWorldIds,
+        final DoubleEndedQueue[][] items,
+        final int npcCount,
+        final NPC[] npcs,
+        final int[] npcIds,
+        final int hintIconType,
+        final int hintIconNpcId,
+        final int hintIconPlayerId,
+        final int hintIconX,
+        final int hintIconY,
+        final int destinationX,
+        final int destinationY,
+        final int tick
     ) {
         this.minimapImageProducer.initDrawingArea();
         if (this.state == 2) {
@@ -400,7 +400,7 @@ public class Minimap {
         }
 
         final int primaryColour = ((238 + (int) (Math.random() * 20D)) - 10 << 16)
-                + ((238 + (int) (Math.random() * 20D)) - 10 << 8) + ((238 + (int) (Math.random() * 20D)) - 10);
+            + ((238 + (int) (Math.random() * 20D)) - 10 << 8) + ((238 + (int) (Math.random() * 20D)) - 10);
         final int secondaryColour = (238 + (int) (Math.random() * 20D)) - 10 << 16;
         this.minimapImage.initDrawingArea();
         for (int y = 1; y < 103; y++) {
@@ -438,19 +438,19 @@ public class Minimap {
                             for (int off = 0; off < 10; off++) {
                                 final int randomDirection = (int) (Math.random() * 4D);
                                 if (randomDirection == 0 && drawPointX > 0 && drawPointX > x - 3
-                                        && (clippingFlags[drawPointX - 1][drawPointY] & 0x1280108) == 0) {
+                                    && (clippingFlags[drawPointX - 1][drawPointY] & 0x1280108) == 0) {
                                     drawPointX--;
                                 }
                                 if (randomDirection == 1 && drawPointX < regionWidth - 1 && drawPointX < x + 3
-                                        && (clippingFlags[drawPointX + 1][drawPointY] & 0x1280180) == 0) {
+                                    && (clippingFlags[drawPointX + 1][drawPointY] & 0x1280180) == 0) {
                                     drawPointX++;
                                 }
                                 if (randomDirection == 2 && drawPointY > 0 && drawPointY > y - 3
-                                        && (clippingFlags[drawPointX][drawPointY - 1] & 0x1280102) == 0) {
+                                    && (clippingFlags[drawPointX][drawPointY - 1] & 0x1280102) == 0) {
                                     drawPointY--;
                                 }
                                 if (randomDirection == 3 && drawPointY < regionHeight - 1 && drawPointY < y + 3
-                                        && (clippingFlags[drawPointX][drawPointY + 1] & 0x1280120) == 0) {
+                                    && (clippingFlags[drawPointX][drawPointY + 1] & 0x1280120) == 0) {
                                     drawPointY++;
                                 }
                             }
@@ -497,7 +497,7 @@ public class Minimap {
             int max = 0;
             for (int _x = 25; _x < 172; _x++) {
                 if (this.minimapBackgroundImage.pixels[_x + _y * this.minimapBackgroundImage.width] == 0
-                        && (_x > 34 || _y > 34)) {
+                    && (_x > 34 || _y > 34)) {
                     if (min == 999) {
                         min = _x;
                     }
@@ -548,10 +548,10 @@ public class Minimap {
         final int spriteOffsetY = y * cosineAngle - x * sineAngle >> 16;
         if (l > 2500) {
             sprite.method354(this.minimapBackgroundImage, 83 - spriteOffsetY - sprite.maxHeight / 2 - 4,
-                    ((94 + spriteOffsetX) - sprite.maxWidth / 2) + 4);
+                ((94 + spriteOffsetX) - sprite.maxWidth / 2) + 4);
         } else {
             sprite.drawImage(((94 + spriteOffsetX) - sprite.maxWidth / 2) + 4,
-                    83 - spriteOffsetY - sprite.maxHeight / 2 - 4);
+                83 - spriteOffsetY - sprite.maxHeight / 2 - 4);
         }
 
         this.minimapImageProducer.initDrawingArea();
