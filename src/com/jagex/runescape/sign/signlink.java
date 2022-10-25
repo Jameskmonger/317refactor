@@ -2,7 +2,9 @@ package com.jagex.runescape.sign;
 
 import java.applet.Applet;
 import java.io.*;
-import java.net.*;
+import java.net.InetAddress;
+import java.net.Socket;
+import java.net.URL;
 
 public final class signlink implements Runnable {
 

@@ -1,7 +1,9 @@
 package com.jagex.runescape;
 
 import com.jagex.runescape.collection.Cache;
-import com.jagex.runescape.definition.*;
+import com.jagex.runescape.definition.EntityDefinition;
+import com.jagex.runescape.definition.GameFont;
+import com.jagex.runescape.definition.ItemDefinition;
 
 public final class RSInterface {
 

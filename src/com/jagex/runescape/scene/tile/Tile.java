@@ -2,7 +2,10 @@ package com.jagex.runescape.scene.tile;
 
 import com.jagex.runescape.InteractiveObject;
 import com.jagex.runescape.collection.Linkable;
-import com.jagex.runescape.scene.object.*;
+import com.jagex.runescape.scene.object.GroundDecoration;
+import com.jagex.runescape.scene.object.GroundItemTile;
+import com.jagex.runescape.scene.object.Wall;
+import com.jagex.runescape.scene.object.WallDecoration;
 
 public final class Tile extends Linkable {
 

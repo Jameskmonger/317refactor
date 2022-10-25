@@ -1,6 +1,7 @@
 package com.jagex.runescape;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.RandomAccessFile;
 
 /**
  * Represents a file cache containing multiple archives.

@@ -1,13 +1,16 @@
 package com.jagex.runescape;
 
-import java.io.*;
-import java.net.Socket;
-import java.util.zip.CRC32;
-import java.util.zip.GZIPInputStream;
-
 import com.jagex.runescape.collection.CacheableQueue;
 import com.jagex.runescape.collection.DoubleEndedQueue;
 import com.jagex.runescape.sign.signlink;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.Socket;
+import java.util.zip.CRC32;
+import java.util.zip.GZIPInputStream;
 
 public final class OnDemandFetcher implements Runnable {
 

@@ -1,5 +1,6 @@
 package com.jagex.runescape.scene;
 
+import com.jagex.runescape.*;
 import com.jagex.runescape.collection.DoubleEndedQueue;
 import com.jagex.runescape.scene.object.GroundDecoration;
 import com.jagex.runescape.scene.object.GroundItemTile;
@@ -8,14 +9,6 @@ import com.jagex.runescape.scene.object.WallDecoration;
 import com.jagex.runescape.scene.tile.PlainTile;
 import com.jagex.runescape.scene.tile.ShapedTile;
 import com.jagex.runescape.scene.tile.Tile;
-
-import com.jagex.runescape.Rasterizer;
-import com.jagex.runescape.CullingCluster;
-import com.jagex.runescape.InteractiveObject;
-import com.jagex.runescape.Model;
-import com.jagex.runescape.Animable;
-import com.jagex.runescape.VertexNormal;
-import com.jagex.runescape.DrawingArea;
 
 public final class WorldController {
 

@@ -1,21 +1,26 @@
 package com.jagex.runescape;
 
-import java.applet.AppletContext;
-import java.awt.*;
-import java.io.*;
-import java.net.*;
-
 import com.jagex.runescape.audio.Effect;
-import com.jagex.runescape.collection.*;
+import com.jagex.runescape.collection.DoubleEndedQueue;
+import com.jagex.runescape.collection.Linkable;
 import com.jagex.runescape.definition.*;
-import com.jagex.runescape.screen.game.Minimap;
-import com.jagex.runescape.screen.title.TitleScreen;
-import com.jagex.runescape.sign.signlink;
 import com.jagex.runescape.isaac.ISAACRandomGenerator;
 import com.jagex.runescape.scene.WorldController;
 import com.jagex.runescape.scene.object.GroundDecoration;
 import com.jagex.runescape.scene.object.Wall;
 import com.jagex.runescape.scene.object.WallDecoration;
+import com.jagex.runescape.screen.game.Minimap;
+import com.jagex.runescape.screen.title.TitleScreen;
+import com.jagex.runescape.sign.signlink;
+
+import java.applet.AppletContext;
+import java.awt.*;
+import java.io.DataInputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.InetAddress;
+import java.net.Socket;
+import java.net.URL;
 
 @SuppressWarnings("serial")
 public final class Client extends RSApplet {

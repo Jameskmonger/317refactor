@@ -1,6 +1,6 @@
 package com.jagex.runescape;
 
-import com.jagex.runescape.bzip2.*;
+import com.jagex.runescape.bzip2.Bzip2Decompressor;
 
 /**
  * Represents a single archive within a cache.

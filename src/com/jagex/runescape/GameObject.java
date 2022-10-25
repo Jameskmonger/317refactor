@@ -1,6 +1,8 @@
 package com.jagex.runescape;
 
-import com.jagex.runescape.definition.*;
+import com.jagex.runescape.definition.AnimationSequence;
+import com.jagex.runescape.definition.GameObjectDefinition;
+import com.jagex.runescape.definition.VarBit;
 
 final class GameObject extends Animable {
 
