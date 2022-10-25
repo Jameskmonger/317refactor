@@ -277,7 +277,7 @@ public final class Buffer extends Cacheable {
             this.buffer[this.position++] = (byte) (int) (l >> 8);
             this.buffer[this.position++] = (byte) (int) l;
         } catch (final RuntimeException ex) {
-            signlink.reporterror("14395, " + 5 + ", " + l + ", " + ex.toString());
+            signlink.reporterror("14395, " + 5 + ", " + l + ", " + ex);
             throw new RuntimeException();
         }
     }

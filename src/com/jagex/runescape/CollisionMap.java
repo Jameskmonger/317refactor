@@ -307,10 +307,10 @@ public final class CollisionMap {
             if (startX == endX && startY == endY + 1 && (this.clippingData[startX][startY] & 0x20) == 0) {
                 return true;
             }
-            if (startX == endX && startY == endY - 1 && (this.clippingData[startX][startY] & 2) == 0) {
+            if (startX == endX && startY == endY - 1 && (this.clippingData[startX][startY] & 0x02) == 0) {
                 return true;
             }
-            if (startX == endX - 1 && startY == endY && (this.clippingData[startX][startY] & 8) == 0) {
+            if (startX == endX - 1 && startY == endY && (this.clippingData[startX][startY] & 0x08) == 0) {
                 return true;
             }
             if (startX == endX + 1 && startY == endY && (this.clippingData[startX][startY] & 0x80) == 0) {
@@ -367,12 +367,12 @@ public final class CollisionMap {
             if (startX == endX && startY == endY + 1 && (this.clippingData[startX][startY] & 0x20) == 0) {
                 return true;
             }
-            if (startX == endX && startY == endY - 1 && (this.clippingData[startX][startY] & 2) == 0) {
+            if (startX == endX && startY == endY - 1 && (this.clippingData[startX][startY] & 0x02) == 0) {
                 return true;
             }
-            if (startX == endX - 1 && startY == endY && (this.clippingData[startX][startY] & 8) == 0) {
+            if (startX == endX - 1 && startY == endY && (this.clippingData[startX][startY] & 0x08) == 0) {
                 return true;
-            }
+            }            
             if (startX == endX + 1 && startY == endY && (this.clippingData[startX][startY] & 0x80) == 0) {
                 return true;
             }

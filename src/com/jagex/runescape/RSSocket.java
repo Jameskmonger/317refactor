@@ -7,9 +7,9 @@ import java.net.Socket;
 
 final class RSSocket implements Runnable {
 
-    private InputStream inputStream;
+    private final InputStream inputStream;
 
-    private OutputStream outputStream;
+    private final OutputStream outputStream;
 
     private final Socket socket;
 

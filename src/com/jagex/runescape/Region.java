@@ -450,7 +450,7 @@ final class Region {
         this.blendDirectionTracker = new int[this.regionSizeY];
     }
 
-    public final void createRegion(final CollisionMap[] collisionMap, final WorldController worldController) {
+    public void createRegion(final CollisionMap[] collisionMap, final WorldController worldController) {
         for (int plane = 0; plane < 4; plane++) {
             for (int x = 0; x < 104; x++) {
                 for (int y = 0; y < 104; y++) {
@@ -899,7 +899,7 @@ final class Region {
         }
     }
 
-    public final void initiateVertexHeights(final int startY, final int countY, final int countX, final int startX) {
+    public void initiateVertexHeights(final int startY, final int countY, final int countX, final int startX) {
         for (int y = startY; y <= startY + countY; y++) {
             for (int x = startX; x <= startX + countX; x++) {
                 if (x >= 0 && x < this.regionSizeX && y >= 0 && y < this.regionSizeY) {
@@ -922,8 +922,8 @@ final class Region {
         }
     }
 
-    public final void loadObjectBlock(final int blockX, final CollisionMap[] collisionMap, final int blockY,
-                                      final WorldController worldController, final byte[] blockData) {
+    public void loadObjectBlock(final int blockX, final CollisionMap[] collisionMap, final int blockY,
+                                final WorldController worldController, final byte[] blockData) {
         start:
         {
             final Buffer stream = new Buffer(blockData);
@@ -965,8 +965,8 @@ final class Region {
         }
     }
 
-    public final void loadObjectSubblock(final CollisionMap[] collisionMap, final WorldController worldController, final int i, final int j,
-                                         final int k, final int objectPlane, final byte[] blockData, final int i1, final int rotation, final int k1) {
+    public void loadObjectSubblock(final CollisionMap[] collisionMap, final WorldController worldController, final int i, final int j,
+                                   final int k, final int objectPlane, final byte[] blockData, final int i1, final int rotation, final int k1) {
         start:
         {
             final Buffer stream = new Buffer(blockData);
@@ -1014,8 +1014,8 @@ final class Region {
         }
     }
 
-    public final void loadTerrainBlock(final byte[] blockData, final int blockY, final int blockX, final int k, final int l,
-                                       final CollisionMap[] collisionMap) {
+    public void loadTerrainBlock(final byte[] blockData, final int blockY, final int blockX, final int k, final int l,
+                                 final CollisionMap[] collisionMap) {
         for (int plane = 0; plane < 4; plane++) {
             for (int tileX = 0; tileX < 64; tileX++) {
                 for (int tileY = 0; tileY < 64; tileY++) {
@@ -1040,8 +1040,8 @@ final class Region {
         }
     }
 
-    public final void loadTerrainSubblock(final int subBlockZ, final int rotation, final CollisionMap[] collisionMap, final int mapRegionX,
-                                          final int subBlockX, final byte[] terrainData, final int subBlockY, final int blockPlane, final int mapRegionY) {
+    public void loadTerrainSubblock(final int subBlockZ, final int rotation, final CollisionMap[] collisionMap, final int mapRegionX,
+                                    final int subBlockX, final byte[] terrainData, final int subBlockY, final int blockPlane, final int mapRegionY) {
         for (int regionX = 0; regionX < 8; regionX++) {
             for (int regionY = 0; regionY < 8; regionY++) {
                 if (mapRegionX + regionX > 0 && mapRegionX + regionX < 103 && mapRegionY + regionY > 0

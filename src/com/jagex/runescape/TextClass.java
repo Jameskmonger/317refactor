@@ -55,7 +55,7 @@ public final class TextClass {
             }
             return new String(name, 12 - i, i);
         } catch (final RuntimeException runtimeexception) {
-            signlink.reporterror("81570, " + longName + ", " + (byte) -99 + ", " + runtimeexception.toString());
+            signlink.reporterror("81570, " + longName + ", " + (byte) -99 + ", " + runtimeexception);
         }
         throw new RuntimeException();
     }

@@ -352,7 +352,7 @@ public final class RSInterface {
     }
 
     private Model getModel(final int modelType, final int modelId) {
-        Model model = (Model) modelCache.get((modelType << 16) + modelId);
+        Model model = (Model) modelCache.get(((long) modelType << 16) + modelId);
         if (model != null) {
             return model;
         }

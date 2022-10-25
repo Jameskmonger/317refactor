@@ -152,7 +152,7 @@ class Censor {
         for (int n = 0; n < WHITELISTED_WORDS.length; n++) {
             for (int index = -1; (index = lowercase.indexOf(WHITELISTED_WORDS[n], index + 1)) != -1; ) {
                 final char[] wchars = WHITELISTED_WORDS[n].toCharArray();
-                System.arraycopy(wchars, 0, chars, 0 + index, wchars.length);
+                System.arraycopy(wchars, 0, chars, index, wchars.length);
             }
         }
 
@@ -692,12 +692,8 @@ class Censor {
                                     frag[off] = chars[cur + off];
                                 }
 
-                                boolean valid = true;
-
                                 // if we read zero chars
-                                if (off == 0) {
-                                    valid = false;
-                                }
+                                boolean valid = off != 0;
 
                                 // if we read less than 3 chars, our cur is
                                 // within bounds, and isn't a symbol

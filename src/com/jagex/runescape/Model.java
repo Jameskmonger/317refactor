@@ -1613,10 +1613,7 @@ public final class Model extends Animable {
             return;
         }
         final int j5 = l2 + (super.modelHeight * yCameraSine >> 16);
-        boolean flag = false;
-        if (k2 - j5 <= 50) {
-            flag = true;
-        }
+        boolean flag = k2 - j5 <= 50;
         boolean flag1 = false;
         if (uid > 0 && aBoolean1684) {
             int k5 = k2 - l2;

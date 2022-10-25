@@ -114,7 +114,7 @@ public final class GameObjectDefinition {
             if (type != 10) {
                 return null;
             }
-            hash = (this.id << 6) + face + ((long) (animationId + 1) << 32);
+            hash = ((long) this.id << 6) + face + ((long) (animationId + 1) << 32);
             final Model cachedModel = (Model) animatedModelCache.get(hash);
             if (cachedModel != null) {
                 return cachedModel;
@@ -161,7 +161,7 @@ public final class GameObjectDefinition {
             if (modelType == -1) {
                 return null;
             }
-            hash = (this.id << 6) + (modelType << 3) + face + ((long) (animationId + 1) << 32);
+            hash = ((long) this.id << 6) + ((long) modelType << 3) + face + ((long) (animationId + 1) << 32);
             final Model model = (Model) animatedModelCache.get(hash);
             if (model != null) {
                 return model;

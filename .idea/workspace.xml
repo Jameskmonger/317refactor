@@ -4,113 +4,27 @@
     <option name="SCOPE_TYPE" value="3" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="21491aa0-0eb7-4d56-9c39-3c7d87baa446" name="Default Changelist" comment="" />
-    <ignored path="$PROJECT_DIR$/out/" />
-    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <list default="true" id="21491aa0-0eb7-4d56-9c39-3c7d87baa446" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/jagex/runescape/Buffer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/jagex/runescape/Buffer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/jagex/runescape/Censor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/jagex/runescape/Censor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/jagex/runescape/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/jagex/runescape/Client.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/jagex/runescape/CollisionMap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/jagex/runescape/CollisionMap.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/jagex/runescape/Item.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/jagex/runescape/Item.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/jagex/runescape/Model.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/jagex/runescape/Model.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/jagex/runescape/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/jagex/runescape/Player.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/jagex/runescape/RSInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/jagex/runescape/RSInterface.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/jagex/runescape/RSSocket.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/jagex/runescape/RSSocket.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/jagex/runescape/Region.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/jagex/runescape/Region.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/jagex/runescape/TextClass.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/jagex/runescape/TextClass.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/jagex/runescape/definition/GameObjectDefinition.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/jagex/runescape/definition/GameObjectDefinition.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/jagex/runescape/screen/game/Minimap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/jagex/runescape/screen/game/Minimap.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
-  </component>
-  <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/jagex/runescape/screen/game/Minimap.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="149">
-              <caret line="335" column="20" selection-start-line="335" selection-start-column="20" selection-end-line="335" selection-end-column="20" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/jagex/runescape/Client.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="295">
-              <caret line="5749" column="18" selection-start-line="5749" selection-start-column="18" selection-end-line="5749" selection-end-column="18" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/jagex/runescape/RSApplet.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="149">
-              <caret line="115" column="57" lean-forward="true" selection-start-line="115" selection-start-column="57" selection-end-line="115" selection-end-column="57" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/jagex/runescape/OnDemandFetcher.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="251">
-              <caret line="143" column="37" selection-start-line="143" selection-start-column="37" selection-end-line="143" selection-end-column="37" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/jagex/runescape/Player.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="142">
-              <caret line="72" column="45" selection-start-line="72" selection-start-column="45" selection-end-line="72" selection-end-column="45" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/jagex/runescape/Model.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="149">
-              <caret line="1838" column="4" lean-forward="true" selection-start-line="1838" selection-start-column="4" selection-end-line="1838" selection-end-column="4" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/jagex/runescape/GlobalConfig.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="149">
-              <caret line="26" column="37" selection-start-line="26" selection-start-column="37" selection-end-line="26" selection-end-column="37" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/com/jagex/runescape/bzip2/Bzip2DecompressionState.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="149">
-              <caret line="11" column="100" selection-start-line="11" selection-start-column="100" selection-end-line="11" selection-end-column="100" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/jagex/runescape/Censor.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="142">
-              <caret line="929" column="23" selection-start-line="929" selection-start-column="23" selection-end-line="929" selection-end-column="23" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/jagex/runescape/collection/Cache.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="149">
-              <caret line="49" column="4" selection-start-line="49" selection-start-column="4" selection-end-line="49" selection-end-column="4" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -192,12 +106,16 @@
       </list>
     </option>
   </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
   <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="-10" />
     <option name="y" value="-10" />
     <option name="width" value="1939" />
     <option name="height" value="1049" />
   </component>
+  <component name="ProjectId" id="2GcrhUfoFcSN3C3rPbWoseaGtwG" />
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
@@ -236,24 +154,17 @@
       <pane id="Scope" />
     </panes>
   </component>
-  <component name="PropertiesComponent">
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1547849952083" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../venomite/venomite-server/venomite-server" />
-    <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
-    <property name="settings.editor.selected.configurable" value="Errors" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
   </component>
-  <component name="RunDashboard">
-    <option name="ruleStates">
-      <list>
-        <RuleState>
-          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
-        </RuleState>
-        <RuleState>
-          <option name="name" value="StatusDashboardGroupingRule" />
-        </RuleState>
-      </list>
-    </option>
-  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "settings.editor.selected.configurable": "Errors"
+  }
+}]]></component>
   <component name="RunManager">
     <configuration name="Client" type="Application" factoryName="Application" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.jagex.runescape.Client" />
@@ -270,6 +181,7 @@
       </method>
     </configuration>
   </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -325,6 +237,10 @@
       <window_info anchor="right" id="Palette&#9;" order="7" />
     </layout>
   </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
+  </component>
   <component name="debuggerHistoryManager">
     <expressions id="evaluateExpression">
       <expression>
@@ -356,21 +272,21 @@
     <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="jar://D:/Program Files/Java/jdk1.8.0_191/jre/lib/rt.jar!/sun/misc/Unsafe.class">
+    <entry file="jar://$PROJECT_DIR$/../../Program Files/Java/jdk1.8.0_191/jre/lib/rt.jar!/sun/misc/Unsafe.class">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="133">
           <caret line="353" column="23" selection-start-line="353" selection-start-column="23" selection-end-line="353" selection-end-column="23" />
         </state>
       </provider>
     </entry>
-    <entry file="jar://D:/Program Files/Java/jdk1.8.0_191/src.zip!/java/lang/Thread.java">
+    <entry file="jar://$PROJECT_DIR$/../../Program Files/Java/jdk1.8.0_191/src.zip!/java/lang/Thread.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="133">
           <caret line="300" column="30" selection-start-line="300" selection-start-column="30" selection-end-line="300" selection-end-column="30" />
         </state>
       </provider>
     </entry>
-    <entry file="jar://D:/Program Files/Java/jdk1.8.0_191/src.zip!/javax/swing/JFrame.java">
+    <entry file="jar://$PROJECT_DIR$/../../Program Files/Java/jdk1.8.0_191/src.zip!/javax/swing/JFrame.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-415">
           <caret line="187" column="11" selection-start-line="187" selection-start-column="11" selection-end-line="187" selection-end-column="11" />
@@ -412,7 +328,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="jar://D:/Program Files/Java/jdk1.8.0_191/src.zip!/javax/swing/SpinnerNumberModel.java">
+    <entry file="jar://$PROJECT_DIR$/../../Program Files/Java/jdk1.8.0_191/src.zip!/javax/swing/SpinnerNumberModel.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="535">
           <caret line="409" column="18" selection-start-line="409" selection-start-column="18" selection-end-line="409" selection-end-column="18" />
@@ -423,7 +339,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="jar://D:/Program Files/Java/jdk1.8.0_191/src.zip!/javax/swing/JSpinner.java">
+    <entry file="jar://$PROJECT_DIR$/../../Program Files/Java/jdk1.8.0_191/src.zip!/javax/swing/JSpinner.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="229">
           <caret line="126" column="40" selection-start-line="126" selection-start-column="30" selection-end-line="126" selection-end-column="40" />

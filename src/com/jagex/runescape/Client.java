@@ -702,7 +702,7 @@ public final class Client extends RSApplet {
                 return;
             }
         } catch (final RuntimeException runtimeexception) {
-            signlink.reporterror("15283, " + (byte) 68 + ", " + targetHash + ", " + runtimeexception.toString());
+            signlink.reporterror("15283, " + (byte) 68 + ", " + targetHash + ", " + runtimeexception);
         }
         throw new RuntimeException();
     }
@@ -736,7 +736,7 @@ public final class Client extends RSApplet {
             this.stream.putLong(target);
             return;
         } catch (final RuntimeException runtimeexception) {
-            signlink.reporterror("45688, " + target + ", " + 4 + ", " + runtimeexception.toString());
+            signlink.reporterror("45688, " + target + ", " + 4 + ", " + runtimeexception);
         }
         throw new RuntimeException();
     }
@@ -957,7 +957,7 @@ public final class Client extends RSApplet {
     }
 
     private void build3dScreenMenu() {
-        if (this.itemSelected == false && this.spellSelected == false) {
+        if (!this.itemSelected && !this.spellSelected) {
             this.menuActionName[this.menuActionRow] = "Walk here";
             this.menuActionId[this.menuActionRow] = 516;
             this.menuActionData2[this.menuActionRow] = super.mouseX;
@@ -1300,7 +1300,7 @@ public final class Client extends RSApplet {
                         this.menuActionRow++;
                     }
                 }
-                if (childInterface.actionType == 2 && this.spellSelected == false && k >= i2 && i1 >= j2
+                if (childInterface.actionType == 2 && !this.spellSelected && k >= i2 && i1 >= j2
                     && k < i2 + childInterface.width && i1 < j2 + childInterface.height) {
                     String actionName = childInterface.selectedActionName;
                     if (actionName.contains(" ")) {
@@ -2106,7 +2106,7 @@ public final class Client extends RSApplet {
                 break;
             }
         } catch (final RuntimeException runtimeexception) {
-            signlink.reporterror("18622, " + false + ", " + friend + ", " + runtimeexception.toString());
+            signlink.reporterror("18622, " + false + ", " + friend + ", " + runtimeexception);
             throw new RuntimeException();
         }
     }
@@ -2130,7 +2130,7 @@ public final class Client extends RSApplet {
 
             return;
         } catch (final RuntimeException runtimeexception) {
-            signlink.reporterror("47229, " + 3 + ", " + target + ", " + runtimeexception.toString());
+            signlink.reporterror("47229, " + 3 + ", " + target + ", " + runtimeexception);
         }
         throw new RuntimeException();
     }
@@ -4078,11 +4078,8 @@ public final class Client extends RSApplet {
                     }
 
                 } else if (childInterface.type == 3) {
-                    boolean hover = false;
-                    if (this.anInt1039 == childInterface.id || this.anInt1048 == childInterface.id
-                        || this.anInt1026 == childInterface.id) {
-                        hover = true;
-                    }
+                    boolean hover = this.anInt1039 == childInterface.id || this.anInt1048 == childInterface.id
+                        || this.anInt1026 == childInterface.id;
                     int colour;
                     if (this.interfaceIsActive(childInterface)) {
                         colour = childInterface.colourActive;
@@ -4113,11 +4110,8 @@ public final class Client extends RSApplet {
                 } else if (childInterface.type == 4) {
                     final GameFont textDrawingArea = childInterface.textDrawingAreas;
                     String text = childInterface.textDefault;
-                    boolean hover = false;
-                    if (this.anInt1039 == childInterface.id || this.anInt1048 == childInterface.id
-                        || this.anInt1026 == childInterface.id) {
-                        hover = true;
-                    }
+                    boolean hover = this.anInt1039 == childInterface.id || this.anInt1048 == childInterface.id
+                        || this.anInt1026 == childInterface.id;
                     int colour;
                     if (this.interfaceIsActive(childInterface)) {
                         colour = childInterface.colourActive;
@@ -4405,7 +4399,7 @@ public final class Client extends RSApplet {
     }
 
     private void drawTooltip() {
-        if (this.menuActionRow < 2 && this.itemSelected == false && this.spellSelected == false) {
+        if (this.menuActionRow < 2 && !this.itemSelected && !this.spellSelected) {
             return;
         }
         String s;
@@ -5745,7 +5739,7 @@ public final class Client extends RSApplet {
         } catch (final IOException _ex) {
             this.dropClient();
         } catch (final Exception exception) {
-            StringBuilder s2 = new StringBuilder("T2 - " + this.packetOpcode + "," + this.secondMostRecentOpcode + "," + this.thirdMostRecentOpcode + " - "
+            final StringBuilder s2 = new StringBuilder("T2 - " + this.packetOpcode + "," + this.secondMostRecentOpcode + "," + this.thirdMostRecentOpcode + " - "
                 + this.packetSize + "," + (this.baseX + localPlayer.waypointX[0]) + "," + (this.baseY + localPlayer.waypointY[0])
                 + " - ");
             for (int j15 = 0; j15 < this.packetSize && j15 < 50; j15++) {

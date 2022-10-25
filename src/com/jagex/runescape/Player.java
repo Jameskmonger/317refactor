@@ -70,11 +70,11 @@ public final class Player extends Entity {
             }
             if (animation.playerReplacementShield >= 0) {
                 j1 = animation.playerReplacementShield;
-                l += j1 - this.appearance[5] << 40;
+                l += (long) j1 - this.appearance[5] << 40;
             }
             if (animation.playerReplacementWeapon >= 0) {
                 k1 = animation.playerReplacementWeapon;
-                l += k1 - this.appearance[3] << 48;
+                l += (long) k1 - this.appearance[3] << 48;
             }
         } else if (super.queuedAnimationId >= 0) {
             k = AnimationSequence.animations[super.queuedAnimationId].primaryFrames[super.queuedAnimationFrame];

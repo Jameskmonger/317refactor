@@ -332,10 +332,7 @@ public class Minimap {
                     break;
                 }
 
-                boolean team = false;
-                if (player.team != 0 && Client.localPlayer.team == player.team) {
-                    team = true;
-                }
+                boolean team = player.team != 0 && Client.localPlayer.team == player.team;
                 if (friend) {
                     this.drawSprite(this.mapDotFriend, mapX, mapY);
                 } else if (team) {
