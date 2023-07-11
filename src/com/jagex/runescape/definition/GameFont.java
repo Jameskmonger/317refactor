@@ -73,7 +73,7 @@ public final class GameFont extends DrawingArea {
         /*
          * Find the glyph information within the parent archive.
          */
-        glyphInformation.position = glyphData.getUnsignedLEShort() + 4;
+        glyphInformation.position = glyphData.getUnsignedBEShort() + 4;
 
         /*
          * Find the glyph data for this font within the parent archive.
@@ -89,8 +89,8 @@ public final class GameFont extends DrawingArea {
         for (int g = 0; g < 256; g++) {
             this.horizontalKerning[g] = glyphInformation.getUnsignedByte();
             this.verticalKerning[g] = glyphInformation.getUnsignedByte();
-            final int width = this.glyphWidth[g] = glyphInformation.getUnsignedLEShort();
-            final int height = this.glyphHeight[g] = glyphInformation.getUnsignedLEShort();
+            final int width = this.glyphWidth[g] = glyphInformation.getUnsignedBEShort();
+            final int height = this.glyphHeight[g] = glyphInformation.getUnsignedBEShort();
 
             /*
              * Is the glyph rectangular?

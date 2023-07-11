@@ -10,7 +10,7 @@ public final class Varp {
 
     public static void load(final Archive archive) {
         final Buffer stream = new Buffer(archive.decompressFile("varp.dat"));
-        final int count = stream.getUnsignedLEShort();
+        final int count = stream.getUnsignedBEShort();
 
         if (values == null) {
             values = new Varp[count];
@@ -44,7 +44,7 @@ public final class Varp {
             else if (opcode == 4) {
             } // dummy
             else if (opcode == 5) {
-                this.type = buffer.getUnsignedLEShort();
+                this.type = buffer.getUnsignedBEShort();
             } else if (opcode == 6) {
             } // dummy
             else if (opcode == 7) {

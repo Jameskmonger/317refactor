@@ -45,18 +45,18 @@ public final class Model extends Animable {
         stream.position = modelData.length - 18;
         final ModelHeader modelHeader = modelHeaders[modelId] = new ModelHeader();
         modelHeader.modelData = modelData;
-        modelHeader.vertexCount = stream.getUnsignedLEShort();
-        modelHeader.triangleCount = stream.getUnsignedLEShort();
+        modelHeader.vertexCount = stream.getUnsignedBEShort();
+        modelHeader.triangleCount = stream.getUnsignedBEShort();
         modelHeader.texturedTriangleCount = stream.getUnsignedByte();
         final int useTextures = stream.getUnsignedByte();
         final int useTrianglePriority = stream.getUnsignedByte();
         final int useAlpha = stream.getUnsignedByte();
         final int useTriangleSkins = stream.getUnsignedByte();
         final int useVertexSkins = stream.getUnsignedByte();
-        final int dataLengthX = stream.getUnsignedLEShort();
-        final int dataLengthY = stream.getUnsignedLEShort();
-        final int dataLengthZ = stream.getUnsignedLEShort();
-        final int dataLengthTriangle = stream.getUnsignedLEShort();
+        final int dataLengthX = stream.getUnsignedBEShort();
+        final int dataLengthY = stream.getUnsignedBEShort();
+        final int dataLengthZ = stream.getUnsignedBEShort();
+        final int dataLengthTriangle = stream.getUnsignedBEShort();
         int offset = 0;
         modelHeader.vertexDirectionOffset = offset;
         offset += modelHeader.vertexCount;
@@ -468,7 +468,7 @@ public final class Model extends Animable {
         zDataOffsetStream.position = modelHeader.triangleAlphaOffset;
         vertexSkinOffsetStream.position = modelHeader.triangleSkinOffset;
         for (int triangle = 0; triangle < this.triangleCount; triangle++) {
-            this.triangleColours[triangle] = vertexDirectionOffsetStream.getUnsignedLEShort();
+            this.triangleColours[triangle] = vertexDirectionOffsetStream.getUnsignedBEShort();
             if (this.triangleDrawType != null) {
                 this.triangleDrawType[triangle] = xDataOffsetStream.getUnsignedByte();
             }
@@ -532,9 +532,9 @@ public final class Model extends Animable {
 
         vertexDirectionOffsetStream.position = modelHeader.texturedTriangleOffset;
         for (int triangle = 0; triangle < this.texturedTriangleCount; triangle++) {
-            this.texturedTrianglePointsX[triangle] = vertexDirectionOffsetStream.getUnsignedLEShort();
-            this.texturedTrianglePointsY[triangle] = vertexDirectionOffsetStream.getUnsignedLEShort();
-            this.texturedTrianglePointsZ[triangle] = vertexDirectionOffsetStream.getUnsignedLEShort();
+            this.texturedTrianglePointsX[triangle] = vertexDirectionOffsetStream.getUnsignedBEShort();
+            this.texturedTrianglePointsY[triangle] = vertexDirectionOffsetStream.getUnsignedBEShort();
+            this.texturedTrianglePointsZ[triangle] = vertexDirectionOffsetStream.getUnsignedBEShort();
         }
 
     }

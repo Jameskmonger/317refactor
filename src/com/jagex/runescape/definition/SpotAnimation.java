@@ -9,7 +9,7 @@ public final class SpotAnimation {
 
     public static void load(final Archive archive) {
         final Buffer buffer = new Buffer(archive.decompressFile("spotanim.dat"));
-        final int count = buffer.getUnsignedLEShort();
+        final int count = buffer.getUnsignedBEShort();
         if (cache == null) {
             cache = new SpotAnimation[count];
         }
@@ -74,26 +74,26 @@ public final class SpotAnimation {
                 return;
             }
             if (opcode == 1) {
-                this.modelId = stream.getUnsignedLEShort();
+                this.modelId = stream.getUnsignedBEShort();
             } else if (opcode == 2) {
-                this.animationId = stream.getUnsignedLEShort();
+                this.animationId = stream.getUnsignedBEShort();
                 if (AnimationSequence.animations != null) {
                     this.sequences = AnimationSequence.animations[this.animationId];
                 }
             } else if (opcode == 4) {
-                this.scaleXY = stream.getUnsignedLEShort();
+                this.scaleXY = stream.getUnsignedBEShort();
             } else if (opcode == 5) {
-                this.scaleZ = stream.getUnsignedLEShort();
+                this.scaleZ = stream.getUnsignedBEShort();
             } else if (opcode == 6) {
-                this.rotation = stream.getUnsignedLEShort();
+                this.rotation = stream.getUnsignedBEShort();
             } else if (opcode == 7) {
                 this.modelLightFalloff = stream.getUnsignedByte();
             } else if (opcode == 8) {
                 this.modelLightAmbient = stream.getUnsignedByte();
             } else if (opcode >= 40 && opcode < 50) {
-                this.originalModelColours[opcode - 40] = stream.getUnsignedLEShort();
+                this.originalModelColours[opcode - 40] = stream.getUnsignedBEShort();
             } else if (opcode >= 50 && opcode < 60) {
-                this.modifiedModelColours[opcode - 50] = stream.getUnsignedLEShort();
+                this.modifiedModelColours[opcode - 50] = stream.getUnsignedBEShort();
             } else {
                 System.out.println("Error unrecognised spotanim config code: " + opcode);
             }

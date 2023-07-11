@@ -24,12 +24,12 @@ public final class GameObjectDefinition {
     public static void load(final Archive archive) {
         stream = new Buffer(archive.decompressFile("loc.dat"));
         final Buffer stream = new Buffer(archive.decompressFile("loc.idx"));
-        final int objectCount = stream.getUnsignedLEShort();
+        final int objectCount = stream.getUnsignedBEShort();
         streamOffsets = new int[objectCount];
         int offset = 2;
         for (int index = 0; index < objectCount; index++) {
             streamOffsets[index] = offset;
-            offset += stream.getUnsignedLEShort();
+            offset += stream.getUnsignedBEShort();
         }
 
         cache = new GameObjectDefinition[20];
@@ -278,7 +278,7 @@ public final class GameObjectDefinition {
                             this.modelTypes = new int[modelCount];
                             this.modelIds = new int[modelCount];
                             for (int m = 0; m < modelCount; m++) {
-                                this.modelIds[m] = stream.getUnsignedLEShort();
+                                this.modelIds[m] = stream.getUnsignedBEShort();
                                 this.modelTypes[m] = stream.getUnsignedByte();
                             }
 
@@ -297,7 +297,7 @@ public final class GameObjectDefinition {
                             this.modelTypes = null;
                             this.modelIds = new int[modelCount];
                             for (int m = 0; m < modelCount; m++) {
-                                this.modelIds[m] = stream.getUnsignedLEShort();
+                                this.modelIds[m] = stream.getUnsignedBEShort();
                             }
 
                         } else {
@@ -324,7 +324,7 @@ public final class GameObjectDefinition {
                 } else if (opcode == 23) {
                     this.wall = true;
                 } else if (opcode == 24) {
-                    this.animationId = stream.getUnsignedLEShort();
+                    this.animationId = stream.getUnsignedBEShort();
                     if (this.animationId == 65535) {
                         this.animationId = -1;
                     }
@@ -347,24 +347,24 @@ public final class GameObjectDefinition {
                     this.modifiedModelColors = new int[colourCount];
                     this.originalModelColors = new int[colourCount];
                     for (int c = 0; c < colourCount; c++) {
-                        this.modifiedModelColors[c] = stream.getUnsignedLEShort();
-                        this.originalModelColors[c] = stream.getUnsignedLEShort();
+                        this.modifiedModelColors[c] = stream.getUnsignedBEShort();
+                        this.originalModelColors[c] = stream.getUnsignedBEShort();
                     }
 
                 } else if (opcode == 60) {
-                    this.icon = stream.getUnsignedLEShort();
+                    this.icon = stream.getUnsignedBEShort();
                 } else if (opcode == 62) {
                     this.rotated = true;
                 } else if (opcode == 64) {
                     this.castsShadow = false;
                 } else if (opcode == 65) {
-                    this.scaleX = stream.getUnsignedLEShort();
+                    this.scaleX = stream.getUnsignedBEShort();
                 } else if (opcode == 66) {
-                    this.scaleY = stream.getUnsignedLEShort();
+                    this.scaleY = stream.getUnsignedBEShort();
                 } else if (opcode == 67) {
-                    this.scaleZ = stream.getUnsignedLEShort();
+                    this.scaleZ = stream.getUnsignedBEShort();
                 } else if (opcode == 68) {
-                    this.mapScene = stream.getUnsignedLEShort();
+                    this.mapScene = stream.getUnsignedBEShort();
                 } else if (opcode == 69) {
                     this.face = stream.getUnsignedByte();
                 } else if (opcode == 70) {
@@ -385,18 +385,18 @@ public final class GameObjectDefinition {
                 }
                 continue label0;
             } while (opcode != 77);
-            this.varBitId = stream.getUnsignedLEShort();
+            this.varBitId = stream.getUnsignedBEShort();
             if (this.varBitId == 65535) {
                 this.varBitId = -1;
             }
-            this.configIds = stream.getUnsignedLEShort();
+            this.configIds = stream.getUnsignedBEShort();
             if (this.configIds == 65535) {
                 this.configIds = -1;
             }
             final int childCount = stream.getUnsignedByte();
             this.childIds = new int[childCount + 1];
             for (int c = 0; c <= childCount; c++) {
-                this.childIds[c] = stream.getUnsignedLEShort();
+                this.childIds[c] = stream.getUnsignedBEShort();
                 if (this.childIds[c] == 65535) {
                     this.childIds[c] = -1;
                 }

@@ -23,12 +23,12 @@ public final class EntityDefinition {
     public static void load(final Archive streamLoader) {
         EntityDefinition.stream = new Buffer(streamLoader.decompressFile("npc.dat"));
         final Buffer stream = new Buffer(streamLoader.decompressFile("npc.idx"));
-        final int size = stream.getUnsignedLEShort();
+        final int size = stream.getUnsignedBEShort();
         EntityDefinition.streamOffsets = new int[size];
         int offset = 2;
         for (int n = 0; n < size; n++) {
             EntityDefinition.streamOffsets[n] = offset;
-            offset += stream.getUnsignedLEShort();
+            offset += stream.getUnsignedBEShort();
         }
 
         EntityDefinition.cache = new EntityDefinition[20];
@@ -235,7 +235,7 @@ public final class EntityDefinition {
                 final int modelCount = stream.getUnsignedByte();
                 this.modelIds = new int[modelCount];
                 for (int m = 0; m < modelCount; m++) {
-                    this.modelIds[m] = stream.getUnsignedLEShort();
+                    this.modelIds[m] = stream.getUnsignedBEShort();
                 }
 
             } else if (opcode == 2) {
@@ -245,14 +245,14 @@ public final class EntityDefinition {
             } else if (opcode == 12) {
                 this.boundaryDimension = stream.get();
             } else if (opcode == 13) {
-                this.standAnimationId = stream.getUnsignedLEShort();
+                this.standAnimationId = stream.getUnsignedBEShort();
             } else if (opcode == 14) {
-                this.walkAnimationId = stream.getUnsignedLEShort();
+                this.walkAnimationId = stream.getUnsignedBEShort();
             } else if (opcode == 17) {
-                this.walkAnimationId = stream.getUnsignedLEShort();
-                this.turnAboutAnimationId = stream.getUnsignedLEShort();
-                this.turnRightAnimationId = stream.getUnsignedLEShort();
-                this.turnLeftAnimationId = stream.getUnsignedLEShort();
+                this.walkAnimationId = stream.getUnsignedBEShort();
+                this.turnAboutAnimationId = stream.getUnsignedBEShort();
+                this.turnRightAnimationId = stream.getUnsignedBEShort();
+                this.turnLeftAnimationId = stream.getUnsignedBEShort();
             } else if (opcode >= 30 && opcode < 40) {
                 if (this.actions == null) {
                     this.actions = new String[5];
@@ -266,31 +266,31 @@ public final class EntityDefinition {
                 this.modifiedModelColours = new int[colourCount];
                 this.originalModelColours = new int[colourCount];
                 for (int c = 0; c < colourCount; c++) {
-                    this.modifiedModelColours[c] = stream.getUnsignedLEShort();
-                    this.originalModelColours[c] = stream.getUnsignedLEShort();
+                    this.modifiedModelColours[c] = stream.getUnsignedBEShort();
+                    this.originalModelColours[c] = stream.getUnsignedBEShort();
                 }
 
             } else if (opcode == 60) {
                 final int additionalModelCount = stream.getUnsignedByte();
                 this.headModelIds = new int[additionalModelCount];
                 for (int m = 0; m < additionalModelCount; m++) {
-                    this.headModelIds[m] = stream.getUnsignedLEShort();
+                    this.headModelIds[m] = stream.getUnsignedBEShort();
                 }
 
             } else if (opcode == 90) {
-                stream.getUnsignedLEShort();
+                stream.getUnsignedBEShort();
             } else if (opcode == 91) {
-                stream.getUnsignedLEShort();
+                stream.getUnsignedBEShort();
             } else if (opcode == 92) {
-                stream.getUnsignedLEShort();
+                stream.getUnsignedBEShort();
             } else if (opcode == 93) {
                 this.visibleMinimap = false;
             } else if (opcode == 95) {
-                this.combatLevel = stream.getUnsignedLEShort();
+                this.combatLevel = stream.getUnsignedBEShort();
             } else if (opcode == 97) {
-                this.scaleXY = stream.getUnsignedLEShort();
+                this.scaleXY = stream.getUnsignedBEShort();
             } else if (opcode == 98) {
-                this.scaleZ = stream.getUnsignedLEShort();
+                this.scaleZ = stream.getUnsignedBEShort();
             } else if (opcode == 99) {
                 this.visible = true;
             } else if (opcode == 100) {
@@ -298,22 +298,22 @@ public final class EntityDefinition {
             } else if (opcode == 101) {
                 this.contrast = stream.get() * 5;
             } else if (opcode == 102) {
-                this.headIcon = stream.getUnsignedLEShort();
+                this.headIcon = stream.getUnsignedBEShort();
             } else if (opcode == 103) {
-                this.degreesToTurn = stream.getUnsignedLEShort();
+                this.degreesToTurn = stream.getUnsignedBEShort();
             } else if (opcode == 106) {
-                this.varBitId = stream.getUnsignedLEShort();
+                this.varBitId = stream.getUnsignedBEShort();
                 if (this.varBitId == 65535) {
                     this.varBitId = -1;
                 }
-                this.settingId = stream.getUnsignedLEShort();
+                this.settingId = stream.getUnsignedBEShort();
                 if (this.settingId == 65535) {
                     this.settingId = -1;
                 }
                 final int childCount = stream.getUnsignedByte();
                 this.childrenIDs = new int[childCount + 1];
                 for (int c = 0; c <= childCount; c++) {
-                    this.childrenIDs[c] = stream.getUnsignedLEShort();
+                    this.childrenIDs[c] = stream.getUnsignedBEShort();
                     if (this.childrenIDs[c] == 65535) {
                         this.childrenIDs[c] = -1;
                     }

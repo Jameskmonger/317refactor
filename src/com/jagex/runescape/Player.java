@@ -305,7 +305,7 @@ public final class Player extends Entity {
             final int itemId2 = stream.getUnsignedByte();
             this.appearance[slot] = (itemId1 << 8) + itemId2;
             if (slot == 0 && this.appearance[0] == 65535) {
-                this.npcAppearance = EntityDefinition.getDefinition(stream.getUnsignedLEShort());
+                this.npcAppearance = EntityDefinition.getDefinition(stream.getUnsignedBEShort());
                 break;
             }
             if (this.appearance[slot] >= 512 && this.appearance[slot] - 512 < ItemDefinition.itemCount) {
@@ -324,37 +324,37 @@ public final class Player extends Entity {
             this.bodyPartColour[bodyPart] = colour;
         }
 
-        super.standAnimationId = stream.getUnsignedLEShort();
+        super.standAnimationId = stream.getUnsignedBEShort();
         if (super.standAnimationId == 65535) {
             super.standAnimationId = -1;
         }
-        super.standTurnAnimationId = stream.getUnsignedLEShort();
+        super.standTurnAnimationId = stream.getUnsignedBEShort();
         if (super.standTurnAnimationId == 65535) {
             super.standTurnAnimationId = -1;
         }
-        super.walkAnimationId = stream.getUnsignedLEShort();
+        super.walkAnimationId = stream.getUnsignedBEShort();
         if (super.walkAnimationId == 65535) {
             super.walkAnimationId = -1;
         }
-        super.turnAboutAnimationId = stream.getUnsignedLEShort();
+        super.turnAboutAnimationId = stream.getUnsignedBEShort();
         if (super.turnAboutAnimationId == 65535) {
             super.turnAboutAnimationId = -1;
         }
-        super.turnRightAnimationId = stream.getUnsignedLEShort();
+        super.turnRightAnimationId = stream.getUnsignedBEShort();
         if (super.turnRightAnimationId == 65535) {
             super.turnRightAnimationId = -1;
         }
-        super.turnLeftAnimationId = stream.getUnsignedLEShort();
+        super.turnLeftAnimationId = stream.getUnsignedBEShort();
         if (super.turnLeftAnimationId == 65535) {
             super.turnLeftAnimationId = -1;
         }
-        super.runAnimationId = stream.getUnsignedLEShort();
+        super.runAnimationId = stream.getUnsignedBEShort();
         if (super.runAnimationId == 65535) {
             super.runAnimationId = -1;
         }
         this.name = TextClass.formatName(TextClass.longToName(stream.getLongBE()));
         this.combatLevel = stream.getUnsignedByte();
-        this.skill = stream.getUnsignedLEShort();
+        this.skill = stream.getUnsignedBEShort();
         this.visible = true;
         this.appearanceOffset = 0L;
         for (int slot = 0; slot < 12; slot++) {

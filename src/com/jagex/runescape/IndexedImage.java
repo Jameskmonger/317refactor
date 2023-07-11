@@ -22,9 +22,9 @@ public final class IndexedImage extends DrawingArea {
         final Buffer imageBuffer = new Buffer(archive.decompressFile(name + ".dat"));
         final Buffer metadataBuffer = new Buffer(archive.decompressFile("index.dat"));
 
-        metadataBuffer.position = imageBuffer.getUnsignedLEShort();
-        this.resizeWidth = metadataBuffer.getUnsignedLEShort();
-        this.resizeHeight = metadataBuffer.getUnsignedLEShort();
+        metadataBuffer.position = imageBuffer.getUnsignedBEShort();
+        this.resizeWidth = metadataBuffer.getUnsignedBEShort();
+        this.resizeHeight = metadataBuffer.getUnsignedBEShort();
 
         final int colourCount = metadataBuffer.getUnsignedByte();
         this.palette = new int[colourCount];
@@ -34,14 +34,14 @@ public final class IndexedImage extends DrawingArea {
 
         for (int i = 0; i < id; i++) {
             metadataBuffer.position += 2;
-            imageBuffer.position += metadataBuffer.getUnsignedLEShort() * metadataBuffer.getUnsignedLEShort();
+            imageBuffer.position += metadataBuffer.getUnsignedBEShort() * metadataBuffer.getUnsignedBEShort();
             metadataBuffer.position++;
         }
 
         this.drawOffsetX = metadataBuffer.getUnsignedByte();
         this.drawOffsetY = metadataBuffer.getUnsignedByte();
-        this.width = metadataBuffer.getUnsignedLEShort();
-        this.height = metadataBuffer.getUnsignedLEShort();
+        this.width = metadataBuffer.getUnsignedBEShort();
+        this.height = metadataBuffer.getUnsignedBEShort();
         final int type = metadataBuffer.getUnsignedByte();
         final int pixelCount = this.width * this.height;
         this.pixels = new byte[pixelCount];

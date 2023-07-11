@@ -112,8 +112,8 @@ final class Instrument {
 
         this.delayTime = stream.getSmartB();
         this.delayFeedback = stream.getSmartB();
-        this.duration = stream.getUnsignedLEShort();
-        this.begin = stream.getUnsignedLEShort();
+        this.duration = stream.getUnsignedBEShort();
+        this.begin = stream.getUnsignedBEShort();
         this.filter = new SoundFilter();
         this.filterEnvelope = new Envelope();
         this.filter.decode(stream, this.filterEnvelope);

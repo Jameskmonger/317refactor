@@ -35,22 +35,22 @@ public final class RSInterface {
         spriteCache = new Cache(50000);
         final Buffer stream = new Buffer(streamLoader.decompressFile("data"));
         int parentId = -1;
-        final int interfaceCount = stream.getUnsignedLEShort();
+        final int interfaceCount = stream.getUnsignedBEShort();
         cache = new RSInterface[interfaceCount];
         while (stream.position < stream.buffer.length) {
-            int id = stream.getUnsignedLEShort();
+            int id = stream.getUnsignedBEShort();
             if (id == 65535) {
-                parentId = stream.getUnsignedLEShort();
-                id = stream.getUnsignedLEShort();
+                parentId = stream.getUnsignedBEShort();
+                id = stream.getUnsignedBEShort();
             }
             final RSInterface rsInterface = cache[id] = new RSInterface();
             rsInterface.id = id;
             rsInterface.parentID = parentId;
             rsInterface.type = stream.getUnsignedByte();
             rsInterface.actionType = stream.getUnsignedByte();
-            rsInterface.contentType = stream.getUnsignedLEShort();
-            rsInterface.width = stream.getUnsignedLEShort();
-            rsInterface.height = stream.getUnsignedLEShort();
+            rsInterface.contentType = stream.getUnsignedBEShort();
+            rsInterface.width = stream.getUnsignedBEShort();
+            rsInterface.height = stream.getUnsignedBEShort();
             rsInterface.alpha = (byte) stream.getUnsignedByte();
             rsInterface.hoveredPopup = stream.getUnsignedByte();
             if (rsInterface.hoveredPopup != 0) {
@@ -64,7 +64,7 @@ public final class RSInterface {
                 rsInterface.conditionValue = new int[conditionCount];
                 for (int c = 0; c < conditionCount; c++) {
                     rsInterface.conditionType[c] = stream.getUnsignedByte();
-                    rsInterface.conditionValue[c] = stream.getUnsignedLEShort();
+                    rsInterface.conditionValue[c] = stream.getUnsignedBEShort();
                 }
 
             }
@@ -72,31 +72,31 @@ public final class RSInterface {
             if (opcodeCount > 0) {
                 rsInterface.opcodes = new int[opcodeCount][];
                 for (int c = 0; c < opcodeCount; c++) {
-                    final int subOpcodeCount = stream.getUnsignedLEShort();
+                    final int subOpcodeCount = stream.getUnsignedBEShort();
                     rsInterface.opcodes[c] = new int[subOpcodeCount];
                     for (int s = 0; s < subOpcodeCount; s++) {
-                        rsInterface.opcodes[c][s] = stream.getUnsignedLEShort();
+                        rsInterface.opcodes[c][s] = stream.getUnsignedBEShort();
                     }
 
                 }
 
             }
             if (rsInterface.type == 0) {
-                rsInterface.scrollMax = stream.getUnsignedLEShort();
+                rsInterface.scrollMax = stream.getUnsignedBEShort();
                 rsInterface.hoverOnly = stream.getUnsignedByte() == 1;
-                final int childCount = stream.getUnsignedLEShort();
+                final int childCount = stream.getUnsignedBEShort();
                 rsInterface.children = new int[childCount];
                 rsInterface.childX = new int[childCount];
                 rsInterface.childY = new int[childCount];
                 for (int child = 0; child < childCount; child++) {
-                    rsInterface.children[child] = stream.getUnsignedLEShort();
+                    rsInterface.children[child] = stream.getUnsignedBEShort();
                     rsInterface.childX[child] = stream.getShortBE();
                     rsInterface.childY[child] = stream.getShortBE();
                 }
 
             }
             if (rsInterface.type == 1) {
-                stream.getUnsignedLEShort();
+                stream.getUnsignedBEShort();
                 stream.getUnsignedByte();
             }
             if (rsInterface.type == 2) {
@@ -194,9 +194,9 @@ public final class RSInterface {
                 } else {
                     rsInterface.animationIdActive = -1;
                 }
-                rsInterface.modelZoom = stream.getUnsignedLEShort();
-                rsInterface.modelRotationX = stream.getUnsignedLEShort();
-                rsInterface.modelRotationY = stream.getUnsignedLEShort();
+                rsInterface.modelZoom = stream.getUnsignedBEShort();
+                rsInterface.modelRotationX = stream.getUnsignedBEShort();
+                rsInterface.modelRotationY = stream.getUnsignedBEShort();
             }
             if (rsInterface.type == 7) {
                 rsInterface.inventoryItemId = new int[rsInterface.width * rsInterface.height];
@@ -223,7 +223,7 @@ public final class RSInterface {
             if (rsInterface.actionType == 2 || rsInterface.type == 2) {
                 rsInterface.selectedActionName = stream.getString();
                 rsInterface.spellName = stream.getString();
-                rsInterface.spellUsableOn = stream.getUnsignedLEShort();
+                rsInterface.spellUsableOn = stream.getUnsignedBEShort();
             }
 
             if (rsInterface.type == 8) {

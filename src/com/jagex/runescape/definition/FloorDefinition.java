@@ -7,7 +7,7 @@ public final class FloorDefinition {
 
     public static void load(final Archive archive) {
         final Buffer stream = new Buffer(archive.decompressFile("flo.dat"));
-        final int cacheSize = stream.getUnsignedLEShort();
+        final int cacheSize = stream.getUnsignedBEShort();
         if (cache == null) {
             cache = new FloorDefinition[cacheSize];
         }

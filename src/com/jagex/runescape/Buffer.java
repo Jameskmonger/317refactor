@@ -150,7 +150,7 @@ public final class Buffer extends Cacheable {
         if (i < 128) {
             return this.getUnsignedByte() - 64;
         } else {
-            return this.getUnsignedLEShort() - 49152;
+            return this.getUnsignedBEShort() - 49152;
         }
     }
 
@@ -159,7 +159,7 @@ public final class Buffer extends Cacheable {
         if (i < 128) {
             return this.getUnsignedByte();
         } else {
-            return this.getUnsignedLEShort() - 32768;
+            return this.getUnsignedBEShort() - 32768;
         }
     }
 
@@ -186,12 +186,12 @@ public final class Buffer extends Cacheable {
         return 128 - this.buffer[this.position++] & 0xff;
     }
 
-    public int getUnsignedLEShort() {
+    public int getUnsignedBEShort() {
         this.position += 2;
         return ((this.buffer[this.position - 2] & 0xff) << 8) + (this.buffer[this.position - 1] & 0xff);
     }
 
-    public int getUnsignedLEShortA() {
+    public int getUnsignedBEShortA() {
         this.position += 2;
         return ((this.buffer[this.position - 2] & 0xff) << 8) + (this.buffer[this.position - 1] - 128 & 0xff);
     }

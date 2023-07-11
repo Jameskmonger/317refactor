@@ -33,7 +33,7 @@ public final class Archive {
             this.decompressed = false;
         }
 
-        this.fileCount = buffer.getUnsignedLEShort();
+        this.fileCount = buffer.getUnsignedBEShort();
         this.hashes = new int[this.fileCount];
         this.decompressedSizes = new int[this.fileCount];
         this.compressedSizes = new int[this.fileCount];

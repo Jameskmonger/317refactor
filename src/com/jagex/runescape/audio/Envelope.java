@@ -37,8 +37,8 @@ final class Envelope {
         this.phaseDuration = new int[this.phaseCount];
         this.phasePeak = new int[this.phaseCount];
         for (int p = 0; p < this.phaseCount; p++) {
-            this.phaseDuration[p] = stream.getUnsignedLEShort();
-            this.phasePeak[p] = stream.getUnsignedLEShort();
+            this.phaseDuration[p] = stream.getUnsignedBEShort();
+            this.phasePeak[p] = stream.getUnsignedBEShort();
         }
 
     }
