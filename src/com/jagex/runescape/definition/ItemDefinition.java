@@ -463,7 +463,7 @@ public final class ItemDefinition {
             } else if (opcode == 11) {
                 this.stackable = true;
             } else if (opcode == 12) {
-                this.value = stream.getInt();
+                this.value = stream.getIntBE();
             } else if (opcode == 16) {
                 this.membersObject = true;
             } else if (opcode == 23) {

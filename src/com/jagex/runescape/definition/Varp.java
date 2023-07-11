@@ -48,7 +48,7 @@ public final class Varp {
             } else if (opcode == 6) {
             } // dummy
             else if (opcode == 7) {
-                buffer.getInt();
+                buffer.getIntBE();
             } else if (opcode == 8) {
             } // dummy
             else if (opcode == 10) {
@@ -56,7 +56,7 @@ public final class Varp {
             } else if (opcode == 11) {
             } // dummy
             else if (opcode == 12) {
-                buffer.getInt();
+                buffer.getIntBE();
             } else if (opcode == 13) {
             } // dummy
             else {

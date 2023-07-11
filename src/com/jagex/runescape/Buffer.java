@@ -112,7 +112,7 @@ public final class Buffer extends Cacheable {
         return j;
     }
 
-    public int getInt() {
+    public int getIntBE() {
         this.position += 4;
         return ((this.buffer[this.position - 4] & 0xff) << 24) + ((this.buffer[this.position - 3] & 0xff) << 16)
             + ((this.buffer[this.position - 2] & 0xff) << 8) + (this.buffer[this.position - 1] & 0xff);
@@ -131,8 +131,8 @@ public final class Buffer extends Cacheable {
     }
 
     public long getLong() {
-        final long ms = this.getInt() & 0xffffffffL;
-        final long ls = this.getInt() & 0xffffffffL;
+        final long ms = this.getIntBE() & 0xffffffffL;
+        final long ls = this.getIntBE() & 0xffffffffL;
         return (ms << 32) + ls;
     }
 

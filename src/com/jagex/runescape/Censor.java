@@ -36,7 +36,7 @@ class Censor {
     }
 
     private static void loadTldList(final Buffer buffer) {
-        final int length = buffer.getInt();
+        final int length = buffer.getIntBE();
         tlds = new char[length][];
         tldTypes = new int[length];
 
@@ -53,20 +53,20 @@ class Censor {
     }
 
     private static void loadBadEnc(final Buffer buffer) {
-        final int length = buffer.getInt();
+        final int length = buffer.getIntBE();
         bads = new char[length][];
         badCombinations = new byte[length][][];
         loadBadEnc(buffer, badCombinations, bads);
     }
 
     private static void loadDomainEnc(final Buffer buffer) {
-        final int i = buffer.getInt();
+        final int i = buffer.getIntBE();
         domains = new char[i][];
         loadDomainEnc(buffer, domains);
     }
 
     private static void loadFragmentsEnc(final Buffer buffer) {
-        fragments = new int[buffer.getInt()];
+        fragments = new int[buffer.getIntBE()];
         for (int i = 0; i < fragments.length; i++) {
             fragments[i] = buffer.getUnsignedShort();
         }

@@ -27,8 +27,8 @@ final class Envelope {
 
     public void decode(final Buffer stream) {
         this.form = stream.getUnsignedByte();
-        this.start = stream.getInt();
-        this.end = stream.getInt();
+        this.start = stream.getIntBE();
+        this.end = stream.getIntBE();
         this.decodeShape(stream);
     }
 

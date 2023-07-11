@@ -41,7 +41,7 @@ public final class Archive {
         int offset = buffer.position + this.fileCount * 10;
 
         for (int index = 0; index < this.fileCount; index++) {
-            this.hashes[index] = buffer.getInt();
+            this.hashes[index] = buffer.getIntBE();
             this.decompressedSizes[index] = buffer.get3Bytes();
             this.compressedSizes[index] = buffer.get3Bytes();
             this.initialOffsets[index] = offset;

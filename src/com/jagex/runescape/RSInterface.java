@@ -150,12 +150,12 @@ public final class RSInterface {
                 rsInterface.textActive = stream.getString();
             }
             if (rsInterface.type == 1 || rsInterface.type == 3 || rsInterface.type == 4) {
-                rsInterface.colourDefault = stream.getInt();
+                rsInterface.colourDefault = stream.getIntBE();
             }
             if (rsInterface.type == 3 || rsInterface.type == 4) {
-                rsInterface.colourActive = stream.getInt();
-                rsInterface.colourDefaultHover = stream.getInt();
-                rsInterface.colourActiveHover = stream.getInt();
+                rsInterface.colourActive = stream.getIntBE();
+                rsInterface.colourDefaultHover = stream.getIntBE();
+                rsInterface.colourActiveHover = stream.getIntBE();
             }
             if (rsInterface.type == 5) {
                 String spriteName = stream.getString();
@@ -207,7 +207,7 @@ public final class RSInterface {
                     rsInterface.textDrawingAreas = fonts[font];
                 }
                 rsInterface.textShadowed = stream.getUnsignedByte() == 1;
-                rsInterface.colourDefault = stream.getInt();
+                rsInterface.colourDefault = stream.getIntBE();
                 rsInterface.inventorySpritePaddingColumn = stream.getShort();
                 rsInterface.inventorySpritePaddingRow = stream.getShort();
                 rsInterface.inventory = stream.getUnsignedByte() == 1;

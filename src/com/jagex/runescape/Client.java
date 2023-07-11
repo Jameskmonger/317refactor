@@ -5345,7 +5345,7 @@ public final class Client extends RSApplet {
             }
             if (this.packetOpcode == 196) {
                 final long nameAsLong = this.inStream.getLong();
-                final int messageId = this.inStream.getInt();
+                final int messageId = this.inStream.getIntBE();
                 final int playerRights = this.inStream.getUnsignedByte();
                 boolean ignored = false;
                 for (int message = 0; message < 100; message++) {
@@ -5694,7 +5694,7 @@ public final class Client extends RSApplet {
                     final int itemId = this.inStream.getUnsignedLEShort();
                     int itemAmount = this.inStream.getUnsignedByte();
                     if (itemAmount == 255) {
-                        itemAmount = this.inStream.getInt();
+                        itemAmount = this.inStream.getIntBE();
                     }
                     if (itemSlot >= 0 && itemSlot < rsInterface.inventoryItemId.length) {
                         rsInterface.inventoryItemId[itemSlot] = itemId;
@@ -10096,7 +10096,7 @@ public final class Client extends RSApplet {
             }
             if ((updateType & 0x80) != 0) {
                 npc.graphicId = stream.getUnsignedLEShort();
-                final int delay = stream.getInt();
+                final int delay = stream.getIntBE();
                 npc.graphicHeight = delay >> 16;
                 npc.graphicEndCycle = tick + (delay & 0xFFff);
                 npc.currentAnimationId = 0;
@@ -10337,7 +10337,7 @@ public final class Client extends RSApplet {
         }
         if ((updateType & 0x100) != 0) {
             player.graphicId = stream.getUnsignedShort();
-            final int delay = stream.getInt();
+            final int delay = stream.getIntBE();
             player.graphicHeight = delay >> 16;
             player.graphicEndCycle = tick + (delay & 0xFFff);
             player.currentAnimationId = 0;

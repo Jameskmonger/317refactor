@@ -660,7 +660,7 @@ public final class OnDemandFetcher implements Runnable {
             final Buffer stream_1 = new Buffer(abyte1);
             this.crcs[k] = new int[i1];
             for (int l1 = 0; l1 < i1; l1++) {
-                this.crcs[k][l1] = stream_1.getInt();
+                this.crcs[k][l1] = stream_1.getIntBE();
             }
 
         }

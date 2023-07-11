@@ -120,7 +120,7 @@ public final class AnimationSequence {
             } else if (opcode == 11) {
                 this.replayMode = stream.getUnsignedByte();
             } else if (opcode == 12) {
-                stream.getInt();
+                stream.getIntBE();
             } else {
                 System.out.println("Error unrecognised seq config code: " + opcode);
             }

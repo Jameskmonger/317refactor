@@ -46,9 +46,9 @@ public final class VarBit {
             } else if (opcode == 2) {
             } // dummy
             else if (opcode == 3) {
-                buffer.getInt();
+                buffer.getIntBE();
             } else if (opcode == 4) {
-                buffer.getInt();
+                buffer.getIntBE();
             } else {
                 System.out.println("Error unrecognised config code: " + opcode);
             }
