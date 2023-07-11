@@ -286,12 +286,12 @@ public final class Buffer extends Cacheable {
         this.buffer[this.position++] = (byte) (i + this.encryptor.value());
     }
 
-    public void putShort(final int i) {
+    public void putShortBE(final int i) {
         this.buffer[this.position++] = (byte) (i >> 8);
         this.buffer[this.position++] = (byte) i;
     }
 
-    public void putShortA(final int j) {
+    public void putShortBEA(final int j) {
         this.buffer[this.position++] = (byte) (j >> 8);
         this.buffer[this.position++] = (byte) (j + 128);
     }

@@ -2224,10 +2224,10 @@ public final class Client extends RSApplet {
                 this.crossType = 2;
                 this.crossIndex = 0;
                 this.stream.putOpcode(57);
-                this.stream.putShortA(this.useItemId);
-                this.stream.putShortA(actionTarget);
+                this.stream.putShortBEA(this.useItemId);
+                this.stream.putShortBEA(actionTarget);
                 this.stream.putLEShort(this.lastItemSelectedSlot);
-                this.stream.putShortA(this.lastItemSelectedInterface);
+                this.stream.putShortBEA(this.lastItemSelectedInterface);
             }
         }
         if (menuAction == 234) {
@@ -2243,17 +2243,17 @@ public final class Client extends RSApplet {
             this.crossIndex = 0;
             this.stream.putOpcode(236);
             this.stream.putLEShort(actionInformation1 + this.baseY);
-            this.stream.putShort(actionTarget);
+            this.stream.putShortBE(actionTarget);
             this.stream.putLEShort(actionInformation2 + this.baseX);
         }
         if (menuAction == 62 && this.clickInteractiveObject(actionTarget, actionInformation1, actionInformation2)) {
             this.stream.putOpcode(192);
-            this.stream.putShort(this.lastItemSelectedInterface);
+            this.stream.putShortBE(this.lastItemSelectedInterface);
             this.stream.putLEShort(actionTarget >> 14 & 0x7FFF);
             this.stream.putLEShortA(actionInformation1 + this.baseY);
             this.stream.putLEShort(this.lastItemSelectedSlot);
             this.stream.putLEShortA(actionInformation2 + this.baseX);
-            this.stream.putShort(this.useItemId);
+            this.stream.putShortBE(this.useItemId);
         }
         if (menuAction == 511) {
             boolean flag2 = this.doWalkTo(2, 0, 0, 0, localPlayer.waypointY[0], 0, 0, actionInformation1,
@@ -2268,16 +2268,16 @@ public final class Client extends RSApplet {
             this.crossIndex = 0;
             this.stream.putOpcode(25);
             this.stream.putLEShort(this.lastItemSelectedInterface);
-            this.stream.putShortA(this.useItemId);
-            this.stream.putShort(actionTarget);
-            this.stream.putShortA(actionInformation1 + this.baseY);
+            this.stream.putShortBEA(this.useItemId);
+            this.stream.putShortBE(actionTarget);
+            this.stream.putShortBEA(actionInformation1 + this.baseY);
             this.stream.putLEShortA(this.lastItemSelectedSlot);
-            this.stream.putShort(actionInformation2 + this.baseX);
+            this.stream.putShortBE(actionInformation2 + this.baseX);
         }
         if (menuAction == 74) {
             this.stream.putOpcode(122);
             this.stream.putLEShortA(actionInformation1);
-            this.stream.putShortA(actionInformation2);
+            this.stream.putShortBEA(actionInformation2);
             this.stream.putLEShort(actionTarget);
             this.atInventoryLoopCycle = 0;
             this.atInventoryInterface = actionInformation1;
@@ -2298,7 +2298,7 @@ public final class Client extends RSApplet {
             }
             if (flag8) {
                 this.stream.putOpcode(185);
-                this.stream.putShort(actionInformation1);
+                this.stream.putShortBE(actionInformation1);
             }
         }
         if (menuAction == 561) {
@@ -2311,7 +2311,7 @@ public final class Client extends RSApplet {
                 this.crossType = 2;
                 this.crossIndex = 0;
                 this.stream.putOpcode(128);
-                this.stream.putShort(actionTarget);
+                this.stream.putShortBE(actionTarget);
             }
         }
         if (menuAction == 20) {
@@ -2350,20 +2350,20 @@ public final class Client extends RSApplet {
         if (menuAction == 1062) {
             this.clickInteractiveObject(actionTarget, actionInformation1, actionInformation2);
             this.stream.putOpcode(228);
-            this.stream.putShortA(actionTarget >> 14 & 0x7FFF);
-            this.stream.putShortA(actionInformation1 + this.baseY);
-            this.stream.putShort(actionInformation2 + this.baseX);
+            this.stream.putShortBEA(actionTarget >> 14 & 0x7FFF);
+            this.stream.putShortBEA(actionInformation1 + this.baseY);
+            this.stream.putShortBE(actionInformation2 + this.baseX);
         }
         if (menuAction == 679 && !this.continuedDialogue) {
             this.stream.putOpcode(40);
-            this.stream.putShort(actionInformation1);
+            this.stream.putShortBE(actionInformation1);
             this.continuedDialogue = true;
         }
         if (menuAction == 431) {
             this.stream.putOpcode(129);
-            this.stream.putShortA(actionInformation2);
-            this.stream.putShort(actionInformation1);
-            this.stream.putShortA(actionTarget);
+            this.stream.putShortBEA(actionInformation2);
+            this.stream.putShortBE(actionInformation1);
+            this.stream.putShortBEA(actionTarget);
             this.atInventoryLoopCycle = 0;
             this.atInventoryInterface = actionInformation1;
             this.atInventoryIndex = actionInformation2;
@@ -2397,7 +2397,7 @@ public final class Client extends RSApplet {
         if (menuAction == 53) {
             this.stream.putOpcode(135);
             this.stream.putLEShort(actionInformation2);
-            this.stream.putShortA(actionInformation1);
+            this.stream.putShortBEA(actionInformation1);
             this.stream.putLEShort(actionTarget);
             this.atInventoryLoopCycle = 0;
             this.atInventoryInterface = actionInformation1;
@@ -2412,7 +2412,7 @@ public final class Client extends RSApplet {
         }
         if (menuAction == 539) {
             this.stream.putOpcode(16);
-            this.stream.putShortA(actionTarget);
+            this.stream.putShortBEA(actionTarget);
             this.stream.putLEShortA(actionInformation2);
             this.stream.putLEShortA(actionInformation1);
             this.atInventoryLoopCycle = 0;
@@ -2448,7 +2448,7 @@ public final class Client extends RSApplet {
                     }
                     if (menuAction == 6) {
                         this.stream.putOpcode(128);
-                        this.stream.putShort(this.localPlayers[p]);
+                        this.stream.putShortBE(this.localPlayers[p]);
                     }
                     foundPlayer = true;
                     break;
@@ -2461,12 +2461,12 @@ public final class Client extends RSApplet {
         }
         if (menuAction == 870) {
             this.stream.putOpcode(53);
-            this.stream.putShort(actionInformation2);
-            this.stream.putShortA(this.lastItemSelectedSlot);
+            this.stream.putShortBE(actionInformation2);
+            this.stream.putShortBEA(this.lastItemSelectedSlot);
             this.stream.putLEShortA(actionTarget);
-            this.stream.putShort(this.lastItemSelectedInterface);
+            this.stream.putShortBE(this.lastItemSelectedInterface);
             this.stream.putLEShort(this.useItemId);
-            this.stream.putShort(actionInformation1);
+            this.stream.putShortBE(actionInformation1);
             this.atInventoryLoopCycle = 0;
             this.atInventoryInterface = actionInformation1;
             this.atInventoryIndex = actionInformation2;
@@ -2480,9 +2480,9 @@ public final class Client extends RSApplet {
         }
         if (menuAction == 847) {
             this.stream.putOpcode(87);
-            this.stream.putShortA(actionTarget);
-            this.stream.putShort(actionInformation1);
-            this.stream.putShortA(actionInformation2);
+            this.stream.putShortBEA(actionTarget);
+            this.stream.putShortBE(actionInformation1);
+            this.stream.putShortBEA(actionInformation2);
             this.atInventoryLoopCycle = 0;
             this.atInventoryInterface = actionInformation1;
             this.atInventoryIndex = actionInformation2;
@@ -2559,14 +2559,14 @@ public final class Client extends RSApplet {
             this.crossIndex = 0;
             this.stream.putOpcode(79);
             this.stream.putLEShort(actionInformation1 + this.baseY);
-            this.stream.putShort(actionTarget);
-            this.stream.putShortA(actionInformation2 + this.baseX);
+            this.stream.putShortBE(actionTarget);
+            this.stream.putShortBEA(actionInformation2 + this.baseX);
         }
         if (menuAction == 632) {
             this.stream.putOpcode(145);
-            this.stream.putShortA(actionInformation1);
-            this.stream.putShortA(actionInformation2);
-            this.stream.putShortA(actionTarget);
+            this.stream.putShortBEA(actionInformation1);
+            this.stream.putShortBEA(actionInformation2);
+            this.stream.putShortBEA(actionTarget);
             this.atInventoryLoopCycle = 0;
             this.atInventoryInterface = actionInformation1;
             this.atInventoryIndex = actionInformation2;
@@ -2582,7 +2582,7 @@ public final class Client extends RSApplet {
             this.stream.putOpcode(75);
             this.stream.putLEShortA(actionInformation1);
             this.stream.putLEShort(actionInformation2);
-            this.stream.putShortA(actionTarget);
+            this.stream.putShortBEA(actionTarget);
             this.atInventoryLoopCycle = 0;
             this.atInventoryInterface = actionInformation1;
             this.atInventoryIndex = actionInformation2;
@@ -2606,7 +2606,7 @@ public final class Client extends RSApplet {
             this.crossType = 2;
             this.crossIndex = 0;
             this.stream.putOpcode(156);
-            this.stream.putShortA(actionInformation2 + this.baseX);
+            this.stream.putShortBEA(actionInformation2 + this.baseX);
             this.stream.putLEShort(actionInformation1 + this.baseY);
             this.stream.putLEShortA(actionTarget);
         }
@@ -2623,13 +2623,13 @@ public final class Client extends RSApplet {
             this.crossIndex = 0;
             this.stream.putOpcode(181);
             this.stream.putLEShort(actionInformation1 + this.baseY);
-            this.stream.putShort(actionTarget);
+            this.stream.putShortBE(actionTarget);
             this.stream.putLEShort(actionInformation2 + this.baseX);
-            this.stream.putShortA(this.selectedSpellId);
+            this.stream.putShortBEA(this.selectedSpellId);
         }
         if (menuAction == 646) {
             this.stream.putOpcode(185);
-            this.stream.putShort(actionInformation1);
+            this.stream.putShortBE(actionInformation1);
             final RSInterface rsInterface = RSInterface.cache[actionInformation1];
             if (rsInterface.opcodes != null && rsInterface.opcodes[0][0] == 5) {
                 final int setting = rsInterface.opcodes[0][1];
@@ -2663,7 +2663,7 @@ public final class Client extends RSApplet {
                 this.crossType = 2;
                 this.crossIndex = 0;
                 this.stream.putOpcode(21);
-                this.stream.putShort(actionTarget);
+                this.stream.putShortBE(actionTarget);
             }
         }
         if (menuAction == 413) {
@@ -2677,7 +2677,7 @@ public final class Client extends RSApplet {
                 this.crossIndex = 0;
                 this.stream.putOpcode(131);
                 this.stream.putLEShortA(actionTarget);
-                this.stream.putShortA(this.selectedSpellId);
+                this.stream.putShortBEA(this.selectedSpellId);
             }
         }
         if (menuAction == 200) {
@@ -2706,7 +2706,7 @@ public final class Client extends RSApplet {
             this.stream.putOpcode(252);
             this.stream.putLEShortA(actionTarget >> 14 & 0x7FFF);
             this.stream.putLEShort(actionInformation1 + this.baseY);
-            this.stream.putShortA(actionInformation2 + this.baseX);
+            this.stream.putShortBEA(actionInformation2 + this.baseX);
         }
         if (menuAction == 412) {
             final NPC npc = this.npcs[actionTarget];
@@ -2718,7 +2718,7 @@ public final class Client extends RSApplet {
                 this.crossType = 2;
                 this.crossIndex = 0;
                 this.stream.putOpcode(72);
-                this.stream.putShortA(actionTarget);
+                this.stream.putShortBEA(actionTarget);
             }
         }
         if (menuAction == 365) {
@@ -2731,7 +2731,7 @@ public final class Client extends RSApplet {
                 this.crossType = 2;
                 this.crossIndex = 0;
                 this.stream.putOpcode(249);
-                this.stream.putShortA(actionTarget);
+                this.stream.putShortBEA(actionTarget);
                 this.stream.putLEShort(this.selectedSpellId);
             }
         }
@@ -2764,8 +2764,8 @@ public final class Client extends RSApplet {
         if (menuAction == 956 && this.clickInteractiveObject(actionTarget, actionInformation1, actionInformation2)) {
             this.stream.putOpcode(35);
             this.stream.putLEShort(actionInformation2 + this.baseX);
-            this.stream.putShortA(this.selectedSpellId);
-            this.stream.putShortA(actionInformation1 + this.baseY);
+            this.stream.putShortBEA(this.selectedSpellId);
+            this.stream.putShortBEA(actionInformation1 + this.baseY);
             this.stream.putLEShort(actionTarget >> 14 & 0x7FFF);
         }
         if (menuAction == 567) {
@@ -2787,8 +2787,8 @@ public final class Client extends RSApplet {
         if (menuAction == 867) {
             this.stream.putOpcode(43);
             this.stream.putLEShort(actionInformation1);
-            this.stream.putShortA(actionTarget);
-            this.stream.putShortA(actionInformation2);
+            this.stream.putShortBEA(actionTarget);
+            this.stream.putShortBEA(actionInformation2);
             this.atInventoryLoopCycle = 0;
             this.atInventoryInterface = actionInformation1;
             this.atInventoryIndex = actionInformation2;
@@ -2802,10 +2802,10 @@ public final class Client extends RSApplet {
         }
         if (menuAction == 543) {
             this.stream.putOpcode(237);
-            this.stream.putShort(actionInformation2);
-            this.stream.putShortA(actionTarget);
-            this.stream.putShort(actionInformation1);
-            this.stream.putShortA(this.selectedSpellId);
+            this.stream.putShortBE(actionInformation2);
+            this.stream.putShortBEA(actionTarget);
+            this.stream.putShortBE(actionInformation1);
+            this.stream.putShortBEA(this.selectedSpellId);
             this.atInventoryLoopCycle = 0;
             this.atInventoryInterface = actionInformation1;
             this.atInventoryIndex = actionInformation2;
@@ -2848,9 +2848,9 @@ public final class Client extends RSApplet {
                 this.crossType = 2;
                 this.crossIndex = 0;
                 this.stream.putOpcode(14);
-                this.stream.putShortA(this.lastItemSelectedInterface);
-                this.stream.putShort(actionTarget);
-                this.stream.putShort(this.useItemId);
+                this.stream.putShortBEA(this.lastItemSelectedInterface);
+                this.stream.putShortBE(actionTarget);
+                this.stream.putShortBE(this.useItemId);
                 this.stream.putLEShort(this.lastItemSelectedSlot);
             }
         }
@@ -2881,9 +2881,9 @@ public final class Client extends RSApplet {
         }
         if (menuAction == 454) {
             this.stream.putOpcode(41);
-            this.stream.putShort(actionTarget);
-            this.stream.putShortA(actionInformation2);
-            this.stream.putShortA(actionInformation1);
+            this.stream.putShortBE(actionTarget);
+            this.stream.putShortBEA(actionInformation2);
+            this.stream.putShortBEA(actionInformation1);
             this.atInventoryLoopCycle = 0;
             this.atInventoryInterface = actionInformation1;
             this.atInventoryIndex = actionInformation2;
@@ -2912,22 +2912,22 @@ public final class Client extends RSApplet {
             this.clickInteractiveObject(actionTarget, actionInformation1, actionInformation2);
             this.stream.putOpcode(70);
             this.stream.putLEShort(actionInformation2 + this.baseX);
-            this.stream.putShort(actionInformation1 + this.baseY);
+            this.stream.putShortBE(actionInformation1 + this.baseY);
             this.stream.putLEShortA(actionTarget >> 14 & 0x7FFF);
         }
         if (menuAction == 872) {
             this.clickInteractiveObject(actionTarget, actionInformation1, actionInformation2);
             this.stream.putOpcode(234);
             this.stream.putLEShortA(actionInformation2 + this.baseX);
-            this.stream.putShortA(actionTarget >> 14 & 0x7FFF);
+            this.stream.putShortBEA(actionTarget >> 14 & 0x7FFF);
             this.stream.putLEShortA(actionInformation1 + this.baseY);
         }
         if (menuAction == 502) {
             this.clickInteractiveObject(actionTarget, actionInformation1, actionInformation2);
             this.stream.putOpcode(132);
             this.stream.putLEShortA(actionInformation2 + this.baseX);
-            this.stream.putShort(actionTarget >> 14 & 0x7FFF);
-            this.stream.putShortA(actionInformation1 + this.baseY);
+            this.stream.putShortBE(actionTarget >> 14 & 0x7FFF);
+            this.stream.putShortBEA(actionInformation1 + this.baseY);
         }
         if (menuAction == 1125) {
             final ItemDefinition item = ItemDefinition.getDefinition(actionTarget);
@@ -2944,7 +2944,7 @@ public final class Client extends RSApplet {
         }
         if (menuAction == 169) {
             this.stream.putOpcode(185);
-            this.stream.putShort(actionInformation1);
+            this.stream.putShortBE(actionInformation1);
             final RSInterface rsInterface = RSInterface.cache[actionInformation1];
             if (rsInterface.opcodes != null && rsInterface.opcodes[0][0] == 5) {
                 final int setting = rsInterface.opcodes[0][1];
@@ -2988,7 +2988,7 @@ public final class Client extends RSApplet {
             this.stream.putOpcode(253);
             this.stream.putLEShort(actionInformation2 + this.baseX);
             this.stream.putLEShortA(actionInformation1 + this.baseY);
-            this.stream.putShortA(actionTarget);
+            this.stream.putShortBEA(actionTarget);
         }
         if (menuAction == 1448) {
             final ItemDefinition item = ItemDefinition.getDefinition(actionTarget);
@@ -6314,7 +6314,7 @@ public final class Client extends RSApplet {
                 }
                 this.loginStream.put(this.stream.position + 40);
                 this.loginStream.put(255);
-                this.loginStream.putShort(317);
+                this.loginStream.putShortBE(317);
                 this.loginStream.put(lowMemory ? 1 : 0);
                 for (int crc = 0; crc < 9; crc++) {
                     this.loginStream.putIntBE(this.expectedCRCs[crc]);
@@ -6658,7 +6658,7 @@ public final class Client extends RSApplet {
                                 && differenceY >= -32 && differenceY <= 31) {
                                 differenceX += 32;
                                 differenceY += 32;
-                                this.stream.putShort((this.sameClickPositionCounter << 12) + (differenceX << 6) + differenceY);
+                                this.stream.putShortBE((this.sameClickPositionCounter << 12) + (differenceX << 6) + differenceY);
                                 this.sameClickPositionCounter = 0;
                             } else if (this.sameClickPositionCounter < 8) {
                                 this.stream.put24BitInt(0x800000 + (this.sameClickPositionCounter << 19) + pixelOffset);
@@ -6723,8 +6723,8 @@ public final class Client extends RSApplet {
             this.cameraMovedWriteDelay = 20;
             this.cameraMovedWrite = false;
             this.stream.putOpcode(86);
-            this.stream.putShort(cameraVertical);
-            this.stream.putShortA(cameraHorizontal);
+            this.stream.putShortBE(cameraVertical);
+            this.stream.putShortBEA(cameraHorizontal);
         }
         if (super.awtFocus && !this.windowFocused) {
             this.windowFocused = true;
@@ -8080,13 +8080,13 @@ public final class Client extends RSApplet {
                 if (canWalk) {
                     this.stream.put(i);
                     this.stream.put(j);
-                    this.stream.putShort(cameraHorizontal);
+                    this.stream.putShortBE(cameraHorizontal);
                     this.stream.put(57);
                     this.stream.put(this.minimap.rotation);
                     this.stream.put(this.minimap.zoom);
                     this.stream.put(89);
-                    this.stream.putShort(localPlayer.x);
-                    this.stream.putShort(localPlayer.y);
+                    this.stream.putShortBE(localPlayer.x);
+                    this.stream.putShortBE(localPlayer.y);
                     this.stream.put(this.arbitraryDestination);
                     this.stream.put(63);
                 }
@@ -8101,14 +8101,14 @@ public final class Client extends RSApplet {
                     this.stream.put(101);
                 }
                 this.stream.put(197);
-                this.stream.putShort((int) (Math.random() * 65536D));
+                this.stream.putShortBE((int) (Math.random() * 65536D));
                 this.stream.put((int) (Math.random() * 256D));
                 this.stream.put(67);
-                this.stream.putShort(14214);
+                this.stream.putShortBE(14214);
                 if ((int) (Math.random() * 2D) == 0) {
-                    this.stream.putShort(29487);
+                    this.stream.putShortBE(29487);
                 }
-                this.stream.putShort((int) (Math.random() * 65536D));
+                this.stream.putShortBE((int) (Math.random() * 65536D));
                 if ((int) (Math.random() * 2D) == 0) {
                     this.stream.put(220);
                 }
