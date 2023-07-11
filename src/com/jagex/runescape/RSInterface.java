@@ -90,8 +90,8 @@ public final class RSInterface {
                 rsInterface.childY = new int[childCount];
                 for (int child = 0; child < childCount; child++) {
                     rsInterface.children[child] = stream.getUnsignedLEShort();
-                    rsInterface.childX[child] = stream.getShort();
-                    rsInterface.childY[child] = stream.getShort();
+                    rsInterface.childX[child] = stream.getShortBE();
+                    rsInterface.childY[child] = stream.getShortBE();
                 }
 
             }
@@ -114,8 +114,8 @@ public final class RSInterface {
                 for (int sprite = 0; sprite < 20; sprite++) {
                     final int spriteExists = stream.getUnsignedByte();
                     if (spriteExists == 1) {
-                        rsInterface.spritesX[sprite] = stream.getShort();
-                        rsInterface.spritesY[sprite] = stream.getShort();
+                        rsInterface.spritesX[sprite] = stream.getShortBE();
+                        rsInterface.spritesY[sprite] = stream.getShortBE();
                         final String name = stream.getString();
                         if (mediaArchive != null && name.length() > 0) {
                             final int spriteId = name.lastIndexOf(",");
@@ -208,8 +208,8 @@ public final class RSInterface {
                 }
                 rsInterface.textShadowed = stream.getUnsignedByte() == 1;
                 rsInterface.colourDefault = stream.getIntBE();
-                rsInterface.inventorySpritePaddingColumn = stream.getShort();
-                rsInterface.inventorySpritePaddingRow = stream.getShort();
+                rsInterface.inventorySpritePaddingColumn = stream.getShortBE();
+                rsInterface.inventorySpritePaddingRow = stream.getShortBE();
                 rsInterface.inventory = stream.getUnsignedByte() == 1;
                 rsInterface.actions = new String[5];
                 for (int active = 0; active < 5; active++) {

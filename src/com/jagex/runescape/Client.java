@@ -4833,7 +4833,7 @@ public final class Client extends RSApplet {
                 return false;
             }
             if (this.packetOpcode == 70) {
-                final int x = this.inStream.getShort();
+                final int x = this.inStream.getShortBE();
                 final int y = this.inStream.getSignedLEShort();
                 final int interfaceId = this.inStream.getUnsignedShort();
                 final RSInterface rsInterface = RSInterface.cache[interfaceId];
@@ -5473,7 +5473,7 @@ public final class Client extends RSApplet {
                 if (this.currentTabId == 12) {
                     this.redrawTab = true;
                 }
-                this.playerWeight = this.inStream.getShort();
+                this.playerWeight = this.inStream.getShortBE();
                 this.packetOpcode = -1;
                 return true;
             }
@@ -5656,7 +5656,7 @@ public final class Client extends RSApplet {
             }
             if (this.packetOpcode == 200) {
                 final int interfaceId = this.inStream.getUnsignedLEShort();
-                final int animationId = this.inStream.getShort();
+                final int animationId = this.inStream.getShortBE();
                 final RSInterface rsInterface = RSInterface.cache[interfaceId];
                 rsInterface.animationIdDefault = animationId;
                 if (animationId == -1) {
@@ -7510,7 +7510,7 @@ public final class Client extends RSApplet {
             int projectileY = this.playerPositionY + (projectileAngle & 7);
             int projectileOffsetX = projectileX + stream.get();
             int projectileOffsetY = projectileY + stream.get();
-            final int projectileTarget = stream.getShort();
+            final int projectileTarget = stream.getShortBE();
             final int projectileGraphicId = stream.getUnsignedLEShort();
             final int projectileHeightStart = stream.getUnsignedByte() * 4;
             final int projectileHeightEnd = stream.getUnsignedByte() * 4;

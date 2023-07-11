@@ -136,7 +136,7 @@ public final class Buffer extends Cacheable {
         return (ms << 32) + ls;
     }
 
-    public int getShort() {
+    public int getShortBE() {
         this.position += 2;
         int i = ((this.buffer[this.position - 2] & 0xff) << 8) + (this.buffer[this.position - 1] & 0xff);
         if (i > 32767) {

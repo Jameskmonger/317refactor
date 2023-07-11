@@ -368,11 +368,11 @@ public final class GameObjectDefinition {
                 } else if (opcode == 69) {
                     this.face = stream.getUnsignedByte();
                 } else if (opcode == 70) {
-                    this.translateX = stream.getShort();
+                    this.translateX = stream.getShortBE();
                 } else if (opcode == 71) {
-                    this.translateY = stream.getShort();
+                    this.translateY = stream.getShortBE();
                 } else if (opcode == 72) {
-                    this.translateZ = stream.getShort();
+                    this.translateZ = stream.getShortBE();
                 } else if (opcode == 73) {
                     this.unknownAttribute = true;
                 } else if (opcode == 74) {
