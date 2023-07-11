@@ -68,7 +68,7 @@ class Censor {
     private static void loadFragmentsEnc(final Buffer buffer) {
         fragments = new int[buffer.getIntBE()];
         for (int i = 0; i < fragments.length; i++) {
-            fragments[i] = buffer.getUnsignedShort();
+            fragments[i] = buffer.getUnsignedLEShort();
         }
     }
 

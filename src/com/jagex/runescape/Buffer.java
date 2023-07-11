@@ -196,12 +196,12 @@ public final class Buffer extends Cacheable {
         return ((this.buffer[this.position - 2] & 0xff) << 8) + (this.buffer[this.position - 1] - 128 & 0xff);
     }
 
-    public int getUnsignedShort() {
+    public int getUnsignedLEShort() {
         this.position += 2;
         return ((this.buffer[this.position - 1] & 0xff) << 8) + (this.buffer[this.position - 2] & 0xff);
     }
 
-    public int getUnsignedShortA() {
+    public int getUnsignedLEShortA() {
         this.position += 2;
         return ((this.buffer[this.position - 1] & 0xff) << 8) + (this.buffer[this.position - 2] - 128 & 0xff);
     }
