@@ -130,7 +130,7 @@ public final class Buffer extends Cacheable {
             + ((this.buffer[this.position - 4] & 0xff) << 8) + (this.buffer[this.position - 3] & 0xff);
     }
 
-    public long getLong() {
+    public long getLongBE() {
         final long ms = this.getIntBE() & 0xffffffffL;
         final long ls = this.getIntBE() & 0xffffffffL;
         return (ms << 32) + ls;

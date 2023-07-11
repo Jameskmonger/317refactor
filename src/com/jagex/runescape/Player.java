@@ -352,7 +352,7 @@ public final class Player extends Entity {
         if (super.runAnimationId == 65535) {
             super.runAnimationId = -1;
         }
-        this.name = TextClass.formatName(TextClass.longToName(stream.getLong()));
+        this.name = TextClass.formatName(TextClass.longToName(stream.getLongBE()));
         this.combatLevel = stream.getUnsignedByte();
         this.skill = stream.getUnsignedLEShort();
         this.visible = true;

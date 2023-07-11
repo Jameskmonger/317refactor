@@ -4751,7 +4751,7 @@ public final class Client extends RSApplet {
             if (this.packetOpcode == 214) {
                 this.ignoreCount = this.packetSize / 8;
                 for (int p = 0; p < this.ignoreCount; p++) {
-                    this.ignoreListAsLongs[p] = this.inStream.getLong();
+                    this.ignoreListAsLongs[p] = this.inStream.getLongBE();
                 }
 
                 this.packetOpcode = -1;
@@ -5202,7 +5202,7 @@ public final class Client extends RSApplet {
                 return true;
             }
             if (this.packetOpcode == 50) {
-                final long nameAsLong = this.inStream.getLong();
+                final long nameAsLong = this.inStream.getLongBE();
                 final int worldId = this.inStream.getUnsignedByte();
                 String name = TextClass.formatName(TextClass.longToName(nameAsLong));
                 for (int friend = 0; friend < this.friendsCount; friend++) {
@@ -5344,7 +5344,7 @@ public final class Client extends RSApplet {
                 return true;
             }
             if (this.packetOpcode == 196) {
-                final long nameAsLong = this.inStream.getLong();
+                final long nameAsLong = this.inStream.getLongBE();
                 final int messageId = this.inStream.getIntBE();
                 final int playerRights = this.inStream.getUnsignedByte();
                 boolean ignored = false;
@@ -6290,7 +6290,7 @@ public final class Client extends RSApplet {
             if (responseCode == 0) {
                 this.socket.read(this.inStream.buffer, 8);
                 this.inStream.position = 0;
-                this.serverSessionKey = this.inStream.getLong();
+                this.serverSessionKey = this.inStream.getLongBE();
                 final int[] seed = new int[4];
                 seed[0] = (int) (Math.random() * 99999999D);
                 seed[1] = (int) (Math.random() * 99999999D);
