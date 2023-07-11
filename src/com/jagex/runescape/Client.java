@@ -3189,7 +3189,7 @@ public final class Client extends RSApplet {
             currentWalkingQueueSize += maxPathSize;
             if (currentWalkingQueueSize >= 92) {
                 this.stream.putOpcode(36);
-                this.stream.putInt(0);
+                this.stream.putIntBE(0);
                 currentWalkingQueueSize = 0;
             }
             if (clickType == 0) {
@@ -6213,7 +6213,7 @@ public final class Client extends RSApplet {
         GameObjectDefinition.modelCache.clear();
         if (super.gameFrame != null) {
             this.stream.putOpcode(210);
-            this.stream.putInt(0x3F008EDD);
+            this.stream.putIntBE(0x3F008EDD);
         }
         if (lowMemory && signlink.cache_dat != null) {
             final int modelCount = this.onDemandFetcher.fileCount(0);
@@ -6298,11 +6298,11 @@ public final class Client extends RSApplet {
                 seed[3] = (int) this.serverSessionKey;
                 this.stream.position = 0;
                 this.stream.put(10);
-                this.stream.putInt(seed[0]);
-                this.stream.putInt(seed[1]);
-                this.stream.putInt(seed[2]);
-                this.stream.putInt(seed[3]);
-                this.stream.putInt(signlink.uid);
+                this.stream.putIntBE(seed[0]);
+                this.stream.putIntBE(seed[1]);
+                this.stream.putIntBE(seed[2]);
+                this.stream.putIntBE(seed[3]);
+                this.stream.putIntBE(signlink.uid);
                 this.stream.putString(playerUsername);
                 this.stream.putString(playerPassword);
                 this.stream.generateKeys();
@@ -6317,7 +6317,7 @@ public final class Client extends RSApplet {
                 this.loginStream.putShort(317);
                 this.loginStream.put(lowMemory ? 1 : 0);
                 for (int crc = 0; crc < 9; crc++) {
-                    this.loginStream.putInt(this.expectedCRCs[crc]);
+                    this.loginStream.putIntBE(this.expectedCRCs[crc]);
                 }
 
                 this.loginStream.putBytes(this.stream.buffer, this.stream.position, 0);
@@ -6664,7 +6664,7 @@ public final class Client extends RSApplet {
                                 this.stream.put24BitInt(0x800000 + (this.sameClickPositionCounter << 19) + pixelOffset);
                                 this.sameClickPositionCounter = 0;
                             } else {
-                                this.stream.putInt(0xc0000000 + (this.sameClickPositionCounter << 19) + pixelOffset);
+                                this.stream.putIntBE(0xc0000000 + (this.sameClickPositionCounter << 19) + pixelOffset);
                                 this.sameClickPositionCounter = 0;
                             }
                         }
@@ -6711,7 +6711,7 @@ public final class Client extends RSApplet {
             }
             final int timeDifference = (int) timeBetweenClicks;
             this.stream.putOpcode(241);
-            this.stream.putInt((timeDifference << 20) + (rightClick << 19) + pixelOffset);
+            this.stream.putIntBE((timeDifference << 20) + (rightClick << 19) + pixelOffset);
         }
         if (this.cameraMovedWriteDelay > 0) {
             this.cameraMovedWriteDelay--;
@@ -7024,7 +7024,7 @@ public final class Client extends RSApplet {
                         } catch (final Exception _ex) {
                         }
                         this.stream.putOpcode(208);
-                        this.stream.putInt(bankAmount);
+                        this.stream.putIntBE(bankAmount);
                     }
                     this.inputDialogState = 0;
                     this.redrawChatbox = true;

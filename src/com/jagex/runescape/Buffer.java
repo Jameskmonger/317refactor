@@ -242,7 +242,7 @@ public final class Buffer extends Cacheable {
 
     }
 
-    public void putInt(final int i) {
+    public void putIntBE(final int i) {
         this.buffer[this.position++] = (byte) (i >> 24);
         this.buffer[this.position++] = (byte) (i >> 16);
         this.buffer[this.position++] = (byte) (i >> 8);

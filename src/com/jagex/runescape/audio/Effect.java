@@ -65,10 +65,10 @@ public final class Effect {
     private Buffer encode(final int loops) {
         final int size = this.mix(loops);
         output.position = 0;
-        output.putInt(0x52494646);
+        output.putIntBE(0x52494646);
         output.putLEInt(36 + size);
-        output.putInt(0x57415645);
-        output.putInt(0x666d7420);
+        output.putIntBE(0x57415645);
+        output.putIntBE(0x666d7420);
         output.putLEInt(16);
         output.putLEShort(1);
         output.putLEShort(1);
@@ -76,7 +76,7 @@ public final class Effect {
         output.putLEInt(22050);
         output.putLEShort(1);
         output.putLEShort(8);
-        output.putInt(0x64617461);
+        output.putIntBE(0x64617461);
         output.putLEInt(size);
         output.position += size;
         return output;
