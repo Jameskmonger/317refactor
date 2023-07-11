@@ -698,7 +698,7 @@ public final class Client extends RSApplet {
                 this.friendsCount++;
                 this.redrawTab = true;
                 this.stream.putOpcode(188);
-                this.stream.putLong(targetHash);
+                this.stream.putLongBE(targetHash);
                 return;
             }
         } catch (final RuntimeException runtimeexception) {
@@ -733,7 +733,7 @@ public final class Client extends RSApplet {
             this.ignoreListAsLongs[this.ignoreCount++] = target;
             this.redrawTab = true;
             this.stream.putOpcode(133);
-            this.stream.putLong(target);
+            this.stream.putLongBE(target);
             return;
         } catch (final RuntimeException runtimeexception) {
             signlink.reporterror("45688, " + target + ", " + 4 + ", " + runtimeexception);
@@ -2102,7 +2102,7 @@ public final class Client extends RSApplet {
                 }
 
                 this.stream.putOpcode(215);
-                this.stream.putLong(friend);
+                this.stream.putLongBE(friend);
                 break;
             }
         } catch (final RuntimeException runtimeexception) {
@@ -2123,7 +2123,7 @@ public final class Client extends RSApplet {
                     System.arraycopy(this.ignoreListAsLongs, i + 1, this.ignoreListAsLongs, i, this.ignoreCount - i);
 
                     this.stream.putOpcode(74);
-                    this.stream.putLong(target);
+                    this.stream.putLongBE(target);
                     return;
                 }
             }
@@ -6983,7 +6983,7 @@ public final class Client extends RSApplet {
                         this.stream.putOpcode(126);
                         this.stream.put(0);
                         final int originalOffset = this.stream.position;
-                        this.stream.putLong(this.privateMessageTarget);
+                        this.stream.putLongBE(this.privateMessageTarget);
                         TextInput.writeToStream(this.promptInput, this.stream);
                         this.stream.putSizeByte(this.stream.position - originalOffset);
                         this.promptInput = TextInput.processText(this.promptInput);
@@ -7041,7 +7041,7 @@ public final class Client extends RSApplet {
                 if (c == 13 || c == 10) {
                     if (this.amountOrNameInput.length() > 0) {
                         this.stream.putOpcode(60);
-                        this.stream.putLong(TextClass.nameToLong(this.amountOrNameInput));
+                        this.stream.putLongBE(TextClass.nameToLong(this.amountOrNameInput));
                     }
                     this.inputDialogState = 0;
                     this.redrawChatbox = true;
@@ -8541,7 +8541,7 @@ public final class Client extends RSApplet {
             this.clearTopInterfaces();
             if (this.reportAbuseInput.length() > 0) {
                 this.stream.putOpcode(218);
-                this.stream.putLong(TextClass.nameToLong(this.reportAbuseInput));
+                this.stream.putLongBE(TextClass.nameToLong(this.reportAbuseInput));
                 this.stream.put(contentType - 601);
                 this.stream.put(this.reportAbuseMute ? 1 : 0);
             }

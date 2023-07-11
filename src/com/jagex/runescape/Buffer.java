@@ -266,7 +266,7 @@ public final class Buffer extends Cacheable {
         this.buffer[this.position++] = (byte) (j >> 8);
     }
 
-    public void putLong(final long l) {
+    public void putLongBE(final long l) {
         try {
             this.buffer[this.position++] = (byte) (int) (l >> 56);
             this.buffer[this.position++] = (byte) (int) (l >> 48);
