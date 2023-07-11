@@ -22,7 +22,7 @@ public final class Effect {
         output = new Buffer(_output);
         Instrument.initialise();
         do {
-            final int effect = stream.getUnsignedLEShort();
+            final int effect = stream.getUnsignedBEShort();
             if (effect == 65535) {
                 return;
             }
@@ -58,17 +58,17 @@ public final class Effect {
                 this.instruments[instrument].decode(stream);
             }
         }
-        this.loopStart = stream.getUnsignedLEShort();
-        this.loopEnd = stream.getUnsignedLEShort();
+        this.loopStart = stream.getUnsignedBEShort();
+        this.loopEnd = stream.getUnsignedBEShort();
     }
 
     private Buffer encode(final int loops) {
         final int size = this.mix(loops);
         output.position = 0;
-        output.putInt(0x52494646);
+        output.putIntBE(0x52494646);
         output.putLEInt(36 + size);
-        output.putInt(0x57415645);
-        output.putInt(0x666d7420);
+        output.putIntBE(0x57415645);
+        output.putIntBE(0x666d7420);
         output.putLEInt(16);
         output.putLEShort(1);
         output.putLEShort(1);
@@ -76,7 +76,7 @@ public final class Effect {
         output.putLEInt(22050);
         output.putLEShort(1);
         output.putLEShort(8);
-        output.putInt(0x64617461);
+        output.putIntBE(0x64617461);
         output.putLEInt(size);
         output.position += size;
         return output;

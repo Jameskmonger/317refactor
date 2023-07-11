@@ -173,12 +173,12 @@ public final class ItemDefinition {
     public static void load(final Archive streamLoader) {
         stream = new Buffer(streamLoader.decompressFile("obj.dat"));
         final Buffer stream = new Buffer(streamLoader.decompressFile("obj.idx"));
-        itemCount = stream.getUnsignedLEShort();
+        itemCount = stream.getUnsignedBEShort();
         streamOffsets = new int[itemCount];
         int offset = 2;
         for (int item = 0; item < itemCount; item++) {
             streamOffsets[item] = offset;
-            offset += stream.getUnsignedLEShort();
+            offset += stream.getUnsignedBEShort();
         }
 
         cache = new ItemDefinition[10];
@@ -437,45 +437,45 @@ public final class ItemDefinition {
                 return;
             }
             if (opcode == 1) {
-                this.modelId = stream.getUnsignedLEShort();
+                this.modelId = stream.getUnsignedBEShort();
             } else if (opcode == 2) {
                 this.name = stream.getString();
             } else if (opcode == 3) {
                 this.description = stream.readBytes();
             } else if (opcode == 4) {
-                this.modelZoom = stream.getUnsignedLEShort();
+                this.modelZoom = stream.getUnsignedBEShort();
             } else if (opcode == 5) {
-                this.modelRotationX = stream.getUnsignedLEShort();
+                this.modelRotationX = stream.getUnsignedBEShort();
             } else if (opcode == 6) {
-                this.modelRotationY = stream.getUnsignedLEShort();
+                this.modelRotationY = stream.getUnsignedBEShort();
             } else if (opcode == 7) {
-                this.modelOffset1 = stream.getUnsignedLEShort();
+                this.modelOffset1 = stream.getUnsignedBEShort();
                 if (this.modelOffset1 > 32767) {
                     this.modelOffset1 -= 0x10000;
                 }
             } else if (opcode == 8) {
-                this.modelOffset2 = stream.getUnsignedLEShort();
+                this.modelOffset2 = stream.getUnsignedBEShort();
                 if (this.modelOffset2 > 32767) {
                     this.modelOffset2 -= 0x10000;
                 }
             } else if (opcode == 10) {
-                stream.getUnsignedLEShort();
+                stream.getUnsignedBEShort();
             } else if (opcode == 11) {
                 this.stackable = true;
             } else if (opcode == 12) {
-                this.value = stream.getInt();
+                this.value = stream.getIntBE();
             } else if (opcode == 16) {
                 this.membersObject = true;
             } else if (opcode == 23) {
-                this.maleEquipModelIdPrimary = stream.getUnsignedLEShort();
+                this.maleEquipModelIdPrimary = stream.getUnsignedBEShort();
                 this.equipModelTranslationMale = stream.get();
             } else if (opcode == 24) {
-                this.maleEquipModelIdSecondary = stream.getUnsignedLEShort();
+                this.maleEquipModelIdSecondary = stream.getUnsignedBEShort();
             } else if (opcode == 25) {
-                this.femaleEquipModelIdPrimary = stream.getUnsignedLEShort();
+                this.femaleEquipModelIdPrimary = stream.getUnsignedBEShort();
                 this.equipModelTranslationFemale = stream.get();
             } else if (opcode == 26) {
-                this.femaleEquipModelIdSecondary = stream.getUnsignedLEShort();
+                this.femaleEquipModelIdSecondary = stream.getUnsignedBEShort();
             } else if (opcode >= 30 && opcode < 35) {
                 if (this.groundActions == null) {
                     this.groundActions = new String[5];
@@ -494,41 +494,41 @@ public final class ItemDefinition {
                 this.modifiedModelColors = new int[colourCount];
                 this.originalModelColors = new int[colourCount];
                 for (int c = 0; c < colourCount; c++) {
-                    this.modifiedModelColors[c] = stream.getUnsignedLEShort();
-                    this.originalModelColors[c] = stream.getUnsignedLEShort();
+                    this.modifiedModelColors[c] = stream.getUnsignedBEShort();
+                    this.originalModelColors[c] = stream.getUnsignedBEShort();
                 }
 
             } else if (opcode == 78) {
-                this.maleEquipModelIdEmblem = stream.getUnsignedLEShort();
+                this.maleEquipModelIdEmblem = stream.getUnsignedBEShort();
             } else if (opcode == 79) {
-                this.femaleEquipModelIdEmblem = stream.getUnsignedLEShort();
+                this.femaleEquipModelIdEmblem = stream.getUnsignedBEShort();
             } else if (opcode == 90) {
-                this.maleDialogueModelId = stream.getUnsignedLEShort();
+                this.maleDialogueModelId = stream.getUnsignedBEShort();
             } else if (opcode == 91) {
-                this.femaleDialogueModelId = stream.getUnsignedLEShort();
+                this.femaleDialogueModelId = stream.getUnsignedBEShort();
             } else if (opcode == 92) {
-                this.maleDialogueHatModelId = stream.getUnsignedLEShort();
+                this.maleDialogueHatModelId = stream.getUnsignedBEShort();
             } else if (opcode == 93) {
-                this.femaleDialogueHatModelId = stream.getUnsignedLEShort();
+                this.femaleDialogueHatModelId = stream.getUnsignedBEShort();
             } else if (opcode == 95) {
-                this.modelRotationZ = stream.getUnsignedLEShort();
+                this.modelRotationZ = stream.getUnsignedBEShort();
             } else if (opcode == 97) {
-                this.noteId = stream.getUnsignedLEShort();
+                this.noteId = stream.getUnsignedBEShort();
             } else if (opcode == 98) {
-                this.noteTemplateId = stream.getUnsignedLEShort();
+                this.noteTemplateId = stream.getUnsignedBEShort();
             } else if (opcode >= 100 && opcode < 110) {
                 if (this.stackableIds == null) {
                     this.stackableIds = new int[10];
                     this.stackableAmounts = new int[10];
                 }
-                this.stackableIds[opcode - 100] = stream.getUnsignedLEShort();
-                this.stackableAmounts[opcode - 100] = stream.getUnsignedLEShort();
+                this.stackableIds[opcode - 100] = stream.getUnsignedBEShort();
+                this.stackableAmounts[opcode - 100] = stream.getUnsignedBEShort();
             } else if (opcode == 110) {
-                this.modelScaleX = stream.getUnsignedLEShort();
+                this.modelScaleX = stream.getUnsignedBEShort();
             } else if (opcode == 111) {
-                this.modelScaleY = stream.getUnsignedLEShort();
+                this.modelScaleY = stream.getUnsignedBEShort();
             } else if (opcode == 112) {
-                this.modelScaleZ = stream.getUnsignedLEShort();
+                this.modelScaleZ = stream.getUnsignedBEShort();
             } else if (opcode == 113) {
                 this.lightModifier = stream.get();
             } else if (opcode == 114) {

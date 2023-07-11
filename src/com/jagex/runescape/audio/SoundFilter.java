@@ -96,13 +96,13 @@ final class SoundFilter {
         this.pairCount[0] = count >> 4;
         this.pairCount[1] = count & 0xf;
         if (count != 0) {
-            this.unity[0] = stream.getUnsignedLEShort();
-            this.unity[1] = stream.getUnsignedLEShort();
+            this.unity[0] = stream.getUnsignedBEShort();
+            this.unity[1] = stream.getUnsignedBEShort();
             final int migrated = stream.getUnsignedByte();
             for (int direction = 0; direction < 2; direction++) {
                 for (int pair = 0; pair < this.pairCount[direction]; pair++) {
-                    this.pairPhase[direction][0][pair] = stream.getUnsignedLEShort();
-                    this.pairMagnitude[direction][0][pair] = stream.getUnsignedLEShort();
+                    this.pairPhase[direction][0][pair] = stream.getUnsignedBEShort();
+                    this.pairMagnitude[direction][0][pair] = stream.getUnsignedBEShort();
                 }
 
             }
@@ -110,8 +110,8 @@ final class SoundFilter {
             for (int direction = 0; direction < 2; direction++) {
                 for (int pair = 0; pair < this.pairCount[direction]; pair++) {
                     if ((migrated & 1 << direction * 4 << pair) != 0) {
-                        this.pairPhase[direction][1][pair] = stream.getUnsignedLEShort();
-                        this.pairMagnitude[direction][1][pair] = stream.getUnsignedLEShort();
+                        this.pairPhase[direction][1][pair] = stream.getUnsignedBEShort();
+                        this.pairMagnitude[direction][1][pair] = stream.getUnsignedBEShort();
                     } else {
                         this.pairPhase[direction][1][pair] = this.pairPhase[direction][0][pair];
                         this.pairMagnitude[direction][1][pair] = this.pairMagnitude[direction][0][pair];

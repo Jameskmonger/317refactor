@@ -112,7 +112,7 @@ public final class Buffer extends Cacheable {
         return j;
     }
 
-    public int getInt() {
+    public int getIntBE() {
         this.position += 4;
         return ((this.buffer[this.position - 4] & 0xff) << 24) + ((this.buffer[this.position - 3] & 0xff) << 16)
             + ((this.buffer[this.position - 2] & 0xff) << 8) + (this.buffer[this.position - 1] & 0xff);
@@ -130,13 +130,13 @@ public final class Buffer extends Cacheable {
             + ((this.buffer[this.position - 4] & 0xff) << 8) + (this.buffer[this.position - 3] & 0xff);
     }
 
-    public long getLong() {
-        final long ms = this.getInt() & 0xffffffffL;
-        final long ls = this.getInt() & 0xffffffffL;
+    public long getLongBE() {
+        final long ms = this.getIntBE() & 0xffffffffL;
+        final long ls = this.getIntBE() & 0xffffffffL;
         return (ms << 32) + ls;
     }
 
-    public int getShort() {
+    public int getShortBE() {
         this.position += 2;
         int i = ((this.buffer[this.position - 2] & 0xff) << 8) + (this.buffer[this.position - 1] & 0xff);
         if (i > 32767) {
@@ -150,7 +150,7 @@ public final class Buffer extends Cacheable {
         if (i < 128) {
             return this.getUnsignedByte() - 64;
         } else {
-            return this.getUnsignedLEShort() - 49152;
+            return this.getUnsignedBEShort() - 49152;
         }
     }
 
@@ -159,7 +159,7 @@ public final class Buffer extends Cacheable {
         if (i < 128) {
             return this.getUnsignedByte();
         } else {
-            return this.getUnsignedLEShort() - 32768;
+            return this.getUnsignedBEShort() - 32768;
         }
     }
 
@@ -186,22 +186,22 @@ public final class Buffer extends Cacheable {
         return 128 - this.buffer[this.position++] & 0xff;
     }
 
-    public int getUnsignedLEShort() {
+    public int getUnsignedBEShort() {
         this.position += 2;
         return ((this.buffer[this.position - 2] & 0xff) << 8) + (this.buffer[this.position - 1] & 0xff);
     }
 
-    public int getUnsignedLEShortA() {
+    public int getUnsignedBEShortA() {
         this.position += 2;
         return ((this.buffer[this.position - 2] & 0xff) << 8) + (this.buffer[this.position - 1] - 128 & 0xff);
     }
 
-    public int getUnsignedShort() {
+    public int getUnsignedLEShort() {
         this.position += 2;
         return ((this.buffer[this.position - 1] & 0xff) << 8) + (this.buffer[this.position - 2] & 0xff);
     }
 
-    public int getUnsignedShortA() {
+    public int getUnsignedLEShortA() {
         this.position += 2;
         return ((this.buffer[this.position - 1] & 0xff) << 8) + (this.buffer[this.position - 2] - 128 & 0xff);
     }
@@ -242,7 +242,7 @@ public final class Buffer extends Cacheable {
 
     }
 
-    public void putInt(final int i) {
+    public void putIntBE(final int i) {
         this.buffer[this.position++] = (byte) (i >> 24);
         this.buffer[this.position++] = (byte) (i >> 16);
         this.buffer[this.position++] = (byte) (i >> 8);
@@ -266,7 +266,7 @@ public final class Buffer extends Cacheable {
         this.buffer[this.position++] = (byte) (j >> 8);
     }
 
-    public void putLong(final long l) {
+    public void putLongBE(final long l) {
         try {
             this.buffer[this.position++] = (byte) (int) (l >> 56);
             this.buffer[this.position++] = (byte) (int) (l >> 48);
@@ -286,12 +286,12 @@ public final class Buffer extends Cacheable {
         this.buffer[this.position++] = (byte) (i + this.encryptor.value());
     }
 
-    public void putShort(final int i) {
+    public void putShortBE(final int i) {
         this.buffer[this.position++] = (byte) (i >> 8);
         this.buffer[this.position++] = (byte) i;
     }
 
-    public void putShortA(final int j) {
+    public void putShortBEA(final int j) {
         this.buffer[this.position++] = (byte) (j >> 8);
         this.buffer[this.position++] = (byte) (j + 128);
     }

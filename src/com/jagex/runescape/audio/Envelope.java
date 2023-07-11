@@ -27,8 +27,8 @@ final class Envelope {
 
     public void decode(final Buffer stream) {
         this.form = stream.getUnsignedByte();
-        this.start = stream.getInt();
-        this.end = stream.getInt();
+        this.start = stream.getIntBE();
+        this.end = stream.getIntBE();
         this.decodeShape(stream);
     }
 
@@ -37,8 +37,8 @@ final class Envelope {
         this.phaseDuration = new int[this.phaseCount];
         this.phasePeak = new int[this.phaseCount];
         for (int p = 0; p < this.phaseCount; p++) {
-            this.phaseDuration[p] = stream.getUnsignedLEShort();
-            this.phasePeak[p] = stream.getUnsignedLEShort();
+            this.phaseDuration[p] = stream.getUnsignedBEShort();
+            this.phasePeak[p] = stream.getUnsignedBEShort();
         }
 
     }

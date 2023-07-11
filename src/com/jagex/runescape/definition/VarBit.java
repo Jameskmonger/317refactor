@@ -12,7 +12,7 @@ public final class VarBit {
 
     public static void load(final Archive archive) {
         final Buffer buffer = new Buffer(archive.decompressFile("varbit.dat"));
-        final int count = buffer.getUnsignedLEShort();
+        final int count = buffer.getUnsignedBEShort();
 
         if (values == null) {
             values = new VarBit[count];
@@ -38,7 +38,7 @@ public final class VarBit {
                 return;
             }
             if (opcode == 1) {
-                this.configId = buffer.getUnsignedLEShort();
+                this.configId = buffer.getUnsignedBEShort();
                 this.leastSignificantBit = buffer.getUnsignedByte();
                 this.mostSignificantBit = buffer.getUnsignedByte();
             } else if (opcode == 10) {
@@ -46,9 +46,9 @@ public final class VarBit {
             } else if (opcode == 2) {
             } // dummy
             else if (opcode == 3) {
-                buffer.getInt();
+                buffer.getIntBE();
             } else if (opcode == 4) {
-                buffer.getInt();
+                buffer.getIntBE();
             } else {
                 System.out.println("Error unrecognised config code: " + opcode);
             }

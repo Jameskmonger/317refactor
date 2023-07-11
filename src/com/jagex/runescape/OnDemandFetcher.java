@@ -648,7 +648,7 @@ public final class OnDemandFetcher implements Runnable {
             this.versions[i] = new int[j];
             this.filePriorities[i] = new byte[j];
             for (int l = 0; l < j; l++) {
-                this.versions[i][l] = stream.getUnsignedLEShort();
+                this.versions[i][l] = stream.getUnsignedBEShort();
             }
 
         }
@@ -660,7 +660,7 @@ public final class OnDemandFetcher implements Runnable {
             final Buffer stream_1 = new Buffer(abyte1);
             this.crcs[k] = new int[i1];
             for (int l1 = 0; l1 < i1; l1++) {
-                this.crcs[k][l1] = stream_1.getInt();
+                this.crcs[k][l1] = stream_1.getIntBE();
             }
 
         }
@@ -686,9 +686,9 @@ public final class OnDemandFetcher implements Runnable {
         this.objectMapIndices = new int[j1];
         this.shouldPreloadMap = new int[j1];
         for (int i = 0; i < j1; i++) {
-            this.mapSquareIds[i] = stream2.getUnsignedLEShort();
-            this.terrainMapIndices[i] = stream2.getUnsignedLEShort();
-            this.objectMapIndices[i] = stream2.getUnsignedLEShort();
+            this.mapSquareIds[i] = stream2.getUnsignedBEShort();
+            this.terrainMapIndices[i] = stream2.getUnsignedBEShort();
+            this.objectMapIndices[i] = stream2.getUnsignedBEShort();
             this.shouldPreloadMap[i] = stream2.getUnsignedByte();
         }
 
@@ -697,7 +697,7 @@ public final class OnDemandFetcher implements Runnable {
         j1 = abyte2.length / 2;
         this.frames = new int[j1];
         for (int j2 = 0; j2 < j1; j2++) {
-            this.frames[j2] = stream2.getUnsignedLEShort();
+            this.frames[j2] = stream2.getUnsignedBEShort();
         }
 
         abyte2 = streamLoader.decompressFile("midi_index");

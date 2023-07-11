@@ -22,9 +22,9 @@ public final class Sprite extends DrawingArea {
     public Sprite(final Archive streamLoader, final String target, final int archiveId) {
         final Buffer dataStream = new Buffer(streamLoader.decompressFile(target + ".dat"));
         final Buffer indexStream = new Buffer(streamLoader.decompressFile("index.dat"));
-        indexStream.position = dataStream.getUnsignedLEShort();
-        this.maxWidth = indexStream.getUnsignedLEShort();
-        this.maxHeight = indexStream.getUnsignedLEShort();
+        indexStream.position = dataStream.getUnsignedBEShort();
+        this.maxWidth = indexStream.getUnsignedBEShort();
+        this.maxHeight = indexStream.getUnsignedBEShort();
         final int length = indexStream.getUnsignedByte();
         final int[] pixels = new int[length];
         for (int p = 0; p < length - 1; p++) {
@@ -36,14 +36,14 @@ public final class Sprite extends DrawingArea {
 
         for (int i = 0; i < archiveId; i++) {
             indexStream.position += 2;
-            dataStream.position += indexStream.getUnsignedLEShort() * indexStream.getUnsignedLEShort();
+            dataStream.position += indexStream.getUnsignedBEShort() * indexStream.getUnsignedBEShort();
             indexStream.position++;
         }
 
         this.offsetX = indexStream.getUnsignedByte();
         this.offsetY = indexStream.getUnsignedByte();
-        this.width = indexStream.getUnsignedLEShort();
-        this.height = indexStream.getUnsignedLEShort();
+        this.width = indexStream.getUnsignedBEShort();
+        this.height = indexStream.getUnsignedBEShort();
         final int type = indexStream.getUnsignedByte();
         final int pixelCount = this.width * this.height;
         this.pixels = new int[pixelCount];

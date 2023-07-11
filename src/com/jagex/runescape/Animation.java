@@ -27,10 +27,10 @@ public final class Animation {
         final Buffer buffer = new Buffer(data);
         buffer.position = data.length - 8;
 
-        final int attributesOffset = buffer.getUnsignedLEShort();
-        final int transformationOffset = buffer.getUnsignedLEShort();
-        final int durationOffset = buffer.getUnsignedLEShort();
-        final int baseOffset = buffer.getUnsignedLEShort();
+        final int attributesOffset = buffer.getUnsignedBEShort();
+        final int transformationOffset = buffer.getUnsignedBEShort();
+        final int durationOffset = buffer.getUnsignedBEShort();
+        final int baseOffset = buffer.getUnsignedBEShort();
 
         int offset = 0;
         final Buffer headerBuffer = new Buffer(data);
@@ -53,7 +53,7 @@ public final class Animation {
         baseBuffer.position = offset;
 
         final Skins base = new Skins(baseBuffer);
-        final int count = headerBuffer.getUnsignedLEShort();
+        final int count = headerBuffer.getUnsignedBEShort();
 
         final int[] transformationIndices = new int[500];
         final int[] transformX = new int[500];
@@ -61,7 +61,7 @@ public final class Animation {
         final int[] transformZ = new int[500];
 
         for (int i = 0; i < count; i++) {
-            final int id = headerBuffer.getUnsignedLEShort();
+            final int id = headerBuffer.getUnsignedBEShort();
 
             final Animation anim = animations[id] = new Animation();
             anim.displayLength = durationBuffer.getUnsignedByte();

@@ -8,7 +8,7 @@ public final class AnimationSequence {
 
     public static void unpackConfig(final Archive streamLoader) {
         final Buffer stream = new Buffer(streamLoader.decompressFile("seq.dat"));
-        final int length = stream.getUnsignedLEShort();
+        final int length = stream.getUnsignedBEShort();
         if (animations == null) {
             animations = new AnimationSequence[length];
         }
@@ -77,16 +77,16 @@ public final class AnimationSequence {
                 this.secondaryFrames = new int[this.frameCount];
                 this.frameLengths = new int[this.frameCount];
                 for (int frame = 0; frame < this.frameCount; frame++) {
-                    this.primaryFrames[frame] = stream.getUnsignedLEShort();
-                    this.secondaryFrames[frame] = stream.getUnsignedLEShort();
+                    this.primaryFrames[frame] = stream.getUnsignedBEShort();
+                    this.secondaryFrames[frame] = stream.getUnsignedBEShort();
                     if (this.secondaryFrames[frame] == 65535) {
                         this.secondaryFrames[frame] = -1;
                     }
-                    this.frameLengths[frame] = stream.getUnsignedLEShort();
+                    this.frameLengths[frame] = stream.getUnsignedBEShort();
                 }
 
             } else if (opcode == 2) {
-                this.frameStep = stream.getUnsignedLEShort();
+                this.frameStep = stream.getUnsignedBEShort();
             } else if (opcode == 3) {
                 final int flowCount = stream.getUnsignedByte();
                 this.flowControl = new int[flowCount + 1];
@@ -100,9 +100,9 @@ public final class AnimationSequence {
             } else if (opcode == 5) {
                 this.priority = stream.getUnsignedByte();
             } else if (opcode == 6) {
-                this.playerReplacementShield = stream.getUnsignedLEShort();
+                this.playerReplacementShield = stream.getUnsignedBEShort();
             } else if (opcode == 7) {
-                this.playerReplacementWeapon = stream.getUnsignedLEShort();
+                this.playerReplacementWeapon = stream.getUnsignedBEShort();
             } else if (opcode == 8) {
                 this.maximumLoops = stream.getUnsignedByte();
             } else if (opcode == 9)
@@ -120,7 +120,7 @@ public final class AnimationSequence {
             } else if (opcode == 11) {
                 this.replayMode = stream.getUnsignedByte();
             } else if (opcode == 12) {
-                stream.getInt();
+                stream.getIntBE();
             } else {
                 System.out.println("Error unrecognised seq config code: " + opcode);
             }

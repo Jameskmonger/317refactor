@@ -33,7 +33,7 @@ public final class Archive {
             this.decompressed = false;
         }
 
-        this.fileCount = buffer.getUnsignedLEShort();
+        this.fileCount = buffer.getUnsignedBEShort();
         this.hashes = new int[this.fileCount];
         this.decompressedSizes = new int[this.fileCount];
         this.compressedSizes = new int[this.fileCount];
@@ -41,7 +41,7 @@ public final class Archive {
         int offset = buffer.position + this.fileCount * 10;
 
         for (int index = 0; index < this.fileCount; index++) {
-            this.hashes[index] = buffer.getInt();
+            this.hashes[index] = buffer.getIntBE();
             this.decompressedSizes[index] = buffer.get3Bytes();
             this.compressedSizes[index] = buffer.get3Bytes();
             this.initialOffsets[index] = offset;

@@ -698,7 +698,7 @@ public final class Client extends RSApplet {
                 this.friendsCount++;
                 this.redrawTab = true;
                 this.stream.putOpcode(188);
-                this.stream.putLong(targetHash);
+                this.stream.putLongBE(targetHash);
                 return;
             }
         } catch (final RuntimeException runtimeexception) {
@@ -733,7 +733,7 @@ public final class Client extends RSApplet {
             this.ignoreListAsLongs[this.ignoreCount++] = target;
             this.redrawTab = true;
             this.stream.putOpcode(133);
-            this.stream.putLong(target);
+            this.stream.putLongBE(target);
             return;
         } catch (final RuntimeException runtimeexception) {
             signlink.reporterror("45688, " + target + ", " + 4 + ", " + runtimeexception);
@@ -2102,7 +2102,7 @@ public final class Client extends RSApplet {
                 }
 
                 this.stream.putOpcode(215);
-                this.stream.putLong(friend);
+                this.stream.putLongBE(friend);
                 break;
             }
         } catch (final RuntimeException runtimeexception) {
@@ -2123,7 +2123,7 @@ public final class Client extends RSApplet {
                     System.arraycopy(this.ignoreListAsLongs, i + 1, this.ignoreListAsLongs, i, this.ignoreCount - i);
 
                     this.stream.putOpcode(74);
-                    this.stream.putLong(target);
+                    this.stream.putLongBE(target);
                     return;
                 }
             }
@@ -2224,10 +2224,10 @@ public final class Client extends RSApplet {
                 this.crossType = 2;
                 this.crossIndex = 0;
                 this.stream.putOpcode(57);
-                this.stream.putShortA(this.useItemId);
-                this.stream.putShortA(actionTarget);
+                this.stream.putShortBEA(this.useItemId);
+                this.stream.putShortBEA(actionTarget);
                 this.stream.putLEShort(this.lastItemSelectedSlot);
-                this.stream.putShortA(this.lastItemSelectedInterface);
+                this.stream.putShortBEA(this.lastItemSelectedInterface);
             }
         }
         if (menuAction == 234) {
@@ -2243,17 +2243,17 @@ public final class Client extends RSApplet {
             this.crossIndex = 0;
             this.stream.putOpcode(236);
             this.stream.putLEShort(actionInformation1 + this.baseY);
-            this.stream.putShort(actionTarget);
+            this.stream.putShortBE(actionTarget);
             this.stream.putLEShort(actionInformation2 + this.baseX);
         }
         if (menuAction == 62 && this.clickInteractiveObject(actionTarget, actionInformation1, actionInformation2)) {
             this.stream.putOpcode(192);
-            this.stream.putShort(this.lastItemSelectedInterface);
+            this.stream.putShortBE(this.lastItemSelectedInterface);
             this.stream.putLEShort(actionTarget >> 14 & 0x7FFF);
             this.stream.putLEShortA(actionInformation1 + this.baseY);
             this.stream.putLEShort(this.lastItemSelectedSlot);
             this.stream.putLEShortA(actionInformation2 + this.baseX);
-            this.stream.putShort(this.useItemId);
+            this.stream.putShortBE(this.useItemId);
         }
         if (menuAction == 511) {
             boolean flag2 = this.doWalkTo(2, 0, 0, 0, localPlayer.waypointY[0], 0, 0, actionInformation1,
@@ -2268,16 +2268,16 @@ public final class Client extends RSApplet {
             this.crossIndex = 0;
             this.stream.putOpcode(25);
             this.stream.putLEShort(this.lastItemSelectedInterface);
-            this.stream.putShortA(this.useItemId);
-            this.stream.putShort(actionTarget);
-            this.stream.putShortA(actionInformation1 + this.baseY);
+            this.stream.putShortBEA(this.useItemId);
+            this.stream.putShortBE(actionTarget);
+            this.stream.putShortBEA(actionInformation1 + this.baseY);
             this.stream.putLEShortA(this.lastItemSelectedSlot);
-            this.stream.putShort(actionInformation2 + this.baseX);
+            this.stream.putShortBE(actionInformation2 + this.baseX);
         }
         if (menuAction == 74) {
             this.stream.putOpcode(122);
             this.stream.putLEShortA(actionInformation1);
-            this.stream.putShortA(actionInformation2);
+            this.stream.putShortBEA(actionInformation2);
             this.stream.putLEShort(actionTarget);
             this.atInventoryLoopCycle = 0;
             this.atInventoryInterface = actionInformation1;
@@ -2298,7 +2298,7 @@ public final class Client extends RSApplet {
             }
             if (flag8) {
                 this.stream.putOpcode(185);
-                this.stream.putShort(actionInformation1);
+                this.stream.putShortBE(actionInformation1);
             }
         }
         if (menuAction == 561) {
@@ -2311,7 +2311,7 @@ public final class Client extends RSApplet {
                 this.crossType = 2;
                 this.crossIndex = 0;
                 this.stream.putOpcode(128);
-                this.stream.putShort(actionTarget);
+                this.stream.putShortBE(actionTarget);
             }
         }
         if (menuAction == 20) {
@@ -2350,20 +2350,20 @@ public final class Client extends RSApplet {
         if (menuAction == 1062) {
             this.clickInteractiveObject(actionTarget, actionInformation1, actionInformation2);
             this.stream.putOpcode(228);
-            this.stream.putShortA(actionTarget >> 14 & 0x7FFF);
-            this.stream.putShortA(actionInformation1 + this.baseY);
-            this.stream.putShort(actionInformation2 + this.baseX);
+            this.stream.putShortBEA(actionTarget >> 14 & 0x7FFF);
+            this.stream.putShortBEA(actionInformation1 + this.baseY);
+            this.stream.putShortBE(actionInformation2 + this.baseX);
         }
         if (menuAction == 679 && !this.continuedDialogue) {
             this.stream.putOpcode(40);
-            this.stream.putShort(actionInformation1);
+            this.stream.putShortBE(actionInformation1);
             this.continuedDialogue = true;
         }
         if (menuAction == 431) {
             this.stream.putOpcode(129);
-            this.stream.putShortA(actionInformation2);
-            this.stream.putShort(actionInformation1);
-            this.stream.putShortA(actionTarget);
+            this.stream.putShortBEA(actionInformation2);
+            this.stream.putShortBE(actionInformation1);
+            this.stream.putShortBEA(actionTarget);
             this.atInventoryLoopCycle = 0;
             this.atInventoryInterface = actionInformation1;
             this.atInventoryIndex = actionInformation2;
@@ -2397,7 +2397,7 @@ public final class Client extends RSApplet {
         if (menuAction == 53) {
             this.stream.putOpcode(135);
             this.stream.putLEShort(actionInformation2);
-            this.stream.putShortA(actionInformation1);
+            this.stream.putShortBEA(actionInformation1);
             this.stream.putLEShort(actionTarget);
             this.atInventoryLoopCycle = 0;
             this.atInventoryInterface = actionInformation1;
@@ -2412,7 +2412,7 @@ public final class Client extends RSApplet {
         }
         if (menuAction == 539) {
             this.stream.putOpcode(16);
-            this.stream.putShortA(actionTarget);
+            this.stream.putShortBEA(actionTarget);
             this.stream.putLEShortA(actionInformation2);
             this.stream.putLEShortA(actionInformation1);
             this.atInventoryLoopCycle = 0;
@@ -2448,7 +2448,7 @@ public final class Client extends RSApplet {
                     }
                     if (menuAction == 6) {
                         this.stream.putOpcode(128);
-                        this.stream.putShort(this.localPlayers[p]);
+                        this.stream.putShortBE(this.localPlayers[p]);
                     }
                     foundPlayer = true;
                     break;
@@ -2461,12 +2461,12 @@ public final class Client extends RSApplet {
         }
         if (menuAction == 870) {
             this.stream.putOpcode(53);
-            this.stream.putShort(actionInformation2);
-            this.stream.putShortA(this.lastItemSelectedSlot);
+            this.stream.putShortBE(actionInformation2);
+            this.stream.putShortBEA(this.lastItemSelectedSlot);
             this.stream.putLEShortA(actionTarget);
-            this.stream.putShort(this.lastItemSelectedInterface);
+            this.stream.putShortBE(this.lastItemSelectedInterface);
             this.stream.putLEShort(this.useItemId);
-            this.stream.putShort(actionInformation1);
+            this.stream.putShortBE(actionInformation1);
             this.atInventoryLoopCycle = 0;
             this.atInventoryInterface = actionInformation1;
             this.atInventoryIndex = actionInformation2;
@@ -2480,9 +2480,9 @@ public final class Client extends RSApplet {
         }
         if (menuAction == 847) {
             this.stream.putOpcode(87);
-            this.stream.putShortA(actionTarget);
-            this.stream.putShort(actionInformation1);
-            this.stream.putShortA(actionInformation2);
+            this.stream.putShortBEA(actionTarget);
+            this.stream.putShortBE(actionInformation1);
+            this.stream.putShortBEA(actionInformation2);
             this.atInventoryLoopCycle = 0;
             this.atInventoryInterface = actionInformation1;
             this.atInventoryIndex = actionInformation2;
@@ -2559,14 +2559,14 @@ public final class Client extends RSApplet {
             this.crossIndex = 0;
             this.stream.putOpcode(79);
             this.stream.putLEShort(actionInformation1 + this.baseY);
-            this.stream.putShort(actionTarget);
-            this.stream.putShortA(actionInformation2 + this.baseX);
+            this.stream.putShortBE(actionTarget);
+            this.stream.putShortBEA(actionInformation2 + this.baseX);
         }
         if (menuAction == 632) {
             this.stream.putOpcode(145);
-            this.stream.putShortA(actionInformation1);
-            this.stream.putShortA(actionInformation2);
-            this.stream.putShortA(actionTarget);
+            this.stream.putShortBEA(actionInformation1);
+            this.stream.putShortBEA(actionInformation2);
+            this.stream.putShortBEA(actionTarget);
             this.atInventoryLoopCycle = 0;
             this.atInventoryInterface = actionInformation1;
             this.atInventoryIndex = actionInformation2;
@@ -2582,7 +2582,7 @@ public final class Client extends RSApplet {
             this.stream.putOpcode(75);
             this.stream.putLEShortA(actionInformation1);
             this.stream.putLEShort(actionInformation2);
-            this.stream.putShortA(actionTarget);
+            this.stream.putShortBEA(actionTarget);
             this.atInventoryLoopCycle = 0;
             this.atInventoryInterface = actionInformation1;
             this.atInventoryIndex = actionInformation2;
@@ -2606,7 +2606,7 @@ public final class Client extends RSApplet {
             this.crossType = 2;
             this.crossIndex = 0;
             this.stream.putOpcode(156);
-            this.stream.putShortA(actionInformation2 + this.baseX);
+            this.stream.putShortBEA(actionInformation2 + this.baseX);
             this.stream.putLEShort(actionInformation1 + this.baseY);
             this.stream.putLEShortA(actionTarget);
         }
@@ -2623,13 +2623,13 @@ public final class Client extends RSApplet {
             this.crossIndex = 0;
             this.stream.putOpcode(181);
             this.stream.putLEShort(actionInformation1 + this.baseY);
-            this.stream.putShort(actionTarget);
+            this.stream.putShortBE(actionTarget);
             this.stream.putLEShort(actionInformation2 + this.baseX);
-            this.stream.putShortA(this.selectedSpellId);
+            this.stream.putShortBEA(this.selectedSpellId);
         }
         if (menuAction == 646) {
             this.stream.putOpcode(185);
-            this.stream.putShort(actionInformation1);
+            this.stream.putShortBE(actionInformation1);
             final RSInterface rsInterface = RSInterface.cache[actionInformation1];
             if (rsInterface.opcodes != null && rsInterface.opcodes[0][0] == 5) {
                 final int setting = rsInterface.opcodes[0][1];
@@ -2663,7 +2663,7 @@ public final class Client extends RSApplet {
                 this.crossType = 2;
                 this.crossIndex = 0;
                 this.stream.putOpcode(21);
-                this.stream.putShort(actionTarget);
+                this.stream.putShortBE(actionTarget);
             }
         }
         if (menuAction == 413) {
@@ -2677,7 +2677,7 @@ public final class Client extends RSApplet {
                 this.crossIndex = 0;
                 this.stream.putOpcode(131);
                 this.stream.putLEShortA(actionTarget);
-                this.stream.putShortA(this.selectedSpellId);
+                this.stream.putShortBEA(this.selectedSpellId);
             }
         }
         if (menuAction == 200) {
@@ -2706,7 +2706,7 @@ public final class Client extends RSApplet {
             this.stream.putOpcode(252);
             this.stream.putLEShortA(actionTarget >> 14 & 0x7FFF);
             this.stream.putLEShort(actionInformation1 + this.baseY);
-            this.stream.putShortA(actionInformation2 + this.baseX);
+            this.stream.putShortBEA(actionInformation2 + this.baseX);
         }
         if (menuAction == 412) {
             final NPC npc = this.npcs[actionTarget];
@@ -2718,7 +2718,7 @@ public final class Client extends RSApplet {
                 this.crossType = 2;
                 this.crossIndex = 0;
                 this.stream.putOpcode(72);
-                this.stream.putShortA(actionTarget);
+                this.stream.putShortBEA(actionTarget);
             }
         }
         if (menuAction == 365) {
@@ -2731,7 +2731,7 @@ public final class Client extends RSApplet {
                 this.crossType = 2;
                 this.crossIndex = 0;
                 this.stream.putOpcode(249);
-                this.stream.putShortA(actionTarget);
+                this.stream.putShortBEA(actionTarget);
                 this.stream.putLEShort(this.selectedSpellId);
             }
         }
@@ -2764,8 +2764,8 @@ public final class Client extends RSApplet {
         if (menuAction == 956 && this.clickInteractiveObject(actionTarget, actionInformation1, actionInformation2)) {
             this.stream.putOpcode(35);
             this.stream.putLEShort(actionInformation2 + this.baseX);
-            this.stream.putShortA(this.selectedSpellId);
-            this.stream.putShortA(actionInformation1 + this.baseY);
+            this.stream.putShortBEA(this.selectedSpellId);
+            this.stream.putShortBEA(actionInformation1 + this.baseY);
             this.stream.putLEShort(actionTarget >> 14 & 0x7FFF);
         }
         if (menuAction == 567) {
@@ -2787,8 +2787,8 @@ public final class Client extends RSApplet {
         if (menuAction == 867) {
             this.stream.putOpcode(43);
             this.stream.putLEShort(actionInformation1);
-            this.stream.putShortA(actionTarget);
-            this.stream.putShortA(actionInformation2);
+            this.stream.putShortBEA(actionTarget);
+            this.stream.putShortBEA(actionInformation2);
             this.atInventoryLoopCycle = 0;
             this.atInventoryInterface = actionInformation1;
             this.atInventoryIndex = actionInformation2;
@@ -2802,10 +2802,10 @@ public final class Client extends RSApplet {
         }
         if (menuAction == 543) {
             this.stream.putOpcode(237);
-            this.stream.putShort(actionInformation2);
-            this.stream.putShortA(actionTarget);
-            this.stream.putShort(actionInformation1);
-            this.stream.putShortA(this.selectedSpellId);
+            this.stream.putShortBE(actionInformation2);
+            this.stream.putShortBEA(actionTarget);
+            this.stream.putShortBE(actionInformation1);
+            this.stream.putShortBEA(this.selectedSpellId);
             this.atInventoryLoopCycle = 0;
             this.atInventoryInterface = actionInformation1;
             this.atInventoryIndex = actionInformation2;
@@ -2848,9 +2848,9 @@ public final class Client extends RSApplet {
                 this.crossType = 2;
                 this.crossIndex = 0;
                 this.stream.putOpcode(14);
-                this.stream.putShortA(this.lastItemSelectedInterface);
-                this.stream.putShort(actionTarget);
-                this.stream.putShort(this.useItemId);
+                this.stream.putShortBEA(this.lastItemSelectedInterface);
+                this.stream.putShortBE(actionTarget);
+                this.stream.putShortBE(this.useItemId);
                 this.stream.putLEShort(this.lastItemSelectedSlot);
             }
         }
@@ -2881,9 +2881,9 @@ public final class Client extends RSApplet {
         }
         if (menuAction == 454) {
             this.stream.putOpcode(41);
-            this.stream.putShort(actionTarget);
-            this.stream.putShortA(actionInformation2);
-            this.stream.putShortA(actionInformation1);
+            this.stream.putShortBE(actionTarget);
+            this.stream.putShortBEA(actionInformation2);
+            this.stream.putShortBEA(actionInformation1);
             this.atInventoryLoopCycle = 0;
             this.atInventoryInterface = actionInformation1;
             this.atInventoryIndex = actionInformation2;
@@ -2912,22 +2912,22 @@ public final class Client extends RSApplet {
             this.clickInteractiveObject(actionTarget, actionInformation1, actionInformation2);
             this.stream.putOpcode(70);
             this.stream.putLEShort(actionInformation2 + this.baseX);
-            this.stream.putShort(actionInformation1 + this.baseY);
+            this.stream.putShortBE(actionInformation1 + this.baseY);
             this.stream.putLEShortA(actionTarget >> 14 & 0x7FFF);
         }
         if (menuAction == 872) {
             this.clickInteractiveObject(actionTarget, actionInformation1, actionInformation2);
             this.stream.putOpcode(234);
             this.stream.putLEShortA(actionInformation2 + this.baseX);
-            this.stream.putShortA(actionTarget >> 14 & 0x7FFF);
+            this.stream.putShortBEA(actionTarget >> 14 & 0x7FFF);
             this.stream.putLEShortA(actionInformation1 + this.baseY);
         }
         if (menuAction == 502) {
             this.clickInteractiveObject(actionTarget, actionInformation1, actionInformation2);
             this.stream.putOpcode(132);
             this.stream.putLEShortA(actionInformation2 + this.baseX);
-            this.stream.putShort(actionTarget >> 14 & 0x7FFF);
-            this.stream.putShortA(actionInformation1 + this.baseY);
+            this.stream.putShortBE(actionTarget >> 14 & 0x7FFF);
+            this.stream.putShortBEA(actionInformation1 + this.baseY);
         }
         if (menuAction == 1125) {
             final ItemDefinition item = ItemDefinition.getDefinition(actionTarget);
@@ -2944,7 +2944,7 @@ public final class Client extends RSApplet {
         }
         if (menuAction == 169) {
             this.stream.putOpcode(185);
-            this.stream.putShort(actionInformation1);
+            this.stream.putShortBE(actionInformation1);
             final RSInterface rsInterface = RSInterface.cache[actionInformation1];
             if (rsInterface.opcodes != null && rsInterface.opcodes[0][0] == 5) {
                 final int setting = rsInterface.opcodes[0][1];
@@ -2988,7 +2988,7 @@ public final class Client extends RSApplet {
             this.stream.putOpcode(253);
             this.stream.putLEShort(actionInformation2 + this.baseX);
             this.stream.putLEShortA(actionInformation1 + this.baseY);
-            this.stream.putShortA(actionTarget);
+            this.stream.putShortBEA(actionTarget);
         }
         if (menuAction == 1448) {
             final ItemDefinition item = ItemDefinition.getDefinition(actionTarget);
@@ -3189,7 +3189,7 @@ public final class Client extends RSApplet {
             currentWalkingQueueSize += maxPathSize;
             if (currentWalkingQueueSize >= 92) {
                 this.stream.putOpcode(36);
-                this.stream.putInt(0);
+                this.stream.putIntBE(0);
                 currentWalkingQueueSize = 0;
             }
             if (clickType == 0) {
@@ -4639,7 +4639,7 @@ public final class Client extends RSApplet {
                 if (availableBytes > 1) {
                     this.socket.read(this.inStream.buffer, 2);
                     this.inStream.position = 0;
-                    this.packetSize = this.inStream.getUnsignedLEShort();
+                    this.packetSize = this.inStream.getUnsignedBEShort();
                     availableBytes -= 2;
                 } else {
                     return false;
@@ -4662,10 +4662,10 @@ public final class Client extends RSApplet {
             }
             if (this.packetOpcode == 176) {
                 this.daysSinceRecoveryChange = this.inStream.getUnsignedByteC();
-                this.unreadMessages = this.inStream.getUnsignedLEShortA();
+                this.unreadMessages = this.inStream.getUnsignedBEShortA();
                 this.membership = this.inStream.getUnsignedByte();
                 this.lastAddress = this.inStream.getMEBInt();
-                this.daysSinceLogin = this.inStream.getUnsignedLEShort();
+                this.daysSinceLogin = this.inStream.getUnsignedBEShort();
                 if (this.lastAddress != 0 && this.openInterfaceId == -1) {
                     signlink.dnslookup(TextClass.decodeDNS(this.lastAddress));
                     this.clearTopInterfaces();
@@ -4715,7 +4715,7 @@ public final class Client extends RSApplet {
                 return true;
             }
             if (this.packetOpcode == 185) {
-                final int interfaceId = this.inStream.getUnsignedShortA();
+                final int interfaceId = this.inStream.getUnsignedLEShortA();
                 RSInterface.cache[interfaceId].modelTypeDefault = 3;
                 if (localPlayer.npcAppearance == null) {
                     RSInterface.cache[interfaceId].modelIdDefault = (localPlayer.bodyPartColour[0] << 25)
@@ -4738,7 +4738,7 @@ public final class Client extends RSApplet {
                 return true;
             }
             if (this.packetOpcode == 72) {
-                final int interfaceId = this.inStream.getUnsignedShort();
+                final int interfaceId = this.inStream.getUnsignedLEShort();
                 final RSInterface rsInterface = RSInterface.cache[interfaceId];
                 for (int slot = 0; slot < rsInterface.inventoryItemId.length; slot++) {
                     rsInterface.inventoryItemId[slot] = -1;
@@ -4751,7 +4751,7 @@ public final class Client extends RSApplet {
             if (this.packetOpcode == 214) {
                 this.ignoreCount = this.packetSize / 8;
                 for (int p = 0; p < this.ignoreCount; p++) {
-                    this.ignoreListAsLongs[p] = this.inStream.getLong();
+                    this.ignoreListAsLongs[p] = this.inStream.getLongBE();
                 }
 
                 this.packetOpcode = -1;
@@ -4761,7 +4761,7 @@ public final class Client extends RSApplet {
                 this.cutsceneActive = true;
                 this.anInt1098 = this.inStream.getUnsignedByte();
                 this.anInt1099 = this.inStream.getUnsignedByte();
-                this.anInt1100 = this.inStream.getUnsignedLEShort();
+                this.anInt1100 = this.inStream.getUnsignedBEShort();
                 this.anInt1101 = this.inStream.getUnsignedByte();
                 this.anInt1102 = this.inStream.getUnsignedByte();
                 if (this.anInt1102 >= 100) {
@@ -4790,7 +4790,7 @@ public final class Client extends RSApplet {
                 return true;
             }
             if (this.packetOpcode == 71) {
-                int sidebarId = this.inStream.getUnsignedLEShort();
+                int sidebarId = this.inStream.getUnsignedBEShort();
                 final int interfaceId = this.inStream.getUnsignedByteA();
                 if (sidebarId == 0x00FFFF) {
                     sidebarId = -1;
@@ -4802,7 +4802,7 @@ public final class Client extends RSApplet {
                 return true;
             }
             if (this.packetOpcode == 74) {
-                int songId = this.inStream.getUnsignedShort();
+                int songId = this.inStream.getUnsignedLEShort();
                 if (songId == 0x00FFFF) {
                     songId = -1;
                 }
@@ -4816,8 +4816,8 @@ public final class Client extends RSApplet {
                 return true;
             }
             if (this.packetOpcode == 121) {
-                final int nextSong = this.inStream.getUnsignedShortA();
-                final int previousSong = this.inStream.getUnsignedLEShortA();
+                final int nextSong = this.inStream.getUnsignedLEShortA();
+                final int previousSong = this.inStream.getUnsignedBEShortA();
                 if (this.musicEnabled && !lowMemory) {
                     this.nextSong = nextSong;
                     this.songChanging = false;
@@ -4833,9 +4833,9 @@ public final class Client extends RSApplet {
                 return false;
             }
             if (this.packetOpcode == 70) {
-                final int x = this.inStream.getShort();
+                final int x = this.inStream.getShortBE();
                 final int y = this.inStream.getSignedLEShort();
-                final int interfaceId = this.inStream.getUnsignedShort();
+                final int interfaceId = this.inStream.getUnsignedLEShort();
                 final RSInterface rsInterface = RSInterface.cache[interfaceId];
                 rsInterface.x = x;
                 rsInterface.y = y;
@@ -4848,12 +4848,12 @@ public final class Client extends RSApplet {
                 int playerRegionX = this.regionX;
                 int playerRegionY = this.regionY;
                 if (this.packetOpcode == 73) {
-                    playerRegionX = this.inStream.getUnsignedLEShortA();
-                    playerRegionY = this.inStream.getUnsignedLEShort();
+                    playerRegionX = this.inStream.getUnsignedBEShortA();
+                    playerRegionY = this.inStream.getUnsignedBEShort();
                     this.loadGeneratedMap = false;
                 }
                 if (this.packetOpcode == 241) {
-                    playerRegionY = this.inStream.getUnsignedLEShortA();
+                    playerRegionY = this.inStream.getUnsignedBEShortA();
                     this.inStream.initBitAccess();
                     for (int z = 0; z < 4; z++) {
                         for (int x = 0; x < 13; x++) {
@@ -4869,7 +4869,7 @@ public final class Client extends RSApplet {
                     }
 
                     this.inStream.finishBitAccess();
-                    playerRegionX = this.inStream.getUnsignedLEShort();
+                    playerRegionX = this.inStream.getUnsignedBEShort();
                     this.loadGeneratedMap = true;
                 }
                 if (this.regionX == playerRegionX && this.regionY == playerRegionY && this.loadingStage == 2) {
@@ -5063,15 +5063,15 @@ public final class Client extends RSApplet {
                 return true;
             }
             if (this.packetOpcode == 75) {
-                final int modelId = this.inStream.getUnsignedShortA();
-                final int interfaceId = this.inStream.getUnsignedShortA();
+                final int modelId = this.inStream.getUnsignedLEShortA();
+                final int interfaceId = this.inStream.getUnsignedLEShortA();
                 RSInterface.cache[interfaceId].modelTypeDefault = 2;
                 RSInterface.cache[interfaceId].modelIdDefault = modelId;
                 this.packetOpcode = -1;
                 return true;
             }
             if (this.packetOpcode == 114) {
-                this.systemUpdateTime = this.inStream.getUnsignedShort() * 30;
+                this.systemUpdateTime = this.inStream.getUnsignedLEShort() * 30;
                 this.packetOpcode = -1;
                 return true;
             }
@@ -5099,9 +5099,9 @@ public final class Client extends RSApplet {
                 return true;
             }
             if (this.packetOpcode == 174) {
-                final int trackId = this.inStream.getUnsignedLEShort();
+                final int trackId = this.inStream.getUnsignedBEShort();
                 final int loop = this.inStream.getUnsignedByte();
-                final int delay = this.inStream.getUnsignedLEShort();
+                final int delay = this.inStream.getUnsignedBEShort();
                 if (this.effectsEnabled && !lowMemory && this.trackCount < 50) {
                     this.trackIds[this.trackCount] = trackId;
                     this.trackLoop[this.trackCount] = loop;
@@ -5202,7 +5202,7 @@ public final class Client extends RSApplet {
                 return true;
             }
             if (this.packetOpcode == 50) {
-                final long nameAsLong = this.inStream.getLong();
+                final long nameAsLong = this.inStream.getLongBE();
                 final int worldId = this.inStream.getUnsignedByte();
                 String name = TextClass.formatName(TextClass.longToName(nameAsLong));
                 for (int friend = 0; friend < this.friendsCount; friend++) {
@@ -5262,7 +5262,7 @@ public final class Client extends RSApplet {
             if (this.packetOpcode == 254) {
                 this.hintIconType = this.inStream.getUnsignedByte();
                 if (this.hintIconType == 1) {
-                    this.hintIconNpcId = this.inStream.getUnsignedLEShort();
+                    this.hintIconNpcId = this.inStream.getUnsignedBEShort();
                 }
                 if (this.hintIconType >= 2 && this.hintIconType <= 6) {
                     if (this.hintIconType == 2) {
@@ -5286,19 +5286,19 @@ public final class Client extends RSApplet {
                         this.hintIconDrawTileY = 128;
                     }
                     this.hintIconType = 2;
-                    this.hintIconX = this.inStream.getUnsignedLEShort();
-                    this.hintIconY = this.inStream.getUnsignedLEShort();
+                    this.hintIconX = this.inStream.getUnsignedBEShort();
+                    this.hintIconY = this.inStream.getUnsignedBEShort();
                     this.hintIconDrawHeight = this.inStream.getUnsignedByte();
                 }
                 if (this.hintIconType == 10) {
-                    this.hintIconPlayerId = this.inStream.getUnsignedLEShort();
+                    this.hintIconPlayerId = this.inStream.getUnsignedBEShort();
                 }
                 this.packetOpcode = -1;
                 return true;
             }
             if (this.packetOpcode == 248) {
-                final int interfaceId = this.inStream.getUnsignedLEShortA();
-                final int inventoryInterfaceId = this.inStream.getUnsignedLEShort();
+                final int interfaceId = this.inStream.getUnsignedBEShortA();
+                final int inventoryInterfaceId = this.inStream.getUnsignedBEShort();
                 if (this.chatboxInterfaceId != -1) {
                     this.chatboxInterfaceId = -1;
                     this.redrawChatbox = true;
@@ -5316,8 +5316,8 @@ public final class Client extends RSApplet {
                 return true;
             }
             if (this.packetOpcode == 79) {
-                final int interfaceId = this.inStream.getUnsignedShort();
-                int scrollPosition = this.inStream.getUnsignedLEShortA();
+                final int interfaceId = this.inStream.getUnsignedLEShort();
+                int scrollPosition = this.inStream.getUnsignedBEShortA();
                 final RSInterface rsInterface = RSInterface.cache[interfaceId];
                 if (rsInterface != null && rsInterface.type == 0) {
                     if (scrollPosition < 0) {
@@ -5344,8 +5344,8 @@ public final class Client extends RSApplet {
                 return true;
             }
             if (this.packetOpcode == 196) {
-                final long nameAsLong = this.inStream.getLong();
-                final int messageId = this.inStream.getInt();
+                final long nameAsLong = this.inStream.getLongBE();
+                final int messageId = this.inStream.getIntBE();
                 final int playerRights = this.inStream.getUnsignedByte();
                 boolean ignored = false;
                 for (int message = 0; message < 100; message++) {
@@ -5406,9 +5406,9 @@ public final class Client extends RSApplet {
                 return true;
             }
             if (this.packetOpcode == 246) {
-                final int interfaceId = this.inStream.getUnsignedShort();
-                final int itemModelZoom = this.inStream.getUnsignedLEShort();
-                final int itemId = this.inStream.getUnsignedLEShort();
+                final int interfaceId = this.inStream.getUnsignedLEShort();
+                final int itemModelZoom = this.inStream.getUnsignedBEShort();
+                final int itemId = this.inStream.getUnsignedBEShort();
                 if (itemId == 0x00FFFF) {
                     RSInterface.cache[interfaceId].modelTypeDefault = 0;
                     this.packetOpcode = -1;
@@ -5426,13 +5426,13 @@ public final class Client extends RSApplet {
             }
             if (this.packetOpcode == 171) {
                 final boolean hiddenUntilHovered = this.inStream.getUnsignedByte() == 1;
-                final int interfaceId = this.inStream.getUnsignedLEShort();
+                final int interfaceId = this.inStream.getUnsignedBEShort();
                 RSInterface.cache[interfaceId].hoverOnly = hiddenUntilHovered;
                 this.packetOpcode = -1;
                 return true;
             }
             if (this.packetOpcode == 142) {
-                final int interfaceId = this.inStream.getUnsignedShort();
+                final int interfaceId = this.inStream.getUnsignedLEShort();
                 this.loadInterface(interfaceId);
                 if (this.chatboxInterfaceId != -1) {
                     this.chatboxInterfaceId = -1;
@@ -5452,7 +5452,7 @@ public final class Client extends RSApplet {
             }
             if (this.packetOpcode == 126) {
                 final String text = this.inStream.getString();
-                final int interfaceId = this.inStream.getUnsignedLEShortA();
+                final int interfaceId = this.inStream.getUnsignedBEShortA();
                 RSInterface.cache[interfaceId].textDefault = text;
                 if (RSInterface.cache[interfaceId].parentID == this.tabInterfaceIDs[this.currentTabId]) {
                     this.redrawTab = true;
@@ -5473,21 +5473,21 @@ public final class Client extends RSApplet {
                 if (this.currentTabId == 12) {
                     this.redrawTab = true;
                 }
-                this.playerWeight = this.inStream.getShort();
+                this.playerWeight = this.inStream.getShortBE();
                 this.packetOpcode = -1;
                 return true;
             }
             if (this.packetOpcode == 8) {
-                final int interfaceId = this.inStream.getUnsignedShortA();
-                final int interfaceModelId = this.inStream.getUnsignedLEShort();
+                final int interfaceId = this.inStream.getUnsignedLEShortA();
+                final int interfaceModelId = this.inStream.getUnsignedBEShort();
                 RSInterface.cache[interfaceId].modelTypeDefault = 1;
                 RSInterface.cache[interfaceId].modelIdDefault = interfaceModelId;
                 this.packetOpcode = -1;
                 return true;
             }
             if (this.packetOpcode == 122) {
-                final int interfaceId = this.inStream.getUnsignedShortA();
-                final int rgb = this.inStream.getUnsignedShortA();
+                final int interfaceId = this.inStream.getUnsignedLEShortA();
+                final int rgb = this.inStream.getUnsignedLEShortA();
                 final int r = rgb >> 10 & 0x1F;
                 final int g = rgb >> 5 & 0x1F;
                 final int b = rgb & 0x1F;
@@ -5497,9 +5497,9 @@ public final class Client extends RSApplet {
             }
             if (this.packetOpcode == 53) {
                 this.redrawTab = true;
-                final int interfaceId = this.inStream.getUnsignedLEShort();
+                final int interfaceId = this.inStream.getUnsignedBEShort();
                 final RSInterface rsInterface = RSInterface.cache[interfaceId];
-                final int itemCount = this.inStream.getUnsignedLEShort();
+                final int itemCount = this.inStream.getUnsignedBEShort();
 
                 for (int item = 0; item < itemCount; item++) {
                     int stackSize = this.inStream.getUnsignedByte();
@@ -5508,7 +5508,7 @@ public final class Client extends RSApplet {
                         stackSize = this.inStream.getMEBInt();
                     }
 
-                    rsInterface.inventoryItemId[item] = this.inStream.getUnsignedShortA();
+                    rsInterface.inventoryItemId[item] = this.inStream.getUnsignedLEShortA();
                     rsInterface.inventoryStackSize[item] = stackSize;
                 }
 
@@ -5521,10 +5521,10 @@ public final class Client extends RSApplet {
                 return true;
             }
             if (this.packetOpcode == 230) {
-                final int modelZoom = this.inStream.getUnsignedLEShortA();
-                final int interfaceId = this.inStream.getUnsignedLEShort();
-                final int modelRotationX = this.inStream.getUnsignedLEShort();
-                final int modelRotationY = this.inStream.getUnsignedShortA();
+                final int modelZoom = this.inStream.getUnsignedBEShortA();
+                final int interfaceId = this.inStream.getUnsignedBEShort();
+                final int modelRotationX = this.inStream.getUnsignedBEShort();
+                final int modelRotationY = this.inStream.getUnsignedLEShortA();
                 RSInterface.cache[interfaceId].modelRotationX = modelRotationX;
                 RSInterface.cache[interfaceId].modelRotationY = modelRotationY;
                 RSInterface.cache[interfaceId].modelZoom = modelZoom;
@@ -5541,7 +5541,7 @@ public final class Client extends RSApplet {
                 this.cutsceneActive = true;
                 this.anInt995 = this.inStream.getUnsignedByte();
                 this.anInt996 = this.inStream.getUnsignedByte();
-                this.cameraOffsetZ = this.inStream.getUnsignedLEShort();
+                this.cameraOffsetZ = this.inStream.getUnsignedBEShort();
                 this.anInt998 = this.inStream.getUnsignedByte();
                 this.anInt999 = this.inStream.getUnsignedByte();
                 if (this.anInt999 >= 100) {
@@ -5567,7 +5567,7 @@ public final class Client extends RSApplet {
             }
             if (this.packetOpcode == 249) {
                 this.membershipStatus = this.inStream.getUnsignedByteA();
-                this.playerListId = this.inStream.getUnsignedShortA();
+                this.playerListId = this.inStream.getUnsignedLEShortA();
                 this.packetOpcode = -1;
                 return true;
             }
@@ -5593,7 +5593,7 @@ public final class Client extends RSApplet {
                 return true;
             }
             if (this.packetOpcode == 97) {
-                final int interfaceId = this.inStream.getUnsignedLEShort();
+                final int interfaceId = this.inStream.getUnsignedBEShort();
                 this.loadInterface(interfaceId);
                 if (this.inventoryOverlayInterfaceID != -1) {
                     this.inventoryOverlayInterfaceID = -1;
@@ -5620,7 +5620,7 @@ public final class Client extends RSApplet {
                 return true;
             }
             if (this.packetOpcode == 87) {
-                final int settingId = this.inStream.getUnsignedShort();
+                final int settingId = this.inStream.getUnsignedLEShort();
                 final int settingValue = this.inStream.getMESInt();
                 this.defaultSettings[settingId] = settingValue;
                 if (this.interfaceSettings[settingId] != settingValue) {
@@ -5635,7 +5635,7 @@ public final class Client extends RSApplet {
                 return true;
             }
             if (this.packetOpcode == 36) {
-                final int settingId = this.inStream.getUnsignedShort();
+                final int settingId = this.inStream.getUnsignedLEShort();
                 final byte settingValue = this.inStream.get();
                 this.defaultSettings[settingId] = settingValue;
                 if (this.interfaceSettings[settingId] != settingValue) {
@@ -5655,8 +5655,8 @@ public final class Client extends RSApplet {
                 return true;
             }
             if (this.packetOpcode == 200) {
-                final int interfaceId = this.inStream.getUnsignedLEShort();
-                final int animationId = this.inStream.getShort();
+                final int interfaceId = this.inStream.getUnsignedBEShort();
+                final int animationId = this.inStream.getShortBE();
                 final RSInterface rsInterface = RSInterface.cache[interfaceId];
                 rsInterface.animationIdDefault = animationId;
                 if (animationId == -1) {
@@ -5687,14 +5687,14 @@ public final class Client extends RSApplet {
             }
             if (this.packetOpcode == 34) {
                 this.redrawTab = true;
-                final int interfaceId = this.inStream.getUnsignedLEShort();
+                final int interfaceId = this.inStream.getUnsignedBEShort();
                 final RSInterface rsInterface = RSInterface.cache[interfaceId];
                 while (this.inStream.position < this.packetSize) {
                     final int itemSlot = this.inStream.getSmartB();
-                    final int itemId = this.inStream.getUnsignedLEShort();
+                    final int itemId = this.inStream.getUnsignedBEShort();
                     int itemAmount = this.inStream.getUnsignedByte();
                     if (itemAmount == 255) {
-                        itemAmount = this.inStream.getInt();
+                        itemAmount = this.inStream.getIntBE();
                     }
                     if (itemSlot >= 0 && itemSlot < rsInterface.inventoryItemId.length) {
                         rsInterface.inventoryItemId[itemSlot] = itemId;
@@ -5719,7 +5719,7 @@ public final class Client extends RSApplet {
                 return true;
             }
             if (this.packetOpcode == 164) {
-                final int interfaceId = this.inStream.getUnsignedShort();
+                final int interfaceId = this.inStream.getUnsignedLEShort();
                 this.loadInterface(interfaceId);
                 if (this.inventoryOverlayInterfaceID != -1) {
                     this.inventoryOverlayInterfaceID = -1;
@@ -6213,7 +6213,7 @@ public final class Client extends RSApplet {
         GameObjectDefinition.modelCache.clear();
         if (super.gameFrame != null) {
             this.stream.putOpcode(210);
-            this.stream.putInt(0x3F008EDD);
+            this.stream.putIntBE(0x3F008EDD);
         }
         if (lowMemory && signlink.cache_dat != null) {
             final int modelCount = this.onDemandFetcher.fileCount(0);
@@ -6290,7 +6290,7 @@ public final class Client extends RSApplet {
             if (responseCode == 0) {
                 this.socket.read(this.inStream.buffer, 8);
                 this.inStream.position = 0;
-                this.serverSessionKey = this.inStream.getLong();
+                this.serverSessionKey = this.inStream.getLongBE();
                 final int[] seed = new int[4];
                 seed[0] = (int) (Math.random() * 99999999D);
                 seed[1] = (int) (Math.random() * 99999999D);
@@ -6298,11 +6298,11 @@ public final class Client extends RSApplet {
                 seed[3] = (int) this.serverSessionKey;
                 this.stream.position = 0;
                 this.stream.put(10);
-                this.stream.putInt(seed[0]);
-                this.stream.putInt(seed[1]);
-                this.stream.putInt(seed[2]);
-                this.stream.putInt(seed[3]);
-                this.stream.putInt(signlink.uid);
+                this.stream.putIntBE(seed[0]);
+                this.stream.putIntBE(seed[1]);
+                this.stream.putIntBE(seed[2]);
+                this.stream.putIntBE(seed[3]);
+                this.stream.putIntBE(signlink.uid);
                 this.stream.putString(playerUsername);
                 this.stream.putString(playerPassword);
                 this.stream.generateKeys();
@@ -6314,10 +6314,10 @@ public final class Client extends RSApplet {
                 }
                 this.loginStream.put(this.stream.position + 40);
                 this.loginStream.put(255);
-                this.loginStream.putShort(317);
+                this.loginStream.putShortBE(317);
                 this.loginStream.put(lowMemory ? 1 : 0);
                 for (int crc = 0; crc < 9; crc++) {
-                    this.loginStream.putInt(this.expectedCRCs[crc]);
+                    this.loginStream.putIntBE(this.expectedCRCs[crc]);
                 }
 
                 this.loginStream.putBytes(this.stream.buffer, this.stream.position, 0);
@@ -6658,13 +6658,13 @@ public final class Client extends RSApplet {
                                 && differenceY >= -32 && differenceY <= 31) {
                                 differenceX += 32;
                                 differenceY += 32;
-                                this.stream.putShort((this.sameClickPositionCounter << 12) + (differenceX << 6) + differenceY);
+                                this.stream.putShortBE((this.sameClickPositionCounter << 12) + (differenceX << 6) + differenceY);
                                 this.sameClickPositionCounter = 0;
                             } else if (this.sameClickPositionCounter < 8) {
                                 this.stream.put24BitInt(0x800000 + (this.sameClickPositionCounter << 19) + pixelOffset);
                                 this.sameClickPositionCounter = 0;
                             } else {
-                                this.stream.putInt(0xc0000000 + (this.sameClickPositionCounter << 19) + pixelOffset);
+                                this.stream.putIntBE(0xc0000000 + (this.sameClickPositionCounter << 19) + pixelOffset);
                                 this.sameClickPositionCounter = 0;
                             }
                         }
@@ -6711,7 +6711,7 @@ public final class Client extends RSApplet {
             }
             final int timeDifference = (int) timeBetweenClicks;
             this.stream.putOpcode(241);
-            this.stream.putInt((timeDifference << 20) + (rightClick << 19) + pixelOffset);
+            this.stream.putIntBE((timeDifference << 20) + (rightClick << 19) + pixelOffset);
         }
         if (this.cameraMovedWriteDelay > 0) {
             this.cameraMovedWriteDelay--;
@@ -6723,8 +6723,8 @@ public final class Client extends RSApplet {
             this.cameraMovedWriteDelay = 20;
             this.cameraMovedWrite = false;
             this.stream.putOpcode(86);
-            this.stream.putShort(cameraVertical);
-            this.stream.putShortA(cameraHorizontal);
+            this.stream.putShortBE(cameraVertical);
+            this.stream.putShortBEA(cameraHorizontal);
         }
         if (super.awtFocus && !this.windowFocused) {
             this.windowFocused = true;
@@ -6983,7 +6983,7 @@ public final class Client extends RSApplet {
                         this.stream.putOpcode(126);
                         this.stream.put(0);
                         final int originalOffset = this.stream.position;
-                        this.stream.putLong(this.privateMessageTarget);
+                        this.stream.putLongBE(this.privateMessageTarget);
                         TextInput.writeToStream(this.promptInput, this.stream);
                         this.stream.putSizeByte(this.stream.position - originalOffset);
                         this.promptInput = TextInput.processText(this.promptInput);
@@ -7024,7 +7024,7 @@ public final class Client extends RSApplet {
                         } catch (final Exception _ex) {
                         }
                         this.stream.putOpcode(208);
-                        this.stream.putInt(bankAmount);
+                        this.stream.putIntBE(bankAmount);
                     }
                     this.inputDialogState = 0;
                     this.redrawChatbox = true;
@@ -7041,7 +7041,7 @@ public final class Client extends RSApplet {
                 if (c == 13 || c == 10) {
                     if (this.amountOrNameInput.length() > 0) {
                         this.stream.putOpcode(60);
-                        this.stream.putLong(TextClass.nameToLong(this.amountOrNameInput));
+                        this.stream.putLongBE(TextClass.nameToLong(this.amountOrNameInput));
                     }
                     this.inputDialogState = 0;
                     this.redrawChatbox = true;
@@ -7243,9 +7243,9 @@ public final class Client extends RSApplet {
             final int positionOffset = stream.getUnsignedByte();
             final int x = this.playerPositionX + (positionOffset >> 4 & 7);
             final int y = this.playerPositionY + (positionOffset & 7);
-            final int targetItemId = stream.getUnsignedLEShort();
-            final int targetItemAmount = stream.getUnsignedLEShort();
-            final int itemCount = stream.getUnsignedLEShort();
+            final int targetItemId = stream.getUnsignedBEShort();
+            final int targetItemAmount = stream.getUnsignedBEShort();
+            final int itemCount = stream.getUnsignedBEShort();
             if (x >= 0 && y >= 0 && x < 104 && y < 104) {
                 final DoubleEndedQueue groundItemArray = this.groundArray[this.plane][x][y];
                 if (groundItemArray != null) {
@@ -7267,7 +7267,7 @@ public final class Client extends RSApplet {
             final int positionOffset = stream.getUnsignedByte();
             final int x = this.playerPositionX + (positionOffset >> 4 & 7);
             final int y = this.playerPositionY + (positionOffset & 7);
-            final int trackId = stream.getUnsignedLEShort();
+            final int trackId = stream.getUnsignedBEShort();
             final int data = stream.getUnsignedByte();
             final int boundarySize = data >> 4 & 0xf;
             final int loop = data & 7;
@@ -7281,12 +7281,12 @@ public final class Client extends RSApplet {
             }
         }
         if (opcode == 215) {
-            final int id = stream.getUnsignedLEShortA();
+            final int id = stream.getUnsignedBEShortA();
             final int positionOffset = stream.getUnsignedByteS();
             final int x = this.playerPositionX + (positionOffset >> 4 & 7);
             final int y = this.playerPositionY + (positionOffset & 7);
-            final int playerId = stream.getUnsignedLEShortA();
-            final int count = stream.getUnsignedLEShort();
+            final int playerId = stream.getUnsignedBEShortA();
+            final int count = stream.getUnsignedBEShort();
             if (x >= 0 && y >= 0 && x < 104 && y < 104 && playerId != this.playerListId) {
                 final Item item = new Item();
                 item.itemId = id;
@@ -7303,7 +7303,7 @@ public final class Client extends RSApplet {
             final int positionOffset = stream.getUnsignedByteA();
             final int x = this.playerPositionX + (positionOffset >> 4 & 7);
             final int y = this.playerPositionY + (positionOffset & 7);
-            final int itemId = stream.getUnsignedLEShort();
+            final int itemId = stream.getUnsignedBEShort();
             if (x >= 0 && y >= 0 && x < 104 && y < 104) {
                 final DoubleEndedQueue groundItems = this.groundArray[this.plane][x][y];
                 if (groundItems != null) {
@@ -7333,7 +7333,7 @@ public final class Client extends RSApplet {
             int objectType = objectData >> 2;
             final int orientation = objectData & 3;
             final int type = this.objectTypes[objectType];
-            final int animationId = stream.getUnsignedLEShortA();
+            final int animationId = stream.getUnsignedBEShortA();
             if (x >= 0 && y >= 0 && x < 103 && y < 103) {
                 final int tileHeightX0Y0 = this.vertexHeights[this.plane][x][y];
                 final int tileHeightX1Y0 = this.vertexHeights[this.plane][x + 1][y];
@@ -7386,17 +7386,17 @@ public final class Client extends RSApplet {
             final int positionOffset = stream.getUnsignedByteS();
             final int x = this.playerPositionX + (positionOffset >> 4 & 7);
             final int y = this.playerPositionY + (positionOffset & 7);
-            final int targetPlayer = stream.getUnsignedLEShort();
+            final int targetPlayer = stream.getUnsignedBEShort();
             byte tileHeight = stream.getByteS();
-            final int startDelay = stream.getUnsignedShort();
+            final int startDelay = stream.getUnsignedLEShort();
             byte tileWidth = stream.getByteC();
-            final int duration = stream.getUnsignedLEShort();
+            final int duration = stream.getUnsignedBEShort();
             final int objectData = stream.getUnsignedByteS();
             final int objectType = objectData >> 2;
             final int objectOrientation = objectData & 3;
             final int type = this.objectTypes[objectType];
             byte offsetX = stream.get();
-            final int objectId = stream.getUnsignedLEShort();
+            final int objectId = stream.getUnsignedBEShort();
             byte offsetY = stream.getByteC();
             final Player player;
             if (targetPlayer == this.playerListId) {
@@ -7447,7 +7447,7 @@ public final class Client extends RSApplet {
             final int positionOffset = stream.getUnsignedByteA();
             final int x = this.playerPositionX + (positionOffset >> 4 & 7);
             final int y = this.playerPositionY + (positionOffset & 7);
-            final int objectId = stream.getUnsignedShort();
+            final int objectId = stream.getUnsignedLEShort();
             final int data = stream.getUnsignedByteS();
             final int objectType = data >> 2;
             final int orientation = data & 3;
@@ -7461,9 +7461,9 @@ public final class Client extends RSApplet {
             final int positionOffset = stream.getUnsignedByte();
             int x = this.playerPositionX + (positionOffset >> 4 & 7);
             int y = this.playerPositionY + (positionOffset & 7);
-            final int graphicId = stream.getUnsignedLEShort();
+            final int graphicId = stream.getUnsignedBEShort();
             final int drawHeight = stream.getUnsignedByte();
-            final int delay = stream.getUnsignedLEShort();
+            final int delay = stream.getUnsignedBEShort();
             if (x >= 0 && y >= 0 && x < 104 && y < 104) {
                 x = x * 128 + 64;
                 y = y * 128 + 64;
@@ -7474,8 +7474,8 @@ public final class Client extends RSApplet {
             return;
         }
         if (opcode == 44) {
-            final int itemId = stream.getUnsignedShortA();
-            final int itemAmount = stream.getUnsignedLEShort();
+            final int itemId = stream.getUnsignedLEShortA();
+            final int itemAmount = stream.getUnsignedBEShort();
             final int positionOffset = stream.getUnsignedByte();
             final int x = this.playerPositionX + (positionOffset >> 4 & 7);
             final int y = this.playerPositionY + (positionOffset & 7);
@@ -7510,12 +7510,12 @@ public final class Client extends RSApplet {
             int projectileY = this.playerPositionY + (projectileAngle & 7);
             int projectileOffsetX = projectileX + stream.get();
             int projectileOffsetY = projectileY + stream.get();
-            final int projectileTarget = stream.getShort();
-            final int projectileGraphicId = stream.getUnsignedLEShort();
+            final int projectileTarget = stream.getShortBE();
+            final int projectileGraphicId = stream.getUnsignedBEShort();
             final int projectileHeightStart = stream.getUnsignedByte() * 4;
             final int projectileHeightEnd = stream.getUnsignedByte() * 4;
-            final int projectileCreatedTime = stream.getUnsignedLEShort();
-            final int projectileSpeed = stream.getUnsignedLEShort();
+            final int projectileCreatedTime = stream.getUnsignedBEShort();
+            final int projectileSpeed = stream.getUnsignedBEShort();
             final int projectileInitialSlope = stream.getUnsignedByte();
             final int projectileDistanceFromSource = stream.getUnsignedByte();
             if (projectileX >= 0 && projectileY >= 0 && projectileX < 104 && projectileY < 104 && projectileOffsetX >= 0
@@ -8080,13 +8080,13 @@ public final class Client extends RSApplet {
                 if (canWalk) {
                     this.stream.put(i);
                     this.stream.put(j);
-                    this.stream.putShort(cameraHorizontal);
+                    this.stream.putShortBE(cameraHorizontal);
                     this.stream.put(57);
                     this.stream.put(this.minimap.rotation);
                     this.stream.put(this.minimap.zoom);
                     this.stream.put(89);
-                    this.stream.putShort(localPlayer.x);
-                    this.stream.putShort(localPlayer.y);
+                    this.stream.putShortBE(localPlayer.x);
+                    this.stream.putShortBE(localPlayer.y);
                     this.stream.put(this.arbitraryDestination);
                     this.stream.put(63);
                 }
@@ -8101,14 +8101,14 @@ public final class Client extends RSApplet {
                     this.stream.put(101);
                 }
                 this.stream.put(197);
-                this.stream.putShort((int) (Math.random() * 65536D));
+                this.stream.putShortBE((int) (Math.random() * 65536D));
                 this.stream.put((int) (Math.random() * 256D));
                 this.stream.put(67);
-                this.stream.putShort(14214);
+                this.stream.putShortBE(14214);
                 if ((int) (Math.random() * 2D) == 0) {
-                    this.stream.putShort(29487);
+                    this.stream.putShortBE(29487);
                 }
-                this.stream.putShort((int) (Math.random() * 65536D));
+                this.stream.putShortBE((int) (Math.random() * 65536D));
                 if ((int) (Math.random() * 2D) == 0) {
                     this.stream.put(220);
                 }
@@ -8541,7 +8541,7 @@ public final class Client extends RSApplet {
             this.clearTopInterfaces();
             if (this.reportAbuseInput.length() > 0) {
                 this.stream.putOpcode(218);
-                this.stream.putLong(TextClass.nameToLong(this.reportAbuseInput));
+                this.stream.putLongBE(TextClass.nameToLong(this.reportAbuseInput));
                 this.stream.put(contentType - 601);
                 this.stream.put(this.reportAbuseMute ? 1 : 0);
             }
@@ -10060,7 +10060,7 @@ public final class Client extends RSApplet {
             final NPC npc = this.npcs[npcId];
             final int updateType = stream.getUnsignedByte();
             if ((updateType & 0x10) != 0) {
-                int animationId = stream.getUnsignedShort();
+                int animationId = stream.getUnsignedLEShort();
                 if (animationId == 0x00FFFF) {
                     animationId = -1;
                 }
@@ -10095,8 +10095,8 @@ public final class Client extends RSApplet {
                 npc.maxHealth = stream.getUnsignedByte();
             }
             if ((updateType & 0x80) != 0) {
-                npc.graphicId = stream.getUnsignedLEShort();
-                final int delay = stream.getInt();
+                npc.graphicId = stream.getUnsignedBEShort();
+                final int delay = stream.getIntBE();
                 npc.graphicHeight = delay >> 16;
                 npc.graphicEndCycle = tick + (delay & 0xFFff);
                 npc.currentAnimationId = 0;
@@ -10109,7 +10109,7 @@ public final class Client extends RSApplet {
                 }
             }
             if ((updateType & 0x20) != 0) {
-                npc.interactingEntity = stream.getUnsignedLEShort();
+                npc.interactingEntity = stream.getUnsignedBEShort();
                 if (npc.interactingEntity == 0x00FFFF) {
                     npc.interactingEntity = -1;
                 }
@@ -10127,7 +10127,7 @@ public final class Client extends RSApplet {
                 npc.maxHealth = stream.getUnsignedByteC();
             }
             if ((updateType & 2) != 0) {
-                npc.npcDefinition = EntityDefinition.getDefinition(stream.getUnsignedShortA());
+                npc.npcDefinition = EntityDefinition.getDefinition(stream.getUnsignedLEShortA());
                 npc.boundaryDimension = npc.npcDefinition.boundaryDimension;
                 npc.degreesToTurn = npc.npcDefinition.degreesToTurn;
                 npc.walkAnimationId = npc.npcDefinition.walkAnimationId;
@@ -10137,8 +10137,8 @@ public final class Client extends RSApplet {
                 npc.standAnimationId = npc.npcDefinition.standAnimationId;
             }
             if ((updateType & 4) != 0) {
-                npc.faceTowardX = stream.getUnsignedShort();
-                npc.faceTowardY = stream.getUnsignedShort();
+                npc.faceTowardX = stream.getUnsignedLEShort();
+                npc.faceTowardY = stream.getUnsignedLEShort();
             }
         }
     }
@@ -10330,14 +10330,14 @@ public final class Client extends RSApplet {
             player.startY = stream.getUnsignedByteS();
             player.endX = stream.getUnsignedByteS();
             player.endY = stream.getUnsignedByteS();
-            player.tickStart = stream.getUnsignedShortA() + tick;
-            player.tickEnd = stream.getUnsignedLEShortA() + tick;
+            player.tickStart = stream.getUnsignedLEShortA() + tick;
+            player.tickEnd = stream.getUnsignedBEShortA() + tick;
             player.direction = stream.getUnsignedByteS();
             player.resetPath();
         }
         if ((updateType & 0x100) != 0) {
-            player.graphicId = stream.getUnsignedShort();
-            final int delay = stream.getInt();
+            player.graphicId = stream.getUnsignedLEShort();
+            final int delay = stream.getIntBE();
             player.graphicHeight = delay >> 16;
             player.graphicEndCycle = tick + (delay & 0xFFff);
             player.currentAnimationId = 0;
@@ -10350,7 +10350,7 @@ public final class Client extends RSApplet {
             }
         }
         if ((updateType & 0x008) != 0) {
-            int animationId = stream.getUnsignedShort();
+            int animationId = stream.getUnsignedLEShort();
             if (animationId == 0x00FFFF) {
                 animationId = -1;
             }
@@ -10389,7 +10389,7 @@ public final class Client extends RSApplet {
             player.textCycle = 150;
         }
         if ((updateType & 0x080) != 0) {
-            final int colourAndEffect = stream.getUnsignedShort();
+            final int colourAndEffect = stream.getUnsignedLEShort();
             final int rights = stream.getUnsignedByte();
             final int messageLength = stream.getUnsignedByteC();
             final int originalOffset = stream.position;
@@ -10436,7 +10436,7 @@ public final class Client extends RSApplet {
             stream.position = originalOffset + messageLength;
         }
         if ((updateType & 0x001) != 0) {
-            player.interactingEntity = stream.getUnsignedShort();
+            player.interactingEntity = stream.getUnsignedLEShort();
             if (player.interactingEntity == 0x00FFFF) {
                 player.interactingEntity = -1;
             }
@@ -10450,8 +10450,8 @@ public final class Client extends RSApplet {
             player.updatePlayerAppearance(appearanceBuffer);
         }
         if ((updateType & 0x002) != 0) {
-            player.faceTowardX = stream.getUnsignedShortA();
-            player.faceTowardY = stream.getUnsignedShort();
+            player.faceTowardX = stream.getUnsignedLEShortA();
+            player.faceTowardY = stream.getUnsignedLEShort();
         }
         if ((updateType & 0x020) != 0) {
             final int hitDamage = stream.getUnsignedByte();

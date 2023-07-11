@@ -8,7 +8,7 @@ public final class IdentityKit {
 
     public static void load(final Archive streamLoader) {
         final Buffer stream = new Buffer(streamLoader.decompressFile("idk.dat"));
-        count = stream.getUnsignedLEShort();
+        count = stream.getUnsignedBEShort();
         if (cache == null) {
             cache = new IdentityKit[count];
         }
@@ -124,17 +124,17 @@ public final class IdentityKit {
                 final int modelCount = stream.getUnsignedByte();
                 this.modelIds = new int[modelCount];
                 for (int m = 0; m < modelCount; m++) {
-                    this.modelIds[m] = stream.getUnsignedLEShort();
+                    this.modelIds[m] = stream.getUnsignedBEShort();
                 }
 
             } else if (opcode == 3) {
                 this.widgetDisplayed = true;
             } else if (opcode >= 40 && opcode < 50) {
-                this.originalModelColours[opcode - 40] = stream.getUnsignedLEShort();
+                this.originalModelColours[opcode - 40] = stream.getUnsignedBEShort();
             } else if (opcode >= 50 && opcode < 60) {
-                this.modifiedModelColours[opcode - 50] = stream.getUnsignedLEShort();
+                this.modifiedModelColours[opcode - 50] = stream.getUnsignedBEShort();
             } else if (opcode >= 60 && opcode < 70) {
-                this.headModelIds[opcode - 60] = stream.getUnsignedLEShort();
+                this.headModelIds[opcode - 60] = stream.getUnsignedBEShort();
             } else {
                 System.out.println("Error unrecognised config code: " + opcode);
             }
